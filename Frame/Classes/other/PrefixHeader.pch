@@ -1,0 +1,131 @@
+//
+//  PrefixHeader.pch
+//  Frame
+//
+//  Created by Hibaysoft on 17/7/4.
+//  Copyright (c) 2018年 Hibaysoft. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+// 统一的Host
+#define Host    @"http://"
+
+
+//#define WebHost   @"http://47.104.158.162:8093"//@"http://121.42.62.71:33693"//@"http://193.112.6.181:8080"//@"http://140.249.55.11:808"// @"http://39.104.161.203:8080"@"http://123.206.90.110"//
+#define WebHost @"http://140.249.55.11:8084"//@"http://221.215.214.26:8084"//@"http://123.206.90.110:8081"
+#define AppVersion    @"V2.0.0"
+//static NSString *const AppVersion = @"appVersion";battery diesel，electric，humidity，immersion，radar ratproof smoke temperature ups
+#define AllEquipment @[@"ups",@"electric",@"diesel",@"battery",@"humidity",@"temperature",@"immersion",@"ratproof",@"smoke",@"radar"]
+  //@[@"ups",@"electric",@"diesel",@"battery",@"mj",@"hwds",@"dzwl",@"humidity",@"temperature",@"immersion",@"ratproof",@"smoke"]//,@"CYFDJ",@"vhf",@"transmission",@"radar",@"airConditioner",@"pressure"
+#define Equipments [NSArray arrayWithObjects:@"temperature",@"diesel",@"humidity",@"immersion",@"ratproof",@"smoke",@"ups",@"electric",@"battery",@"电子围栏",@"红外对射",@"门禁",nil];//,@"diesel"
+#ifdef __OBJC__
+    #import "UIView+convenience.h"
+    #import "UIColor+Extension.h"
+    #import "CommonExtension.h"
+#endif
+
+#pragma mark - 宽度
+#define WIDTH_SCREEN [UIScreen mainScreen].bounds.size.width   //屏幕[UIScreen mainScreen].bounds.size
+#define HEIGHT_SCREEN [UIScreen mainScreen].bounds.size.height   //屏幕
+#define HEIGHT_TABBAR self.tabBar.bounds.size.height
+#define View_Height self.view.bounds.size.height
+#define View_Width self.view.bounds.size.width
+#define FrameWidth(fmt) WIDTH_SCREEN*fmt/640
+#define FrameHeight(fmt) HEIGHT_SCREEN*fmt/1136
+#define isNull(fmt) ([fmt isKindOfClass:[NSNull class]]||[fmt isEqual:[NSNull null]]||fmt == nil) ? 0:1 //
+#define GETSTRING(fmt) ([fmt isKindOfClass:[NSNull class]] || [fmt isEqual:[NSNull null]] || fmt == nil) ? @"":fmt
+
+#define BGColor [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]]
+#define navigationColor [UIColor  colorWithPatternImage:[UIImage imageNamed:@"navigation"]]
+#define warnColor  [UIColor colorWithRed:242/255.0 green:108/255.0 blue:107/255.0 alpha:1.0]//[UIColor  colorWithPatternImage:[UIImage imageNamed:@"station_warn_bg"]]
+#define levelColor [UIColor colorWithRed:252/255.0 green:201/255.0 blue:84/255.0 alpha:1.0]//[UIColor  colorWithPatternImage:[UIImage imageNamed:@"station_machine_btn_w"]]
+#define RGBColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+
+#define isPlus ([UIScreen mainScreen].bounds.size.width==414)  //iphone6 plus iphone7plus 375:iphone6
+#define isIphone ([UIScreen mainScreen].bounds.size.width==375)    //iphone6 7 8
+#define isIphoneX ([UIScreen mainScreen].bounds.size.height==812)    //iphoneX
+#define is5S ([UIScreen mainScreen].bounds.size.width == 320)  //iphone5
+
+#define FontSize(sizeI) is5S ? [UIFont fontWithName:@"PingFangSC-Regular" size:sizeI-1]: isPlus ?  [UIFont fontWithName:@"PingFangSC-Regular" size:sizeI] : [UIFont fontWithName:@"PingFangSC-Regular" size:sizeI]
+//Helvetica Neue//PingFangSC-Regular
+//#define FontSize(sizeI) is5S ? [UIFont systemFontOfSize:sizeI-1]: isPlus ? [UIFont systemFontOfSize:sizeI] : [UIFont systemFontOfSize:sizeI]
+#define FontBSize(size) is5S ? [UIFont boldSystemFontOfSize:size-1]: isPlus ? [UIFont boldSystemFontOfSize:size] : [UIFont boldSystemFontOfSize:size]
+#define listGrayColor [UIColor colorWithRed:80/255.0 green:80/255.0 blue:80/255.0 alpha:1.0]
+// 状态栏的高度
+#define MLStatusBarHeight     [[UIApplication sharedApplication] statusBarFrame].size.height
+// 导航条的高度
+#define MLNavigationBarHeight self.navigationController.navigationBar.frame.size.height
+// tableBar的高度
+#define MLTabBarHeight self.tabBarController.tabBar.frame.size.height
+
+#define ZNAVViewH (MLNavigationBarHeight + MLStatusBarHeight)
+
+
+
+
+
+
+//手机型号
+//判断iPhoneX
+#define IS_IPHONE_X ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+//判断iPHoneXr
+#define IS_IPHONE_Xr ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828, 1792), [[UIScreen mainScreen] currentMode].size) : NO)
+//判断iPhoneXs
+#define IS_IPHONE_Xs ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+//判断iPhoneXs Max
+#define IS_IPHONE_Xs_Max ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size) : NO)
+//适配高度
+#define IS_IPHONE_X_SERIES (IS_IPHONE_X==YES || IS_IPHONE_Xr ==YES || IS_IPHONE_Xs== YES || IS_IPHONE_Xs_Max== YES)
+#define SAFE_TOP_HEIGHT (IS_IPHONE_X_SERIES ? 88.0 : 64.0)
+#define SAFE_TOP_MARGIN (IS_IPHONE_X_SERIES ? 44.0 : 20.0)
+#define SAFE_TAB_HEIGHT (IS_IPHONE_X_SERIES ? 83.0 : 49.0)
+#define SAFE_TAB_MARGIN (IS_IPHONE_X_SERIES ? 34.0 : 0.0)
+/*
+#if ([UIScreen mainScreen].bounds.size.width > 0)
+#define FontSize1(size)    [UIFont systemFontOfSize:size-1]
+#endif
+
+#if is5S
+#define FontSize(size)    [UIFont systemFontOfSize:size-2]
+#elif isPlus
+#define FontSize(size)    [UIFont systemFontOfSize:size]
+#else
+#define FontSize(size)    [UIFont systemFontOfSize:size-1]
+#endif
+*/
+#define kApplicationGoesToTheForegroundNotification @"applicationGoesToTheForegroundNotification"//应用程序从后台进入前台
+#define kNetworkStatusNotification @"networkStatusNotification" //网络状态通知
+#define IsNetwork ([[NSUserDefaults standardUserDefaults] boolForKey:@"isNetwork"])//([[NSUserDefaults standardUserDefaults] integerForKey:@"isNetwork"])//
+#define unReadNum ([[NSUserDefaults standardUserDefaults] integerForKey:@"unReadNum"])
+#define getAllStation ([[NSUserDefaults standardUserDefaults] arrayForKey:@"allStation"])
+
+//打印调试
+#if DEBUG
+#define FrameLog(fmt,...)    NSLog((@"%s [Line %d] " fmt),__PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);  /**<输出语句*/
+#else
+#define FrameLog(fmt, ...)
+#endif
+
+#define getScreen [UIScreen mainScreen].bounds
+//CGRect thisView = [UIScreen mainScreen].bounds;//[ UIScreen mainScreen ].[UIScreen bounds ];
+#define DIRECTORY_DOCUMENT [([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]) stringByAppendingString:@"/FrameResource/"]
+/**
+ *  随机色
+ */
+#define FrameColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define FrameRandomColor FrameColor(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255))
+
+//浅灰色
+#define QianGray [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1]
+#define kCellHighlightColor @"F5FBFF"
+#define scrollViewNoNetworkText @"网络异常，请检查网络设置"
+#define scrollViewNoDataText @"暂无数据"
+#define scrollViewButtonText @"重新加载"
+#endif /* PrefixHeader_pch */
+
+

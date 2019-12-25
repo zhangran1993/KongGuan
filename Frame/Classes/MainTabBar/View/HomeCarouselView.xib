@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="HomeCarouselView">
+            <rect key="frame" x="0.0" y="0.0" width="371" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P0A-pN-Fvm">
+                    <rect key="frame" x="40" y="0.0" width="321" height="40"/>
+                </view>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ecv-LT-Lmv">
+                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </webView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sG-9L-l3m">
+                    <rect key="frame" x="0.0" y="0.0" width="371" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="TJ8-2V-3oK"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WUb-6w-QuV">
+                    <rect key="frame" x="0.0" y="39" width="371" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="tSk-X9-5CO"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="ecv-LT-Lmv" firstAttribute="leading" secondItem="WUb-6w-QuV" secondAttribute="leading" id="0AL-QZ-uyw"/>
+                <constraint firstItem="WUb-6w-QuV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="29b-tw-CDp"/>
+                <constraint firstItem="P0A-pN-Fvm" firstAttribute="bottom" secondItem="WUb-6w-QuV" secondAttribute="bottom" id="A76-ui-6QA"/>
+                <constraint firstItem="ecv-LT-Lmv" firstAttribute="top" secondItem="P0A-pN-Fvm" secondAttribute="top" id="If7-nr-ykG"/>
+                <constraint firstItem="5sG-9L-l3m" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="O2T-FE-XZv"/>
+                <constraint firstAttribute="trailing" secondItem="P0A-pN-Fvm" secondAttribute="trailing" constant="10" id="Sit-Cd-A0d"/>
+                <constraint firstItem="P0A-pN-Fvm" firstAttribute="leading" secondItem="ecv-LT-Lmv" secondAttribute="trailing" id="U78-ZQ-8On"/>
+                <constraint firstItem="ecv-LT-Lmv" firstAttribute="bottom" secondItem="P0A-pN-Fvm" secondAttribute="bottom" id="Xvu-Vw-Ubv"/>
+                <constraint firstItem="5sG-9L-l3m" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ZfZ-6O-LFK"/>
+                <constraint firstItem="P0A-pN-Fvm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="eb6-cg-Xu4"/>
+                <constraint firstAttribute="trailing" secondItem="WUb-6w-QuV" secondAttribute="trailing" id="jaE-F1-9Lu"/>
+                <constraint firstItem="P0A-pN-Fvm" firstAttribute="top" secondItem="5sG-9L-l3m" secondAttribute="top" id="mqE-hk-hRS"/>
+                <constraint firstAttribute="trailing" secondItem="5sG-9L-l3m" secondAttribute="trailing" id="nr2-WW-9Mb"/>
+                <constraint firstAttribute="bottom" secondItem="WUb-6w-QuV" secondAttribute="bottom" id="xrW-Wo-t8o"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bottomLine" destination="WUb-6w-QuV" id="xpo-Ez-kOx"/>
+                <outlet property="homeLight" destination="ecv-LT-Lmv" id="tZh-ex-btG"/>
+                <outlet property="topLine" destination="5sG-9L-l3m" id="bR2-Hn-Jmv"/>
+                <outlet property="viewR" destination="P0A-pN-Fvm" id="ORC-WT-JSa"/>
+            </connections>
+            <point key="canvasLocation" x="32.5" y="348"/>
+        </view>
+    </objects>
+</document>

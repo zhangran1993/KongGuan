@@ -1,0 +1,107 @@
+[
+   {
+        "featureType": "highway",
+        "elementType": "all",
+        "stylers": {
+        "visibility": "off"
+
+        }
+   },
+    {
+        "featureType":"highway",
+        "elementType":"labels.text",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {"featureType": "highway",
+        "elementType": "labels.icon",
+        "stylers": {
+            "visibility": "off"
+        }
+    },
+    {
+        "featureType":"arterial",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"local",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"land",
+        "elementType":"all",
+        "stylers":{
+            "color":"#ffffff"
+        }
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": {
+            "color": "#97cff0"
+        }
+    },
+    {
+        "featureType": "green",
+        "elementType": "geometry",
+        "stylers": {
+            "color": "#97cff0"
+        }
+    },
+    {
+        "featureType":"railway",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"building",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"green",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"boundary",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"manmade",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"road",
+        "elementType":"all",
+        "stylers":{
+            "visibility":"off"
+        }
+    },
+    {
+        "featureType":"arterial",
+        "elementType":"labels",
+        "stylers":{
+            "visibility":"off"
+        }
+    }
+]
