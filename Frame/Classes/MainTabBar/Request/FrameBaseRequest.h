@@ -27,7 +27,7 @@
 
 + (BOOL)stringContainsEmoji:(NSString *)string;
 + (void)getWithUrl:(NSString *)url param:(id)param resultClass:(Class)resultClass success:(void (^)(id))success failure:(void (^)(NSError *))failure;
-
++ (void)getDataWithUrl:(NSString *)url param:(id)param success:(void (^)(id))success failure:(void (^)(NSURLSessionDataTask *))failure;
 
 + (void)getWithUrl:(NSString *)url param:(id)param success:(void (^)(id))success failure:(void (^)(NSURLSessionDataTask *))failure;
 + (void)deleteWithUrl:(NSString *)url param:(id)param success:(void (^)(id))success failure:(void (^)(NSError *))failure;

@@ -372,7 +372,21 @@ static NSString *RecordTableViewCellID = @"RecordTableViewCellID";
                 }
             }
         }
-        self.curriculumVitaeArray = [mutableArray copy];
+        NSMutableArray *listArray = [NSMutableArray array];
+        
+        if (mutableArray.count) {
+            
+            NSString *repeatString = @"";
+            for (int i=0;i<mutableArray.count;i++) {
+                CurriculumVitaeModel *model = mutableArray[i];
+                if (![repeatString isEqualToString:model.name]) {
+                    repeatString = model.name;
+                    [listArray addObject:model];
+                }
+            }
+        }
+       
+        self.curriculumVitaeArray = [listArray copy];
         self.tableView.emptyDataSetDelegate = self;
         [self.tableView reloadData];
         

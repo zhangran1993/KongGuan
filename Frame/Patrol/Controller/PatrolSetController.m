@@ -80,9 +80,9 @@
     if([_type_code isEqualToString: @"special"] ){//routine////comprehensive//special
         _patrolTitle = @"特殊巡查";
     }
-    if([_specialCode isEqualToString: @"weatherInspection"] ){//routine////comprehensive//special
-        _patrolTitle = @"天气巡检";
-    }
+//    if([_specialCode isEqualToString: @"weatherInspection"] ){//routine////comprehensive//special
+//        _patrolTitle = @"天气巡检";
+//    }
     self.imageList = [NSMutableArray new];
     self.videoList = [NSMutableArray new];
     self.mediaUrlList = [NSMutableArray new];

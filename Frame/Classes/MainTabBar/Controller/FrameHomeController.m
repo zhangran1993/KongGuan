@@ -53,6 +53,8 @@
 @property  BOOL alreadyShow;
 @property (nonatomic, strong) NSMutableArray *annotationViewArray;
 @property (nonatomic, assign) BOOL isTap;
+//定时刷新的定时器
+@property (nonatomic, strong) NSTimer* repeatTimer;
 @end
 
 @implementation FrameHomeController
@@ -94,6 +96,7 @@
         
     }
     [self getStationData];
+    
     //预警提醒
     if(!self.AlarmView){//||[[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstView"]
         [self isAlarmShow];
@@ -104,8 +107,57 @@
     }
     [self getNewsNum];
     [self dataReport];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+     if (!self.repeatTimer) {
+          self.repeatTimer = [NSTimer timerWithTimeInterval:10.f target:self selector:@selector(refreshMap) userInfo:nil repeats:YES];
+                   [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
+                   [[NSRunLoop currentRunLoop] run];
+         
+     }
+    });
 }
-
+//刷新地图页面 间隔10s
+- (void)refreshMap {
+    NSLog(@"refresh------");
+    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/stationList"];
+        [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+            self.carouselView.frame = CGRectMake(20, -1, WIDTH_SCREEN-40, 40);
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            if(code  <= -1){
+                [FrameBaseRequest showMessage:result[@"errMsg"]];
+                return ;
+            }
+            _stationList = [result[@"value"] copy];
+            
+            [_mapView removeAnnotations:_clusters2];
+            [_mapView removeAnnotations:_clusters];
+            [self addClusters];
+            
+        } failure:^(NSURLSessionDataTask *error)  {
+            FrameLog(@"请求失败，返回数据 : %@",error);
+            NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+                [FrameBaseRequest logout];
+                [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+                
+                LoginViewController *login = [[LoginViewController alloc] init];
+                [self.navigationController pushViewController:login animated:YES];
+                
+                return;
+            }else if(responses.statusCode == 502){
+                
+            }
+    //        [FrameBaseRequest showMessage:@"网络链接失败"];
+            return ;
+            
+        }];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.repeatTimer invalidate];
+    self.repeatTimer = nil;
+      
+}
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.carouselView.frame = CGRectMake(20, -1, WIDTH_SCREEN-40, 40);

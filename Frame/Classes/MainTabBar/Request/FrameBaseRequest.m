@@ -374,6 +374,40 @@
         }
     }];
 }
+
+
++ (void)getDataWithUrl:(NSString *)url param:(id)param success:(void (^)(id))success failure:(void (^)(NSURLSessionDataTask *))failure
+{
+   
+    NSDictionary *params = [param mj_keyValues];
+    NSString * urla = url;
+    for (NSString *key in params) {
+        if([urla isEqualToString:url]){
+            urla =[NSString stringWithFormat:@"%@?%@=%@",url,key,params[key]];
+        }else{
+            urla =[NSString stringWithFormat:@"%@&%@=%@",urla,key,params[key]];
+        }
+    }
+    NSLog(@"url :%@::param::%@",urla,param);
+    url = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    [FrameHttpRequest newget:url params:params success:^(id responseObj) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isNetwork"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [SVProgressHUD dismiss];
+        if (success) {
+            success(responseObj);
+        }
+    } failure:^(NSURLSessionDataTask *error) {
+        [SVProgressHUD dismiss];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isNetwork"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
 + (void)deleteWithUrl:(NSString *)url param:(id)param success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     NSDictionary *params = [param mj_keyValues];
