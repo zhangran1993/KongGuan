@@ -433,10 +433,15 @@
 }
 
 - (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    [self performSelector:@selector(resetClickMethod) withObject:nil afterDelay:1.f];
+}
+
+- (void)resetClickMethod {
     for (int i = 0; i < self.annotationViewArray.count; i++) {
-        BMKAnnotationView *annotationView = self.annotationViewArray[i];
-        annotationView.enabled = YES;
-    }
+           BMKAnnotationView *annotationView = self.annotationViewArray[i];
+           annotationView.enabled = YES;
+       }
+
 }
 
 //- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
@@ -448,10 +453,11 @@
 
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-    for (int i = 0; i < self.annotationViewArray.count; i++) {
-        BMKAnnotationView *annotationView = self.annotationViewArray[i];
-        annotationView.enabled = YES;
-    }
+//    for (int i = 0; i < self.annotationViewArray.count; i++) {
+//        BMKAnnotationView *annotationView = self.annotationViewArray[i];
+//        annotationView.enabled = YES;
+//    }
+    [self performSelector:@selector(resetClickMethod) withObject:nil afterDelay:1.f];
 }
 
 
@@ -517,7 +523,10 @@
             [aclusters2 addObject:annotation2];
         }
         //[_clusters addObject:annotation2];
-        NSDictionary  *thisStation = @{
+//        securityStatus
+        
+       
+        NSDictionary  *thisStationDic = @{
                                        @"name":stationInfo[@"station"][@"alias"],
                                        @"alias":stationInfo[@"station"][@"alias"],
                                        @"environmentStatus":stationInfo[@"environmentStatus"],
@@ -533,7 +542,13 @@
                                        @"nowKey":[NSString stringWithFormat:@"%d",nowKey],
                                        @"isShow":isShow
                                        };
+        NSMutableDictionary *thisStation = [[NSMutableDictionary alloc]initWithDictionary:thisStationDic];
+
+        if([[stationInfo allKeys] containsObject:@"securityStatus"]) {
         
+            [thisStation setObject:stationInfo[@"securityStatus"] forKey:@"securityStatus"];
+          
+        }
         _stationDIC[annotation2.title] = thisStation;
         
         //[_mapView addAnnotation:annotation2];
@@ -606,31 +621,40 @@
                 annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
                 
                 //UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake((317-FrameWidth(315))/2, (123-FrameWidth(103))/2, FrameWidth(315),  FrameWidth(103))];
-                UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, FrameWidth(315),  FrameWidth(103))];
+                UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, FrameWidth(315),  FrameWidth(138))];
                 
                 
                 bgImg.image = [UIImage imageNamed:@"home_detail_biao"];
                 [annotationView addSubview:bgImg];
                 
-                UILabel * powerLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(5), FrameWidth(75),  FrameWidth(27))];
+                
+                
+                UILabel * securityLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(5), FrameWidth(75),  FrameWidth(27))];
+                securityLabel.text = @"安防:";
+                securityLabel.font = FontSize(12);
+                [bgImg addSubview:securityLabel];
+                
+                
+                
+                UILabel * powerLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(33), FrameWidth(75),  FrameWidth(27))];
                 powerLabel.text = @"动力:";
                 powerLabel.font = FontSize(12);
                 [bgImg addSubview:powerLabel];
                 
                 
                 
-                UILabel * envLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(33), FrameWidth(75),  FrameWidth(27))];
+                UILabel * envLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(60), FrameWidth(75),  FrameWidth(27))];
                 envLabel.text = @"环境:";
                 envLabel.font = FontSize(12);
                 [bgImg addSubview:envLabel];
                 
-                UILabel * eqpLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(58), FrameWidth(75),  FrameWidth(27))];
+                UILabel * eqpLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(87), FrameWidth(75),  FrameWidth(27))];
                 eqpLabel.text = @"设备:";
                 eqpLabel.font = FontSize(12);
                 [bgImg addSubview:eqpLabel];
                 
                 
-                UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(220), 0, FrameWidth(80),  FrameWidth(90))];
+                UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(220), 0, FrameWidth(80),  FrameWidth(117))];
                 titleLabel.text = _stationDIC[annotation.title][@"alias"];
                 titleLabel.numberOfLines = 3;
                 titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -639,9 +663,53 @@
                 titleLabel.font = FontSize(12);
                 titleLabel.textColor = [UIColor whiteColor];
                 [bgImg addSubview:titleLabel];
+                //安防
+                if([_stationDIC[annotation.title][@"securityStatus"][@"status"] isEqualToString:@"0"] ||[_stationDIC[annotation.title][@"securityStatus"] count] ==0){
+                    UIButton *securityOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                    [securityOk setBackgroundColor:FrameColor(120, 203, 161)];
+                    securityOk.layer.cornerRadius = 2;
+                    securityOk.titleLabel.font = FontBSize(10);
+                    [securityOk setTitle: @"正常"   forState:UIControlStateNormal];
+                    securityOk.titleLabel.textColor = [UIColor whiteColor];
+                    [bgImg addSubview:securityOk];
+                    
+                }else if([_stationDIC[annotation.title][@"securityStatus"][@"status"] isEqualToString:@"3"] ){
+                    UIButton *securityOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                    [securityOk setBackgroundColor:FrameColor(252,201,84)];
+                    securityOk.layer.cornerRadius = 2;
+                    securityOk.titleLabel.font = FontBSize(10);
+                    [securityOk setTitle: @"正常"   forState:UIControlStateNormal];
+                    securityOk.titleLabel.textColor = [UIColor whiteColor];
+                    [bgImg addSubview:securityOk];
+                    
+                }else{
+                    
+                    UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(90), FrameWidth(22))];
+                    [warnBtn setBackgroundColor:warnColor];//warnColor
+                    warnBtn.layer.cornerRadius = 2;
+                    warnBtn.titleLabel.font = FontBSize(10);
+                    
+                    
+                    int isNull = isNull( _stationDIC[annotation.title][@"securityStatus"][@"num"]);
+                    NSString *equipNum = isNull == 1?_stationDIC[annotation.title][@"securityStatus"][@"num"]:@"0";
+                    
+                    [warnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",equipNum]  forState:UIControlStateNormal];
+                    
+                    //[warnBtn setTitle: [NSString stringWithFormat:@"告警数量%@",_stationDIC[annotation.title][@"powerStatus"][@"num"]]   forState:UIControlStateNormal];
+                    warnBtn.titleLabel.textColor = [UIColor whiteColor];
+                    [bgImg addSubview:warnBtn];
+                    
+                    UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                    
+                    LevelBtn.layer.cornerRadius = 2;
+                    [CommonExtension addLevelBtn:LevelBtn level:_stationDIC[annotation.title][@"securityStatus"][@"level"]];
+                    LevelBtn.titleLabel.font = FontBSize(10);
+                    [bgImg addSubview:LevelBtn];
+                }
+                
                 //powerstatus
                 if([_stationDIC[annotation.title][@"powerStatus"][@"status"] isEqualToString:@"0"] ||[_stationDIC[annotation.title][@"powerStatus"] count] ==0){
-                    UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                    UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
                     [powerOk setBackgroundColor:FrameColor(120, 203, 161)];
                     powerOk.layer.cornerRadius = 2;
                     powerOk.titleLabel.font = FontBSize(10);
@@ -650,7 +718,7 @@
                     [bgImg addSubview:powerOk];
                     
                 }else if([_stationDIC[annotation.title][@"powerStatus"][@"status"] isEqualToString:@"3"] ){
-                    UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                    UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
                     [powerOk setBackgroundColor:FrameColor(252,201,84)];
                     powerOk.layer.cornerRadius = 2;
                     powerOk.titleLabel.font = FontBSize(10);
@@ -660,7 +728,7 @@
                     
                 }else{
                     
-                    UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(90), FrameWidth(22))];
+                    UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(90), FrameWidth(22))];
                     [warnBtn setBackgroundColor:warnColor];//warnColor
                     warnBtn.layer.cornerRadius = 2;
                     warnBtn.titleLabel.font = FontBSize(10);
@@ -675,7 +743,7 @@
                     warnBtn.titleLabel.textColor = [UIColor whiteColor];
                     [bgImg addSubview:warnBtn];
                     
-                    UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                    UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
                     
                     LevelBtn.layer.cornerRadius = 2;
                     [CommonExtension addLevelBtn:LevelBtn level:_stationDIC[annotation.title][@"powerStatus"][@"level"]];
@@ -686,7 +754,7 @@
                 //environmentStatus
                 if([_stationDIC[annotation.title][@"environmentStatus"][@"status"] isEqualToString:@"0"]||[_stationDIC[annotation.title][@"environmentStatus"] count] ==0 ){
                  
-                    UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(34), FrameWidth(45), FrameWidth(22))];
+                    UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
                     [envOk setBackgroundColor:FrameColor(120, 203, 161)];
                     envOk.layer.cornerRadius = 2;
                     envOk.titleLabel.font = FontBSize(10);
@@ -696,7 +764,7 @@
                     
                 }else if([_stationDIC[annotation.title][@"environmentStatus"][@"status"] isEqualToString:@"3"] ){
                     
-                    UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(34), FrameWidth(45), FrameWidth(22))];
+                    UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
                     [envOk setBackgroundColor:FrameColor(252,201,84)];
                     envOk.layer.cornerRadius = 2;
                     envOk.titleLabel.font = FontBSize(10);
@@ -705,7 +773,7 @@
                     [bgImg addSubview:envOk];
                     
                 }else{
-                    UIButton *envWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(34), FrameWidth(90), FrameWidth(22))];
+                    UIButton *envWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(90), FrameWidth(22))];
                     [envWarnBtn setBackgroundColor:warnColor];
                     envWarnBtn.layer.cornerRadius = 2;
                     envWarnBtn.titleLabel.font = FontBSize(10);
@@ -718,7 +786,7 @@
                     envWarnBtn.titleLabel.textColor = [UIColor whiteColor];
                     [bgImg addSubview:envWarnBtn];
                     
-                    UIButton *envLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(34), FrameWidth(48), FrameWidth(22))];
+                    UIButton *envLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(62), FrameWidth(48), FrameWidth(22))];
                     
                     envLevelBtn.layer.cornerRadius = 2;
                     
@@ -734,7 +802,7 @@
                 
                 //equipmentStatus
                 if([_stationDIC[annotation.title][@"equipmentStatus"][@"status"] isEqualToString:@"0"]||[_stationDIC[annotation.title][@"equipmentStatus"] count] ==0){
-                    UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(60), FrameWidth(45), FrameWidth(22))];
+                    UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
                     [equipOk setBackgroundColor:FrameColor(120, 203, 161)];
                     equipOk.layer.cornerRadius = 2;
                     equipOk.titleLabel.font = FontBSize(10);
@@ -743,7 +811,7 @@
                     [bgImg addSubview:equipOk];
                     
                 }else if([_stationDIC[annotation.title][@"equipmentStatus"][@"status"] isEqualToString:@"3"]){
-                    UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(60), FrameWidth(45), FrameWidth(22))];
+                    UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
                     [equipOk setBackgroundColor:FrameColor(252,201,84)];
                     equipOk.layer.cornerRadius = 2;
                     equipOk.titleLabel.font = FontBSize(10);
@@ -752,7 +820,7 @@
                     [bgImg addSubview:equipOk];
                     
                 }else{
-                    UIButton *equipWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(60), FrameWidth(90), FrameWidth(22))];
+                    UIButton *equipWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(90), FrameWidth(22))];
                     [equipWarnBtn setBackgroundColor:warnColor];
                     equipWarnBtn.layer.cornerRadius = 2;
                     equipWarnBtn.titleLabel.font = FontBSize(10);
@@ -762,7 +830,7 @@
                     equipWarnBtn.titleLabel.textColor = [UIColor whiteColor];
                     [bgImg addSubview:equipWarnBtn];
                     
-                    UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(60), FrameWidth(48), FrameWidth(22))];
+                    UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(89), FrameWidth(48), FrameWidth(22))];
                     
                     equipLevelBtn.titleLabel.font = FontBSize(10);
                     equipLevelBtn.layer.cornerRadius = 2;
@@ -790,6 +858,13 @@
         return annotationView;
     }
     return nil;
+}
+- (UIImage *)resizeWithImage:(UIImage *)image{
+    CGFloat top = image.size.height/2.0;
+    CGFloat left = image.size.width/2.0;
+    CGFloat bottom = image.size.height/2.0;
+    CGFloat right = image.size.width/2.0;
+    return [image resizableImageWithCapInsets:UIEdgeInsetsMake(top, left, bottom, right)resizingMode:UIImageResizingModeStretch];
 }
 
 
@@ -1381,4 +1456,5 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
+
 @end
