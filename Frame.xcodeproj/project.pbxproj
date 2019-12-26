@@ -1593,7 +1593,8 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Frame/Pods-Frame-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Frame/Pods-Frame-resources.sh",
+				"${PODS_ROOT}/BaiduMapKit/BaiduMapKit/BaiduMapAPI_Map.framework/mapapi.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/MSImagePickerController/Pod/Assets/MSImagePickerController.bundle/AssetsPickerChecked@2x.png",
 				"${PODS_ROOT}/MSImagePickerController/Pod/Assets/MSImagePickerController.bundle/AssetsPickerChecked@3x.png",
@@ -1604,6 +1605,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/mapapi.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AssetsPickerChecked@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AssetsPickerChecked@3x.png",
@@ -1614,7 +1616,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Frame/Pods-Frame-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Frame/Pods-Frame-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FE739B184F227452201D4267 /* [CP] Check Pods Manifest.lock */ = {

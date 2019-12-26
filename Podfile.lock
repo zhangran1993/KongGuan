@@ -16,10 +16,11 @@ PODS:
     - AFNetworking/NSURLSession
   - BaiduMapKit (4.4.2)
   - Bugly (2.5.0)
-  - JCore (2.1.1)
-  - JPush (3.2.2):
+  - JCore (2.1.8)
+  - JPush (3.2.8):
     - JCore (< 3.0.0, >= 2.0.0)
   - JSONKit (1.4)
+  - Masonry (1.0.2)
   - MJExtension (3.1.0)
   - MJRefresh (3.2.0)
   - MSImagePickerController (1.0.1)
@@ -39,6 +40,7 @@ DEPENDENCIES:
   - Bugly
   - JPush (>= 3.0.6)
   - JSONKit (~> 1.4)
+  - Masonry (~> 1.0.1)
   - MJExtension
   - MJRefresh
   - MSImagePickerController
@@ -49,13 +51,14 @@ DEPENDENCIES:
   - SVProgressHUD
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - AFNetworking
     - BaiduMapKit
     - Bugly
     - JCore
     - JPush
     - JSONKit
+    - Masonry
     - MJExtension
     - MJRefresh
     - MSImagePickerController
@@ -70,9 +73,10 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   BaiduMapKit: 11acde2e7c06e31b7de60b323880a5eb7c4dccb6
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
-  JCore: 4072327557f0b83cc22dd4041f2f839740c0077b
-  JPush: 0e9088c85c73275629facc311fe5992dfac36eeb
+  JCore: a7f1dead960d77a97717c73ea8b0aa5b33706491
+  JPush: 8ce888d6dedfa417e90c8b6bc87405a16ce2e699
   JSONKit: 5b69e804ea54d99293eed0fd2ce596c5703fefb0
+  Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MJExtension: 6b69b3bef2864fd550ce1a184eda219e321209d2
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
   MSImagePickerController: 500e0cd0d165ca52a4b927b68de474ff59263dbd
@@ -83,6 +87,6 @@ SPEC CHECKSUMS:
   SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 6d693a82bb02846cbab4f15e5b61b155c19c846a
+PODFILE CHECKSUM: b0ca5e088b420c387a903c84411435ed7a3b753c
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.8.4
