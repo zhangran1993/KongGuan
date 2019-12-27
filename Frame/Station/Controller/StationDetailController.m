@@ -19,6 +19,7 @@
 #import "UIView+LX_Frame.h"
 #import <MJExtension.h>
 #import "UIColor+Extension.h"
+#import <SDImageCache.h>
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
@@ -679,16 +680,41 @@
         viewHeight = self.imageHeight +FrameWidth(51);
     }
     
+//    NSString *path_document = NSHomeDirectory();
+//    //设置一个图片的存储路径
+//    NSString *imagePath = [path_document stringByAppendingString:@"/Documents/pic.png"];
+//    //把图片直接保存到指定的路径（同时应该把图片的路径imagePath存起来，下次就可以直接用来取）
+//    [UIImagePNGRepresentation(image2) writeToFile:imagePath atomically:YES];
+//    UIImage *getimage2 = [UIImage imageWithContentsOfFile:imagePath];
+//    NSLog(@"image2 is size %@",NSStringFromCGSize(getimage2.size));
+    
+    
     UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(view2.frame)+5, WIDTH_SCREEN, viewHeight)];
     view3.backgroundColor = [UIColor whiteColor];
     [thiscell addSubview:view3];
     
     
+    NSString *stationString = @"";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if([userDefaults objectForKey:@"station"]){
+        NSDictionary * station = [userDefaults objectForKey:@"station"];
+        stationString =  station[@"alias"];
+        
+    }
+
+    //先从缓存中找是否有图片
+    SDImageCache *cache =  [SDImageCache sharedImageCache];
+    UIImage *memoryImage = [cache imageFromMemoryCacheForKey:stationString];
+      
     UIImageView *BigImg = [[UIImageView alloc]init];
+    if (memoryImage) {
+        NSLog(@"you");
+        [BigImg setImage:memoryImage ];
+    }else {
+       
+    }
     [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_imageUrl]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]];
-    
-    
-   
     
     [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebHost stringByAppendingString:_imageUrl]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         NSLog(@"cself.imageHeight %ld",self.imageHeight);
@@ -703,6 +729,13 @@
     }];
 
     BigImg.frame = CGRectMake(FrameWidth(23), FrameWidth(20), FrameWidth(595), viewHeight - FrameWidth(51));
+  
+      if([userDefaults objectForKey:@"station"]){
+          NSDictionary * station = [userDefaults objectForKey:@"station"];
+        
+          [[SDImageCache sharedImageCache] storeImage:BigImg.image forKey:station[@"alias"] toDisk:YES completion:nil];
+             
+      }
     
     [view3 addSubview:BigImg];//station_right
     
