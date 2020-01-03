@@ -65,6 +65,15 @@
 		1F8AB5601F0CB9EB00256218 /* FrameHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8AB5391F0CB9EB00256218 /* FrameHttpRequest.m */; };
 		1F8AB5611F0CB9EB00256218 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8AB53C1F0CB9EB00256218 /* AppDelegate.m */; };
 		1F8AB5671F0CBA4F00256218 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F8AB5661F0CBA4F00256218 /* Images.xcassets */; };
+		250B882323B9D00700C79136 /* BMKClusterItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B881B23B9D00700C79136 /* BMKClusterItem.m */; };
+		250B882423B9D00700C79136 /* BMKClusterQuadtree.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B881D23B9D00700C79136 /* BMKClusterQuadtree.m */; };
+		250B882523B9D00700C79136 /* BMKClusterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B881F23B9D00700C79136 /* BMKClusterManager.m */; };
+		250B882623B9D00700C79136 /* BMKClusterAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B882123B9D00700C79136 /* BMKClusterAlgorithm.m */; };
+		250B882C23B9D0CD00C79136 /* CluserAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B882B23B9D0CD00C79136 /* CluserAnnotation.m */; };
+		250B882F23B9D11E00C79136 /* CluseterAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B882E23B9D11E00C79136 /* CluseterAnnotationView.m */; };
+		250B883223BD73CB00C79136 /* FrameLocModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B883123BD73CB00C79136 /* FrameLocModel.m */; };
+		250B884A23BD835200C79136 /* NSArray+SMSafeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B883F23BD835200C79136 /* NSArray+SMSafeMethod.m */; };
+		250B885223BD857300C79136 /* NSObject+SafeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885123BD857300C79136 /* NSObject+SafeMethod.m */; };
 		271825CB236C177600D68C18 /* StationSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CA236C177600D68C18 /* StationSectionView.m */; };
 		271825CD236C177E00D68C18 /* StationSectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271825CC236C177E00D68C18 /* StationSectionView.xib */; };
 		271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CF236C2B5E00D68C18 /* WarnTableViewCell.m */; };
@@ -315,6 +324,25 @@
 		1F8AB53C1F0CB9EB00256218 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/other/AppDelegate.m; sourceTree = "<group>"; };
 		1F8AB53D1F0CB9EB00256218 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		1F8AB5661F0CBA4F00256218 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		250B881B23B9D00700C79136 /* BMKClusterItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMKClusterItem.m; sourceTree = "<group>"; };
+		250B881C23B9D00700C79136 /* BMKClusterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKClusterManager.h; sourceTree = "<group>"; };
+		250B881D23B9D00700C79136 /* BMKClusterQuadtree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMKClusterQuadtree.m; sourceTree = "<group>"; };
+		250B881E23B9D00700C79136 /* BMKClusterAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKClusterAlgorithm.h; sourceTree = "<group>"; };
+		250B881F23B9D00700C79136 /* BMKClusterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMKClusterManager.m; sourceTree = "<group>"; };
+		250B882023B9D00700C79136 /* BMKClusterItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKClusterItem.h; sourceTree = "<group>"; };
+		250B882123B9D00700C79136 /* BMKClusterAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMKClusterAlgorithm.m; sourceTree = "<group>"; };
+		250B882223B9D00700C79136 /* BMKClusterQuadtree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKClusterQuadtree.h; sourceTree = "<group>"; };
+		250B882A23B9D0CD00C79136 /* CluserAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CluserAnnotation.h; sourceTree = "<group>"; };
+		250B882B23B9D0CD00C79136 /* CluserAnnotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CluserAnnotation.m; sourceTree = "<group>"; };
+		250B882D23B9D11E00C79136 /* CluseterAnnotationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CluseterAnnotationView.h; sourceTree = "<group>"; };
+		250B882E23B9D11E00C79136 /* CluseterAnnotationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CluseterAnnotationView.m; sourceTree = "<group>"; };
+		250B883023BD73CB00C79136 /* FrameLocModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameLocModel.h; sourceTree = "<group>"; };
+		250B883123BD73CB00C79136 /* FrameLocModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FrameLocModel.m; sourceTree = "<group>"; };
+		250B883623BD835200C79136 /* LCChunhui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCChunhui.h; sourceTree = "<group>"; };
+		250B883723BD835200C79136 /* NSArray+SMSafeMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SMSafeMethod.h"; sourceTree = "<group>"; };
+		250B883E23BD835200C79136 /* NSObject+SafeMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SafeMethod.h"; sourceTree = "<group>"; };
+		250B883F23BD835200C79136 /* NSArray+SMSafeMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SMSafeMethod.m"; sourceTree = "<group>"; };
+		250B885123BD857300C79136 /* NSObject+SafeMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SafeMethod.m"; sourceTree = "<group>"; };
 		271825C9236C177600D68C18 /* StationSectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StationSectionView.h; sourceTree = "<group>"; };
 		271825CA236C177600D68C18 /* StationSectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StationSectionView.m; sourceTree = "<group>"; };
 		271825CC236C177E00D68C18 /* StationSectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StationSectionView.xib; sourceTree = "<group>"; };
@@ -777,6 +805,7 @@
 		1F8AB52E1F0CB9EB00256218 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				250B881A23B9D00700C79136 /* Cluster */,
 				1F8AB52F1F0CB9EB00256218 /* FrameNavigationController.h */,
 				1F8AB5301F0CB9EB00256218 /* FrameNavigationController.m */,
 				1F8AB5311F0CB9EB00256218 /* FrameTabBarController.h */,
@@ -785,11 +814,17 @@
 				1F8AB5341F0CB9EB00256218 /* FrameViewController.m */,
 				FEE24934206CDAD300D62197 /* FrameHomeController.h */,
 				FEE24935206CDADC00D62197 /* FrameHomeController.m */,
+				250B883023BD73CB00C79136 /* FrameLocModel.h */,
+				250B883123BD73CB00C79136 /* FrameLocModel.m */,
 				FEF6695D206F2C8A00F3CF2B /* EditPwdController.h */,
 				FEF6695E206F2C9400F3CF2B /* EditPwdController.m */,
 				C1F8F175205BB3430070CFE6 /* LoginViewController.h */,
 				C1F8F173205BB32B0070CFE6 /* LoginViewController.m */,
 				C1F8F176205BBCD50070CFE6 /* LoginViewController.xib */,
+				250B882A23B9D0CD00C79136 /* CluserAnnotation.h */,
+				250B882B23B9D0CD00C79136 /* CluserAnnotation.m */,
+				250B882D23B9D11E00C79136 /* CluseterAnnotationView.h */,
+				250B882E23B9D11E00C79136 /* CluseterAnnotationView.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -825,6 +860,7 @@
 		1F8AB5681F0CBB6500256218 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				250B883423BD835200C79136 /* Category */,
 				18CAAD8021B76100003C8B39 /* Rank */,
 				1F8AB52D1F0CB9EB00256218 /* MainTabBar */,
 				FE1209E7205A6C54006C42BA /* Personal */,
@@ -839,6 +875,33 @@
 				1F8AB53C1F0CB9EB00256218 /* AppDelegate.m */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		250B881A23B9D00700C79136 /* Cluster */ = {
+			isa = PBXGroup;
+			children = (
+				250B881B23B9D00700C79136 /* BMKClusterItem.m */,
+				250B881C23B9D00700C79136 /* BMKClusterManager.h */,
+				250B881D23B9D00700C79136 /* BMKClusterQuadtree.m */,
+				250B881E23B9D00700C79136 /* BMKClusterAlgorithm.h */,
+				250B881F23B9D00700C79136 /* BMKClusterManager.m */,
+				250B882023B9D00700C79136 /* BMKClusterItem.h */,
+				250B882123B9D00700C79136 /* BMKClusterAlgorithm.m */,
+				250B882223B9D00700C79136 /* BMKClusterQuadtree.h */,
+			);
+			path = Cluster;
+			sourceTree = "<group>";
+		};
+		250B883423BD835200C79136 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				250B883623BD835200C79136 /* LCChunhui.h */,
+				250B883723BD835200C79136 /* NSArray+SMSafeMethod.h */,
+				250B883E23BD835200C79136 /* NSObject+SafeMethod.h */,
+				250B883F23BD835200C79136 /* NSArray+SMSafeMethod.m */,
+				250B885123BD857300C79136 /* NSObject+SafeMethod.m */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 		788A20BC55DCDB0A83EB70D5 /* Frameworks */ = {
@@ -1656,6 +1719,7 @@
 				FE419F6C206E08F800A35A2F /* VideoItems.m in Sources */,
 				1F8AB5601F0CB9EB00256218 /* FrameHttpRequest.m in Sources */,
 				FE419F72206E2AB000A35A2F /* StationScrollViewController.m in Sources */,
+				250B883223BD73CB00C79136 /* FrameLocModel.m in Sources */,
 				ECA60FCE21AFFD3B00690698 /* BasicViewController.m in Sources */,
 				FEF6695F206F2C9400F3CF2B /* EditPwdController.m in Sources */,
 				18B5545921B913DE00026734 /* WarnCell.m in Sources */,
@@ -1666,6 +1730,7 @@
 				FEFD280520746129004821E1 /* AlarmDetailController.m in Sources */,
 				EC025D8A21C8BEDC001A3F5E /* UIView+LYExtension.m in Sources */,
 				FEFD280B20746726004821E1 /* AlarmItems.m in Sources */,
+				250B882323B9D00700C79136 /* BMKClusterItem.m in Sources */,
 				FE419F75206E2C1C00A35A2F /* MachineItems.m in Sources */,
 				ECA60FC421AFDF2400690698 /* NSString+Extension.m in Sources */,
 				EC51DECC21BF5BE100D68F47 /* CurriculumVitaeModel.m in Sources */,
@@ -1695,6 +1760,7 @@
 				EC4C0C2D21B67C2E00E23EFA /* CategoryModel.m in Sources */,
 				FE24525C20AE5F0C00CA0D98 /* StationMachinePictureController.m in Sources */,
 				FE050A8F205BF52900A4AD93 /* PersonalChooseStationController.m in Sources */,
+				250B882623B9D00700C79136 /* BMKClusterAlgorithm.m in Sources */,
 				ECA60FC721AFE0DF00690698 /* UIApplication+Visible.m in Sources */,
 				EC4E9AD221B0DA2400B69476 /* HomeCarouselView.m in Sources */,
 				EC70A5F421C109E500F858EE /* CCZTrotingLabel.m in Sources */,
@@ -1705,6 +1771,7 @@
 				FE281623208D70EE00918C76 /* DeviceInfo.m in Sources */,
 				FEE2492D206CB9E100D62197 /* PatroTitleCell.m in Sources */,
 				FE1AB3E520A1B9BB0026DDF2 /* AlarmUserItems.m in Sources */,
+				250B884A23BD835200C79136 /* NSArray+SMSafeMethod.m in Sources */,
 				FEFD280220746108004821E1 /* AlarmListController.m in Sources */,
 				271825CB236C177600D68C18 /* StationSectionView.m in Sources */,
 				FEE24927206CB97200D62197 /* PatroRadioCell.m in Sources */,
@@ -1720,22 +1787,26 @@
 				18B34DE721C34A230021C2E6 /* uploadModel.m in Sources */,
 				EC70A5F621C109E500F858EE /* CCZAngelWalker.m in Sources */,
 				FEE2491E206CB89C00D62197 /* Patroltems.m in Sources */,
+				250B882C23B9D0CD00C79136 /* CluserAnnotation.m in Sources */,
 				18CAAD8321B76130003C8B39 /* RankController.m in Sources */,
 				EC5E52FC21B7D6C5009212D7 /* PersonModel.m in Sources */,
 				189938FB21C1EFFC0026B6AB /* ValueWeatherStationMoel.m in Sources */,
 				FE050A95205BF61B00A4AD93 /* ChooseStationCell.m in Sources */,
 				FE050A89205B549F00A4AD93 /* PersonalInfoController.m in Sources */,
 				1F8AB55D1F0CB9EB00256218 /* FrameTabBarController.m in Sources */,
+				250B882F23B9D11E00C79136 /* CluseterAnnotationView.m in Sources */,
 				EC5DBF1021BA49E800F00882 /* CustomTableViewCell.m in Sources */,
 				EC8795E021B4E0F2000F3CC1 /* EquipmentDetailsModel.m in Sources */,
 				FEF6695C206F21A900F3CF2B /* MsgItems.m in Sources */,
 				18CB1CCE21C7433400F40413 /* MediaModel.m in Sources */,
 				189938FE21C1F05D0026B6AB /* ValueClassModel.m in Sources */,
 				EC8795DA21B4C3F9000F3CC1 /* WheelModel.m in Sources */,
+				250B882423B9D00700C79136 /* BMKClusterQuadtree.m in Sources */,
 				ECA60FC121AFDE4600690698 /* UIColor+Extension.m in Sources */,
 				EC4C0C2921B65C4300E23EFA /* XDMultTableView.m in Sources */,
 				FEE24933206CC69400D62197 /* PatrolHistoryController.m in Sources */,
 				FEE24932206CC4AB00D62197 /* PatrolDetailController.m in Sources */,
+				250B885223BD857300C79136 /* NSObject+SafeMethod.m in Sources */,
 				FEE24924206CB92E00D62197 /* PatroTextFieldCell.m in Sources */,
 				EC61EA0521C8835400FACC83 /* UIScrollView+EmptyDataSet.m in Sources */,
 				FEB8F6092079B0E50064F358 /* AlarmMachineTypeListController.m in Sources */,
@@ -1749,6 +1820,7 @@
 				FE416DC4205CC1E50044229F /* PersonalFollowUsController.m in Sources */,
 				EC4C0C1A21B62EAD00E23EFA /* TechnicalManualTableViewCell.m in Sources */,
 				FE419F66206DEB1C00A35A2F /* StationRoomController.m in Sources */,
+				250B882523B9D00700C79136 /* BMKClusterManager.m in Sources */,
 				EC70A5F521C109E500F858EE /* CCZTrotingAttribute.m in Sources */,
 				187673F021C0B7A7004C1E8D /* PatrolEquipmentController..m in Sources */,
 				FEF66959206F191900F3CF2B /* PersonalMsgListController.m in Sources */,
@@ -2109,7 +2181,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.qdcadc.IntelligentStation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = zrAppstore;
+				PROVISIONING_PROFILE_SPECIFIER = zradhoc;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64e arm64";
 			};

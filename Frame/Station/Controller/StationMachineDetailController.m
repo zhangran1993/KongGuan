@@ -42,7 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, getScreen.size.width,FrameWidth(840) )];
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, getScreen.size.width,HEIGHT_SCREEN - 120 - TOOLH - ZNAVViewH)];
     NSLog(@"tableviewtableviewtableview %f",self.tableview.frameHeight);
     
     [self.view addSubview:self.tableview];
@@ -124,17 +124,20 @@
     NSString * img = @"station_big_normal";
     if([AllEquipment indexOfObject:_machineDetail[@"category"]] != NSNotFound){
         img = [NSString stringWithFormat:@"station_big_%@",_machineDetail[@"category"]];
+        machineImg.image = [UIImage imageNamed:img];
+    }else {
+        [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
     }
     machineImg.contentMode = 1;
-    machineImg.image = [UIImage imageNamed:img];
+    
     
     machineImg.userInteractionEnabled = YES;
     UITapGestureRecognizer *viewTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(MachineInfoPicture:)];
     [machineImg addGestureRecognizer:viewTapGesture];
     [viewTapGesture setNumberOfTapsRequired:1];
     
-    //[machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
-    //[_headImage sd_setImageWithURL:[NSURL URLWithString: _imgUrl] placeholderImage:[UIImage imageNamed:@"personal_head"]];
+//    [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
+//    [_headImage sd_setImageWithURL:[NSURL URLWithString: _imgUrl] placeholderImage:[UIImage imageNamed:@"personal_head"]];
     
     [machineView addSubview:machineImg];
     
@@ -447,7 +450,7 @@
     return containerView.frame.size.height;
 }
 -(void)loadWebView{
-    self.webview = [[WKWebView alloc] initWithFrame:CGRectMake(0, FrameWidth(80), WIDTH_SCREEN, self.wkHeight)];
+    self.webview = [[WKWebView alloc] initWithFrame:CGRectMake(0, FrameWidth(80), WIDTH_SCREEN, HEIGHT_SCREEN-FrameWidth(80))];
     self.webview.backgroundColor = [UIColor whiteColor];
     //self.webview.UIDelegate =self;
     self.webview.navigationDelegate = self;

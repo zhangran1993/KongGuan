@@ -26,10 +26,76 @@
 #import "CCZTrotingLabel.h"
 #import <MJExtension.h>
 #import "UIView+LX_Frame.h"
+
+#import "BMKClusterManager.h"
+
+/*
+ *点聚合Annotation
+ */
+@interface ClusterAnnotation : BMKPointAnnotation
+
+///所包含annotation个数
+@property (nonatomic, assign) NSInteger size;
+
+@property (nonatomic ,strong) NSArray *dataArr;
+@end
+
+@implementation ClusterAnnotation
+@synthesize size = _size;
+@synthesize dataArr = _dataArr;
+@end
+
+
+/*
+ *点聚合AnnotationView
+ */
+@interface ClusterAnnotationView : BMKPinAnnotationView {
+    
+}
+
+@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UILabel *labelTitle;
+@property (nonatomic, strong) UILabel *totalTitle;
+@end
+
+@implementation ClusterAnnotationView
+
+@synthesize size = _size;
+@synthesize label = _label;
+@synthesize labelTitle = _labelTitle;
+@synthesize dataDic = _dataDic;
+
+- (id)initWithAnnotation:(id<BMKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self setBounds:CGRectMake(0.f, 0.f, 77.f, 77.f)];
+        
+        self.alpha = 1;
+    }
+    return self;
+}
+
+- (void)setDataDic:(NSDictionary *)dataDic {
+    _dataDic = dataDic;
+    
+}
+
+- (void)setSize:(NSInteger)size {
+    _size = size;
+    
+}
+
+@end
+
 @interface FrameHomeController ()<UINavigationControllerDelegate,BMKMapViewDelegate,UITableViewDelegate,UITableViewDataSource,CCZTrotingLabelDelegate,UIGestureRecognizerDelegate>{
     BMKMapView* _mapView;
     UIWindow * healthWindow;
     UIButton *leftButton;
+    BMKClusterManager *_clusterManager;//点聚合管理类
+    NSInteger _clusterZoom;//聚合级别
+    NSMutableArray *_clusterCaches;//点聚合缓存标注
 }
 @property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
 @property (strong, nonatomic) NSMutableArray<StationItems *> * PatrolRemindItem;
@@ -42,8 +108,8 @@
 @property (nonatomic,copy) NSDictionary * stationList;
 //@property (strong, nonatomic) NSMutableArray<MsgItems *> * msgList;
 @property (nonatomic,copy) NSMutableDictionary* stationDIC;
-@property (nonatomic,copy) NSMutableArray<BMKPointAnnotation *> *clusters;
-@property (nonatomic,copy) NSMutableArray<BMKPointAnnotation *> *clusters2;
+@property (nonatomic,copy) NSMutableArray<ClusterAnnotation *> *clusters;
+@property (nonatomic,copy) NSMutableArray<ClusterAnnotation *> *clusters2;
 @property NSString * FrameCellID;
 @property NSString * PatrolCellID;
 @property  int annoNum;
@@ -53,6 +119,7 @@
 @property  BOOL alreadyShow;
 @property (nonatomic, strong) NSMutableArray *annotationViewArray;
 @property (nonatomic, assign) BOOL isTap;
+@property (nonatomic, assign) BOOL isFirstEnter;
 //定时刷新的定时器
 @property (nonatomic, strong) NSTimer* repeatTimer;
 @end
@@ -64,9 +131,9 @@
     NSString* path = [[NSBundle mainBundle] pathForResource:@"custom_config" ofType:@""];
     
     [BMKMapView customMapStyle:path];
-   
     
-   
+    
+    
     //[BMKMapView enableCustomMapStyle:YES];//打开个性化地图
 }
 
@@ -88,7 +155,7 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation2"] forBarMetrics:UIBarMetricsDefault];
     self.navigationItem.title = @"智慧台站";
     [self.rotingLabel walk];
-
+    
     if(_clusters){
         
     }else{
@@ -108,55 +175,55 @@
     [self getNewsNum];
     [self dataReport];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-     if (!self.repeatTimer) {
-          self.repeatTimer = [NSTimer timerWithTimeInterval:10.f target:self selector:@selector(refreshMap) userInfo:nil repeats:YES];
-                   [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
-                   [[NSRunLoop currentRunLoop] run];
-         
-     }
+        if (!self.repeatTimer) {
+            self.repeatTimer = [NSTimer timerWithTimeInterval:10.f target:self selector:@selector(refreshMap) userInfo:nil repeats:YES];
+            [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
+            [[NSRunLoop currentRunLoop] run];
+            
+        }
     });
 }
 //刷新地图页面 间隔10s
 - (void)refreshMap {
     NSLog(@"refresh------");
     NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/stationList"];
-        [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
-            self.carouselView.frame = CGRectMake(20, -1, WIDTH_SCREEN-40, 40);
-            NSInteger code = [[result objectForKey:@"errCode"] intValue];
-            if(code  <= -1){
-                [FrameBaseRequest showMessage:result[@"errMsg"]];
-                return ;
-            }
-            _stationList = [result[@"value"] copy];
-            //
-            [_mapView removeAnnotations:_clusters2];
-            [_mapView removeAnnotations:_clusters];
-            [self addClusters];
-            
-        } failure:^(NSURLSessionDataTask *error)  {
-            FrameLog(@"请求失败，返回数据 : %@",error);
-            NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-                [FrameBaseRequest logout];
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-                
-                LoginViewController *login = [[LoginViewController alloc] init];
-                [self.navigationController pushViewController:login animated:YES];
-                
-                return;
-            }else if(responses.statusCode == 502){
-                
-            }
-    //        [FrameBaseRequest showMessage:@"网络链接失败"];
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        self.carouselView.frame = CGRectMake(20, -1, WIDTH_SCREEN-40, 40);
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
+        }
+        _stationList = [result[@"value"] copy];
+        //
+        [_mapView removeAnnotations:_clusters2];
+        [_mapView removeAnnotations:_clusters];
+        [self addClusters];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest logout];
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             
-        }];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.repeatTimer invalidate];
     self.repeatTimer = nil;
-      
+    
 }
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
@@ -185,8 +252,15 @@
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
         return;
     }
-    //[self isPatrolRemindShow];
-
+    _clusterCaches = [[NSMutableArray alloc] init];
+    for (NSInteger i = 3; i < 21; i++) {
+           [_clusterCaches addObject:[NSMutableArray array]];
+       }
+       
+    
+    //点聚合管理类
+    _clusterManager = [[BMKClusterManager alloc] init];
+    
 }
 
 
@@ -202,7 +276,7 @@
         }
         NSLog(@"请求成功");
     } failure:^(NSError *error) {
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
 }
@@ -261,7 +335,7 @@
             [self.carouselView removeFromSuperview];
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, -1, WIDTH_SCREEN-40, 40)];
             view.backgroundColor = [UIColor colorWithRed:112/255.0 green:153/255.0 blue:211/255.0 alpha:0.8];
-                                   
+            
             view.layer.cornerRadius = 8;
             view.layer.masksToBounds = YES;
             [self.view addSubview:view];
@@ -276,7 +350,7 @@
             
             NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
             NSString *maxLevel = [NSString stringWithFormat:@"%@",result[@"value"][@"maxLevel"]]  ;
-           
+            
             if([maxLevel isEqualToString:@"1"]){
                 url = [NSURL URLWithString:[[NSBundle mainBundle]pathForResource:@"red" ofType:@"gif"]];
             }else if([maxLevel isEqualToString:@"2"]){
@@ -291,22 +365,22 @@
             [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
             
             /*
-            NSData *gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
-            NSString *maxLevel = [NSString stringWithFormat:@"%@",result[@"value"][@"maxLevel"]]  ;
-            
-            if([maxLevel isEqualToString:@"1"]){
-                gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"red" ofType:@"gif"]];
-            }else if([maxLevel isEqualToString:@"2"]){
-                gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"orange" ofType:@"gif"]];
-            }else if([maxLevel isEqualToString:@"3"]){
-                gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"yellow" ofType:@"gif"]];
-            }else if([maxLevel isEqualToString:@"4"]){
-                gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
-            }else{
-                gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"green0" ofType:@"gif"]];
-            }
-            
-            [self.webView loadData:gifData MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+             NSData *gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
+             NSString *maxLevel = [NSString stringWithFormat:@"%@",result[@"value"][@"maxLevel"]]  ;
+             
+             if([maxLevel isEqualToString:@"1"]){
+             gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"red" ofType:@"gif"]];
+             }else if([maxLevel isEqualToString:@"2"]){
+             gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"orange" ofType:@"gif"]];
+             }else if([maxLevel isEqualToString:@"3"]){
+             gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"yellow" ofType:@"gif"]];
+             }else if([maxLevel isEqualToString:@"4"]){
+             gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
+             }else{
+             gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"green0" ofType:@"gif"]];
+             }
+             
+             [self.webView loadData:gifData MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
              */
             [self.webView setScalesPageToFit:YES];
             [view addSubview:self.webView];
@@ -329,7 +403,7 @@
                     [arr addObject:model.context];
                 }
                 NSArray *array = [arr copy];
-                 [self.rotingLabel addTexts:array];
+                [self.rotingLabel addTexts:array];
             } else {
                 [self.rotingLabel addTexts:[@[@"设备运行正常"] mutableCopy]];
             }
@@ -365,7 +439,11 @@
         [_mapView removeAnnotations:_clusters2];
         [_mapView removeAnnotations:_clusters];
         [self addClusters];
-        
+        if (!_isFirstEnter) {
+             [self performSelector:@selector(changemapView) withObject:nil afterDelay:.1f];
+            _isFirstEnter = YES;
+        }
+       
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
@@ -380,7 +458,7 @@
         }else if(responses.statusCode == 502){
             
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
     }];
@@ -398,18 +476,18 @@
     
     region.span.longitudeDelta =7.5;
     
-   
+    
     _mapView = [[BMKMapView alloc]initWithFrame:self.view.bounds];
-     _mapView.delegate = self;
+    _mapView.delegate = self;
     
     _mapView.rotateEnabled= NO;
-
     
-
+    
+    
     [_mapView setRegion:region animated:YES];
-   
+    
     //设定地图View能否支持用户缩放(双击或双指单击)
-//    _mapView.zoomEnabledWithTap= NO;
+    //    _mapView.zoomEnabledWithTap= NO;
     _mapView.overlookEnabled= NO;
     self.view = _mapView;
     UIPinchGestureRecognizer* pinchGR = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchAction:)];
@@ -438,10 +516,10 @@
 
 - (void)resetClickMethod {
     for (int i = 0; i < self.annotationViewArray.count; i++) {
-           BMKAnnotationView *annotationView = self.annotationViewArray[i];
-           annotationView.enabled = YES;
-       }
-
+        BMKAnnotationView *annotationView = self.annotationViewArray[i];
+        annotationView.enabled = YES;
+    }
+    
 }
 
 //- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
@@ -453,22 +531,22 @@
 
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
-//    for (int i = 0; i < self.annotationViewArray.count; i++) {
-//        BMKAnnotationView *annotationView = self.annotationViewArray[i];
-//        annotationView.enabled = YES;
-//    }
+    //    for (int i = 0; i < self.annotationViewArray.count; i++) {
+    //        BMKAnnotationView *annotationView = self.annotationViewArray[i];
+    //        annotationView.enabled = YES;
+    //    }
     [self performSelector:@selector(resetClickMethod) withObject:nil afterDelay:1.f];
 }
 
 
 //f缩放回调
 - (void)pinchAction:(UIPinchGestureRecognizer*)recognizer{
-  
+    
     CGFloat velocity = recognizer.velocity;
     CGFloat scale = recognizer.scale;
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
         if(scale>1.0){
-          _mapView.zoomIn;
+            _mapView.zoomIn;
         }else{
             _mapView.zoomOut;
         }
@@ -479,11 +557,11 @@
         annotationView.enabled = NO;
     }
     
-        //NSLog(@"正在缩放z%ld",UIGestureRecognizerStateBegan);
-       // NSLog(@"ssssss---%ld",[recognizer velocity]);
-      //_mapView.zoomIn;
-   // }
-  
+    //NSLog(@"正在缩放z%ld",UIGestureRecognizerStateBegan);
+    // NSLog(@"ssssss---%ld",[recognizer velocity]);
+    //_mapView.zoomIn;
+    // }
+    
     //NSLog(@"用户捏合的速度为%g、比例为%g",velocity,scale);
     //recognizer.scale = 1;
 }
@@ -498,14 +576,15 @@
 -(void)addClusters{
     NSMutableArray * aclusters = [NSMutableArray array];
     NSMutableArray * aclusters2 = [NSMutableArray array];
-
+    
     NSMutableArray * allStation = [NSMutableArray array];
     _stationDIC = [[NSMutableDictionary alloc] init];
     int nowKey = 0;
     //NSLog(@"array = %@", _stationList);
+    [_clusterManager clearClusterItems];
     for (NSDictionary * stationInfo in _stationList) {
         
-        BMKPointAnnotation* annotation = [[BMKPointAnnotation alloc]init];
+        ClusterAnnotation* annotation = [[ClusterAnnotation alloc]init];
         annotation.coordinate = CLLocationCoordinate2DMake([stationInfo[@"station"][@"latitude"] floatValue], [stationInfo[@"station"][@"longitude"] floatValue]);
         NSString *isShow = @"0";
         
@@ -514,7 +593,7 @@
         [allStation addObject:stationInfo[@"station"][@"code"]];
         [aclusters addObject:annotation];
         
-        BMKPointAnnotation* annotation2 = [[BMKPointAnnotation alloc]init];
+        ClusterAnnotation* annotation2 = [[ClusterAnnotation alloc]init];
         annotation2.coordinate = CLLocationCoordinate2DMake([stationInfo[@"station"][@"latitude"] floatValue], [stationInfo[@"station"][@"longitude"] floatValue] );
         annotation2.title = [NSString stringWithFormat:@"%@%@",stationInfo[@"station"][@"code"],stationInfo[@"station"][@"alias"]] ;
         //是否显示全部雷达站
@@ -522,32 +601,40 @@
             isShow = @"1";
             [aclusters2 addObject:annotation2];
         }
-        //[_clusters addObject:annotation2];
-//        securityStatus
         
-       
+        //向点聚合管理类中添加标注
+        
+        BMKClusterItem *clusterItem = [[BMKClusterItem alloc] init];
+        clusterItem.coor = CLLocationCoordinate2DMake([stationInfo[@"station"][@"latitude"] floatValue], [stationInfo[@"station"][@"longitude"] floatValue] );
+        clusterItem.locDic = stationInfo;
+        [_clusterManager addClusterItem:clusterItem];
+        
+        [_clusters addObject:annotation2];
+        //        securityStatus
+        
+        
         NSDictionary  *thisStationDic = @{
-                                       @"name":stationInfo[@"station"][@"alias"],
-                                       @"alias":stationInfo[@"station"][@"alias"],
-                                       @"environmentStatus":stationInfo[@"environmentStatus"],
-                                       @"equipmentStatus":stationInfo[@"equipmentStatus"],
-                                       @"powerStatus":stationInfo[@"powerStatus"],
-                                       @"alarmStatus":stationInfo[@"station"][@"alarmStatus"],
-                                       @"code":stationInfo[@"station"][@"code"],
-                                       @"airport":stationInfo[@"station"][@"airport"],
-                                       @"latitude":stationInfo[@"station"][@"latitude"],
-                                       @"longitude":stationInfo[@"station"][@"longitude"],
-                                       @"picture":stationInfo[@"station"][@"picture"],
-                                       @"address":stationInfo[@"station"][@"address"],
-                                       @"nowKey":[NSString stringWithFormat:@"%d",nowKey],
-                                       @"isShow":isShow
-                                       };
+            @"name":stationInfo[@"station"][@"alias"],
+            @"alias":stationInfo[@"station"][@"alias"],
+            @"environmentStatus":stationInfo[@"environmentStatus"],
+            @"equipmentStatus":stationInfo[@"equipmentStatus"],
+            @"powerStatus":stationInfo[@"powerStatus"],
+            @"alarmStatus":stationInfo[@"station"][@"alarmStatus"],
+            @"code":stationInfo[@"station"][@"code"],
+            @"airport":stationInfo[@"station"][@"airport"],
+            @"latitude":stationInfo[@"station"][@"latitude"],
+            @"longitude":stationInfo[@"station"][@"longitude"],
+            @"picture":stationInfo[@"station"][@"picture"],
+            @"address":stationInfo[@"station"][@"address"],
+            @"nowKey":[NSString stringWithFormat:@"%d",nowKey],
+            @"isShow":isShow
+        };
         NSMutableDictionary *thisStation = [[NSMutableDictionary alloc]initWithDictionary:thisStationDic];
-
-        if([[stationInfo allKeys] containsObject:@"securityStatus"]) {
         
+        if([[stationInfo allKeys] containsObject:@"securityStatus"]) {
+            
             [thisStation setObject:stationInfo[@"securityStatus"] forKey:@"securityStatus"];
-          
+            
         }
         _stationDIC[annotation2.title] = thisStation;
         
@@ -564,9 +651,15 @@
     aclusters2 =nil;
     _clusters = [aclusters mutableCopy];
     aclusters =nil;
-    [_mapView addAnnotations:_clusters];
-    [_mapView addAnnotations:_clusters2];
-    [self removeClusters];
+//    [_mapView addAnnotations:_clusters];
+//    [_mapView addAnnotations:_clusters2];
+//    [self removeClusters];
+    [self updateClusters];
+ 
+}
+
+- (void)changemapView {
+    [_mapView zoomIn];
 }
 /**
  *根据anntation生成对应的View
@@ -576,289 +669,452 @@
  */
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
-    if ([annotation isKindOfClass:[BMKPointAnnotation class]])
-    {
-        NSString *reuseIndetifier = [NSString stringWithFormat:@"annotationReuseIndetifier"];
+    
+    //普通annotation
+    NSString *AnnotationViewID = @"ClusterMark";
+    ClusterAnnotation *cluster = (ClusterAnnotation*)annotation;
+    ClusterAnnotationView *annotationView = [[ClusterAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
+    annotationView.size = cluster.size;
+    annotationView.canShowCallout = NO;//在点击大头针的时候会弹出那个黑框框
+    annotationView.draggable = NO;//禁止标注在地图上拖动
+    annotationView.annotation = cluster;
+    
+    //    annotationView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:annotation.subtitle]]];
+    annotationView.centerOffset=CGPointMake(0,-80);
+    
+    annotationView.tag = [_stationDIC[annotation.title][@"nowKey"] intValue]+100;
+    
+    //需要判断不同的机型决定字体大小以及背景图
+    if(isIphoneX){//iphonex
+        annotationView.image = [UIImage imageNamed:@"alpha3"];//537*165
+    }else if(isIphone){//iphonex iphone6 iphone8 iphone7
+        annotationView.image = [UIImage imageNamed:@"alpha2"];//350*105
+    }else if(isPlus){//iphone6 plus iphone7plus
+        annotationView.image = [UIImage imageNamed:@"alpha0"];//596*183
+    }else if(is5S){//iphone5s
+        annotationView.image = [UIImage imageNamed:@"alpha1"];//300*100
+    }else{
+        annotationView.image = [UIImage imageNamed:@"alpha0"];//300*100
+    }
+    
+    annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
+    
+    //UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake((317-FrameWidth(315))/2, (123-FrameWidth(103))/2, FrameWidth(315),  FrameWidth(103))];
+    UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, FrameWidth(315),  FrameWidth(138))];
+    
+    
+    bgImg.image = [UIImage imageNamed:@"home_detail_biao"];
+    [annotationView addSubview:bgImg];
+    
+    
+    
+    UILabel * securityLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(5), FrameWidth(75),  FrameWidth(27))];
+    securityLabel.text = @"安防:";
+    securityLabel.font = FontSize(12);
+    [bgImg addSubview:securityLabel];
+    
+    
+    
+    UILabel * powerLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(33), FrameWidth(75),  FrameWidth(27))];
+    powerLabel.text = @"动力:";
+    powerLabel.font = FontSize(12);
+    [bgImg addSubview:powerLabel];
+    
+    
+    
+    UILabel * envLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(60), FrameWidth(75),  FrameWidth(27))];
+    envLabel.text = @"环境:";
+    envLabel.font = FontSize(12);
+    [bgImg addSubview:envLabel];
+    
+    UILabel * eqpLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(87), FrameWidth(75),  FrameWidth(27))];
+    eqpLabel.text = @"设备:";
+    eqpLabel.font = FontSize(12);
+    [bgImg addSubview:eqpLabel];
+    
+    
+    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(220), 0, FrameWidth(80),  FrameWidth(117))];
+    
+    titleLabel.numberOfLines = 3;
+    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    //titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
+    titleLabel.font = FontSize(12);
+    titleLabel.textColor = [UIColor whiteColor];
+    NSInteger ss = cluster.size;
+    NSArray *dataList = cluster.dataArr;
+    
+    if (ss >1) {
+        titleLabel.text = [NSString stringWithFormat:@"台站%ld",(long)cluster.size];
+    }else {
         
-        BMKAnnotationView *annotationView = (BMKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:reuseIndetifier];
-        if (annotationView == nil){
-            annotationView = [[BMKAnnotationView alloc] initWithAnnotation:annotation
-                                                           reuseIdentifier:reuseIndetifier];
-        }
-        annotationView.canShowCallout = NO;
-        
-        @try {
-            // 可能会出现崩溃的代码
-            if(annotation.subtitle  != nil){
-                annotationView.tag = [_stationDIC[annotation.subtitle][@"nowKey"] intValue];
-                if([_stationDIC[annotation.subtitle][@"alarmStatus"] isEqualToString:@"1"] ){
-                    annotationView.image = [UIImage imageNamed:@"home_warn_biao"];
-                }else{
-                    annotationView.image = [UIImage imageNamed:@"home_normal_biao"];
+        for (BMKClusterItem *item in dataList) {
+            NSDictionary *dic = item.locDic;
+            if (isSafeDictionary(dic)) {
+                NSString *titleString = dic[@"station"][@"alias"];
+                if (titleString.length) {
+                    titleLabel.text = [NSString stringWithFormat:@"%@",safeString(titleString)];
                 }
+            }
+            
+        }
+    }
+    
+    [bgImg addSubview:titleLabel];
+    
+    int securityLevel = 0;
+    int securityStatus = 0;
+    for (BMKClusterItem *item in dataList) {
+        NSDictionary *dic = item.locDic;
+        if (isSafeDictionary(dic)) {
+            securityStatus += [ dic[@"securityStatus"][@"num"] intValue];
+            if([dic[@"securityStatus"][@"level"] intValue] >securityLevel ){
+                securityLevel = [dic[@"securityStatus"][@"level"] intValue];
+            }
+        }
+    }
+    if (dataList.count == 1) {
+        //安防
+        for (BMKClusterItem *item in dataList) {
+            NSDictionary *dic = item.locDic;
+            if([dic[@"securityStatus"][@"status"] isEqualToString:@"0"] ||[dic[@"securityStatus"] count] ==0){
+                UIButton *securityOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                [securityOk setBackgroundColor:FrameColor(120, 203, 161)];
+                securityOk.layer.cornerRadius = 2;
+                securityOk.titleLabel.font = FontBSize(10);
+                [securityOk setTitle: @"正常"   forState:UIControlStateNormal];
+                securityOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:securityOk];
                 
+            }else if([dic[@"securityStatus"][@"status"] isEqualToString:@"3"] ){
+                UIButton *securityOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+                [securityOk setBackgroundColor:FrameColor(252,201,84)];
+                securityOk.layer.cornerRadius = 2;
+                securityOk.titleLabel.font = FontBSize(10);
+                [securityOk setTitle: @"正常"   forState:UIControlStateNormal];
+                securityOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:securityOk];
                 
             }else{
-                NSString *reuseIndetifier2 = [NSString stringWithFormat:@"annotationReuseIndetifier2"];
-                annotationView = [[BMKAnnotationView alloc] initWithAnnotation:annotation
-                                                               reuseIdentifier:reuseIndetifier2];
                 
-                annotationView.tag = [_stationDIC[annotation.title][@"nowKey"] intValue]+100;
-                
-                //需要判断不同的机型决定字体大小以及背景图
-                if(isIphoneX){//iphonex
-                    annotationView.image = [UIImage imageNamed:@"alpha3"];//537*165
-                }else if(isIphone){//iphonex iphone6 iphone8 iphone7
-                    annotationView.image = [UIImage imageNamed:@"alpha2"];//350*105
-                }else if(isPlus){//iphone6 plus iphone7plus
-                    annotationView.image = [UIImage imageNamed:@"alpha0"];//596*183
-                }else if(is5S){//iphone5s
-                    annotationView.image = [UIImage imageNamed:@"alpha1"];//300*100
-                }else{
-                    annotationView.image = [UIImage imageNamed:@"alpha0"];//300*100
-                }
-                
-                annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
-                
-                //UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake((317-FrameWidth(315))/2, (123-FrameWidth(103))/2, FrameWidth(315),  FrameWidth(103))];
-                UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, FrameWidth(315),  FrameWidth(138))];
+                UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(75), FrameWidth(22))];
+                [warnBtn setBackgroundColor:warnColor];//warnColor
+                warnBtn.layer.cornerRadius = 2;
+                warnBtn.titleLabel.font = FontBSize(10);
                 
                 
-                bgImg.image = [UIImage imageNamed:@"home_detail_biao"];
-                [annotationView addSubview:bgImg];
+                int isNull = isNull( dic[@"securityStatus"][@"num"]);
+                NSString *equipNum = isNull == 1?dic[@"securityStatus"][@"num"]:@"0";
                 
+                [warnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",equipNum]  forState:UIControlStateNormal];
                 
+                //[warnBtn setTitle: [NSString stringWithFormat:@"告警数量%@",_stationDIC[annotation.title][@"powerStatus"][@"num"]]   forState:UIControlStateNormal];
+                warnBtn.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:warnBtn];
                 
-                UILabel * securityLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(5), FrameWidth(75),  FrameWidth(27))];
-                securityLabel.text = @"安防:";
-                securityLabel.font = FontSize(12);
-                [bgImg addSubview:securityLabel];
+                UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
                 
-                
-                
-                UILabel * powerLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(33), FrameWidth(75),  FrameWidth(27))];
-                powerLabel.text = @"动力:";
-                powerLabel.font = FontSize(12);
-                [bgImg addSubview:powerLabel];
-                
-                
-                
-                UILabel * envLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(60), FrameWidth(75),  FrameWidth(27))];
-                envLabel.text = @"环境:";
-                envLabel.font = FontSize(12);
-                [bgImg addSubview:envLabel];
-                
-                UILabel * eqpLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(87), FrameWidth(75),  FrameWidth(27))];
-                eqpLabel.text = @"设备:";
-                eqpLabel.font = FontSize(12);
-                [bgImg addSubview:eqpLabel];
-                
-                
-                UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(220), 0, FrameWidth(80),  FrameWidth(117))];
-                titleLabel.text = _stationDIC[annotation.title][@"alias"];
-                titleLabel.numberOfLines = 3;
-                titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                titleLabel.textAlignment = NSTextAlignmentCenter;
-                //titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
-                titleLabel.font = FontSize(12);
-                titleLabel.textColor = [UIColor whiteColor];
-                [bgImg addSubview:titleLabel];
-                //安防
-                if([_stationDIC[annotation.title][@"securityStatus"][@"status"] isEqualToString:@"0"] ||[_stationDIC[annotation.title][@"securityStatus"] count] ==0){
-                    UIButton *securityOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
-                    [securityOk setBackgroundColor:FrameColor(120, 203, 161)];
-                    securityOk.layer.cornerRadius = 2;
-                    securityOk.titleLabel.font = FontBSize(10);
-                    [securityOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    securityOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:securityOk];
-                    
-                }else if([_stationDIC[annotation.title][@"securityStatus"][@"status"] isEqualToString:@"3"] ){
-                    UIButton *securityOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
-                    [securityOk setBackgroundColor:FrameColor(252,201,84)];
-                    securityOk.layer.cornerRadius = 2;
-                    securityOk.titleLabel.font = FontBSize(10);
-                    [securityOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    securityOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:securityOk];
-                    
-                }else{
-                    
-                    UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(90), FrameWidth(22))];
-                    [warnBtn setBackgroundColor:warnColor];//warnColor
-                    warnBtn.layer.cornerRadius = 2;
-                    warnBtn.titleLabel.font = FontBSize(10);
-                    
-                    
-                    int isNull = isNull( _stationDIC[annotation.title][@"securityStatus"][@"num"]);
-                    NSString *equipNum = isNull == 1?_stationDIC[annotation.title][@"securityStatus"][@"num"]:@"0";
-                    
-                    [warnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",equipNum]  forState:UIControlStateNormal];
-                    
-                    //[warnBtn setTitle: [NSString stringWithFormat:@"告警数量%@",_stationDIC[annotation.title][@"powerStatus"][@"num"]]   forState:UIControlStateNormal];
-                    warnBtn.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:warnBtn];
-                    
-                    UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
-                    
-                    LevelBtn.layer.cornerRadius = 2;
-                    [CommonExtension addLevelBtn:LevelBtn level:_stationDIC[annotation.title][@"securityStatus"][@"level"]];
-                    LevelBtn.titleLabel.font = FontBSize(10);
-                    [bgImg addSubview:LevelBtn];
-                }
-                
-                //powerstatus
-                if([_stationDIC[annotation.title][@"powerStatus"][@"status"] isEqualToString:@"0"] ||[_stationDIC[annotation.title][@"powerStatus"] count] ==0){
-                    UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
-                    [powerOk setBackgroundColor:FrameColor(120, 203, 161)];
-                    powerOk.layer.cornerRadius = 2;
-                    powerOk.titleLabel.font = FontBSize(10);
-                    [powerOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    powerOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:powerOk];
-                    
-                }else if([_stationDIC[annotation.title][@"powerStatus"][@"status"] isEqualToString:@"3"] ){
-                    UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
-                    [powerOk setBackgroundColor:FrameColor(252,201,84)];
-                    powerOk.layer.cornerRadius = 2;
-                    powerOk.titleLabel.font = FontBSize(10);
-                    [powerOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    powerOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:powerOk];
-                    
-                }else{
-                    
-                    UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(90), FrameWidth(22))];
-                    [warnBtn setBackgroundColor:warnColor];//warnColor
-                    warnBtn.layer.cornerRadius = 2;
-                    warnBtn.titleLabel.font = FontBSize(10);
-                    
-                    
-                    int isNull = isNull( _stationDIC[annotation.title][@"powerStatus"][@"num"]);
-                    NSString *equipNum = isNull == 1?_stationDIC[annotation.title][@"powerStatus"][@"num"]:@"0";
-                    
-                    [warnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",equipNum]  forState:UIControlStateNormal];
-                    
-                    //[warnBtn setTitle: [NSString stringWithFormat:@"告警数量%@",_stationDIC[annotation.title][@"powerStatus"][@"num"]]   forState:UIControlStateNormal];
-                    warnBtn.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:warnBtn];
-                    
-                    UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
-                    
-                    LevelBtn.layer.cornerRadius = 2;
-                    [CommonExtension addLevelBtn:LevelBtn level:_stationDIC[annotation.title][@"powerStatus"][@"level"]];
-                    LevelBtn.titleLabel.font = FontBSize(10);
-                    [bgImg addSubview:LevelBtn];
-                }
-                
-                //environmentStatus
-                if([_stationDIC[annotation.title][@"environmentStatus"][@"status"] isEqualToString:@"0"]||[_stationDIC[annotation.title][@"environmentStatus"] count] ==0 ){
-                 
-                    UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
-                    [envOk setBackgroundColor:FrameColor(120, 203, 161)];
-                    envOk.layer.cornerRadius = 2;
-                    envOk.titleLabel.font = FontBSize(10);
-                    [envOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    envOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:envOk];
-                    
-                }else if([_stationDIC[annotation.title][@"environmentStatus"][@"status"] isEqualToString:@"3"] ){
-                    
-                    UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
-                    [envOk setBackgroundColor:FrameColor(252,201,84)];
-                    envOk.layer.cornerRadius = 2;
-                    envOk.titleLabel.font = FontBSize(10);
-                    [envOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    envOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:envOk];
-                    
-                }else{
-                    UIButton *envWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(90), FrameWidth(22))];
-                    [envWarnBtn setBackgroundColor:warnColor];
-                    envWarnBtn.layer.cornerRadius = 2;
-                    envWarnBtn.titleLabel.font = FontBSize(10);
-                    
-                    int isNull = isNull( _stationDIC[annotation.title][@"environmentStatus"][@"num"]);
-                    NSString *equipNum = isNull == 1?_stationDIC[annotation.title][@"environmentStatus"][@"num"]:@"0";
-                    [envWarnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",equipNum]  forState:UIControlStateNormal];
-                    
-                    //[envWarnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",_stationDIC[annotation.title][@"environmentStatus"][@"num"]]  forState:UIControlStateNormal];
-                    envWarnBtn.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:envWarnBtn];
-                    
-                    UIButton *envLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(62), FrameWidth(48), FrameWidth(22))];
-                    
-                    envLevelBtn.layer.cornerRadius = 2;
-                    
-                    [CommonExtension addLevelBtn:envLevelBtn level:_stationDIC[annotation.title][@"environmentStatus"][@"level"]];
-                    
-                    
-                    envLevelBtn.titleLabel.font = FontBSize(10);
-                    envLevelBtn.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:envLevelBtn];
-                    
-                    
-                }
-                
-                //equipmentStatus
-                if([_stationDIC[annotation.title][@"equipmentStatus"][@"status"] isEqualToString:@"0"]||[_stationDIC[annotation.title][@"equipmentStatus"] count] ==0){
-                    UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
-                    [equipOk setBackgroundColor:FrameColor(120, 203, 161)];
-                    equipOk.layer.cornerRadius = 2;
-                    equipOk.titleLabel.font = FontBSize(10);
-                    [equipOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    equipOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:equipOk];
-                    
-                }else if([_stationDIC[annotation.title][@"equipmentStatus"][@"status"] isEqualToString:@"3"]){
-                    UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
-                    [equipOk setBackgroundColor:FrameColor(252,201,84)];
-                    equipOk.layer.cornerRadius = 2;
-                    equipOk.titleLabel.font = FontBSize(10);
-                    [equipOk setTitle: @"正常"   forState:UIControlStateNormal];
-                    equipOk.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:equipOk];
-                    
-                }else{
-                    UIButton *equipWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(90), FrameWidth(22))];
-                    [equipWarnBtn setBackgroundColor:warnColor];
-                    equipWarnBtn.layer.cornerRadius = 2;
-                    equipWarnBtn.titleLabel.font = FontBSize(10);
-                    int isNull = isNull( _stationDIC[annotation.title][@"equipmentStatus"][@"num"]);
-                    NSString *equipNum = isNull == 1?_stationDIC[annotation.title][@"equipmentStatus"][@"num"]:@"0";
-                    [equipWarnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",equipNum]  forState:UIControlStateNormal];
-                    equipWarnBtn.titleLabel.textColor = [UIColor whiteColor];
-                    [bgImg addSubview:equipWarnBtn];
-                    
-                    UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(89), FrameWidth(48), FrameWidth(22))];
-                    
-                    equipLevelBtn.titleLabel.font = FontBSize(10);
-                    equipLevelBtn.layer.cornerRadius = 2;
-                    [CommonExtension addLevelBtn:equipLevelBtn level:_stationDIC[annotation.title][@"equipmentStatus"][@"level"]];
-                    
-                    [bgImg addSubview:equipLevelBtn];
-                    
-                    
-                }
-                
-                
+                LevelBtn.layer.cornerRadius = 2;
+                [CommonExtension addLevelBtn:LevelBtn level:dic[@"securityStatus"][@"level"]];
+                LevelBtn.titleLabel.font = FontBSize(10);
+                [bgImg addSubview:LevelBtn];
             }
-        } @catch (NSException *exception) {
-            // 捕获到的异常exception
-            NSLog(@"main: Caught %@: %@", [exception name], [exception reason]);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                return ;
-            });
-        } @finally {
-            // 结果处理
+        }
+    }else {
+        
+        if (securityStatus == 0) {
+            UIButton *securityOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+            [securityOk setBackgroundColor:FrameColor(120, 203, 161)];
+            securityOk.layer.cornerRadius = 2;
+            securityOk.titleLabel.font = FontBSize(10);
+            [securityOk setTitle: @"正常"   forState:UIControlStateNormal];
+            securityOk.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:securityOk];
+        }else {
+            UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(8), FrameWidth(75), FrameWidth(22))];
+            [warnBtn setBackgroundColor:warnColor];//warnColor
+            warnBtn.layer.cornerRadius = 2;
+            warnBtn.titleLabel.font = FontBSize(10);
+            
+            [warnBtn setTitle:[NSString stringWithFormat:@"告警%d",securityStatus]  forState:UIControlStateNormal];
+            
+            warnBtn.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:warnBtn];
+            
+            UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(8), FrameWidth(45), FrameWidth(22))];
+            
+            LevelBtn.layer.cornerRadius = 2;
+            [CommonExtension addLevelBtn:LevelBtn level:[NSString stringWithFormat:@"%d",securityLevel]];
+            LevelBtn.titleLabel.font = FontBSize(10);
+            [bgImg addSubview:LevelBtn];
         }
         
-//        annotationView.enabled = NO;
-        [self.annotationViewArray addObject:annotationView];
-        return annotationView;
     }
-    return nil;
+    //power
+    int powerLevel = 0;
+    int powerStatus = 0;
+    for (BMKClusterItem *item in dataList) {
+        NSDictionary *dic = item.locDic;
+        if (isSafeDictionary(dic)) {
+            powerStatus += [ dic[@"powerStatus"][@"num"] intValue];
+            
+            if([dic[@"powerStatus"][@"level"] intValue] >powerLevel ){
+                powerLevel = [dic[@"powerStatus"][@"level"] intValue];
+            }
+        }
+    }
+    if (dataList.count == 1) {
+        //power
+        for (BMKClusterItem *item in dataList) {
+            NSDictionary *dic = item.locDic;
+            if([dic[@"powerStatus"][@"status"] isEqualToString:@"0"] ||[dic[@"powerStatus"] count] ==0){
+                UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
+                [powerOk setBackgroundColor:FrameColor(120, 203, 161)];
+                powerOk.layer.cornerRadius = 2;
+                powerOk.titleLabel.font = FontBSize(10);
+                [powerOk setTitle: @"正常"   forState:UIControlStateNormal];
+                powerOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:powerOk];
+                
+            }else if([dic[@"powerStatus"][@"status"] isEqualToString:@"3"] ){
+                UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
+                [powerOk setBackgroundColor:FrameColor(252,201,84)];
+                powerOk.layer.cornerRadius = 2;
+                powerOk.titleLabel.font = FontBSize(10);
+                [powerOk setTitle: @"正常"   forState:UIControlStateNormal];
+                powerOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:powerOk];
+                
+            }else{
+                
+                UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(75), FrameWidth(22))];
+                [warnBtn setBackgroundColor:warnColor];//warnColor
+                warnBtn.layer.cornerRadius = 2;
+                warnBtn.titleLabel.font = FontBSize(10);
+                
+                
+                int isNull = isNull(  dic[@"powerStatus"][@"num"]);
+                NSString *equipNum = isNull == 1? dic[@"powerStatus"][@"num"]:@"0";
+                
+                [warnBtn setTitle:[NSString stringWithFormat:@"告警%@",equipNum]  forState:UIControlStateNormal];
+                
+                //[warnBtn setTitle: [NSString stringWithFormat:@"告警数量%@",_stationDIC[annotation.title][@"powerStatus"][@"num"]]   forState:UIControlStateNormal];
+                warnBtn.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:warnBtn];
+                
+                UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
+                
+                LevelBtn.layer.cornerRadius = 2;
+                [CommonExtension addLevelBtn:LevelBtn level: dic[@"powerStatus"][@"level"]];
+                LevelBtn.titleLabel.font = FontBSize(10);
+                [bgImg addSubview:LevelBtn];
+            }
+        }
+    }else {
+        
+        if (powerStatus == 0) {
+            UIButton *powerOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
+            [powerOk setBackgroundColor:FrameColor(120, 203, 161)];
+            powerOk.layer.cornerRadius = 2;
+            powerOk.titleLabel.font = FontBSize(10);
+            [powerOk setTitle: @"正常"   forState:UIControlStateNormal];
+            powerOk.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:powerOk];
+        }else {
+            UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(35), FrameWidth(75), FrameWidth(22))];
+            [warnBtn setBackgroundColor:warnColor];//warnColor
+            warnBtn.layer.cornerRadius = 2;
+            warnBtn.titleLabel.font = FontBSize(10);
+            [warnBtn setTitle:[NSString stringWithFormat:@"告警%d",powerStatus]  forState:UIControlStateNormal];
+            warnBtn.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:warnBtn];
+            
+            UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
+            
+            LevelBtn.layer.cornerRadius = 2;
+            [CommonExtension addLevelBtn:LevelBtn level:[NSString stringWithFormat:@"%d",powerLevel]];
+            LevelBtn.titleLabel.font = FontBSize(10);
+            [bgImg addSubview:LevelBtn];
+        }
+        
+    }
+    //environmentStatus
+    
+    int environmentLevel = 0;
+    int environmentStatus = 0;
+    for (BMKClusterItem *item in dataList) {
+        NSDictionary *dic = item.locDic;
+        if (isSafeDictionary(dic)) {
+            environmentStatus += [ dic[@"environmentStatus"][@"num"] intValue];
+           
+            if([dic[@"environmentStatus"][@"level"] intValue] >environmentLevel ){
+                environmentLevel = [dic[@"environmentStatus"][@"level"] intValue];
+            }
+        }
+    }
+    if (dataList.count == 1) {
+        
+        for (BMKClusterItem *item in dataList) {
+            NSDictionary *dic = item.locDic;
+            if([dic[@"environmentStatus"][@"status"] isEqualToString:@"0"] ||[dic[@"environmentStatus"] count] ==0){
+                UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
+                [envOk setBackgroundColor:FrameColor(120, 203, 161)];
+                envOk.layer.cornerRadius = 2;
+                envOk.titleLabel.font = FontBSize(10);
+                [envOk setTitle: @"正常"   forState:UIControlStateNormal];
+                envOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:envOk];
+                
+            }else if([dic[@"environmentStatus"][@"status"] isEqualToString:@"3"] ){
+                UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
+                [envOk setBackgroundColor:FrameColor(252,201,84)];
+                envOk.layer.cornerRadius = 2;
+                envOk.titleLabel.font = FontBSize(10);
+                [envOk setTitle: @"正常"   forState:UIControlStateNormal];
+                envOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:envOk];
+                
+            }else{
+                
+                UIButton *envWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(75), FrameWidth(22))];
+                [envWarnBtn setBackgroundColor:warnColor];
+                envWarnBtn.layer.cornerRadius = 2;
+                envWarnBtn.titleLabel.font = FontBSize(10);
+                int isNull = isNull( dic[@"environmentStatus"][@"num"]);
+                NSString *equipNum = isNull == 1?dic[@"environmentStatus"][@"num"]:@"0";
+                [envWarnBtn setTitle:[NSString stringWithFormat:@"告警%@",equipNum]  forState:UIControlStateNormal];
+                envWarnBtn.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:envWarnBtn];
+                
+                UIButton *envLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(62), FrameWidth(48), FrameWidth(22))];
+                
+                envLevelBtn.layer.cornerRadius = 2;
+                
+                [CommonExtension addLevelBtn:envLevelBtn level:dic[@"environmentStatus"][@"level"]];
+                envLevelBtn.titleLabel.font = FontBSize(10);
+                envLevelBtn.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:envLevelBtn];
+                
+            }
+        }
+    }else {
+        
+        if (environmentStatus == 0) {
+            UIButton *envOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
+            [envOk setBackgroundColor:FrameColor(120, 203, 161)];
+            envOk.layer.cornerRadius = 2;
+            envOk.titleLabel.font = FontBSize(10);
+            [envOk setTitle: @"正常"   forState:UIControlStateNormal];
+            envOk.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:envOk];
+        }else {
+            
+            UIButton *envWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(62), FrameWidth(75), FrameWidth(22))];
+            [envWarnBtn setBackgroundColor:warnColor];
+            envWarnBtn.layer.cornerRadius = 2;
+            envWarnBtn.titleLabel.font = FontBSize(10);
+            
+            [envWarnBtn setTitle:[NSString stringWithFormat:@"告警%d",environmentStatus]  forState:UIControlStateNormal];
+            envWarnBtn.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:envWarnBtn];
+            UIButton *envLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
+            envLevelBtn.layer.cornerRadius = 2;
+            [CommonExtension addLevelBtn:envLevelBtn level:[NSString stringWithFormat:@"%d",environmentLevel]];
+            envLevelBtn.titleLabel.font = FontBSize(10);
+            envLevelBtn.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:envLevelBtn];
+        }
+        
+    }
+    //equipmentStatus
+    
+    int equipmentLevel = 0;
+    int equipmentStatus = 0;
+    for (BMKClusterItem *item in dataList) {
+        NSDictionary *dic = item.locDic;
+        if (isSafeDictionary(dic)) {
+            equipmentStatus += [ dic[@"equipmentStatus"][@"num"] intValue];
+            equipmentLevel += [ dic[@"equipmentStatus"][@"level"] intValue];
+            if([dic[@"equipmentStatus"][@"level"] intValue] >equipmentLevel ){
+                equipmentLevel = [dic[@"equipmentStatus"][@"level"] intValue];
+            }
+        }
+    }
+    if (dataList.count == 1) {
+        for (BMKClusterItem *item in dataList) {
+            NSDictionary *dic = item.locDic;
+            if([dic[@"equipmentStatus"][@"status"] isEqualToString:@"0"] ||[dic[@"equipmentStatus"] count] ==0){
+                UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
+                [equipOk setBackgroundColor:FrameColor(120, 203, 161)];
+                equipOk.layer.cornerRadius = 2;
+                equipOk.titleLabel.font = FontBSize(10);
+                [equipOk setTitle: @"正常"   forState:UIControlStateNormal];
+                equipOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:equipOk];
+                
+            }else if([dic[@"equipmentStatus"][@"status"] isEqualToString:@"3"] ){
+                UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
+                [equipOk setBackgroundColor:FrameColor(252,201,84)];
+                equipOk.layer.cornerRadius = 2;
+                equipOk.titleLabel.font = FontBSize(10);
+                [equipOk setTitle: @"正常"   forState:UIControlStateNormal];
+                equipOk.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:equipOk];
+            }else{
+                UIButton *equipWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(75), FrameWidth(22))];
+                [equipWarnBtn setBackgroundColor:warnColor];
+                equipWarnBtn.layer.cornerRadius = 2;
+                equipWarnBtn.titleLabel.font = FontBSize(10);
+                int isNull = isNull(dic[@"equipmentStatus"][@"num"]);
+                NSString *equipNum = isNull == 1?dic[@"equipmentStatus"][@"num"]:@"0";
+                [equipWarnBtn setTitle:[NSString stringWithFormat:@"告警%@",equipNum]  forState:UIControlStateNormal];
+                equipWarnBtn.titleLabel.textColor = [UIColor whiteColor];
+                [bgImg addSubview:equipWarnBtn];
+                
+                UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(89), FrameWidth(48), FrameWidth(22))];
+                equipLevelBtn.titleLabel.font = FontBSize(10);
+                equipLevelBtn.layer.cornerRadius = 2;
+                [CommonExtension addLevelBtn:equipLevelBtn level:dic[@"equipmentStatus"][@"level"]];
+                [bgImg addSubview:equipLevelBtn];
+            }
+        }
+    }else {
+        if (equipmentStatus == 0) {
+            UIButton *equipOk = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
+            [equipOk setBackgroundColor:FrameColor(120, 203, 161)];
+            equipOk.layer.cornerRadius = 2;
+            equipOk.titleLabel.font = FontBSize(10);
+            [equipOk setTitle: @"正常"   forState:UIControlStateNormal];
+            equipOk.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:equipOk];
+        }else {
+            UIButton *equipWarnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(89), FrameWidth(75), FrameWidth(22))];
+            [equipWarnBtn setBackgroundColor:warnColor];
+            equipWarnBtn.layer.cornerRadius = 2;
+            equipWarnBtn.titleLabel.font = FontBSize(10);
+            [equipWarnBtn setTitle:[NSString stringWithFormat:@"告警%d",equipmentStatus]  forState:UIControlStateNormal];
+            equipWarnBtn.titleLabel.textColor = [UIColor whiteColor];
+            [bgImg addSubview:equipWarnBtn];
+            
+            UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(89), FrameWidth(48), FrameWidth(22))];
+            equipLevelBtn.titleLabel.font = FontBSize(10);
+            equipLevelBtn.layer.cornerRadius = 2;
+            [CommonExtension addLevelBtn:equipLevelBtn level:[NSString stringWithFormat:@"%d",equipmentLevel]];
+            [bgImg addSubview:equipLevelBtn];
+        }
+        
+    }
+    return annotationView;
 }
+
+-(UIImage *)getImageFromView:(UIView *)view{
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
 - (UIImage *)resizeWithImage:(UIImage *)image{
     CGFloat top = image.size.height/2.0;
     CGFloat left = image.size.width/2.0;
@@ -874,79 +1130,111 @@
  *@param view 选中的annotation views
  */
 -(void)mapView:(BMKMapView *)mapView didSelectAnnotationView:(BMKAnnotationView *)view{
- 
-    [mapView deselectAnnotation:view.annotation animated:true];
     
-    if(view.tag < 100){
-        if([_stationDIC[view.annotation.subtitle][@"isShow"] isEqualToString:@"0"]){
-            
-            //BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
-            
-            NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
-            
-            BMKPointAnnotation* annotation2 = [[BMKPointAnnotation alloc]init];
-            annotation2.coordinate = CLLocationCoordinate2DMake([thisStation1[@"latitude"] floatValue], [thisStation1[@"longitude"] floatValue] );
-            annotation2.title = view.annotation.subtitle;
-            [mapView addAnnotation:annotation2];
-            
-            [_clusters2 addObject:annotation2];
-            
-            NSDictionary  *thisStation2 = @{
-                                            @"name":thisStation1[@"alias"],
-                                            @"alias":thisStation1[@"alias"],
-                                            @"environmentStatus":thisStation1[@"environmentStatus"],
-                                            @"powerStatus":thisStation1[@"powerStatus"],
-                                            @"alarmStatus":thisStation1[@"alarmStatus"],
-                                            @"code":thisStation1[@"code"],
-                                            @"airport":thisStation1[@"airport"],
-                                            @"latitude":thisStation1[@"latitude"],
-                                            @"longitude":thisStation1[@"longitude"],
-                                            @"picture":thisStation1[@"picture"],
-                                            @"nowKey":thisStation1[@"nowKey"],
-                                            @"address":thisStation1[@"address"],
-                                            @"isShow":@"1"
-                                            };
-            
-            _stationDIC[view.annotation.subtitle] = thisStation2;
-            
-        }else{
-            BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
-            
-            
-            NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
-            
-            
-            [mapView removeAnnotation:view1.annotation];
-            
-            
-            //[_stationDIC removeObjectForKey:view.annotation.subtitle];
-            NSDictionary  *thisStation2 = @{
-                                            @"name":thisStation1[@"alias"],
-                                            @"alias":thisStation1[@"alias"],
-                                            @"environmentStatus":thisStation1[@"environmentStatus"],
-                                            @"powerStatus":thisStation1[@"powerStatus"],
-                                            @"alarmStatus":thisStation1[@"alarmStatus"],
-                                            @"code":thisStation1[@"code"],
-                                            @"airport":thisStation1[@"airport"],
-                                            @"latitude":thisStation1[@"latitude"],
-                                            @"longitude":thisStation1[@"longitude"],
-                                            @"picture":thisStation1[@"picture"],
-                                            @"nowKey":thisStation1[@"nowKey"],
-                                            @"address":thisStation1[@"address"],
-                                            @"isShow":@"0"
-                                            };
-            _stationDIC[view.annotation.subtitle] = thisStation2;
+    [mapView deselectAnnotation:view.annotation animated:true];
+    ClusterAnnotation *clusterAnnotation = (ClusterAnnotation*)view.annotation;
+    if (clusterAnnotation.size > 1) {
+        [mapView setCenterCoordinate:view.annotation.coordinate];
+        [mapView zoomIn];
+        
+    }else {
+        NSArray *dataList = clusterAnnotation.dataArr;
+        if (dataList.count == 1) {
+            for (BMKClusterItem *item in dataList) {
+              
+               NSDictionary *dataD = [[NSMutableDictionary alloc]initWithDictionary:[item.locDic mj_keyValues]];
+                if (isSafeDictionary(dataD)) {
+                   
+                   NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"station"]];
+                    for (NSString*s in [dataDic allKeys]) {
+                        if ([dataDic[s] isEqual:[NSNull null]]) {
+                            [dataDic setObject:@"" forKey:s];
+                        }
+                    }
+                  
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    [userDefaults setObject:dataDic forKey:@"station"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [self.navigationController.tabBarController setSelectedIndex:0];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
+                    
+                    
+                }
+            }
         }
-    }else{
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:_stationDIC[view.annotation.title] forKey:@"station"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.navigationController.tabBarController setSelectedIndex:0];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
-
+//
+//        if(view.tag < 100){
+//            if([_stationDIC[view.annotation.subtitle][@"isShow"] isEqualToString:@"0"]){
+//
+//                //BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
+//
+//                NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
+//
+//                ClusterAnnotation* annotation2 = [[ClusterAnnotation alloc]init];
+//                annotation2.coordinate = CLLocationCoordinate2DMake([thisStation1[@"latitude"] floatValue], [thisStation1[@"longitude"] floatValue] );
+//                annotation2.title = view.annotation.subtitle;
+//                [mapView addAnnotation:annotation2];
+//
+//                [_clusters2 addObject:annotation2];
+//
+//                NSDictionary  *thisStation2 = @{
+//                    @"name":thisStation1[@"alias"],
+//                    @"alias":thisStation1[@"alias"],
+//                    @"environmentStatus":thisStation1[@"environmentStatus"],
+//                    @"powerStatus":thisStation1[@"powerStatus"],
+//                    @"alarmStatus":thisStation1[@"alarmStatus"],
+//                    @"code":thisStation1[@"code"],
+//                    @"airport":thisStation1[@"airport"],
+//                    @"latitude":thisStation1[@"latitude"],
+//                    @"longitude":thisStation1[@"longitude"],
+//                    @"picture":thisStation1[@"picture"],
+//                    @"nowKey":thisStation1[@"nowKey"],
+//                    @"address":thisStation1[@"address"],
+//                    @"isShow":@"1"
+//                };
+//
+//                _stationDIC[view.annotation.subtitle] = thisStation2;
+//
+//            }else{
+//                BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
+//
+//
+//                NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
+//
+//
+//                [mapView removeAnnotation:view1.annotation];
+//
+//
+//                //[_stationDIC removeObjectForKey:view.annotation.subtitle];
+//                NSDictionary  *thisStation2 = @{
+//                    @"name":thisStation1[@"alias"],
+//                    @"alias":thisStation1[@"alias"],
+//                    @"environmentStatus":thisStation1[@"environmentStatus"],
+//                    @"powerStatus":thisStation1[@"powerStatus"],
+//                    @"alarmStatus":thisStation1[@"alarmStatus"],
+//                    @"code":thisStation1[@"code"],
+//                    @"airport":thisStation1[@"airport"],
+//                    @"latitude":thisStation1[@"latitude"],
+//                    @"longitude":thisStation1[@"longitude"],
+//                    @"picture":thisStation1[@"picture"],
+//                    @"nowKey":thisStation1[@"nowKey"],
+//                    @"address":thisStation1[@"address"],
+//                    @"isShow":@"0"
+//                };
+//                _stationDIC[view.annotation.subtitle] = thisStation2;
+//            }
+//        }else{
+//            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//            [userDefaults setObject:_stationDIC[view.annotation.title] forKey:@"station"];
+//            [[NSUserDefaults standardUserDefaults] synchronize];
+//            [self.navigationController.tabBarController setSelectedIndex:0];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
+//
+//        }
+//
+        //[mapView selectAnnotation:view.annotation animated:true];
     }
     
-    //[mapView selectAnnotation:view.annotation animated:true];
 }
 /**
  *当取消选中一个annotation views时，调用此接口
@@ -954,7 +1242,7 @@
  *@param view 取消选中的annotation views
  */
 -(void)mapView:(BMKMapView *)mapView didDeselectAnnotationView:(BMKAnnotationView *)view{
-   // NSLog(@"取消了选中%@",view.annotation.subtitle);//
+    // NSLog(@"取消了选中%@",view.annotation.subtitle);//
     
     return ;
 }
@@ -965,9 +1253,10 @@
     NSLog(@"地图加载完成%d",_annoNum);
     [BMKMapView enableCustomMapStyle:YES];
     //地图加载完成后才可以删除
-    [self removeClusters];
+//    [self removeClusters];
     [self addStationHealthBtn];
-
+    [self updateClusters];
+    
 }
 
 -(void)removeClusters{
@@ -986,7 +1275,7 @@
  *@param coordinate 空白处坐标点的经纬度
  */
 - (void)mapView:(BMKMapView *)mapView onClickedMapBlank:(CLLocationCoordinate2D)coordinate{
-   NSLog(@"点击地图空白处");
+    NSLog(@"点击地图空白处");
     return ;
 }
 
@@ -1038,100 +1327,100 @@
             self.StationItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:result[@"value"] ];
             //NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             //if( ![[userDefaults objectForKey:@"warningId"] isEqualToString:self.StationItem[0].warningId]){
+            
+            self.AlarmView = [[UIView alloc]init];
+            
+            self.AlarmView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(500), FrameWidth(630));
+            self.AlarmView.layer.cornerRadius = 9.0;
+            UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"warn_bg"]];
+            explanAll.frame =  CGRectMake(0,FrameWidth(30),  FrameWidth(480), FrameWidth(585));
+            //CGRectMake(0, 0 ,  FrameWidth(480), FrameWidth(585));
+            [self.AlarmView addSubview:explanAll];
+            //关闭
+            UIButton * closeBtn = [[UIButton alloc]initWithFrame:CGRectMake( FrameWidth(440), 0,FrameWidth(60), FrameWidth(60))];
+            //[[UIButton alloc]initWithFrame:CGRectMake( FrameWidth(440), -FrameWidth(20),FrameWidth(60), FrameWidth(60))];
+            //[closeBtn setBackgroundImage:[UIImage imageNamed:@"warn_close"] forState:UIControlStateNormal];
+            [closeBtn setImage:[UIImage imageNamed:@"warn_close"] forState:UIControlStateNormal];
+            [closeBtn addTarget:self action:@selector(closeAlarmView) forControlEvents:UIControlEventTouchUpInside];
+            [self.AlarmView addSubview:closeBtn];
+            //标题
+            UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,explanAll.frameWidth, FrameWidth(80))];
+            titleLabel.textColor = [UIColor whiteColor];
+            titleLabel.font = FontBSize(20);
+            titleLabel.text = @"预警提醒";
+            titleLabel.textAlignment = NSTextAlignmentCenter;
+            [explanAll addSubview:titleLabel];
+            
+            //提醒列表
+            _stationTabView = [[UITableView alloc] initWithFrame:CGRectMake(FrameWidth(20),FrameWidth(150) , explanAll.frameWidth -FrameWidth(60), FrameWidth(340))];
+            _stationTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            
+            _stationTabView.dataSource = self;
+            _stationTabView.delegate = self;
+            _stationTabView.separatorStyle =NO;
+            //                _stationTabView.estimatedRowHeight = 0;
+            //                _stationTabView.estimatedSectionHeaderHeight = 0;
+            //                _stationTabView.estimatedSectionFooterHeight = 0;
+            float isAllWeather = YES;
+            for (int i = 0; i< self.StationItem.count; i++) {
+                StationItems *item = self.StationItem[i];
+                self.StationItem[i].num = i + 1;
+                //计算高度
+                NSStringDrawingOptions option = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
                 
-                self.AlarmView = [[UIView alloc]init];
-                
-                self.AlarmView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(500), FrameWidth(630));
-                self.AlarmView.layer.cornerRadius = 9.0;
-                UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"warn_bg"]];
-                explanAll.frame =  CGRectMake(0,FrameWidth(30),  FrameWidth(480), FrameWidth(585));
-                //CGRectMake(0, 0 ,  FrameWidth(480), FrameWidth(585));
-                [self.AlarmView addSubview:explanAll];
-                //关闭
-                UIButton * closeBtn = [[UIButton alloc]initWithFrame:CGRectMake( FrameWidth(440), 0,FrameWidth(60), FrameWidth(60))];
-                //[[UIButton alloc]initWithFrame:CGRectMake( FrameWidth(440), -FrameWidth(20),FrameWidth(60), FrameWidth(60))];
-                //[closeBtn setBackgroundImage:[UIImage imageNamed:@"warn_close"] forState:UIControlStateNormal];
-                [closeBtn setImage:[UIImage imageNamed:@"warn_close"] forState:UIControlStateNormal];
-                [closeBtn addTarget:self action:@selector(closeAlarmView) forControlEvents:UIControlEventTouchUpInside];
-                [self.AlarmView addSubview:closeBtn];
-                //标题
-                UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,explanAll.frameWidth, FrameWidth(80))];
-                titleLabel.textColor = [UIColor whiteColor];
-                titleLabel.font = FontBSize(20);
-                titleLabel.text = @"预警提醒";
-                titleLabel.textAlignment = NSTextAlignmentCenter;
-                [explanAll addSubview:titleLabel];
-                
-                //提醒列表
-                _stationTabView = [[UITableView alloc] initWithFrame:CGRectMake(FrameWidth(20),FrameWidth(150) , explanAll.frameWidth -FrameWidth(60), FrameWidth(340))];
-                _stationTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-                
-                _stationTabView.dataSource = self;
-                _stationTabView.delegate = self;
-                _stationTabView.separatorStyle =NO;
-//                _stationTabView.estimatedRowHeight = 0;
-//                _stationTabView.estimatedSectionHeaderHeight = 0;
-//                _stationTabView.estimatedSectionFooterHeight = 0;
-                float isAllWeather = YES;
-                for (int i = 0; i< self.StationItem.count; i++) {
-                    StationItems *item = self.StationItem[i];
-                    self.StationItem[i].num = i + 1;
-                    //计算高度
-                    NSStringDrawingOptions option = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-                    
-//                    CGSize lblSize = [item.content boundingRectWithSize:CGSizeMake(_stationTabView.frameWidth -FrameWidth(60) , MAXFLOAT) options:option attributes:@{NSFontAttributeName:FontSize(15)} context:nil].size;
-//                    self.StationItem[i].LabelHeight = ceilf(lblSize.height);
-                    if(![self.StationItem[i].type isEqualToString:@"weather"]){
-                        isAllWeather = NO;
-                    }
-                    
-                    
+                //                    CGSize lblSize = [item.content boundingRectWithSize:CGSizeMake(_stationTabView.frameWidth -FrameWidth(60) , MAXFLOAT) options:option attributes:@{NSFontAttributeName:FontSize(15)} context:nil].size;
+                //                    self.StationItem[i].LabelHeight = ceilf(lblSize.height);
+                if(![self.StationItem[i].type isEqualToString:@"weather"]){
+                    isAllWeather = NO;
                 }
                 
                 
-                // 注册重用Cell
-                [_stationTabView registerNib:[UINib nibWithNibName:NSStringFromClass([WarnTableViewCell class]) bundle:nil] forCellReuseIdentifier:_FrameCellID];//cell的class
-                //_stationTabView.separatorStyle = NO;
-                [self.AlarmView addSubview:_stationTabView];
-                
-                [_stationTabView reloadData];
-                
-                //查看和确认
-                
-               // UIButton * showDetailBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(80), FrameWidth(510), FrameWidth(150), FrameWidth(45))];
-                UIButton * showDetailBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(160), FrameWidth(520), FrameWidth(150), FrameWidth(45))];
-                [showDetailBtn setTitle:@"查看" forState:UIControlStateNormal];
-                
+            }
+            
+            
+            // 注册重用Cell
+            [_stationTabView registerNib:[UINib nibWithNibName:NSStringFromClass([WarnTableViewCell class]) bundle:nil] forCellReuseIdentifier:_FrameCellID];//cell的class
+            //_stationTabView.separatorStyle = NO;
+            [self.AlarmView addSubview:_stationTabView];
+            
+            [_stationTabView reloadData];
+            
+            //查看和确认
+            
+            // UIButton * showDetailBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(80), FrameWidth(510), FrameWidth(150), FrameWidth(45))];
+            UIButton * showDetailBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(160), FrameWidth(520), FrameWidth(150), FrameWidth(45))];
+            [showDetailBtn setTitle:@"查看" forState:UIControlStateNormal];
+            
             if(isAllWeather){
                 [showDetailBtn addTarget:self action:@selector(seeDetail) forControlEvents:UIControlEventTouchUpInside];
             }else{
                 [showDetailBtn addTarget:self action:@selector(seeAlarmMsg) forControlEvents:UIControlEventTouchUpInside];
             }
             
-                [showDetailBtn.layer setCornerRadius:FrameWidth(10)]; //设置矩形四个圆角半径
-                [showDetailBtn.layer setBorderWidth:1.5]; //边框宽度
-                [showDetailBtn setTitleColor:FrameColor(100, 170, 250) forState:UIControlStateNormal];//title color
-                showDetailBtn.titleLabel.font = FontSize(15);
-                [showDetailBtn.layer setBorderColor:[UIColor colorWithRed:100/255.0 green:170/255.0 blue:250/255.0 alpha:1].CGColor];//边框颜色
-                [self.AlarmView addSubview:showDetailBtn];
+            [showDetailBtn.layer setCornerRadius:FrameWidth(10)]; //设置矩形四个圆角半径
+            [showDetailBtn.layer setBorderWidth:1.5]; //边框宽度
+            [showDetailBtn setTitleColor:FrameColor(100, 170, 250) forState:UIControlStateNormal];//title color
+            showDetailBtn.titleLabel.font = FontSize(15);
+            [showDetailBtn.layer setBorderColor:[UIColor colorWithRed:100/255.0 green:170/255.0 blue:250/255.0 alpha:1].CGColor];//边框颜色
+            [self.AlarmView addSubview:showDetailBtn];
             
-                [self.view addSubview:self.AlarmView ];
+            [self.view addSubview:self.AlarmView ];
+            
+            
+            //动画出现
+            [UIView animateWithDuration:0.3
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseIn animations:^{
+                
+                self.AlarmView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(480), FrameWidth(600));
                 
                 
-                //动画出现
-                [UIView animateWithDuration:0.3
-                                      delay:0
-                                    options:UIViewAnimationOptionCurveEaseIn animations:^{
-                                        
-                                        self.AlarmView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(480), FrameWidth(600));
-                                        
-                                        
-                                    } completion:^(BOOL finished) {
-                                        
-                                        
-                                    }];
+            } completion:^(BOOL finished) {
                 
-            }
+                
+            }];
+            
+        }
         //记录下曾经弹过窗
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstView"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -1145,7 +1434,7 @@
         }else if(responses.statusCode == 502){
             
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
 }
@@ -1163,7 +1452,7 @@
         if (result[@"value"] && [result[@"value"] isKindOfClass:[NSArray class]] && [result[@"value"] count] > 0) {
             self.alreadyShow = true;
             self.PatrolRemindItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:result[@"value"] ];
-
+            
             self.PatrolRemindView = [[UIView alloc]init];
             self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(530), FrameWidth(630));
             
@@ -1232,14 +1521,14 @@
             [UIView animateWithDuration:0.3
                                   delay:0
                                 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                                    
-                                    self.PatrolRemindView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
-                                    
-                                    
-                                } completion:^(BOOL finished) {
-                                    
-                                    
-                                }];
+                
+                self.PatrolRemindView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+                
+                
+            } completion:^(BOOL finished) {
+                
+                
+            }];
             
         }
         
@@ -1256,7 +1545,7 @@
         }else if(responses.statusCode == 502){
             
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
 }
@@ -1285,11 +1574,11 @@
         return item.LabelHeight;
     }else if(_stationTabView == tableView){
         
-//        StationItems *item = self.StationItem[indexPath.row];
-//
-//        if(item.LabelHeight >0 ){
-//            return item.LabelHeight+15;
-//        }
+        //        StationItems *item = self.StationItem[indexPath.row];
+        //
+        //        if(item.LabelHeight >0 ){
+        //            return item.LabelHeight+15;
+        //        }
         return UITableViewAutomaticDimension;
     }
     return FrameWidth(90);
@@ -1345,19 +1634,19 @@
 
 -(void)closeAlarmView{
     
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    [userDefaults setObject:self.StationItem[0].warningId forKey:@"warningId"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
+    //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //    [userDefaults setObject:self.StationItem[0].warningId forKey:@"warningId"];
+    //    [[NSUserDefaults standardUserDefaults] synchronize];
     //动画出现
     [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn animations:^{
-                            
-                            self.AlarmView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
-                        } completion:^(BOOL finished) {
-                            //self.AlarmView = nil;
-                            //[self.AlarmView removeFromSuperview];
-                        }];
+        
+        self.AlarmView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+    } completion:^(BOOL finished) {
+        //self.AlarmView = nil;
+        //[self.AlarmView removeFromSuperview];
+    }];
 }
 
 -(void)closePatrolRemind{
@@ -1365,13 +1654,13 @@
     [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn animations:^{
-                            
-                            self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
-                        } completion:^(BOOL finished) {
-                            
-                            //self.PatrolRemindView = nil;
-                            //[self.PatrolRemindView removeFromSuperview];
-                        }];
+        
+        self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+    } completion:^(BOOL finished) {
+        
+        //self.PatrolRemindView = nil;
+        //[self.PatrolRemindView removeFromSuperview];
+    }];
 }
 
 -(void)showDetail{//预警提醒跳转特殊巡查
@@ -1456,5 +1745,53 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
+//更新聚合状态
+- (void)updateClusters {
+    _clusterZoom = (NSInteger)_mapView.zoomLevel;
+    if(_clusterZoom >=21) {
+               return;
+           }
+    @synchronized(_clusterCaches) {
+        __block NSMutableArray *clusters = [_clusterCaches objectAtIndex:(_clusterZoom - 3)];
 
+       
+        if (clusters.count > 0) {
+            [_mapView removeAnnotations:_mapView.annotations];
+            [_mapView addAnnotations:clusters];
+        } else {
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                ///获取聚合后的标注
+                NSArray *array = [_clusterManager getClusters:_clusterZoom];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    for (int i=0;i<[array count];i++) {
+                        BMKCluster *item=array[i];
+                        ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];
+                        annotation.coordinate = item.coordinate;
+                        annotation.size = item.size;
+                        annotation.dataArr = item.clusterItems;
+              
+                        [clusters addObject:annotation];
+                    }
+                    
+                    [_mapView removeAnnotations:_mapView.annotations];
+                    [_mapView addAnnotations:clusters];
+                    
+                  
+                });
+            });
+        }
+    }
+}
+
+/**
+ *地图渲染每一帧画面过程中，以及每次需要重绘地图时（例如添加覆盖物）都会调用此接口
+ *@param mapview 地图View
+ *@param status 此时地图的状态
+ */
+- (void)mapView:(BMKMapView *)mapView onDrawMapFrame:(BMKMapStatus *)status {
+    if (_clusterZoom != 0 && _clusterZoom != (NSInteger)mapView.zoomLevel) {
+        [self updateClusters];
+    }
+}
 @end

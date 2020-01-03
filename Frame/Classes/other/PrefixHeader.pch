@@ -65,7 +65,7 @@
 
 #define ZNAVViewH (MLNavigationBarHeight + MLStatusBarHeight)
 
-
+#define TOOLH (IS_IPHONE_X ||IS_IPHONE_Xr ||IS_IPHONE_Xs ||IS_IPHONE_Xs_Max? 34 : 0)
 
 
 
@@ -127,5 +127,5 @@
 #define scrollViewNoDataText @"暂无数据"
 #define scrollViewButtonText @"重新加载"
 #endif /* PrefixHeader_pch */
-
+#import "LCChunhui.h"
 

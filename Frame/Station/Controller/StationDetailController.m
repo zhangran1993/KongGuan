@@ -135,7 +135,7 @@
     //[self.view addSubview:_tableview];
     
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoBottomApevent:) name:@"bottomapevent" object:nil];
-
+    
 }
 
 
@@ -173,10 +173,10 @@
 #pragma mark - private methods 私有方法
 
 - (void)setupTable{
-
+    
     
     [self stationBtn];
-//    _station_code = @"S5";
+    //    _station_code = @"S5";
     NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/stationInfo/%@/%@",_airport,_station_code]];
     NSLog(@"%@",FrameRequestURL);
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -220,7 +220,7 @@
             EquipmentStatusModel *model = [EquipmentStatusModel mj_objectWithKeyValues:dict];
             [self.statusArray addObject:model];
         }
-    
+        
         
         [self.tableview reloadData];
         
@@ -303,38 +303,38 @@
         _isRefresh = false;
         return ;
     }
-//    _imageUrl = @"";
-//    [_tableview reloadData];
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//
-//    if([userDefaults objectForKey:@"station"]){
-//        NSDictionary * station = [userDefaults objectForKey:@"station"];
-//
-//        self.navigationItem.title = station[@"alias"];//
-//        _station_name = station[@"alias"];
-//        _station_code = station[@"code"];//
-//        _airport = station[@"airport"];//
-//        if([getAllStation indexOfObject:_station_code] != NSNotFound){
-//
-//        }else{
-//            [userDefaults removeObjectForKey:@"station"];
-//            [FrameBaseRequest showMessage:@"您没有当前台站的权限"];
-//            [self.tabBarController setSelectedIndex:2];
-//            return ;
-//        }
-//
-//    }else{
-//        [FrameBaseRequest showMessage:@"请选择台站"];
-//        [self.tabBarController setSelectedIndex:2];
-//        return ;
-//    }
-//
-//    [self setupTable];
-//    self.view.backgroundColor = [UIColor whiteColor];
-//    //去除分割线
-//    //[self.view addSubview:_tableview];
-//
-//    [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoBottomApevent:) name:@"bottomapevent" object:nil];
+    //    _imageUrl = @"";
+    //    [_tableview reloadData];
+    //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //
+    //    if([userDefaults objectForKey:@"station"]){
+    //        NSDictionary * station = [userDefaults objectForKey:@"station"];
+    //
+    //        self.navigationItem.title = station[@"alias"];//
+    //        _station_name = station[@"alias"];
+    //        _station_code = station[@"code"];//
+    //        _airport = station[@"airport"];//
+    //        if([getAllStation indexOfObject:_station_code] != NSNotFound){
+    //
+    //        }else{
+    //            [userDefaults removeObjectForKey:@"station"];
+    //            [FrameBaseRequest showMessage:@"您没有当前台站的权限"];
+    //            [self.tabBarController setSelectedIndex:2];
+    //            return ;
+    //        }
+    //
+    //    }else{
+    //        [FrameBaseRequest showMessage:@"请选择台站"];
+    //        [self.tabBarController setSelectedIndex:2];
+    //        return ;
+    //    }
+    //
+    //    [self setupTable];
+    //    self.view.backgroundColor = [UIColor whiteColor];
+    //    //去除分割线
+    //    //[self.view addSubview:_tableview];
+    //
+    //    [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoBottomApevent:) name:@"bottomapevent" object:nil];
     
 }
 -(void)gotoBottomApevent:(NSNotification *)notification{
@@ -478,11 +478,11 @@
     title.font = FontSize(18);
     title.text = @"环境监测";
     [view addSubview:title];
-
+    
     _btnFont = FontBSize(13);
     //
     if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"0"]){
-
+        
         UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
         [normalBtn setBackgroundColor:FrameColor(120, 203, 161)];
         normalBtn.layer.cornerRadius = 2;
@@ -525,11 +525,11 @@
     //动力监测
     UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, FrameWidth(85), WIDTH_SCREEN, FrameWidth(84))];
     view1.backgroundColor = [UIColor whiteColor];
-//    view1.userInteractionEnabled = YES;
-//    view1.tag = 200;
-//    UITapGestureRecognizer *viewTapGesture1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(machineTapevent:)];
-//    [view1 addGestureRecognizer:viewTapGesture1];
-//    [viewTapGesture1 setNumberOfTapsRequired:1];
+    //    view1.userInteractionEnabled = YES;
+    //    view1.tag = 200;
+    //    UITapGestureRecognizer *viewTapGesture1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(machineTapevent:)];
+    //    [view1 addGestureRecognizer:viewTapGesture1];
+    //    [viewTapGesture1 setNumberOfTapsRequired:1];
     
     [thiscell addSubview:view1];
     
@@ -602,12 +602,12 @@
     deviceTestingTitle.font = FontSize(18);
     [deviceTesting addSubview:deviceTestingTitle];
     
-//    UIButton *stateBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-//    [stateBtn setBackgroundColor:FrameColor(120, 203, 161)];
-//    stateBtn.layer.cornerRadius = 2;
-//    stateBtn.titleLabel.font = _btnFont;
-//    stateBtn.titleLabel.textColor = [UIColor whiteColor];
-//    [deviceTesting addSubview:stateBtn];
+    //    UIButton *stateBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
+    //    [stateBtn setBackgroundColor:FrameColor(120, 203, 161)];
+    //    stateBtn.layer.cornerRadius = 2;
+    //    stateBtn.titleLabel.font = _btnFont;
+    //    stateBtn.titleLabel.textColor = [UIColor whiteColor];
+    //    [deviceTesting addSubview:stateBtn];
     
     if (self.statusArray.count > 0) {
         UIButton *stateBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
@@ -680,13 +680,13 @@
         viewHeight = self.imageHeight +FrameWidth(51);
     }
     
-//    NSString *path_document = NSHomeDirectory();
-//    //设置一个图片的存储路径
-//    NSString *imagePath = [path_document stringByAppendingString:@"/Documents/pic.png"];
-//    //把图片直接保存到指定的路径（同时应该把图片的路径imagePath存起来，下次就可以直接用来取）
-//    [UIImagePNGRepresentation(image2) writeToFile:imagePath atomically:YES];
-//    UIImage *getimage2 = [UIImage imageWithContentsOfFile:imagePath];
-//    NSLog(@"image2 is size %@",NSStringFromCGSize(getimage2.size));
+    //    NSString *path_document = NSHomeDirectory();
+    //    //设置一个图片的存储路径
+    //    NSString *imagePath = [path_document stringByAppendingString:@"/Documents/pic.png"];
+    //    //把图片直接保存到指定的路径（同时应该把图片的路径imagePath存起来，下次就可以直接用来取）
+    //    [UIImagePNGRepresentation(image2) writeToFile:imagePath atomically:YES];
+    //    UIImage *getimage2 = [UIImage imageWithContentsOfFile:imagePath];
+    //    NSLog(@"image2 is size %@",NSStringFromCGSize(getimage2.size));
     
     
     UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(view2.frame)+5, WIDTH_SCREEN, viewHeight)];
@@ -702,18 +702,43 @@
         stationString =  station[@"alias"];
         
     }
-
+    // 读取沙盒路径图片
+    
+    NSString *aPath3=[NSString stringWithFormat:@"%@/Documents/%@.png",NSHomeDirectory(),stationString];
+    
+    // 拿到沙盒路径图片
+    
+    UIImageView *BigImg = [[UIImageView alloc]init];
+    
+    UIImage *imgFromUrl3=[[UIImage alloc]initWithContentsOfFile:aPath3];
+    if(imgFromUrl3) {
+        
+        NSLog(@"you");
+        [BigImg setImage:imgFromUrl3 ];
+        
+    }else {
+        
+        NSString *urlString =  [WebHost stringByAppendingString:_imageUrl];
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL  URLWithString:urlString]];
+        UIImage *image = [UIImage imageWithData:data]; // 取得图片
+        
+        // 本地沙盒目录
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        // 得到本地沙盒中名为"MyImage"的路径，"MyImage"是保存的图片名
+        NSString *imageFilePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",stationString]];
+        // 将取得的图片写入本地的沙盒中，其中0.5表示压缩比例，1表示不压缩，数值越小压缩比例越大
+        BOOL success = [UIImageJPEGRepresentation(image, 0.5) writeToFile:imageFilePath  atomically:YES];
+        if (success){
+            NSLog(@"写入本地成功");
+        }
+    }
+    
+    
+    
     //先从缓存中找是否有图片
     SDImageCache *cache =  [SDImageCache sharedImageCache];
     UIImage *memoryImage = [cache imageFromMemoryCacheForKey:stationString];
-      
-    UIImageView *BigImg = [[UIImageView alloc]init];
-    if (memoryImage) {
-        NSLog(@"you");
-        [BigImg setImage:memoryImage ];
-    }else {
-       
-    }
+    
     [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_imageUrl]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]];
     
     [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebHost stringByAppendingString:_imageUrl]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -727,15 +752,15 @@
             return ;
         }
     }];
-
+    
     BigImg.frame = CGRectMake(FrameWidth(23), FrameWidth(20), FrameWidth(595), viewHeight - FrameWidth(51));
-  
-      if([userDefaults objectForKey:@"station"]){
-          NSDictionary * station = [userDefaults objectForKey:@"station"];
+    
+    if([userDefaults objectForKey:@"station"]){
+        NSDictionary * station = [userDefaults objectForKey:@"station"];
         
-          [[SDImageCache sharedImageCache] storeImage:BigImg.image forKey:station[@"alias"] toDisk:YES completion:nil];
-             
-      }
+        [[SDImageCache sharedImageCache] storeImage:BigImg.image forKey:station[@"alias"] toDisk:YES completion:nil];
+        
+    }
     
     [view3 addSubview:BigImg];//station_right
     
@@ -909,7 +934,7 @@
             UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
             UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
             
-//            nameLabel.userInteractionEnabled = YES;
+            //            nameLabel.userInteractionEnabled = YES;
             
             nameLabel.font = FontSize(17);
             nameLabel.textColor = listGrayColor;
@@ -918,7 +943,7 @@
             com10.delegate = self;
             com10.parentViewTag = i + 200;
             [com10 addTouchViewParentTagClass:backView];
-             
+            
             nameLabel.text = [NSString stringWithFormat:@"             %@",_objects2[i][@"name"]] ;//;
             [view10 addSubview:backView];
             [backView addSubview:nameLabel];
@@ -979,7 +1004,7 @@
             UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
             [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
             [view10 addSubview:imgIconView];
-          
+            
             UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
             typeBtn.layer.cornerRadius = 2;
             typeBtn.titleLabel.font = _btnFont;
@@ -1008,7 +1033,7 @@
             [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
             typeBtn.titleLabel.textColor = [UIColor whiteColor];
             [view10 addSubview:typeBtn];
-             
+            
             
             
             
@@ -1203,14 +1228,14 @@
     NSDictionary * weather = [NSMutableDictionary alloc];
     if([_weather isEqual:[NSNull null]]||[_weather  isKindOfClass:[NSNull class]]||[self isBlankDictionary:_weather  ]){
         weather = @{
-                    @"WEAT":@"－－",
-                    @"windDir":@"－－",
-                    @"windSpeed":@"－－",
-                    @"pressure":@"－－",
-                    @"humidity":@"－－",
-                    @"temp":@"－－",
-                    @"condition":@"－－"
-                    };
+            @"WEAT":@"－－",
+            @"windDir":@"－－",
+            @"windSpeed":@"－－",
+            @"pressure":@"－－",
+            @"humidity":@"－－",
+            @"temp":@"－－",
+            @"condition":@"－－"
+        };
     }else{
         //匹配图片
         NSArray *weatherArray = @[@"雾",@"云",@"雷",@"霾",@"晴",@"雪",@"雨"];
@@ -1493,7 +1518,7 @@
         mList = _objects1;
         category = _objects1[senderTag - 100][@"code"];
         machinename = _objects1[senderTag- 100][@"name"];
-//        return ;
+        //        return ;
     }else if(senderTag >= 200 &&_objects2.count > senderTag - 200){//是power
         category = _objects2[senderTag - 200][@"code"];
         machinename = _objects2[senderTag- 200][@"name"];
@@ -1527,7 +1552,7 @@
         self.rightButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.rightButton.titleLabel.numberOfLines = 2;
         if(![CommonExtension isEmptyWithString:_station_name]){
-           
+            
             
             NSMutableString* str1=[[NSMutableString alloc]initWithString:_station_name];//存在堆区，可变字符串
             float strLength = floor(str1.length/7);
@@ -1585,58 +1610,58 @@
     //if(self.StationItem){
     //    [self getStationList];
     //}else{
-        NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
-        NSLog(@"%@",FrameRequestURL);
-        [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-            NSInteger code = [[result objectForKey:@"errCode"] intValue];
-            if(code  <= -1){
-                [FrameBaseRequest showMessage:result[@"errMsg"]];
-                return ;
-            }
-            NSMutableArray<StationItems *> * SItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:[result objectForKey:@"value"] ];
-            NSMutableArray<StationItems *> * radar = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"雷达台站"}]];
-            NSMutableArray<StationItems *> * navigation = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"导航台站"}]];
-            NSMutableArray<StationItems *> * local = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"本场"}]];
-             NSMutableArray<StationItems *> * shelter = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"方舱"}]];
-            //[navigation addObject:radar];
-            
-            for(StationItems *item in SItem){
-                
-                if([item.category isEqualToString:@"navigation"]){
-                    [navigation addObject:item];
-                }else if([item.category isEqualToString:@"radar"]){
-                    [radar addObject:item];
-                }else if([item.category isEqualToString:@"local"]){
-                    [local addObject:item];
-                }else if([item.category isEqualToString:@"shelter"]){
-                    [shelter addObject:item];
-                }
-            }
-            [radar addObjectsFromArray:navigation];
-            [radar addObjectsFromArray:local];
-            [radar addObjectsFromArray:shelter];
-            self.StationItem = [radar copy];
-            
-            [self getStationList];
-            
-        } failure:^(NSURLSessionDataTask *error)  {
-            FrameLog(@"请求失败，返回数据 : %@",error);
-            NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                
-                LoginViewController *login = [[LoginViewController alloc] init];
-                [self.navigationController pushViewController:login animated:YES];
-                return;
-            }else if(responses.statusCode == 502){
-                
-            }
-            [FrameBaseRequest showMessage:@"网络链接失败"];
+    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
+    NSLog(@"%@",FrameRequestURL);
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
+        }
+        NSMutableArray<StationItems *> * SItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:[result objectForKey:@"value"] ];
+        NSMutableArray<StationItems *> * radar = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"雷达台站"}]];
+        NSMutableArray<StationItems *> * navigation = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"导航台站"}]];
+        NSMutableArray<StationItems *> * local = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"本场"}]];
+        NSMutableArray<StationItems *> * shelter = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"方舱"}]];
+        //[navigation addObject:radar];
+        
+        for(StationItems *item in SItem){
             
-        }];
-   // }
+            if([item.category isEqualToString:@"navigation"]){
+                [navigation addObject:item];
+            }else if([item.category isEqualToString:@"radar"]){
+                [radar addObject:item];
+            }else if([item.category isEqualToString:@"local"]){
+                [local addObject:item];
+            }else if([item.category isEqualToString:@"shelter"]){
+                [shelter addObject:item];
+            }
+        }
+        [radar addObjectsFromArray:navigation];
+        [radar addObjectsFromArray:local];
+        [radar addObjectsFromArray:shelter];
+        self.StationItem = [radar copy];
+        
+        [self getStationList];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+    // }
     
     
 }
@@ -1697,14 +1722,14 @@
             _address = item.address;
             
             NSDictionary  *thisStation2 = @{
-                                            @"name":_station_name,
-                                            @"alias":_station_name,
-                                            @"code":_station_code,
-                                            @"airport":_airport,
-                                            @"picture":_imageUrl,
-                                            @"address":_address,
-                                            @"isShow":@"1"
-                                            };
+                @"name":_station_name,
+                @"alias":_station_name,
+                @"code":_station_code,
+                @"airport":_airport,
+                @"picture":_imageUrl,
+                @"address":_address,
+                @"isShow":@"1"
+            };
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             [userDefaults setObject:thisStation2 forKey:@"station"];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -1728,40 +1753,40 @@
 -(BOOL)isBlankDictionary:(NSDictionary *)dic {
     
     if (!dic) {
-
-    return YES;
-
+        
+        return YES;
+        
     }
-
+    
     if ([dic isKindOfClass:[NSNull class]]) {
-
-    return YES;
-
+        
+        return YES;
+        
     }
     if (![dic isKindOfClass:[NSDictionary class]]) {
-
-    return YES;
-
+        
+        return YES;
+        
     }
-
+    
     if (!dic.count) {
-
-    return YES;
-
+        
+        return YES;
+        
     }
-
+    
     if (dic == nil) {
-
-    return YES;
-
+        
+        return YES;
+        
     }
-
+    
     if (dic == NULL) {
-
-    return YES;
-
+        
+        return YES;
+        
     }
-
+    
     return NO;
     
 }
