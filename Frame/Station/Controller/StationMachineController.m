@@ -51,6 +51,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoMachineInfo:) name:@"Machine" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoMachinePicture:) name:@"Picture" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoMachineAlarmapevent:) name:@"Alarmapevent" object:nil];
+    [self getRadarInfoList];
     
 }
 
@@ -162,7 +163,19 @@
     }
 }
 
+-(void)getRadarInfoList{
+    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/equipmentInfo/%@/%@?engine_room_code=%@",_station_code,_category,_engine_room_code]];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+       
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+       
+        
+    }];
 
+    
+}
 
 -(void)getMachineList{
     NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/equipmentInfo/%@/%@?engine_room_code=%@",_station_code,_category,_engine_room_code]];

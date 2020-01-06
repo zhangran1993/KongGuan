@@ -42,7 +42,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, getScreen.size.width,HEIGHT_SCREEN - 120 - TOOLH - ZNAVViewH)];
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, getScreen.size.width,HEIGHT_SCREEN - 160 - TOOLH - ZNAVViewH)];
+    if (TOOLH >0) {
+        [self.tableview setFrame:CGRectMake(0, 0, getScreen.size.width,HEIGHT_SCREEN - 120 - TOOLH - ZNAVViewH)];
+    }
+   
     NSLog(@"tableviewtableviewtableview %f",self.tableview.frameHeight);
     
     [self.view addSubview:self.tableview];
@@ -122,12 +126,17 @@
     
     UIImageView *machineImg = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(20), FrameWidth(200), FrameWidth(250))];
     NSString * img = @"station_big_normal";
-    if([AllEquipment indexOfObject:_machineDetail[@"category"]] != NSNotFound){
-        img = [NSString stringWithFormat:@"station_big_%@",_machineDetail[@"category"]];
-        machineImg.image = [UIImage imageNamed:img];
-    }else {
-        [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
-    }
+//    if([AllEquipment indexOfObject:_machineDetail[@"category"]] != NSNotFound){
+//        img = [NSString stringWithFormat:@"station_big_%@",_machineDetail[@"category"]];
+//        machineImg.image = [UIImage imageNamed:img];
+//    }else {
+//        [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
+//        if([_machineDetail[@"picture"] length] == 0)
+//        {
+//             machineImg.image = [UIImage imageNamed:img];
+//        }
+//    }
+    [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
     machineImg.contentMode = 1;
     
     

@@ -248,19 +248,18 @@
     [leftButton addTarget:self action:@selector(leftButtonClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
     [self notificationMonitoring];
+    _clusterCaches = [[NSMutableArray alloc] init];
+    for (NSInteger i = 3; i <= 21; i++) {
+        [_clusterCaches addObject:[NSMutableArray array]];
+    }
+    
+    //点聚合管理类
+    _clusterManager = [[BMKClusterManager alloc] init];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
         return;
     }
-    _clusterCaches = [[NSMutableArray alloc] init];
-    for (NSInteger i = 3; i < 21; i++) {
-           [_clusterCaches addObject:[NSMutableArray array]];
-       }
-       
-    
-    //点聚合管理类
-    _clusterManager = [[BMKClusterManager alloc] init];
-    
+  
 }
 
 
@@ -902,7 +901,7 @@
                 warnBtn.titleLabel.textColor = [UIColor whiteColor];
                 [bgImg addSubview:warnBtn];
                 
-                UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(165), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
+                UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(35), FrameWidth(45), FrameWidth(22))];
                 
                 LevelBtn.layer.cornerRadius = 2;
                 [CommonExtension addLevelBtn:LevelBtn level: dic[@"powerStatus"][@"level"]];
@@ -986,7 +985,7 @@
                 envWarnBtn.titleLabel.textColor = [UIColor whiteColor];
                 [bgImg addSubview:envWarnBtn];
                 
-                UIButton *envLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(62), FrameWidth(48), FrameWidth(22))];
+                UIButton *envLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(62), FrameWidth(45), FrameWidth(22))];
                 
                 envLevelBtn.layer.cornerRadius = 2;
                 
@@ -1071,7 +1070,7 @@
                 equipWarnBtn.titleLabel.textColor = [UIColor whiteColor];
                 [bgImg addSubview:equipWarnBtn];
                 
-                UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(89), FrameWidth(48), FrameWidth(22))];
+                UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
                 equipLevelBtn.titleLabel.font = FontBSize(10);
                 equipLevelBtn.layer.cornerRadius = 2;
                 [CommonExtension addLevelBtn:equipLevelBtn level:dic[@"equipmentStatus"][@"level"]];
@@ -1096,7 +1095,7 @@
             equipWarnBtn.titleLabel.textColor = [UIColor whiteColor];
             [bgImg addSubview:equipWarnBtn];
             
-            UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(89), FrameWidth(48), FrameWidth(22))];
+            UIButton *equipLevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(150), FrameWidth(89), FrameWidth(45), FrameWidth(22))];
             equipLevelBtn.titleLabel.font = FontBSize(10);
             equipLevelBtn.layer.cornerRadius = 2;
             [CommonExtension addLevelBtn:equipLevelBtn level:[NSString stringWithFormat:@"%d",equipmentLevel]];
@@ -1748,7 +1747,7 @@
 //更新聚合状态
 - (void)updateClusters {
     _clusterZoom = (NSInteger)_mapView.zoomLevel;
-    if(_clusterZoom >=21) {
+    if(_clusterZoom >21) {
                return;
            }
     @synchronized(_clusterCaches) {
@@ -1764,14 +1763,30 @@
                 NSArray *array = [_clusterManager getClusters:_clusterZoom];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                 
                     for (int i=0;i<[array count];i++) {
+                        
                         BMKCluster *item=array[i];
-                        ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];
-                        annotation.coordinate = item.coordinate;
-                        annotation.size = item.size;
-                        annotation.dataArr = item.clusterItems;
-              
-                        [clusters addObject:annotation];
+                        if ((NSInteger)_mapView.zoomLevel >=20 ) {
+                            if (item.clusterItems.count >1) {
+                                for (BMKClusterItem *itemDetail in item.clusterItems) {
+                                    ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];
+                                    annotation.coordinate = itemDetail.coor;
+                                    annotation.size = 1;
+                                    NSMutableArray *arr = [NSMutableArray array];
+                                    [arr addObject:itemDetail];
+                                    annotation.dataArr = arr;
+                                    [clusters addObject:annotation];
+                                }
+                            }
+                        }else {
+                            ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];
+                            annotation.coordinate = item.coordinate;
+                            annotation.size = item.size;
+                            annotation.dataArr = item.clusterItems;
+                            [clusters addObject:annotation];
+                        }
+                        
                     }
                     
                     [_mapView removeAnnotations:_mapView.annotations];
