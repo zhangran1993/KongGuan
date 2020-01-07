@@ -138,7 +138,10 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    [_clusterCaches removeAllObjects];
+    for (NSInteger i = 3; i <= 21; i++) {
+           [_clusterCaches addObject:[NSMutableArray array]];
+       }
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
         [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"alpha0"] forBarMetrics:UIBarMetricsDefault];
@@ -249,9 +252,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
     [self notificationMonitoring];
     _clusterCaches = [[NSMutableArray alloc] init];
-    for (NSInteger i = 3; i <= 21; i++) {
-        [_clusterCaches addObject:[NSMutableArray array]];
-    }
+   
     
     //点聚合管理类
     _clusterManager = [[BMKClusterManager alloc] init];
@@ -679,7 +680,7 @@
     annotationView.annotation = cluster;
     
     //    annotationView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:annotation.subtitle]]];
-    annotationView.centerOffset=CGPointMake(0,-80);
+//    annotationView.centerOffset=CGPointMake(0,-80);
     
     annotationView.tag = [_stationDIC[annotation.title][@"nowKey"] intValue]+100;
     
@@ -696,7 +697,7 @@
         annotationView.image = [UIImage imageNamed:@"alpha0"];//300*100
     }
     
-    annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
+//    annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
     
     //UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake((317-FrameWidth(315))/2, (123-FrameWidth(103))/2, FrameWidth(315),  FrameWidth(103))];
     UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, FrameWidth(315),  FrameWidth(138))];
@@ -1767,7 +1768,7 @@
                     for (int i=0;i<[array count];i++) {
                         
                         BMKCluster *item=array[i];
-                        if ((NSInteger)_mapView.zoomLevel >=20 ) {
+                       if ((NSInteger)_mapView.zoomLevel >=20 ) {
                             if (item.clusterItems.count >1) {
                                 for (BMKClusterItem *itemDetail in item.clusterItems) {
                                     ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];
@@ -1777,7 +1778,7 @@
                                     [arr addObject:itemDetail];
                                     annotation.dataArr = arr;
                                     [clusters addObject:annotation];
-                                }
+                               }
                             }
                         }else {
                             ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];

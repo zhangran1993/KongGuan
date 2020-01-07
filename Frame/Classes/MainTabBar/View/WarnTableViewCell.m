@@ -28,11 +28,14 @@
         
         NSDictionary *dict = StationItem.content[0];
         NSString *contentStr;
-        if ([StationItem.type isEqualToString:@"weather"]) {
-            contentStr = @"雷电";
-        } else {
-            contentStr = @"设备预警";
-        }
+//        if ([StationItem.type isEqualToString:@"weather"]) {
+//            contentStr = @"雷电";
+//        } else {
+//            contentStr = @"设备预警";
+//        }
+       
+        contentStr =safeString(dict[@"weather"]);
+      
         NSArray *stationList = dict[@"stationList"];
         contentStr = [NSString stringWithFormat:@"%@，请注意检查相关设备:",contentStr];
         for (int i = 0; i < stationList.count; i++) {
@@ -45,9 +48,13 @@
         paragraphStyle.alignment = NSTextAlignmentJustified; //设置两端对齐显示
         [attributedStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attributedStr.length)];
         _stationName.attributedText = attributedStr;
+        int level = 1;
+           [_stationrank setImage:[UIImage imageNamed:[NSString stringWithFormat:@"station_rank%d",level]]];
+        _stationrank.hidden = NO;
+    }else {
+        _stationrank.hidden = YES;
     }
-    int level = 1;
-    [_stationrank setImage:[UIImage imageNamed:[NSString stringWithFormat:@"station_rank%d",level]]];
+   
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

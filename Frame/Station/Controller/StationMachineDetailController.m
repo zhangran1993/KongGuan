@@ -12,9 +12,9 @@
 #import "MachineItems.h"
 #import "StationMachineInfoListController.h"
 #import <WebKit/WebKit.h>
-
+#import "RadarTableViewCell.h"
 #import <MJExtension.h>
-
+#import "StationMachineDetailMoreController.h"
 @interface StationMachineDetailController ()<UITableViewDataSource,UITableViewDelegate,WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView *webview;
@@ -23,7 +23,10 @@
 
 @property NSMutableArray <MachineItems *> *objects;
 @property NSMutableArray *objects0;
+@property (nonatomic, strong) NSMutableArray *radarList;
 @property float wkHeight;
+
+@property (nonatomic, strong) UITableView *radarTableView;
 /** 请求管理者 */
 //@property (nonatomic,weak) AFHTTPSessionManager * manager;
 /** 用于加载下一页的参数(页码) */
@@ -46,7 +49,7 @@
     if (TOOLH >0) {
         [self.tableview setFrame:CGRectMake(0, 0, getScreen.size.width,HEIGHT_SCREEN - 120 - TOOLH - ZNAVViewH)];
     }
-   
+    self.radarList = [NSMutableArray arrayWithCapacity:0];
     NSLog(@"tableviewtableviewtableview %f",self.tableview.frameHeight);
     
     [self.view addSubview:self.tableview];
@@ -55,7 +58,16 @@
     self.tableview.separatorStyle = NO;
     if([_machineDetail[@"category"] isEqualToString:@"radar"]){
         [self loadWebView];
+        [self loadTableView];
     }
+  
+    for (NSDictionary *dic in _machineDetail[@"tagList"]) {
+        BOOL isEmp = [dic[@"emphasis"] boolValue];
+        if (isEmp) {
+            [self.radarList addObject:dic];
+        }
+    }
+   [self.radarTableView reloadData];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -95,6 +107,9 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     //if(self.detail[indexPath.row].typeid==1){
+    if ([tableView isEqual:self.radarTableView]) {
+        return 50;
+    }
     NSLog(@"allHeightallHeight %f::: %ld",allHeight,(long)indexPath.row);
     if(indexPath.row==0&&allHeight>FrameWidth(500)){
         return  allHeight;//+
@@ -105,10 +120,27 @@
 #pragma mark - UITableviewDatasource 数据源方法
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if([tableView isEqual:self.radarTableView]) {
+        return [self.radarList count];
+    }
     return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if ([tableView isEqual:self.radarTableView]) {
+        
+        RadarTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RadarTableViewCell"];
+        if (cell == nil) {
+            cell = [[RadarTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RadarTableViewCell"];
+        }
+        cell.titleLabel.text = safeString(self.radarList[indexPath.row][@"name"]) ;
+        cell.detailLabel.text = safeString(self.radarList[indexPath.row][@"tagValue"]);
+        
+        return cell;
+    }
+    
+    
     UITableViewCell *thiscell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN)];
     thiscell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
     
@@ -136,7 +168,7 @@
 //             machineImg.image = [UIImage imageNamed:img];
 //        }
 //    }
-    [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
+    [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
     machineImg.contentMode = 1;
     
     
@@ -248,8 +280,27 @@
         [machineStatusView addSubview:title];//station_right
         
         
+        UIButton *moreBtn = [[UIButton alloc]init];
+        [machineStatusView addSubview:moreBtn];
+        [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
+        [moreBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [moreBtn setImage:[UIImage imageNamed:@"station_right"] forState:UIControlStateNormal];
+        [moreBtn setImageEdgeInsets:UIEdgeInsetsMake(0,0,0, -90)];
+
+
+        [moreBtn addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
+        [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(machineStatusView.mas_right).offset(-30);
+            make.width.equalTo(@80);
+            make.centerY.equalTo(title.mas_centerY);
+            make.height.equalTo(@77);
+            
+        }];
         [machineStatusView addSubview:self.webview];
+        self.webview.hidden = YES;
         
+        [machineStatusView addSubview:self.radarTableView];
+      
         // Do any additional setup after loading the view from its nib.'
         
         allHeight = self.webview.frame.origin.y + self.webview.frame.size.height +FrameWidth(100) ;
@@ -386,6 +437,14 @@
     
 }
 
+//更多按钮
+- (void)moreAction :(id)sender {
+    if (self.moreAction) {
+        self.moreAction();
+    }
+  
+    
+}
 -(void)MachineInfoList:(UITapGestureRecognizer *)recognizer{
     
     NSDictionary *dic = _machineDetail;
@@ -470,7 +529,16 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.webview loadRequest:request];
 }
-
+- (void)loadTableView {
+    self.radarTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, FrameWidth(80), WIDTH_SCREEN, HEIGHT_SCREEN - 150 - TOOLH - ZNAVViewH)];
+    self.radarTableView.delegate =self;
+    self.radarTableView.dataSource =self;
+    self.radarTableView.separatorStyle = NO;
+    
+    if (TOOLH >0) {
+        [self.radarTableView setFrame:CGRectMake(0, FrameWidth(80), WIDTH_SCREEN,HEIGHT_SCREEN - 90 - TOOLH - ZNAVViewH)];
+    }
+}
 
 //  页面开始加载web内容时调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {

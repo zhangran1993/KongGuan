@@ -21,4 +21,6 @@
 @property (assign, nonatomic) NSString* engine_room_code;
 @property (copy, nonatomic) NSDictionary * machineDetail;
 
+@property (nonatomic ,copy) void (^moreAction)();
+
 @end

@@ -74,6 +74,8 @@
 		250B883223BD73CB00C79136 /* FrameLocModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B883123BD73CB00C79136 /* FrameLocModel.m */; };
 		250B884A23BD835200C79136 /* NSArray+SMSafeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B883F23BD835200C79136 /* NSArray+SMSafeMethod.m */; };
 		250B885223BD857300C79136 /* NSObject+SafeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885123BD857300C79136 /* NSObject+SafeMethod.m */; };
+		250B885523C42E6C00C79136 /* RadarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885423C42E6C00C79136 /* RadarTableViewCell.m */; };
+		250B885923C46D7700C79136 /* StationMachineDetailMoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885823C46D7700C79136 /* StationMachineDetailMoreController.m */; };
 		271825CB236C177600D68C18 /* StationSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CA236C177600D68C18 /* StationSectionView.m */; };
 		271825CD236C177E00D68C18 /* StationSectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271825CC236C177E00D68C18 /* StationSectionView.xib */; };
 		271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CF236C2B5E00D68C18 /* WarnTableViewCell.m */; };
@@ -343,6 +345,10 @@
 		250B883E23BD835200C79136 /* NSObject+SafeMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SafeMethod.h"; sourceTree = "<group>"; };
 		250B883F23BD835200C79136 /* NSArray+SMSafeMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SMSafeMethod.m"; sourceTree = "<group>"; };
 		250B885123BD857300C79136 /* NSObject+SafeMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SafeMethod.m"; sourceTree = "<group>"; };
+		250B885323C42E6C00C79136 /* RadarTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RadarTableViewCell.h; sourceTree = "<group>"; };
+		250B885423C42E6C00C79136 /* RadarTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RadarTableViewCell.m; sourceTree = "<group>"; };
+		250B885723C46D7700C79136 /* StationMachineDetailMoreController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StationMachineDetailMoreController.h; sourceTree = "<group>"; };
+		250B885823C46D7700C79136 /* StationMachineDetailMoreController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StationMachineDetailMoreController.m; sourceTree = "<group>"; };
 		271825C9236C177600D68C18 /* StationSectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StationSectionView.h; sourceTree = "<group>"; };
 		271825CA236C177600D68C18 /* StationSectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StationSectionView.m; sourceTree = "<group>"; };
 		271825CC236C177E00D68C18 /* StationSectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StationSectionView.xib; sourceTree = "<group>"; };
@@ -1241,6 +1247,8 @@
 				FE419F71206E2AB000A35A2F /* StationScrollViewController.m */,
 				FE816956206E5A2A000F8E29 /* StationMachineDetailController.h */,
 				FE816957206E5A35000F8E29 /* StationMachineDetailController.m */,
+				250B885723C46D7700C79136 /* StationMachineDetailMoreController.h */,
+				250B885823C46D7700C79136 /* StationMachineDetailMoreController.m */,
 				FE216F3E209D928B00E523DE /* StationMachineInfoListController.h */,
 				FE216F3F209D929700E523DE /* StationMachineInfoListController.m */,
 				FE60F3E320A97BB400E18C73 /* StationairConditionerController.h */,
@@ -1423,6 +1431,8 @@
 		FE050A83205B532400A4AD93 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				250B885323C42E6C00C79136 /* RadarTableViewCell.h */,
+				250B885423C42E6C00C79136 /* RadarTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1799,6 +1809,7 @@
 				EC8795E021B4E0F2000F3CC1 /* EquipmentDetailsModel.m in Sources */,
 				FEF6695C206F21A900F3CF2B /* MsgItems.m in Sources */,
 				18CB1CCE21C7433400F40413 /* MediaModel.m in Sources */,
+				250B885923C46D7700C79136 /* StationMachineDetailMoreController.m in Sources */,
 				189938FE21C1F05D0026B6AB /* ValueClassModel.m in Sources */,
 				EC8795DA21B4C3F9000F3CC1 /* WheelModel.m in Sources */,
 				250B882423B9D00700C79136 /* BMKClusterQuadtree.m in Sources */,
@@ -1834,6 +1845,7 @@
 				FE662C8C205E27C4001FD73E /* PersonalPatrolController.m in Sources */,
 				18CAAD8E21B7DE4C003C8B39 /* PatrolSpecialController.m in Sources */,
 				1F8AB5611F0CB9EB00256218 /* AppDelegate.m in Sources */,
+				250B885523C42E6C00C79136 /* RadarTableViewCell.m in Sources */,
 				18482D8B21C7D9F70064FE8B /* WSLPictureBrowseView.m in Sources */,
 				FE77AD0E2069DB7D00CE8866 /* UIViewController+CBPopup.m in Sources */,
 				EC5E52EA21B7B4DB009212D7 /* ContactsCell.m in Sources */,

@@ -17,6 +17,7 @@
 #import "StationItems.h"
 #import "UIColor+Extension.h"
 #import <MJExtension.h>
+#import "StationMachineDetailMoreController.h"
 
 @interface StationMachineController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -207,6 +208,12 @@
                                       };
             //_machine_name = equipmentDetails[i][@"equipment"][@"alias"];
             StationMachineDetailController *oneVC = [[StationMachineDetailController alloc] init];
+            oneVC.moreAction = ^{
+                StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
+                vc.machineDetail = Detail;
+                [self.navigationController pushViewController:vc animated:YES];
+            };
+          
             oneVC.machineDetail = Detail;
             
             [controllerArr addObject:oneVC];
