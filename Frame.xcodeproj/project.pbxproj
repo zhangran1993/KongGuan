@@ -76,6 +76,15 @@
 		250B885223BD857300C79136 /* NSObject+SafeMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885123BD857300C79136 /* NSObject+SafeMethod.m */; };
 		250B885523C42E6C00C79136 /* RadarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885423C42E6C00C79136 /* RadarTableViewCell.m */; };
 		250B885923C46D7700C79136 /* StationMachineDetailMoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885823C46D7700C79136 /* StationMachineDetailMoreController.m */; };
+		250B886823C578A500C79136 /* CommonBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B885F23C578A400C79136 /* CommonBaseViewController.m */; };
+		250B886923C578A500C79136 /* WYLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B886223C578A500C79136 /* WYLNavigationController.m */; };
+		250B886A23C578A500C79136 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B886323C578A500C79136 /* BaseNavigationController.m */; };
+		250B886C23C578A500C79136 /* BaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B886723C578A500C79136 /* BaseVC.m */; };
+		250B887323C578F700C79136 /* AlarmDetailInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B887223C578F700C79136 /* AlarmDetailInfoController.m */; };
+		250B887623C5790D00C79136 /* AlarmDetailInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B887523C5790D00C79136 /* AlarmDetailInfoCell.m */; };
+		250B887923C5792100C79136 /* AlarmDetailInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B887823C5792100C79136 /* AlarmDetailInfoModel.m */; };
+		251F3F9323C5A0AE00217E73 /* RS_ColorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */; };
+		251F3F9923C5B5EB00217E73 /* AlarmClassInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */; };
 		271825CB236C177600D68C18 /* StationSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CA236C177600D68C18 /* StationSectionView.m */; };
 		271825CD236C177E00D68C18 /* StationSectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271825CC236C177E00D68C18 /* StationSectionView.xib */; };
 		271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CF236C2B5E00D68C18 /* WarnTableViewCell.m */; };
@@ -349,6 +358,24 @@
 		250B885423C42E6C00C79136 /* RadarTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RadarTableViewCell.m; sourceTree = "<group>"; };
 		250B885723C46D7700C79136 /* StationMachineDetailMoreController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StationMachineDetailMoreController.h; sourceTree = "<group>"; };
 		250B885823C46D7700C79136 /* StationMachineDetailMoreController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StationMachineDetailMoreController.m; sourceTree = "<group>"; };
+		250B885E23C578A400C79136 /* BaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseVC.h; sourceTree = "<group>"; };
+		250B885F23C578A400C79136 /* CommonBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonBaseViewController.m; sourceTree = "<group>"; };
+		250B886123C578A500C79136 /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
+		250B886223C578A500C79136 /* WYLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYLNavigationController.m; sourceTree = "<group>"; };
+		250B886323C578A500C79136 /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
+		250B886523C578A500C79136 /* WYLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYLNavigationController.h; sourceTree = "<group>"; };
+		250B886623C578A500C79136 /* CommonBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonBaseViewController.h; sourceTree = "<group>"; };
+		250B886723C578A500C79136 /* BaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseVC.m; sourceTree = "<group>"; };
+		250B887123C578F700C79136 /* AlarmDetailInfoController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlarmDetailInfoController.h; sourceTree = "<group>"; };
+		250B887223C578F700C79136 /* AlarmDetailInfoController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailInfoController.m; sourceTree = "<group>"; };
+		250B887423C5790D00C79136 /* AlarmDetailInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlarmDetailInfoCell.h; sourceTree = "<group>"; };
+		250B887523C5790D00C79136 /* AlarmDetailInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailInfoCell.m; sourceTree = "<group>"; };
+		250B887723C5792100C79136 /* AlarmDetailInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlarmDetailInfoModel.h; sourceTree = "<group>"; };
+		250B887823C5792100C79136 /* AlarmDetailInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlarmDetailInfoModel.m; sourceTree = "<group>"; };
+		251F3F9123C5A0AE00217E73 /* RS_ColorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_ColorManager.h; sourceTree = "<group>"; };
+		251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_ColorManager.m; sourceTree = "<group>"; };
+		251F3F9723C5B5EB00217E73 /* AlarmClassInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlarmClassInfoCell.h; sourceTree = "<group>"; };
+		251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlarmClassInfoCell.m; sourceTree = "<group>"; };
 		271825C9236C177600D68C18 /* StationSectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StationSectionView.h; sourceTree = "<group>"; };
 		271825CA236C177600D68C18 /* StationSectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StationSectionView.m; sourceTree = "<group>"; };
 		271825CC236C177E00D68C18 /* StationSectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StationSectionView.xib; sourceTree = "<group>"; };
@@ -866,6 +893,7 @@
 		1F8AB5681F0CBB6500256218 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				250B885D23C5785D00C79136 /* BaseVC */,
 				250B883423BD835200C79136 /* Category */,
 				18CAAD8021B76100003C8B39 /* Rank */,
 				1F8AB52D1F0CB9EB00256218 /* MainTabBar */,
@@ -908,6 +936,62 @@
 				250B885123BD857300C79136 /* NSObject+SafeMethod.m */,
 			);
 			path = Category;
+			sourceTree = "<group>";
+		};
+		250B885D23C5785D00C79136 /* BaseVC */ = {
+			isa = PBXGroup;
+			children = (
+				251F3F9123C5A0AE00217E73 /* RS_ColorManager.h */,
+				251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */,
+				250B886123C578A500C79136 /* BaseNavigationController.h */,
+				250B886323C578A500C79136 /* BaseNavigationController.m */,
+				250B885E23C578A400C79136 /* BaseVC.h */,
+				250B886723C578A500C79136 /* BaseVC.m */,
+				250B886623C578A500C79136 /* CommonBaseViewController.h */,
+				250B885F23C578A400C79136 /* CommonBaseViewController.m */,
+				250B886523C578A500C79136 /* WYLNavigationController.h */,
+				250B886223C578A500C79136 /* WYLNavigationController.m */,
+			);
+			path = BaseVC;
+			sourceTree = "<group>";
+		};
+		250B886D23C578C100C79136 /* 预警提示详情 */ = {
+			isa = PBXGroup;
+			children = (
+				250B887023C578DB00C79136 /* Model */,
+				250B886F23C578D600C79136 /* View */,
+				250B886E23C578CF00C79136 /* Controller */,
+			);
+			path = "预警提示详情";
+			sourceTree = "<group>";
+		};
+		250B886E23C578CF00C79136 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				250B887123C578F700C79136 /* AlarmDetailInfoController.h */,
+				250B887223C578F700C79136 /* AlarmDetailInfoController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		250B886F23C578D600C79136 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				250B887423C5790D00C79136 /* AlarmDetailInfoCell.h */,
+				250B887523C5790D00C79136 /* AlarmDetailInfoCell.m */,
+				251F3F9723C5B5EB00217E73 /* AlarmClassInfoCell.h */,
+				251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		250B887023C578DB00C79136 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				250B887723C5792100C79136 /* AlarmDetailInfoModel.h */,
+				250B887823C5792100C79136 /* AlarmDetailInfoModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		788A20BC55DCDB0A83EB70D5 /* Frameworks */ = {
@@ -1460,6 +1544,7 @@
 		FE1209E9205A6C62006C42BA /* Alarm */ = {
 			isa = PBXGroup;
 			children = (
+				250B886D23C578C100C79136 /* 预警提示详情 */,
 				FE050A7A205B52EB00A4AD93 /* Controller */,
 				FE050A7E205B530F00A4AD93 /* Model */,
 				FE050A82205B532100A4AD93 /* View */,
@@ -1749,11 +1834,13 @@
 				FE050A92205BF5D300A4AD93 /* StationItems.m in Sources */,
 				EC8795DD21B4D9A4000F3CC1 /* SearchView.m in Sources */,
 				FE216F40209D929700E523DE /* StationMachineInfoListController.m in Sources */,
+				251F3F9323C5A0AE00217E73 /* RS_ColorManager.m in Sources */,
 				FEE2492A206CB9B200D62197 /* PatroTextViewCell.m in Sources */,
 				FE416DB8205CAE060044229F /* PersonalSetController.m in Sources */,
 				FE050A86205B539A00A4AD93 /* PersonalViewController.m in Sources */,
 				EC4C0C3021B67C6100E23EFA /* technicalManualListModel.m in Sources */,
 				FE60F3E520A97BC100E18C73 /* StationairConditionerController.m in Sources */,
+				250B887323C578F700C79136 /* AlarmDetailInfoController.m in Sources */,
 				1F8AB55F1F0CB9EB00256218 /* FrameBaseRequest.m in Sources */,
 				ECA60FBE21AFD23500690698 /* UIView+LX_Frame.m in Sources */,
 				EC61EA0621C8835400FACC83 /* HSIEmptyDataSetView.m in Sources */,
@@ -1785,6 +1872,7 @@
 				FEFD280220746108004821E1 /* AlarmListController.m in Sources */,
 				271825CB236C177600D68C18 /* StationSectionView.m in Sources */,
 				FEE24927206CB97200D62197 /* PatroRadioCell.m in Sources */,
+				251F3F9923C5B5EB00217E73 /* AlarmClassInfoCell.m in Sources */,
 				18482D8D21C7D9F70064FE8B /* WSLPhotoZoom.m in Sources */,
 				EC4C0C1121B60C9600E23EFA /* ZYSpreadSubButton.m in Sources */,
 				EC51DEC521BF483C00D68F47 /* RecordTableViewCell.m in Sources */,
@@ -1798,6 +1886,7 @@
 				EC70A5F621C109E500F858EE /* CCZAngelWalker.m in Sources */,
 				FEE2491E206CB89C00D62197 /* Patroltems.m in Sources */,
 				250B882C23B9D0CD00C79136 /* CluserAnnotation.m in Sources */,
+				250B887623C5790D00C79136 /* AlarmDetailInfoCell.m in Sources */,
 				18CAAD8321B76130003C8B39 /* RankController.m in Sources */,
 				EC5E52FC21B7D6C5009212D7 /* PersonModel.m in Sources */,
 				189938FB21C1EFFC0026B6AB /* ValueWeatherStationMoel.m in Sources */,
@@ -1811,6 +1900,7 @@
 				18CB1CCE21C7433400F40413 /* MediaModel.m in Sources */,
 				250B885923C46D7700C79136 /* StationMachineDetailMoreController.m in Sources */,
 				189938FE21C1F05D0026B6AB /* ValueClassModel.m in Sources */,
+				250B886823C578A500C79136 /* CommonBaseViewController.m in Sources */,
 				EC8795DA21B4C3F9000F3CC1 /* WheelModel.m in Sources */,
 				250B882423B9D00700C79136 /* BMKClusterQuadtree.m in Sources */,
 				ECA60FC121AFDE4600690698 /* UIColor+Extension.m in Sources */,
@@ -1820,6 +1910,8 @@
 				250B885223BD857300C79136 /* NSObject+SafeMethod.m in Sources */,
 				FEE24924206CB92E00D62197 /* PatroTextFieldCell.m in Sources */,
 				EC61EA0521C8835400FACC83 /* UIScrollView+EmptyDataSet.m in Sources */,
+				250B886C23C578A500C79136 /* BaseVC.m in Sources */,
+				250B886923C578A500C79136 /* WYLNavigationController.m in Sources */,
 				FEB8F6092079B0E50064F358 /* AlarmMachineTypeListController.m in Sources */,
 				18E8DFBD21F0C23E00D5449F /* SimpleDemoViewController.mm in Sources */,
 				ECA60FB621AFC16C00690698 /* DataCenterViewController.m in Sources */,
@@ -1832,6 +1924,7 @@
 				EC4C0C1A21B62EAD00E23EFA /* TechnicalManualTableViewCell.m in Sources */,
 				FE419F66206DEB1C00A35A2F /* StationRoomController.m in Sources */,
 				250B882523B9D00700C79136 /* BMKClusterManager.m in Sources */,
+				250B886A23C578A500C79136 /* BaseNavigationController.m in Sources */,
 				EC70A5F521C109E500F858EE /* CCZTrotingAttribute.m in Sources */,
 				187673F021C0B7A7004C1E8D /* PatrolEquipmentController..m in Sources */,
 				FEF66959206F191900F3CF2B /* PersonalMsgListController.m in Sources */,
@@ -1850,6 +1943,7 @@
 				FE77AD0E2069DB7D00CE8866 /* UIViewController+CBPopup.m in Sources */,
 				EC5E52EA21B7B4DB009212D7 /* ContactsCell.m in Sources */,
 				18CAAD8B21B773B1003C8B39 /* StationRankCell.m in Sources */,
+				250B887923C5792100C79136 /* AlarmDetailInfoModel.m in Sources */,
 				EC51DECF21BF5D3100D68F47 /* AtcAttachmentRecordsModel.m in Sources */,
 				FE419F69206E070A00A35A2F /* StationVideoListController.m in Sources */,
 				EC5E52DE21B7A28D009212D7 /* PopularModel.m in Sources */,

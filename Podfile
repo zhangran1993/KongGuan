@@ -20,6 +20,7 @@ target 'Frame' do
     pod 'QBImagePickerController', '~>3.0'
     pod 'JPush', '>= 3.0.6'
     pod 'Masonry','~>1.0.1'
+    pod 'SDAutoLayout', '~> 2.1.7'
     #pod 'Pgyer'
     #pod 'PgyUpdate'
 

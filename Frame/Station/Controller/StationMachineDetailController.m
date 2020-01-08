@@ -283,10 +283,10 @@
         UIButton *moreBtn = [[UIButton alloc]init];
         [machineStatusView addSubview:moreBtn];
         [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
-        [moreBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [moreBtn setTitleColor:[UIColor colorWithHexString:@"#222222"] forState:UIControlStateNormal];
         [moreBtn setImage:[UIImage imageNamed:@"station_right"] forState:UIControlStateNormal];
         [moreBtn setImageEdgeInsets:UIEdgeInsetsMake(0,0,0, -90)];
-
+        moreBtn.titleLabel.font = [UIFont systemFontOfSize:17];
 
         [moreBtn addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
         [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {

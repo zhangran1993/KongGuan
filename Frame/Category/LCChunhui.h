@@ -15,8 +15,19 @@
 #import "MJExtension.h"
 #import "NSArray+SMSafeMethod.h"
 #import <Masonry.h>
+#import <SDAutoLayout.h>
+#import "RS_ColorManager.h"
 
+//MARK:判断手机机型
 
+// 判断是否为 iPhone 5SE
+#define iPhone5SE [[UIScreen mainScreen] bounds].size.width == 320.0f && [[UIScreen mainScreen] bounds].size.height == 568.0f
+// 判断是否为iPhone 6/6s
+#define iPhone6_6s [[UIScreen mainScreen] bounds].size.width == 375.0f && [[UIScreen mainScreen] bounds].size.height == 667.0f
+// 判断是否为iPhone 6Plus/6sPlus
+#define iPhone6Plus_6sPlus [[UIScreen mainScreen] bounds].size.width == 414.0f && [[UIScreen mainScreen] bounds].size.height == 736.0f
+// 判断是否为iPhoneX,XS、XR及XSMAX
+#define iPhoneX ((IS_IPHONE_X == YES || IS_IPHONE_Xr == YES || IS_IPHONE_Xs == YES || IS_IPHONE_Xs_Max == YES) ? YES : NO)
 #define LCColor(hexColor)  [UIColor colorWithHexString:hexColor]
 
 #define NAVIGATIONBAR_HEIGHT (iPhoneX ? 88  : 64)
@@ -29,13 +40,23 @@
 #define weakify(object)     @smWeak(object)
 #define strongify(object)   @smStrong(object)
 #define WS(weakSelf) __weak __typeof(&*self) weakSelf = self;
+//根据十进制颜色和不透明度设置颜色
+#define RGBA(r, g, b, a) [UIColor colorWithRed:r / 255.0 green:g / 255.0 blue:b / 255.0 alpha:a]
+//十进制颜色
+#define RGB(r, g, b) RGBA(r, g, b, 1.0f)
 
+/**生成随机色*/
+#define WYLAutoColor [UIColor colorWithRed:arc4random_uniform(255) / 255.0 green:arc4random_uniform(255) / 255.0 blue:arc4random_uniform(255) / 255.0 alpha:1];
 
 
 
 #define kShowMSG(text) [MBProgressHUD show:text toView:[UIApplication sharedApplication].keyWindow];
 
+#define kWScale (SCREEN_WIDTH / 375.0)
+#define kHScale (375.0 / SCREEN_WIDTH)
 
+#define WidthScale SCREEN_WIDTH / 414.0
+#define HeightScale SCREEN_HEIGHT / 736.0
 
 
 typedef NS_ENUM(NSUInteger, PolicyDetailHeadViewType) {

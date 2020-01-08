@@ -26,7 +26,7 @@
 #import "CCZTrotingLabel.h"
 #import <MJExtension.h>
 #import "UIView+LX_Frame.h"
-
+#import "AlarmDetailInfoController.h"
 #import "BMKClusterManager.h"
 
 /*
@@ -1675,7 +1675,8 @@
 }
 -(void)seeAlarmMsg{
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    PersonalMsgController  * PersonalMsg = [[PersonalMsgController alloc] init];
+//    AlarmDetailInfoController  * PersonalMsg = [[AlarmDetailInfoController alloc] init];
+     PatrolEquipmentController *PersonalMsg = [[PatrolEquipmentController alloc] init];
     [self.navigationController pushViewController: PersonalMsg animated:YES];
     [self closeAlarmView];
 }

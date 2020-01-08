@@ -547,7 +547,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "000B4C6A-F4B3-47B0-9C5A-3EFD4CC6BD13"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Frame/Classes/other/AppDelegate.m"
@@ -572,6 +572,22 @@
             startingLineNumber = "588"
             endingLineNumber = "588"
             landmarkName = "-addClusters"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5E6B5DBD-832E-4211-A326-2E5BE059E60B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/Patrol/Controller/PatrolEquipmentController..m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "-setupTable"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
