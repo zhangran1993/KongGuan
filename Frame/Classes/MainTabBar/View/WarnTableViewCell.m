@@ -56,6 +56,34 @@
     }
    
 }
+- (void)setCurrentRow:(NSInteger)currentRow {
+    _currentRow = currentRow;
+}
+- (void)setString:(NSString *)String {
+    _String = String;
+    if (String.length > 0 ) {
+        
+       
+        NSString *contentStr =String;
+      
+        
+        NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:contentStr];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = 4.0f; // 设置行间距
+        paragraphStyle.alignment = NSTextAlignmentLeft; //设置两端对齐显示
+        [attributedStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attributedStr.length)];
+        _stationName.attributedText = attributedStr;
+    
+        int level = 1;
+        [_stationrank setImage:[UIImage imageNamed:[NSString stringWithFormat:@"station_rank%d",level]]];
+        _stationrank.hidden = NO;
+    }else {
+        _stationrank.hidden = YES;
+    }
+    if (_currentRow == 0) {
+        _stationrank.hidden = YES;
+    }
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

@@ -489,6 +489,7 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
             [FrameBaseRequest logout];
+            
              [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
             //跳转登陆页
             LoginViewController *login = [[LoginViewController alloc] init];

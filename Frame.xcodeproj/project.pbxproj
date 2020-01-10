@@ -85,6 +85,7 @@
 		250B887923C5792100C79136 /* AlarmDetailInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B887823C5792100C79136 /* AlarmDetailInfoModel.m */; };
 		251F3F9323C5A0AE00217E73 /* RS_ColorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */; };
 		251F3F9923C5B5EB00217E73 /* AlarmClassInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */; };
+		258E1E2523C7182200F4ED7E /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E1E2423C7182200F4ED7E /* UserManager.m */; };
 		271825CB236C177600D68C18 /* StationSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CA236C177600D68C18 /* StationSectionView.m */; };
 		271825CD236C177E00D68C18 /* StationSectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271825CC236C177E00D68C18 /* StationSectionView.xib */; };
 		271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CF236C2B5E00D68C18 /* WarnTableViewCell.m */; };
@@ -376,6 +377,9 @@
 		251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_ColorManager.m; sourceTree = "<group>"; };
 		251F3F9723C5B5EB00217E73 /* AlarmClassInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlarmClassInfoCell.h; sourceTree = "<group>"; };
 		251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlarmClassInfoCell.m; sourceTree = "<group>"; };
+		258E1E2323C7182200F4ED7E /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
+		258E1E2423C7182200F4ED7E /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
+		258E1E2623C7185D00F4ED7E /* Single.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Single.h; sourceTree = "<group>"; };
 		271825C9236C177600D68C18 /* StationSectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StationSectionView.h; sourceTree = "<group>"; };
 		271825CA236C177600D68C18 /* StationSectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StationSectionView.m; sourceTree = "<group>"; };
 		271825CC236C177E00D68C18 /* StationSectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StationSectionView.xib; sourceTree = "<group>"; };
@@ -941,6 +945,9 @@
 		250B885D23C5785D00C79136 /* BaseVC */ = {
 			isa = PBXGroup;
 			children = (
+				258E1E2623C7185D00F4ED7E /* Single.h */,
+				258E1E2323C7182200F4ED7E /* UserManager.h */,
+				258E1E2423C7182200F4ED7E /* UserManager.m */,
 				251F3F9123C5A0AE00217E73 /* RS_ColorManager.h */,
 				251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */,
 				250B886123C578A500C79136 /* BaseNavigationController.h */,
@@ -1868,6 +1875,7 @@
 				FE281623208D70EE00918C76 /* DeviceInfo.m in Sources */,
 				FEE2492D206CB9E100D62197 /* PatroTitleCell.m in Sources */,
 				FE1AB3E520A1B9BB0026DDF2 /* AlarmUserItems.m in Sources */,
+				258E1E2523C7182200F4ED7E /* UserManager.m in Sources */,
 				250B884A23BD835200C79136 /* NSArray+SMSafeMethod.m in Sources */,
 				FEFD280220746108004821E1 /* AlarmListController.m in Sources */,
 				271825CB236C177600D68C18 /* StationSectionView.m in Sources */,

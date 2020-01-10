@@ -79,10 +79,11 @@
 }
 
 - (void)loadTableView {
-    self.radarTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN - 150 - TOOLH - ZNAVViewH)];
+    self.radarTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN - Height_BottomBar)];
     self.radarTableView.delegate =self;
     self.radarTableView.dataSource =self;
     self.radarTableView.separatorStyle = NO;
+    self.radarTableView.backgroundColor  = self.view.backgroundColor;
     [self.view addSubview:self.radarTableView];
     [self.radarTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);

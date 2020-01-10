@@ -12,5 +12,9 @@
 @interface WarnTableViewCell : UITableViewCell
 /** 菜单模型 */
 @property (copy, nonatomic) StationItems * StationItem;
+
+@property (copy, nonatomic)  NSString *String;
+
+@property (assign, nonatomic)  NSInteger currentRow;
 @end
 

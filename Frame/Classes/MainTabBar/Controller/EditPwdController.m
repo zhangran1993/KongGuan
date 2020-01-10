@@ -57,9 +57,9 @@
     
     _mobileText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(150), 0,FrameWidth(480), FrameWidth(80))];
     _mobileText.font = FontSize(15);
-    _mobileText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入手机号" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor]}];
+    _mobileText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入手机号" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(15)}];
     //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [_mobileText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
+//    [_mobileText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
     [_mobileText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
     _mobileText.tag=1;
     _mobileText.delegate = self;
@@ -80,8 +80,8 @@
     
     _verifText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(150), 0, FrameWidth(300), FrameWidth(80))];
     _verifText.font = FontSize(15);
-    _verifText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor]}];
-    [_verifText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
+    _verifText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(15)}];
+//    [_verifText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
     [_verifText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
     _verifText.tag=1;
     _verifText.delegate = self;
@@ -114,8 +114,8 @@
     
     _pwdTextSure.font = FontSize(15);
     _pwdText.secureTextEntry = YES;
-    _pwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor]}];
-    [_pwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
+    _pwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(15)}];
+//    [_pwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
     [_pwdText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
     _pwdText.tag=1;
     _pwdText.delegate = self;
@@ -134,8 +134,8 @@
     _pwdTextSure = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(150), 0,FrameWidth(480), FrameWidth(80))];
     _pwdTextSure.font = FontSize(15);
     _pwdTextSure.secureTextEntry = YES;
-    _pwdTextSure.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请再次输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor]}];
-    [_pwdTextSure setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
+    _pwdTextSure.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请再次输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(15)}];
+//    [_pwdTextSure setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
     [_pwdTextSure setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
     _pwdTextSure.tag=1;
     _pwdTextSure.delegate = self;

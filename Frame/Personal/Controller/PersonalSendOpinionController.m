@@ -65,9 +65,9 @@
     opinionView.backgroundColor = [UIColor whiteColor];
   
     _titletext = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(20), 0, FrameWidth(500), FrameWidth(80))];
-    _titletext.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"您的主题" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor]}];
+    _titletext.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"您的主题" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(17)}];
     //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [_titletext setValue:FontSize(17) forKeyPath:@"_placeholderLabel.font"];
+//    [_titletext setValue:FontSize(17) forKeyPath:@"_placeholderLabel.font"];
     [_titletext setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.6] forKeyPath:@"_placeholderLabel.textColor"];
     _titletext.tag=2;
     _titletext.delegate = self;

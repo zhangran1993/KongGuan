@@ -17,7 +17,7 @@
 #import <Masonry.h>
 #import <SDAutoLayout.h>
 #import "RS_ColorManager.h"
-
+#import "UserManager.h"
 //MARK:判断手机机型
 
 // 判断是否为 iPhone 5SE

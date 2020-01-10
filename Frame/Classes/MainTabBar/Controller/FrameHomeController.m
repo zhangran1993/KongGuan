@@ -28,7 +28,7 @@
 #import "UIView+LX_Frame.h"
 #import "AlarmDetailInfoController.h"
 #import "BMKClusterManager.h"
-
+#import "JPUSHService.h"
 /*
  *点聚合Annotation
  */
@@ -99,10 +99,16 @@
 }
 @property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
 @property (strong, nonatomic) NSMutableArray<StationItems *> * PatrolRemindItem;
+@property (strong, nonatomic) NSMutableArray * StationAlertArray;
 @property(strong,nonatomic)UITableView *stationTabView;
 @property(strong,nonatomic)UITableView *PatrolRemindTabView;
 @property(weak,nonatomic) UIView *PatrolRemindView;
 @property(weak,nonatomic) UIView *AlarmView;
+
+
+@property(strong,nonatomic)UITableView *stationAlertView;
+
+@property(weak,nonatomic) UIView *AlertView;
 
 
 @property (nonatomic,copy) NSDictionary * stationList;
@@ -140,8 +146,8 @@
 -(void)viewWillAppear:(BOOL)animated{
     [_clusterCaches removeAllObjects];
     for (NSInteger i = 3; i <= 21; i++) {
-           [_clusterCaches addObject:[NSMutableArray array]];
-       }
+        [_clusterCaches addObject:[NSMutableArray array]];
+    }
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
         [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"alpha0"] forBarMetrics:UIBarMetricsDefault];
@@ -154,7 +160,7 @@
         }
         return;
     }
-    
+    [UserManager shareUserManager].loginSuccess = YES;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation2"] forBarMetrics:UIBarMetricsDefault];
     self.navigationItem.title = @"智慧台站";
     [self.rotingLabel walk];
@@ -238,6 +244,8 @@
 
 - (void)viewDidLoad {
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(20),NSForegroundColorAttributeName:[UIColor whiteColor]}] ;
+    self.StationAlertArray = [NSMutableArray array];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(alertMessage:) name:@"alertMessage" object:nil];
     self.alreadyShow = false;
     _FrameCellID = @"WarnTableViewCell";
     self.PatrolCellID = @"PatrolRemindCell";
@@ -252,7 +260,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
     [self notificationMonitoring];
     _clusterCaches = [[NSMutableArray alloc] init];
-   
+    
     
     //点聚合管理类
     _clusterManager = [[BMKClusterManager alloc] init];
@@ -260,9 +268,45 @@
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
         return;
     }
-  
+    
 }
 
+
+- (void)alertMessage:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSMutableArray *dataArray = [NSMutableArray array];
+    if ([[userInfo allKeys] containsObject:@"aps"]) {
+        NSDictionary *dic = userInfo[@"aps"];
+        if ([[dic allKeys] containsObject:@"alert"]) {
+            NSString *apnCount = dic[@"alert"];
+            
+            if (apnCount.length ) {
+                
+                NSArray * array = [apnCount componentsSeparatedByString:@"："];
+                if (array.count) {
+                    [dataArray addObject:[array firstObject]];
+                    NSArray * array1 = [[array lastObject] componentsSeparatedByString:@";"];
+                    
+                    if (array1.count) {
+                        
+                        for (NSString *string in array1) {
+                            if (string.length) {
+                                [dataArray addObject:string];
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    if (dataArray.count) {
+        [self showAlertMessage:dataArray];
+    }
+    
+    
+}
 
 
 #pragma mark--上传用户使用情况的接口，这个接口在台站管理页面、首页每次进入调用一次
@@ -440,10 +484,10 @@
         [_mapView removeAnnotations:_clusters];
         [self addClusters];
         if (!_isFirstEnter) {
-             [self performSelector:@selector(changemapView) withObject:nil afterDelay:.1f];
+            [self performSelector:@selector(changemapView) withObject:nil afterDelay:.1f];
             _isFirstEnter = YES;
         }
-       
+        
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
@@ -651,11 +695,11 @@
     aclusters2 =nil;
     _clusters = [aclusters mutableCopy];
     aclusters =nil;
-//    [_mapView addAnnotations:_clusters];
-//    [_mapView addAnnotations:_clusters2];
-//    [self removeClusters];
+    //    [_mapView addAnnotations:_clusters];
+    //    [_mapView addAnnotations:_clusters2];
+    //    [self removeClusters];
     [self updateClusters];
- 
+    
 }
 
 - (void)changemapView {
@@ -680,7 +724,7 @@
     annotationView.annotation = cluster;
     
     //    annotationView.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:annotation.subtitle]]];
-//    annotationView.centerOffset=CGPointMake(0,-80);
+    //    annotationView.centerOffset=CGPointMake(0,-80);
     
     annotationView.tag = [_stationDIC[annotation.title][@"nowKey"] intValue]+100;
     
@@ -697,7 +741,7 @@
         annotationView.image = [UIImage imageNamed:@"alpha0"];//300*100
     }
     
-//    annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
+    //    annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
     
     //UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake((317-FrameWidth(315))/2, (123-FrameWidth(103))/2, FrameWidth(315),  FrameWidth(103))];
     UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, FrameWidth(315),  FrameWidth(138))];
@@ -946,7 +990,7 @@
         NSDictionary *dic = item.locDic;
         if (isSafeDictionary(dic)) {
             environmentStatus += [ dic[@"environmentStatus"][@"num"] intValue];
-           
+            
             if([dic[@"environmentStatus"][@"level"] intValue] >environmentLevel ){
                 environmentLevel = [dic[@"environmentStatus"][@"level"] intValue];
             }
@@ -1141,17 +1185,17 @@
         NSArray *dataList = clusterAnnotation.dataArr;
         if (dataList.count == 1) {
             for (BMKClusterItem *item in dataList) {
-              
-               NSDictionary *dataD = [[NSMutableDictionary alloc]initWithDictionary:[item.locDic mj_keyValues]];
+                
+                NSDictionary *dataD = [[NSMutableDictionary alloc]initWithDictionary:[item.locDic mj_keyValues]];
                 if (isSafeDictionary(dataD)) {
-                   
-                   NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"station"]];
+                    
+                    NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"station"]];
                     for (NSString*s in [dataDic allKeys]) {
                         if ([dataDic[s] isEqual:[NSNull null]]) {
                             [dataDic setObject:@"" forKey:s];
                         }
                     }
-                  
+                    
                     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                     [userDefaults setObject:dataDic forKey:@"station"];
                     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -1162,76 +1206,76 @@
                 }
             }
         }
-//
-//        if(view.tag < 100){
-//            if([_stationDIC[view.annotation.subtitle][@"isShow"] isEqualToString:@"0"]){
-//
-//                //BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
-//
-//                NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
-//
-//                ClusterAnnotation* annotation2 = [[ClusterAnnotation alloc]init];
-//                annotation2.coordinate = CLLocationCoordinate2DMake([thisStation1[@"latitude"] floatValue], [thisStation1[@"longitude"] floatValue] );
-//                annotation2.title = view.annotation.subtitle;
-//                [mapView addAnnotation:annotation2];
-//
-//                [_clusters2 addObject:annotation2];
-//
-//                NSDictionary  *thisStation2 = @{
-//                    @"name":thisStation1[@"alias"],
-//                    @"alias":thisStation1[@"alias"],
-//                    @"environmentStatus":thisStation1[@"environmentStatus"],
-//                    @"powerStatus":thisStation1[@"powerStatus"],
-//                    @"alarmStatus":thisStation1[@"alarmStatus"],
-//                    @"code":thisStation1[@"code"],
-//                    @"airport":thisStation1[@"airport"],
-//                    @"latitude":thisStation1[@"latitude"],
-//                    @"longitude":thisStation1[@"longitude"],
-//                    @"picture":thisStation1[@"picture"],
-//                    @"nowKey":thisStation1[@"nowKey"],
-//                    @"address":thisStation1[@"address"],
-//                    @"isShow":@"1"
-//                };
-//
-//                _stationDIC[view.annotation.subtitle] = thisStation2;
-//
-//            }else{
-//                BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
-//
-//
-//                NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
-//
-//
-//                [mapView removeAnnotation:view1.annotation];
-//
-//
-//                //[_stationDIC removeObjectForKey:view.annotation.subtitle];
-//                NSDictionary  *thisStation2 = @{
-//                    @"name":thisStation1[@"alias"],
-//                    @"alias":thisStation1[@"alias"],
-//                    @"environmentStatus":thisStation1[@"environmentStatus"],
-//                    @"powerStatus":thisStation1[@"powerStatus"],
-//                    @"alarmStatus":thisStation1[@"alarmStatus"],
-//                    @"code":thisStation1[@"code"],
-//                    @"airport":thisStation1[@"airport"],
-//                    @"latitude":thisStation1[@"latitude"],
-//                    @"longitude":thisStation1[@"longitude"],
-//                    @"picture":thisStation1[@"picture"],
-//                    @"nowKey":thisStation1[@"nowKey"],
-//                    @"address":thisStation1[@"address"],
-//                    @"isShow":@"0"
-//                };
-//                _stationDIC[view.annotation.subtitle] = thisStation2;
-//            }
-//        }else{
-//            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//            [userDefaults setObject:_stationDIC[view.annotation.title] forKey:@"station"];
-//            [[NSUserDefaults standardUserDefaults] synchronize];
-//            [self.navigationController.tabBarController setSelectedIndex:0];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
-//
-//        }
-//
+        //
+        //        if(view.tag < 100){
+        //            if([_stationDIC[view.annotation.subtitle][@"isShow"] isEqualToString:@"0"]){
+        //
+        //                //BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
+        //
+        //                NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
+        //
+        //                ClusterAnnotation* annotation2 = [[ClusterAnnotation alloc]init];
+        //                annotation2.coordinate = CLLocationCoordinate2DMake([thisStation1[@"latitude"] floatValue], [thisStation1[@"longitude"] floatValue] );
+        //                annotation2.title = view.annotation.subtitle;
+        //                [mapView addAnnotation:annotation2];
+        //
+        //                [_clusters2 addObject:annotation2];
+        //
+        //                NSDictionary  *thisStation2 = @{
+        //                    @"name":thisStation1[@"alias"],
+        //                    @"alias":thisStation1[@"alias"],
+        //                    @"environmentStatus":thisStation1[@"environmentStatus"],
+        //                    @"powerStatus":thisStation1[@"powerStatus"],
+        //                    @"alarmStatus":thisStation1[@"alarmStatus"],
+        //                    @"code":thisStation1[@"code"],
+        //                    @"airport":thisStation1[@"airport"],
+        //                    @"latitude":thisStation1[@"latitude"],
+        //                    @"longitude":thisStation1[@"longitude"],
+        //                    @"picture":thisStation1[@"picture"],
+        //                    @"nowKey":thisStation1[@"nowKey"],
+        //                    @"address":thisStation1[@"address"],
+        //                    @"isShow":@"1"
+        //                };
+        //
+        //                _stationDIC[view.annotation.subtitle] = thisStation2;
+        //
+        //            }else{
+        //                BMKAnnotationView * view1 = [mapView viewWithTag:view.tag+100];
+        //
+        //
+        //                NSDictionary  *thisStation1 = _stationDIC[view.annotation.subtitle];
+        //
+        //
+        //                [mapView removeAnnotation:view1.annotation];
+        //
+        //
+        //                //[_stationDIC removeObjectForKey:view.annotation.subtitle];
+        //                NSDictionary  *thisStation2 = @{
+        //                    @"name":thisStation1[@"alias"],
+        //                    @"alias":thisStation1[@"alias"],
+        //                    @"environmentStatus":thisStation1[@"environmentStatus"],
+        //                    @"powerStatus":thisStation1[@"powerStatus"],
+        //                    @"alarmStatus":thisStation1[@"alarmStatus"],
+        //                    @"code":thisStation1[@"code"],
+        //                    @"airport":thisStation1[@"airport"],
+        //                    @"latitude":thisStation1[@"latitude"],
+        //                    @"longitude":thisStation1[@"longitude"],
+        //                    @"picture":thisStation1[@"picture"],
+        //                    @"nowKey":thisStation1[@"nowKey"],
+        //                    @"address":thisStation1[@"address"],
+        //                    @"isShow":@"0"
+        //                };
+        //                _stationDIC[view.annotation.subtitle] = thisStation2;
+        //            }
+        //        }else{
+        //            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        //            [userDefaults setObject:_stationDIC[view.annotation.title] forKey:@"station"];
+        //            [[NSUserDefaults standardUserDefaults] synchronize];
+        //            [self.navigationController.tabBarController setSelectedIndex:0];
+        //            [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
+        //
+        //        }
+        //
         //[mapView selectAnnotation:view.annotation animated:true];
     }
     
@@ -1253,7 +1297,7 @@
     NSLog(@"地图加载完成%d",_annoNum);
     [BMKMapView enableCustomMapStyle:YES];
     //地图加载完成后才可以删除
-//    [self removeClusters];
+    //    [self removeClusters];
     [self addStationHealthBtn];
     [self updateClusters];
     
@@ -1311,7 +1355,89 @@
     RankController *Rank = [[RankController alloc] init];
     [self.navigationController pushViewController:Rank animated:YES];
 }
-
+- (void)showAlertMessage:(NSMutableArray *)array {
+    
+    if (![UserManager shareUserManager].loginSuccess ) {
+        return;
+    }
+    self.StationAlertArray = array;
+    
+    //NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //if( ![[userDefaults objectForKey:@"warningId"] isEqualToString:self.StationItem[0].warningId]){
+    
+    self.AlertView = [[UIView alloc]init];
+//    self.AlertView.frame = CGRectMake(FrameWidth(80),FrameWidth(150),  FrameWidth(480), FrameWidth(600));
+   
+    self.AlertView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(500), FrameWidth(630));
+    self.AlertView.layer.cornerRadius = 9.0;
+    UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"warn_bg"]];
+    explanAll.frame =  CGRectMake(0,FrameWidth(30),  FrameWidth(480), FrameWidth(585));
+    //CGRectMake(0, 0 ,  FrameWidth(480), FrameWidth(585));
+    [self.AlertView addSubview:explanAll];
+    //关闭
+    UIButton * closeBtn = [[UIButton alloc]initWithFrame:CGRectMake( FrameWidth(440), 0,FrameWidth(60), FrameWidth(60))];
+    //[[UIButton alloc]initWithFrame:CGRectMake( FrameWidth(440), -FrameWidth(20),FrameWidth(60), FrameWidth(60))];
+    //[closeBtn setBackgroundImage:[UIImage imageNamed:@"warn_close"] forState:UIControlStateNormal];
+    [closeBtn setImage:[UIImage imageNamed:@"warn_close"] forState:UIControlStateNormal];
+    [closeBtn addTarget:self action:@selector(closeAlertView) forControlEvents:UIControlEventTouchUpInside];
+    [self.AlertView addSubview:closeBtn];
+    //标题
+    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0,explanAll.frameWidth, FrameWidth(80))];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = FontBSize(20);
+    titleLabel.text = @"告警提醒";
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [explanAll addSubview:titleLabel];
+    
+    //提醒列表
+    _stationAlertView = [[UITableView alloc] initWithFrame:CGRectMake(FrameWidth(20),FrameWidth(150) , explanAll.frameWidth -FrameWidth(60), FrameWidth(340))];
+    _stationAlertView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    _stationAlertView.dataSource = self;
+    _stationAlertView.delegate = self;
+    _stationAlertView.separatorStyle =NO;
+    
+    
+    
+    // 注册重用Cell
+    [_stationAlertView registerNib:[UINib nibWithNibName:NSStringFromClass([WarnTableViewCell class]) bundle:nil] forCellReuseIdentifier:_FrameCellID];//cell的class
+    //_stationTabView.separatorStyle = NO;
+    [self.AlertView addSubview:_stationAlertView];
+    
+    [_stationAlertView reloadData];
+    
+    //查看和确认
+    
+    // UIButton * showDetailBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(80), FrameWidth(510), FrameWidth(150), FrameWidth(45))];
+    UIButton * showDetailBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(160), FrameWidth(520), FrameWidth(150), FrameWidth(45))];
+    [showDetailBtn setTitle:@"确定" forState:UIControlStateNormal];
+    
+    [showDetailBtn addTarget:self action:@selector(confirmMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [showDetailBtn.layer setCornerRadius:FrameWidth(10)]; //设置矩形四个圆角半径
+    [showDetailBtn.layer setBorderWidth:1.5]; //边框宽度
+    [showDetailBtn setTitleColor:FrameColor(100, 170, 250) forState:UIControlStateNormal];//title color
+    showDetailBtn.titleLabel.font = FontSize(15);
+    [showDetailBtn.layer setBorderColor:[UIColor colorWithRed:100/255.0 green:170/255.0 blue:250/255.0 alpha:1].CGColor];//边框颜色
+    [self.AlertView addSubview:showDetailBtn];
+    
+    [[UIApplication sharedApplication].keyWindow addSubview:self.AlertView ];
+//    self.AlertView.hidden = YES;
+    
+    //动画出现
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseIn animations:^{
+        
+        self.AlertView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(480), FrameWidth(600));
+        self.AlertView.hidden = NO;
+        
+    } completion:^(BOOL finished) {
+        
+        
+    }];
+    
+}
 //预警提醒
 -(void)isAlarmShow{
     NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/getWarning"];//getWarning
@@ -1331,6 +1457,7 @@
             self.AlarmView = [[UIView alloc]init];
             
             self.AlarmView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(500), FrameWidth(630));
+          
             self.AlarmView.layer.cornerRadius = 9.0;
             UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"warn_bg"]];
             explanAll.frame =  CGRectMake(0,FrameWidth(30),  FrameWidth(480), FrameWidth(585));
@@ -1412,7 +1539,7 @@
                                   delay:0
                                 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 
-                self.AlarmView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(480), FrameWidth(600));
+                self.AlarmView.frame = CGRectMake(FrameWidth(80),FrameWidth(150),  FrameWidth(480), FrameWidth(600));
                 
                 
             } completion:^(BOOL finished) {
@@ -1522,7 +1649,7 @@
                                   delay:0
                                 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 
-                self.PatrolRemindView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+                self.PatrolRemindView.frame = CGRectMake(FrameWidth(80),FrameWidth(150),  FrameWidth(530), FrameWidth(600));
                 
                 
             } completion:^(BOOL finished) {
@@ -1580,6 +1707,10 @@
         //            return item.LabelHeight+15;
         //        }
         return UITableViewAutomaticDimension;
+    }else if(_stationAlertView == tableView){
+        
+        
+        return UITableViewAutomaticDimension;
     }
     return FrameWidth(90);
 }
@@ -1588,6 +1719,8 @@
         return self.PatrolRemindItem.count;
     }else if(_stationTabView == tableView){
         return self.StationItem.count;
+    }else if(_stationAlertView == tableView){
+        return self.StationAlertArray.count;
     }
     return 0;
 }
@@ -1612,6 +1745,19 @@
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
         StationItems *item = self.StationItem[indexPath.row];
         cell.StationItem = item;
+        return cell;
+    }else if(_stationAlertView == tableView){
+        // 1.2 去缓存池中取Cell
+        WarnTableViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:_FrameCellID];
+        cell.contentView.backgroundColor =[UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
+        cell.backgroundColor = [UIColor clearColor];//;
+        // cell = [tableView dequeueReusableCellWithIdentifier:ID];
+        //cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
+        NSString *string = self.StationAlertArray[indexPath.row];
+        cell.currentRow = indexPath.row;
+        cell.String = string;
+        
         return cell;
     }
     UITableViewCell *noCell = [[UITableViewCell alloc]init];
@@ -1642,20 +1788,39 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn animations:^{
         
-        self.AlarmView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+        self.AlarmView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(530), FrameWidth(600));
     } completion:^(BOOL finished) {
         //self.AlarmView = nil;
         //[self.AlarmView removeFromSuperview];
     }];
 }
-
+-(void)closeAlertView{
+    
+    //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //    [userDefaults setObject:self.StationItem[0].warningId forKey:@"warningId"];
+    //    [[NSUserDefaults standardUserDefaults] synchronize];
+    //动画出现
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseIn animations:^{
+        
+        self.AlertView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+    } completion:^(BOOL finished) {
+        self.AlertView.hidden = YES;
+        self.AlarmView = nil;
+        [self.AlarmView removeFromSuperview];
+    }];
+}
+-(void)confirmMessage {
+    [self closeAlertView];
+}
 -(void)closePatrolRemind{
     //动画出现
     [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn animations:^{
         
-        self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+        self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(530), FrameWidth(600));
     } completion:^(BOOL finished) {
         
         //self.PatrolRemindView = nil;
@@ -1675,8 +1840,8 @@
 }
 -(void)seeAlarmMsg{
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-//    AlarmDetailInfoController  * PersonalMsg = [[AlarmDetailInfoController alloc] init];
-     PatrolEquipmentController *PersonalMsg = [[PatrolEquipmentController alloc] init];
+    //    AlarmDetailInfoController  * PersonalMsg = [[AlarmDetailInfoController alloc] init];
+    PatrolEquipmentController *PersonalMsg = [[PatrolEquipmentController alloc] init];
     [self.navigationController pushViewController: PersonalMsg animated:YES];
     [self closeAlarmView];
 }
@@ -1750,12 +1915,12 @@
 - (void)updateClusters {
     _clusterZoom = (NSInteger)_mapView.zoomLevel;
     if(_clusterZoom >21) {
-               return;
-           }
+        return;
+    }
     @synchronized(_clusterCaches) {
         __block NSMutableArray *clusters = [_clusterCaches objectAtIndex:(_clusterZoom - 3)];
-
-       
+        
+        
         if (clusters.count > 0) {
             [_mapView removeAnnotations:_mapView.annotations];
             [_mapView addAnnotations:clusters];
@@ -1765,11 +1930,11 @@
                 NSArray *array = [_clusterManager getClusters:_clusterZoom];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                 
+                    
                     for (int i=0;i<[array count];i++) {
                         
                         BMKCluster *item=array[i];
-                       if ((NSInteger)_mapView.zoomLevel >=20 ) {
+                        if ((NSInteger)_mapView.zoomLevel >=20 ) {
                             if (item.clusterItems.count >1) {
                                 for (BMKClusterItem *itemDetail in item.clusterItems) {
                                     ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];
@@ -1779,7 +1944,7 @@
                                     [arr addObject:itemDetail];
                                     annotation.dataArr = arr;
                                     [clusters addObject:annotation];
-                               }
+                                }
                             }
                         }else {
                             ClusterAnnotation *annotation = [[ClusterAnnotation alloc] init];
@@ -1794,7 +1959,7 @@
                     [_mapView removeAnnotations:_mapView.annotations];
                     [_mapView addAnnotations:clusters];
                     
-                  
+                    
                 });
             });
         }
@@ -1811,4 +1976,9 @@
         [self updateClusters];
     }
 }
+
+
+
+
+
 @end

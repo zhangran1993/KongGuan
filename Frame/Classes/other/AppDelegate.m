@@ -32,6 +32,8 @@
 
 @interface AppDelegate ()<JPUSHRegisterDelegate,UITabBarControllerDelegate,BuglyDelegate>
 @property (strong, nonatomic) UIView *ADView;
+
+@property (strong, nonatomic) NSDictionary *datDic;
 @end
 
 @implementation AppDelegate
@@ -78,6 +80,8 @@
         
         
     }];
+ 
+    
     // notice: 2.1.5版本的SDK新增的注册方法，改成可上报IDFA，如果没有使用IDFA直接传nil
     // 如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
     [JPUSHService setupWithOption:launchOptions appKey: @"6787538ae7be7e273b69703f" channel:@"AppStore" apsForProduction:FALSE];
@@ -108,6 +112,12 @@
     
     //[self loadAdView];
     [self checkNetWorkTrans];
+    NSDictionary *userInfo=[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    self.datDic = userInfo;
+    
+    if (userInfo.count >0) {
+        [self performSelector:@selector(alwaysShows) withObject:nil afterDelay:1.f];
+    }
     /*
    
      */
@@ -116,10 +126,12 @@
     //[[PgyManager sharedPgyManager] startManagerWithAppId:@"PGY_APP_ID"];
     //启动更新检查SDK
     //[[PgyUpdateManager sharedPgyManager] startManagerWithAppId:@"PGY_APP_ID"];
+ 
     return YES;
 }
-
-
+- (void)alwaysShows {
+     [[NSNotificationCenter defaultCenter]postNotificationName:@"alertMessage" object:nil userInfo:self.datDic];
+}
 
 /**
  监听网络状态
@@ -298,8 +310,9 @@
         [JPUSHService handleRemoteNotification:userInfo];
     }
     completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置
-}
+  
 
+}
 
 
  // iOS 10 Support 点击推送
@@ -311,6 +324,12 @@
      }
      [JPUSHService setBadge:0];
      completionHandler();  // 系统要求执行这个方法
+     //    NSLog(@"%@",userInfo);
+     NSMutableDictionary *notDic = [NSMutableDictionary dictionary];
+     
+     //第二种情况后台挂起时
+     [[NSNotificationCenter defaultCenter]postNotificationName:@"alertMessage" object:nil userInfo:userInfo];
+     
  }
 
 

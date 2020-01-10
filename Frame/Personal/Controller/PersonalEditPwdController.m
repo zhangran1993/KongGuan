@@ -54,9 +54,9 @@
     _oldPwdText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
     _oldPwdText.font = FontSize(15);
     _oldPwdText.secureTextEntry = YES;
-    _oldPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写旧密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
+    _oldPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写旧密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(15)}];
     //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [_oldPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
+//    [_oldPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
     //[_oldPwdText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
     _oldPwdText.tag=1;
     _oldPwdText.delegate = self;
@@ -75,9 +75,9 @@
     _oneNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
     _oneNewPwdText.font = FontSize(15);
     _oneNewPwdText.secureTextEntry = YES;
-    _oneNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
+    _oneNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(15)}];
     //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [_oneNewPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
+//    [_oneNewPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
     //[_oneNewPwdText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
     _oneNewPwdText.tag=2;
     _oneNewPwdText.delegate = self;
@@ -95,9 +95,9 @@
     _sureNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
     _sureNewPwdText.font = FontSize(15);
     _sureNewPwdText.secureTextEntry = YES;
-    _sureNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请再次输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor]}];
+    _sureNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请再次输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(15)}];
     //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [_sureNewPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
+//    [_sureNewPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
     //[_sureNewPwdText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
     _sureNewPwdText.tag=2;
     _sureNewPwdText.delegate = self;

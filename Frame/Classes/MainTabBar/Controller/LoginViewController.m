@@ -80,12 +80,14 @@
     
     
     _userText.delegate = self;
-    _userText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的帐号或手机号" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"]}];
-    [_userText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
+    _userText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的帐号或手机号" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"],NSFontAttributeName:FontSize(16)
+                                                                                              
+    }];
+//    [_userText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
     //_userText.text = @"ceshi";
     _pwdText.delegate = self;
-    _pwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的密码" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"]}];
-    [_pwdText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
+    _pwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的密码" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"],NSFontAttributeName:FontSize(16)}];
+//    [_pwdText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
     
     _LoginBtn.layer.cornerRadius = 8;
     [_LoginBtn setBackgroundColor:[UIColor colorWithHexString:@"#409ff3"]];
@@ -180,7 +182,7 @@
         //[self.navigationController popViewControllerAnimated:YES];
         [self.navigationController popToRootViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
-
+        [UserManager shareUserManager].loginSuccess = YES;
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
