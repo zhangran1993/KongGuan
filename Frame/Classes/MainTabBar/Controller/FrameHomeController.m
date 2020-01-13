@@ -232,7 +232,7 @@
     [super viewWillDisappear:animated];
     [self.repeatTimer invalidate];
     self.repeatTimer = nil;
-    
+    [self closeAlertView];
 }
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
@@ -290,8 +290,8 @@
                     if (array1.count) {
                         
                         for (NSString *string in array1) {
-                            if (string.length) {
-                                [dataArray addObject:string];
+                            if (string.length >2) {
+                                [dataArray addObject:[string substringFromIndex:2]];
                             }
                             
                         }
@@ -1368,7 +1368,7 @@
     self.AlertView = [[UIView alloc]init];
 //    self.AlertView.frame = CGRectMake(FrameWidth(80),FrameWidth(150),  FrameWidth(480), FrameWidth(600));
    
-    self.AlertView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(500), FrameWidth(630));
+    self.AlertView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150) + NAVIGATIONBAR_HEIGHT,  FrameWidth(500), FrameWidth(630));
     self.AlertView.layer.cornerRadius = 9.0;
     UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"warn_bg"]];
     explanAll.frame =  CGRectMake(0,FrameWidth(30),  FrameWidth(480), FrameWidth(585));
@@ -1429,7 +1429,7 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn animations:^{
         
-        self.AlertView.frame = CGRectMake(FrameWidth(80),FrameWidth(180),  FrameWidth(480), FrameWidth(600));
+        self.AlertView.frame = CGRectMake(FrameWidth(80),FrameWidth(150)+ NAVIGATIONBAR_HEIGHT,  FrameWidth(480), FrameWidth(600));
         self.AlertView.hidden = NO;
         
     } completion:^(BOOL finished) {
@@ -1804,11 +1804,11 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn animations:^{
         
-        self.AlertView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(180),  FrameWidth(530), FrameWidth(600));
+        self.AlertView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150)+ NAVIGATIONBAR_HEIGHT,  FrameWidth(530), FrameWidth(600));
     } completion:^(BOOL finished) {
         self.AlertView.hidden = YES;
-        self.AlarmView = nil;
-        [self.AlarmView removeFromSuperview];
+        self.AlertView = nil;
+        [self.AlertView removeFromSuperview];
     }];
 }
 -(void)confirmMessage {

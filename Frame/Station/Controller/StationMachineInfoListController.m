@@ -79,7 +79,7 @@
         moreheight = -FrameWidth(1100);
     }
     
-    _machineStatusMain = [[UIView alloc]initWithFrame:CGRectMake(FrameWidth(20), machineStatusView.frame.origin.y + machineStatusView.frame.size.height + FrameWidth(20) , WIDTH_SCREEN -FrameWidth(40), moreheight)];
+    _machineStatusMain = [[UIView alloc]initWithFrame:CGRectMake(FrameWidth(20), machineStatusView.frame.origin.y + machineStatusView.frame.size.height + FrameWidth(20) , WIDTH_SCREEN -FrameWidth(40), HEIGHT_SCREEN - kDefectHeight - machineStatusView.frame.origin.y - machineStatusView.frame.size.height - FrameWidth(20))];
     _machineStatusMain.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_machineStatusMain];
     
@@ -88,7 +88,13 @@
     _machineStatusMain.layer.borderWidth = 1;
     _machineStatusMain.layer.borderColor = QianGray.CGColor;
     
-    
+    [_machineStatusMain mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(machineStatusView.mas_bottom).offset(20);
+        make.left.equalTo(self.view.mas_left).offset(20);
+        make.width.equalTo(@(SCREEN_WIDTH-40));
+        make.right.equalTo(self.view.mas_right).offset(-20);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-kDefectHeight-20);
+    }];
     
     
     
@@ -101,6 +107,13 @@
     [_machineStatusMain addSubview:self.tableview];
     [self.tableview reloadData];
     
+    [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_machineStatusMain.mas_top);
+        make.left.equalTo(_machineStatusMain.mas_left);
+        make.width.equalTo(_machineStatusMain.mas_width);
+        make.right.equalTo(_machineStatusMain.mas_right);
+        make.bottom.equalTo(_machineStatusMain.mas_bottom);
+    }];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -215,8 +228,22 @@
     if(MainHeight > FrameWidth(900)){
         MainHeight = FrameWidth(900);
     }
-    [_machineStatusMain setFrame:CGRectMake(_machineStatusMain.frame.origin.x, _machineStatusMain.frame.origin.y, _machineStatusMain.frame.size.width, FrameWidth(5)+MainHeight)];
-    [self.tableview setFrame:CGRectMake(self.tableview.frame.origin.x, self.tableview.frame.origin.y, self.tableview.frame.size.width, MainHeight)];
+    [_machineStatusMain setFrame:CGRectMake(_machineStatusMain.frame.origin.x, _machineStatusMain.frame.origin.y, _machineStatusMain.frame.size.width, HEIGHT_SCREEN - kDefectHeight - _machineStatusMain.frame.origin.y -10)];
+    [_machineStatusMain mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset(FrameWidth(77) + FrameWidth(20));
+        make.left.equalTo(self.view.mas_left).offset(20);
+        make.width.equalTo(@(SCREEN_WIDTH-40));
+        make.right.equalTo(self.view.mas_right).offset(-20);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-kDefectHeight-20);
+    }];
+    [self.tableview setFrame:CGRectMake(self.tableview.frame.origin.x, self.tableview.frame.origin.y, self.tableview.frame.size.width, HEIGHT_SCREEN - kDefectHeight - self.tableview.frame.origin.y)];
+    [self.tableview mas_updateConstraints:^(MASConstraintMaker *make) {
+          make.top.equalTo(_machineStatusMain.mas_top);
+          make.left.equalTo(_machineStatusMain.mas_left);
+          make.width.equalTo(_machineStatusMain.mas_width);
+          make.right.equalTo(_machineStatusMain.mas_right);
+          make.bottom.equalTo(_machineStatusMain.mas_bottom);
+      }];
     [thiscell addSubview:InView];
     
     

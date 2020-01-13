@@ -276,7 +276,8 @@
         
         UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(75), 0, WIDTH_SCREEN, FrameWidth(77))];
         title.font = FontSize(16);
-        title.text = @"雷达组成框图";//@"UPS状态";
+//        title.text = @"雷达组成框图";//@"UPS状态";
+        title.text = _machineDetail[@"alias"];
         [machineStatusView addSubview:title];//station_right
         
         
