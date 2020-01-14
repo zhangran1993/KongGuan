@@ -189,7 +189,7 @@
             [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
             [[NSRunLoop currentRunLoop] run];
             
-        }
+        }   
     });
 }
 //刷新地图页面 间隔10s
