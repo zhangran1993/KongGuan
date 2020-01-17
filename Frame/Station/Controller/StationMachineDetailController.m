@@ -238,15 +238,55 @@
         normalBtn.titleLabel.textColor = [UIColor whiteColor];
         [machineView addSubview:normalBtn];
     }
+    int descripptionHeight = 0;
+    //新增告警显示
+    if (safeString(_machineDetail[@"description"]).length) {
+        UILabel *warnLabel = [[UILabel alloc]init];
+        [machineView addSubview:warnLabel];
+        warnLabel.textAlignment = NSTextAlignmentLeft;
+        warnLabel.numberOfLines = 6;
+        warnLabel.textColor = [UIColor orangeColor];
+        warnLabel.font = [UIFont systemFontOfSize:12];
+        [warnLabel sizeToFit];
+        warnLabel.text = [NSString stringWithFormat:@"%@",safeString(_machineDetail[@"description"])];
+      
+        [warnLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(ztLabel.mas_left);
+            make.right.equalTo(machineView.mas_right).offset(-20);
+            make.top.equalTo(ztLabel.mas_bottom).offset(5);
+        }];
+        CGSize size = [warnLabel.text boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - FrameWidth(240) -20, MAXFLOAT)
+                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                               attributes:@{NSFontAttributeName:warnLabel.font}
+                                                  context:nil].size;
+        
     
+        descripptionHeight = size.height;
+        CGRect machineViewFrame = machineView.frame;
+        if(descripptionHeight >40) {
+            machineViewFrame.size.height += 40;
+        }else {
+            machineViewFrame.size.height += descripptionHeight;
+        }
+        
+        machineView.frame = machineViewFrame;
+        
+    }
+     UIButton * manageBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(400), FrameWidth(240), FrameWidth(125), FrameWidth(40))];
     if([_machineDetail[@"status"] isEqualToString:@"1"]){
-        UIButton * manageBtn = [[UIButton alloc] initWithFrame:CGRectMake(FrameWidth(400), FrameWidth(240), FrameWidth(125), FrameWidth(40))];
+       
         [manageBtn setBackgroundImage:[UIImage imageNamed:@"station_manage"] forState:UIControlStateNormal];
         [manageBtn addTarget:self action:@selector(Alarmapevent:) forControlEvents:UIControlEventTouchUpInside];
         
         [machineView addSubview:manageBtn];
+        [manageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(ztLabel.mas_bottom).offset(5 + descripptionHeight);
+            make.right.equalTo(machineView.mas_right).offset(-80);
+            make.width.equalTo(@(FrameWidth(125)));
+            make.height.equalTo(@(FrameWidth(40)));
+        }];
     }
-    
+  
     
     if([_machineDetail[@"category"] isEqualToString:@"radar"]){
        // 添加一段描述
@@ -258,8 +298,7 @@
         descLabel.text = [NSString stringWithFormat:@"%@",_machineDetail[@"description"]];
         [machineView addSubview:descLabel];
         [descLabel sizeToFit];
-        
-        
+     
         //雷达框图
         UIView *machineStatusView = [[UIView alloc]initWithFrame:CGRectMake(0, machineView.frame.origin.y + machineView.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(77))];
         machineStatusView.backgroundColor = [UIColor whiteColor];
@@ -305,12 +344,25 @@
         // Do any additional setup after loading the view from its nib.'
         
         allHeight = self.webview.frame.origin.y + self.webview.frame.size.height +FrameWidth(100) ;
-        
+//        [machineStatusView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(manageBtn.mas_bottom).offset(10);
+//            make.left.equalTo(thiscell.mas_left);
+//            make.right.equalTo(thiscell.mas_right);
+//            make.bottom.equalTo(thiscell.mas_bottom);
+//        }];
         
     }else{
+       
         //UPS状态
         UIView *machineStatusView = [[UIView alloc]initWithFrame:CGRectMake(0, machineView.frame.origin.y + machineView.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(77))];
         machineStatusView.backgroundColor = [UIColor whiteColor];
+        
+//        [machineStatusView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(thiscell.mas_left);
+//            make.right.equalTo(thiscell.mas_right);
+//            make.top.equalTo(machineView.mas_bottom).offset(5);
+//            make.height.equalTo(@(FrameWidth(77)));
+//        }];
         [thiscell addSubview:machineStatusView];
         
         UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(75), 0, WIDTH_SCREEN, FrameWidth(77))];

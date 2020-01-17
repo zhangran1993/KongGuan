@@ -754,7 +754,7 @@
     }];
     
     BigImg.frame = CGRectMake(FrameWidth(23), FrameWidth(20), FrameWidth(595), viewHeight - FrameWidth(51));
-    
+    BigImg.contentMode = UIViewContentModeScaleAspectFill;
     if([userDefaults objectForKey:@"station"]){
         NSDictionary * station = [userDefaults objectForKey:@"station"];
         
