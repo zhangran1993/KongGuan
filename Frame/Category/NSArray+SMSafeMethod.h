@@ -2,8 +2,8 @@
 //  NSArray+SMSafeMethod.h
 //  SMZDM
 //
-//  Created by 李春慧 on 15/5/14.
-//  Copyright (c) 2015年 李春慧. All rights reserved.
+//  Created by zhangran on 15/5/14.
+//  Copyright (c) 2015年 zhangran. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

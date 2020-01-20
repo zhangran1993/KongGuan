@@ -2,7 +2,7 @@
 //  Single.h
 //  06-单例MRC
 //
-//  Created by 王云龙 on 15/10/16.
+//  Created by zhangran on 15/10/16.
 //  Copyright © 2015年 xiaomage. All rights reserved.
 //
 
