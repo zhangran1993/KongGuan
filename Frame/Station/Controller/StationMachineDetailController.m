@@ -168,8 +168,24 @@
 //             machineImg.image = [UIImage imageNamed:img];
 //        }
 //    }
-    [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
+   
     machineImg.contentMode = 1;
+    NSString *cag = safeString(_machineDetail[@"category"]);
+    if ([cag isEqualToString:@"ats"]) {
+        machineImg.image = [UIImage imageNamed:@"machine_ats"];
+    }else if ([cag isEqualToString:@"navigation"]) {
+        machineImg.image = [UIImage imageNamed:@"machine_dme"];
+    }else if ([cag isEqualToString:@"ups"]) {
+        machineImg.image = [UIImage imageNamed:@"machine_ups"];
+    }else if ([cag isEqualToString:@"dvor"]) {
+        machineImg.image = [UIImage imageNamed:@"machine_dvor"];
+    }else if ([cag isEqualToString:@"airSwitch"]) {
+        machineImg.image = [UIImage imageNamed:@"machine_kongkai"];
+    }else if ([cag isEqualToString:@"rs"]) {
+        machineImg.image = [UIImage imageNamed:@"machine_rs"];
+    }else {
+         [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
+    }
     
     
     machineImg.userInteractionEnabled = YES;
@@ -263,10 +279,12 @@
     
         descripptionHeight = size.height;
         CGRect machineViewFrame = machineView.frame;
-        if(descripptionHeight >40) {
+        if(descripptionHeight >70) {
             machineViewFrame.size.height += 40;
-        }else {
-            machineViewFrame.size.height += descripptionHeight;
+        }else if(descripptionHeight >50) {
+            machineViewFrame.size.height += 30;
+        }else{
+//            machineViewFrame.size.height += descripptionHeight;
         }
         
         machineView.frame = machineViewFrame;

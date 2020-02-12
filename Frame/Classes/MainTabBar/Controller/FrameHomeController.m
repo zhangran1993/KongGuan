@@ -29,6 +29,7 @@
 #import "AlarmDetailInfoController.h"
 #import "BMKClusterManager.h"
 #import "JPUSHService.h"
+
 /*
  *点聚合Annotation
  */
@@ -525,11 +526,29 @@
     _mapView.delegate = self;
     
     _mapView.rotateEnabled= NO;
-    
-    
-    
+
     [_mapView setRegion:region animated:YES];
-    
+    //1.设置本地个性化地图样式
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"custom_map_config" ofType:@"json"];
+//    //设置个性化地图样式
+//    [_mapView setCustomMapStylePath:path];
+//    [_mapView setCustomMapStyleEnable:YES];
+//
+//    //2.设置在线个性化地图样式
+//    BMKCustomMapStyleOption *option = [[BMKCustomMapStyleOption alloc] init];
+//    //请输入您的在线个性化样式ID
+//    option.customMapStyleID = @"4e7360bde67c***d6e69bc6a2c53059c";
+//    //获取本地个性化地图模板文件路径
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"custom_map_config" ofType:@"json"];
+//    //在线样式ID加载失败后会加载此路径的文件
+//    option.customMapStyleFilePath = path;
+//    [self.mapView setCustomMapStyleWithOption:option preLoad:^(NSString *path) {
+//        NSLog(@"预加载个性化文件路径：%@",path);
+//    } success:^(NSString *path) {
+//        NSLog(@"在线个性化文件路径：%@",path);
+//    } failure:^(NSError *error, NSString *path) {
+//        NSLog(@"设置在线个性化地图失败：%@---%@",error.userInfo,path);
+//    }];
     //设定地图View能否支持用户缩放(双击或双指单击)
     //    _mapView.zoomEnabledWithTap= NO;
     _mapView.overlookEnabled= NO;
@@ -850,7 +869,7 @@
                 int isNull = isNull( dic[@"securityStatus"][@"num"]);
                 NSString *equipNum = isNull == 1?dic[@"securityStatus"][@"num"]:@"0";
                 
-                [warnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",equipNum]  forState:UIControlStateNormal];
+                [warnBtn setTitle:[NSString stringWithFormat:@"告警%@",equipNum]  forState:UIControlStateNormal];
                 
                 //[warnBtn setTitle: [NSString stringWithFormat:@"告警数量%@",_stationDIC[annotation.title][@"powerStatus"][@"num"]]   forState:UIControlStateNormal];
                 warnBtn.titleLabel.textColor = [UIColor whiteColor];

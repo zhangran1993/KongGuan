@@ -15,12 +15,13 @@ target 'Frame' do
     pod 'ReactiveObjC'
     pod 'PGDatePicker', '>= 1.5.6'
     pod 'MSImagePickerController'
-    pod 'BaiduMapKit' , '> 4.1.0' #百度地图SDK
+    pod 'BaiduMapKit' , '> 5.0.0' #百度地图SDK
     pod 'Bugly'
     pod 'QBImagePickerController', '~>3.0'
     pod 'JPush', '>= 3.0.6'
     pod 'Masonry','~>1.0.1'
     pod 'SDAutoLayout', '~> 2.1.7'
+    pod 'DZNEmptyDataSet'
     #pod 'Pgyer'
     #pod 'PgyUpdate'
 

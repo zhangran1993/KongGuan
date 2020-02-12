@@ -86,6 +86,12 @@
 		251F3F9323C5A0AE00217E73 /* RS_ColorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */; };
 		251F3F9923C5B5EB00217E73 /* AlarmClassInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */; };
 		258E1E2523C7182200F4ED7E /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E1E2423C7182200F4ED7E /* UserManager.m */; };
+		25B2F8D223D6A21E0001AF4A /* machine_dvor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CC23D6A21E0001AF4A /* machine_dvor.png */; };
+		25B2F8D323D6A21E0001AF4A /* machine_rs.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CD23D6A21E0001AF4A /* machine_rs.png */; };
+		25B2F8D423D6A21E0001AF4A /* machine_kongkai.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CE23D6A21E0001AF4A /* machine_kongkai.png */; };
+		25B2F8D523D6A21E0001AF4A /* machine_dme.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CF23D6A21E0001AF4A /* machine_dme.png */; };
+		25B2F8D623D6A21E0001AF4A /* machine_ups.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8D023D6A21E0001AF4A /* machine_ups.png */; };
+		25B2F8D723D6A21E0001AF4A /* machine_ats.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8D123D6A21E0001AF4A /* machine_ats.png */; };
 		271825CB236C177600D68C18 /* StationSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CA236C177600D68C18 /* StationSectionView.m */; };
 		271825CD236C177E00D68C18 /* StationSectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271825CC236C177E00D68C18 /* StationSectionView.xib */; };
 		271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 271825CF236C2B5E00D68C18 /* WarnTableViewCell.m */; };
@@ -380,6 +386,12 @@
 		258E1E2323C7182200F4ED7E /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
 		258E1E2423C7182200F4ED7E /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		258E1E2623C7185D00F4ED7E /* Single.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Single.h; sourceTree = "<group>"; };
+		25B2F8CC23D6A21E0001AF4A /* machine_dvor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_dvor.png; sourceTree = "<group>"; };
+		25B2F8CD23D6A21E0001AF4A /* machine_rs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_rs.png; sourceTree = "<group>"; };
+		25B2F8CE23D6A21E0001AF4A /* machine_kongkai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_kongkai.png; sourceTree = "<group>"; };
+		25B2F8CF23D6A21E0001AF4A /* machine_dme.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_dme.png; sourceTree = "<group>"; };
+		25B2F8D023D6A21E0001AF4A /* machine_ups.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_ups.png; sourceTree = "<group>"; };
+		25B2F8D123D6A21E0001AF4A /* machine_ats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_ats.png; sourceTree = "<group>"; };
 		271825C9236C177600D68C18 /* StationSectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StationSectionView.h; sourceTree = "<group>"; };
 		271825CA236C177600D68C18 /* StationSectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StationSectionView.m; sourceTree = "<group>"; };
 		271825CC236C177E00D68C18 /* StationSectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StationSectionView.xib; sourceTree = "<group>"; };
@@ -729,6 +741,12 @@
 		189B0FC121B6639D0077C860 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				25B2F8D123D6A21E0001AF4A /* machine_ats.png */,
+				25B2F8CF23D6A21E0001AF4A /* machine_dme.png */,
+				25B2F8CC23D6A21E0001AF4A /* machine_dvor.png */,
+				25B2F8CE23D6A21E0001AF4A /* machine_kongkai.png */,
+				25B2F8CD23D6A21E0001AF4A /* machine_rs.png */,
+				25B2F8D023D6A21E0001AF4A /* machine_ups.png */,
 				184871B921D64B3B007F8066 /* 960.png */,
 				184871BB21D64B8E007F8066 /* 1136.png */,
 				184871AF21D642DC007F8066 /* Default.png */,
@@ -1687,11 +1705,14 @@
 				EC51DEC621BF483C00D68F47 /* RecordTableViewCell.xib in Resources */,
 				184871BA21D64B3C007F8066 /* 960.png in Resources */,
 				184871B021D642DC007F8066 /* Default.png in Resources */,
+				25B2F8D723D6A21E0001AF4A /* machine_ats.png in Resources */,
+				25B2F8D223D6A21E0001AF4A /* machine_dvor.png in Resources */,
 				EC5E523621B77034009212D7 /* FilePreviewViewController.xib in Resources */,
 				FE77AD162069F20D00CE8866 /* PatrolHistoryCell.xib in Resources */,
 				18CB1CC921C7402600F40413 /* green.gif in Resources */,
 				18B5545821B913DE00026734 /* WarnCell.xib in Resources */,
 				1F8AB4591F0C77C200256218 /* LaunchScreen.storyboard in Resources */,
+				25B2F8D423D6A21E0001AF4A /* machine_kongkai.png in Resources */,
 				EC5E523121B75D59009212D7 /* PopularCollectionViewCell.xib in Resources */,
 				EC4E9AD121B0DA2400B69476 /* HomeCarouselView.xib in Resources */,
 				EC61EA0421C8835400FACC83 /* HSIEmptyDataSetView.xib in Resources */,
@@ -1701,9 +1722,12 @@
 				FEE2494A206CDFE700D62197 /* mapapi.bundle in Resources */,
 				C1F8F177205BBCD50070CFE6 /* LoginViewController.xib in Resources */,
 				EC4C0C1B21B62EAD00E23EFA /* TechnicalManualTableViewCell.xib in Resources */,
+				25B2F8D623D6A21E0001AF4A /* machine_ups.png in Resources */,
+				25B2F8D523D6A21E0001AF4A /* machine_dme.png in Resources */,
 				271825D2236C2B5E00D68C18 /* WarnTableViewCell.xib in Resources */,
 				EC51DEC121BF482000D68F47 /* SparePartTableViewCell.xib in Resources */,
 				271825CD236C177E00D68C18 /* StationSectionView.xib in Resources */,
+				25B2F8D323D6A21E0001AF4A /* machine_rs.png in Resources */,
 				189B6CCA21C6835500434DF5 /* PatrolRemindCell.xib in Resources */,
 				EC5DBF1121BA49E800F00882 /* CustomTableViewCell.xib in Resources */,
 				18E8DFBC21F0C23E00D5449F /* SimpleDemoViewController.xib in Resources */,
