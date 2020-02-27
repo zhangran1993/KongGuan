@@ -1,0 +1,172 @@
+[
+  {
+    "featureType": "land",
+    "elementType": "all",
+    "stylers": {
+      "color": "#f6f7f2ff"
+    }
+  },
+  {
+    "featureType": "water",
+    "elementType": "all",
+    "stylers": {
+      "color": "#97cff0ff"
+    }
+  },
+  {
+    "featureType": "manland",
+    "elementType": "all",
+    "stylers": {
+      "color": "#f8f8f0ff",
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "green",
+    "elementType": "geometry",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "building",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "road",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "poilabel",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "district",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "town",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "highway",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "boundary",
+    "elementType": "geometry",
+    "stylers": {
+      "color": "#ffff00ff",
+      "hue": "#ffff00"
+    }
+  },
+  {
+    "featureType": "arterial",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "local",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "railway",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "subwaystation",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "education",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "medical",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "scenicspots",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "scenicspotslabel",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "educationlabel",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "medicallabel",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "airportlabel",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "on"
+    }
+  },
+  {
+    "featureType": "scenicspotspoilabel",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  },
+  {
+    "featureType": "subway",
+    "elementType": "all",
+    "stylers": {
+      "visibility": "off"
+    }
+  }
+]

@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - BaiduMapKit (4.4.2)
+  - BaiduMapKit (5.1.0)
   - Bugly (2.5.0)
   - DZNEmptyDataSet (1.8.1)
   - JCore (2.1.8)
@@ -38,7 +38,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
-  - BaiduMapKit (> 4.1.0)
+  - BaiduMapKit (> 5.0.0)
   - Bugly
   - DZNEmptyDataSet
   - JPush (>= 3.0.6)
@@ -77,7 +77,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  BaiduMapKit: 11acde2e7c06e31b7de60b323880a5eb7c4dccb6
+  BaiduMapKit: be03d7c0d625e2106ba04691e4be45f71f8dee7f
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   JCore: a7f1dead960d77a97717c73ea8b0aa5b33706491
@@ -95,6 +95,6 @@ SPEC CHECKSUMS:
   SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: f444b79e586897ba871115ccd38458e3f3fd6650
+PODFILE CHECKSUM: 4bcbb5d0fe7daca50a6f3caafcee3719ff78729b
 
 COCOAPODS: 1.8.4

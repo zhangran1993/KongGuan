@@ -85,6 +85,7 @@
 		250B887923C5792100C79136 /* AlarmDetailInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 250B887823C5792100C79136 /* AlarmDetailInfoModel.m */; };
 		251F3F9323C5A0AE00217E73 /* RS_ColorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */; };
 		251F3F9923C5B5EB00217E73 /* AlarmClassInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */; };
+		2543B6BE240751DC00829016 /* baidu_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = 2543B6BD240751DC00829016 /* baidu_map_style.json */; };
 		258E1E2523C7182200F4ED7E /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E1E2423C7182200F4ED7E /* UserManager.m */; };
 		25B2F8D223D6A21E0001AF4A /* machine_dvor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CC23D6A21E0001AF4A /* machine_dvor.png */; };
 		25B2F8D323D6A21E0001AF4A /* machine_rs.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CD23D6A21E0001AF4A /* machine_rs.png */; };
@@ -241,7 +242,6 @@
 		FEE24944206CDF1900D62197 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE24943206CDF1900D62197 /* CoreLocation.framework */; };
 		FEE24947206CDF4800D62197 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE24945206CDF4700D62197 /* libssl.a */; };
 		FEE24948206CDF4800D62197 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEE24946206CDF4700D62197 /* libcrypto.a */; };
-		FEE2494A206CDFE700D62197 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FEE24949206CDFE600D62197 /* mapapi.bundle */; };
 		FEE2494D206CFC0000D62197 /* StationDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE2494C206CFC0000D62197 /* StationDetailController.m */; };
 		FEF66956206F18FF00F3CF2B /* PersonalMsgController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF66955206F18FF00F3CF2B /* PersonalMsgController.m */; };
 		FEF66959206F191900F3CF2B /* PersonalMsgListController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF66958206F191900F3CF2B /* PersonalMsgListController.m */; };
@@ -383,6 +383,7 @@
 		251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_ColorManager.m; sourceTree = "<group>"; };
 		251F3F9723C5B5EB00217E73 /* AlarmClassInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlarmClassInfoCell.h; sourceTree = "<group>"; };
 		251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlarmClassInfoCell.m; sourceTree = "<group>"; };
+		2543B6BD240751DC00829016 /* baidu_map_style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = baidu_map_style.json; sourceTree = "<group>"; };
 		258E1E2323C7182200F4ED7E /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
 		258E1E2423C7182200F4ED7E /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		258E1E2623C7185D00F4ED7E /* Single.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Single.h; sourceTree = "<group>"; };
@@ -741,6 +742,7 @@
 		189B0FC121B6639D0077C860 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				2543B6BD240751DC00829016 /* baidu_map_style.json */,
 				25B2F8D123D6A21E0001AF4A /* machine_ats.png */,
 				25B2F8CF23D6A21E0001AF4A /* machine_dme.png */,
 				25B2F8CC23D6A21E0001AF4A /* machine_dvor.png */,
@@ -1712,6 +1714,7 @@
 				18CB1CC921C7402600F40413 /* green.gif in Resources */,
 				18B5545821B913DE00026734 /* WarnCell.xib in Resources */,
 				1F8AB4591F0C77C200256218 /* LaunchScreen.storyboard in Resources */,
+				2543B6BE240751DC00829016 /* baidu_map_style.json in Resources */,
 				25B2F8D423D6A21E0001AF4A /* machine_kongkai.png in Resources */,
 				EC5E523121B75D59009212D7 /* PopularCollectionViewCell.xib in Resources */,
 				EC4E9AD121B0DA2400B69476 /* HomeCarouselView.xib in Resources */,
@@ -1719,7 +1722,6 @@
 				18C0393521D8D48D00C54F3D /* orangea.gif in Resources */,
 				18CAAD8A21B773B1003C8B39 /* StationRankCell.xib in Resources */,
 				18CB1CCA21C7402600F40413 /* green0.gif in Resources */,
-				FEE2494A206CDFE700D62197 /* mapapi.bundle in Resources */,
 				C1F8F177205BBCD50070CFE6 /* LoginViewController.xib in Resources */,
 				EC4C0C1B21B62EAD00E23EFA /* TechnicalManualTableViewCell.xib in Resources */,
 				25B2F8D623D6A21E0001AF4A /* machine_ups.png in Resources */,

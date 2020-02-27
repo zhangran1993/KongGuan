@@ -144,7 +144,7 @@
     UITableViewCell *thiscell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN)];
     thiscell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
     
-    thiscell.backgroundColor = BGColor;
+    thiscell.backgroundColor = self.view.backgroundColor;
     
     
     
@@ -662,7 +662,7 @@
     //[SVProgressHUD dismiss];
 }
 
-
+  //  thiscell.backgroundColor = self.view.backgroundColor;
 
 
 @end

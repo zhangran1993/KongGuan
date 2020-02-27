@@ -74,10 +74,11 @@
     _oldVerifText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
     _oldVerifText.font = FontSize(16);
     _oldVerifText.keyboardType = UIKeyboardTypeNumberPad;
-    _oldVerifText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(16)}];
-    //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-//    [_oldVerifText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
-    [_oldVerifText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
+    _oldVerifText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(16),NSForegroundColorAttributeName:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8]}];
+
+    
+//    _oldVerifText.attributedPlaceholder=[[NSAttributedString alloc]initWithString:@"请输入验证码"attributes:@{}];
+
     _oldVerifText.tag=1;
     _oldVerifText.delegate = self;
     [oldVerifView addSubview:_oldVerifText];
@@ -107,10 +108,10 @@
     _mobileText.font = FontSize(16);
     //_mobileText.keyboardType = UIKeyboardTypeDecimalPad;
     _mobileText.keyboardType = UIKeyboardTypeNumberPad;
-    _mobileText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入新的手机号" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(16)}];
-    //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-//    [_mobileText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
-    [_mobileText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
+    _mobileText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入新的手机号" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(16),NSForegroundColorAttributeName:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8]}];
+
+    
+
     _mobileText.tag=3;
     _mobileText.delegate = self;
     [mobileView addSubview:_mobileText];
@@ -130,10 +131,9 @@
     _verifText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
     _verifText.font = FontSize(16);
     _verifText.keyboardType = UIKeyboardTypeASCIICapableNumberPad;
-    _verifText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(16)}];
-    //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-//    [_verifText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
-    [_verifText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
+    _verifText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(16),NSForegroundColorAttributeName:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8]}];
+
+  
     _verifText.tag=4;
     _verifText.delegate = self;
     [verifView addSubview:_verifText];
