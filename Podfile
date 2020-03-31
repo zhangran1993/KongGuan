@@ -22,6 +22,7 @@ target 'Frame' do
     pod 'Masonry','~>1.0.1'
     pod 'SDAutoLayout', '~> 2.1.7'
     pod 'DZNEmptyDataSet'
+    pod 'MBProgressHUD'
     #pod 'Pgyer'
     #pod 'PgyUpdate'
 

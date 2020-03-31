@@ -51,6 +51,10 @@
 @property(nonatomic) UITableView *filterTabView;
 @property(nonatomic) UIButton *rightButton;
 @property  (assign,nonatomic) UIFont* btnFont;
+@property (nonatomic, strong)  UIView *runView;
+/**  标题栏 */
+@property (nonatomic, strong) UILabel * titleLabel;
+@property (nonatomic, strong)  UIView *navigationView;
 @end
 
 @implementation StationDetailController
@@ -62,11 +66,17 @@
 - (void)viewDidLoad {
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(20),NSForegroundColorAttributeName:[UIColor whiteColor]}] ;
+  
+    [self createNaviTopView];
+    [self createTopView];
+          
+          
     float moreheight = ZNAVViewH;
     if(HEIGHT_SCREEN == 812){
         moreheight = FrameWidth(280);
     }
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0,WIDTH_SCREEN, HEIGHT_SCREEN - ZNAVViewH -MLTabBarHeight)];
+    
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 215,WIDTH_SCREEN, HEIGHT_SCREEN - ZNAVViewH -MLTabBarHeight)];
     self.tableview.estimatedRowHeight = 0;
     self.tableview.estimatedSectionHeaderHeight = 0;
     self.tableview.estimatedSectionFooterHeight = 0;
@@ -96,11 +106,316 @@
     
     
 }
+
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+    [self.view addSubview:topImage1];
+    topImage1.contentMode = UIViewContentModeScaleAspectFill;
+    topImage1.image  =[UIImage imageNamed:@"machine_rs"];
+    
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+    [self.view addSubview:topImage];
+    topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
+    [self stationBtn];
+    
+    
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+  
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"智环";
+  
+    /** 返回按钮 **/
+    UIButton * backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_icon");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+    
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+    
+}
+- (void)createTopView{
+  
+    [self.runView removeFromSuperview];
+    self.runView = nil;
+    self.runView= [[UIView alloc]init];
+    [self.view addSubview:self.runView];
+    self.runView.backgroundColor = [UIColor whiteColor];
+    self.runView.layer.cornerRadius = 9;
+    self.runView.layer.masksToBounds = YES;
+    [self.runView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +24);
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.height.equalTo(@100);
+    }];
+    
+    UIImageView *runBgImage = [[UIImageView alloc]init];
+    [self.runView addSubview:runBgImage];
+    runBgImage.contentMode = UIViewContentModeScaleAspectFill;
+    runBgImage.image = [UIImage imageNamed:@"runBgImage"];
+    [runBgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.runView.mas_top);
+        make.left.equalTo(self.runView.mas_left);
+        make.right.equalTo(self.runView.mas_right);
+        make.height.equalTo(@40);
+    }];
+    //智环运行状况
+    UILabel *zhihuanRunLabel = [[UILabel alloc]init];
+    [self.runView addSubview:zhihuanRunLabel];
+    zhihuanRunLabel.text = @"智环运行情况";
+    zhihuanRunLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    zhihuanRunLabel.font = [UIFont systemFontOfSize:18];
+    zhihuanRunLabel.numberOfLines = 1;
+    zhihuanRunLabel.textAlignment = NSTextAlignmentLeft;
+    [zhihuanRunLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.runView.mas_left).offset(17);
+        make.top.equalTo(self.runView.mas_top).offset(17);
+        make.height.equalTo(@24);
+        make.width.equalTo(@140);
+    }];
+    
+    UIButton *rightBtn = [[UIButton alloc]init];
+    [rightBtn setTitle:@"查看视频" forState:UIControlStateNormal];
+    [self.runView addSubview:rightBtn];
+    [rightBtn setImage:[UIImage imageNamed:@"watchvideo_right"] forState:UIControlStateNormal];
+    [rightBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 66, 0, 0)];
+    [rightBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
+    rightBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [rightBtn addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.runView.mas_right).offset(-20);
+        make.centerY.equalTo(zhihuanRunLabel.mas_centerY);
+        make.height.equalTo(@20);
+        make.width.equalTo(@70);
+    }];
+    
+    UILabel *anfangLalbel = [[UILabel alloc]init];
+    [self.runView addSubview:anfangLalbel];
+    anfangLalbel.text = @"安防监测";
+    anfangLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    anfangLalbel.font = [UIFont systemFontOfSize:14];
+    anfangLalbel.numberOfLines = 1;
+    anfangLalbel.textAlignment = NSTextAlignmentLeft;
+    [anfangLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.runView.mas_left).offset(16);
+        make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
+        make.width.equalTo(@60);
+        make.height.equalTo(@18);
+    }];
+    UIImageView *anfangImage = [[UIImageView alloc]init];
+    anfangImage.image = [UIImage imageNamed:@"level_prompt"];
+    [self.runView addSubview:anfangImage];
+    [anfangImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(anfangLalbel.mas_centerY);
+        make.left.equalTo(anfangLalbel.mas_right).offset(1);
+        make.width.equalTo(@30);
+        make.height.equalTo(@17);
+    }];
+    
+    UILabel *anfangNumLalbel = [[UILabel alloc]init];
+    [self.runView addSubview:anfangNumLalbel];
+    anfangNumLalbel.layer.cornerRadius = 5.f;
+    anfangNumLalbel.layer.masksToBounds = YES;
+    anfangNumLalbel.text = @"1";
+    anfangNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    anfangNumLalbel.font = [UIFont systemFontOfSize:14];
+    anfangNumLalbel.numberOfLines = 1;
+    
+    anfangNumLalbel.textAlignment = NSTextAlignmentLeft;
+    [anfangNumLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(anfangImage.mas_right).offset(-5);
+        make.bottom.equalTo(anfangImage.mas_top).offset(-5);
+        make.width.equalTo(@10);
+        make.height.equalTo(@10);
+    }];
+    //设备监测
+    if (self.statusArray.count > 0) {
+        EquipmentStatusModel *model = self.statusArray[0];
+        switch (model.status) {
+            case 0:
+                anfangImage.image = [UIImage imageNamed:@"level_normal"];
+                break;
+            case 1:
+                anfangImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%ld级",(long)model.level]]];
+                anfangNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%ld级",(long)model.level]];
+                anfangNumLalbel.text = [NSString stringWithFormat:@"%ld",(long)model.num];
+                break;
+            case 2:{
+                anfangImage.image = [UIImage imageNamed:@"level_normal"];
+                break;
+            }
+            case 3:
+                anfangImage.image = [UIImage imageNamed:@"level_normal"];
+                break;
+            default:
+                break;
+        }
+    }
+    UILabel *envLalbel = [[UILabel alloc]init];
+    [self.runView addSubview:envLalbel];
+    envLalbel.text = @"环境监测";
+    envLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    envLalbel.font = [UIFont systemFontOfSize:14];
+    envLalbel.numberOfLines = 1;
+    envLalbel.textAlignment = NSTextAlignmentLeft;
+    [envLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.runView.mas_centerX).offset(-15);
+        make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
+        make.width.equalTo(@60);
+        make.height.equalTo(@18);
+    }];
+    UIImageView *envImage = [[UIImageView alloc]init];
+    envImage.image = [UIImage imageNamed:@"level_prompt"];
+    [self.runView addSubview:envImage];
+    [envImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(envLalbel.mas_centerY);
+        make.left.equalTo(envLalbel.mas_right).offset(1);
+        make.width.equalTo(@30);
+        make.height.equalTo(@17);
+    }];
+    
+    UILabel *envNumLalbel = [[UILabel alloc]init];
+    [self.runView addSubview:envNumLalbel];
+    envNumLalbel.text = @"1";
+    envNumLalbel.layer.cornerRadius = 5.f;
+    envNumLalbel.layer.masksToBounds = YES;
+    envNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    envNumLalbel.font = [UIFont systemFontOfSize:14];
+    envNumLalbel.numberOfLines = 1;
+    envNumLalbel.backgroundColor = [self getTextColor:@""];
+    envNumLalbel.textAlignment = NSTextAlignmentLeft;
+    [envNumLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(envImage.mas_right).offset(-2);
+        make.bottom.equalTo(envImage.mas_top).offset(-5);
+        make.width.equalTo(@10);
+        make.height.equalTo(@10);
+    }];
+    if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"0"]){
+        
+        envImage.image = [UIImage imageNamed:@"level_normal"];
+    }else if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"3"]){
+        
+        envImage.image = [UIImage imageNamed:@"level_normal"];
+    }else if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"1"]){
+        envImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",_stationDetail[@"environmentStatus"][@"level"]]]];
+        envNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",_stationDetail[@"environmentStatus"][@"level"]]];
+        envNumLalbel.text = [NSString stringWithFormat:@"%@",_stationDetail[@"environmentStatus"][@"num"]];
+        
+    }else{
+        envImage.image = [UIImage imageNamed:@"level_normal"];
+    }
+    
+    UILabel *powerLalbel = [[UILabel alloc]init];
+    [self.runView addSubview:powerLalbel];
+    powerLalbel.text = @"动力监测";
+    powerLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    powerLalbel.font = [UIFont systemFontOfSize:14];
+    powerLalbel.numberOfLines = 1;
+    powerLalbel.textAlignment = NSTextAlignmentLeft;
+   
+    UIImageView *powerImage = [[UIImageView alloc]init];
+    powerImage.image = [UIImage imageNamed:@"level_prompt"];
+    [self.runView addSubview:powerImage];
+    [powerImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(anfangLalbel.mas_centerY);
+        make.right.equalTo(self.runView.mas_right).offset(-9);
+        make.width.equalTo(@30);
+        make.height.equalTo(@17);
+    }];
+    [powerLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.right.equalTo(powerImage.mas_left).offset(-5);
+           make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
+           make.width.equalTo(@60);
+           make.height.equalTo(@18);
+       }];
+    UILabel *powerNumLabel = [[UILabel alloc]init];
+    [self.runView addSubview:powerNumLabel];
+    powerNumLabel.text = @"1";
+    powerNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    powerNumLabel.font = [UIFont systemFontOfSize:14];
+    powerNumLabel.numberOfLines = 1;
+    powerNumLabel.layer.cornerRadius = 5.f;
+    powerNumLabel.layer.masksToBounds = YES;
+    powerNumLabel.backgroundColor = [self getTextColor:@""];
+    powerNumLabel.textAlignment = NSTextAlignmentLeft;
+    [powerNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(powerImage.mas_right).offset(-5);
+        make.bottom.equalTo(powerImage.mas_top).offset(-5);
+        make.width.equalTo(@10);
+        make.height.equalTo(@10);
+    }];
+    if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"0"]){
+        
+        powerImage.image = [UIImage imageNamed:@"level_normal"];
+    }else if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"3"]){
+        powerImage.image = [UIImage imageNamed:@"level_normal"];
+    }else if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"1"]){
+        powerImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",_stationDetail[@"powerStatus"][@"level"]]]];
+        powerNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",_stationDetail[@"powerStatus"][@"level"]]];
+        powerNumLabel.text = [NSString stringWithFormat:@"%@",_stationDetail[@"powerStatus"][@"num"]];
+    }else{
+        powerImage.image = [UIImage imageNamed:@"level_normal"];
+    }
+    [self.tableview reloadData];
+}
+
+- (UIColor *)getTextColor:(NSString *)level {
+    UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    
+    if ([level isEqualToString:@"0"]) {
+        textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    }else if ([level isEqualToString:@"4"]) {
+        textColor = [UIColor colorWithHexString:@"2986F1"];
+    }else if ([level isEqualToString:@"3"]) {
+        textColor = [UIColor colorWithHexString:@"FFA800"];
+    }else if ([level isEqualToString:@"2"]) {
+        textColor = [UIColor colorWithHexString:@"FC7D0E"];
+    }else if ([level isEqualToString:@"1"]) {
+        textColor = [UIColor colorWithHexString:@"F62546"];
+    }
+    
+    //紧急
+    return textColor;
+}
+//查看视频
+- (void)rightButtonClicked:(UIButton *)button {
+    [self sptapevent];
+    
+}
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [self.navigationController setNavigationBarHidden:YES];
     self.StationItem = nil;
-    [self showNavigation];
-    [self stationBtn];
+    
+    
     [self dataReport];
     
     _imageUrl = @"";
@@ -137,12 +452,35 @@
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoBottomApevent:) name:@"bottomapevent" object:nil];
     
 }
-
+/**
+ 颜色转图片
+ 
+ @param color 颜色
+ @return 图片
+ */
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
+    //    self.navigationController.navigationBar.translucent = NO;
+    //    [self.navigationController setNavigationBarHidden:NO];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+     [self.navigationController setNavigationBarHidden:NO];
+}
 
 //展示navigation背景色
 -(void)showNavigation{
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.translucent = NO;
+    
+    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
 }
 
 
@@ -235,7 +573,7 @@
         }else{
             _longitude = @"0";
         }
-        
+      
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
@@ -291,11 +629,6 @@
     }];
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    NSLog(@"StationDetailController viewWillDisappear");
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.translucent = NO;
-}
 
 -(void)viewDidAppear:(BOOL)animated{
     // NSLog(@"viewDidAppear");
@@ -462,7 +795,7 @@
         NSLog(@"_stationDetail == nil ");
         return thiscell;
     }
-    
+   
     //环境监测
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, FrameWidth(84))];
     view.backgroundColor = [UIColor whiteColor];
@@ -1570,18 +1903,15 @@
             }
             
         }
-        
-        
-        UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:self.rightButton];
-        
-        
-        
-        UIButton *rightButton1 = [[UIButton alloc]initWithFrame:CGRectMake(5, 0, FrameWidth(20), FrameWidth(30))];
-        [rightButton1 setImage:[UIImage imageNamed:@"station_pulldown"] forState:UIControlStateNormal];
-        
-        //[rightButton1 addTarget:self action:@selector(jifangAction) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightBarButton1 = [[UIBarButtonItem alloc]initWithCustomView:rightButton1];
-        self.navigationItem.rightBarButtonItems = @[ rightBarButton1,rightBarButton];
+//        
+//        [self.navigationView addSubview:self.rightButton];
+//        
+//        [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.right.height.equalTo(self.navigationView.mas_right).offset(-20);
+//            make.centerY.equalTo(self.titleLabel.mas_centerY);
+//            make.width.equalTo(@200);
+//        }];
+           
     }else{
         if(![CommonExtension isEmptyWithString:_station_name]){
             NSMutableString* str1=[[NSMutableString alloc]initWithString:_station_name];//存在堆区，可变字符串
@@ -1701,6 +2031,7 @@
     [self.filterTabView reloadData];
     
     
+    
     [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentRight overlayDismissed:nil];
     
 }
@@ -1789,6 +2120,38 @@
     
     return NO;
     
+}
+
+
+- (NSString *)getLevelImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"0"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"4"]) {
+        levelString = @"level_prompt";
+    }else if ([level isEqualToString:@"3"]) {
+        levelString = @"level_ciyao";
+    }else if ([level isEqualToString:@"2"]) {
+        levelString = @"level_important";
+    }else if ([level isEqualToString:@"1"]) {
+        levelString = @"level_jinji";
+    }
+    
+    //紧急
+    return levelString;
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
 }
 @end
 

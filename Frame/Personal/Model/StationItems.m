@@ -81,5 +81,11 @@
  
  
  */
++ (NSDictionary *)mj_replacedKeyFromPropertyName
 
+{
+
+    return @{@"points":@"value" , @"stationName":@"name"};
+
+}
 @end

@@ -51,8 +51,8 @@
 @property (copy, nonatomic) NSString*  NowStatus;
 @property (copy, nonatomic) NSString*  AirConditionNum;
 @property (copy, nonatomic) NSArray*  airTagList;
-
-
+@property (copy, nonatomic) NSString*  value;
+@property (copy, nonatomic) NSString*  grade;
 - (StationItems *)initWithDetailDic:(NSDictionary *)dic;
 
 @end

@@ -22,6 +22,7 @@ PODS:
     - JCore (< 3.0.0, >= 2.0.0)
   - JSONKit (1.4)
   - Masonry (1.0.2)
+  - MBProgressHUD (1.2.0)
   - MJExtension (3.1.0)
   - MJRefresh (3.2.0)
   - MSImagePickerController (1.0.1)
@@ -44,6 +45,7 @@ DEPENDENCIES:
   - JPush (>= 3.0.6)
   - JSONKit (~> 1.4)
   - Masonry (~> 1.0.1)
+  - MBProgressHUD
   - MJExtension
   - MJRefresh
   - MSImagePickerController
@@ -64,6 +66,7 @@ SPEC REPOS:
     - JPush
     - JSONKit
     - Masonry
+    - MBProgressHUD
     - MJExtension
     - MJRefresh
     - MSImagePickerController
@@ -84,6 +87,7 @@ SPEC CHECKSUMS:
   JPush: 8ce888d6dedfa417e90c8b6bc87405a16ce2e699
   JSONKit: 5b69e804ea54d99293eed0fd2ce596c5703fefb0
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJExtension: 6b69b3bef2864fd550ce1a184eda219e321209d2
   MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
   MSImagePickerController: 500e0cd0d165ca52a4b927b68de474ff59263dbd
@@ -95,6 +99,6 @@ SPEC CHECKSUMS:
   SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 4bcbb5d0fe7daca50a6f3caafcee3719ff78729b
+PODFILE CHECKSUM: ce0bdada9378877743d58a11d077f5adb2ec53e0
 
 COCOAPODS: 1.8.4

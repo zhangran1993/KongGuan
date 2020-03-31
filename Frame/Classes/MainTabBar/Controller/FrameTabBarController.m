@@ -100,29 +100,32 @@
     [UITabBar appearance].translucent = NO;
     
     // 添加第1个控制器
-    StationDetailController *oneVC = [[StationDetailController alloc]init];
-    [self setUpOneChildViewController:oneVC image:[UIImage imageNamed:@"main_station"] image2:[UIImage imageNamed:@"main_station_s"] title:@"台站管理"  type:0];
+//    StationDetailController *oneVC = [[StationDetailController alloc]init];
+//    [self setUpOneChildViewController:oneVC image:[UIImage imageNamed:@"mystation_unsel"] image2:[UIImage imageNamed:@"mystation_sel"] title:@"我的台站"  type:1];
+//
     
+    FrameHomeController *oneVC = [[FrameHomeController alloc]init];
+    [self setUpOneChildViewController:oneVC image:[UIImage imageNamed:@"mystation_unsel"] image2:[UIImage imageNamed:@"mystation_sel"] title:@"我的台站"  type:1];
     // 添加第2个控制器
     AlarmListController *twoVC = [[AlarmListController alloc]init];
-    [self setUpOneChildViewController:twoVC image:[UIImage imageNamed:@"main_alarm"] image2:[UIImage imageNamed:@"main_alarm_s"] title:@"告警管理"  type:0];
+    [self setUpOneChildViewController:twoVC image:[UIImage imageNamed:@"zhixiu_unsel"] image2:[UIImage imageNamed:@"zhixiu_sel"] title:@"智修"  type:0];
     
     
     //[self.tabBar setBackgroundImage:[UIImage imageNamed:@"//main_tab_bg"]];
     
     // 添加第3个控制器
-    FrameHomeController *threeVC = [[FrameHomeController alloc]init];
-    [self setUpOneChildViewController:threeVC image:[UIImage imageNamed:@"main_home"] image2:[UIImage imageNamed:@"main_home_s"] title:@"首页"  type:1];
+    StationDetailController *threeVC = [[StationDetailController alloc]init];
+    [self setUpOneChildViewController:threeVC image:[UIImage imageNamed:@"task_unsel"] image2:[UIImage imageNamed:@"task_sel"] title:@"任务"  type:0];
     
     // 添加第4个控制器
     PatrolController *fourVC = [[PatrolController alloc]init];
-    [self setUpOneChildViewController:fourVC image:[UIImage imageNamed:@"main_Patrol"] image2:[UIImage imageNamed:@"main_Patrol_s"] title:@"巡查管理"  type:0];
+    [self setUpOneChildViewController:fourVC image:[UIImage imageNamed:@"zhiyun_unsel"] image2:[UIImage imageNamed:@"zhiyun_sel"] title:@"智云"  type:0];
     // 添加第5个控制器
     DataCenterViewController *fiveVC = [[DataCenterViewController alloc]init];
-    [self setUpOneChildViewController:fiveVC image:[UIImage imageNamed:@"main_data"] image2:[UIImage imageNamed:@"main_data_s"] title:@"数据中心"  type:0];
-    [self setSelectedIndex:2];
-    self.selectedIndex = 2;
-    self.tabBarController.selectedIndex = 2;
+    [self setUpOneChildViewController:fiveVC image:[UIImage imageNamed:@"mine_unsel"] image2:[UIImage imageNamed:@"mine_sel"] title:@"我的"  type:0];
+    [self setSelectedIndex:0];
+    self.selectedIndex = 0;
+    self.tabBarController.selectedIndex = 0;
 }
 
 
@@ -151,7 +154,7 @@
          */
     }
     
-    self.tabBar.tintColor = [UIColor colorWithRed:100/255.0 green:170/255.0 blue:250/255.0 alpha:1];
+    self.tabBar.tintColor = [UIColor colorWithHexString:@"##0E59AB"];
     [navC.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
     viewController.navigationItem.title = title;
     // 字体大小 跟 normal

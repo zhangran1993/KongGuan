@@ -19,6 +19,8 @@
 
 #import "HSIEmptyDataSetView.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "KG_OverAlertView.h"
+#import "KG_OverAlertCenterView.h"
 
 @interface RankController ()<UITableViewDelegate,UITableViewDataSource,EmptyDataSetDelegate>{
 }
@@ -27,8 +29,10 @@
 @property(strong,nonatomic)UITableView *stationTabView;
 @property NSMutableArray *stationList;
 
-
-
+@property (nonatomic, strong) KG_OverAlertView *overAlertView;
+@property (nonatomic, strong) KG_OverAlertCenterView *overAlertCenterView;
+@property(strong,nonatomic) NSString *typeString;
+@property(strong,nonatomic) UIButton *rightButon;
 @end
 
 @implementation RankController
@@ -39,22 +43,44 @@ static NSString * const FrameCellID = @"PatrolHistory";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initViewData];
     [self backBtn];
+    
     [self loadBgView];
     [self setExplainBtn ];
+    
     //[self loadData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotificationAction) name:kNetworkStatusNotification object:nil];
     
+   
+}
+- (void)initViewData{
     
+    self.typeString = @"comprehensiveScoringMethod";
+}
+//右侧点击方法
+- (void)rightButon:(UIButton *)button {
+   
+    if (self.overAlertView.isHidden) {
+        self.overAlertView.hidden = NO;
+    }
+    
+   
+    
+   
 }
 -(void)loadBgView{//设置台站列表内容
     self.title = @"台站健康度排行榜";
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     
-    self.stationTabView = [[UITableView alloc] initWithFrame:CGRectMake(0,0 , WIDTH_SCREEN , View_Height-ZNAVViewH)];
+    self.stationTabView = [[UITableView alloc] initWithFrame:CGRectMake(16,140+NAVIGATIONBAR_HEIGHT -64 , WIDTH_SCREEN-32 , SCREEN_HEIGHT-(140+NAVIGATIONBAR_HEIGHT -64)- kDefectHeight)];
     self.stationTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.stationTabView.tableFooterView.frame = CGRectMake(0, 0, WIDTH_SCREEN -4 , FrameWidth(30));
+    self.stationTabView.showsVerticalScrollIndicator = NO;
+    self.stationTabView.layer.cornerRadius = 10;
+    self.stationTabView.layer.masksToBounds = YES;
+    self.stationTabView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.stationTabView];
     self.stationTabView.dataSource = self;
     self.stationTabView.delegate = self;
@@ -77,13 +103,67 @@ static NSString * const FrameCellID = @"PatrolHistory";
 -(void)viewWillAppear:(BOOL)animated{
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBarHidden = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
-    
+    self.overAlertView.hidden = YES;
+    self.navigationController.navigationBarHidden = NO;
 }
 
 -(void)loadData{
     [self loadMoreData];
+    
+}
+
+- (void)getHealthStationData {
+//    请求地址：/intelligent/atcStationHealth/health/{stationCode}/{type}
+//         其中，stationCode是台站编码
+//               type是健康度计算类型：
+//                         comprehensiveScoringMethod：综合评分法
+//                         syntheticalIndexMethod：综合指数法
+//    greyCorrelativeAnalysis：灰色关联分析法
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+//    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/%@" ,self.typeString]];
+     NSString *  FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/atcStationHealth/health/%@",self.typeString];
+    FrameRequestURL = [FrameRequestURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:params  success:^(id result) {
+        
+        self.stationTabView.emptyDataSetDelegate = self;
+//        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//
+//        if(code  <= -1){
+//            [self.stationTabView reloadData];
+//            [FrameBaseRequest showMessage:result[@"errMsg"]];
+//            return ;
+//        }
+        self.StationItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:result];
+        
+        [self.stationTabView reloadData];
+        [self.stationTabView.mj_header endRefreshing];
+        [self.stationTabView.mj_footer endRefreshing];
+    } failure:^(NSURLSessionDataTask *error)  {
+        [self.stationTabView.mj_header endRefreshing];
+        [self.stationTabView.mj_footer endRefreshing];
+        self.stationTabView.emptyDataSetDelegate = self;
+        [self.stationTabView reloadData];
+        //self.stationTabView.mj_footer.state = MJRefreshStateNoMoreData;
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            [self.navigationController popToViewController:viewCtl animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
 }
 
 /**
@@ -93,22 +173,22 @@ static NSString * const FrameCellID = @"PatrolHistory";
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/getHealthList"]];
-    
+//    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/%@" ,self.typeString]];
+    NSString *  FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/atcStationHealth/health/%@",self.typeString];
     FrameRequestURL = [FrameRequestURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:params  success:^(id result) {
         
         self.stationTabView.emptyDataSetDelegate = self;
-        NSInteger code = [[result objectForKey:@"errCode"] intValue];
-        
-        if(code  <= -1){
-            [self.stationTabView reloadData];
-            [FrameBaseRequest showMessage:result[@"errMsg"]];
-            return ;
-        }
-        self.StationItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:result[@"value"] ];
+//        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//
+//        if(code  <= -1){
+//            [self.stationTabView reloadData];
+//            [FrameBaseRequest showMessage:result[@"errMsg"]];
+//            return ;
+//        }
+        self.StationItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:result];
         
         [self.stationTabView reloadData];
         [self.stationTabView.mj_header endRefreshing];
@@ -139,7 +219,7 @@ static NSString * const FrameCellID = @"PatrolHistory";
 #pragma mark - UITableviewDatasource 数据源方法
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return FrameWidth(90);
+    return 70;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.StationItem.count;
@@ -169,7 +249,7 @@ static NSString * const FrameCellID = @"PatrolHistory";
                                   @"isShow":@"0"
                                   } forKey:@"station"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.navigationController.tabBarController setSelectedIndex:0];
+        [self.navigationController.tabBarController setSelectedIndex:2];
         [self.navigationController popToRootViewControllerAnimated:true];
         
     }else{
@@ -246,20 +326,55 @@ static NSString * const FrameCellID = @"PatrolHistory";
 
 /*返回 */
 -(void)backBtn{
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
-    [leftButon setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
-    [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
-    //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
-    [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
-    self.navigationItem.leftBarButtonItem = fixedButton;
+    //    health_bgimage@2x
+    UIImageView *bgImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 297)];
+    bgImage.image = [UIImage imageNamed:@"health_bgimage"];
+    bgImage.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:bgImage];
+   
+    
+ 
+    
+    
+    UIButton *backBtn = [[UIButton alloc]initWithFrame: CGRectMake(16,NAVIGATIONBAR_HEIGHT -64,60 ,60)];
+    [backBtn setImage:[UIImage imageNamed:@"backwhite"] forState:UIControlStateNormal];
+    [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:backBtn];
+    [backBtn setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
+    
+    self.rightButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    self.rightButon.frame = CGRectMake(0,0,80,FrameWidth(40));
+  
+    [self.rightButon addTarget:self action:@selector(rightButon:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButon setTitle:@"综合分析法" forState:UIControlStateNormal];
+    [self.rightButon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.view addSubview:self.rightButon];
+   
+    
+    UIImageView *rightImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 7, 10)];
+    rightImage.image = [UIImage imageNamed:@"right_arrow"];
+    [self.view addSubview:rightImage];
+    [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(backBtn.mas_centerY);
+        make.right.equalTo(self.view.mas_right).offset(-20);
+    }];
+    [self.rightButon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(backBtn.mas_centerY);
+        make.right.equalTo(rightImage.mas_left).offset(-1);
+    }];
+       
 }
+
+
+
+
 -(void)backAction {
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation2"] forBarMetrics:UIBarMetricsDefault];
     
     [self.navigationController popViewControllerAnimated:YES];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -273,38 +388,43 @@ static NSString * const FrameCellID = @"PatrolHistory";
 
 //台站解说
 -(void)setExplainBtn{
-        //healthWindow = [[UIWindow alloc]initWithFrame:CGRectMake(FrameWidth(520), FrameWidth(560), FrameWidth(120), FrameWidth(120))];
-        UIButton * healthBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(500), FrameWidth(520),FrameWidth(120), FrameWidth(110))];
+    //healthWindow = [[UIWindow alloc]initWithFrame:CGRectMake(FrameWidth(520), FrameWidth(560), FrameWidth(120), FrameWidth(120))];
+    UIButton * healthBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 58-20, SCREEN_HEIGHT/2 +50,58, 61)];
     
-        [healthBtn setBackgroundImage:[UIImage imageNamed:@"home_explain_biao"] forState:UIControlStateNormal];
-        [healthBtn addTarget:self action:@selector(explainBtnClick) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:healthBtn];
+    [healthBtn setBackgroundImage:[UIImage imageNamed:@"station_rank"] forState:UIControlStateNormal];
+    [healthBtn addTarget:self action:@selector(explainBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:healthBtn];
 }
 -(void)explainBtnClick{
     NSLog(@"explainBtnClick   explain_all");
-    UIViewController *vc = [UIViewController new];
-    vc.view.backgroundColor = [UIColor clearColor];
+    if (self.overAlertCenterView.isHidden) {
+          self.overAlertCenterView.hidden = NO;
+      }
+  
     
-    vc.view.frame = CGRectMake(FrameWidth(70), FrameWidth(225), FrameWidth(505), FrameWidth(780));
-    vc.view.layer.cornerRadius = 9.0;
-    vc.view.layer.masksToBounds = YES;
-    UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"explain_all"]];
-    explanAll.frame = CGRectMake(0, 0,  FrameWidth(505), FrameWidth(660));
-    [vc.view addSubview:explanAll];
+//    UIViewController *vc = [UIViewController new];
+//    vc.view.backgroundColor = [UIColor clearColor];
+//    
+//    vc.view.frame = CGRectMake(FrameWidth(70), FrameWidth(225), FrameWidth(505), FrameWidth(780));
+//    vc.view.layer.cornerRadius = 9.0;
+//    vc.view.layer.masksToBounds = YES;
+//    UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"explain_all"]];
+//    explanAll.frame = CGRectMake(0, 0,  FrameWidth(505), FrameWidth(660));
+//    [vc.view addSubview:explanAll];
     //UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(FrameWidth(252), FrameWidth(660), 1, FrameWidth(50))];
     //lineView.backgroundColor = [UIColor whiteColor];
    // [vc.view addSubview:lineView];
     
-    UIButton * healthBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(220), FrameWidth(660),FrameWidth(60), FrameWidth(115))];
-
-    [healthBtn setBackgroundImage:[UIImage imageNamed:@"explain_close"] forState:UIControlStateNormal];
-    [healthBtn addTarget:self action:@selector(closeExplain) forControlEvents:UIControlEventTouchUpInside];
-    [vc.view addSubview:healthBtn];
-    
-    
-    
-    
-    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentCenter overlayDismissed:nil];
+//    UIButton * healthBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(220), FrameWidth(660),FrameWidth(60), FrameWidth(115))];
+//
+//    [healthBtn setBackgroundImage:[UIImage imageNamed:@"explain_close"] forState:UIControlStateNormal];
+//    [healthBtn addTarget:self action:@selector(closeExplain) forControlEvents:UIControlEventTouchUpInside];
+//    [vc.view addSubview:healthBtn];
+//
+//
+//
+//
+//    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentCenter overlayDismissed:nil];
 }
 
 -(void)closeExplain{
@@ -312,5 +432,41 @@ static NSString * const FrameCellID = @"PatrolHistory";
     
 }
 
+- (KG_OverAlertView *)overAlertView {
+    if (!_overAlertView) {
+        _overAlertView = [[KG_OverAlertView alloc]init];
+        [JSHmainWindow addSubview:self.overAlertView];
+        [self.overAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.right.bottom.left.equalTo(self.view);
+          
+        }];
+        _overAlertView.didsel = ^(NSString * _Nonnull selString) {
+            self.typeString = selString;
+            if ([self.typeString isEqualToString:@"comprehensiveScoringMethod"]) {
+                [self.rightButon setTitle:[NSString stringWithFormat:@"综合分析法"] forState:UIControlStateNormal];
+            }else if ([self.typeString isEqualToString:@"syntheticalIndexMethod"]) {
+                [self.rightButon setTitle:[NSString stringWithFormat:@"综合指数法"] forState:UIControlStateNormal];
+            }else if ([self.typeString isEqualToString:@"greyCorrelativeAnalysis"]) {
+                [self.rightButon setTitle:[NSString stringWithFormat:@"灰色关联分析法"] forState:UIControlStateNormal];
+            }
+            [self loadMoreData];
+        };
+     
+    }
+    return _overAlertView;
+}
 
+- (KG_OverAlertCenterView *)overAlertCenterView {
+    
+    if (!_overAlertCenterView) {
+        _overAlertCenterView = [[KG_OverAlertCenterView alloc]init];
+        [self.view addSubview:self.overAlertCenterView];
+        [self.overAlertCenterView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.right.bottom.left.equalTo(self.view);
+          
+        }];
+        
+    }
+    return _overAlertCenterView;
+}
 @end

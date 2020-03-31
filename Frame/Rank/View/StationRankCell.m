@@ -30,6 +30,18 @@
     int level = [self getNum:StationItem.points];
     _stationName.text = [NSString stringWithFormat:@"%@",StationItem.stationName] ;
     [_stationrank setImage:[UIImage imageNamed:[NSString stringWithFormat:@"station_rank%d",level]]];
+    float rowNum = [StationItem.points floatValue];
+    
+    if(0 <= rowNum&& rowNum <= 69){
+        [_stationrank setImage:[UIImage imageNamed:@"star_red"]];
+    }else if(70 <= rowNum&& rowNum <80){
+        [_stationrank setImage:[UIImage imageNamed:@"star_orange"]];
+    }else if(80 <= rowNum&& rowNum <= 89){
+        [_stationrank setImage:[UIImage imageNamed:@"star_yellowgreen"]];
+    }else if(90 <= rowNum&& rowNum <= 100){
+        [_stationrank setImage:[UIImage imageNamed:@"star_green"]];
+    }
+   
     _rankNum.text = [NSString stringWithFormat:@"%.1f分",point] ;
     
     _rankNum.textColor = [self getColor:StationItem.points];
@@ -39,13 +51,13 @@
 
 -(int)getNum:(NSString *)row{
     float rowNum = [row floatValue];
-    if(0 <= rowNum&& rowNum <= 80){
+    if(0 <= rowNum&& rowNum <= 69){
         return 1;
-    }else if(80 < rowNum&& rowNum <= 90){
+    }else if(70 <= rowNum&& rowNum <80){
         return 3;
-    }else if(90 < rowNum&& rowNum <= 95){
+    }else if(80 <= rowNum&& rowNum <= 89){
         return 4;
-    }else if(95 < rowNum&& rowNum <= 100){
+    }else if(90 <= rowNum&& rowNum <= 100){
         return 5;
     }
     return 0;
@@ -67,14 +79,14 @@
 -(UIColor *)getColor:(NSString *)row{
     float rowNum = [row floatValue];
     
-    if(0 <= rowNum&& rowNum <= 80){
-        return FrameColor(255, 0, 0);
-    }else if(80 < rowNum&& rowNum <= 90){
-        return FrameColor(255,215,0);
-    }else if(90 < rowNum&& rowNum <= 95){
-        return FrameColor(144,238,144);
-    }else if(95 < rowNum&& rowNum <= 100){
-        return FrameColor(0, 250, 150);
+    if(0 <= rowNum&& rowNum <= 69){
+        return [UIColor colorWithHexString:@"#FB394C"];
+    }else if(70 <= rowNum&& rowNum <80){
+        return [UIColor colorWithHexString:@"#FFA800"];
+    }else if(80 <= rowNum&& rowNum <= 89){
+        return [UIColor colorWithHexString:@"#99E14D"];
+    }else if(90 <= rowNum&& rowNum <= 100){
+        return [UIColor colorWithHexString:@"#08CEB2"];
     }
     return listGrayColor;
     /*
