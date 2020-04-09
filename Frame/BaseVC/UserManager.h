@@ -13,10 +13,8 @@
 
 interfaceSingle(UserManager)
 
-
-
 /**  用户信息 */
 @property (nonatomic, assign) BOOL loginSuccess;
 
-
+@property(nonatomic, strong) NSDictionary *currentStationDic;
 @end

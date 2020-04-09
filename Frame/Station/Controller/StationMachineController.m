@@ -18,6 +18,7 @@
 #import "UIColor+Extension.h"
 #import <MJExtension.h>
 #import "StationMachineDetailMoreController.h"
+#import "KG_UpsAlertView.h"
 
 @interface StationMachineController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -25,6 +26,7 @@
 @property (strong, nonatomic) NSArray<MachineItems *> * MachineList1;
 @property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
 @property(strong,nonatomic)UITableView *filterTabView;
+@property (strong, nonatomic) KG_UpsAlertView *upsAlertView;
 /** 请求管理者 */
 //@property (nonatomic,weak) AFHTTPSessionManager * manager;
 /** 用于加载下一页的参数(页码) */
@@ -37,7 +39,27 @@
         [self backAction];
     }
     [self backBtn];
+   
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     
+  @{NSFontAttributeName:[UIFont systemFontOfSize:18],
     
+    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
+    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+
+    self.navigationController.navigationBar.translucent = NO;
+
+}
+
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
 }
 
 - (void)viewDidLoad {
@@ -260,41 +282,46 @@
 }
 
 -(void)getMachinetypeList{
-    float moreheight = FrameWidth(900);
-    if(HEIGHT_SCREEN == 812){
-        moreheight = -FrameWidth(1100);
+    
+    if (self.upsAlertView.isHidden) {
+        self.upsAlertView.hidden = NO;
     }
-    UIViewController *vc = [UIViewController new];
-    
-    vc.view.frame = CGRectMake(FrameWidth(320), FrameWidth(128), FrameWidth(320),  moreheight);
-    //_vc.view.layer.cornerRadius = 4.0;
-    vc.view.layer.masksToBounds = YES;
-    UIImageView * xialaImage = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, FrameWidth(300),  FrameWidth(20))];
-    xialaImage.image = [UIImage imageNamed:@"station_pulldown_right"];
-    [vc.view addSubview:xialaImage];
-    
-    float tabelHeight = self.StationItem.count * FrameWidth(56);
-    if(tabelHeight > FrameWidth(400)){
-        tabelHeight = FrameWidth(400);
-    }
-    
-    //设置滚动
-    self.filterTabView = [[UITableView alloc] initWithFrame:CGRectMake(0, FrameWidth(20), FrameWidth(300) , tabelHeight)];
-    self.filterTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    [vc.view addSubview:self.filterTabView];
-    self.filterTabView.dataSource = self;
-    self.filterTabView.delegate = self;
-    [self.filterTabView reloadData];
-    
-    UIView *alphaView = [[UIView alloc]initWithFrame:CGRectMake(0, tabelHeight, FrameWidth(300),  FrameWidth(1000))];
-    alphaView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *viewTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeFrame)];
-    [alphaView addGestureRecognizer:viewTapGesture];
-    [viewTapGesture setNumberOfTapsRequired:1];
-    [vc.view addSubview:alphaView];
-    
-    
-    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentRight overlayDismissed:nil];
+      
+//    float moreheight = FrameWidth(900);
+//    if(HEIGHT_SCREEN == 812){
+//        moreheight = -FrameWidth(1100);
+//    }
+//    UIViewController *vc = [UIViewController new];
+//
+//    vc.view.frame = CGRectMake(FrameWidth(320), FrameWidth(128), FrameWidth(320),  moreheight);
+//    //_vc.view.layer.cornerRadius = 4.0;
+//    vc.view.layer.masksToBounds = YES;
+//    UIImageView * xialaImage = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, FrameWidth(300),  FrameWidth(20))];
+//    xialaImage.image = [UIImage imageNamed:@"station_pulldown_right"];
+//    [vc.view addSubview:xialaImage];
+//
+//    float tabelHeight = self.StationItem.count * FrameWidth(56);
+//    if(tabelHeight > FrameWidth(400)){
+//        tabelHeight = FrameWidth(400);
+//    }
+//
+//    //设置滚动
+//    self.filterTabView = [[UITableView alloc] initWithFrame:CGRectMake(0, FrameWidth(20), FrameWidth(300) , tabelHeight)];
+//    self.filterTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    [vc.view addSubview:self.filterTabView];
+//    self.filterTabView.dataSource = self;
+//    self.filterTabView.delegate = self;
+//    [self.filterTabView reloadData];
+//
+//    UIView *alphaView = [[UIView alloc]initWithFrame:CGRectMake(0, tabelHeight, FrameWidth(300),  FrameWidth(1000))];
+//    alphaView.userInteractionEnabled = YES;
+//    UITapGestureRecognizer *viewTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeFrame)];
+//    [alphaView addGestureRecognizer:viewTapGesture];
+//    [viewTapGesture setNumberOfTapsRequired:1];
+//    [vc.view addSubview:alphaView];
+//
+//
+//    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentRight overlayDismissed:nil];
     
 }
 -(void)closeFrame{//消失
@@ -319,7 +346,7 @@
 -(void)backBtn{
     UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
-    [leftButon setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
+    [leftButon setImage:[UIImage imageNamed:@"back_gray"] forState:UIControlStateNormal];
     [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
     //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
     [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
@@ -328,17 +355,34 @@
     
     UIButton *rightButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     rightButon.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-    [rightButon setImage:[UIImage imageNamed:@"station_right_more"] forState:UIControlStateNormal];
+    [rightButon setImage:[UIImage imageNamed:@"ups_right"] forState:UIControlStateNormal];
     [rightButon addTarget:self action:@selector(getMachinetypeList) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightfixedButton = [[UIBarButtonItem alloc]initWithCustomView:rightButon];
     self.navigationItem.rightBarButtonItem = rightfixedButton;
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
 }
 -(void)backAction {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"bottomapevent" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (KG_UpsAlertView *)upsAlertView {
+    if (!_upsAlertView) {
+        _upsAlertView = [[KG_UpsAlertView alloc]init];
+        [JSHmainWindow addSubview:self.upsAlertView];
+        [self.upsAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.bottom.left.equalTo(self.view);
+            make.top.equalTo(self.view.mas_top).offset(-NAVIGATIONBAR_HEIGHT);
+          
+        }];
+        _upsAlertView.didsel = ^(NSString * _Nonnull selString) {
+            
+        };
+     
+    }
+    return _upsAlertView;
 }
 
 @end

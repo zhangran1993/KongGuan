@@ -20,6 +20,10 @@
 #import <MJExtension.h>
 #import "UIColor+Extension.h"
 #import <SDImageCache.h>
+#import "KG_SecView.h"
+#import "KG_EnvView.h"
+#import "KG_PowView.h""
+#import "KG_StationDetailModel.h"
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
@@ -55,6 +59,25 @@
 /**  标题栏 */
 @property (nonatomic, strong) UILabel * titleLabel;
 @property (nonatomic, strong)  UIView *navigationView;
+//安防
+@property (strong, nonatomic) KG_SecView *secView;
+//环境
+@property (strong, nonatomic) KG_EnvView *envView;
+//动力
+@property (strong, nonatomic) KG_PowView *powerView;
+
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) NSMutableDictionary *dataDic;
+//天气
+@property (strong, nonatomic) NSDictionary *weatherDic;
+@property (strong, nonatomic) KG_StationDetailModel *dataModel;
+
+@property (strong, nonatomic) UIImageView *anfangImage;
+@property (strong, nonatomic) UILabel *anfangNumLalbel;
+@property (strong, nonatomic) UIImageView *envImage;
+@property (strong, nonatomic) UILabel *envNumLalbel;
+@property (strong, nonatomic) UIImageView *powerImage;
+@property (strong, nonatomic) UILabel *powerNumLabel;
 @end
 
 @implementation StationDetailController
@@ -69,7 +92,6 @@
   
     [self createNaviTopView];
     [self createTopView];
-          
           
     float moreheight = ZNAVViewH;
     if(HEIGHT_SCREEN == 812){
@@ -103,7 +125,7 @@
     self.statusArray = [NSMutableArray array];
     [super viewDidLoad];
     
-    
+    self.dataModel = [[KG_StationDetailModel alloc]init];
     
 }
 
@@ -228,55 +250,33 @@
         make.width.equalTo(@60);
         make.height.equalTo(@18);
     }];
-    UIImageView *anfangImage = [[UIImageView alloc]init];
-    anfangImage.image = [UIImage imageNamed:@"level_prompt"];
-    [self.runView addSubview:anfangImage];
-    [anfangImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.anfangImage = [[UIImageView alloc]init];
+    self.anfangImage.image = [UIImage imageNamed:@"level_prompt"];
+    [self.runView addSubview:self.anfangImage];
+    [self.anfangImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(anfangLalbel.mas_centerY);
         make.left.equalTo(anfangLalbel.mas_right).offset(1);
         make.width.equalTo(@30);
         make.height.equalTo(@17);
     }];
     
-    UILabel *anfangNumLalbel = [[UILabel alloc]init];
-    [self.runView addSubview:anfangNumLalbel];
-    anfangNumLalbel.layer.cornerRadius = 5.f;
-    anfangNumLalbel.layer.masksToBounds = YES;
-    anfangNumLalbel.text = @"1";
-    anfangNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    anfangNumLalbel.font = [UIFont systemFontOfSize:14];
-    anfangNumLalbel.numberOfLines = 1;
+    self.anfangNumLalbel = [[UILabel alloc]init];
+    [self.runView addSubview:self.anfangNumLalbel];
+    self.anfangNumLalbel.layer.cornerRadius = 5.f;
+    self.anfangNumLalbel.layer.masksToBounds = YES;
+    self.anfangNumLalbel.text = @"1";
+    self.anfangNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    self.anfangNumLalbel.font = [UIFont systemFontOfSize:10];
+    self.anfangNumLalbel.numberOfLines = 1;
     
-    anfangNumLalbel.textAlignment = NSTextAlignmentLeft;
-    [anfangNumLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(anfangImage.mas_right).offset(-5);
-        make.bottom.equalTo(anfangImage.mas_top).offset(-5);
+    self.anfangNumLalbel.textAlignment = NSTextAlignmentCenter;
+    [self.anfangNumLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.anfangImage.mas_right).offset(-5);
+        make.bottom.equalTo(self.anfangImage.mas_top).offset(5);
         make.width.equalTo(@10);
         make.height.equalTo(@10);
     }];
-    //设备监测
-    if (self.statusArray.count > 0) {
-        EquipmentStatusModel *model = self.statusArray[0];
-        switch (model.status) {
-            case 0:
-                anfangImage.image = [UIImage imageNamed:@"level_normal"];
-                break;
-            case 1:
-                anfangImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%ld级",(long)model.level]]];
-                anfangNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%ld级",(long)model.level]];
-                anfangNumLalbel.text = [NSString stringWithFormat:@"%ld",(long)model.num];
-                break;
-            case 2:{
-                anfangImage.image = [UIImage imageNamed:@"level_normal"];
-                break;
-            }
-            case 3:
-                anfangImage.image = [UIImage imageNamed:@"level_normal"];
-                break;
-            default:
-                break;
-        }
-    }
+   
     UILabel *envLalbel = [[UILabel alloc]init];
     [self.runView addSubview:envLalbel];
     envLalbel.text = @"环境监测";
@@ -290,47 +290,33 @@
         make.width.equalTo(@60);
         make.height.equalTo(@18);
     }];
-    UIImageView *envImage = [[UIImageView alloc]init];
-    envImage.image = [UIImage imageNamed:@"level_prompt"];
-    [self.runView addSubview:envImage];
-    [envImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.envImage = [[UIImageView alloc]init];
+    self.envImage.image = [UIImage imageNamed:@"level_prompt"];
+    [self.runView addSubview:self.envImage];
+    [self.envImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(envLalbel.mas_centerY);
         make.left.equalTo(envLalbel.mas_right).offset(1);
         make.width.equalTo(@30);
         make.height.equalTo(@17);
     }];
     
-    UILabel *envNumLalbel = [[UILabel alloc]init];
-    [self.runView addSubview:envNumLalbel];
-    envNumLalbel.text = @"1";
-    envNumLalbel.layer.cornerRadius = 5.f;
-    envNumLalbel.layer.masksToBounds = YES;
-    envNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    envNumLalbel.font = [UIFont systemFontOfSize:14];
-    envNumLalbel.numberOfLines = 1;
-    envNumLalbel.backgroundColor = [self getTextColor:@""];
-    envNumLalbel.textAlignment = NSTextAlignmentLeft;
-    [envNumLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(envImage.mas_right).offset(-2);
-        make.bottom.equalTo(envImage.mas_top).offset(-5);
+    self.envNumLalbel = [[UILabel alloc]init];
+    [self.runView addSubview:self.envNumLalbel];
+    self.envNumLalbel.text = @"1";
+    self.envNumLalbel.layer.cornerRadius = 5.f;
+    self.envNumLalbel.layer.masksToBounds = YES;
+    self.envNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    self.envNumLalbel.font = [UIFont systemFontOfSize:10];
+    self.envNumLalbel.numberOfLines = 1;
+    self.envNumLalbel.backgroundColor = [self getTextColor:@""];
+    self.envNumLalbel.textAlignment = NSTextAlignmentCenter;
+    [self.envNumLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.envImage.mas_right).offset(-2);
+        make.bottom.equalTo(self.envImage.mas_top).offset(5);
         make.width.equalTo(@10);
         make.height.equalTo(@10);
     }];
-    if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"0"]){
-        
-        envImage.image = [UIImage imageNamed:@"level_normal"];
-    }else if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"3"]){
-        
-        envImage.image = [UIImage imageNamed:@"level_normal"];
-    }else if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"1"]){
-        envImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",_stationDetail[@"environmentStatus"][@"level"]]]];
-        envNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",_stationDetail[@"environmentStatus"][@"level"]]];
-        envNumLalbel.text = [NSString stringWithFormat:@"%@",_stationDetail[@"environmentStatus"][@"num"]];
-        
-    }else{
-        envImage.image = [UIImage imageNamed:@"level_normal"];
-    }
-    
+   
     UILabel *powerLalbel = [[UILabel alloc]init];
     [self.runView addSubview:powerLalbel];
     powerLalbel.text = @"动力监测";
@@ -339,49 +325,38 @@
     powerLalbel.numberOfLines = 1;
     powerLalbel.textAlignment = NSTextAlignmentLeft;
    
-    UIImageView *powerImage = [[UIImageView alloc]init];
-    powerImage.image = [UIImage imageNamed:@"level_prompt"];
-    [self.runView addSubview:powerImage];
-    [powerImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.powerImage = [[UIImageView alloc]init];
+    self.powerImage.image = [UIImage imageNamed:@"level_prompt"];
+    [self.runView addSubview:self.powerImage];
+    [self.powerImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(anfangLalbel.mas_centerY);
         make.right.equalTo(self.runView.mas_right).offset(-9);
         make.width.equalTo(@30);
         make.height.equalTo(@17);
     }];
     [powerLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
-           make.right.equalTo(powerImage.mas_left).offset(-5);
+           make.right.equalTo(self.powerImage.mas_left).offset(-5);
            make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
            make.width.equalTo(@60);
            make.height.equalTo(@18);
        }];
-    UILabel *powerNumLabel = [[UILabel alloc]init];
-    [self.runView addSubview:powerNumLabel];
-    powerNumLabel.text = @"1";
-    powerNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    powerNumLabel.font = [UIFont systemFontOfSize:14];
-    powerNumLabel.numberOfLines = 1;
-    powerNumLabel.layer.cornerRadius = 5.f;
-    powerNumLabel.layer.masksToBounds = YES;
-    powerNumLabel.backgroundColor = [self getTextColor:@""];
-    powerNumLabel.textAlignment = NSTextAlignmentLeft;
-    [powerNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(powerImage.mas_right).offset(-5);
-        make.bottom.equalTo(powerImage.mas_top).offset(-5);
+    self.powerNumLabel = [[UILabel alloc]init];
+    [self.runView addSubview:self.powerNumLabel];
+    self.powerNumLabel.text = @"1";
+    self.powerNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    self.powerNumLabel.font = [UIFont systemFontOfSize:10];
+    self.powerNumLabel.numberOfLines = 1;
+    self.powerNumLabel.layer.cornerRadius = 5.f;
+    self.powerNumLabel.layer.masksToBounds = YES;
+    self.powerNumLabel.backgroundColor = [self getTextColor:@""];
+    self.powerNumLabel.textAlignment = NSTextAlignmentCenter;
+    [self.powerNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.powerImage.mas_right).offset(-5);
+        make.bottom.equalTo(self.powerImage.mas_top).offset(5);
         make.width.equalTo(@10);
         make.height.equalTo(@10);
     }];
-    if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"0"]){
-        
-        powerImage.image = [UIImage imageNamed:@"level_normal"];
-    }else if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"3"]){
-        powerImage.image = [UIImage imageNamed:@"level_normal"];
-    }else if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"1"]){
-        powerImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",_stationDetail[@"powerStatus"][@"level"]]]];
-        powerNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",_stationDetail[@"powerStatus"][@"level"]]];
-        powerNumLabel.text = [NSString stringWithFormat:@"%@",_stationDetail[@"powerStatus"][@"num"]];
-    }else{
-        powerImage.image = [UIImage imageNamed:@"level_normal"];
-    }
+   
     [self.tableview reloadData];
 }
 
@@ -450,6 +425,97 @@
     //[self.view addSubview:_tableview];
     
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoBottomApevent:) name:@"bottomapevent" object:nil];
+     [self queryStationDetailData];
+         
+}
+
+
+- (void)refreshData {
+    //设备监测
+    
+    NSDictionary *secDic = self.dataModel.securityStatus;
+    if (isSafeDictionary(secDic)) {
+         if([secDic[@"status"] isEqualToString:@"0"]){
+               self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
+           }else if([secDic[@"status"] isEqualToString:@"3"]){
+               self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
+           }else if([secDic[@"status"] isEqualToString:@"1"]){
+               self.anfangImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",secDic[@"level"]]]];
+               self.anfangNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",secDic[@"level"]]];
+               self.anfangNumLalbel.text = [NSString stringWithFormat:@"%@",secDic[@"num"]];
+               
+           }else{
+               self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
+           }
+    }
+   
+    
+    NSDictionary *envDic = self.dataModel.environmentStatus;
+    if (isSafeDictionary(envDic)) {
+        if([envDic[@"status"] isEqualToString:@"0"]){
+               
+               self.envImage.image = [UIImage imageNamed:@"level_normal"];
+           }else if([envDic[@"status"] isEqualToString:@"3"]){
+               
+               self.envImage.image = [UIImage imageNamed:@"level_normal"];
+           }else if([envDic[@"status"] isEqualToString:@"1"]){
+               self.envImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",envDic[@"level"]]]];
+               self.envNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",envDic[@"level"]]];
+               self.envNumLalbel.text = [NSString stringWithFormat:@"%@",envDic[@"num"]];
+               
+           }else{
+               self.envImage.image = [UIImage imageNamed:@"level_normal"];
+           }
+    }
+    NSDictionary *powDic = self.dataModel.powerStatus;
+    if (isSafeDictionary(powDic)) {
+        if([powDic[@"status"] isEqualToString:@"0"]){
+            
+            self.powerImage.image = [UIImage imageNamed:@"level_normal"];
+        }else if([powDic[@"status"] isEqualToString:@"3"]){
+            self.powerImage.image = [UIImage imageNamed:@"level_normal"];
+        }else if([powDic[@"status"] isEqualToString:@"1"]){
+            self.powerImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",powDic[@"level"]]]];
+            self.powerNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",powDic[@"level"]]];
+            self.powerNumLabel.text = [NSString stringWithFormat:@"%@",powDic[@"num"]];
+        }else{
+            self.powerImage.image = [UIImage imageNamed:@"level_normal"];
+        }
+        
+    }
+    [self.tableview reloadData];
+}
+//获取某个台站详情页接口：
+
+- (void)queryStationDetailData{
+    
+    NSDictionary *dic = [UserManager shareUserManager].currentStationDic;
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/%@",dic[@"airport"]];
+    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/35TXFC";
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+       
+        [self.dataModel mj_setKeyValues:result[@"value"]];
+        [self refreshData];
+        [self queryWeatherData:self.dataModel.station[@"latitude"] withLon:self.dataModel.station[@"longitude"]];
+        NSLog(@"1");
+      
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        //[FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
     
 }
 /**
@@ -470,11 +536,8 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-    //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    //    self.navigationController.navigationBar.translucent = NO;
-    //    [self.navigationController setNavigationBarHidden:NO];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-     [self.navigationController setNavigationBarHidden:NO];
+    self.navigationController.navigationBarHidden = NO;
 }
 
 //展示navigation背景色
@@ -795,223 +858,36 @@
         NSLog(@"_stationDetail == nil ");
         return thiscell;
     }
-   
-    //环境监测
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, FrameWidth(84))];
-    view.backgroundColor = [UIColor whiteColor];
+    UIView *bgView = [[UIView alloc] init];
+    bgView.frame = CGRectMake(16,10,SCREEN_WIDTH -32,241);
     
-    [thiscell addSubview:view];
-    CommonExtension *com = [CommonExtension new];
-    [com addTouchViewParent:view];
-    com.delegate = self;
-    com.parentViewTitle = @"环境监测";
+    bgView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+    bgView.layer.cornerRadius = 9;
+    bgView.layer.shadowColor = [UIColor colorWithRed:238/255.0 green:240/255.0 blue:245/255.0 alpha:1.0].CGColor;
+    bgView.layer.shadowOffset = CGSizeMake(0,2);
+    bgView.layer.shadowOpacity = 1;
+    bgView.layer.shadowRadius = 2;
+    [thiscell addSubview:bgView];
     
-    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(84))];
+    UILabel  *leftTitle = [[UILabel alloc]init];
+    leftTitle.text = @"机房实时视频";
+    leftTitle.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    leftTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
+    [bgView addSubview:leftTitle];
+    leftTitle.numberOfLines = 1;
+    leftTitle.textAlignment = NSTextAlignmentLeft;
+    [leftTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(bgView.mas_left).offset(16);
+        make.top.equalTo(bgView.mas_top).offset(17);
+        make.width.equalTo(@120);
+        make.height.equalTo(@22);
+    }];
     
-    title.font = FontSize(18);
-    title.text = @"环境监测";
-    [view addSubview:title];
-    
-    _btnFont = FontBSize(13);
-    //
-    if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"0"]){
-        
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-        [normalBtn setBackgroundColor:FrameColor(120, 203, 161)];
-        normalBtn.layer.cornerRadius = 2;
-        normalBtn.titleLabel.font = _btnFont;
-        [normalBtn setTitle: @"正常"   forState:UIControlStateNormal];
-        normalBtn.titleLabel.textColor = [UIColor whiteColor];
-        [view addSubview:normalBtn];
-    }else if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"3"]){
-        
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-        [normalBtn setBackgroundColor:FrameColor(252,201,84)];
-        normalBtn.layer.cornerRadius = 2;
-        normalBtn.titleLabel.font = _btnFont;
-        [normalBtn setTitle: @"正常"   forState:UIControlStateNormal];
-        normalBtn.titleLabel.textColor = [UIColor whiteColor];
-        [view addSubview:normalBtn];
-    }else if([_stationDetail[@"environmentStatus"][@"status"] isEqualToString:@"1"]){
-        UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(420), FrameWidth(32), FrameWidth(120), FrameWidth(28))];
-        
-        [warnBtn setBackgroundColor:warnColor];
-        warnBtn.layer.cornerRadius = 2;
-        
-        warnBtn.titleLabel.font = _btnFont;
-        [warnBtn setTitle:[NSString stringWithFormat:@"告警数量%@",_stationDetail[@"environmentStatus"][@"num"]] forState:UIControlStateNormal];
-        warnBtn.titleLabel.textColor = [UIColor whiteColor];
-        [view addSubview:warnBtn];
-        //
-        UIButton *LevelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-        LevelBtn.layer.cornerRadius = 2;
-        LevelBtn.titleLabel.font = _btnFont;
-        [CommonExtension addLevelBtn:LevelBtn level:_stationDetail[@"environmentStatus"][@"level"]];
-        
-        [view addSubview:LevelBtn];
-        
-    }else{
-        UILabel *noneMachine = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(560), FrameWidth(32), FrameWidth(70), FrameWidth(26))];
-        noneMachine.text = @"－－";
-        [view addSubview:noneMachine];
-    }
-    //动力监测
-    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, FrameWidth(85), WIDTH_SCREEN, FrameWidth(84))];
-    view1.backgroundColor = [UIColor whiteColor];
-    //    view1.userInteractionEnabled = YES;
-    //    view1.tag = 200;
-    //    UITapGestureRecognizer *viewTapGesture1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(machineTapevent:)];
-    //    [view1 addGestureRecognizer:viewTapGesture1];
-    //    [viewTapGesture1 setNumberOfTapsRequired:1];
-    
-    [thiscell addSubview:view1];
-    
-    CommonExtension *com1 = [CommonExtension new];
-    [com1 addTouchViewParentTagClass:view1];
-    com1.delegate = self;
-    com1.parentViewTag = 200;
-    
-    UILabel *title1 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(84))];
-    title1.text = @"动力监测";
-    title1.font = FontSize(18);
-    [view1 addSubview:title1];
-    //
-    if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"0"]){
-        
-        UIButton *normalBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-        [normalBtn1 setBackgroundColor:FrameColor(120, 203, 161)];
-        normalBtn1.layer.cornerRadius = 2;
-        normalBtn1.titleLabel.font = _btnFont;
-        [normalBtn1 setTitle: @"正常"   forState:UIControlStateNormal];
-        normalBtn1.titleLabel.textColor = [UIColor whiteColor];
-        [view1 addSubview:normalBtn1];
-    }else if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"3"]){
-        
-        UIButton *normalBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-        [normalBtn1 setBackgroundColor:FrameColor(252,201,84)];
-        normalBtn1.layer.cornerRadius = 2;
-        normalBtn1.titleLabel.font = _btnFont;
-        [normalBtn1 setTitle: @"正常"   forState:UIControlStateNormal];
-        normalBtn1.titleLabel.textColor = [UIColor whiteColor];
-        [view1 addSubview:normalBtn1];
-    }else if([_stationDetail[@"powerStatus"][@"status"] isEqualToString:@"1"]){
-        //
-        UIButton *warnBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(420), FrameWidth(32), FrameWidth(120), FrameWidth(28))];
-        [warnBtn1 setBackgroundColor:warnColor];
-        warnBtn1.layer.cornerRadius = 2;
-        [warnBtn1 setTitle:[NSString stringWithFormat:@"告警数量%@",_stationDetail[@"powerStatus"][@"num"]] forState:UIControlStateNormal];
-        warnBtn1.titleLabel.font = _btnFont;
-        warnBtn1.titleLabel.textColor = [UIColor whiteColor];
-        [view1 addSubview:warnBtn1];
-        //
-        UIButton *LevelBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-        LevelBtn1.layer.cornerRadius = 2;
-        LevelBtn1.titleLabel.font = _btnFont;
-        [CommonExtension addLevelBtn:LevelBtn1 level:_stationDetail[@"powerStatus"][@"level"]];
-        
-        [view1 addSubview:LevelBtn1];
-    }else{
-        UILabel *noneMachine = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(560), FrameWidth(32), FrameWidth(70), FrameWidth(26))];
-        noneMachine.text = @"－－";
-        [view1 addSubview:noneMachine];
-    }
-    
-    //设备监测
-    UIView *deviceTesting = [[UIView alloc]initWithFrame:CGRectMake(0, FrameWidth(170), WIDTH_SCREEN, FrameWidth(84))];
-    deviceTesting.backgroundColor = [UIColor whiteColor];
-    deviceTesting.userInteractionEnabled = YES;
-    CommonExtension *com3 = [CommonExtension new];
-    [com3 addTouchViewParent:deviceTesting];
-    com3.delegate = self;
-    com3.parentViewTitle = @"设备监测";
-    [thiscell addSubview:deviceTesting];
-    
-    //UITapGestureRecognizer *deviceTestingTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deviceTestingClick)];
-    //[deviceTesting addGestureRecognizer:deviceTestingTapGesture];
-    //
-    
-    UILabel *deviceTestingTitle = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(84))];
-    deviceTestingTitle.text = @"设备监测";
-    deviceTestingTitle.font = FontSize(18);
-    [deviceTesting addSubview:deviceTestingTitle];
-    
-    //    UIButton *stateBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-    //    [stateBtn setBackgroundColor:FrameColor(120, 203, 161)];
-    //    stateBtn.layer.cornerRadius = 2;
-    //    stateBtn.titleLabel.font = _btnFont;
-    //    stateBtn.titleLabel.textColor = [UIColor whiteColor];
-    //    [deviceTesting addSubview:stateBtn];
-    
-    if (self.statusArray.count > 0) {
-        UIButton *stateBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(555), FrameWidth(32), FrameWidth(60), FrameWidth(28))];
-        stateBtn.layer.cornerRadius = 2;
-        stateBtn.titleLabel.font = _btnFont;
-        stateBtn.titleLabel.textColor = [UIColor whiteColor];
-        [deviceTesting addSubview:stateBtn];
-        EquipmentStatusModel *model = self.statusArray[0];
-        switch (model.status) {
-            case 0:
-                [stateBtn setTitle: @"正常"   forState:UIControlStateNormal];
-                [stateBtn setBackgroundColor:FrameColor(120, 203, 161)];
-                break;
-            case 1:
-                [stateBtn setTitle: [NSString stringWithFormat:@"%ld级",(long)model.level ] forState:UIControlStateNormal];
-                [stateBtn setBackgroundColor:FrameColor(242, 108, 107)];
-                
-                UIButton *warnBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(420), FrameWidth(32), FrameWidth(120), FrameWidth(28))];
-                [warnBtn1 setBackgroundColor:warnColor];
-                warnBtn1.layer.cornerRadius = 2;
-                [warnBtn1 setTitle:[NSString stringWithFormat:@"告警数量%ld",(long)model.num] forState:UIControlStateNormal];
-                warnBtn1.titleLabel.font = _btnFont;
-                warnBtn1.titleLabel.textColor = [UIColor whiteColor];
-                [deviceTesting addSubview:warnBtn1];
-                
-                break;
-            case 2:{
-                UILabel *noneMachine = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(560), FrameWidth(32), FrameWidth(70), FrameWidth(26))];
-                noneMachine.text = @"－－";
-                [deviceTesting addSubview:noneMachine];
-                break;
-            }
-            case 3:
-                [stateBtn setTitle: @"正常"   forState:UIControlStateNormal];
-                [stateBtn setBackgroundColor:FrameColor(252,201,84)];
-                break;
-            default:
-                break;
-        }
-    }
-    
-    //视频监测
-    UIView *view2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(deviceTesting.frame)+1, WIDTH_SCREEN, FrameWidth(84))];
-    view2.backgroundColor = [UIColor whiteColor];
-    
-    view2.userInteractionEnabled = YES;
-    
-    CommonExtension *com4 = [CommonExtension new];
-    [com4 addTouchViewParent:view2];
-    com4.delegate = self;
-    com4.parentViewTitle = @"视频监测";
-    
-    //UITapGestureRecognizer *view2TapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(sptapevent:)];
-    //[view2 addGestureRecognizer:view2TapGesture];
-    //[view2TapGesture setNumberOfTapsRequired:1];
-    [thiscell addSubview:view2];
-    
-    UILabel *title2 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(84))];
-    title2.text = @"视频监测";
-    title2.font = FontSize(18);
-    [view2 addSubview:title2];//station_right
-    UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(600), FrameWidth(25), FrameWidth(15), FrameWidth(30))];
-    rightImg.image = [UIImage imageNamed:@"station_right"];
-    [view2 addSubview:rightImg];//station_right
     
     //大图
     
-    float viewHeight = FrameWidth(448);
-    if(self.imageHeight >0){
-        viewHeight = self.imageHeight +FrameWidth(51);
-    }
+    float viewHeight =128;
+   
     
     //    NSString *path_document = NSHomeDirectory();
     //    //设置一个图片的存储路径
@@ -1022,9 +898,9 @@
     //    NSLog(@"image2 is size %@",NSStringFromCGSize(getimage2.size));
     
     
-    UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(view2.frame)+5, WIDTH_SCREEN, viewHeight)];
+    UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0, 225, WIDTH_SCREEN, viewHeight)];
     view3.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:view3];
+//    [thiscell addSubview:view3];
     
     
     NSString *stationString = @"";
@@ -1044,7 +920,7 @@
     UIImageView *BigImg = [[UIImageView alloc]init];
     
     UIImage *imgFromUrl3=[[UIImage alloc]initWithContentsOfFile:aPath3];
-    if(imgFromUrl3) {
+     if(imgFromUrl3) {
         
         NSLog(@"you");
         [BigImg setImage:imgFromUrl3 ];
@@ -1086,8 +962,8 @@
         }
     }];
     
-    BigImg.frame = CGRectMake(FrameWidth(23), FrameWidth(20), FrameWidth(595), viewHeight - FrameWidth(51));
-    BigImg.contentMode = UIViewContentModeScaleAspectFill;
+    BigImg.frame = CGRectMake(SCREEN_WIDTH - 32-16-195, 51, 195, 128);
+    BigImg.contentMode = UIViewContentModeScaleAspectFit;
     if([userDefaults objectForKey:@"station"]){
         NSDictionary * station = [userDefaults objectForKey:@"station"];
         
@@ -1095,467 +971,781 @@
         
     }
     
-    [view3 addSubview:BigImg];//station_right
+   
+    UIView *bgImage = [[UIView alloc] init];
+    bgImage.frame = CGRectMake(96,51,231,150);
+
+    bgImage.layer.backgroundColor = [UIColor colorWithRed:237/255.0 green:242/255.0 blue:252/255.0 alpha:1.0].CGColor;
+    bgImage.layer.cornerRadius = 4;
+    bgImage.layer.shadowColor = [UIColor colorWithRed:238/255.0 green:240/255.0 blue:245/255.0 alpha:1.0].CGColor;
+    bgImage.layer.shadowOffset = CGSizeMake(0,2);
+    bgImage.layer.shadowOpacity = 1;
+    bgImage.layer.shadowRadius = 2;
+    [bgView addSubview:bgImage];
+    [bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(bgView.mas_right).offset(-16);
+        make.width.equalTo(@231);
+        make.height.equalTo(@150);
+        make.top.equalTo(bgView.mas_top).offset(51);
+    }];
+    [bgView addSubview:BigImg];//station_right
+    [BigImg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(bgView.mas_right).offset(-33);
+        make.width.equalTo(@195);
+        make.height.equalTo(@128);
+        make.top.equalTo(bgImage.mas_top).offset(11);
+    }];
+    
     
     UIView *view4 = [[UIView alloc] init];
     view4.backgroundColor = [UIColor whiteColor];
     _newHeight1 = [self setFilterBtn:view4 objects:_objects0 title:@"机房"];
     [view4 setFrame:CGRectMake(0, view3.frame.origin.y + view3.frame.size.height +1, WIDTH_SCREEN, FrameWidth(40)+_newHeight1)];
-    [thiscell addSubview:view4];
+//    [thiscell addSubview:view4];
     
-    
-    //安防情况
-    UIView *view5 = [[UIView alloc]initWithFrame:CGRectMake(0, view4.frame.origin.y + view4.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
-    view5.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:view5];
-    
-    UILabel *title5 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
-    title5.text = @"安防情况";
-    title5.font = FontSize(18);
-    [view5 addSubview:title5];//station_right
-    
-    UIView *view6 = [[UIView alloc]initWithFrame:CGRectMake(0, view5.frame.origin.y + view5.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
-    view6.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:view6];
-    
-    UIView *view7 = [[UIView alloc]init];
-    
-    
-    _objects10 = [NSMutableArray arrayWithObjects:@"temperature",@"humidity",@"immersion",@"ratproof",@"smoke",@"ups",@"electric",@"diesel",@"battery",@"电子围栏",@"红外对射",@"门禁",nil];
-    CGFloat neworign_y = 0;
-    if(_objects1.count > 0){
-        for (int i=0; i<_objects1.count; ++i) {
-            neworign_y = FrameWidth(40) + i * FrameWidth(60);
+    for (int i=0; i<_objects0.count; i++) {
+        UIButton *btn  =[[UIButton alloc]init];
+        btn.tag = i+1;
+        [btn setFrame:CGRectMake(16+16, 51 + bgView.frame.origin.y + i*40 ,73, 30)];
+        [thiscell addSubview:btn];
+        [btn addTarget:self action:@selector(jfbtapevent:) forControlEvents:UIControlEventTouchUpInside];
+        if([stationString isEqualToString:_objects0[i][@"alias"]]) {
+             [btn setBackgroundColor:[UIColor colorWithHexString:@"#EDF2FC"]];
+             [btn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        }else {
             
-            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
-            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
-            
-            //            nameLabel.userInteractionEnabled = YES;
-            
-            nameLabel.font = FontSize(17);
-            
-            nameLabel.textColor = listGrayColor;
-            CommonExtension * com10 = [CommonExtension new];
-            com10.delegate = self;
-            com10.parentViewTag = i + 100;
-            [com10 addTouchViewParentTagClass:backView];
-            
-            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects1[i][@"name"]] ;//;
-            [view7 addSubview:backView];
-            [backView addSubview:nameLabel];
-            
-            
-            
-            
-            NSString *imgIcon =  @"station_tongyong";
-            NSString *btnIcon =  @"正常";
-            
-            
-            NSUInteger index = [_objects10  indexOfObject:_objects1[i][@"name"]];
-            switch (index) {
-                case 0:
-                    imgIcon =  @"station_wendu";
-                    break;
-                case 1:
-                    imgIcon =  @"station_shidu";
-                    break;
-                case 2:
-                    imgIcon =  @"station_shuijin";
-                    break;
-                case 3:
-                    imgIcon =  @"station_fangshu";
-                    break;
-                case 4:
-                    imgIcon =  @"station_yangan";
-                    break;
-                case 5:
-                    imgIcon =  @"station_UPS";
-                    break;
-                case 6:
-                    imgIcon =  @"station_shidian";
-                    break;
-                case 7:
-                    imgIcon =  @"station_diesel";
-                    break;
-                case 8:
-                    imgIcon =  @"station_xudian";
-                    break;
-                case 9:
-                    imgIcon =  @"station_dianzi";
-                    break;
-                case 10:
-                    imgIcon =  @"station_hongwai";
-                    break;
-                case 11:
-                    imgIcon =  @"station_menjin";
-                    break;
-                    
-                default:
-                    break;
-            }
-            
-            
-            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
-            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
-            
-            [view7 addSubview:imgIconView];
-            
-            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(504), neworign_y, FrameWidth(60), FrameWidth(28))];
-            typeBtn.layer.cornerRadius = 2;
-            typeBtn.titleLabel.font = _btnFont;
-            
-            if([_objects1[i][@"status"] isEqual:[NSNull null]]||[_objects1[i][@"status"] intValue ] == 0){
-                btnIcon =  @"正常";
-                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-            }else if([_objects1[i][@"status"] intValue ] == 1){
-                btnIcon =  @"告警";
-                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
-            }else if([_objects1[i][@"status"] intValue ] == 2){
-                btnIcon =  @"--";
-                [typeBtn setHidden:true];
-                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y, FrameWidth(60), FrameWidth(28))];
-                noStatus.text = btnIcon;
-                [view7 addSubview:noStatus];
-            }else if([_objects1[i][@"status"] intValue ] == 3){
-                btnIcon =  @"正常";//预警
-                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
-            }else {
-                btnIcon =  @"正常";
-                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-            }
-            
-            
-            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
-            typeBtn.titleLabel.textColor = [UIColor whiteColor];
-            [view7 addSubview:typeBtn];
-            
+            [btn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+            [btn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
         }
+        
+        
+        btn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [btn setTitle:_objects0[i][@"alias"] forState:UIControlStateNormal];
+        btn.layer.cornerRadius = 4;
+        btn.layer.masksToBounds = YES;
     }
-    [view7 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y)];
     
-    [view6 setFrame:CGRectMake(0, view6.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view7.frame.size.height)];
-    view7.layer.cornerRadius = 5;
-    view7.layer.borderWidth = 1;
-    view7.layer.borderColor = QianGray.CGColor;
-    [view6 addSubview:view7];
+    UIView *tempView = [[UIView alloc]init];
+    [thiscell addSubview:tempView];
+    [tempView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(thiscell.mas_left).offset(14);
+        make.top.equalTo(bgView.mas_bottom).offset(10);
+        make.width.equalTo(@170);
+        make.height.equalTo(@92);
+    }];
+    UIImageView *tempCenterImage = [[UIImageView alloc]init];
+    [tempView addSubview:tempCenterImage];
+    tempCenterImage.image = [UIImage imageNamed:@"wendu_bgimage"];
+    [tempCenterImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(tempView.mas_left);
+        make.top.equalTo(tempView.mas_top);
+        make.width.equalTo(tempView.mas_width);
+        make.height.equalTo(tempView.mas_height);
+    }];
+    UIImageView *tempImage = [[UIImageView alloc]init];
+    [tempView addSubview:tempImage];
+    [tempImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(tempView.mas_left).offset(18);
+        make.top.equalTo(tempView.mas_top).offset(22);
+        make.width.equalTo(@10);
+        make.height.equalTo(@14);
+    }];
+    tempImage.image = [UIImage imageNamed:@"temp_icon"];
+    
+    UILabel *tempLabel = [[UILabel alloc]init];
+    tempLabel.text = @"温度";
+    [tempView addSubview:tempLabel];
+    tempLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    tempLabel.numberOfLines = 1;
+    tempLabel.font = [UIFont systemFontOfSize:14];
+    tempLabel.textAlignment = NSTextAlignmentLeft;
+    [tempLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(tempImage.mas_right).offset(4);
+        make.top.equalTo(tempView.mas_top).offset(19);
+        make.width.equalTo(@40);
+        make.height.equalTo(@20);
+    }];
+    
+    UILabel *tempNumLabel = [[UILabel alloc]init];
+    tempNumLabel.text = @"40.3";
+    [tempView addSubview:tempNumLabel];
+    tempNumLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    tempNumLabel.numberOfLines = 1;
+    tempNumLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    tempNumLabel.textAlignment = NSTextAlignmentLeft;
+    [tempNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(tempView.mas_left).offset(32);
+        make.top.equalTo(tempLabel.mas_bottom).offset(9);
+        make.width.equalTo(@38);
+        make.height.equalTo(@25);
+    }];
+    tempNumLabel.text = safeString([NSString stringWithFormat:@"%@",self.dataModel.station[@"temperature"]]);
+    UILabel *tempTitleLabel = [[UILabel alloc]init];
+    tempTitleLabel.text = @"℃";
+    [tempView addSubview:tempTitleLabel];
+    tempTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    tempTitleLabel.numberOfLines = 1;
+    tempTitleLabel.font = [UIFont systemFontOfSize:10];
+    tempTitleLabel.textAlignment = NSTextAlignmentLeft;
+    [tempTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(tempNumLabel.mas_right);
+        make.top.equalTo(tempNumLabel.mas_top).offset(3);
+        make.width.equalTo(@20);
+        make.height.equalTo(@14);
+    }];
+    UIImageView *tempBgImage = [[UIImageView alloc]init];
+    [tempView addSubview:tempBgImage];
+    tempBgImage.image = [UIImage imageNamed:@"level_normal"];
+    [tempBgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.right.equalTo(tempView.mas_right).offset(-16);
+           make.top.equalTo(tempView.mas_top).offset(20);
+           make.width.equalTo(@32);
+           make.height.equalTo(@17);
+       }];
+    UIImageView *tempStatusImage = [[UIImageView alloc]init];
+    [tempView addSubview:tempStatusImage];
+    tempStatusImage.image = [UIImage imageNamed:@"temp_status"];
+    [tempStatusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.right.equalTo(tempView.mas_right).offset(-21);
+           make.top.equalTo(tempBgImage.mas_bottom).offset(14);
+           make.width.equalTo(@25);
+           make.height.equalTo(@20);
+       }];
     
     
-    //动力情况
-    UIView *view8 = [[UIView alloc]initWithFrame:CGRectMake(0, view6.frame.origin.y + view6.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
-    view8.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:view8];
-    
-    UILabel *title8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
-    title8.text = @"动力情况";
-    title8.font = FontSize(18);
-    [view8 addSubview:title8];//station_right
-    
-    UIView *view9 = [[UIView alloc]initWithFrame:CGRectMake(0, view8.frame.origin.y + view8.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
-    view9.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:view9];
-    
-    UIView *view10 = [[UIView alloc]init];
     
     
-    CGFloat neworign_y10 = 0;
-    if(_objects2.count > 0){
-        //NSInteger rowCount = _objects2.count;
-        for (int i=0; i<_objects2.count; ++i) {
-            neworign_y10 = FrameWidth(40) + i * FrameWidth(60);
-            
-            
-            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
-            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
-            
-            //            nameLabel.userInteractionEnabled = YES;
-            
-            nameLabel.font = FontSize(17);
-            nameLabel.textColor = listGrayColor;
-            
-            CommonExtension * com10 = [CommonExtension new];
-            com10.delegate = self;
-            com10.parentViewTag = i + 200;
-            [com10 addTouchViewParentTagClass:backView];
-            
-            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects2[i][@"name"]] ;//;
-            [view10 addSubview:backView];
-            [backView addSubview:nameLabel];
-            
-            
-            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), neworign_y10, FrameWidth(15), FrameWidth(26))];
-            rightImg.image = [UIImage imageNamed:@"station_right"];
-            [view10 addSubview:rightImg];//station_right
-            
-            NSString *imgIcon =  @"station_tongyong";
-            NSString *btnIcon =  @"正常";
-            NSUInteger index = [_objects10  indexOfObject:_objects2[i][@"code"]];
-            switch (index) {
-                case 0:
-                    imgIcon =  @"station_wendu";
-                    break;
-                case 1:
-                    imgIcon =  @"station_shidu";
-                    break;
-                case 2:
-                    imgIcon =  @"station_shuijin";
-                    break;
-                case 3:
-                    imgIcon =  @"station_fangshu";
-                    break;
-                case 4:
-                    imgIcon =  @"station_yangan";
-                    break;
-                case 5:
-                    imgIcon =  @"station_UPS";
-                    break;
-                case 6:
-                    imgIcon =  @"station_shidian";
-                    break;
-                case 7:
-                    imgIcon =  @"station_diesel";
-                    break;
-                case 8:
-                    imgIcon =  @"station_xudian";
-                    break;
-                case 9:
-                    imgIcon =  @"station_dianzi";
-                    break;
-                case 10:
-                    imgIcon =  @"station_hongwai";
-                    break;
-                case 11:
-                    imgIcon =  @"station_menjin";
-                    break;
-                    
-                default:
-                    break;
-            }
-            
-            
-            
-            
-            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
-            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
-            [view10 addSubview:imgIconView];
-            
-            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
-            typeBtn.layer.cornerRadius = 2;
-            typeBtn.titleLabel.font = _btnFont;
-            
-            if([_objects2[i][@"status"] isEqual:[NSNull null]]||[_objects2[i][@"status"] intValue ] == 0){
-                btnIcon =  @"正常";
-                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-            }else if([_objects2[i][@"status"] intValue ] == 1){
-                btnIcon =  @"告警";
-                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
-            }else if([_objects2[i][@"status"] intValue ] == 2){
-                btnIcon =  @"--";
-                [typeBtn setHidden:true];
-                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
-                noStatus.text = btnIcon;
-                [view10 addSubview:noStatus];
-            }else if([_objects2[i][@"status"] intValue ] == 3){
-                btnIcon =  @"正常";//预警
-                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
-            }else {
-                btnIcon =  @"正常";
-                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-            }
-            
-            
-            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
-            typeBtn.titleLabel.textColor = [UIColor whiteColor];
-            [view10 addSubview:typeBtn];
-            
-            
-            
-            
-            
-        }
+    UIView *humidityView = [[UIView alloc]init];
+    [thiscell addSubview:humidityView];
+    [humidityView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(thiscell.mas_right).offset(-14);
+        make.top.equalTo(bgView.mas_bottom).offset(10);
+        make.width.equalTo(@170);
+        make.height.equalTo(@92);
+    }];
+    UIImageView *humidityCenterImage = [[UIImageView alloc]init];
+    [humidityView addSubview:humidityCenterImage];
+    humidityCenterImage.image = [UIImage imageNamed:@"shidu_bgimage"];
+    [humidityCenterImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(humidityView.mas_left);
+        make.top.equalTo(humidityView.mas_top);
+        make.width.equalTo(humidityView.mas_width);
+        make.height.equalTo(humidityView.mas_height);
+    }];
+    UIImageView *humidityImage = [[UIImageView alloc]init];
+    [humidityView addSubview:humidityImage];
+    [humidityImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(humidityView.mas_left).offset(18);
+        make.top.equalTo(humidityView.mas_top).offset(22);
+        make.width.equalTo(@10);
+        make.height.equalTo(@14);
+    }];
+    humidityImage.image = [UIImage imageNamed:@"temp_icon"];
+    
+    UILabel *humidityLabel = [[UILabel alloc]init];
+    humidityLabel.text = @"湿度";
+    [humidityView addSubview:humidityLabel];
+    humidityLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    humidityLabel.numberOfLines = 1;
+    humidityLabel.font = [UIFont systemFontOfSize:14];
+    humidityLabel.textAlignment = NSTextAlignmentLeft;
+    [humidityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(humidityImage.mas_right).offset(4);
+        make.top.equalTo(humidityView.mas_top).offset(19);
+        make.width.equalTo(@40);
+        make.height.equalTo(@20);
+    }];
+    
+    UILabel *humidityNumLabel = [[UILabel alloc]init];
+    humidityNumLabel.text = @"40.3";
+    [humidityView addSubview:humidityNumLabel];
+    humidityNumLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    humidityNumLabel.numberOfLines = 1;
+    humidityNumLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    humidityNumLabel.textAlignment = NSTextAlignmentLeft;
+    [humidityNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(humidityView.mas_left).offset(32);
+        make.top.equalTo(humidityLabel.mas_bottom).offset(9);
+        make.width.equalTo(@38);
+        make.height.equalTo(@25);
+    }];
+    humidityNumLabel.text = safeString([NSString stringWithFormat:@"%@",self.dataModel.station[@"humidity"]]);
+    UILabel *humidityTitleLabel = [[UILabel alloc]init];
+    humidityTitleLabel.text = @"℃";
+    [humidityView addSubview:humidityTitleLabel];
+    humidityTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    humidityTitleLabel.numberOfLines = 1;
+    humidityTitleLabel.font = [UIFont systemFontOfSize:10];
+    humidityTitleLabel.textAlignment = NSTextAlignmentLeft;
+    [humidityTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(humidityNumLabel.mas_right);
+        make.top.equalTo(humidityNumLabel.mas_top).offset(3);
+        make.width.equalTo(@20);
+        make.height.equalTo(@14);
+    }];
+    UIImageView *humidityBgImage = [[UIImageView alloc]init];
+    [humidityView addSubview:humidityBgImage];
+    humidityBgImage.image = [UIImage imageNamed:@"level_normal"];
+    [humidityBgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(humidityView.mas_right).offset(-16);
+        make.top.equalTo(humidityView.mas_top).offset(20);
+        make.width.equalTo(@32);
+        make.height.equalTo(@17);
+    }];
+    UIImageView *humidityStatusImage = [[UIImageView alloc]init];
+    [humidityView addSubview:humidityStatusImage];
+    humidityStatusImage.image = [UIImage imageNamed:@"temp_status"];
+    [humidityStatusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(humidityView.mas_right).offset(-21);
+        make.top.equalTo(humidityBgImage.mas_bottom).offset(14);
+        make.width.equalTo(@25);
+        make.height.equalTo(@20);
+    }];
+    //环境
+    self.envView = [[KG_EnvView alloc]init];
+    self.envView.layer.cornerRadius = 10.f;
+    self.envView.layer.masksToBounds = YES;
+   
+    [thiscell addSubview:self.envView];
+    
+    NSInteger count = 1;
+    if(self.dataModel.enviromentDetails.count){
+        self.envView.envArray = self.dataModel.enviromentDetails;
+        
+        count = self.dataModel.enviromentDetails.count;
+        
     }
-    [view10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y10)];
-    
-    [view9 setFrame:CGRectMake(0, view9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view10.frame.size.height)];
-    view10.layer.cornerRadius = 5;
-    view10.layer.borderWidth = 1;
-    view10.layer.borderColor = QianGray.CGColor;
-    [view9 addSubview:view10];
-    
-    
-    //设备情况
-    UIView *equipview = [[UIView alloc]initWithFrame:CGRectMake(0, view9.frame.origin.y + view9.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
-    equipview.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:equipview];
-    
-    UILabel *equiptitle8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
-    equiptitle8.text = @"设备情况";
-    equiptitle8.font = FontSize(18);
-    [equipview addSubview:equiptitle8];//station_right
-    
-    UIView *equipview9 = [[UIView alloc]initWithFrame:CGRectMake(0, equipview.frame.origin.y + equipview.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
-    equipview9.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:equipview9];
-    
-    UIView *equipview10 = [[UIView alloc]init];
-    
-    
-    CGFloat equipneworign_y10 = 0;
-    if(_objects3.count > 0){
-        for (int i=0; i<_objects3.count; ++i) {
-            equipneworign_y10 = FrameWidth(40) + i * FrameWidth(60);
-            
-            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), equipneworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
-            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
-            
-            //            nameLabel.userInteractionEnabled = YES;
-            
-            nameLabel.font = FontSize(17);
-            nameLabel.textColor = listGrayColor;
-            
-            CommonExtension * com10 = [CommonExtension new];
-            com10.delegate = self;
-            com10.parentViewTag = i + 300;
-            [com10 addTouchViewParentTagClass:backView];
-            
-            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects3[i][@"name"]] ;//;
-            [equipview10 addSubview:backView];
-            [backView addSubview:nameLabel];
-            
-            
-            
-            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), equipneworign_y10, FrameWidth(15), FrameWidth(26))];
-            rightImg.image = [UIImage imageNamed:@"station_right"];
-            [equipview10 addSubview:rightImg];//station_right
-            
-            NSString *imgIcon =  @"station_tongyong";
-            NSString *btnIcon =  @"正常";
-            NSUInteger index = [_objects10  indexOfObject:_objects3[i][@"code"]];
-            switch (index) {
-                case 0:
-                    imgIcon =  @"station_wendu";
-                    break;
-                case 1:
-                    imgIcon =  @"station_shidu";
-                    break;
-                case 2:
-                    imgIcon =  @"station_shuijin";
-                    break;
-                case 3:
-                    imgIcon =  @"station_fangshu";
-                    break;
-                case 4:
-                    imgIcon =  @"station_yangan";
-                    break;
-                case 5:
-                    imgIcon =  @"station_UPS";
-                    break;
-                case 6:
-                    imgIcon =  @"station_shidian";
-                    break;
-                case 7:
-                    imgIcon =  @"station_diesel";
-                    break;
-                case 8:
-                    imgIcon =  @"station_xudian";
-                    break;
-                case 9:
-                    imgIcon =  @"station_dianzi";
-                    break;
-                case 10:
-                    imgIcon =  @"station_hongwai";
-                    break;
-                case 11:
-                    imgIcon =  @"station_menjin";
-                    break;
-                    
-                default:
-                    break;
-            }
-            
-            
-            
-            
-            UIImageView *equipimgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
-            [equipimgIconView setFrame:CGRectMake(FrameWidth(30), equipneworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
-            
-            [equipview10 addSubview:equipimgIconView];
-            /*
-             UIButton * typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(30))];
-             [typeBtn setBackgroundImage:[UIImage imageNamed:btnIcon] forState:UIControlStateNormal];
-             [view10 addSubview:typeBtn];
-             */
-            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
-            typeBtn.layer.cornerRadius = 2;
-            typeBtn.titleLabel.font = _btnFont;
-            
-            if([_objects3[i][@"status"] isEqual:[NSNull null]]||[_objects3[i][@"status"] intValue ] == 0){
-                btnIcon =  @"正常";
-                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-            }else if([_objects3[i][@"status"] intValue ] == 1){
-                btnIcon =  @"告警";
-                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
-            }else if([_objects3[i][@"status"] intValue ] == 2){
-                btnIcon =  @"--";
-                [typeBtn setHidden:true];
-                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
-                noStatus.text = btnIcon;
-                [equipview10 addSubview:noStatus];
-            }else if([_objects3[i][@"status"] intValue ] == 3){
-                btnIcon =  @"正常";//预警
-                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
-            }else {
-                btnIcon =  @"正常";
-                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-            }
-            
-            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
-            typeBtn.titleLabel.textColor = [UIColor whiteColor];
-            [equipview10 addSubview:typeBtn];
-            
-        }
+    self.envView.didsel = ^(NSString * _Nonnull typeString, NSDictionary * _Nonnull dic) {
+        [self pushNextStep:typeString withDataDic:dic];
+    };
+  
+    [self.envView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(thiscell.mas_right).offset(-16);
+        make.left.equalTo(thiscell.mas_left).offset(16);
+        make.top.equalTo(humidityView.mas_bottom).offset(6);
+        make.height.equalTo(@(count *50+50));
+    }];
+    if (count >0) {
+        
+        [self.envView mas_remakeConstraints:^(MASConstraintMaker *make) {
+               make.right.equalTo(thiscell.mas_right).offset(-16);
+               make.left.equalTo(thiscell.mas_left).offset(16);
+               make.top.equalTo(humidityView.mas_bottom).offset(6);
+               make.height.equalTo(@(count *50+50));
+           }];
     }
-    [equipview10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+equipneworign_y10)];
+  
+   
+    //动力
     
-    [equipview9 setFrame:CGRectMake(0, equipview9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+equipview10.frame.size.height)];
-    equipview10.layer.cornerRadius = 5;
-    equipview10.layer.borderWidth = 1;
-    equipview10.layer.borderColor = QianGray.CGColor;
-    [equipview9 addSubview:equipview10];
+    self.powerView = [[KG_PowView alloc]init];
+    self.powerView.layer.cornerRadius = 10.f;
+    self.powerView.layer.masksToBounds = YES;
+   
+    [thiscell addSubview:self.powerView];
+   
+    NSInteger powCount  = 1;
+    if(self.dataModel.powerDetails.count){
+        self.powerView.powArray = self.dataModel.powerDetails;
+         powCount = self.dataModel.powerDetails.count;
+       
+    }
+    self.powerView.didsel = ^(NSString * _Nonnull typeString, NSDictionary * _Nonnull dic) {
+        [self pushNextStep:typeString withDataDic:dic];
+    };
+    [self.powerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(thiscell.mas_right).offset(-16);
+        make.left.equalTo(thiscell.mas_left).offset(16);
+        make.top.equalTo(self.envView.mas_bottom).offset(10);
+        make.height.equalTo(@(powCount *50+50));
+    }];
+    //安防
+    self.secView = [[KG_SecView alloc]init];
+    self.secView.backgroundColor = [UIColor whiteColor];
+    self.secView.layer.cornerRadius = 10.f;
+    self.secView.layer.masksToBounds = YES;
+    [thiscell addSubview:self.secView];
+   
+    NSInteger secCount = 1;
+    if(self.dataModel.securityDetails.count){
+        self.secView.secArray = self.dataModel.securityDetails;
+        secCount = self.dataModel.securityDetails.count;
+        
+    }
+    self.secView.didsel = ^(NSString * _Nonnull typeString, NSDictionary * _Nonnull dic) {
+        [self pushNextStep:typeString withDataDic:dic];
+    };
+    [self.secView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(thiscell.mas_right).offset(-16);
+        make.left.equalTo(thiscell.mas_left).offset(16);
+        make.top.equalTo(self.powerView.mas_bottom).offset(10);
+        make.height.equalTo(@(secCount *50+50));
+    }];
     
+
+//    //安防情况
+//    UIView *view5 = [[UIView alloc]initWithFrame:CGRectMake(0,1500 , WIDTH_SCREEN, FrameWidth(74))];
+//    view5.backgroundColor = [UIColor whiteColor];
+//    [thiscell addSubview:view5];
+//
+//    UILabel *title5 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
+//    title5.text = @"安防情况";
+//    title5.font = FontSize(18);
+//    [view5 addSubview:title5];//station_right
+//
+//    UIView *view6 = [[UIView alloc]initWithFrame:CGRectMake(0, view5.frame.origin.y + view5.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
+//    view6.backgroundColor = [UIColor whiteColor];
+//    [thiscell addSubview:view6];
+//
+//    UIView *view7 = [[UIView alloc]init];
+//
+//
+//    _objects10 = [NSMutableArray arrayWithObjects:@"temperature",@"humidity",@"immersion",@"ratproof",@"smoke",@"ups",@"electric",@"diesel",@"battery",@"电子围栏",@"红外对射",@"门禁",nil];
+//    CGFloat neworign_y = 0;
+//    if(_objects1.count > 0){
+//        for (int i=0; i<_objects1.count; ++i) {
+//            neworign_y = FrameWidth(40) + i * FrameWidth(60);
+//
+//            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
+//            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
+//
+//            //            nameLabel.userInteractionEnabled = YES;
+//
+//            nameLabel.font = FontSize(17);
+//
+//            nameLabel.textColor = listGrayColor;
+//            CommonExtension * com10 = [CommonExtension new];
+//            com10.delegate = self;
+//            com10.parentViewTag = i + 100;
+//            [com10 addTouchViewParentTagClass:backView];
+//
+//            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects1[i][@"name"]] ;//;
+//            [view7 addSubview:backView];
+//            [backView addSubview:nameLabel];
+//
+//
+//
+//
+//            NSString *imgIcon =  @"station_tongyong";
+//            NSString *btnIcon =  @"正常";
+//
+//
+//            NSUInteger index = [_objects10  indexOfObject:_objects1[i][@"name"]];
+//            switch (index) {
+//                case 0:
+//                    imgIcon =  @"station_wendu";
+//                    break;
+//                case 1:
+//                    imgIcon =  @"station_shidu";
+//                    break;
+//                case 2:
+//                    imgIcon =  @"station_shuijin";
+//                    break;
+//                case 3:
+//                    imgIcon =  @"station_fangshu";
+//                    break;
+//                case 4:
+//                    imgIcon =  @"station_yangan";
+//                    break;
+//                case 5:
+//                    imgIcon =  @"station_UPS";
+//                    break;
+//                case 6:
+//                    imgIcon =  @"station_shidian";
+//                    break;
+//                case 7:
+//                    imgIcon =  @"station_diesel";
+//                    break;
+//                case 8:
+//                    imgIcon =  @"station_xudian";
+//                    break;
+//                case 9:
+//                    imgIcon =  @"station_dianzi";
+//                    break;
+//                case 10:
+//                    imgIcon =  @"station_hongwai";
+//                    break;
+//                case 11:
+//                    imgIcon =  @"station_menjin";
+//                    break;
+//
+//                default:
+//                    break;
+//            }
+//
+//
+//            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
+//            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
+//
+//            [view7 addSubview:imgIconView];
+//
+//            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(504), neworign_y, FrameWidth(60), FrameWidth(28))];
+//            typeBtn.layer.cornerRadius = 2;
+//            typeBtn.titleLabel.font = _btnFont;
+//
+//            if([_objects1[i][@"status"] isEqual:[NSNull null]]||[_objects1[i][@"status"] intValue ] == 0){
+//                btnIcon =  @"正常";
+//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+//            }else if([_objects1[i][@"status"] intValue ] == 1){
+//                btnIcon =  @"告警";
+//                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
+//            }else if([_objects1[i][@"status"] intValue ] == 2){
+//                btnIcon =  @"--";
+//                [typeBtn setHidden:true];
+//                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y, FrameWidth(60), FrameWidth(28))];
+//                noStatus.text = btnIcon;
+//                [view7 addSubview:noStatus];
+//            }else if([_objects1[i][@"status"] intValue ] == 3){
+//                btnIcon =  @"正常";//预警
+//                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
+//            }else {
+//                btnIcon =  @"正常";
+//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+//            }
+//
+//
+//            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
+//            typeBtn.titleLabel.textColor = [UIColor whiteColor];
+//            [view7 addSubview:typeBtn];
+//
+//        }
+//    }
+//    [view7 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y)];
+//
+//    [view6 setFrame:CGRectMake(0, view6.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view7.frame.size.height)];
+//    view7.layer.cornerRadius = 5;
+//    view7.layer.borderWidth = 1;
+//    view7.layer.borderColor = QianGray.CGColor;
+//    [view6 addSubview:view7];
+//
+//
+//    //动力情况
+//    UIView *view8 = [[UIView alloc]initWithFrame:CGRectMake(0, view6.frame.origin.y + view6.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
+//    view8.backgroundColor = [UIColor whiteColor];
+//    [thiscell addSubview:view8];
+//
+//    UILabel *title8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
+//    title8.text = @"动力情况";
+//    title8.font = FontSize(18);
+//    [view8 addSubview:title8];//station_right
+//
+//    UIView *view9 = [[UIView alloc]initWithFrame:CGRectMake(0, view8.frame.origin.y + view8.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
+//    view9.backgroundColor = [UIColor whiteColor];
+//    [thiscell addSubview:view9];
+//
+//    UIView *view10 = [[UIView alloc]init];
+//
+//
+//    CGFloat neworign_y10 = 0;
+//    if(_objects2.count > 0){
+//        //NSInteger rowCount = _objects2.count;
+//        for (int i=0; i<_objects2.count; ++i) {
+//            neworign_y10 = FrameWidth(40) + i * FrameWidth(60);
+//
+//
+//            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
+//            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
+//
+//            //            nameLabel.userInteractionEnabled = YES;
+//
+//            nameLabel.font = FontSize(17);
+//            nameLabel.textColor = listGrayColor;
+//
+//            CommonExtension * com10 = [CommonExtension new];
+//            com10.delegate = self;
+//            com10.parentViewTag = i + 200;
+//            [com10 addTouchViewParentTagClass:backView];
+//
+//            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects2[i][@"name"]] ;//;
+//            [view10 addSubview:backView];
+//            [backView addSubview:nameLabel];
+//
+//
+//            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), neworign_y10, FrameWidth(15), FrameWidth(26))];
+//            rightImg.image = [UIImage imageNamed:@"station_right"];
+//            [view10 addSubview:rightImg];//station_right
+//
+//            NSString *imgIcon =  @"station_tongyong";
+//            NSString *btnIcon =  @"正常";
+//            NSUInteger index = [_objects10  indexOfObject:_objects2[i][@"code"]];
+//            switch (index) {
+//                case 0:
+//                    imgIcon =  @"station_wendu";
+//                    break;
+//                case 1:
+//                    imgIcon =  @"station_shidu";
+//                    break;
+//                case 2:
+//                    imgIcon =  @"station_shuijin";
+//                    break;
+//                case 3:
+//                    imgIcon =  @"station_fangshu";
+//                    break;
+//                case 4:
+//                    imgIcon =  @"station_yangan";
+//                    break;
+//                case 5:
+//                    imgIcon =  @"station_UPS";
+//                    break;
+//                case 6:
+//                    imgIcon =  @"station_shidian";
+//                    break;
+//                case 7:
+//                    imgIcon =  @"station_diesel";
+//                    break;
+//                case 8:
+//                    imgIcon =  @"station_xudian";
+//                    break;
+//                case 9:
+//                    imgIcon =  @"station_dianzi";
+//                    break;
+//                case 10:
+//                    imgIcon =  @"station_hongwai";
+//                    break;
+//                case 11:
+//                    imgIcon =  @"station_menjin";
+//                    break;
+//
+//                default:
+//                    break;
+//            }
+//
+//
+//
+//
+//            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
+//            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
+//            [view10 addSubview:imgIconView];
+//
+//            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
+//            typeBtn.layer.cornerRadius = 2;
+//            typeBtn.titleLabel.font = _btnFont;
+//
+//            if([_objects2[i][@"status"] isEqual:[NSNull null]]||[_objects2[i][@"status"] intValue ] == 0){
+//                btnIcon =  @"正常";
+//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+//            }else if([_objects2[i][@"status"] intValue ] == 1){
+//                btnIcon =  @"告警";
+//                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
+//            }else if([_objects2[i][@"status"] intValue ] == 2){
+//                btnIcon =  @"--";
+//                [typeBtn setHidden:true];
+//                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
+//                noStatus.text = btnIcon;
+//                [view10 addSubview:noStatus];
+//            }else if([_objects2[i][@"status"] intValue ] == 3){
+//                btnIcon =  @"正常";//预警
+//                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
+//            }else {
+//                btnIcon =  @"正常";
+//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+//            }
+//
+//
+//            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
+//            typeBtn.titleLabel.textColor = [UIColor whiteColor];
+//            [view10 addSubview:typeBtn];
+//
+//
+//
+//
+//
+//        }
+//    }
+//    [view10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y10)];
+//
+//    [view9 setFrame:CGRectMake(0, view9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view10.frame.size.height)];
+//    view10.layer.cornerRadius = 5;
+//    view10.layer.borderWidth = 1;
+//    view10.layer.borderColor = QianGray.CGColor;
+//    [view9 addSubview:view10];
+//
+//
+//    //设备情况
+//    UIView *equipview = [[UIView alloc]initWithFrame:CGRectMake(0, view9.frame.origin.y + view9.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
+//    equipview.backgroundColor = [UIColor whiteColor];
+//    [thiscell addSubview:equipview];
+//
+//    UILabel *equiptitle8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
+//    equiptitle8.text = @"设备情况";
+//    equiptitle8.font = FontSize(18);
+//    [equipview addSubview:equiptitle8];//station_right
+//
+//    UIView *equipview9 = [[UIView alloc]initWithFrame:CGRectMake(0, equipview.frame.origin.y + equipview.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
+//    equipview9.backgroundColor = [UIColor whiteColor];
+//    [thiscell addSubview:equipview9];
+//
+//    UIView *equipview10 = [[UIView alloc]init];
+//
+//
+//    CGFloat equipneworign_y10 = 0;
+//    if(_objects3.count > 0){
+//        for (int i=0; i<_objects3.count; ++i) {
+//            equipneworign_y10 = FrameWidth(40) + i * FrameWidth(60);
+//
+//            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), equipneworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
+//            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
+//
+//            //            nameLabel.userInteractionEnabled = YES;
+//
+//            nameLabel.font = FontSize(17);
+//            nameLabel.textColor = listGrayColor;
+//
+//            CommonExtension * com10 = [CommonExtension new];
+//            com10.delegate = self;
+//            com10.parentViewTag = i + 300;
+//            [com10 addTouchViewParentTagClass:backView];
+//
+//            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects3[i][@"name"]] ;//;
+//            [equipview10 addSubview:backView];
+//            [backView addSubview:nameLabel];
+//
+//
+//
+//            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), equipneworign_y10, FrameWidth(15), FrameWidth(26))];
+//            rightImg.image = [UIImage imageNamed:@"station_right"];
+//            [equipview10 addSubview:rightImg];//station_right
+//
+//            NSString *imgIcon =  @"station_tongyong";
+//            NSString *btnIcon =  @"正常";
+//            NSUInteger index = [_objects10  indexOfObject:_objects3[i][@"code"]];
+//            switch (index) {
+//                case 0:
+//                    imgIcon =  @"station_wendu";
+//                    break;
+//                case 1:
+//                    imgIcon =  @"station_shidu";
+//                    break;
+//                case 2:
+//                    imgIcon =  @"station_shuijin";
+//                    break;
+//                case 3:
+//                    imgIcon =  @"station_fangshu";
+//                    break;
+//                case 4:
+//                    imgIcon =  @"station_yangan";
+//                    break;
+//                case 5:
+//                    imgIcon =  @"station_UPS";
+//                    break;
+//                case 6:
+//                    imgIcon =  @"station_shidian";
+//                    break;
+//                case 7:
+//                    imgIcon =  @"station_diesel";
+//                    break;
+//                case 8:
+//                    imgIcon =  @"station_xudian";
+//                    break;
+//                case 9:
+//                    imgIcon =  @"station_dianzi";
+//                    break;
+//                case 10:
+//                    imgIcon =  @"station_hongwai";
+//                    break;
+//                case 11:
+//                    imgIcon =  @"station_menjin";
+//                    break;
+//
+//                default:
+//                    break;
+//            }
+//
+//
+//
+//
+//            UIImageView *equipimgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
+//            [equipimgIconView setFrame:CGRectMake(FrameWidth(30), equipneworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
+//
+//            [equipview10 addSubview:equipimgIconView];
+//            /*
+//             UIButton * typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(30))];
+//             [typeBtn setBackgroundImage:[UIImage imageNamed:btnIcon] forState:UIControlStateNormal];
+//             [view10 addSubview:typeBtn];
+//             */
+//            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
+//            typeBtn.layer.cornerRadius = 2;
+//            typeBtn.titleLabel.font = _btnFont;
+//
+//            if([_objects3[i][@"status"] isEqual:[NSNull null]]||[_objects3[i][@"status"] intValue ] == 0){
+//                btnIcon =  @"正常";
+//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+//            }else if([_objects3[i][@"status"] intValue ] == 1){
+//                btnIcon =  @"告警";
+//                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
+//            }else if([_objects3[i][@"status"] intValue ] == 2){
+//                btnIcon =  @"--";
+//                [typeBtn setHidden:true];
+//                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
+//                noStatus.text = btnIcon;
+//                [equipview10 addSubview:noStatus];
+//            }else if([_objects3[i][@"status"] intValue ] == 3){
+//                btnIcon =  @"正常";//预警
+//                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
+//            }else {
+//                btnIcon =  @"正常";
+//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+//            }
+//
+//            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
+//            typeBtn.titleLabel.textColor = [UIColor whiteColor];
+//            [equipview10 addSubview:typeBtn];
+//
+//        }
+//    }
+//    [equipview10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+equipneworign_y10)];
+//
+//    [equipview9 setFrame:CGRectMake(0, equipview9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+equipview10.frame.size.height)];
+//    equipview10.layer.cornerRadius = 5;
+//     equipview10.layer.borderWidth = 1;
+//    equipview10.layer.borderColor = QianGray.CGColor;
+//    [equipview9 addSubview:equipview10];
+//
+//    self.weatherDic
     //天气
-    UIView *view11 =  [[UIView alloc] initWithFrame:CGRectMake(0, equipview9.frame.origin.y + equipview9.frame.size.height + 5, WIDTH_SCREEN, FrameWidth(290))];
-    view11.backgroundColor = [UIColor whiteColor];
-    [thiscell addSubview:view11];
+    UIView *bottomView =  [[UIView alloc] initWithFrame:CGRectMake(16, 800, WIDTH_SCREEN-32, 149)];
+    bottomView.backgroundColor = [UIColor whiteColor];
+    [thiscell addSubview:bottomView];
+    [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.secView.mas_bottom).offset(20);
+        make.left.equalTo(self.secView.mas_left);
+        make.right.equalTo(self.secView.mas_right);
+        make.height.equalTo(@149);
+    }];
+    UIImageView *bottomBgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"weather_sunny"]];
     
-    UIImageView *view12 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"station_tqbg"]];
+    bottomBgImage.frame = CGRectMake(0,0, WIDTH_SCREEN-32,149);
     
-    view12.frame = CGRectMake(FrameWidth(20), FrameWidth(30), FrameWidth(600), FrameWidth(222));
+    bottomBgImage.contentMode = UIViewContentModeScaleAspectFill;
+    [bottomView addSubview:bottomBgImage];
     
-    view12.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    [view11 addSubview:view12];
-    
-    UIImageView *lineH = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"station_tg_line"]];
-    
-    lineH.frame = CGRectMake(FrameWidth(340), FrameWidth(36), FrameWidth(2), FrameWidth(150));
-    
-    [view12 addSubview:lineH];
-    
-    
-    
-    UIFont *btnFont = FontSize(15);
+    UIImageView *locImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"loc_white"]];
+    [bottomView addSubview:locImage];
+    [locImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(bottomView.mas_left).offset(17);
+        make.width.equalTo(@15);
+        make.height.equalTo(@18);
+        make.top.equalTo(bottomView.mas_top).offset(17);
+    }];
     
     
+    UIFont *btnFont = FontSize(12);
     
-    UILabel *addressLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(70), FrameWidth(5), FrameWidth(260), FrameWidth(75))];
-    addressLabel.font = btnFont;
+    UILabel *addressLabel = [[UILabel alloc]init];
+    addressLabel.font = [UIFont systemFontOfSize:16];
     addressLabel.text = [_address  isEqual:[NSNull null]]?@"xxx":_address;
     addressLabel.numberOfLines = 0;
+    addressLabel.textAlignment = NSTextAlignmentLeft;
     addressLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [view12 addSubview:addressLabel];
+    [bottomView addSubview:addressLabel];
+    addressLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(locImage.mas_right).offset(5);
+        make.centerY.equalTo(locImage.mas_centerY);
+        make.width.equalTo(@200);
+        make.height.equalTo(@22);
+    }];
     
-    UIImageView *addressImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"station_address"]];
-    [addressImg setFrame:CGRectMake(-FrameWidth(45), FrameWidth(20), FrameWidth(23), FrameWidth(28))];
-    [addressLabel addSubview:addressImg];
     
     NSString *weat = @"";
     NSDictionary * weather = [NSMutableDictionary alloc];
@@ -1572,7 +1762,7 @@
     }else{
         //匹配图片
         NSArray *weatherArray = @[@"雾",@"云",@"雷",@"霾",@"晴",@"雪",@"雨"];
-        weat = [NSString stringWithFormat:@"%@",_weather[@"condition"]];
+        weat = [NSString stringWithFormat:@"%@",self.weatherDic[@"condition"]];
         for (int i = 0; i < weatherArray.count; i++) {
             if ([weat rangeOfString:weatherArray[i]].location != NSNotFound ) {
                 weat = weatherArray[i];
@@ -1587,53 +1777,167 @@
     
     UIImageView *tqImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:weat] ];
     [tqImg setFrame:CGRectMake(FrameWidth(30), FrameWidth(90), FrameWidth(100), FrameWidth(100))];
-    [view12 addSubview:tqImg];
+    [bottomView addSubview:tqImg];
+    
+    
+    UILabel *qwLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(155),tqImg.lx_y + tqImg.lx_height/2.5 , FrameWidth(130), FrameWidth(60))];
+    qwLabel.font = FontSize(46);
+    qwLabel.text = [self.weatherDic[@"temp"] isEqualToString:@"－－"]?@"--":[NSString stringWithFormat:@"%@",self.weatherDic[@"temp"]];
+    qwLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    CGSize size =[qwLabel.text sizeWithAttributes:@{NSFontAttributeName:FontSize(35)}];
+    //@"13°";
+    [bottomView addSubview:qwLabel];
+    [qwLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(bottomView.mas_left).offset(17);
+        make.bottom.equalTo(bottomView.mas_bottom).offset(-11);
+        make.width.equalTo(@56);
+        make.height.equalTo(@65);
+    }];
+    
+    UIImageView *wenduImage = [[UIImageView alloc]init];
+    [bottomView addSubview:wenduImage];
+    wenduImage.image = [UIImage imageNamed:@"wendu_icon"];
+    [wenduImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(bottomView.mas_bottom).offset(-42);
+        make.left.equalTo(qwLabel.mas_right);
+        make.width.equalTo(@15);
+        make.height.equalTo(@22);
+    }];
+    
+    UILabel *tqLabel = [[UILabel alloc]initWithFrame:CGRectMake(size.width+FrameWidth(20), FrameWidth(20), FrameWidth(90), FrameWidth(30))];
+    tqLabel.font = FontSize(14);
+    tqLabel.text = self.weatherDic[@"condition"];
+    tqLabel.textAlignment = NSTextAlignmentCenter;
+    tqLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [qwLabel addSubview:tqLabel];
+    [tqLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(wenduImage.mas_right).offset(7);
+        make.width.lessThanOrEqualTo(@60);
+        make.height.equalTo(@20);
+        make.bottom.equalTo(bottomView.mas_bottom).offset(-43);
+    }];
+    [tqImg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(tqLabel.mas_right).offset(5);
+        make.width.height.equalTo(@15);
+        make.centerY.equalTo(tqLabel.mas_centerY);
+    }];
+    
+    
+    
+    
     
     UILabel *fxLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(360), FrameWidth(40), FrameWidth(240), FrameWidth(25))];
     fxLabel.font = btnFont;
-    NSString *WindD = [weather[@"WindD"] isEqualToString:@""]?@"－－":weather[@"windDir"];
-    fxLabel.text = [NSString stringWithFormat:@"%@%@",@"风向：  ",WindD];
+    fxLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    fxLabel.textAlignment = NSTextAlignmentLeft;
+    NSString *WindD = [self.weatherDic[@"WindD"] isEqualToString:@""]?@"－－":self.weatherDic[@"windDir"];
+    fxLabel.text = [NSString stringWithFormat:@"%@%@",@"风向:",WindD];
     //_stationDetail[@"weather"][@"WindD"];
-    [view12 addSubview:fxLabel];
+    [bottomView addSubview:fxLabel];
     
     UILabel *fsLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(360), fxLabel.frame.origin.y *2, FrameWidth(240), FrameWidth(25))];
     fsLabel.font = btnFont;
-    NSString *windSpeed = [weather[@"windSpeed"] isEqualToString:@""]?@"－－":weather[@"windSpeed"];
-    fsLabel.text = [windSpeed isEqualToString:@"－－"]?[NSString stringWithFormat:@"%@%@%@",@"风速：   ",windSpeed,@""]:[NSString stringWithFormat:@"%@%@%@",@"风速：  ",windSpeed,@"m/s"];
-    [view12 addSubview:fsLabel];
+    fsLabel.textAlignment = NSTextAlignmentLeft;
+    fsLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    NSString *windSpeed = [self.weatherDic[@"windSpeed"] isEqualToString:@""]?@"－－":self.weatherDic[@"windSpeed"];
+    fsLabel.text = [windSpeed isEqualToString:@"－－"]?[NSString stringWithFormat:@"%@%@%@",@"风速：   ",windSpeed,@""]:[NSString stringWithFormat:@"%@%@%@",@"风速: ",windSpeed,@"m/s"];
+    [bottomView addSubview:fsLabel];
     
     UILabel *njdLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(360), fxLabel.frame.origin.y *3, FrameWidth(240), FrameWidth(25))];
     njdLabel.font = btnFont;
-    NSString *humidity = [weather[@"humidity"] isEqualToString:@""]?@"－－":weather[@"humidity"];
-    njdLabel.text = [humidity isEqualToString:@"－－"]?[NSString stringWithFormat:@"%@%@%@",@"湿度：   ",humidity,@""]:[NSString stringWithFormat:@"%@%@%@",@"湿度：  ",humidity,@"%"];
+    njdLabel.textAlignment = NSTextAlignmentLeft;
+    NSString *humidity = [self.weatherDic[@"humidity"] isEqualToString:@""]?@"－－":self.weatherDic[@"humidity"];
+    njdLabel.text = [humidity isEqualToString:@"－－"]?[NSString stringWithFormat:@"%@%@%@",@"湿度：   ",humidity,@""]:[NSString stringWithFormat:@"%@%@%@",@"湿度: ",humidity,@"%"];
     //@"能见度：50m";
-    [view12 addSubview:njdLabel];
+    njdLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [bottomView addSubview:njdLabel];
     
     UILabel *QNHLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(360), fxLabel.frame.origin.y *4, FrameWidth(240), FrameWidth(25))];
     QNHLabel.font = btnFont;
-    NSString *QNH = [weather[@"pressure"] isEqualToString:@""]?@"－－":weather[@"pressure"];
-    QNHLabel.text = [QNH isEqualToString:@"－－"]?[NSString stringWithFormat:@"%@%@%@",@"QNH：  ",QNH,@""]:[NSString stringWithFormat:@"%@%@%@",@"QNH： ",QNH,@"百帕"];
-    
-    [view12 addSubview:QNHLabel];
-    
-    UILabel *qwLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(155),tqImg.lx_y + tqImg.lx_height/2.5 , FrameWidth(130), FrameWidth(60))];
-    qwLabel.font = FontSize(35);
-    qwLabel.text = [weather[@"temp"] isEqualToString:@"－－"]?@"--":[NSString stringWithFormat:@"%@%@",weather[@"temp"],@"°"];
-    CGSize size =[qwLabel.text sizeWithAttributes:@{NSFontAttributeName:FontSize(35)}];
-    //@"13°";
-    [view12 addSubview:qwLabel];
-    
-    UILabel *tqLabel = [[UILabel alloc]initWithFrame:CGRectMake(size.width+FrameWidth(20), FrameWidth(20), FrameWidth(90), FrameWidth(30))];
-    tqLabel.font = FontSize(17);
-    tqLabel.text = weather[@"condition"];
-    tqLabel.textAlignment = NSTextAlignmentCenter;
-    [qwLabel addSubview:tqLabel];
-    allHeight = view11.frame.origin.y + view11.frame.size.height ;
+    QNHLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    NSString *QNH = [self.weatherDic[@"pressure"] isEqualToString:@""]?@"－－":self.weatherDic[@"pressure"];
+    QNHLabel.text = [QNH isEqualToString:@"－－"]?[NSString stringWithFormat:@"%@%@%@",@"QNH：  ",QNH,@""]:[NSString stringWithFormat:@"%@%@%@",@"QNH:",QNH,@"百帕"];
+    QNHLabel.textAlignment = NSTextAlignmentLeft;
+    [bottomView addSubview:QNHLabel];
+    //风速
+    [fsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(bottomView.mas_right).offset(-18);
+        make.centerY.equalTo(wenduImage.mas_centerY);
+        make.height.equalTo(@18);
+        make.width.equalTo(@90);
+    }];
+    //QNH
+    [QNHLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(bottomView.mas_right).offset(-18);
+        make.top.equalTo(fsLabel.mas_bottom).offset(7);
+        make.height.equalTo(@18);
+        make.width.equalTo(@90);
+    }];
+    //风向
+    [fxLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(fsLabel.mas_left);
+        make.centerY.equalTo(wenduImage.mas_centerY);
+        make.height.equalTo(@18);
+        make.width.equalTo(@80);
+    }];
+    //湿度
+    [njdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(fxLabel.mas_right);
+        make.top.equalTo(fxLabel.mas_bottom).offset(7);
+        make.height.equalTo(@18);
+        make.width.equalTo(@80);
+    }];
+    allHeight = self.dataModel.enviromentDetails.count *50 + self.dataModel.powerDetails.count *50 + self.dataModel.securityDetails.count *50 + 92 +60 + 150 +10 +241 + 149 + 200;
     return thiscell;
     
     
 }
+//获取某个台站天气接口：
+//请求地址：/intelligent/api/weather/{lat}/{lon}/
+//     其中，lat 是台站维度，lon是台站经度
+//请求方式：GET
+//请求返回：
+//   如：http://10.33.33.147:8089/intelligent/api/weather/36.317888/120.111424/
 
+- (void)queryWeatherData:(NSString *)lat withLon:(NSString *)lon {
+    
+    
+    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
+    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/weather/36.317888/120.111424/";
+    FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/weather/%@/%@/",lat,lon];
+      NSLog(@"%@",FrameRequestURL);
+      [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+          NSInteger code = [[result objectForKey:@"errCode"] intValue];
+          if(code  <= -1){
+              [FrameBaseRequest showMessage:result[@"errMsg"]];
+              return ;
+          }
+          self.weatherDic = result[@"value"];
+          [self.tableview reloadData];
+         
+      } failure:^(NSURLSessionDataTask *error)  {
+          FrameLog(@"请求失败，返回数据 : %@",error);
+          NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+          if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+              [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+              [FrameBaseRequest logout];
+              
+              LoginViewController *login = [[LoginViewController alloc] init];
+              [self.navigationController pushViewController:login animated:YES];
+              return;
+          }else if(responses.statusCode == 502){
+              
+          }
+          [FrameBaseRequest showMessage:@"网络链接失败"];
+          return ;
+          
+      }];
+}
+
+//ups 油机房 设备机房 配电室
+- (void)buttonClickMethod:(UIButton *)button {
+    
+}
 
 #pragma mark - UITableviewDelegate 代理方法
 
@@ -2152,6 +2456,45 @@
         _titleLabel = titleLabel;
     }
     return _titleLabel;
+}
+
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray alloc] init];
+    }
+    return _dataArray;
+}
+
+
+- (NSMutableDictionary *)dataDic
+{
+    if (!_dataDic) {
+        _dataDic = [[NSMutableDictionary alloc] init];
+        
+    }
+    return _dataDic;
+}
+
+- (void)pushNextStep:(NSString *)string withDataDic:(NSDictionary *)dic {
+    NSMutableArray *listArr = [NSMutableArray array];
+    [listArr removeAllObjects];
+    if ([string isEqualToString:@"sec"]) {
+       
+        [listArr addObjectsFromArray:self.dataModel.securityDetails];
+    }else if ([string isEqualToString:@"pow"]) {
+        [listArr addObjectsFromArray:self.dataModel.powerDetails];
+    }else if ([string isEqualToString:@"env"]) {
+        [listArr addObjectsFromArray:self.dataModel.enviromentDetails];
+    }
+    StationMachineController  *StationMachine = [[StationMachineController alloc] init];
+    StationMachine.category = safeString(dic[@"code"]);
+    StationMachine.machine_name = safeString(dic[@"name"]);
+    StationMachine.station_name = _station_name;
+    StationMachine.station_code = _station_code;
+    StationMachine.engine_room_code = @"";
+    StationMachine.mList = listArr;
+    [self.navigationController pushViewController:StationMachine animated:YES];
 }
 @end
 

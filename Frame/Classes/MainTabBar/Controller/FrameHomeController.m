@@ -33,7 +33,8 @@
 #import "FrameScrollList.h"
 
 #import "StationVideoListController.h"
-
+#import "KG_SecondFloorViewController.h"
+#import "KG_NewTarBarViewController.h"
 /*
  *点聚合Annotation
  */
@@ -331,6 +332,7 @@
         }else {
             self.currentStationDic = [_stationList firstObject];
         }
+        [UserManager shareUserManager].currentStationDic = self.currentStationDic;
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
@@ -2115,13 +2117,14 @@
     
 }
 - (void)saveDefaultData:(NSDictionary *)dataD {
-    
+   
     NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"station"]];
     for (NSString*s in [dataDic allKeys]) {
         if ([dataDic[s] isEqual:[NSNull null]]) {
             [dataDic setObject:@"" forKey:s];
         }
     }
+    [UserManager shareUserManager].currentStationDic = dataDic;
     NSMutableDictionary *secDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"securityStatus"]];
     for (NSString*s in [secDic allKeys]) {
         if ([secDic[s] isEqual:[NSNull null]]) {
@@ -2170,6 +2173,10 @@
     
     [self.navigationController.tabBarController setSelectedIndex:2];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
+//    KG_NewTarBarViewController * test = [[KG_NewTarBarViewController alloc]init];
+//    //    self.navigationController.navigationBar.hidden = YES ;
+//    self.tabBarController.tabBar.hidden = YES ;
+//    [self.navigationController pushViewController:test animated:YES];
     
 }
 /**
@@ -2244,8 +2251,11 @@
 -(void)healthBtnClick{
     NSLog(@"healthBtnClick");
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    RankController *Rank = [[RankController alloc] init];
-    [self.navigationController pushViewController:Rank animated:YES];
+    //
+    //    RankController *Rank = [[RankController alloc] init];
+    //    [self.navigationController pushViewController:Rank animated:YES];
+    KG_SecondFloorViewController *Rank = [[KG_SecondFloorViewController alloc] init];
+   [self.navigationController pushViewController:Rank animated:YES];
 }
 - (void)showAlertMessage:(NSMutableArray *)array {
     
@@ -2473,7 +2483,7 @@
             self.PatrolRemindItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:result[@"value"] ];
             
             self.PatrolRemindView = [[UIView alloc]init];
-            self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(530), FrameWidth(630));
+            self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(200),  FrameWidth(530), FrameWidth(630));
             
             UIImageView * explanAll = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"warn_bg"]];
             explanAll.frame = CGRectMake(0,FrameWidth(30),  FrameWidth(480), FrameWidth(585));
@@ -2541,7 +2551,7 @@
                                   delay:0
                                 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 
-                self.PatrolRemindView.frame = CGRectMake(FrameWidth(80),FrameWidth(150),  FrameWidth(530), FrameWidth(600));
+                self.PatrolRemindView.frame = CGRectMake(FrameWidth(80),FrameWidth(200),  FrameWidth(530), FrameWidth(600));
                 
                 
             } completion:^(BOOL finished) {
@@ -2704,7 +2714,7 @@
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn animations:^{
         
-        self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(150),  FrameWidth(530), FrameWidth(600));
+        self.PatrolRemindView.frame = CGRectMake(WIDTH_SCREEN + FrameWidth(80),FrameWidth(200),  FrameWidth(530), FrameWidth(600));
     } completion:^(BOOL finished) {
         
         //self.PatrolRemindView = nil;

@@ -45,10 +45,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, getScreen.size.width,HEIGHT_SCREEN - 160 - TOOLH - ZNAVViewH)];
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(16, 0, getScreen.size.width-32,HEIGHT_SCREEN - 160 - TOOLH - ZNAVViewH)];
     if (TOOLH >0) {
-        [self.tableview setFrame:CGRectMake(0, 0, getScreen.size.width,HEIGHT_SCREEN - 120 - TOOLH - ZNAVViewH)];
+        [self.tableview setFrame:CGRectMake(16, 0, getScreen.size.width-32,HEIGHT_SCREEN - 120 - TOOLH - ZNAVViewH)];
     }
+    self.tableview.layer.cornerRadius = 16;
+    self.tableview.layer.masksToBounds = YES;
     self.radarList = [NSMutableArray arrayWithCapacity:0];
     NSLog(@"tableviewtableviewtableview %f",self.tableview.frameHeight);
     
@@ -68,7 +70,8 @@
         }
     }
    [self.radarTableView reloadData];
-    
+
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
 }
 -(void)viewWillAppear:(BOOL)animated{
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -149,25 +152,14 @@
     
     
     //UPS设备
-    UIView *machineView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, FrameWidth(300))];
+    UIView *machineView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, 140)];
     machineView.backgroundColor = [UIColor whiteColor];
     [thiscell addSubview:machineView];
-    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(FrameWidth(230), FrameWidth(18), 1, FrameWidth(260))];
-    lineView.backgroundColor = [UIColor lightGrayColor];
-    [machineView addSubview:lineView];
+  
     
     UIImageView *machineImg = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(20), FrameWidth(200), FrameWidth(250))];
     NSString * img = @"station_big_normal";
-//    if([AllEquipment indexOfObject:_machineDetail[@"category"]] != NSNotFound){
-//        img = [NSString stringWithFormat:@"station_big_%@",_machineDetail[@"category"]];
-//        machineImg.image = [UIImage imageNamed:img];
-//    }else {
-//        [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
-//        if([_machineDetail[@"picture"] length] == 0)
-//        {
-//             machineImg.image = [UIImage imageNamed:img];
-//        }
-//    }
+
    
     machineImg.contentMode = 1;
     NSString *cag = safeString(_machineDetail[@"category"]);
@@ -187,37 +179,84 @@
          [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
     }
     
+    UIImageView *topBgImageView = [[UIImageView alloc]init];
+    topBgImageView.backgroundColor = [UIColor colorWithHexString:@"#F3F5F9"];
+    [machineView addSubview:topBgImageView];
+    [topBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@145);
+        make.height.equalTo(@106);
+        make.left.equalTo(machineView.mas_left).offset(16);
+        make.top.equalTo(machineView.mas_top).offset(20);
+    }];
+    
     
     machineImg.userInteractionEnabled = YES;
     UITapGestureRecognizer *viewTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(MachineInfoPicture:)];
     [machineImg addGestureRecognizer:viewTapGesture];
     [viewTapGesture setNumberOfTapsRequired:1];
     
-//    [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_machineDetail[@"picture"]]]];
-//    [_headImage sd_setImageWithURL:[NSURL URLWithString: _imgUrl] placeholderImage:[UIImage imageNamed:@"personal_head"]];
-    
     [machineView addSubview:machineImg];
+    [machineImg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@145);
+        make.height.equalTo(@89);
+        make.left.equalTo(machineView.mas_left).offset(16);
+        make.top.equalTo(topBgImageView.mas_top).offset(9);
+        
+    }];
+    
+    UIImageView *greenDotImage = [[UIImageView alloc]init];
+    greenDotImage.backgroundColor = [UIColor colorWithHexString:@"#03C3B6"];
+    [machineView addSubview:greenDotImage];
+    greenDotImage.layer.cornerRadius = 4.f;
+    greenDotImage.layer.masksToBounds = YES;
+    [greenDotImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@8);
+        make.height.equalTo(@8);
+        make.left.equalTo(topBgImageView.mas_right).offset(10);
+        make.top.equalTo(topBgImageView.mas_top).offset(11);
+    }];
+    
     
     UILabel *machineLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(240), FrameWidth(40), FrameWidth(380), FrameWidth(30))];
-    machineLabel.font = FontSize(17);
+    machineLabel.font = FontSize(14);
     machineLabel.text = [NSString stringWithFormat:@"%@-%@",_machineDetail[@"roomName"],_machineDetail[@"alias"]];//_machineDetail[@"alias"];//@"***-温度;
     [machineView addSubview:machineLabel];
-    
+    machineLabel.numberOfLines = 1;
+    machineLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    [machineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.lessThanOrEqualTo(@200);
+        make.height.equalTo(@21);
+        make.left.equalTo(greenDotImage.mas_right).offset(7);
+        make.top.equalTo(topBgImageView.mas_top).offset(4);
+    }];
+   
    
     
     
-    UILabel *bhLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(240), FrameWidth(90), FrameWidth(380), FrameWidth(30))];
+    UILabel *bhLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(240)+60, FrameWidth(90), FrameWidth(380), FrameWidth(30))];
     bhLabel.font = FontSize(16);
     bhLabel.text = [NSString stringWithFormat:@"%@%@",@"编号：",_machineDetail[@"code"]];//@"编号
     [machineView addSubview:bhLabel];
+    
+    [bhLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(machineLabel.mas_left);
+        make.top.equalTo(machineLabel.mas_bottom).offset(5);
+        make.width.equalTo(@200);
+        make.height.equalTo(@21);
+    }];
     //warn_save
-    UILabel *ztLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(240), FrameWidth(140), FrameWidth(80), FrameWidth(30))];
+    UILabel *ztLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(240)+60, FrameWidth(140), FrameWidth(80), FrameWidth(30))];
     ztLabel.font = FontSize(16);
     ztLabel.text = @"状态:";
     [machineView addSubview:ztLabel];
-    
+    [ztLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(machineLabel.mas_left);
+        make.top.equalTo(bhLabel.mas_bottom).offset(5);
+        make.width.equalTo(@200);
+        make.height.equalTo(@21);
+    }];
     if([_machineDetail[@"status"] isEqualToString:@"1"]){
-        UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320), FrameWidth(140), FrameWidth(120), FrameWidth(28))];
+        UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(120), FrameWidth(28))];
         [warnBtn setBackgroundColor:warnColor];
         warnBtn.layer.cornerRadius = 2;
         warnBtn.titleLabel.font = FontBSize(13);
@@ -232,12 +271,12 @@
         [machineView addSubview:levelBtn];
     }else if([_machineDetail[@"status"] isEqualToString:@"2"]){
         
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320), FrameWidth(140), FrameWidth(60), FrameWidth(28))];
+        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(60), FrameWidth(28))];
         [normalBtn setTitle: @"--"   forState:UIControlStateNormal];
         [machineView addSubview:normalBtn];
     }else if([_machineDetail[@"status"] isEqualToString:@"3"]){
         
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320), FrameWidth(140), FrameWidth(60), FrameWidth(28))];
+        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(60), FrameWidth(28))];
         [normalBtn setBackgroundColor:FrameColor(252,201,84)];
         normalBtn.layer.cornerRadius = 2;
         normalBtn.titleLabel.font = FontBSize(13);
@@ -246,7 +285,7 @@
         [machineView addSubview:normalBtn];
     }else{
         
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320), FrameWidth(140), FrameWidth(60), FrameWidth(28))];
+        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(60), FrameWidth(28))];
         [normalBtn setBackgroundColor:FrameColor(120, 203, 161)];
         normalBtn.layer.cornerRadius = 2;
         normalBtn.titleLabel.font = FontBSize(13);
@@ -372,7 +411,7 @@
     }else{
        
         //UPS状态
-        UIView *machineStatusView = [[UIView alloc]initWithFrame:CGRectMake(0, machineView.frame.origin.y + machineView.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(77))];
+        UIView *machineStatusView = [[UIView alloc]initWithFrame:CGRectMake(0, machineView.frame.origin.y + machineView.frame.size.height, WIDTH_SCREEN, 50)];
         machineStatusView.backgroundColor = [UIColor whiteColor];
         
 //        [machineStatusView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -383,22 +422,38 @@
 //        }];
         [thiscell addSubview:machineStatusView];
         
-        UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(75), 0, WIDTH_SCREEN, FrameWidth(77))];
-        title.font = FontSize(17);
+        UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(39, 0, 200, 50)];
+        title.font = FontSize(14);
         title.text = [NSString stringWithFormat:@"%@",_machineDetail[@"alias"]];//@"UPS状态";
         [machineStatusView addSubview:title];//station_right
         
-        UILabel *title2 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(480), 0, FrameWidth(100), FrameWidth(77))];
-        title2.text = @"更多";
+        UILabel *title2 = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 16-100-23, 0, 100, 50)];
+        title2.text = @"更多参数";
         title2.textAlignment = NSTextAlignmentRight ;
-        title2.font = FontSize(16);
+        title2.font = FontSize(14);
+        title2.textColor = [UIColor colorWithHexString:@"#1860B0"];
         title2.userInteractionEnabled = YES;
         UITapGestureRecognizer *viewTapGesture1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(MachineInfoList:)];
         [title2 addGestureRecognizer:viewTapGesture1];
         [viewTapGesture setNumberOfTapsRequired:1];
+        [machineStatusView addSubview:title2];
+        [title2 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(machineStatusView.mas_right).offset(-23-16-20);
+            make.top.equalTo(machineStatusView.mas_top);
+            make.width.equalTo(@100);
+            make.height.equalTo(@50);
+        }];
         
-        
-        [machineStatusView addSubview:title2];//station_right
+        UIImageView *rightArrowImg = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-16-16-4, 23, 4, 4)];
+        rightArrowImg.image = [UIImage imageNamed:@"blue_jiantou"];
+        [machineStatusView addSubview:rightArrowImg];//station_right
+        [rightArrowImg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(title2.mas_right).offset(2);
+            make.top.equalTo(machineStatusView.mas_top).offset(23);
+            make.width.equalTo(@4);
+            make.height.equalTo(@4);
+        }];
+       
         UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(600), FrameWidth(25), FrameWidth(15), FrameWidth(30))];
         rightImg.image = [UIImage imageNamed:@"station_right"];
         [machineStatusView addSubview:rightImg];//station_right
@@ -430,18 +485,20 @@
                 if(self.objects[i].emphasis == false){
                     continue;
                 }
-                neworign_y +=   FrameWidth(80);
+                neworign_y +=  50;
                 
                 
-                UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(50), neworign_y, FrameWidth(200), FrameWidth(80))];
-                nameLabel.font = FontSize(16);
+                UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(38, neworign_y, FrameWidth(200),50)];
+                nameLabel.font = FontSize(14);
                 nameLabel.text = [CommonExtension isEmptyWithString:   self.objects[i].name]?@"":self.objects[i].name;//[self.objects[i].name isEqual:[NSNull null]]?@"":self.objects[i].name;
                 nameLabel.numberOfLines = 0;
+                nameLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                
                 nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
                 [InView addSubview:nameLabel];
                 
-                UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(260), neworign_y, FrameWidth(180), FrameWidth(80))];
-                numLabel.font = FontSize(16);
+                UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH -100-17, neworign_y, FrameWidth(180), 50)];
+                numLabel.font = FontSize(14);
                 NSString * unit = [CommonExtension isEmptyWithString:   self.objects[i].unit]?@"":self.objects[i].unit;
                 NSString * tagValue = [CommonExtension isEmptyWithString:   self.objects[i].tagValue]?@"":self.objects[i].tagValue;
                 numLabel.text =[NSString stringWithFormat:@"%@%@",tagValue ,unit] ;
@@ -450,8 +507,10 @@
                 [InView addSubview:numLabel];
                 
                 UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(400), neworign_y, FrameWidth(190), FrameWidth(80))];
-                titleLabel.font = FontSize(16);
+                titleLabel.font = FontSize(14);
                 titleLabel.textAlignment = NSTextAlignmentCenter;
+                titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+                
                 NSString *bottomLimit = @"";
                 NSString *topLimit = @"";
                 if([FrameBaseRequest isPureInt:self.objects[i].bottomLimit]){
@@ -471,29 +530,27 @@
                 
                 
                 
-                UIImageView * typeImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(25), neworign_y+FrameWidth(35), 6, 6)];
-                typeImg.image = [UIImage imageNamed:@"station_dian"];
+                UIImageView * typeImg = [[UIImageView alloc]initWithFrame:CGRectMake(23, neworign_y+22, 6, 6)];
+                typeImg.backgroundColor = [UIColor colorWithHexString:@"#95A8D7"];
+                typeImg.layer.cornerRadius = 3.f;
+                typeImg.layer.masksToBounds = YES;
                 [InView addSubview:typeImg];
                 if(self.objects[i].alarmStatus){
-                    typeImg.image = [UIImage imageNamed:@"station_dian_red"];
-                    titleLabel.textColor = [UIColor redColor];
-                    nameLabel.textColor = [UIColor redColor];
-                    numLabel.textColor = [UIColor redColor];
+                    typeImg.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+                    titleLabel.textColor =  [UIColor colorWithHexString:@"#F11B3D"];
+                    nameLabel.textColor = [UIColor colorWithHexString:@"#F11B3D"];
+                    numLabel.textColor = [UIColor colorWithHexString:@"#F11B3D"];
                 }
                 
-                UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), neworign_y + FrameWidth(80), FrameWidth(550), 1)];
-                lineLabel.backgroundColor = BGColor;
-                [InView addSubview:lineLabel];
+              
                 
             }
         }
         if(neworign_y < 0){neworign_y = 0;}
-        [InView setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(595), FrameWidth(80)+neworign_y)];
+        [InView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100+neworign_y)];
         
         [machineStatusMain setFrame:CGRectMake(0, machineStatusMain.frame.origin.y, WIDTH_SCREEN, FrameWidth(28)+InView.frame.size.height)];
-        InView.layer.cornerRadius = 3;
-        InView.layer.borderWidth = 1;
-        InView.layer.borderColor = QianGray.CGColor;
+     
         [machineStatusMain addSubview:InView];
         
         allHeight = machineStatusMain.frame.origin.y + machineStatusMain.frame.size.height ;

@@ -66,6 +66,16 @@
     NSLog(@"StationVideoListController  %@",_station_code);
     
     [self setupTable];
+    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     
+     @{NSFontAttributeName:[UIFont systemFontOfSize:18],
+       
+    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
 }
 
 - (void)dealloc {
@@ -73,7 +83,22 @@
     [super dealloc];
 }
 
-
+/**
+ 颜色转图片
+ 
+ @param color 颜色
+ @return 图片
+ */
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
 
 /**
  监听网络
@@ -152,8 +177,9 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationVideoListController viewWillDisappear");
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.translucent = NO;
+     [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
+
+      self.navigationController.navigationBar.translucent = YES;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -243,14 +269,21 @@
         }else{
             UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(80), 0, FrameWidth(220), FrameWidth(54))];
             titleLabel.text = item.alias;
-            titleLabel.textColor = [UIColor grayColor];
+            titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
             titleLabel.font = FontSize(15);
             [cell addSubview:titleLabel];
             
             UIImageView *dot = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(55), FrameWidth(20), FrameWidth(12), FrameWidth(12))];
-            dot.image = [UIImage imageNamed:@"station_dian"];
+            dot.image = [UIImage imageNamed:@"video_icon"];
             [cell addSubview:dot];
-            
+            UIImageView *rightArrow = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(13), FrameWidth(72), FrameWidth(72))];
+            rightArrow.image = [UIImage imageNamed:@"video_right"];
+            [cell addSubview:rightArrow];//station_right
+            [rightArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(cell.mas_right).offset(-10);
+                make.width.height.equalTo(@18);
+                make.centerY.equalTo(dot.mas_centerY);
+            }];
         }
         
         return cell;
@@ -277,13 +310,23 @@
         [thiscell addSubview:lineLabel];
         
         UIImageView *videoImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(13), FrameWidth(72), FrameWidth(72))];
-        videoImg.image = [UIImage imageNamed:@"station_video"];
+        videoImg.image = [UIImage imageNamed:@"video_icon"];
         [thiscell addSubview:videoImg];//station_right
         UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(120), FrameWidth(1), FrameWidth(450), FrameWidth(107))];
         titleLabel.font = FontSize(17);
         titleLabel.text = self.videoList[indexPath.row].name;
-        titleLabel.textColor = [UIColor grayColor];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
         [thiscell addSubview:titleLabel];
+        
+        
+        UIImageView *rightArrow = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(13), FrameWidth(72), FrameWidth(72))];
+        rightArrow.image = [UIImage imageNamed:@"video_right"];
+        [thiscell addSubview:rightArrow];//station_right
+        [rightArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(thiscell.mas_right).offset(-10);
+            make.width.height.equalTo(@18);
+            make.centerY.equalTo(videoImg.mas_centerY);
+        }];
         
     }
     return thiscell;
@@ -440,34 +483,35 @@
 -(void)backBtn{
     UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
-    [leftButon setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
+    [leftButon setImage:[UIImage imageNamed:@"back_gray"] forState:UIControlStateNormal];
     [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
     //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
     [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
     self.navigationItem.leftBarButtonItem = fixedButton;
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+
     [self stationBtn];
 }
 -(void)stationBtn{
-    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,  FrameWidth(100), FrameWidth(30))];
-    
-    [_rightButton addTarget:self action:@selector(stationAction) forControlEvents:UIControlEventTouchUpInside];
-    _rightButton.titleLabel.font = FontSize(15);
-    CGSize size = [_station_name sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(15),NSFontAttributeName,nil]];
-    
-    //[leftButton setBackgroundColor:[UIColor blueColor]];
-    [_rightButton setFrame:CGRectMake(FrameWidth(30), 0, size.width, FrameWidth(30))];
-    [_rightButton setTitle:_station_name forState:UIControlStateNormal];
-    
-    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:_rightButton];
-    
-    
-    UIButton *rightButton1 = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, FrameWidth(20), FrameWidth(30))];
-    [rightButton1 setImage:[UIImage imageNamed:@"station_pulldown"] forState:UIControlStateNormal];
-    UIBarButtonItem *rightBarButton1 = [[UIBarButtonItem alloc]initWithCustomView:rightButton1];
-    self.navigationItem.rightBarButtonItems = @[ rightBarButton1,rightBarButton];
-    
+//    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,  FrameWidth(100), FrameWidth(30))];
+//
+//    [_rightButton addTarget:self action:@selector(stationAction) forControlEvents:UIControlEventTouchUpInside];
+//    _rightButton.titleLabel.font = FontSize(15);
+//    CGSize size = [_station_name sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(15),NSFontAttributeName,nil]];
+//
+//    //[leftButton setBackgroundColor:[UIColor blueColor]];
+//    [_rightButton setFrame:CGRectMake(FrameWidth(30), 0, size.width, FrameWidth(30))];
+//    [_rightButton setTitle:_station_name forState:UIControlStateNormal];
+//
+//    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc]initWithCustomView:_rightButton];
+//
+//
+//    UIButton *rightButton1 = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, FrameWidth(20), FrameWidth(30))];
+//    [rightButton1 setImage:[UIImage imageNamed:@"station_pulldown"] forState:UIControlStateNormal];
+//    UIBarButtonItem *rightBarButton1 = [[UIBarButtonItem alloc]initWithCustomView:rightButton1];
+//    self.navigationItem.rightBarButtonItems = @[ rightBarButton1,rightBarButton];
+//
     
 }
 -(void)backAction {

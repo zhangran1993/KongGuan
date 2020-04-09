@@ -45,19 +45,18 @@
 #pragma mark - private methods 私有方法
 
 - (void)setupTable{
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
     //UPS状态
-    UIView *machineStatusView = [[UIView alloc]initWithFrame:CGRectMake(-1, -1, WIDTH_SCREEN+2, FrameWidth(77)+2)];
+    UIView *machineStatusView = [[UIView alloc]initWithFrame:CGRectMake(0,9, WIDTH_SCREEN, 50)];
     machineStatusView.backgroundColor = [UIColor whiteColor];
-    
-    machineStatusView.layer.borderWidth = 1;
-    machineStatusView.layer.borderColor = BGColor.CGColor;
+ 
     [self.view addSubview:machineStatusView];
     
     UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(75), 0, WIDTH_SCREEN, FrameWidth(77)+2)];
-    title.font = FontSize(18);
+    title.font = FontSize(14);
     title.text = [NSString stringWithFormat:@"%@-%@",_machineDetail[@"roomName"],_machineDetail[@"alias"]];//@"UPS状态";
+    title.textColor = [UIColor colorWithHexString:@"#24252A"];
     [machineStatusView addSubview:title];//station_right
     
     
@@ -66,7 +65,7 @@
     
     UIImageView *nowMachine = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(18), FrameWidth(45), FrameWidth(45))];
     nowMachine.backgroundColor = [UIColor clearColor];
-    NSString * img1 = @"equipment";
+    NSString * img1 = @"device_UPS";
     if([AllEquipment indexOfObject:_machineDetail[@"category"]] != NSNotFound){
         img1 = _machineDetail[@"category"];
         
@@ -79,20 +78,37 @@
         moreheight = -FrameWidth(1100);
     }
     
-    _machineStatusMain = [[UIView alloc]initWithFrame:CGRectMake(FrameWidth(20), machineStatusView.frame.origin.y + machineStatusView.frame.size.height + FrameWidth(20) , WIDTH_SCREEN -FrameWidth(40), HEIGHT_SCREEN - kDefectHeight - machineStatusView.frame.origin.y - machineStatusView.frame.size.height - FrameWidth(20))];
+    [nowMachine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(machineStatusView.mas_left).offset(21);
+        make.top.equalTo(machineStatusView.mas_top).offset(17);
+        make.width.equalTo(@11);
+        make.height.equalTo(@16);
+    }];
+    [title mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.left.equalTo(nowMachine.mas_right).offset(6);
+           make.top.equalTo(machineStatusView.mas_top).offset(14);
+           make.width.equalTo(@200);
+           make.height.equalTo(@21);
+       }];
+    UIImageView *lineImage = [[UIImageView alloc]init];
+    [machineStatusView addSubview:lineImage];
+    lineImage.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [lineImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(machineStatusView.mas_left).offset(16);
+        make.right.equalTo(machineStatusView.mas_right).offset(-14);
+        make.bottom.equalTo(machineStatusView.mas_bottom);
+    }];
+    
+    _machineStatusMain = [[UIView alloc]initWithFrame:CGRectMake(0, machineStatusView.frame.origin.y + machineStatusView.frame.size.height + FrameWidth(20) , WIDTH_SCREEN , HEIGHT_SCREEN - kDefectHeight - machineStatusView.frame.origin.y - machineStatusView.frame.size.height - FrameWidth(20))];
+    
     _machineStatusMain.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_machineStatusMain];
     
-    //[machineStatusMain setFrame:CGRectMake(0, machineStatusMain.frame.origin.y, WIDTH_SCREEN, FrameWidth(28))];
-    _machineStatusMain.layer.cornerRadius = 3;
-    _machineStatusMain.layer.borderWidth = 1;
-    _machineStatusMain.layer.borderColor = QianGray.CGColor;
     
     [_machineStatusMain mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(machineStatusView.mas_bottom).offset(20);
-        make.left.equalTo(self.view.mas_left).offset(20);
-        make.width.equalTo(@(SCREEN_WIDTH-40));
-        make.right.equalTo(self.view.mas_right).offset(-20);
+        make.left.equalTo(machineStatusView.mas_left);
+        make.right.equalTo(machineStatusView.mas_right);
         make.bottom.equalTo(self.view.mas_bottom).offset(-kDefectHeight-20);
     }];
     
@@ -100,7 +116,7 @@
     
     //去除分割线
     
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(1, FrameWidth(5) ,_machineStatusMain.frame.size.width,_machineStatusMain.frame.size.height - FrameWidth(10))];
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0,0 ,SCREEN_WIDTH,_machineStatusMain.frame.size.height - FrameWidth(10))];
     self.tableview.delegate =self;
     self.tableview.dataSource =self;
     self.tableview.separatorStyle = NO;
@@ -168,19 +184,22 @@
     if(self.objects.count > 0){
         //NSInteger rowCount = _objects2.count;
         for (int i=0; i<self.objects.count; ++i) {
-            neworign_y =  i * FrameWidth(70);
+            neworign_y =  i * 50;
             
-            UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(30), neworign_y, FrameWidth(195), FrameWidth(70))];
-            nameLabel.font = FontSize(16);
+            UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(38, neworign_y, FrameWidth(195),50)];
+            nameLabel.font = FontSize(14);
             nameLabel.text =[self.objects[i].name isEqual:[NSNull null]]? @"":self.objects[i].name;
             nameLabel.numberOfLines = 0;
             nameLabel.lineBreakMode = NSLineBreakByCharWrapping;
+            nameLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
             [InView addSubview:nameLabel];
             
-            UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(250), neworign_y, FrameWidth(180), FrameWidth(70))];
-            numLabel.font = FontSize(16);
+            UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH -100-17-16, neworign_y, 100, 50)];
+            numLabel.font = FontSize(14);
+            numLabel.textAlignment = NSTextAlignmentRight;
             NSString * unit = [CommonExtension isEmptyWithString:   self.objects[i].unit]?@"":self.objects[i].unit;
             numLabel.text =[NSString stringWithFormat:@"%@%@",[CommonExtension isEmptyWithString:  self.objects[i].tagValue ]? @"":self.objects[i].tagValue,unit];
+            numLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
             [InView addSubview:numLabel];
             
             UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(380), neworign_y, FrameWidth(200), FrameWidth(70))];
@@ -201,25 +220,27 @@
                 //[InView addSubview:titleLabel];
             }
             
-            UIImageView * typeImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(5), neworign_y+FrameWidth(28), 6, 6)];
-            typeImg.image = [UIImage imageNamed:@"station_dian"];
+            UIImageView * typeImg = [[UIImageView alloc]initWithFrame:CGRectMake(23, neworign_y+22, 6, 6)];
+            typeImg.backgroundColor = [UIColor colorWithHexString:@"#95A8D7"];
+            typeImg.layer.cornerRadius = 3.f;
+            typeImg.layer.masksToBounds = YES;
             [InView addSubview:typeImg];
             
-            UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), neworign_y + FrameWidth(70), FrameWidth(500), 1)];
-            lineLabel.backgroundColor = BGColor;
-            [InView addSubview:lineLabel];
-            
+//            UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), neworign_y + FrameWidth(70), FrameWidth(500), 1)];
+//            lineLabel.backgroundColor = BGColor;
+//            [InView addSubview:lineLabel];
+//
             
             if(self.objects[i].alarmStatus){
-                typeImg.image = [UIImage imageNamed:@"station_dian_red"];
-                titleLabel.textColor = [UIColor redColor];
-                nameLabel.textColor = [UIColor redColor];
-                numLabel.textColor = [UIColor redColor];
+                typeImg.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+                titleLabel.textColor = [UIColor colorWithHexString:@"#F11B3D"];
+                nameLabel.textColor = [UIColor colorWithHexString:@"#F11B3D"];
+                numLabel.textColor = [UIColor colorWithHexString:@"#F11B3D"];
             }
             
         }
     }
-    [InView setFrame:CGRectMake(FrameWidth(25), FrameWidth(10), FrameWidth(595), FrameWidth(100)+neworign_y)];
+    [InView setFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100+neworign_y)];
     
     
     
@@ -230,10 +251,10 @@
     }
     [_machineStatusMain setFrame:CGRectMake(_machineStatusMain.frame.origin.x, _machineStatusMain.frame.origin.y, _machineStatusMain.frame.size.width, HEIGHT_SCREEN - kDefectHeight - _machineStatusMain.frame.origin.y -10)];
     [_machineStatusMain mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(FrameWidth(77) + FrameWidth(20));
-        make.left.equalTo(self.view.mas_left).offset(20);
-        make.width.equalTo(@(SCREEN_WIDTH-40));
-        make.right.equalTo(self.view.mas_right).offset(-20);
+        make.top.equalTo(self.view.mas_top).offset(60);
+        make.left.equalTo(self.view.mas_left);
+        make.width.equalTo(@(SCREEN_WIDTH));
+        make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom).offset(-kDefectHeight-20);
     }];
     [self.tableview setFrame:CGRectMake(self.tableview.frame.origin.x, self.tableview.frame.origin.y, self.tableview.frame.size.width, HEIGHT_SCREEN - kDefectHeight - self.tableview.frame.origin.y)];
@@ -269,13 +290,14 @@
 -(void)backBtn{
     UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
-    [leftButon setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
+    [leftButon setImage:[UIImage imageNamed:@"back_black"] forState:UIControlStateNormal];
     [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
     //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
     [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
     self.navigationItem.leftBarButtonItem = fixedButton;
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor blackColor]}] ;
 }
 -(void)backAction {
     //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
