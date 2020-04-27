@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDictionary *dataDic;
 
 @property (nonatomic, copy) void (^watchVideo)(NSString *stationCode,NSString *stationName);
-
+@property (nonatomic ,copy) void(^selStation)();
 @end
 
 NS_ASSUME_NONNULL_END

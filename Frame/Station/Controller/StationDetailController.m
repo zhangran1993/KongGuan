@@ -24,7 +24,10 @@
 #import "KG_EnvView.h"
 #import "KG_PowView.h""
 #import "KG_StationDetailModel.h"
-@interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate>
+#import "KG_SecondFloorViewController.h"
+#import "KG_MachineStationModel.h"
+#import "KG_KongTiaoViewController.h"
+@interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
 @property (nonatomic,copy) NSString* station_name;
@@ -78,6 +81,10 @@
 @property (strong, nonatomic) UILabel *envNumLalbel;
 @property (strong, nonatomic) UIImageView *powerImage;
 @property (strong, nonatomic) UILabel *powerNumLabel;
+
+@property (strong, nonatomic) NSMutableArray *temArray;
+@property (strong, nonatomic) UIImageView *topImage1;
+
 @end
 
 @implementation StationDetailController
@@ -89,10 +96,11 @@
 - (void)viewDidLoad {
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(20),NSForegroundColorAttributeName:[UIColor whiteColor]}] ;
-  
+//    self.navigationController.delegate = self;
+   
     [self createNaviTopView];
     [self createTopView];
-          
+    
     float moreheight = ZNAVViewH;
     if(HEIGHT_SCREEN == 812){
         moreheight = FrameWidth(280);
@@ -124,17 +132,60 @@
     self.modelArray = [NSMutableArray array];
     self.statusArray = [NSMutableArray array];
     [super viewDidLoad];
-    
+    [self loadData];
     self.dataModel = [[KG_StationDetailModel alloc]init];
+    [self queryStationDetailData];
+    
     
 }
-
+- (void)loadData {
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    [self.navigationController setNavigationBarHidden:YES];
+    self.StationItem = nil;
+    
+    
+    [self dataReport];
+    
+    _imageUrl = @"";
+    [_tableview reloadData];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if([userDefaults objectForKey:@"station"]){
+        NSDictionary * station = [userDefaults objectForKey:@"station"];
+        
+        self.navigationItem.title = station[@"alias"];//
+        _station_name = station[@"alias"];
+        _station_code = station[@"code"];//
+        _airport = station[@"airport"];//
+        if([getAllStation indexOfObject:_station_code] != NSNotFound){
+            
+        }else{
+            [userDefaults removeObjectForKey:@"station"];
+            [FrameBaseRequest showMessage:@"您没有当前台站的权限"];
+            [self.tabBarController setSelectedIndex:2];
+            return ;
+        }
+        
+    }else{
+        [FrameBaseRequest showMessage:@"请选择台站"];
+        [self.tabBarController setSelectedIndex:2];
+        return ;
+    }
+    
+    [self setupTable];
+    self.view.backgroundColor = [UIColor whiteColor];
+    //去除分割线
+    //[self.view addSubview:_tableview];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoBottomApevent:) name:@"bottomapevent" object:nil];
+    
+}
 - (void)createNaviTopView {
     
-    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
-    [self.view addSubview:topImage1];
-    topImage1.contentMode = UIViewContentModeScaleAspectFill;
-    topImage1.image  =[UIImage imageNamed:@"machine_rs"];
+    self.topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+    [self.view addSubview:self.topImage1];
+    self.topImage1.contentMode = UIViewContentModeScaleAspectFill;
+    self.topImage1.image  =[UIImage imageNamed:@"machine_rs"];
     
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
     [self.view addSubview:topImage];
@@ -146,7 +197,7 @@
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
     self.navigationView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.navigationView];
-  
+    
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
     
@@ -155,7 +206,7 @@
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
     self.titleLabel.text = @"智环";
-  
+    
     /** 返回按钮 **/
     UIButton * backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -175,14 +226,43 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-   
+    
 }
-
+- (void)getTemHuiData {
+    NSString *  FrameRequestURL  =  @"http://10.33.33.147:8089/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS";
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.temArray = [KG_MachineStationModel mj_objectArrayWithKeyValuesArray:result[@"value"]];
+        [self.tableview reloadData];
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            [self.navigationController popToViewController:viewCtl animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+}
 - (void)backButtonClick:(UIButton *)button {
+    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     
 }
 - (void)createTopView{
-  
+    
     [self.runView removeFromSuperview];
     self.runView = nil;
     self.runView= [[UIView alloc]init];
@@ -276,7 +356,7 @@
         make.width.equalTo(@10);
         make.height.equalTo(@10);
     }];
-   
+    
     UILabel *envLalbel = [[UILabel alloc]init];
     [self.runView addSubview:envLalbel];
     envLalbel.text = @"环境监测";
@@ -316,7 +396,7 @@
         make.width.equalTo(@10);
         make.height.equalTo(@10);
     }];
-   
+    
     UILabel *powerLalbel = [[UILabel alloc]init];
     [self.runView addSubview:powerLalbel];
     powerLalbel.text = @"动力监测";
@@ -324,7 +404,7 @@
     powerLalbel.font = [UIFont systemFontOfSize:14];
     powerLalbel.numberOfLines = 1;
     powerLalbel.textAlignment = NSTextAlignmentLeft;
-   
+    
     self.powerImage = [[UIImageView alloc]init];
     self.powerImage.image = [UIImage imageNamed:@"level_prompt"];
     [self.runView addSubview:self.powerImage];
@@ -335,11 +415,11 @@
         make.height.equalTo(@17);
     }];
     [powerLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
-           make.right.equalTo(self.powerImage.mas_left).offset(-5);
-           make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
-           make.width.equalTo(@60);
-           make.height.equalTo(@18);
-       }];
+        make.right.equalTo(self.powerImage.mas_left).offset(-5);
+        make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
+        make.width.equalTo(@60);
+        make.height.equalTo(@18);
+    }];
     self.powerNumLabel = [[UILabel alloc]init];
     [self.runView addSubview:self.powerNumLabel];
     self.powerNumLabel.text = @"1";
@@ -356,7 +436,7 @@
         make.width.equalTo(@10);
         make.height.equalTo(@10);
     }];
-   
+    
     [self.tableview reloadData];
 }
 
@@ -385,48 +465,8 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
-    
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    [self.navigationController setNavigationBarHidden:YES];
-    self.StationItem = nil;
-    
-    
-    [self dataReport];
-    
-    _imageUrl = @"";
-    [_tableview reloadData];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
-    if([userDefaults objectForKey:@"station"]){
-        NSDictionary * station = [userDefaults objectForKey:@"station"];
-        
-        self.navigationItem.title = station[@"alias"];//
-        _station_name = station[@"alias"];
-        _station_code = station[@"code"];//
-        _airport = station[@"airport"];//
-        if([getAllStation indexOfObject:_station_code] != NSNotFound){
-            
-        }else{
-            [userDefaults removeObjectForKey:@"station"];
-            [FrameBaseRequest showMessage:@"您没有当前台站的权限"];
-            [self.tabBarController setSelectedIndex:2];
-            return ;
-        }
-        
-    }else{
-        [FrameBaseRequest showMessage:@"请选择台站"];
-        [self.tabBarController setSelectedIndex:2];
-        return ;
-    }
-    
-    [self setupTable];
-    self.view.backgroundColor = [UIColor whiteColor];
-    //去除分割线
-    //[self.view addSubview:_tableview];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoBottomApevent:) name:@"bottomapevent" object:nil];
-     [self queryStationDetailData];
-         
+   
+    [self.tableview reloadData];
 }
 
 
@@ -435,37 +475,47 @@
     
     NSDictionary *secDic = self.dataModel.securityStatus;
     if (isSafeDictionary(secDic)) {
-         if([secDic[@"status"] isEqualToString:@"0"]){
-               self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
-           }else if([secDic[@"status"] isEqualToString:@"3"]){
-               self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
-           }else if([secDic[@"status"] isEqualToString:@"1"]){
-               self.anfangImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",secDic[@"level"]]]];
-               self.anfangNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",secDic[@"level"]]];
-               self.anfangNumLalbel.text = [NSString stringWithFormat:@"%@",secDic[@"num"]];
-               
-           }else{
-               self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
-           }
+        if([secDic[@"status"] isEqualToString:@"0"]){
+            self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
+        }else if([secDic[@"status"] isEqualToString:@"3"]){
+            self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
+        }else if([secDic[@"status"] isEqualToString:@"1"]){
+            self.anfangImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",secDic[@"level"]]]];
+            self.anfangNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",secDic[@"level"]]];
+            self.anfangNumLalbel.text = [NSString stringWithFormat:@"%@",secDic[@"num"]];
+            
+        }else{
+            self.anfangImage.image = [UIImage imageNamed:@"level_normal"];
+        }
+        if ([secDic[@"num"] intValue] == 0) {
+            self.anfangNumLalbel.hidden = YES;
+        }else {
+            self.anfangNumLalbel.hidden =NO;
+        }
     }
-   
+    
     
     NSDictionary *envDic = self.dataModel.environmentStatus;
     if (isSafeDictionary(envDic)) {
         if([envDic[@"status"] isEqualToString:@"0"]){
-               
-               self.envImage.image = [UIImage imageNamed:@"level_normal"];
-           }else if([envDic[@"status"] isEqualToString:@"3"]){
-               
-               self.envImage.image = [UIImage imageNamed:@"level_normal"];
-           }else if([envDic[@"status"] isEqualToString:@"1"]){
-               self.envImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",envDic[@"level"]]]];
-               self.envNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",envDic[@"level"]]];
-               self.envNumLalbel.text = [NSString stringWithFormat:@"%@",envDic[@"num"]];
-               
-           }else{
-               self.envImage.image = [UIImage imageNamed:@"level_normal"];
-           }
+            
+            self.envImage.image = [UIImage imageNamed:@"level_normal"];
+        }else if([envDic[@"status"] isEqualToString:@"3"]){
+            
+            self.envImage.image = [UIImage imageNamed:@"level_normal"];
+        }else if([envDic[@"status"] isEqualToString:@"1"]){
+            self.envImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",envDic[@"level"]]]];
+            self.envNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",envDic[@"level"]]];
+            self.envNumLalbel.text = [NSString stringWithFormat:@"%@",envDic[@"num"]];
+            
+        }else{
+            self.envImage.image = [UIImage imageNamed:@"level_normal"];
+        }
+        if ([envDic[@"num"] intValue] == 0) {
+            self.envNumLalbel.hidden = YES;
+        }else {
+            self.envNumLalbel.hidden =NO;
+        }
     }
     NSDictionary *powDic = self.dataModel.powerStatus;
     if (isSafeDictionary(powDic)) {
@@ -481,6 +531,11 @@
         }else{
             self.powerImage.image = [UIImage imageNamed:@"level_normal"];
         }
+        if ([powDic[@"num"] intValue] == 0) {
+            self.powerNumLabel.hidden = YES;
+        }else {
+            self.powerNumLabel.hidden =NO;
+        }
         
     }
     [self.tableview reloadData];
@@ -490,20 +545,73 @@
 - (void)queryStationDetailData{
     
     NSDictionary *dic = [UserManager shareUserManager].currentStationDic;
-    NSString *FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/%@",dic[@"airport"]];
-    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/35TXFC";
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/%@",dic[@"code"]];
+//    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/35TXFC";
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-       
+        [self.modelArray removeAllObjects];
+        [self.statusArray removeAllObjects];
+        _stationDetail = [result[@"value"] copy];
+        _objects0 = [NSMutableArray new];
+        [_objects0 addObjectsFromArray:[_stationDetail[@"roomList"] copy]];
+        //_objects0 = [_stationDetail[@"roomList"] copy];
+        
+        _objects1 = [_stationDetail[@"securityDetails"] copy];
+        _objects2 = [_stationDetail[@"powerDetails"] copy];
+        _objects3 = [_stationDetail[@"equipmentDetails"] copy];
+        _roomList = [_stationDetail[@"roomList"] copy];
+        _imageUrl = @"";
+        _address = @"";
+        
+        if(_stationDetail[@"station"][@"picture"]){
+            _imageUrl= _stationDetail[@"station"][@"picture"];//
+          
+          
+            [self.topImage1 sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebHost,_imageUrl]] placeholderImage:[UIImage imageNamed:@"machine_rs"] ];
+        }
+        
+        if(_stationDetail[@"station"][@"address"]){
+            _address= _stationDetail[@"station"][@"address"];//
+        }
+        
+        if (result[@"value"][@"equipmentDetails"] && [result[@"value"][@"equipmentDetails"] isKindOfClass:[NSArray class]]) {
+            _objects3 = [result[@"value"][@"equipmentDetails"] copy];
+            for (NSDictionary *dict in result[@"value"][@"equipmentDetails"]) {
+                EquipmentDetailsModel *model = [EquipmentDetailsModel mj_objectWithKeyValues:dict];
+                [self.modelArray addObject:model];
+            }
+        }
+        
+        if (result[@"value"][@"equipmentStatus"] && [result[@"value"][@"equipmentStatus"] isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = result[@"value"][@"equipmentStatus"];
+            EquipmentStatusModel *model = [EquipmentStatusModel mj_objectWithKeyValues:dict];
+            [self.statusArray addObject:model];
+        }
+        
+        
+        [self.tableview reloadData];
+        
+        if(_stationDetail[@"station"][@"latitude"]){
+            _latitude= _stationDetail[@"station"][@"latitude"];//
+        }else{
+            _latitude = @"0";
+        }
+        if(_stationDetail[@"station"][@"longitude"]){
+            _longitude= _stationDetail[@"station"][@"longitude"];//
+            [self getWeather];
+        }else{
+            _longitude = @"0";
+        }
         [self.dataModel mj_setKeyValues:result[@"value"]];
         [self refreshData];
         [self queryWeatherData:self.dataModel.station[@"latitude"] withLon:self.dataModel.station[@"longitude"]];
+        [self getTemHuiData];
         NSLog(@"1");
-      
+        
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
@@ -536,8 +644,8 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    self.navigationController.navigationBarHidden = NO;
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+//    self.navigationController.navigationBarHidden = NO;
 }
 
 //展示navigation背景色
@@ -636,7 +744,7 @@
         }else{
             _longitude = @"0";
         }
-      
+        
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
@@ -887,94 +995,38 @@
     //大图
     
     float viewHeight =128;
+    
    
-    
-    //    NSString *path_document = NSHomeDirectory();
-    //    //设置一个图片的存储路径
-    //    NSString *imagePath = [path_document stringByAppendingString:@"/Documents/pic.png"];
-    //    //把图片直接保存到指定的路径（同时应该把图片的路径imagePath存起来，下次就可以直接用来取）
-    //    [UIImagePNGRepresentation(image2) writeToFile:imagePath atomically:YES];
-    //    UIImage *getimage2 = [UIImage imageWithContentsOfFile:imagePath];
-    //    NSLog(@"image2 is size %@",NSStringFromCGSize(getimage2.size));
-    
     
     UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0, 225, WIDTH_SCREEN, viewHeight)];
     view3.backgroundColor = [UIColor whiteColor];
-//    [thiscell addSubview:view3];
+    //    [thiscell addSubview:view3];
     
-    
+  
     NSString *stationString = @"";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
-    if([userDefaults objectForKey:@"station"]){
-        NSDictionary * station = [userDefaults objectForKey:@"station"];
-        stationString =  station[@"alias"];
-        
-    }
-    // 读取沙盒路径图片
-    
-    NSString *aPath3=[NSString stringWithFormat:@"%@/Documents/%@.png",NSHomeDirectory(),stationString];
-    
-    // 拿到沙盒路径图片
-    
     UIImageView *BigImg = [[UIImageView alloc]init];
+      
     
-    UIImage *imgFromUrl3=[[UIImage alloc]initWithContentsOfFile:aPath3];
-     if(imgFromUrl3) {
-        
-        NSLog(@"you");
-        [BigImg setImage:imgFromUrl3 ];
-        
-    }else {
-        
-        NSString *urlString =  [WebHost stringByAppendingString:_imageUrl];
-        NSData *data = [NSData dataWithContentsOfURL:[NSURL  URLWithString:urlString]];
-        UIImage *image = [UIImage imageWithData:data]; // 取得图片
-        
-        // 本地沙盒目录
-        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-        // 得到本地沙盒中名为"MyImage"的路径，"MyImage"是保存的图片名
-        NSString *imageFilePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",stationString]];
-        // 将取得的图片写入本地的沙盒中，其中0.5表示压缩比例，1表示不压缩，数值越小压缩比例越大
-        BOOL success = [UIImageJPEGRepresentation(image, 0.5) writeToFile:imageFilePath  atomically:YES];
-        if (success){
-            NSLog(@"写入本地成功");
+    if (self.dataModel.roomList.count) {
+        [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebHost stringByAppendingString:self.dataModel.roomList[0][@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]];
+        if([userDefaults objectForKey:@"zhihuanImage"]){
+            stationString = [userDefaults objectForKey:@"zhihuanImage"];
+            
+            for (int i=0; i<self.dataModel.roomList.count; i++) {
+                
+                if([stationString isEqualToString:self.dataModel.roomList[i][@"code"]]) {
+                    [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:self.dataModel.roomList[i][@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]];
+                    break;
+                }
+            }
         }
     }
+  
     
-    
-    
-    //先从缓存中找是否有图片
-    SDImageCache *cache =  [SDImageCache sharedImageCache];
-    UIImage *memoryImage = [cache imageFromMemoryCacheForKey:stationString];
-    
-    [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:_imageUrl]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]];
-    
-    [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebHost stringByAppendingString:_imageUrl]] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        NSLog(@"cself.imageHeight %ld",self.imageHeight);
-        if (self.imageHeight==0) {
-            self.imageHeight = (image.size.height / image.size.width) * BigImg.frameWidth;
-            NSLog(@"bself.imageHeight %ld",self.imageHeight);
-            if (self.imageHeight==0) {self.imageHeight =FrameWidth(397); }
-            NSLog(@"aself.imageHeight %ld",self.imageHeight);
-            [self.tableview reloadData ];
-            return ;
-        }
-    }];
-    
-    BigImg.frame = CGRectMake(SCREEN_WIDTH - 32-16-195, 51, 195, 128);
-    BigImg.contentMode = UIViewContentModeScaleAspectFit;
-    if([userDefaults objectForKey:@"station"]){
-        NSDictionary * station = [userDefaults objectForKey:@"station"];
-        
-        [[SDImageCache sharedImageCache] storeImage:BigImg.image forKey:station[@"alias"] toDisk:YES completion:nil];
-        
-    }
-    
-   
     UIView *bgImage = [[UIView alloc] init];
     bgImage.frame = CGRectMake(96,51,231,150);
-
+    
     bgImage.layer.backgroundColor = [UIColor colorWithRed:237/255.0 green:242/255.0 blue:252/255.0 alpha:1.0].CGColor;
     bgImage.layer.cornerRadius = 4;
     bgImage.layer.shadowColor = [UIColor colorWithRed:238/255.0 green:240/255.0 blue:245/255.0 alpha:1.0].CGColor;
@@ -995,32 +1047,40 @@
         make.height.equalTo(@128);
         make.top.equalTo(bgImage.mas_top).offset(11);
     }];
-    
+
     
     UIView *view4 = [[UIView alloc] init];
     view4.backgroundColor = [UIColor whiteColor];
     _newHeight1 = [self setFilterBtn:view4 objects:_objects0 title:@"机房"];
     [view4 setFrame:CGRectMake(0, view3.frame.origin.y + view3.frame.size.height +1, WIDTH_SCREEN, FrameWidth(40)+_newHeight1)];
-//    [thiscell addSubview:view4];
-    
-    for (int i=0; i<_objects0.count; i++) {
+    //    [thiscell addSubview:view4];
+    int num = 0;
+    for (int i=0; i<self.dataModel.roomList.count; i++) {
+        if([stationString isEqualToString:self.dataModel.roomList[i][@"code"]]) {
+            num ++;
+        }
+        
+    }
+    for (int i=0; i<self.dataModel.roomList.count; i++) {
         UIButton *btn  =[[UIButton alloc]init];
         btn.tag = i+1;
         [btn setFrame:CGRectMake(16+16, 51 + bgView.frame.origin.y + i*40 ,73, 30)];
         [thiscell addSubview:btn];
         [btn addTarget:self action:@selector(jfbtapevent:) forControlEvents:UIControlEventTouchUpInside];
-        if([stationString isEqualToString:_objects0[i][@"alias"]]) {
-             [btn setBackgroundColor:[UIColor colorWithHexString:@"#EDF2FC"]];
-             [btn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        if([stationString isEqualToString:self.dataModel.roomList[i][@"code"]]) {
+            [btn setBackgroundColor:[UIColor colorWithHexString:@"#EDF2FC"]];
+            [btn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
         }else {
-            
             [btn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
             [btn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
         }
-        
+        if (num == 0 && i == 0) {
+            [btn setBackgroundColor:[UIColor colorWithHexString:@"#EDF2FC"]];
+            [btn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        }
         
         btn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [btn setTitle:_objects0[i][@"alias"] forState:UIControlStateNormal];
+        [btn setTitle:self.dataModel.roomList[i][@"alias"] forState:UIControlStateNormal];
         btn.layer.cornerRadius = 4;
         btn.layer.masksToBounds = YES;
     }
@@ -1080,6 +1140,7 @@
         make.height.equalTo(@25);
     }];
     tempNumLabel.text = safeString([NSString stringWithFormat:@"%@",self.dataModel.station[@"temperature"]]);
+    
     UILabel *tempTitleLabel = [[UILabel alloc]init];
     tempTitleLabel.text = @"℃";
     [tempView addSubview:tempTitleLabel];
@@ -1097,20 +1158,26 @@
     [tempView addSubview:tempBgImage];
     tempBgImage.image = [UIImage imageNamed:@"level_normal"];
     [tempBgImage mas_makeConstraints:^(MASConstraintMaker *make) {
-           make.right.equalTo(tempView.mas_right).offset(-16);
-           make.top.equalTo(tempView.mas_top).offset(20);
-           make.width.equalTo(@32);
-           make.height.equalTo(@17);
-       }];
+        make.right.equalTo(tempView.mas_right).offset(-16);
+        make.top.equalTo(tempView.mas_top).offset(20);
+        make.width.equalTo(@32);
+        make.height.equalTo(@17);
+    }];
+    if (self.temArray.count == 2) {
+        KG_MachineStationModel *temDic = self.temArray[1];
+        tempNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
+        tempBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+    }
+    
     UIImageView *tempStatusImage = [[UIImageView alloc]init];
     [tempView addSubview:tempStatusImage];
     tempStatusImage.image = [UIImage imageNamed:@"temp_status"];
     [tempStatusImage mas_makeConstraints:^(MASConstraintMaker *make) {
-           make.right.equalTo(tempView.mas_right).offset(-21);
-           make.top.equalTo(tempBgImage.mas_bottom).offset(14);
-           make.width.equalTo(@25);
-           make.height.equalTo(@20);
-       }];
+        make.right.equalTo(tempView.mas_right).offset(-21);
+        make.top.equalTo(tempBgImage.mas_bottom).offset(14);
+        make.width.equalTo(@25);
+        make.height.equalTo(@20);
+    }];
     
     
     
@@ -1140,7 +1207,7 @@
         make.width.equalTo(@10);
         make.height.equalTo(@14);
     }];
-    humidityImage.image = [UIImage imageNamed:@"temp_icon"];
+    humidityImage.image = [UIImage imageNamed:@"humidity_icon"];
     
     UILabel *humidityLabel = [[UILabel alloc]init];
     humidityLabel.text = @"湿度";
@@ -1170,8 +1237,10 @@
         make.height.equalTo(@25);
     }];
     humidityNumLabel.text = safeString([NSString stringWithFormat:@"%@",self.dataModel.station[@"humidity"]]);
+    
+    
     UILabel *humidityTitleLabel = [[UILabel alloc]init];
-    humidityTitleLabel.text = @"℃";
+    humidityTitleLabel.text = @"%";
     [humidityView addSubview:humidityTitleLabel];
     humidityTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     humidityTitleLabel.numberOfLines = 1;
@@ -1192,6 +1261,11 @@
         make.width.equalTo(@32);
         make.height.equalTo(@17);
     }];
+    if (self.temArray.count == 2) {
+        KG_MachineStationModel *temDic = self.temArray[0];
+        humidityNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
+        humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+    }
     UIImageView *humidityStatusImage = [[UIImageView alloc]init];
     [humidityView addSubview:humidityStatusImage];
     humidityStatusImage.image = [UIImage imageNamed:@"temp_status"];
@@ -1205,7 +1279,7 @@
     self.envView = [[KG_EnvView alloc]init];
     self.envView.layer.cornerRadius = 10.f;
     self.envView.layer.masksToBounds = YES;
-   
+    
     [thiscell addSubview:self.envView];
     
     NSInteger count = 1;
@@ -1218,7 +1292,7 @@
     self.envView.didsel = ^(NSString * _Nonnull typeString, NSDictionary * _Nonnull dic) {
         [self pushNextStep:typeString withDataDic:dic];
     };
-  
+    
     [self.envView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(thiscell.mas_right).offset(-16);
         make.left.equalTo(thiscell.mas_left).offset(16);
@@ -1228,27 +1302,27 @@
     if (count >0) {
         
         [self.envView mas_remakeConstraints:^(MASConstraintMaker *make) {
-               make.right.equalTo(thiscell.mas_right).offset(-16);
-               make.left.equalTo(thiscell.mas_left).offset(16);
-               make.top.equalTo(humidityView.mas_bottom).offset(6);
-               make.height.equalTo(@(count *50+50));
-           }];
+            make.right.equalTo(thiscell.mas_right).offset(-16);
+            make.left.equalTo(thiscell.mas_left).offset(16);
+            make.top.equalTo(humidityView.mas_bottom).offset(6);
+            make.height.equalTo(@(count *50+50));
+        }];
     }
-  
-   
+    
+    
     //动力
     
     self.powerView = [[KG_PowView alloc]init];
     self.powerView.layer.cornerRadius = 10.f;
     self.powerView.layer.masksToBounds = YES;
-   
+    
     [thiscell addSubview:self.powerView];
-   
+    
     NSInteger powCount  = 1;
     if(self.dataModel.powerDetails.count){
         self.powerView.powArray = self.dataModel.powerDetails;
-         powCount = self.dataModel.powerDetails.count;
-       
+        powCount = self.dataModel.powerDetails.count;
+        
     }
     self.powerView.didsel = ^(NSString * _Nonnull typeString, NSDictionary * _Nonnull dic) {
         [self pushNextStep:typeString withDataDic:dic];
@@ -1265,7 +1339,7 @@
     self.secView.layer.cornerRadius = 10.f;
     self.secView.layer.masksToBounds = YES;
     [thiscell addSubview:self.secView];
-   
+    
     NSInteger secCount = 1;
     if(self.dataModel.securityDetails.count){
         self.secView.secArray = self.dataModel.securityDetails;
@@ -1282,426 +1356,426 @@
         make.height.equalTo(@(secCount *50+50));
     }];
     
-
-//    //安防情况
-//    UIView *view5 = [[UIView alloc]initWithFrame:CGRectMake(0,1500 , WIDTH_SCREEN, FrameWidth(74))];
-//    view5.backgroundColor = [UIColor whiteColor];
-//    [thiscell addSubview:view5];
-//
-//    UILabel *title5 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
-//    title5.text = @"安防情况";
-//    title5.font = FontSize(18);
-//    [view5 addSubview:title5];//station_right
-//
-//    UIView *view6 = [[UIView alloc]initWithFrame:CGRectMake(0, view5.frame.origin.y + view5.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
-//    view6.backgroundColor = [UIColor whiteColor];
-//    [thiscell addSubview:view6];
-//
-//    UIView *view7 = [[UIView alloc]init];
-//
-//
-//    _objects10 = [NSMutableArray arrayWithObjects:@"temperature",@"humidity",@"immersion",@"ratproof",@"smoke",@"ups",@"electric",@"diesel",@"battery",@"电子围栏",@"红外对射",@"门禁",nil];
-//    CGFloat neworign_y = 0;
-//    if(_objects1.count > 0){
-//        for (int i=0; i<_objects1.count; ++i) {
-//            neworign_y = FrameWidth(40) + i * FrameWidth(60);
-//
-//            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
-//            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
-//
-//            //            nameLabel.userInteractionEnabled = YES;
-//
-//            nameLabel.font = FontSize(17);
-//
-//            nameLabel.textColor = listGrayColor;
-//            CommonExtension * com10 = [CommonExtension new];
-//            com10.delegate = self;
-//            com10.parentViewTag = i + 100;
-//            [com10 addTouchViewParentTagClass:backView];
-//
-//            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects1[i][@"name"]] ;//;
-//            [view7 addSubview:backView];
-//            [backView addSubview:nameLabel];
-//
-//
-//
-//
-//            NSString *imgIcon =  @"station_tongyong";
-//            NSString *btnIcon =  @"正常";
-//
-//
-//            NSUInteger index = [_objects10  indexOfObject:_objects1[i][@"name"]];
-//            switch (index) {
-//                case 0:
-//                    imgIcon =  @"station_wendu";
-//                    break;
-//                case 1:
-//                    imgIcon =  @"station_shidu";
-//                    break;
-//                case 2:
-//                    imgIcon =  @"station_shuijin";
-//                    break;
-//                case 3:
-//                    imgIcon =  @"station_fangshu";
-//                    break;
-//                case 4:
-//                    imgIcon =  @"station_yangan";
-//                    break;
-//                case 5:
-//                    imgIcon =  @"station_UPS";
-//                    break;
-//                case 6:
-//                    imgIcon =  @"station_shidian";
-//                    break;
-//                case 7:
-//                    imgIcon =  @"station_diesel";
-//                    break;
-//                case 8:
-//                    imgIcon =  @"station_xudian";
-//                    break;
-//                case 9:
-//                    imgIcon =  @"station_dianzi";
-//                    break;
-//                case 10:
-//                    imgIcon =  @"station_hongwai";
-//                    break;
-//                case 11:
-//                    imgIcon =  @"station_menjin";
-//                    break;
-//
-//                default:
-//                    break;
-//            }
-//
-//
-//            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
-//            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
-//
-//            [view7 addSubview:imgIconView];
-//
-//            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(504), neworign_y, FrameWidth(60), FrameWidth(28))];
-//            typeBtn.layer.cornerRadius = 2;
-//            typeBtn.titleLabel.font = _btnFont;
-//
-//            if([_objects1[i][@"status"] isEqual:[NSNull null]]||[_objects1[i][@"status"] intValue ] == 0){
-//                btnIcon =  @"正常";
-//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-//            }else if([_objects1[i][@"status"] intValue ] == 1){
-//                btnIcon =  @"告警";
-//                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
-//            }else if([_objects1[i][@"status"] intValue ] == 2){
-//                btnIcon =  @"--";
-//                [typeBtn setHidden:true];
-//                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y, FrameWidth(60), FrameWidth(28))];
-//                noStatus.text = btnIcon;
-//                [view7 addSubview:noStatus];
-//            }else if([_objects1[i][@"status"] intValue ] == 3){
-//                btnIcon =  @"正常";//预警
-//                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
-//            }else {
-//                btnIcon =  @"正常";
-//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-//            }
-//
-//
-//            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
-//            typeBtn.titleLabel.textColor = [UIColor whiteColor];
-//            [view7 addSubview:typeBtn];
-//
-//        }
-//    }
-//    [view7 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y)];
-//
-//    [view6 setFrame:CGRectMake(0, view6.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view7.frame.size.height)];
-//    view7.layer.cornerRadius = 5;
-//    view7.layer.borderWidth = 1;
-//    view7.layer.borderColor = QianGray.CGColor;
-//    [view6 addSubview:view7];
-//
-//
-//    //动力情况
-//    UIView *view8 = [[UIView alloc]initWithFrame:CGRectMake(0, view6.frame.origin.y + view6.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
-//    view8.backgroundColor = [UIColor whiteColor];
-//    [thiscell addSubview:view8];
-//
-//    UILabel *title8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
-//    title8.text = @"动力情况";
-//    title8.font = FontSize(18);
-//    [view8 addSubview:title8];//station_right
-//
-//    UIView *view9 = [[UIView alloc]initWithFrame:CGRectMake(0, view8.frame.origin.y + view8.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
-//    view9.backgroundColor = [UIColor whiteColor];
-//    [thiscell addSubview:view9];
-//
-//    UIView *view10 = [[UIView alloc]init];
-//
-//
-//    CGFloat neworign_y10 = 0;
-//    if(_objects2.count > 0){
-//        //NSInteger rowCount = _objects2.count;
-//        for (int i=0; i<_objects2.count; ++i) {
-//            neworign_y10 = FrameWidth(40) + i * FrameWidth(60);
-//
-//
-//            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
-//            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
-//
-//            //            nameLabel.userInteractionEnabled = YES;
-//
-//            nameLabel.font = FontSize(17);
-//            nameLabel.textColor = listGrayColor;
-//
-//            CommonExtension * com10 = [CommonExtension new];
-//            com10.delegate = self;
-//            com10.parentViewTag = i + 200;
-//            [com10 addTouchViewParentTagClass:backView];
-//
-//            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects2[i][@"name"]] ;//;
-//            [view10 addSubview:backView];
-//            [backView addSubview:nameLabel];
-//
-//
-//            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), neworign_y10, FrameWidth(15), FrameWidth(26))];
-//            rightImg.image = [UIImage imageNamed:@"station_right"];
-//            [view10 addSubview:rightImg];//station_right
-//
-//            NSString *imgIcon =  @"station_tongyong";
-//            NSString *btnIcon =  @"正常";
-//            NSUInteger index = [_objects10  indexOfObject:_objects2[i][@"code"]];
-//            switch (index) {
-//                case 0:
-//                    imgIcon =  @"station_wendu";
-//                    break;
-//                case 1:
-//                    imgIcon =  @"station_shidu";
-//                    break;
-//                case 2:
-//                    imgIcon =  @"station_shuijin";
-//                    break;
-//                case 3:
-//                    imgIcon =  @"station_fangshu";
-//                    break;
-//                case 4:
-//                    imgIcon =  @"station_yangan";
-//                    break;
-//                case 5:
-//                    imgIcon =  @"station_UPS";
-//                    break;
-//                case 6:
-//                    imgIcon =  @"station_shidian";
-//                    break;
-//                case 7:
-//                    imgIcon =  @"station_diesel";
-//                    break;
-//                case 8:
-//                    imgIcon =  @"station_xudian";
-//                    break;
-//                case 9:
-//                    imgIcon =  @"station_dianzi";
-//                    break;
-//                case 10:
-//                    imgIcon =  @"station_hongwai";
-//                    break;
-//                case 11:
-//                    imgIcon =  @"station_menjin";
-//                    break;
-//
-//                default:
-//                    break;
-//            }
-//
-//
-//
-//
-//            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
-//            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
-//            [view10 addSubview:imgIconView];
-//
-//            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
-//            typeBtn.layer.cornerRadius = 2;
-//            typeBtn.titleLabel.font = _btnFont;
-//
-//            if([_objects2[i][@"status"] isEqual:[NSNull null]]||[_objects2[i][@"status"] intValue ] == 0){
-//                btnIcon =  @"正常";
-//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-//            }else if([_objects2[i][@"status"] intValue ] == 1){
-//                btnIcon =  @"告警";
-//                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
-//            }else if([_objects2[i][@"status"] intValue ] == 2){
-//                btnIcon =  @"--";
-//                [typeBtn setHidden:true];
-//                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
-//                noStatus.text = btnIcon;
-//                [view10 addSubview:noStatus];
-//            }else if([_objects2[i][@"status"] intValue ] == 3){
-//                btnIcon =  @"正常";//预警
-//                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
-//            }else {
-//                btnIcon =  @"正常";
-//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-//            }
-//
-//
-//            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
-//            typeBtn.titleLabel.textColor = [UIColor whiteColor];
-//            [view10 addSubview:typeBtn];
-//
-//
-//
-//
-//
-//        }
-//    }
-//    [view10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y10)];
-//
-//    [view9 setFrame:CGRectMake(0, view9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view10.frame.size.height)];
-//    view10.layer.cornerRadius = 5;
-//    view10.layer.borderWidth = 1;
-//    view10.layer.borderColor = QianGray.CGColor;
-//    [view9 addSubview:view10];
-//
-//
-//    //设备情况
-//    UIView *equipview = [[UIView alloc]initWithFrame:CGRectMake(0, view9.frame.origin.y + view9.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
-//    equipview.backgroundColor = [UIColor whiteColor];
-//    [thiscell addSubview:equipview];
-//
-//    UILabel *equiptitle8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
-//    equiptitle8.text = @"设备情况";
-//    equiptitle8.font = FontSize(18);
-//    [equipview addSubview:equiptitle8];//station_right
-//
-//    UIView *equipview9 = [[UIView alloc]initWithFrame:CGRectMake(0, equipview.frame.origin.y + equipview.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
-//    equipview9.backgroundColor = [UIColor whiteColor];
-//    [thiscell addSubview:equipview9];
-//
-//    UIView *equipview10 = [[UIView alloc]init];
-//
-//
-//    CGFloat equipneworign_y10 = 0;
-//    if(_objects3.count > 0){
-//        for (int i=0; i<_objects3.count; ++i) {
-//            equipneworign_y10 = FrameWidth(40) + i * FrameWidth(60);
-//
-//            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), equipneworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
-//            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
-//
-//            //            nameLabel.userInteractionEnabled = YES;
-//
-//            nameLabel.font = FontSize(17);
-//            nameLabel.textColor = listGrayColor;
-//
-//            CommonExtension * com10 = [CommonExtension new];
-//            com10.delegate = self;
-//            com10.parentViewTag = i + 300;
-//            [com10 addTouchViewParentTagClass:backView];
-//
-//            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects3[i][@"name"]] ;//;
-//            [equipview10 addSubview:backView];
-//            [backView addSubview:nameLabel];
-//
-//
-//
-//            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), equipneworign_y10, FrameWidth(15), FrameWidth(26))];
-//            rightImg.image = [UIImage imageNamed:@"station_right"];
-//            [equipview10 addSubview:rightImg];//station_right
-//
-//            NSString *imgIcon =  @"station_tongyong";
-//            NSString *btnIcon =  @"正常";
-//            NSUInteger index = [_objects10  indexOfObject:_objects3[i][@"code"]];
-//            switch (index) {
-//                case 0:
-//                    imgIcon =  @"station_wendu";
-//                    break;
-//                case 1:
-//                    imgIcon =  @"station_shidu";
-//                    break;
-//                case 2:
-//                    imgIcon =  @"station_shuijin";
-//                    break;
-//                case 3:
-//                    imgIcon =  @"station_fangshu";
-//                    break;
-//                case 4:
-//                    imgIcon =  @"station_yangan";
-//                    break;
-//                case 5:
-//                    imgIcon =  @"station_UPS";
-//                    break;
-//                case 6:
-//                    imgIcon =  @"station_shidian";
-//                    break;
-//                case 7:
-//                    imgIcon =  @"station_diesel";
-//                    break;
-//                case 8:
-//                    imgIcon =  @"station_xudian";
-//                    break;
-//                case 9:
-//                    imgIcon =  @"station_dianzi";
-//                    break;
-//                case 10:
-//                    imgIcon =  @"station_hongwai";
-//                    break;
-//                case 11:
-//                    imgIcon =  @"station_menjin";
-//                    break;
-//
-//                default:
-//                    break;
-//            }
-//
-//
-//
-//
-//            UIImageView *equipimgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
-//            [equipimgIconView setFrame:CGRectMake(FrameWidth(30), equipneworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
-//
-//            [equipview10 addSubview:equipimgIconView];
-//            /*
-//             UIButton * typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(30))];
-//             [typeBtn setBackgroundImage:[UIImage imageNamed:btnIcon] forState:UIControlStateNormal];
-//             [view10 addSubview:typeBtn];
-//             */
-//            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
-//            typeBtn.layer.cornerRadius = 2;
-//            typeBtn.titleLabel.font = _btnFont;
-//
-//            if([_objects3[i][@"status"] isEqual:[NSNull null]]||[_objects3[i][@"status"] intValue ] == 0){
-//                btnIcon =  @"正常";
-//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-//            }else if([_objects3[i][@"status"] intValue ] == 1){
-//                btnIcon =  @"告警";
-//                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
-//            }else if([_objects3[i][@"status"] intValue ] == 2){
-//                btnIcon =  @"--";
-//                [typeBtn setHidden:true];
-//                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
-//                noStatus.text = btnIcon;
-//                [equipview10 addSubview:noStatus];
-//            }else if([_objects3[i][@"status"] intValue ] == 3){
-//                btnIcon =  @"正常";//预警
-//                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
-//            }else {
-//                btnIcon =  @"正常";
-//                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
-//            }
-//
-//            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
-//            typeBtn.titleLabel.textColor = [UIColor whiteColor];
-//            [equipview10 addSubview:typeBtn];
-//
-//        }
-//    }
-//    [equipview10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+equipneworign_y10)];
-//
-//    [equipview9 setFrame:CGRectMake(0, equipview9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+equipview10.frame.size.height)];
-//    equipview10.layer.cornerRadius = 5;
-//     equipview10.layer.borderWidth = 1;
-//    equipview10.layer.borderColor = QianGray.CGColor;
-//    [equipview9 addSubview:equipview10];
-//
-//    self.weatherDic
+    
+    //    //安防情况
+    //    UIView *view5 = [[UIView alloc]initWithFrame:CGRectMake(0,1500 , WIDTH_SCREEN, FrameWidth(74))];
+    //    view5.backgroundColor = [UIColor whiteColor];
+    //    [thiscell addSubview:view5];
+    //
+    //    UILabel *title5 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
+    //    title5.text = @"安防情况";
+    //    title5.font = FontSize(18);
+    //    [view5 addSubview:title5];//station_right
+    //
+    //    UIView *view6 = [[UIView alloc]initWithFrame:CGRectMake(0, view5.frame.origin.y + view5.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
+    //    view6.backgroundColor = [UIColor whiteColor];
+    //    [thiscell addSubview:view6];
+    //
+    //    UIView *view7 = [[UIView alloc]init];
+    //
+    //
+    //    _objects10 = [NSMutableArray arrayWithObjects:@"temperature",@"humidity",@"immersion",@"ratproof",@"smoke",@"ups",@"electric",@"diesel",@"battery",@"电子围栏",@"红外对射",@"门禁",nil];
+    //    CGFloat neworign_y = 0;
+    //    if(_objects1.count > 0){
+    //        for (int i=0; i<_objects1.count; ++i) {
+    //            neworign_y = FrameWidth(40) + i * FrameWidth(60);
+    //
+    //            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
+    //            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
+    //
+    //            //            nameLabel.userInteractionEnabled = YES;
+    //
+    //            nameLabel.font = FontSize(17);
+    //
+    //            nameLabel.textColor = listGrayColor;
+    //            CommonExtension * com10 = [CommonExtension new];
+    //            com10.delegate = self;
+    //            com10.parentViewTag = i + 100;
+    //            [com10 addTouchViewParentTagClass:backView];
+    //
+    //            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects1[i][@"name"]] ;//;
+    //            [view7 addSubview:backView];
+    //            [backView addSubview:nameLabel];
+    //
+    //
+    //
+    //
+    //            NSString *imgIcon =  @"station_tongyong";
+    //            NSString *btnIcon =  @"正常";
+    //
+    //
+    //            NSUInteger index = [_objects10  indexOfObject:_objects1[i][@"name"]];
+    //            switch (index) {
+    //                case 0:
+    //                    imgIcon =  @"station_wendu";
+    //                    break;
+    //                case 1:
+    //                    imgIcon =  @"station_shidu";
+    //                    break;
+    //                case 2:
+    //                    imgIcon =  @"station_shuijin";
+    //                    break;
+    //                case 3:
+    //                    imgIcon =  @"station_fangshu";
+    //                    break;
+    //                case 4:
+    //                    imgIcon =  @"station_yangan";
+    //                    break;
+    //                case 5:
+    //                    imgIcon =  @"station_UPS";
+    //                    break;
+    //                case 6:
+    //                    imgIcon =  @"station_shidian";
+    //                    break;
+    //                case 7:
+    //                    imgIcon =  @"station_diesel";
+    //                    break;
+    //                case 8:
+    //                    imgIcon =  @"station_xudian";
+    //                    break;
+    //                case 9:
+    //                    imgIcon =  @"station_dianzi";
+    //                    break;
+    //                case 10:
+    //                    imgIcon =  @"station_hongwai";
+    //                    break;
+    //                case 11:
+    //                    imgIcon =  @"station_menjin";
+    //                    break;
+    //
+    //                default:
+    //                    break;
+    //            }
+    //
+    //
+    //            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
+    //            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
+    //
+    //            [view7 addSubview:imgIconView];
+    //
+    //            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(504), neworign_y, FrameWidth(60), FrameWidth(28))];
+    //            typeBtn.layer.cornerRadius = 2;
+    //            typeBtn.titleLabel.font = _btnFont;
+    //
+    //            if([_objects1[i][@"status"] isEqual:[NSNull null]]||[_objects1[i][@"status"] intValue ] == 0){
+    //                btnIcon =  @"正常";
+    //                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+    //            }else if([_objects1[i][@"status"] intValue ] == 1){
+    //                btnIcon =  @"告警";
+    //                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
+    //            }else if([_objects1[i][@"status"] intValue ] == 2){
+    //                btnIcon =  @"--";
+    //                [typeBtn setHidden:true];
+    //                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y, FrameWidth(60), FrameWidth(28))];
+    //                noStatus.text = btnIcon;
+    //                [view7 addSubview:noStatus];
+    //            }else if([_objects1[i][@"status"] intValue ] == 3){
+    //                btnIcon =  @"正常";//预警
+    //                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
+    //            }else {
+    //                btnIcon =  @"正常";
+    //                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+    //            }
+    //
+    //
+    //            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
+    //            typeBtn.titleLabel.textColor = [UIColor whiteColor];
+    //            [view7 addSubview:typeBtn];
+    //
+    //        }
+    //    }
+    //    [view7 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y)];
+    //
+    //    [view6 setFrame:CGRectMake(0, view6.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view7.frame.size.height)];
+    //    view7.layer.cornerRadius = 5;
+    //    view7.layer.borderWidth = 1;
+    //    view7.layer.borderColor = QianGray.CGColor;
+    //    [view6 addSubview:view7];
+    //
+    //
+    //    //动力情况
+    //    UIView *view8 = [[UIView alloc]initWithFrame:CGRectMake(0, view6.frame.origin.y + view6.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
+    //    view8.backgroundColor = [UIColor whiteColor];
+    //    [thiscell addSubview:view8];
+    //
+    //    UILabel *title8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
+    //    title8.text = @"动力情况";
+    //    title8.font = FontSize(18);
+    //    [view8 addSubview:title8];//station_right
+    //
+    //    UIView *view9 = [[UIView alloc]initWithFrame:CGRectMake(0, view8.frame.origin.y + view8.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
+    //    view9.backgroundColor = [UIColor whiteColor];
+    //    [thiscell addSubview:view9];
+    //
+    //    UIView *view10 = [[UIView alloc]init];
+    //
+    //
+    //    CGFloat neworign_y10 = 0;
+    //    if(_objects2.count > 0){
+    //        //NSInteger rowCount = _objects2.count;
+    //        for (int i=0; i<_objects2.count; ++i) {
+    //            neworign_y10 = FrameWidth(40) + i * FrameWidth(60);
+    //
+    //
+    //            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), neworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
+    //            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
+    //
+    //            //            nameLabel.userInteractionEnabled = YES;
+    //
+    //            nameLabel.font = FontSize(17);
+    //            nameLabel.textColor = listGrayColor;
+    //
+    //            CommonExtension * com10 = [CommonExtension new];
+    //            com10.delegate = self;
+    //            com10.parentViewTag = i + 200;
+    //            [com10 addTouchViewParentTagClass:backView];
+    //
+    //            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects2[i][@"name"]] ;//;
+    //            [view10 addSubview:backView];
+    //            [backView addSubview:nameLabel];
+    //
+    //
+    //            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), neworign_y10, FrameWidth(15), FrameWidth(26))];
+    //            rightImg.image = [UIImage imageNamed:@"station_right"];
+    //            [view10 addSubview:rightImg];//station_right
+    //
+    //            NSString *imgIcon =  @"station_tongyong";
+    //            NSString *btnIcon =  @"正常";
+    //            NSUInteger index = [_objects10  indexOfObject:_objects2[i][@"code"]];
+    //            switch (index) {
+    //                case 0:
+    //                    imgIcon =  @"station_wendu";
+    //                    break;
+    //                case 1:
+    //                    imgIcon =  @"station_shidu";
+    //                    break;
+    //                case 2:
+    //                    imgIcon =  @"station_shuijin";
+    //                    break;
+    //                case 3:
+    //                    imgIcon =  @"station_fangshu";
+    //                    break;
+    //                case 4:
+    //                    imgIcon =  @"station_yangan";
+    //                    break;
+    //                case 5:
+    //                    imgIcon =  @"station_UPS";
+    //                    break;
+    //                case 6:
+    //                    imgIcon =  @"station_shidian";
+    //                    break;
+    //                case 7:
+    //                    imgIcon =  @"station_diesel";
+    //                    break;
+    //                case 8:
+    //                    imgIcon =  @"station_xudian";
+    //                    break;
+    //                case 9:
+    //                    imgIcon =  @"station_dianzi";
+    //                    break;
+    //                case 10:
+    //                    imgIcon =  @"station_hongwai";
+    //                    break;
+    //                case 11:
+    //                    imgIcon =  @"station_menjin";
+    //                    break;
+    //
+    //                default:
+    //                    break;
+    //            }
+    //
+    //
+    //
+    //
+    //            UIImageView *imgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
+    //            [imgIconView setFrame:CGRectMake(FrameWidth(30), neworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
+    //            [view10 addSubview:imgIconView];
+    //
+    //            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
+    //            typeBtn.layer.cornerRadius = 2;
+    //            typeBtn.titleLabel.font = _btnFont;
+    //
+    //            if([_objects2[i][@"status"] isEqual:[NSNull null]]||[_objects2[i][@"status"] intValue ] == 0){
+    //                btnIcon =  @"正常";
+    //                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+    //            }else if([_objects2[i][@"status"] intValue ] == 1){
+    //                btnIcon =  @"告警";
+    //                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
+    //            }else if([_objects2[i][@"status"] intValue ] == 2){
+    //                btnIcon =  @"--";
+    //                [typeBtn setHidden:true];
+    //                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(28))];
+    //                noStatus.text = btnIcon;
+    //                [view10 addSubview:noStatus];
+    //            }else if([_objects2[i][@"status"] intValue ] == 3){
+    //                btnIcon =  @"正常";//预警
+    //                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
+    //            }else {
+    //                btnIcon =  @"正常";
+    //                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+    //            }
+    //
+    //
+    //            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
+    //            typeBtn.titleLabel.textColor = [UIColor whiteColor];
+    //            [view10 addSubview:typeBtn];
+    //
+    //
+    //
+    //
+    //
+    //        }
+    //    }
+    //    [view10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+neworign_y10)];
+    //
+    //    [view9 setFrame:CGRectMake(0, view9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+view10.frame.size.height)];
+    //    view10.layer.cornerRadius = 5;
+    //    view10.layer.borderWidth = 1;
+    //    view10.layer.borderColor = QianGray.CGColor;
+    //    [view9 addSubview:view10];
+    //
+    //
+    //    //设备情况
+    //    UIView *equipview = [[UIView alloc]initWithFrame:CGRectMake(0, view9.frame.origin.y + view9.frame.size.height + 5 , WIDTH_SCREEN, FrameWidth(74))];
+    //    equipview.backgroundColor = [UIColor whiteColor];
+    //    [thiscell addSubview:equipview];
+    //
+    //    UILabel *equiptitle8 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(74))];
+    //    equiptitle8.text = @"设备情况";
+    //    equiptitle8.font = FontSize(18);
+    //    [equipview addSubview:equiptitle8];//station_right
+    //
+    //    UIView *equipview9 = [[UIView alloc]initWithFrame:CGRectMake(0, equipview.frame.origin.y + equipview.frame.size.height + 1 , WIDTH_SCREEN, FrameWidth(520))];
+    //    equipview9.backgroundColor = [UIColor whiteColor];
+    //    [thiscell addSubview:equipview9];
+    //
+    //    UIView *equipview10 = [[UIView alloc]init];
+    //
+    //
+    //    CGFloat equipneworign_y10 = 0;
+    //    if(_objects3.count > 0){
+    //        for (int i=0; i<_objects3.count; ++i) {
+    //            equipneworign_y10 = FrameWidth(40) + i * FrameWidth(60);
+    //
+    //            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(FrameWidth(1), equipneworign_y10 - FrameWidth(15), FrameWidth(580), FrameWidth(60))];
+    //            UILabel *nameLabel = [[UILabel alloc]initWithFrame:backView.bounds];
+    //
+    //            //            nameLabel.userInteractionEnabled = YES;
+    //
+    //            nameLabel.font = FontSize(17);
+    //            nameLabel.textColor = listGrayColor;
+    //
+    //            CommonExtension * com10 = [CommonExtension new];
+    //            com10.delegate = self;
+    //            com10.parentViewTag = i + 300;
+    //            [com10 addTouchViewParentTagClass:backView];
+    //
+    //            nameLabel.text = [NSString stringWithFormat:@"             %@",_objects3[i][@"name"]] ;//;
+    //            [equipview10 addSubview:backView];
+    //            [backView addSubview:nameLabel];
+    //
+    //
+    //
+    //            UIImageView *rightImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(550), equipneworign_y10, FrameWidth(15), FrameWidth(26))];
+    //            rightImg.image = [UIImage imageNamed:@"station_right"];
+    //            [equipview10 addSubview:rightImg];//station_right
+    //
+    //            NSString *imgIcon =  @"station_tongyong";
+    //            NSString *btnIcon =  @"正常";
+    //            NSUInteger index = [_objects10  indexOfObject:_objects3[i][@"code"]];
+    //            switch (index) {
+    //                case 0:
+    //                    imgIcon =  @"station_wendu";
+    //                    break;
+    //                case 1:
+    //                    imgIcon =  @"station_shidu";
+    //                    break;
+    //                case 2:
+    //                    imgIcon =  @"station_shuijin";
+    //                    break;
+    //                case 3:
+    //                    imgIcon =  @"station_fangshu";
+    //                    break;
+    //                case 4:
+    //                    imgIcon =  @"station_yangan";
+    //                    break;
+    //                case 5:
+    //                    imgIcon =  @"station_UPS";
+    //                    break;
+    //                case 6:
+    //                    imgIcon =  @"station_shidian";
+    //                    break;
+    //                case 7:
+    //                    imgIcon =  @"station_diesel";
+    //                    break;
+    //                case 8:
+    //                    imgIcon =  @"station_xudian";
+    //                    break;
+    //                case 9:
+    //                    imgIcon =  @"station_dianzi";
+    //                    break;
+    //                case 10:
+    //                    imgIcon =  @"station_hongwai";
+    //                    break;
+    //                case 11:
+    //                    imgIcon =  @"station_menjin";
+    //                    break;
+    //
+    //                default:
+    //                    break;
+    //            }
+    //
+    //
+    //
+    //
+    //            UIImageView *equipimgIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgIcon]];
+    //            [equipimgIconView setFrame:CGRectMake(FrameWidth(30), equipneworign_y10 - FrameWidth(5), FrameWidth(40), FrameWidth(40))];
+    //
+    //            [equipview10 addSubview:equipimgIconView];
+    //            /*
+    //             UIButton * typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), neworign_y10, FrameWidth(60), FrameWidth(30))];
+    //             [typeBtn setBackgroundImage:[UIImage imageNamed:btnIcon] forState:UIControlStateNormal];
+    //             [view10 addSubview:typeBtn];
+    //             */
+    //            UIButton *typeBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
+    //            typeBtn.layer.cornerRadius = 2;
+    //            typeBtn.titleLabel.font = _btnFont;
+    //
+    //            if([_objects3[i][@"status"] isEqual:[NSNull null]]||[_objects3[i][@"status"] intValue ] == 0){
+    //                btnIcon =  @"正常";
+    //                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+    //            }else if([_objects3[i][@"status"] intValue ] == 1){
+    //                btnIcon =  @"告警";
+    //                [typeBtn setBackgroundColor:FrameColor(242, 108, 107)];
+    //            }else if([_objects3[i][@"status"] intValue ] == 2){
+    //                btnIcon =  @"--";
+    //                [typeBtn setHidden:true];
+    //                UILabel * noStatus = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(475), equipneworign_y10, FrameWidth(60), FrameWidth(28))];
+    //                noStatus.text = btnIcon;
+    //                [equipview10 addSubview:noStatus];
+    //            }else if([_objects3[i][@"status"] intValue ] == 3){
+    //                btnIcon =  @"正常";//预警
+    //                [typeBtn setBackgroundColor:FrameColor(252,201,84)];
+    //            }else {
+    //                btnIcon =  @"正常";
+    //                [typeBtn setBackgroundColor:FrameColor(120, 203, 161)];
+    //            }
+    //
+    //            [typeBtn setTitle: btnIcon   forState:UIControlStateNormal];
+    //            typeBtn.titleLabel.textColor = [UIColor whiteColor];
+    //            [equipview10 addSubview:typeBtn];
+    //
+    //        }
+    //    }
+    //    [equipview10 setFrame:CGRectMake(FrameWidth(25), FrameWidth(20), FrameWidth(590), FrameWidth(70)+equipneworign_y10)];
+    //
+    //    [equipview9 setFrame:CGRectMake(0, equipview9.frame.origin.y, WIDTH_SCREEN, FrameWidth(40)+equipview10.frame.size.height)];
+    //    equipview10.layer.cornerRadius = 5;
+    //     equipview10.layer.borderWidth = 1;
+    //    equipview10.layer.borderColor = QianGray.CGColor;
+    //    [equipview9 addSubview:equipview10];
+    //
+    //    self.weatherDic
     //天气
     UIView *bottomView =  [[UIView alloc] initWithFrame:CGRectMake(16, 800, WIDTH_SCREEN-32, 149)];
     bottomView.backgroundColor = [UIColor whiteColor];
@@ -1797,6 +1871,7 @@
     UIImageView *wenduImage = [[UIImageView alloc]init];
     [bottomView addSubview:wenduImage];
     wenduImage.image = [UIImage imageNamed:@"wendu_icon"];
+    wenduImage.contentMode = UIViewContentModeScaleAspectFit;
     [wenduImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(bottomView.mas_bottom).offset(-42);
         make.left.equalTo(qwLabel.mas_right);
@@ -1887,7 +1962,7 @@
         make.height.equalTo(@18);
         make.width.equalTo(@80);
     }];
-    allHeight = self.dataModel.enviromentDetails.count *50 + self.dataModel.powerDetails.count *50 + self.dataModel.securityDetails.count *50 + 92 +60 + 150 +10 +241 + 149 + 200;
+    allHeight = self.dataModel.enviromentDetails.count *50 + self.dataModel.powerDetails.count *50 + self.dataModel.securityDetails.count *50 + 92 +60 + 150 +10 +241 + 149 + 200 +50;
     return thiscell;
     
     
@@ -1905,33 +1980,33 @@
     NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
     FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/weather/36.317888/120.111424/";
     FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/weather/%@/%@/",lat,lon];
-      NSLog(@"%@",FrameRequestURL);
-      [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-          NSInteger code = [[result objectForKey:@"errCode"] intValue];
-          if(code  <= -1){
-              [FrameBaseRequest showMessage:result[@"errMsg"]];
-              return ;
-          }
-          self.weatherDic = result[@"value"];
-          [self.tableview reloadData];
-         
-      } failure:^(NSURLSessionDataTask *error)  {
-          FrameLog(@"请求失败，返回数据 : %@",error);
-          NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-          if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-              [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-              [FrameBaseRequest logout];
-              
-              LoginViewController *login = [[LoginViewController alloc] init];
-              [self.navigationController pushViewController:login animated:YES];
-              return;
-          }else if(responses.statusCode == 502){
-              
-          }
-          [FrameBaseRequest showMessage:@"网络链接失败"];
-          return ;
-          
-      }];
+    NSLog(@"%@",FrameRequestURL);
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.weatherDic = result[@"value"];
+        [self.tableview reloadData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
 }
 
 //ups 油机房 设备机房 配电室
@@ -2050,7 +2125,14 @@
     StationRoom.room_name = _objects0[nlabel.tag - 1][@"alias"];
     StationRoom.station_code = _station_code;
     StationRoom.station_name = _station_name;
+   
+    [[NSUserDefaults standardUserDefaults] setObject:_objects0[nlabel.tag - 1][@"code"] forKey:@"zhihuanImage"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.tableview reloadData];
     [self.navigationController pushViewController:StationRoom animated:YES];
+       
+      
 }
 
 
@@ -2207,15 +2289,15 @@
             }
             
         }
-//        
-//        [self.navigationView addSubview:self.rightButton];
-//        
-//        [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.right.height.equalTo(self.navigationView.mas_right).offset(-20);
-//            make.centerY.equalTo(self.titleLabel.mas_centerY);
-//            make.width.equalTo(@200);
-//        }];
-           
+        //        
+        //        [self.navigationView addSubview:self.rightButton];
+        //        
+        //        [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        //            make.right.height.equalTo(self.navigationView.mas_right).offset(-20);
+        //            make.centerY.equalTo(self.titleLabel.mas_centerY);
+        //            make.width.equalTo(@200);
+        //        }];
+        
     }else{
         if(![CommonExtension isEmptyWithString:_station_name]){
             NSMutableString* str1=[[NSMutableString alloc]initWithString:_station_name];//存在堆区，可变字符串
@@ -2466,6 +2548,14 @@
     return _dataArray;
 }
 
+- (NSMutableArray *)temArray
+{
+    if (!_temArray) {
+        _temArray = [[NSMutableArray alloc] init];
+    }
+    return _temArray;
+}
+
 
 - (NSMutableDictionary *)dataDic
 {
@@ -2480,21 +2570,80 @@
     NSMutableArray *listArr = [NSMutableArray array];
     [listArr removeAllObjects];
     if ([string isEqualToString:@"sec"]) {
-       
+        
         [listArr addObjectsFromArray:self.dataModel.securityDetails];
     }else if ([string isEqualToString:@"pow"]) {
         [listArr addObjectsFromArray:self.dataModel.powerDetails];
     }else if ([string isEqualToString:@"env"]) {
         [listArr addObjectsFromArray:self.dataModel.enviromentDetails];
     }
-    StationMachineController  *StationMachine = [[StationMachineController alloc] init];
-    StationMachine.category = safeString(dic[@"code"]);
-    StationMachine.machine_name = safeString(dic[@"name"]);
-    StationMachine.station_name = _station_name;
-    StationMachine.station_code = _station_code;
-    StationMachine.engine_room_code = @"";
-    StationMachine.mList = listArr;
-    [self.navigationController pushViewController:StationMachine animated:YES];
+    if([safeString(dic[@"name"]) isEqualToString:@"空调"]){
+        KG_KongTiaoViewController  *StationMachine = [[KG_KongTiaoViewController alloc] init];
+        StationMachine.category = safeString(dic[@"code"]);
+        StationMachine.machine_name = safeString(dic[@"name"]);
+        StationMachine.station_name = _station_name;
+        StationMachine.station_code = _station_code;
+        StationMachine.engine_room_code = @"";
+        StationMachine.mList = listArr;
+        [self.navigationController pushViewController:StationMachine animated:YES];
+        
+    }else {
+        StationMachineController  *StationMachine = [[StationMachineController alloc] init];
+        StationMachine.category = safeString(dic[@"code"]);
+        StationMachine.machine_name = safeString(dic[@"name"]);
+        StationMachine.station_name = _station_name;
+        StationMachine.station_code = _station_code;
+        StationMachine.engine_room_code = @"";
+        StationMachine.mList = listArr;
+        [self.navigationController pushViewController:StationMachine animated:YES];
+          
+    }
+    
+  
 }
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+   
+}
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+
+{
+    if (scrollView.contentOffset.y <-120) {
+           NSLog(@"11111111%f",scrollView.contentOffset.y);
+           KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
+           [self.navigationController pushViewController:vc animated:nil];
+       }
+    
+}
+
+
+//- (void)navigationController:(UINavigationController*)navigationController willShowViewController:(UIViewController*)viewController animated:(BOOL)animated
+//{
+////    if(viewController == self){
+////        [self loadData];
+////
+////    }
+//   //每次当navigation中的界面切换，设为空。本次赋值只在程序初始化时执行一次
+//   static UIViewController *lastController = nil;
+//
+//   //若上个view不为空
+//   if (lastController != nil)
+//   {
+//       //若该实例实现了viewWillDisappear方法，则调用
+//       if ([lastController respondsToSelector:@selector(viewWillDisappear:)])
+//       {
+//           [lastController viewWillDisappear:animated];
+//       }
+//   }
+//
+//   //将当前要显示的view设置为lastController，在下次view切换调用本方法时，会执行viewWillDisappear
+//   lastController = viewController;
+//
+//   [viewController viewWillAppear:animated];
+//
+//}
+//
+
+
 @end
 

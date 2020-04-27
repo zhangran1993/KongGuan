@@ -16,9 +16,6 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 
-@property (nonatomic, strong) NSArray *dataArray;
-
-
 @end
 @implementation KG_UpsAlertView
 
@@ -27,16 +24,13 @@
 {
     self = [super init];
     if (self) {
-        [self initData];
+       
         [self setupDataSubviews];
         
     }
     return self;
 }
-//初始化数据
-- (void)initData {
-    self.dataArray = [NSArray arrayWithObjects:@"综合分析法",@"综合指数法",@"灰色关联分析法", nil];
-}
+
 
 //创建视图
 -(void)setupDataSubviews
@@ -53,17 +47,25 @@
         make.right.equalTo(self.mas_right);
         make.bottom.equalTo(self.mas_bottom);
     }];
-    
+    float xDep = NAVIGATIONBAR_HEIGHT;
+    UIView *bgView = [[UIView alloc]init];
+    [self addSubview:bgView];
+    bgView.backgroundColor = [UIColor whiteColor];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_top).offset(xDep);
+        make.right.equalTo(self.mas_right).offset(-16);
+        make.width.equalTo(@162);
+        make.height.equalTo(@311);
+    }];
+    bgView.layer.cornerRadius = 8.f;
+    bgView.layer.masksToBounds = YES;
     UIImageView *topImage = [[UIImageView alloc]init];
     topImage.image = [UIImage imageNamed:@"slider_up"];
    
     [self addSubview:topImage];
     
-    
-    
-    [self.tableView reloadData];
     [self addSubview:self.tableView];
-    float xDep = NAVIGATIONBAR_HEIGHT;
+    
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).offset(xDep);
         make.right.equalTo(self.mas_right).offset(-16);
@@ -93,28 +95,23 @@
         _tableView.dataSource = self;
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = NO;
+        _tableView.scrollEnabled = YES;
         
     }
     return _tableView;
-}
--(NSArray *)dataArray{
-    if (!_dataArray) {
-        _dataArray = [NSArray array];
-    }
-    return _dataArray;
 }
 
 
 
 #pragma mark - TableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return self.dataArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 2;
+    NSArray *categoryArray = self.dataArray[section][@"categoryInfo"];
+    return categoryArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -129,6 +126,11 @@
         cell = [[KG_UpsAlertCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_UpsAlertCell"];
         
     }
+    NSDictionary *dataDic = self.dataArray[indexPath.section];
+    
+    NSDictionary *detailDic = dataDic[@"categoryInfo"][indexPath.row];
+    cell.titleLabel.text = safeString(detailDic[@"categoryName"]);
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -144,30 +146,38 @@
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
     headView.backgroundColor = [UIColor whiteColor];
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
-    titleLabel.text = @"安防";
+   
+    NSDictionary *dataDic = self.dataArray[section];
+    titleLabel.text = safeString(dataDic[@"groupName"]);
+       
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:titleLabel];
+    
+    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(14,39,133 , 1)];
+    [headView addSubview:lineView];
+    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+   
     return headView;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *didselString= @"comprehensiveScoringMethod";
-    NSString *selString = self.dataArray[indexPath.row];
-    if ([selString isEqualToString:@"综合分析法"]) {
-        didselString = @"comprehensiveScoringMethod";
-    }else if ([selString isEqualToString:@"综合指数法"]) {
-        didselString = @"syntheticalIndexMethod";
-    }else if ([selString isEqualToString:@"灰色关联分析法"]) {
-        didselString = @"greyCorrelativeAnalysis";
-    }
+   
+    NSDictionary *dataDic = self.dataArray[indexPath.section];
+    NSDictionary *detailDic = dataDic[@"categoryInfo"][indexPath.row];
+    
     if (self.didsel) {
-        self.didsel(didselString);
+        self.didsel(detailDic);
     }
     self.hidden = YES;
 }
 
+
+- (void)setDataArray:(NSMutableArray *)dataArray {
+    _dataArray = dataArray;
+    [self.tableView reloadData];
+}
 @end

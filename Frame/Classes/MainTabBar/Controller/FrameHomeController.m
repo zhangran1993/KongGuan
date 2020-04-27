@@ -35,6 +35,8 @@
 #import "StationVideoListController.h"
 #import "KG_SecondFloorViewController.h"
 #import "KG_NewTarBarViewController.h"
+#import "KG_ZhiTaiView.h"
+#import "KG_DMEView.h"
 /*
  *点聚合Annotation
  */
@@ -318,7 +320,7 @@
             return ;
         }
         _stationList = [result[@"value"] copy];
-        
+        [UserManager shareUserManager].stationList = _stationList;
         [_mapView removeAnnotations:_clusters2];
         [_mapView removeAnnotations:_clusters];
         [self addClusters];
@@ -2171,12 +2173,80 @@
     [userDefaults4 setObject:powerDic forKey:@"powerStatus"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [self.navigationController.tabBarController setSelectedIndex:2];
+//    [self.navigationController.tabBarController setSelectedIndex:2];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
-//    KG_NewTarBarViewController * test = [[KG_NewTarBarViewController alloc]init];
-//    //    self.navigationController.navigationBar.hidden = YES ;
-//    self.tabBarController.tabBar.hidden = YES ;
-//    [self.navigationController pushViewController:test animated:YES];
+  
+    
+    [self.navigationController.navigationBar setHidden:YES];
+    [self.tabBarController.tabBar setHidden:YES];
+    KG_NewTarBarViewController * cusBarVC = [[KG_NewTarBarViewController alloc] init];
+    [self.navigationController pushViewController:cusBarVC animated:YES];
+    
+}
+
+- (void)selDefaultData:(NSDictionary *)dataD {
+   
+    NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD];
+    for (NSString*s in [dataDic allKeys]) {
+        if ([dataDic[s] isEqual:[NSNull null]]) {
+            [dataDic setObject:@"" forKey:s];
+        }
+    }
+    [UserManager shareUserManager].currentStationDic = dataDic;
+    NSMutableDictionary *secDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"securityStatus"]];
+    for (NSString*s in [secDic allKeys]) {
+        if ([secDic[s] isEqual:[NSNull null]]) {
+            [secDic setObject:@"" forKey:s];
+        }
+    }
+    NSMutableDictionary *equDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"equipmentStatus"]];
+    for (NSString*s in [equDic allKeys]) {
+        if ([equDic[s] isEqual:[NSNull null]]) {
+            [equDic setObject:@"" forKey:s];
+        }
+    }
+    NSMutableDictionary *envDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"environmentStatus"]];
+    for (NSString*s in [envDic allKeys]) {
+        if ([envDic[s] isEqual:[NSNull null]]) {
+            [envDic setObject:@"" forKey:s];
+        }
+    }
+    NSMutableDictionary *powerDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"powerStatus"]];
+    for (NSString*s in [powerDic allKeys]) {
+        if ([powerDic[s] isEqual:[NSNull null]]) {
+            [powerDic setObject:@"" forKey:s];
+        }
+    }
+    
+    
+      
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:dataDic forKey:@"station"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    
+    NSUserDefaults *userDefaults1 = [NSUserDefaults standardUserDefaults];
+    [userDefaults1 setObject:secDic forKey:@"securityStatus"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSUserDefaults *userDefaults2 = [NSUserDefaults standardUserDefaults];
+    [userDefaults2 setObject:equDic forKey:@"equipmentStatus"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults3 = [NSUserDefaults standardUserDefaults];
+    [userDefaults3 setObject:envDic forKey:@"environmentStatus"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults4 = [NSUserDefaults standardUserDefaults];
+    [userDefaults4 setObject:powerDic forKey:@"powerStatus"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+//    [self.navigationController.tabBarController setSelectedIndex:2];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
+  
+    
+    [self.navigationController.navigationBar setHidden:YES];
+    [self.tabBarController.tabBar setHidden:YES];
+    KG_NewTarBarViewController * cusBarVC = [[KG_NewTarBarViewController alloc] init];
+    [self.navigationController pushViewController:cusBarVC animated:YES];
     
 }
 /**
@@ -2251,11 +2321,20 @@
 -(void)healthBtnClick{
     NSLog(@"healthBtnClick");
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    //
+    
     //    RankController *Rank = [[RankController alloc] init];
     //    [self.navigationController pushViewController:Rank animated:YES];
-    KG_SecondFloorViewController *Rank = [[KG_SecondFloorViewController alloc] init];
-   [self.navigationController pushViewController:Rank animated:YES];
+//    KG_SecondFloorViewController *Rank = [[KG_SecondFloorViewController alloc] init];
+//   [self.navigationController pushViewController:Rank animated:YES];
+    KG_DMEView *Rank = [[KG_DMEView alloc]init];
+    Rank.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:Rank];
+    [Rank mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.top.equalTo(@10);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
 }
 - (void)showAlertMessage:(NSMutableArray *)array {
     
@@ -2944,6 +3023,13 @@
                StationVideo.station_name = stationName;
                [self.navigationController pushViewController:StationVideo animated:YES];
            };
+        _bottomAlertView.selStation = ^{
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            if([userDefaults objectForKey:@"station"]){
+                [self selDefaultData: [userDefaults objectForKey:@"station"]];
+            }
+            
+        };
         UISwipeGestureRecognizer * recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
         [recognizer setDirection:(UISwipeGestureRecognizerDirectionUp)];
         [self.bottomAlertView addGestureRecognizer:recognizer];

@@ -54,7 +54,7 @@
     self.timeLabel.text = @"2020.03.02 10:20:42";
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_selectImageView.mas_right).offset(8);
-        make.width.height.equalTo(@200);
+        make.width.equalTo(@200);
         make.centerY.equalTo(_selectImageView.mas_centerY);
         make.height.equalTo(@27);
     }];
@@ -68,7 +68,7 @@
     self.timeLabel.text = @"张三对1#空调遥控器（OAO-485）进行了：";
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_selectImageView.mas_right).offset(8);
-        make.right.height.equalTo(self.mas_right).offset(-36);
+        make.right.equalTo(self.mas_right).offset(-36);
         make.top.equalTo(self.mas_top).offset(32);
         make.height.equalTo(@27);
     }];
@@ -82,7 +82,7 @@
     self.detailLabel.numberOfLines = 1;
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_selectImageView.mas_right).offset(8);
-        make.right.height.equalTo(self.mas_right).offset(-36);
+        make.right.equalTo(self.mas_right).offset(-36);
         make.top.equalTo(self.mas_top).offset(32);
         make.height.equalTo(@27);
     }];

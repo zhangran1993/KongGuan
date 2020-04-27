@@ -17,4 +17,6 @@ interfaceSingle(UserManager)
 @property (nonatomic, assign) BOOL loginSuccess;
 
 @property(nonatomic, strong) NSDictionary *currentStationDic;
+
+@property(nonatomic, strong) NSArray *stationList;
 @end

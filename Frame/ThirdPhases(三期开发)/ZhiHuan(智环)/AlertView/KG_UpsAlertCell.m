@@ -41,7 +41,8 @@
   
     _selectImageView = [UIImageView new];
     [self.contentView addSubview:_selectImageView];
-    _selectImageView.hidden = YES;
+    _selectImageView.layer.cornerRadius = 3.f;
+    _selectImageView.layer.masksToBounds = YES;
     _selectImageView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
     [_selectImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(14);
@@ -61,7 +62,15 @@
         make.centerY.equalTo(_selectImageView.mas_centerY);
     }];
     
-    
+    UIView *lineView = [[UIView alloc]init];
+    [self addSubview:lineView];
+    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(14);
+        make.width.equalTo(@133);
+        make.height.equalTo(@1);
+        make.bottom.equalTo(self.mas_bottom);
+    }];
 }
 
 @end

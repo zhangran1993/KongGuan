@@ -15,6 +15,7 @@
 #import "RadarTableViewCell.h"
 #import <MJExtension.h>
 #import "StationMachineDetailMoreController.h"
+#import "KG_GaojingView.h"
 @interface StationMachineDetailController ()<UITableViewDataSource,UITableViewDelegate,WKNavigationDelegate>
 
 @property (nonatomic, strong) WKWebView *webview;
@@ -27,12 +28,15 @@
 @property float wkHeight;
 
 @property (nonatomic, strong) UITableView *radarTableView;
+@property (nonatomic, strong) UIView *rightView;
+@property (nonatomic, strong) UIView *leftView;
 /** 请求管理者 */
 //@property (nonatomic,weak) AFHTTPSessionManager * manager;
 /** 用于加载下一页的参数(页码) */
 @property   int viewnum;
 
 @property(nonatomic) UITableView *tableview;
+@property (nonatomic, strong) KG_GaojingView *gaojingView;
 @end
 
 @implementation StationMachineDetailController
@@ -45,6 +49,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //注册通知(接收,监听,一个通知)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification1:) name:@"hiddenRightView" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification2:) name:@"hiddenLeftView" object:nil];
+
     self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(16, 0, getScreen.size.width-32,HEIGHT_SCREEN - 160 - TOOLH - ZNAVViewH)];
     if (TOOLH >0) {
         [self.tableview setFrame:CGRectMake(16, 0, getScreen.size.width-32,HEIGHT_SCREEN - 120 - TOOLH - ZNAVViewH)];
@@ -62,20 +71,87 @@
         [self loadWebView];
         [self loadTableView];
     }
-  
-    for (NSDictionary *dic in _machineDetail[@"tagList"]) {
-        BOOL isEmp = [dic[@"emphasis"] boolValue];
-        if (isEmp) {
-            [self.radarList addObject:dic];
+    if(isSafeDictionary(_machineDetail[@"tagList"])) {
+        for (NSDictionary *dic in _machineDetail[@"tagList"]) {
+            BOOL isEmp = [dic[@"emphasis"] boolValue];
+            if (isEmp) {
+                [self.radarList addObject:dic];
+            }
         }
     }
-   [self.radarTableView reloadData];
+    [self.radarTableView reloadData];
+    self.rightView = [[UIView alloc] init];
+    self.rightView.frame = CGRectMake(SCREEN_WIDTH-10,self.tableview.frame.origin.y,10,self.tableview.frame.origin.y +self.tableview.frame.size.height);
+    
+    self.rightView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+   
+    [self.view addSubview:self.rightView];
+//    [self.rightView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.view.mas_right);
+//        make.top.equalTo(self.tableview.mas_top);
+//        make.width.equalTo(@10);
+//        make.bottom.equalTo(self.tableview.mas_bottom);
+//    }];
+    self.rightView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.rightView.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerTopLeft cornerRadii:CGSizeMake(16,16)];
+    //创建 layer
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.rightView.bounds;
+    //赋值
+    maskLayer.path = maskPath.CGPath;
+    self.rightView.layer.mask = maskLayer;
 
+    
+    self.leftView = [[UIView alloc] init];
+    self.leftView.frame = CGRectMake(0,self.tableview.frame.origin.y,10,self.tableview.frame.origin.y +self.tableview.frame.size.height);
+    
+    self.leftView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+     self.leftView.layer.masksToBounds = YES;
+    self.leftView.hidden = YES;
+    [self.view addSubview:self.leftView];
+//    [self.leftView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.view.mas_left);
+//        make.top.equalTo(self.tableview.mas_top);
+//        make.width.equalTo(@10);
+//        make.bottom.equalTo(self.tableview.mas_bottom);
+//    }];
+    self.leftView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    UIBezierPath *maskPath1 = [UIBezierPath bezierPathWithRoundedRect:self.leftView.bounds byRoundingCorners:UIRectCornerBottomRight | UIRectCornerTopRight cornerRadii:CGSizeMake(16,16)];
+    //创建 layer
+    CAShapeLayer *maskLayer1 = [[CAShapeLayer alloc] init];
+    maskLayer1.frame = self.leftView.bounds;
+    //赋值
+    maskLayer1.path = maskPath1.CGPath;
+    self.leftView.layer.mask = maskLayer1;
+}
+
+//实现方法
+-(void)notification1:(NSNotification *)notification{
+    NSLog(@"接收 不带参数的消息");
+    NSString *str = notification.object;
+    if ([str isEqualToString:@"YES"]) {
+        self.rightView.hidden = YES;
+    }else {
+        self.rightView.hidden = NO;
+    }
+    
+}
+//实现方法
+-(void)notification2:(NSNotification *)notification{
+    NSLog(@"接收 不带参数的消息");
+    NSString *str = notification.object;
+    if ([str isEqualToString:@"YES"]) {
+        self.leftView.hidden = YES;
+    }else {
+        self.leftView.hidden = NO;
+    }
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     self.automaticallyAdjustsScrollViewInsets = NO;
-   
+    
     countnum = 0;
 }
 #pragma mark - private methods 私有方法
@@ -176,7 +252,9 @@
     }else if ([cag isEqualToString:@"rs"]) {
         machineImg.image = [UIImage imageNamed:@"machine_rs"];
     }else {
-         [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
+//         [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
+        [machineImg sd_setImageWithURL:[NSURL URLWithString: [@"http://10.33.33.147:8089" stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
+              
     }
     
     UIImageView *topBgImageView = [[UIImageView alloc]init];
@@ -230,14 +308,12 @@
         make.top.equalTo(topBgImageView.mas_top).offset(4);
     }];
    
-   
-    
     
     UILabel *bhLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(240)+60, FrameWidth(90), FrameWidth(380), FrameWidth(30))];
-    bhLabel.font = FontSize(16);
-    bhLabel.text = [NSString stringWithFormat:@"%@%@",@"编号：",_machineDetail[@"code"]];//@"编号
+    bhLabel.font = FontSize(14);
+    bhLabel.text = [NSString stringWithFormat:@"%@",@"告警状态"];//@"告警状态
     [machineView addSubview:bhLabel];
-    
+    bhLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
     [bhLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(machineLabel.mas_left);
         make.top.equalTo(machineLabel.mas_bottom).offset(5);
@@ -246,8 +322,11 @@
     }];
     //warn_save
     UILabel *ztLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(240)+60, FrameWidth(140), FrameWidth(80), FrameWidth(30))];
-    ztLabel.font = FontSize(16);
-    ztLabel.text = @"状态:";
+    ztLabel.font = FontSize(14);
+    ztLabel.text = @"运行状态:";
+    ztLabel.hidden = YES;
+    
+    ztLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
     [machineView addSubview:ztLabel];
     [ztLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(machineLabel.mas_left);
@@ -255,44 +334,79 @@
         make.width.equalTo(@200);
         make.height.equalTo(@21);
     }];
+    
+    
+    NSMutableArray *dataArray = [NSMutableArray array];
+    if(isSafeArray(_machineDetail[@"tagList"])) {
+        for (NSDictionary *dic in _machineDetail[@"tagList"]) {
+            BOOL picShow = [dic[@"picShow"] boolValue];
+            if (picShow) {
+                [dataArray addObject:dic];
+            }
+        }
+    }
+    if (dataArray.count) {
+        self.gaojingView = [[KG_GaojingView alloc]init];
+        [machineView addSubview:self.gaojingView];
+        [self.gaojingView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@42);
+            make.left.equalTo(bhLabel.mas_left);
+            make.right.equalTo(machineView.mas_right).offset(-16-20);
+            make.top.equalTo(bhLabel.mas_bottom).offset(5);
+        }];
+        self.gaojingView.powArray = dataArray;
+    }
+   
+    UIImageView *statusImage = [[UIImageView alloc]init];
+    [machineView addSubview:statusImage];
+    statusImage.image = [UIImage imageNamed:@"level_normal"];
+    [statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(bhLabel.mas_centerY);
+        make.height.equalTo(@17);
+        make.width.equalTo(@32);
+        make.right.equalTo(machineView.mas_right).offset(-60);
+    }];
+    UILabel * statusNumLalbel = [[UILabel alloc]init];
+    [machineView addSubview:statusNumLalbel];
+    statusNumLalbel.layer.cornerRadius = 5.f;
+    statusNumLalbel.layer.masksToBounds = YES;
+    statusNumLalbel.text = @"1";
+    statusNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    statusNumLalbel.font = [UIFont systemFontOfSize:10];
+    statusNumLalbel.numberOfLines = 1;
+    
+    statusNumLalbel.textAlignment = NSTextAlignmentCenter;
+    [statusNumLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(statusImage.mas_right).offset(-5);
+        make.bottom.equalTo(statusImage.mas_top).offset(5);
+        make.width.equalTo(@10);
+        make.height.equalTo(@10);
+    }];
+    
     if([_machineDetail[@"status"] isEqualToString:@"1"]){
-        UIButton *warnBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(120), FrameWidth(28))];
-        [warnBtn setBackgroundColor:warnColor];
-        warnBtn.layer.cornerRadius = 2;
-        warnBtn.titleLabel.font = FontBSize(13);
-        [warnBtn setTitle:[NSString stringWithFormat:@"%@%@",@"告警数量",_machineDetail[@"num"]] forState:UIControlStateNormal];
-        warnBtn.titleLabel.textColor = [UIColor whiteColor];
-        [machineView addSubview:warnBtn];
-        UIButton *levelBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(455), FrameWidth(140), FrameWidth(60), FrameWidth(28))];
-        levelBtn.layer.cornerRadius = 2;
-        levelBtn.titleLabel.font = FontBSize(13);
-        [CommonExtension addLevelBtn:levelBtn level:_machineDetail[@"level"]];
-        
-        [machineView addSubview:levelBtn];
+        statusNumLalbel.text =[NSString stringWithFormat:@"%@",_machineDetail[@"num"]];
+       
+        statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",_machineDetail[@"level"]]]];
+        statusNumLalbel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",_machineDetail[@"level"]]];
+      
+       
     }else if([_machineDetail[@"status"] isEqualToString:@"2"]){
         
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(60), FrameWidth(28))];
-        [normalBtn setTitle: @"--"   forState:UIControlStateNormal];
-        [machineView addSubview:normalBtn];
+       statusImage.image = [UIImage imageNamed:@"level_normal"];
     }else if([_machineDetail[@"status"] isEqualToString:@"3"]){
         
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(60), FrameWidth(28))];
-        [normalBtn setBackgroundColor:FrameColor(252,201,84)];
-        normalBtn.layer.cornerRadius = 2;
-        normalBtn.titleLabel.font = FontBSize(13);
-        [normalBtn setTitle: @"正常"   forState:UIControlStateNormal];
-        normalBtn.titleLabel.textColor = [UIColor whiteColor];
-        [machineView addSubview:normalBtn];
+      statusImage.image = [UIImage imageNamed:@"level_normal"];
     }else{
         
-        UIButton *normalBtn = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(320)+100, FrameWidth(140), FrameWidth(60), FrameWidth(28))];
-        [normalBtn setBackgroundColor:FrameColor(120, 203, 161)];
-        normalBtn.layer.cornerRadius = 2;
-        normalBtn.titleLabel.font = FontBSize(13);
-        [normalBtn setTitle: @"正常"   forState:UIControlStateNormal];
-        normalBtn.titleLabel.textColor = [UIColor whiteColor];
-        [machineView addSubview:normalBtn];
+       statusImage.image = [UIImage imageNamed:@"level_normal"];
     }
+    if ([_machineDetail[@"num"] intValue] == 0) {
+        statusNumLalbel.hidden = YES;
+    }else {
+        statusNumLalbel.hidden =NO;
+    }
+    
+    
     int descripptionHeight = 0;
     //新增告警显示
     if (safeString(_machineDetail[@"description"]).length) {
@@ -501,7 +615,10 @@
                 numLabel.font = FontSize(14);
                 NSString * unit = [CommonExtension isEmptyWithString:   self.objects[i].unit]?@"":self.objects[i].unit;
                 NSString * tagValue = [CommonExtension isEmptyWithString:   self.objects[i].tagValue]?@"":self.objects[i].tagValue;
-                numLabel.text =[NSString stringWithFormat:@"%@%@",tagValue ,unit] ;
+                if(tagValue.length >0){
+                    numLabel.text =[NSString stringWithFormat:@"%@%@",tagValue ,unit] ;
+                }
+                
                 numLabel.textAlignment = NSTextAlignmentCenter;
                 //numLabel.text =self.objects[i].tagValue;
                 [InView addSubview:numLabel];
@@ -720,7 +837,44 @@
 }
 
   //  thiscell.backgroundColor = self.view.backgroundColor;
+- (UIColor *)getTextColor:(NSString *)level {
+    UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    
+    if ([level isEqualToString:@"0"]) {
+        textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    }else if ([level isEqualToString:@"4"]) {
+        textColor = [UIColor colorWithHexString:@"2986F1"];
+    }else if ([level isEqualToString:@"3"]) {
+        textColor = [UIColor colorWithHexString:@"FFA800"];
+    }else if ([level isEqualToString:@"2"]) {
+        textColor = [UIColor colorWithHexString:@"FC7D0E"];
+    }else if ([level isEqualToString:@"1"]) {
+        textColor = [UIColor colorWithHexString:@"F62546"];
+    }
+    
+    //紧急
+    return textColor;
+}
 
+
+- (NSString *)getLevelImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"0"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"4"]) {
+        levelString = @"level_prompt";
+    }else if ([level isEqualToString:@"3"]) {
+        levelString = @"level_ciyao";
+    }else if ([level isEqualToString:@"2"]) {
+        levelString = @"level_important";
+    }else if ([level isEqualToString:@"1"]) {
+        levelString = @"level_jinji";
+    }
+    
+    //紧急
+    return levelString;
+}
 
 @end
 

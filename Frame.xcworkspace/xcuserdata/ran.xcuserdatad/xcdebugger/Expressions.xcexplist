@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "__39-[KG_SecondFloorViewController getData]_block_invoke_3:KG_SecondFloorViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__49-[StationDetailController queryStationDetailData]_block_invoke:StationDetailController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[KG_CenterCell setDataDic:]:KG_CenterCell.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[KG_SecondFloorViewController refreshStationData]:KG_SecondFloorViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__42-[StationMachineController getMachineList]_block_invoke:StationMachineController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__40-[StationDetailController getTemHuiData]_block_invoke:StationDetailController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[StationDetailController getTemHuiData]:StationDetailController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__52-[KG_SecondFloorViewController getStationStatusData]_block_invoke:KG_SecondFloorViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__52-[KG_SecondFloorViewController getStationHealthData]_block_invoke:KG_SecondFloorViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__48-[StationMachineController getMachineDetailList]_block_invoke:StationMachineController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__41-[StationMachineController getTemHuiData]_block_invoke:StationMachineController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[StationDetailController tableView:cellForRowAtIndexPath:]:StationDetailController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__46-[KG_SecondFloorViewController getStationData]_block_invoke:KG_SecondFloorViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[KG_UpsAlertView numberOfSectionsInTableView:]:KG_UpsAlertView.m">
+      </ContextState>
+      <ContextState
+         contextName = "__39-[KG_SecondFloorViewController getData]_block_invoke_2.167:KG_SecondFloorViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__46-[StationMachineController getDetailRightData]_block_invoke:StationMachineController.m">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

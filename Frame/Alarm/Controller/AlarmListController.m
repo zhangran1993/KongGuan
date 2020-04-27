@@ -101,7 +101,7 @@
     self.roomBtn = [UIButton new];
     self.levelBtn = [UIButton new];
     
-    
+   
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     UIView * oneView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, FrameWidth(156))];
     oneView.backgroundColor = [UIColor whiteColor];

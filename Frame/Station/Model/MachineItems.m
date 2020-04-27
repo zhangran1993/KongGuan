@@ -28,5 +28,9 @@
  
  
  */
++ (NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"tagValue": @"valueAlias"};
+}
 
 @end

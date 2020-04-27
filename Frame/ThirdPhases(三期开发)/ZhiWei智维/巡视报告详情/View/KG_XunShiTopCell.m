@@ -1,0 +1,68 @@
+//
+//  KG_XunShiTopCell.m
+//  Frame
+//
+//  Created by zhangran on 2020/4/26.
+//  Copyright © 2020 hibaysoft. All rights reserved.
+//
+
+#import "KG_XunShiTopCell.h"
+
+@implementation KG_XunShiTopCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    
+    
+    if([super initWithStyle:style reuseIdentifier:reuseIdentifier]){
+        
+        
+        [self createUI];
+    }
+    
+    return self;
+}
+
+
+
+- (void)createUI{
+    
+    
+    
+    self.iconImage = [[UIImageView alloc]init];
+    [self addSubview:self.iconImage];
+    self.iconImage.layer.cornerRadius = 3.f;
+    self.iconImage.layer.masksToBounds = YES;
+    self.iconImage.backgroundColor = [UIColor colorWithHexString:@"#95A8D7"];
+    [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(16);
+        make.top.equalTo(self.mas_top).offset(19);
+        make.width.height.equalTo(@6);
+    }];
+    
+    self.titleLabel = [[UILabel alloc]init];
+    [self addSubview:self.titleLabel];
+    self.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.titleLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+    self.titleLabel.textAlignment = NSTextAlignmentLeft;
+    self.titleLabel.numberOfLines = 1;
+    self.titleLabel.text = @"雷达";
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.iconImage.mas_right).offset(9.5);
+        make.width.equalTo(@200);
+        make.centerY.equalTo(self.iconImage.mas_centerY);
+    }];
+    
+}
+@end

@@ -21,7 +21,7 @@
 @property  bool  emphasis;
 @property (copy, nonatomic) NSString *  tagValue;
 @property (copy, nonatomic) NSString *  category;
-
+@property (copy, nonatomic) NSString *  valueAlias;
 @property  int  vid;
 /** 尾部标题 */
 @property (copy, nonatomic) NSString*  type;

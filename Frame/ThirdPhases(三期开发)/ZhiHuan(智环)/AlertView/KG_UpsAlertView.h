@@ -12,7 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_UpsAlertView : UIView
 
-@property (nonatomic ,copy) void(^didsel)(NSString *selString);
+@property (nonatomic ,copy) void(^didsel)(NSDictionary *selDic);
+
+
+@property (nonatomic ,strong) NSMutableArray *dataArray;
 @end
 
 NS_ASSUME_NONNULL_END

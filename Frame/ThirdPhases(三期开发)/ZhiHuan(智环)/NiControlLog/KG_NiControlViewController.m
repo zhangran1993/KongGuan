@@ -168,13 +168,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    KG_NiControlCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_NiControlCellb "];
+  
+    KG_NiControlCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_NiControlCell"];
     if (cell == nil) {
-        cell = [[[NSBundle mainBundle]loadNibNamed:@"KG_NiControlCell" owner:self options:nil] lastObject];
+        cell = [[KG_NiControlCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_NiControlCell"];
+        
     }
     NSDictionary *dataDic = self.dataArray[indexPath.row];
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;

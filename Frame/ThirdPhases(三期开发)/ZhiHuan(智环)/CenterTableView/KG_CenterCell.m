@@ -33,18 +33,34 @@
 }
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
-    NSString *code = safeString(dataDic[@"code"]);
-    self.iconImage.image = [UIImage imageNamed:@"device_UPS"];
-    if([code isEqualToString:@"ups"]){
+    NSString *code = safeString(dataDic[@"name"]);
+    self.iconImage.image = [UIImage imageNamed:@"UPS"];
+    if([code isEqualToString:@"UPS"]){
         self.iconImage.image = [UIImage imageNamed:@"device_UPS"];
-    }else if([code isEqualToString:@"distribution_box"]){
-        self.iconImage.image = [UIImage imageNamed:@"device_UPS"];
-    }else if([code isEqualToString:@"electricityMeter"]){
-        self.iconImage.image = [UIImage imageNamed:@"device_dianliangyi"];
-    }else if([code isEqualToString:@"ats"]){
-        self.iconImage.image = [UIImage imageNamed:@"device_UPS"];
-    }else if([code isEqualToString:@"battery"]){
+    }else if([code isEqualToString:@"水浸"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_shuijin"];
+    }else if([code isEqualToString:@"烟感"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_yangan"];
+    }else if([code isEqualToString:@"空调"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_kongtiao"];
+    }else if([code isEqualToString:@"蓄电池"]){
         self.iconImage.image = [UIImage imageNamed:@"device_xudianchi"];
+    }else if([code isEqualToString:@"柴油发电机"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_chaiyou"];
+    }else if([code isEqualToString:@"电量仪"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_dianliangyi"];
+    }else if([code isEqualToString:@"空开"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_kongtiao"];
+    }else if([code isEqualToString:@"电子围栏"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_zhalan"];
+    }else if([code isEqualToString:@"门禁"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_menjin"];
+    }else if([code isEqualToString:@"视频监测"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_video"];
+    }else if([code isEqualToString:@"温湿度"]){
+        self.iconImage.image = [UIImage imageNamed:@"device_wenshidu"];
+    }else {
+        self.iconImage.image = [UIImage imageNamed:@"device_UPS"];
     }
     
     if (isSafeDictionary(dataDic)) {
@@ -59,6 +75,11 @@
             
         }else{
             self.levelImagee.image = [UIImage imageNamed:@"level_normal"];
+        }
+        if ([dataDic[@"num"] intValue] == 0) {
+            self.redDotImage.hidden = YES;
+        }else {
+            self.redDotImage.hidden =NO;
         }
     }
     self.titleLabel.text = safeString(dataDic[@"name"]);

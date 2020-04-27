@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_UpsAlertCell : UITableViewCell
+
 @property (nonatomic,strong)UILabel * titleLabel;
 
 @property (strong, nonatomic)UIImageView *selectImageView;

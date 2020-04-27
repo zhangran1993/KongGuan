@@ -19,7 +19,8 @@
 #import <MJExtension.h>
 #import "StationMachineDetailMoreController.h"
 #import "KG_UpsAlertView.h"
-
+#import "KG_MachineStationModel.h"
+#import "KG_MachineDetailModel.h"
 @interface StationMachineController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (strong, nonatomic) NSMutableArray<MachineItems *> * MachineList;
@@ -30,6 +31,13 @@
 /** 请求管理者 */
 //@property (nonatomic,weak) AFHTTPSessionManager * manager;
 /** 用于加载下一页的参数(页码) */
+
+@property (strong, nonatomic) NSMutableArray *dataArray;
+
+@property (strong, nonatomic) NSMutableArray *rightArray;
+
+@property (strong, nonatomic) NSMutableArray *detailArray;
+@property (strong, nonatomic) KG_MachineDetailModel *detailModel;
 @end
 
 @implementation StationMachineController
@@ -39,16 +47,16 @@
         [self backAction];
     }
     [self backBtn];
-   
+    
     [self.navigationController.navigationBar setTitleTextAttributes:
      
-  @{NSFontAttributeName:[UIFont systemFontOfSize:18],
-    
-    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
+     @{NSFontAttributeName:[UIFont systemFontOfSize:18],
+       
+       NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
     [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
-
+    
     self.navigationController.navigationBar.translucent = NO;
-
+    
 }
 
 - (UIImage*)createImageWithColor: (UIColor*) color{
@@ -70,12 +78,14 @@
     self.filterTabView.separatorStyle = NO;
     self.StationItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:_mList];
     // Do any additional setup after loading the view.
-    [self getMachineList];
+    self.detailModel = [[KG_MachineDetailModel alloc]init];
+//    [self getMachineList];
+    [self getMachineDetailList];
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoMachineInfo:) name:@"Machine" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoMachinePicture:) name:@"Picture" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(gotoMachineAlarmapevent:) name:@"Alarmapevent" object:nil];
     [self getRadarInfoList];
-    
+    [self getDetailRightData];
 }
 
 
@@ -182,26 +192,98 @@
         _category = item.code;
         _machine_name = item.name;
         [self closeFrame];
-        [self getMachineList];
+//        [self getMachineList];
+        [self getMachineDetailList];
     }
 }
 
 -(void)getRadarInfoList{
     NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/equipmentInfo/%@/%@?engine_room_code=%@",_station_code,_category,_engine_room_code]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-       
+        
         
         
     } failure:^(NSURLSessionDataTask *error)  {
-       
+        
         
     }];
-
+    
     
 }
+//获取设备详情页面右上角，台站下设备分类接口：
+//请求地址：/intelligent/api/envDeviceCategory/{stationCode}
+//     其中，stationCode是台站编码
+//请求方式：GET
+//如：http://10.33.33.147:8089/intelligent/api/envDeviceCategory/HCDHT
 
--(void)getMachineList{
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/equipmentInfo/%@/%@?engine_room_code=%@",_station_code,_category,_engine_room_code]];
+- (void)getDetailRightData {
+    NSString *  FrameRequestURL  =  @"http://10.33.33.147:8089/intelligent/api/envDeviceCategory/HCDHT";
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.rightArray = result[@"value"];
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            [self.navigationController popToViewController:viewCtl animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+}
+- (void)getTemHuiData {
+    NSString *  FrameRequestURL  =  @"http://10.33.33.147:8089/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS";
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.dataArray = [KG_MachineStationModel mj_objectArrayWithKeyValuesArray:result[@"value"]];
+        
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            [self.navigationController popToViewController:viewCtl animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+}
+//获取某个台站下某个机房的详情页接口：
+//请求地址：/intelligent/api/envRoomInfo/{stationCode}/{engineRoomCode}
+//     其中，stationCode是台站编码，engineRoomCode是机房编码
+//请求方式：GET
+//请求返回：
+//   如：
+//{
+
+-(void)getMachineDetailList{
+    NSString *  FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/envDeviceInfo/%@/%@",_station_code,_category];
+    
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -209,6 +291,9 @@
             return ;
         }
         NSArray *equipmentDetails = result[@"value"][@"equipmentDetails"];
+        if (equipmentDetails.count == 0) {
+            return;
+        }
         NSMutableArray * titleArr = [[NSMutableArray alloc] init];
         NSMutableArray * controllerArr = [[NSMutableArray alloc] init];
         for (int i = 0; i < equipmentDetails.count; i++) {
@@ -225,9 +310,9 @@
                                       @"level":equipmentDetails[i][@"level"]?equipmentDetails[i][@"level"]:@"",
                                       @"num":equipmentDetails[i][@"num"]?equipmentDetails[i][@"num"]:@"",
                                       @"category":equipmentDetails[i][@"equipment"][@"category"],
-                                      @"tagList":equipmentDetails[i][@"equipment"][@"tagList"],
+                                      @"tagList":equipmentDetails[i][@"equipment"][@"measureTagList"],
                                       @"description":equipmentDetails[i][@"equipment"][@"description"]
-                                      };
+            };
             //_machine_name = equipmentDetails[i][@"equipment"][@"alias"];
             StationMachineDetailController *oneVC = [[StationMachineDetailController alloc] init];
             oneVC.moreAction = ^{
@@ -235,7 +320,7 @@
                 vc.machineDetail = Detail;
                 [self.navigationController pushViewController:vc animated:YES];
             };
-          
+            
             oneVC.machineDetail = Detail;
             
             [controllerArr addObject:oneVC];
@@ -247,7 +332,7 @@
                                @"category":_category,
                                @"engine_room_code":_engine_room_code,
                                @"totalDetail":result[@"value"][@"totalDetail"]
-                               };
+        };
         
         self.title = [NSString stringWithFormat:@"%@-%@",_station_name,_machine_name];
         if(titleArr == nil || controllerArr == nil){
@@ -258,7 +343,90 @@
         self.titleArray = titleArr;
         self.controllerArray = controllerArr;
         
+        [self.detailModel mj_setKeyValues:result[@"value"]];
         
+        
+        
+        NSLog(@"1");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            [self.navigationController popToViewController:viewCtl animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+    
+}
+
+-(void)getMachineList{
+    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/equipmentInfo/%@/%@?engine_room_code=%@",_station_code,_category,_engine_room_code]];
+    
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+//        NSArray *equipmentDetails = result[@"value"][@"equipmentDetails"];
+//        NSMutableArray * titleArr = [[NSMutableArray alloc] init];
+//        NSMutableArray * controllerArr = [[NSMutableArray alloc] init];
+//        for (int i = 0; i < equipmentDetails.count; i++) {
+//            [titleArr addObject:equipmentDetails[i][@"equipment"][@"alias"]];
+//
+//            NSDictionary * Detail = @{@"station_name":_station_name,
+//                                      @"machine_name":_machine_name,
+//                                      @"name":equipmentDetails[i][@"equipment"][@"alias"],
+//                                      @"alias":equipmentDetails[i][@"equipment"][@"alias"],
+//                                      @"code":equipmentDetails[i][@"equipment"][@"code"],
+//                                      @"roomName":equipmentDetails[i][@"equipment"][@"roomName"],
+//                                      @"picture":equipmentDetails[i][@"equipment"][@"picture"],
+//                                      @"status":equipmentDetails[i][@"status"],
+//                                      @"level":equipmentDetails[i][@"level"]?equipmentDetails[i][@"level"]:@"",
+//                                      @"num":equipmentDetails[i][@"num"]?equipmentDetails[i][@"num"]:@"",
+//                                      @"category":equipmentDetails[i][@"equipment"][@"category"],
+//                                      @"tagList":equipmentDetails[i][@"equipment"][@"tagList"],
+//                                      @"description":equipmentDetails[i][@"equipment"][@"description"]
+//            };
+//            //_machine_name = equipmentDetails[i][@"equipment"][@"alias"];
+//            StationMachineDetailController *oneVC = [[StationMachineDetailController alloc] init];
+//            oneVC.moreAction = ^{
+//                StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
+//                vc.machineDetail = Detail;
+//                [self.navigationController pushViewController:vc animated:YES];
+//            };
+//
+//            oneVC.machineDetail = Detail;
+//
+//            [controllerArr addObject:oneVC];
+//
+//        }
+//        self.machineDetail = @{@"station_name":_station_name,
+//                               @"machine_name":_machine_name,
+//                               @"station_code":_station_code,
+//                               @"category":_category,
+//                               @"engine_room_code":_engine_room_code,
+//                               @"totalDetail":result[@"value"][@"totalDetail"]
+//        };
+//
+//        self.title = [NSString stringWithFormat:@"%@-%@",_station_name,_machine_name];
+//        if(titleArr == nil || controllerArr == nil){
+//            [FrameBaseRequest showMessage:@"请求失败，请检查网络"];
+//            return ;
+//        }
+//
+//        self.titleArray = titleArr;
+//        self.controllerArray = controllerArr;
+//
+//
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
@@ -286,42 +454,42 @@
     if (self.upsAlertView.isHidden) {
         self.upsAlertView.hidden = NO;
     }
-      
-//    float moreheight = FrameWidth(900);
-//    if(HEIGHT_SCREEN == 812){
-//        moreheight = -FrameWidth(1100);
-//    }
-//    UIViewController *vc = [UIViewController new];
-//
-//    vc.view.frame = CGRectMake(FrameWidth(320), FrameWidth(128), FrameWidth(320),  moreheight);
-//    //_vc.view.layer.cornerRadius = 4.0;
-//    vc.view.layer.masksToBounds = YES;
-//    UIImageView * xialaImage = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, FrameWidth(300),  FrameWidth(20))];
-//    xialaImage.image = [UIImage imageNamed:@"station_pulldown_right"];
-//    [vc.view addSubview:xialaImage];
-//
-//    float tabelHeight = self.StationItem.count * FrameWidth(56);
-//    if(tabelHeight > FrameWidth(400)){
-//        tabelHeight = FrameWidth(400);
-//    }
-//
-//    //设置滚动
-//    self.filterTabView = [[UITableView alloc] initWithFrame:CGRectMake(0, FrameWidth(20), FrameWidth(300) , tabelHeight)];
-//    self.filterTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//    [vc.view addSubview:self.filterTabView];
-//    self.filterTabView.dataSource = self;
-//    self.filterTabView.delegate = self;
-//    [self.filterTabView reloadData];
-//
-//    UIView *alphaView = [[UIView alloc]initWithFrame:CGRectMake(0, tabelHeight, FrameWidth(300),  FrameWidth(1000))];
-//    alphaView.userInteractionEnabled = YES;
-//    UITapGestureRecognizer *viewTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeFrame)];
-//    [alphaView addGestureRecognizer:viewTapGesture];
-//    [viewTapGesture setNumberOfTapsRequired:1];
-//    [vc.view addSubview:alphaView];
-//
-//
-//    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentRight overlayDismissed:nil];
+    
+    //    float moreheight = FrameWidth(900);
+    //    if(HEIGHT_SCREEN == 812){
+    //        moreheight = -FrameWidth(1100);
+    //    }
+    //    UIViewController *vc = [UIViewController new];
+    //
+    //    vc.view.frame = CGRectMake(FrameWidth(320), FrameWidth(128), FrameWidth(320),  moreheight);
+    //    //_vc.view.layer.cornerRadius = 4.0;
+    //    vc.view.layer.masksToBounds = YES;
+    //    UIImageView * xialaImage = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, FrameWidth(300),  FrameWidth(20))];
+    //    xialaImage.image = [UIImage imageNamed:@"station_pulldown_right"];
+    //    [vc.view addSubview:xialaImage];
+    //
+    //    float tabelHeight = self.StationItem.count * FrameWidth(56);
+    //    if(tabelHeight > FrameWidth(400)){
+    //        tabelHeight = FrameWidth(400);
+    //    }
+    //
+    //    //设置滚动
+    //    self.filterTabView = [[UITableView alloc] initWithFrame:CGRectMake(0, FrameWidth(20), FrameWidth(300) , tabelHeight)];
+    //    self.filterTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    //    [vc.view addSubview:self.filterTabView];
+    //    self.filterTabView.dataSource = self;
+    //    self.filterTabView.delegate = self;
+    //    [self.filterTabView reloadData];
+    //
+    //    UIView *alphaView = [[UIView alloc]initWithFrame:CGRectMake(0, tabelHeight, FrameWidth(300),  FrameWidth(1000))];
+    //    alphaView.userInteractionEnabled = YES;
+    //    UITapGestureRecognizer *viewTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeFrame)];
+    //    [alphaView addGestureRecognizer:viewTapGesture];
+    //    [viewTapGesture setNumberOfTapsRequired:1];
+    //    [vc.view addSubview:alphaView];
+    //
+    //
+    //    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentRight overlayDismissed:nil];
     
 }
 -(void)closeFrame{//消失
@@ -375,14 +543,38 @@
         [self.upsAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.bottom.left.equalTo(self.view);
             make.top.equalTo(self.view.mas_top).offset(-NAVIGATIONBAR_HEIGHT);
-          
-        }];
-        _upsAlertView.didsel = ^(NSString * _Nonnull selString) {
             
+        }];
+        _upsAlertView.dataArray = self.rightArray;
+        _upsAlertView.didsel = ^(NSDictionary * _Nonnull selDic) {
+            _category =safeString(selDic[@"categoryCode"]);
+            [self getMachineDetailList];
         };
-     
+        
     }
     return _upsAlertView;
 }
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray alloc] init];
+    }
+    return _dataArray;
+}
+- (NSMutableArray *)rightArray
+{
+    if (!_rightArray) {
+        _rightArray = [[NSMutableArray alloc] init];
+    }
+    return _rightArray;
+}
+- (NSMutableArray *)detailArray
+{
+    if (!_detailArray) {
+        _detailArray = [[NSMutableArray alloc] init];
+    }
+    return _detailArray;
+}
+
 
 @end
