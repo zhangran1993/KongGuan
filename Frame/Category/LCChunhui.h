@@ -10,7 +10,7 @@
 #ifndef LCChunhui_h
 #define LCChunhui_h
 
-
+#import "UIImage+RSMethod.h"
 #import "NSObject+SafeMethod.h"
 #import "MJExtension.h"
 #import "NSArray+SMSafeMethod.h"
@@ -26,8 +26,8 @@
 #import "MJExtension.h"
 #import <UIImageView+WebCache.h>
 #import "FrameBaseRequest.h"
-
-
+#import "MBProgressHUD+XMG.h"
+#import "NSString+RSMethod.h"
 #define XZShare [UtilsJSH standarInstance]
 //MARK:判断手机机型
 #define JSHmainWindow [UIApplication sharedApplication].keyWindow
@@ -235,6 +235,22 @@
 #define SafeAreaLeftRightMargin ((IS_IPHONE_X == YES || IS_IPHONE_Xr == YES || IS_IPHONE_Xs == YES || IS_IPHONE_Xs_Max == YES) ? 44.0 : 0.0)
 //底部安全距离
 #define SafeAreaBottomMargin ((IS_IPHONE_X == YES || IS_IPHONE_Xr == YES || IS_IPHONE_Xs == YES || IS_IPHONE_Xs_Max == YES) ? 21.0 : 0.0)
+
+// 判断是否为iPhone x 或者 xs
+#define iPhoneX [[UIScreen mainScreen] bounds].size.width == 375.0f && [[UIScreen mainScreen] bounds].size.height == 812.0f
+// 判断是否为iPhone xr 或者 xs max
+#define iPhoneXR [[UIScreen mainScreen] bounds].size.width == 414.0f && [[UIScreen mainScreen] bounds].size.height == 896.0f
+// 是全面屏手机
+#define IS_FULL_SCREEN (iPhoneX || iPhoneXR)
+
+// 全面屏适配 适配
+// 状态栏高度
+#define kStateBarHeight (isFullScreen ? 44.0 : 20.0)
+// 导航栏高度
+#define kNavigationBarHeight (kStateBarHeight + 44.0)
+// 底部tabbar高度
+#define kTabBarHeight (isFullScreen ? (49.0+34.0) : 49.0)
+
 /*****判断navBar和tabBar代码*****/
 typedef NS_ENUM(NSUInteger, PolicyDetailHeadViewType) {
     PolicyDetailHeaderTypePromotion,

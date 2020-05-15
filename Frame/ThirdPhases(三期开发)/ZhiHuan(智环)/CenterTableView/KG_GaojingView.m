@@ -95,10 +95,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
-    }
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
+       
     NSDictionary *dataDic = self.dataArray[indexPath.row];
     
     cell.textLabel.text = safeString(dataDic[@"name"]);
@@ -113,7 +112,7 @@
     
     UILabel *detaillabel = [[UILabel alloc]init];
     
-    detaillabel.text = safeString(dataDic[@"valueAlias"]);
+    detaillabel.text = [NSString stringWithFormat:@"%@%@",safeString(dataDic[@"valueAlias"]),safeString(dataDic[@"unit"])];
     detaillabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     detaillabel.textAlignment = NSTextAlignmentRight;
     detaillabel.font = [UIFont systemFontOfSize:14];
@@ -121,7 +120,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [detaillabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.textLabel.mas_centerY);
-        make.right.equalTo(cell.mas_right).offset(-50);
+        make.right.equalTo(cell.mas_right).offset(-5);
         make.width.equalTo(@100);
         make.height.equalTo(@21);
     }];

@@ -147,6 +147,7 @@
         }
     }
     [_dataArray replaceObjectAtIndex:1 withObject:workString];
+    [self.tableView reloadData];
     
 }
 
@@ -171,6 +172,7 @@
         
     }
     [_dataArray replaceObjectAtIndex:0 withObject:fasheString];
+    [self.tableView reloadData];
 }
 
 - (NSMutableArray *)dataArray

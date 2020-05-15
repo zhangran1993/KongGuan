@@ -1,0 +1,19 @@
+//
+//  KG_SelEquipClassView.h
+//  Frame
+//
+//  Created by zhangran on 2020/4/28.
+//  Copyright © 2020 hibaysoft. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface KG_SelEquipClassView : UIView
+
+@property (nonatomic ,copy) void(^didsel)(NSString *str);
+
+@end
+
+NS_ASSUME_NONNULL_END

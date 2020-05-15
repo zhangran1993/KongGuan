@@ -21,6 +21,7 @@ PODS:
   - JPush (3.2.8):
     - JCore (< 3.0.0, >= 2.0.0)
   - JSONKit (1.4)
+  - JSONModel (1.8.0)
   - Masonry (1.0.2)
   - MBProgressHUD (1.2.0)
   - MJExtension (3.1.0)
@@ -44,6 +45,7 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - JPush (>= 3.0.6)
   - JSONKit (~> 1.4)
+  - JSONModel
   - Masonry (~> 1.0.1)
   - MBProgressHUD
   - MJExtension
@@ -65,6 +67,7 @@ SPEC REPOS:
     - JCore
     - JPush
     - JSONKit
+    - JSONModel
     - Masonry
     - MBProgressHUD
     - MJExtension
@@ -86,6 +89,7 @@ SPEC CHECKSUMS:
   JCore: a7f1dead960d77a97717c73ea8b0aa5b33706491
   JPush: 8ce888d6dedfa417e90c8b6bc87405a16ce2e699
   JSONKit: 5b69e804ea54d99293eed0fd2ce596c5703fefb0
+  JSONModel: 02ab723958366a3fd27da57ea2af2113658762e9
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJExtension: 6b69b3bef2864fd550ce1a184eda219e321209d2
@@ -99,6 +103,6 @@ SPEC CHECKSUMS:
   SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: ce0bdada9378877743d58a11d077f5adb2ec53e0
+PODFILE CHECKSUM: aced232794406053d5e8b9747f086bd504181b53
 
 COCOAPODS: 1.8.4

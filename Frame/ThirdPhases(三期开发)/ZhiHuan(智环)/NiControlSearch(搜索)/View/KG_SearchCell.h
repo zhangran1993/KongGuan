@@ -11,12 +11,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_SearchCell : UITableViewCell
+
+@property (nonatomic,strong) UIView *contentBgView;
 @property (nonatomic,strong)UILabel * timeLabel;
 @property (nonatomic,strong)UILabel * titleLabel;
 @property (nonatomic,strong)UILabel * detailLabel;
 @property (nonatomic,strong)UILabel * remarkLabel;
 
 @property (strong, nonatomic)UIImageView *selectImageView;
+
+@property (nonatomic,strong)UILabel * personLabel;
 @end
 
 NS_ASSUME_NONNULL_END

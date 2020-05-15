@@ -89,7 +89,7 @@
     NSLog(@"HEIGHT_SCREEN %f",HEIGHT_SCREEN);
     self.bgScrollView.frame = CGRectMake(0, NAVIGATIONBAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
     self.bgScrollView.delegate = self;
-    self.bgScrollView.backgroundColor = [UIColor clearColor];
+    self.bgScrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
     self.bgScrollView.scrollEnabled = YES;
     self.bgScrollView.contentSize = CGSizeMake(0, 600 + 183 +112 + 50 +100 +100);
@@ -340,7 +340,7 @@
         make.height.equalTo(@120);
         make.width.equalTo(@183);
     }];
-    [picImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebHost,roomInfo[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
+    [picImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,roomInfo[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
     
     
     
@@ -424,7 +424,8 @@
         return;
     }
     
-    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationSitInfo/%@",curr[@"code"]];
+//    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationSitInfo/%@",curr[@"code"]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationSitInfo/%@",curr[@"code"]]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -439,15 +440,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+       
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -572,7 +565,8 @@
 
 - (void)queryCategoryData {
     
-    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/atcDictionary?type_code=equipmentCategory"];
+//    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/atcDictionary?type_code=equipmentCategory"];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=equipmentCategory"]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -585,15 +579,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+       
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -730,7 +716,8 @@
         code = self.dataModel.mainEquipmentDetails[0][@"code"];
         isSystem = [self.dataModel.mainEquipmentDetails[0][@"isSystemEquipment"] intValue];
     }
-    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
+//    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -746,15 +733,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+       
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -768,7 +747,8 @@
         code = self.dataModel.mainEquipmentDetails[1][@"code"];
         isSystem = [self.dataModel.mainEquipmentDetails[1][@"isSystemEquipment"] intValue];
     }
-    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
+//    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -784,15 +764,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+      
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -939,7 +911,9 @@
 - (void)getNewData:(NSString *)code {
     
     
-    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationSitInfo/%@",code];
+//    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationSitInfo/%@",code];
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationSitInfo/%@",code]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -954,15 +928,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+      
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         

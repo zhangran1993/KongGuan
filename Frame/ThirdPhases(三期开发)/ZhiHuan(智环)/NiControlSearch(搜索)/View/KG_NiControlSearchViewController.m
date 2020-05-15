@@ -18,7 +18,8 @@
 
 @property (nonatomic, strong) NSArray *dataArray;
 
-      
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) UILabel *topTitleLabel;
 @end
 
 @implementation KG_NiControlSearchViewController
@@ -30,6 +31,18 @@
 
     [self createSearchUI];
     [self setupDataSubviews];
+    [self createNaviTopView];
+    
+}
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:NO];
     
 }
 
@@ -42,8 +55,8 @@
     [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT-64);
-        make.height.equalTo(@30);
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT-64 +Height_StatusBar);
+        make.height.equalTo(@44);
     }];
     
     UIButton *cancelBtn = [[UIButton alloc]init];
@@ -54,42 +67,55 @@
     [cancelBtn addTarget:self action:@selector(cancelMethod:) forControlEvents:UIControlEventTouchUpInside];
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(searchView.mas_right).offset(-16);
-        make.top.equalTo(searchView.mas_top);
-        make.height.equalTo(@30);
+        make.top.equalTo(searchView.mas_top).offset(8);
+        make.height.equalTo(@28);
         make.width.equalTo(@30);
     }];
     
+    UIView *searchBgView = [[UIView alloc]init];
+    [searchView addSubview:searchBgView];
+    searchBgView.backgroundColor = [UIColor whiteColor];
+    searchBgView.layer.cornerRadius = 5.f;
+    searchBgView.layer.masksToBounds = YES;
+    [searchBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(searchView.mas_left).offset(16);
+        make.top.equalTo(searchView.mas_top).offset(8);
+        make.height.equalTo(@28);
+        make.right.equalTo(cancelBtn.mas_left).offset(-11.5);
+    }];
+    
     UIImageView *iconImage = [[UIImageView alloc]init];
-    [searchView addSubview:iconImage];
+    [searchBgView addSubview:iconImage];
     iconImage.image = [UIImage imageNamed:@"seach_icon"];
     [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(searchView.mas_left).offset(6);
+        make.left.equalTo(searchBgView.mas_left).offset(6);
         make.width.height.equalTo(@18);
-        make.centerY.equalTo(searchView.mas_centerY);
+        make.centerY.equalTo(searchBgView.mas_centerY);
     }];
  
-    UITextField *textField = [[UITextField alloc]init];
-    [searchView addSubview:textField];
-    textField.text = @"";
-    textField.placeholder = @"";
-    textField.delegate = self;
-    textField.textColor = [UIColor colorWithHexString:@"#24252A"];
-    [textField mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.textField = [[UITextField alloc]init];
+    [searchBgView addSubview:self.textField];
+    self.textField.text = @"电阻";
+    self.textField.placeholder = @"请输入搜索内容";
+    self.textField.font = [UIFont systemFontOfSize:14];
+    self.textField.delegate = self;
+    self.textField.textColor = [UIColor colorWithHexString:@"#24252A"];
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(iconImage.mas_right).offset(9);
         make.height.equalTo(@30);
         make.right.equalTo(cancelBtn.mas_left).offset(-10);
-        make.top.equalTo(searchView.mas_top);
+        make.top.equalTo(searchBgView.mas_top);
     }];
     
-    UILabel *titleLabel = [[UILabel alloc]init];
+    self.topTitleLabel = [[UILabel alloc]init];
     
-    titleLabel.text = @"包含“空调”的内容";
+    self.topTitleLabel.text = @"包含“空调”的内容";
   
-    titleLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
-    titleLabel.font = [UIFont systemFontOfSize:12];
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    [searchView addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.topTitleLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
+    self.topTitleLabel.font = [UIFont systemFontOfSize:12];
+    self.topTitleLabel.textAlignment = NSTextAlignmentLeft;
+    [self.view addSubview:self.topTitleLabel];
+    [self.topTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left).offset(19);
         make.width.equalTo(@200);
         make.top.equalTo(searchView.mas_bottom).offset(13);
@@ -98,9 +124,12 @@
   
 }
 
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.textField resignFirstResponder];
+}
 
 - (void)cancelMethod:(UIButton *)button {
-    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 //创建视图
@@ -111,7 +140,7 @@
   
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.
-                         view.mas_top).offset(96+NAVIGATIONBAR_HEIGHT-64);
+                         topTitleLabel.mas_bottom).offset(10);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
@@ -143,13 +172,13 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
+    return 5;
     return  self.dataArray.count ;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 50;
+    return 87;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -160,36 +189,55 @@
         cell = [[KG_SearchCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_SearchCell"];
         
     }
-    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+//    NSDictionary *dataDic = self.dataArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
-    return 50.f;
-}
-
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
-    headView.backgroundColor = [UIColor whiteColor];
-    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
-    if(self.dataArray.count ){
-        titleLabel.text = safeString(self.dataArray[section][@"name"]);
-    }
-    
-    titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.font = [UIFont systemFontOfSize:14];
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    [headView addSubview:titleLabel];
-    return headView;
-}
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
 }
+
+//创建导航栏视图
+-  (void)createNaviTopView {
+    UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
+    [leftButon setImage:[UIImage imageNamed:@"back_gray"] forState:UIControlStateNormal];
+    [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
+    //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
+    [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
+    self.navigationItem.leftBarButtonItem = fixedButton;
+  
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.title = [NSString stringWithFormat:@"历史任务"];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
+    
+    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+    
+    self.navigationController.navigationBar.translucent = NO;
+    
+    //去掉透明后导航栏下边的黑边
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+}
+
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end

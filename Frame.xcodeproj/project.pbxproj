@@ -89,30 +89,6 @@
 		2581ED55244E8C7A002B1D9F /* KG_ZhiTaiBottomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED54244E8C7A002B1D9F /* KG_ZhiTaiBottomCell.m */; };
 		2581ED5A244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED59244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m */; };
 		2581ED5D24503324002B1D9F /* KG_ZhiTaiStationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED5C24503324002B1D9F /* KG_ZhiTaiStationModel.m */; };
-		2581ED6424504B6E002B1D9F /* KG_ZhiWeiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED6324504B6E002B1D9F /* KG_ZhiWeiViewController.m */; };
-		2581ED6724504B7E002B1D9F /* KG_ZhiWeiModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED6624504B7E002B1D9F /* KG_ZhiWeiModel.m */; };
-		2581ED6E24506124002B1D9F /* KG_YiJianXunShiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED6D24506124002B1D9F /* KG_YiJianXunShiViewController.m */; };
-		2582C88624511FBD0058D20D /* KG_TeShuBaoZhangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C88524511FBD0058D20D /* KG_TeShuBaoZhangViewController.m */; };
-		2582C88924511FDE0058D20D /* KG_LiXingWeiHuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C88824511FDE0058D20D /* KG_LiXingWeiHuViewController.m */; };
-		2582C88D245120690058D20D /* KG_TeShuBaoZhangModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C88C245120690058D20D /* KG_TeShuBaoZhangModel.m */; };
-		2582C890245120810058D20D /* KG_LiXingWeiHuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C88F245120810058D20D /* KG_LiXingWeiHuModel.m */; };
-		2582C893245120EC0058D20D /* KG_YiJianXunShiModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C892245120EC0058D20D /* KG_YiJianXunShiModel.m */; };
-		2582C896245122340058D20D /* KG_YiJianXunShiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C895245122340058D20D /* KG_YiJianXunShiCell.m */; };
-		2582C899245165E30058D20D /* KG_ZhiWeiNaviTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C898245165E30058D20D /* KG_ZhiWeiNaviTopView.m */; };
-		2582C89E245271260058D20D /* KG_XunShiReportDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C89D245271260058D20D /* KG_XunShiReportDetailViewController.m */; };
-		2582C8A32452714C0058D20D /* KG_XunShiReportDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8A22452714C0058D20D /* KG_XunShiReportDetailModel.m */; };
-		2582C8A92452E31B0058D20D /* FlipTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8A52452E31B0058D20D /* FlipTableView.m */; };
-		2582C8AA2452E31B0058D20D /* SegmentTapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8A72452E31B0058D20D /* SegmentTapView.m */; };
-		2582C8AD245518380058D20D /* KG_LiXingWeiHuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8AC245518380058D20D /* KG_LiXingWeiHuCell.m */; };
-		2582C8B0245557910058D20D /* KG_TeShuBaoZhangCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8AF245557910058D20D /* KG_TeShuBaoZhangCell.m */; };
-		2582C8B324555F0F0058D20D /* KG_XunShiTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8B224555F0F0058D20D /* KG_XunShiTopView.m */; };
-		2582C8B6245560BE0058D20D /* KG_XunShiTopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8B5245560BE0058D20D /* KG_XunShiTopCell.m */; };
-		2582C8BA24556DBF0058D20D /* KG_XunShiRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8B924556DBF0058D20D /* KG_XunShiRadarView.m */; };
-		2582C8BD24558B260058D20D /* KG_RadarEnvCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8BC24558B260058D20D /* KG_RadarEnvCell.m */; };
-		2582C8C0245594EC0058D20D /* KG_RadarEquipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8BF245594EC0058D20D /* KG_RadarEquipCell.m */; };
-		2582C8C42456737D0058D20D /* KG_XunShiResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8C32456737D0058D20D /* KG_XunShiResultView.m */; };
-		2582C8C8245677D10058D20D /* KG_XunShiLogView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8C7245677D10058D20D /* KG_XunShiLogView.m */; };
-		2582C8CB245677FB0058D20D /* KG_XunShiSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C8CA245677FB0058D20D /* KG_XunShiSegmentView.m */; };
 		2584D60C2444037E0059A949 /* KG_MachineStationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2584D60B2444037E0059A949 /* KG_MachineStationModel.m */; };
 		2584D61024440C110059A949 /* KG_DetailRightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2584D60F24440C110059A949 /* KG_DetailRightModel.m */; };
 		2584D6142445874D0059A949 /* KG_MachineDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2584D6132445874D0059A949 /* KG_MachineDetailModel.m */; };
@@ -137,7 +113,82 @@
 		258CDE2D24285D1500B870D6 /* FrameScrollList.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CDE2C24285D1500B870D6 /* FrameScrollList.m */; };
 		258CDE3524285D7800B870D6 /* FrameScrollListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CDE3324285D7800B870D6 /* FrameScrollListCell.m */; };
 		258CDE3624285D7800B870D6 /* FrameScrollListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 258CDE3424285D7800B870D6 /* FrameScrollListCell.xib */; };
+		258D2915246A6C9A004E8B5A /* KG_HistoryTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2883246A6C9A004E8B5A /* KG_HistoryTaskViewController.m */; };
+		258D2916246A6C9A004E8B5A /* KG_HistoryTaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2888246A6C9A004E8B5A /* KG_HistoryTaskCell.m */; };
+		258D2917246A6C9A004E8B5A /* KG_XunJianReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D288A246A6C9A004E8B5A /* KG_XunJianReportCell.m */; };
+		258D2918246A6C9A004E8B5A /* KG_XunJianReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D288D246A6C9A004E8B5A /* KG_XunJianReportViewController.m */; };
+		258D2919246A6C9A004E8B5A /* CXDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D288F246A6C9A004E8B5A /* CXDatePickerView.m */; };
+		258D291A246A6C9A004E8B5A /* timeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2890246A6C9A004E8B5A /* timeViewController.m */; };
+		258D291B246A6C9A004E8B5A /* NSDate+CXCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2894246A6C9A004E8B5A /* NSDate+CXCategory.m */; };
+		258D291C246A6C9A004E8B5A /* KG_XunJianWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D289A246A6C9A004E8B5A /* KG_XunJianWeekView.m */; };
+		258D291D246A6C9A004E8B5A /* KG_XunJianWeekCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D289B246A6C9A004E8B5A /* KG_XunJianWeekCell.m */; };
+		258D291E246A6C9A004E8B5A /* KG_CommonSelContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D289D246A6C9A004E8B5A /* KG_CommonSelContentView.m */; };
+		258D291F246A6C9A004E8B5A /* KG_ComminSelContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D289F246A6C9A004E8B5A /* KG_ComminSelContentCell.m */; };
+		258D2920246A6C9A004E8B5A /* KG_XunJianTaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28A4246A6C9A004E8B5A /* KG_XunJianTaskView.m */; };
+		258D2921246A6C9A004E8B5A /* KG_XunJianTaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28A5246A6C9A004E8B5A /* KG_XunJianTaskCell.m */; };
+		258D2922246A6C9A004E8B5A /* KG_CommonSelEquipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28A7246A6C9A004E8B5A /* KG_CommonSelEquipView.m */; };
+		258D2923246A6C9A004E8B5A /* KG_CommonSelEquipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28A8246A6C9A004E8B5A /* KG_CommonSelEquipCell.m */; };
+		258D2924246A6C9A004E8B5A /* KG_SelEquipClassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28AC246A6C9A004E8B5A /* KG_SelEquipClassView.m */; };
+		258D2925246A6C9A004E8B5A /* KG_SelEquipClassCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28AD246A6C9A004E8B5A /* KG_SelEquipClassCell.m */; };
+		258D2926246A6C9A004E8B5A /* KG_ZhiWeiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28B1246A6C9A004E8B5A /* KG_ZhiWeiViewController.m */; };
+		258D2927246A6C9A004E8B5A /* KG_LiXingWeiHuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28B6246A6C9A004E8B5A /* KG_LiXingWeiHuViewController.m */; };
+		258D2928246A6C9A004E8B5A /* KG_LiXingWeiHuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28B9246A6C9A004E8B5A /* KG_LiXingWeiHuModel.m */; };
+		258D2929246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28BC246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m */; };
+		258D292A246A6C9A004E8B5A /* KG_YiJianXunShiModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28C0246A6C9A004E8B5A /* KG_YiJianXunShiModel.m */; };
+		258D292B246A6C9A004E8B5A /* KG_YiJianXunShiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28C4246A6C9A004E8B5A /* KG_YiJianXunShiCell.m */; };
+		258D292C246A6C9A004E8B5A /* KG_YiJianXunShiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28C5246A6C9A004E8B5A /* KG_YiJianXunShiViewController.m */; };
+		258D292D246A6C9A004E8B5A /* KG_TeShuBaoZhangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28C8246A6C9A004E8B5A /* KG_TeShuBaoZhangViewController.m */; };
+		258D292E246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28CC246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.m */; };
+		258D292F246A6C9A004E8B5A /* KG_TeShuBaoZhangCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28CF246A6C9A004E8B5A /* KG_TeShuBaoZhangCell.m */; };
+		258D2930246A6C9A004E8B5A /* KG_XunShiBottomTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28D3246A6C9A004E8B5A /* KG_XunShiBottomTextView.m */; };
+		258D2931246A6C9A004E8B5A /* KG_XunShiRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28D7246A6C9A004E8B5A /* KG_XunShiRadarView.m */; };
+		258D2932246A6C9A004E8B5A /* KG_RadarEquipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28DA246A6C9A004E8B5A /* KG_RadarEquipCell.m */; };
+		258D2933246A6C9A004E8B5A /* KG_RadarEnvCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28DB246A6C9A004E8B5A /* KG_RadarEnvCell.m */; };
+		258D2934246A6C9A004E8B5A /* KG_XunShiReportDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28DC246A6C9A004E8B5A /* KG_XunShiReportDetailViewController.m */; };
+		258D2935246A6C9A004E8B5A /* KG_XunShiHandleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28DE246A6C9A004E8B5A /* KG_XunShiHandleCell.m */; };
+		258D2936246A6C9A004E8B5A /* KG_XunShiHandleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28DF246A6C9A004E8B5A /* KG_XunShiHandleView.m */; };
+		258D2937246A6C9A004E8B5A /* KG_XunShiReportDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28E3246A6C9A004E8B5A /* KG_XunShiReportDetailModel.m */; };
+		258D2938246A6C9A004E8B5A /* KG_XunShiTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28E6246A6C9A004E8B5A /* KG_XunShiTopView.m */; };
+		258D2939246A6C9A004E8B5A /* KG_XunShiTopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28E7246A6C9A004E8B5A /* KG_XunShiTopCell.m */; };
+		258D293A246A6C9A004E8B5A /* KG_XunShiResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28EC246A6C9A004E8B5A /* KG_XunShiResultView.m */; };
+		258D293B246A6C9A004E8B5A /* KG_XunShiLogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28F0246A6C9A004E8B5A /* KG_XunShiLogCell.m */; };
+		258D293C246A6C9A004E8B5A /* KG_XunShiLogView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28F1246A6C9A004E8B5A /* KG_XunShiLogView.m */; };
+		258D293D246A6C9A004E8B5A /* KG_XunShiSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28F2246A6C9A004E8B5A /* KG_XunShiSegmentView.m */; };
+		258D293E246A6C9A004E8B5A /* KG_NewContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28FA246A6C9A004E8B5A /* KG_NewContentModel.m */; };
+		258D293F246A6C9A004E8B5A /* KG_NewContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28FC246A6C9A004E8B5A /* KG_NewContentCell.m */; };
+		258D2940246A6C9A004E8B5A /* KG_NewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28FD246A6C9A004E8B5A /* KG_NewContentViewController.m */; };
+		258D2941246A6C9A004E8B5A /* KG_NewContentTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D28FE246A6C9A004E8B5A /* KG_NewContentTextCell.m */; };
+		258D2942246A6C9A004E8B5A /* KG_OperationGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2900246A6C9A004E8B5A /* KG_OperationGuideViewController.m */; };
+		258D2943246A6C9A004E8B5A /* KG_XunShiRoomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2904246A6C9A004E8B5A /* KG_XunShiRoomCell.m */; };
+		258D2944246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2905246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m */; };
+		258D2945246A6C9A004E8B5A /* KG_ZhiWeiModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2908246A6C9A004E8B5A /* KG_ZhiWeiModel.m */; };
+		258D2946246A6C9A004E8B5A /* KG_ZhiWeiNaviTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D290B246A6C9A004E8B5A /* KG_ZhiWeiNaviTopView.m */; };
+		258D2947246A6C9A004E8B5A /* SegmentTapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2910246A6C9A004E8B5A /* SegmentTapView.m */; };
+		258D2948246A6C9A004E8B5A /* FlipTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2911246A6C9A004E8B5A /* FlipTableView.m */; };
+		258D2949246A6C9A004E8B5A /* KG_ContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2914246A6C9A004E8B5A /* KG_ContactViewController.m */; };
+		258D294C246B7A3F004E8B5A /* KG_XunShiReportDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D294B246B7A3F004E8B5A /* KG_XunShiReportDetailCell.m */; };
+		258D294F246BCBEF004E8B5A /* KG_XunShiResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D294E246BCBEF004E8B5A /* KG_XunShiResultCell.m */; };
+		258D2952246BD4B7004E8B5A /* KG_XunShiDetailLogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2951246BD4B7004E8B5A /* KG_XunShiDetailLogCell.m */; };
+		258D295C246BF9DA004E8B5A /* RS_ConditionSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2957246BF9DA004E8B5A /* RS_ConditionSearchModel.m */; };
+		258D295D246BF9DA004E8B5A /* RS_ConditionSearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2958246BF9DA004E8B5A /* RS_ConditionSearchCell.m */; };
+		258D295E246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2959246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m */; };
+		258D295F246BF9DA004E8B5A /* RS_ConditionSearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D295B246BF9DA004E8B5A /* RS_ConditionSearchView.m */; };
+		258D2962246BFB44004E8B5A /* RS_JSONModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2960246BFB43004E8B5A /* RS_JSONModel.m */; };
+		258D2965246BFE45004E8B5A /* NSString+RSMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2964246BFE45004E8B5A /* NSString+RSMethod.m */; };
+		258D296C246BFF0B004E8B5A /* RS_VillageURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2968246BFF0A004E8B5A /* RS_VillageURL.m */; };
+		258D296D246BFF0B004E8B5A /* RS_EnableDraggingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2969246BFF0B004E8B5A /* RS_EnableDraggingButton.m */; };
+		258D296E246BFF0B004E8B5A /* RS_BottomButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D296A246BFF0B004E8B5A /* RS_BottomButtonView.m */; };
+		258D2971246C0411004E8B5A /* RS_CollectionAlignmentFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D296F246C0410004E8B5A /* RS_CollectionAlignmentFlowLayout.m */; };
+		258D2974246C078B004E8B5A /* UIImage+RSMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 258D2972246C078B004E8B5A /* UIImage+RSMethod.m */; };
 		258E1E2523C7182200F4ED7E /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E1E2423C7182200F4ED7E /* UserManager.m */; };
+		258ED6F524629CFA00639B37 /* KG_CommonGaojingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258ED6F424629CFA00639B37 /* KG_CommonGaojingView.m */; };
+		258ED6F824629D1400639B37 /* KG_CommonGaoJingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258ED6F724629D1400639B37 /* KG_CommonGaoJingCell.m */; };
+		2593B5B6246D4C2100BBB964 /* KG_ZhiXiuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2593B5B5246D4C2100BBB964 /* KG_ZhiXiuViewController.m */; };
+		2593B5BA246D523500BBB964 /* KG_ZhiXiuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2593B5B9246D523500BBB964 /* KG_ZhiXiuCell.m */; };
+		25950A8C24596F3C00BCCA8B /* MBProgressHUD+XMG.m in Sources */ = {isa = PBXBuildFile; fileRef = 25950A8A24596F3C00BCCA8B /* MBProgressHUD+XMG.m */; };
+		25950A90245973B200BCCA8B /* KG_CommonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25950A8F245973B100BCCA8B /* KG_CommonDetailViewController.m */; };
+		25950A9324597AD500BCCA8B /* KG_CommonDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25950A9224597AD500BCCA8B /* KG_CommonDetailView.m */; };
+		25950A9624598C0F00BCCA8B /* KG_CommonDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25950A9524598C0F00BCCA8B /* KG_CommonDetailCell.m */; };
 		25B2F8D223D6A21E0001AF4A /* machine_dvor.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CC23D6A21E0001AF4A /* machine_dvor.png */; };
 		25B2F8D323D6A21E0001AF4A /* machine_rs.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CD23D6A21E0001AF4A /* machine_rs.png */; };
 		25B2F8D423D6A21E0001AF4A /* machine_kongkai.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8CE23D6A21E0001AF4A /* machine_kongkai.png */; };
@@ -525,54 +576,6 @@
 		2581ED59244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiTaiRightAlertView.m; sourceTree = "<group>"; };
 		2581ED5B24503324002B1D9F /* KG_ZhiTaiStationModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ZhiTaiStationModel.h; sourceTree = "<group>"; };
 		2581ED5C24503324002B1D9F /* KG_ZhiTaiStationModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiTaiStationModel.m; sourceTree = "<group>"; };
-		2581ED6224504B6E002B1D9F /* KG_ZhiWeiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ZhiWeiViewController.h; sourceTree = "<group>"; };
-		2581ED6324504B6E002B1D9F /* KG_ZhiWeiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiWeiViewController.m; sourceTree = "<group>"; };
-		2581ED6524504B7E002B1D9F /* KG_ZhiWeiModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ZhiWeiModel.h; sourceTree = "<group>"; };
-		2581ED6624504B7E002B1D9F /* KG_ZhiWeiModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiWeiModel.m; sourceTree = "<group>"; };
-		2581ED6C24506124002B1D9F /* KG_YiJianXunShiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_YiJianXunShiViewController.h; sourceTree = "<group>"; };
-		2581ED6D24506124002B1D9F /* KG_YiJianXunShiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_YiJianXunShiViewController.m; sourceTree = "<group>"; };
-		2582C88424511FBD0058D20D /* KG_TeShuBaoZhangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_TeShuBaoZhangViewController.h; sourceTree = "<group>"; };
-		2582C88524511FBD0058D20D /* KG_TeShuBaoZhangViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_TeShuBaoZhangViewController.m; sourceTree = "<group>"; };
-		2582C88724511FDE0058D20D /* KG_LiXingWeiHuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_LiXingWeiHuViewController.h; sourceTree = "<group>"; };
-		2582C88824511FDE0058D20D /* KG_LiXingWeiHuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_LiXingWeiHuViewController.m; sourceTree = "<group>"; };
-		2582C88B245120690058D20D /* KG_TeShuBaoZhangModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_TeShuBaoZhangModel.h; sourceTree = "<group>"; };
-		2582C88C245120690058D20D /* KG_TeShuBaoZhangModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_TeShuBaoZhangModel.m; sourceTree = "<group>"; };
-		2582C88E245120810058D20D /* KG_LiXingWeiHuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_LiXingWeiHuModel.h; sourceTree = "<group>"; };
-		2582C88F245120810058D20D /* KG_LiXingWeiHuModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_LiXingWeiHuModel.m; sourceTree = "<group>"; };
-		2582C891245120EC0058D20D /* KG_YiJianXunShiModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_YiJianXunShiModel.h; sourceTree = "<group>"; };
-		2582C892245120EC0058D20D /* KG_YiJianXunShiModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_YiJianXunShiModel.m; sourceTree = "<group>"; };
-		2582C894245122340058D20D /* KG_YiJianXunShiCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_YiJianXunShiCell.h; sourceTree = "<group>"; };
-		2582C895245122340058D20D /* KG_YiJianXunShiCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_YiJianXunShiCell.m; sourceTree = "<group>"; };
-		2582C897245165E30058D20D /* KG_ZhiWeiNaviTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_ZhiWeiNaviTopView.h; sourceTree = "<group>"; };
-		2582C898245165E30058D20D /* KG_ZhiWeiNaviTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiWeiNaviTopView.m; sourceTree = "<group>"; };
-		2582C89C245271260058D20D /* KG_XunShiReportDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiReportDetailViewController.h; sourceTree = "<group>"; };
-		2582C89D245271260058D20D /* KG_XunShiReportDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiReportDetailViewController.m; sourceTree = "<group>"; };
-		2582C8A12452714C0058D20D /* KG_XunShiReportDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiReportDetailModel.h; sourceTree = "<group>"; };
-		2582C8A22452714C0058D20D /* KG_XunShiReportDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiReportDetailModel.m; sourceTree = "<group>"; };
-		2582C8A52452E31B0058D20D /* FlipTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipTableView.m; sourceTree = "<group>"; };
-		2582C8A62452E31B0058D20D /* FlipTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlipTableView.h; sourceTree = "<group>"; };
-		2582C8A72452E31B0058D20D /* SegmentTapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentTapView.m; sourceTree = "<group>"; };
-		2582C8A82452E31B0058D20D /* SegmentTapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentTapView.h; sourceTree = "<group>"; };
-		2582C8AB245518380058D20D /* KG_LiXingWeiHuCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_LiXingWeiHuCell.h; sourceTree = "<group>"; };
-		2582C8AC245518380058D20D /* KG_LiXingWeiHuCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_LiXingWeiHuCell.m; sourceTree = "<group>"; };
-		2582C8AE245557910058D20D /* KG_TeShuBaoZhangCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_TeShuBaoZhangCell.h; sourceTree = "<group>"; };
-		2582C8AF245557910058D20D /* KG_TeShuBaoZhangCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_TeShuBaoZhangCell.m; sourceTree = "<group>"; };
-		2582C8B124555F0F0058D20D /* KG_XunShiTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiTopView.h; sourceTree = "<group>"; };
-		2582C8B224555F0F0058D20D /* KG_XunShiTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiTopView.m; sourceTree = "<group>"; };
-		2582C8B4245560BE0058D20D /* KG_XunShiTopCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiTopCell.h; sourceTree = "<group>"; };
-		2582C8B5245560BE0058D20D /* KG_XunShiTopCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiTopCell.m; sourceTree = "<group>"; };
-		2582C8B824556DBF0058D20D /* KG_XunShiRadarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiRadarView.h; sourceTree = "<group>"; };
-		2582C8B924556DBF0058D20D /* KG_XunShiRadarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiRadarView.m; sourceTree = "<group>"; };
-		2582C8BB24558B260058D20D /* KG_RadarEnvCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RadarEnvCell.h; sourceTree = "<group>"; };
-		2582C8BC24558B260058D20D /* KG_RadarEnvCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RadarEnvCell.m; sourceTree = "<group>"; };
-		2582C8BE245594EC0058D20D /* KG_RadarEquipCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RadarEquipCell.h; sourceTree = "<group>"; };
-		2582C8BF245594EC0058D20D /* KG_RadarEquipCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RadarEquipCell.m; sourceTree = "<group>"; };
-		2582C8C22456737D0058D20D /* KG_XunShiResultView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiResultView.h; sourceTree = "<group>"; };
-		2582C8C32456737D0058D20D /* KG_XunShiResultView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiResultView.m; sourceTree = "<group>"; };
-		2582C8C6245677D10058D20D /* KG_XunShiLogView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiLogView.h; sourceTree = "<group>"; };
-		2582C8C7245677D10058D20D /* KG_XunShiLogView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiLogView.m; sourceTree = "<group>"; };
-		2582C8C9245677FB0058D20D /* KG_XunShiSegmentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiSegmentView.h; sourceTree = "<group>"; };
-		2582C8CA245677FB0058D20D /* KG_XunShiSegmentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiSegmentView.m; sourceTree = "<group>"; };
 		2584D60A2444037E0059A949 /* KG_MachineStationModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_MachineStationModel.h; sourceTree = "<group>"; };
 		2584D60B2444037E0059A949 /* KG_MachineStationModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_MachineStationModel.m; sourceTree = "<group>"; };
 		2584D60E24440C110059A949 /* KG_DetailRightModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_DetailRightModel.h; sourceTree = "<group>"; };
@@ -619,9 +622,160 @@
 		258CDE3224285D7800B870D6 /* FrameScrollListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameScrollListCell.h; sourceTree = "<group>"; };
 		258CDE3324285D7800B870D6 /* FrameScrollListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FrameScrollListCell.m; sourceTree = "<group>"; };
 		258CDE3424285D7800B870D6 /* FrameScrollListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FrameScrollListCell.xib; sourceTree = "<group>"; };
+		258D2883246A6C9A004E8B5A /* KG_HistoryTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistoryTaskViewController.m; sourceTree = "<group>"; };
+		258D2884246A6C9A004E8B5A /* KG_HistoryTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistoryTaskViewController.h; sourceTree = "<group>"; };
+		258D2887246A6C9A004E8B5A /* KG_HistoryTaskCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistoryTaskCell.h; sourceTree = "<group>"; };
+		258D2888246A6C9A004E8B5A /* KG_HistoryTaskCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistoryTaskCell.m; sourceTree = "<group>"; };
+		258D288A246A6C9A004E8B5A /* KG_XunJianReportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunJianReportCell.m; sourceTree = "<group>"; };
+		258D288B246A6C9A004E8B5A /* KG_XunJianReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunJianReportViewController.h; sourceTree = "<group>"; };
+		258D288C246A6C9A004E8B5A /* KG_XunJianReportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunJianReportCell.h; sourceTree = "<group>"; };
+		258D288D246A6C9A004E8B5A /* KG_XunJianReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunJianReportViewController.m; sourceTree = "<group>"; };
+		258D288F246A6C9A004E8B5A /* CXDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXDatePickerView.m; sourceTree = "<group>"; };
+		258D2890246A6C9A004E8B5A /* timeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timeViewController.m; sourceTree = "<group>"; };
+		258D2891246A6C9A004E8B5A /* NSDate+CXCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+CXCategory.h"; sourceTree = "<group>"; };
+		258D2892246A6C9A004E8B5A /* timeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeViewController.h; sourceTree = "<group>"; };
+		258D2893246A6C9A004E8B5A /* CXDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXDatePickerView.h; sourceTree = "<group>"; };
+		258D2894246A6C9A004E8B5A /* NSDate+CXCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+CXCategory.m"; sourceTree = "<group>"; };
+		258D2895246A6C9A004E8B5A /* PickerViewParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerViewParameter.h; sourceTree = "<group>"; };
+		258D2898246A6C9A004E8B5A /* KG_XunJianWeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunJianWeekView.h; sourceTree = "<group>"; };
+		258D2899246A6C9A004E8B5A /* KG_XunJianWeekCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunJianWeekCell.h; sourceTree = "<group>"; };
+		258D289A246A6C9A004E8B5A /* KG_XunJianWeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunJianWeekView.m; sourceTree = "<group>"; };
+		258D289B246A6C9A004E8B5A /* KG_XunJianWeekCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunJianWeekCell.m; sourceTree = "<group>"; };
+		258D289D246A6C9A004E8B5A /* KG_CommonSelContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_CommonSelContentView.m; sourceTree = "<group>"; };
+		258D289E246A6C9A004E8B5A /* KG_ComminSelContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_ComminSelContentCell.h; sourceTree = "<group>"; };
+		258D289F246A6C9A004E8B5A /* KG_ComminSelContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_ComminSelContentCell.m; sourceTree = "<group>"; };
+		258D28A0246A6C9A004E8B5A /* KG_CommonSelContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_CommonSelContentView.h; sourceTree = "<group>"; };
+		258D28A2246A6C9A004E8B5A /* KG_XunJianTaskView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunJianTaskView.h; sourceTree = "<group>"; };
+		258D28A3246A6C9A004E8B5A /* KG_XunJianTaskCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunJianTaskCell.h; sourceTree = "<group>"; };
+		258D28A4246A6C9A004E8B5A /* KG_XunJianTaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunJianTaskView.m; sourceTree = "<group>"; };
+		258D28A5246A6C9A004E8B5A /* KG_XunJianTaskCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunJianTaskCell.m; sourceTree = "<group>"; };
+		258D28A7246A6C9A004E8B5A /* KG_CommonSelEquipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_CommonSelEquipView.m; sourceTree = "<group>"; };
+		258D28A8246A6C9A004E8B5A /* KG_CommonSelEquipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_CommonSelEquipCell.m; sourceTree = "<group>"; };
+		258D28A9246A6C9A004E8B5A /* KG_CommonSelEquipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_CommonSelEquipView.h; sourceTree = "<group>"; };
+		258D28AA246A6C9A004E8B5A /* KG_CommonSelEquipCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_CommonSelEquipCell.h; sourceTree = "<group>"; };
+		258D28AC246A6C9A004E8B5A /* KG_SelEquipClassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_SelEquipClassView.m; sourceTree = "<group>"; };
+		258D28AD246A6C9A004E8B5A /* KG_SelEquipClassCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_SelEquipClassCell.m; sourceTree = "<group>"; };
+		258D28AE246A6C9A004E8B5A /* KG_SelEquipClassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_SelEquipClassView.h; sourceTree = "<group>"; };
+		258D28AF246A6C9A004E8B5A /* KG_SelEquipClassCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_SelEquipClassCell.h; sourceTree = "<group>"; };
+		258D28B1246A6C9A004E8B5A /* KG_ZhiWeiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiWeiViewController.m; sourceTree = "<group>"; };
+		258D28B5246A6C9A004E8B5A /* KG_LiXingWeiHuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_LiXingWeiHuViewController.h; sourceTree = "<group>"; };
+		258D28B6246A6C9A004E8B5A /* KG_LiXingWeiHuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_LiXingWeiHuViewController.m; sourceTree = "<group>"; };
+		258D28B8246A6C9A004E8B5A /* KG_LiXingWeiHuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_LiXingWeiHuModel.h; sourceTree = "<group>"; };
+		258D28B9246A6C9A004E8B5A /* KG_LiXingWeiHuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_LiXingWeiHuModel.m; sourceTree = "<group>"; };
+		258D28BB246A6C9A004E8B5A /* KG_LiXingWeiHuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_LiXingWeiHuCell.h; sourceTree = "<group>"; };
+		258D28BC246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_LiXingWeiHuCell.m; sourceTree = "<group>"; };
+		258D28BE246A6C9A004E8B5A /* KG_YiJianXunShiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_YiJianXunShiViewController.h; sourceTree = "<group>"; };
+		258D28C0246A6C9A004E8B5A /* KG_YiJianXunShiModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_YiJianXunShiModel.m; sourceTree = "<group>"; };
+		258D28C1246A6C9A004E8B5A /* KG_YiJianXunShiModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_YiJianXunShiModel.h; sourceTree = "<group>"; };
+		258D28C3246A6C9A004E8B5A /* KG_YiJianXunShiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_YiJianXunShiCell.h; sourceTree = "<group>"; };
+		258D28C4246A6C9A004E8B5A /* KG_YiJianXunShiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_YiJianXunShiCell.m; sourceTree = "<group>"; };
+		258D28C5246A6C9A004E8B5A /* KG_YiJianXunShiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_YiJianXunShiViewController.m; sourceTree = "<group>"; };
+		258D28C8246A6C9A004E8B5A /* KG_TeShuBaoZhangViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_TeShuBaoZhangViewController.m; sourceTree = "<group>"; };
+		258D28C9246A6C9A004E8B5A /* KG_TeShuBaoZhangViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_TeShuBaoZhangViewController.h; sourceTree = "<group>"; };
+		258D28CB246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_TeShuBaoZhangModel.h; sourceTree = "<group>"; };
+		258D28CC246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_TeShuBaoZhangModel.m; sourceTree = "<group>"; };
+		258D28CE246A6C9A004E8B5A /* KG_TeShuBaoZhangCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_TeShuBaoZhangCell.h; sourceTree = "<group>"; };
+		258D28CF246A6C9A004E8B5A /* KG_TeShuBaoZhangCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_TeShuBaoZhangCell.m; sourceTree = "<group>"; };
+		258D28D0246A6C9A004E8B5A /* KG_ZhiWeiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_ZhiWeiViewController.h; sourceTree = "<group>"; };
+		258D28D3246A6C9A004E8B5A /* KG_XunShiBottomTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiBottomTextView.m; sourceTree = "<group>"; };
+		258D28D4246A6C9A004E8B5A /* KG_XunShiBottomTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiBottomTextView.h; sourceTree = "<group>"; };
+		258D28D6246A6C9A004E8B5A /* KG_RadarEquipCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_RadarEquipCell.h; sourceTree = "<group>"; };
+		258D28D7246A6C9A004E8B5A /* KG_XunShiRadarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiRadarView.m; sourceTree = "<group>"; };
+		258D28D8246A6C9A004E8B5A /* KG_RadarEnvCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_RadarEnvCell.h; sourceTree = "<group>"; };
+		258D28D9246A6C9A004E8B5A /* KG_XunShiRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiRadarView.h; sourceTree = "<group>"; };
+		258D28DA246A6C9A004E8B5A /* KG_RadarEquipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_RadarEquipCell.m; sourceTree = "<group>"; };
+		258D28DB246A6C9A004E8B5A /* KG_RadarEnvCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_RadarEnvCell.m; sourceTree = "<group>"; };
+		258D28DC246A6C9A004E8B5A /* KG_XunShiReportDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiReportDetailViewController.m; sourceTree = "<group>"; };
+		258D28DE246A6C9A004E8B5A /* KG_XunShiHandleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiHandleCell.m; sourceTree = "<group>"; };
+		258D28DF246A6C9A004E8B5A /* KG_XunShiHandleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiHandleView.m; sourceTree = "<group>"; };
+		258D28E0246A6C9A004E8B5A /* KG_XunShiHandleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiHandleCell.h; sourceTree = "<group>"; };
+		258D28E1246A6C9A004E8B5A /* KG_XunShiHandleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiHandleView.h; sourceTree = "<group>"; };
+		258D28E3246A6C9A004E8B5A /* KG_XunShiReportDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiReportDetailModel.m; sourceTree = "<group>"; };
+		258D28E4246A6C9A004E8B5A /* KG_XunShiReportDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiReportDetailModel.h; sourceTree = "<group>"; };
+		258D28E6246A6C9A004E8B5A /* KG_XunShiTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiTopView.m; sourceTree = "<group>"; };
+		258D28E7246A6C9A004E8B5A /* KG_XunShiTopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiTopCell.m; sourceTree = "<group>"; };
+		258D28E8246A6C9A004E8B5A /* KG_XunShiTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiTopView.h; sourceTree = "<group>"; };
+		258D28E9246A6C9A004E8B5A /* KG_XunShiTopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiTopCell.h; sourceTree = "<group>"; };
+		258D28EB246A6C9A004E8B5A /* KG_XunShiResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiResultView.h; sourceTree = "<group>"; };
+		258D28EC246A6C9A004E8B5A /* KG_XunShiResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiResultView.m; sourceTree = "<group>"; };
+		258D28ED246A6C9A004E8B5A /* KG_XunShiReportDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiReportDetailViewController.h; sourceTree = "<group>"; };
+		258D28EF246A6C9A004E8B5A /* KG_XunShiSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiSegmentView.h; sourceTree = "<group>"; };
+		258D28F0246A6C9A004E8B5A /* KG_XunShiLogCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiLogCell.m; sourceTree = "<group>"; };
+		258D28F1246A6C9A004E8B5A /* KG_XunShiLogView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiLogView.m; sourceTree = "<group>"; };
+		258D28F2246A6C9A004E8B5A /* KG_XunShiSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiSegmentView.m; sourceTree = "<group>"; };
+		258D28F3246A6C9A004E8B5A /* KG_XunShiLogCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiLogCell.h; sourceTree = "<group>"; };
+		258D28F4246A6C9A004E8B5A /* KG_XunShiLogView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiLogView.h; sourceTree = "<group>"; };
+		258D28F6246A6C9A004E8B5A /* KG_NewContentTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_NewContentTextCell.h; sourceTree = "<group>"; };
+		258D28F7246A6C9A004E8B5A /* KG_NewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_NewContentViewController.h; sourceTree = "<group>"; };
+		258D28F8246A6C9A004E8B5A /* KG_NewContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_NewContentCell.h; sourceTree = "<group>"; };
+		258D28FA246A6C9A004E8B5A /* KG_NewContentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_NewContentModel.m; sourceTree = "<group>"; };
+		258D28FB246A6C9A004E8B5A /* KG_NewContentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_NewContentModel.h; sourceTree = "<group>"; };
+		258D28FC246A6C9A004E8B5A /* KG_NewContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_NewContentCell.m; sourceTree = "<group>"; };
+		258D28FD246A6C9A004E8B5A /* KG_NewContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_NewContentViewController.m; sourceTree = "<group>"; };
+		258D28FE246A6C9A004E8B5A /* KG_NewContentTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_NewContentTextCell.m; sourceTree = "<group>"; };
+		258D2900246A6C9A004E8B5A /* KG_OperationGuideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_OperationGuideViewController.m; sourceTree = "<group>"; };
+		258D2901246A6C9A004E8B5A /* KG_OperationGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_OperationGuideViewController.h; sourceTree = "<group>"; };
+		258D2903246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_CreateXunShiContentViewController.h; sourceTree = "<group>"; };
+		258D2904246A6C9A004E8B5A /* KG_XunShiRoomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiRoomCell.m; sourceTree = "<group>"; };
+		258D2905246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_CreateXunShiContentViewController.m; sourceTree = "<group>"; };
+		258D2906246A6C9A004E8B5A /* KG_XunShiRoomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_XunShiRoomCell.h; sourceTree = "<group>"; };
+		258D2908246A6C9A004E8B5A /* KG_ZhiWeiModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiWeiModel.m; sourceTree = "<group>"; };
+		258D2909246A6C9A004E8B5A /* KG_ZhiWeiModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_ZhiWeiModel.h; sourceTree = "<group>"; };
+		258D290B246A6C9A004E8B5A /* KG_ZhiWeiNaviTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiWeiNaviTopView.m; sourceTree = "<group>"; };
+		258D290C246A6C9A004E8B5A /* KG_ZhiWeiNaviTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_ZhiWeiNaviTopView.h; sourceTree = "<group>"; };
+		258D290E246A6C9A004E8B5A /* FlipTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlipTableView.h; sourceTree = "<group>"; };
+		258D290F246A6C9A004E8B5A /* SegmentTapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentTapView.h; sourceTree = "<group>"; };
+		258D2910246A6C9A004E8B5A /* SegmentTapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentTapView.m; sourceTree = "<group>"; };
+		258D2911246A6C9A004E8B5A /* FlipTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlipTableView.m; sourceTree = "<group>"; };
+		258D2913246A6C9A004E8B5A /* KG_ContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_ContactViewController.h; sourceTree = "<group>"; };
+		258D2914246A6C9A004E8B5A /* KG_ContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_ContactViewController.m; sourceTree = "<group>"; };
+		258D294A246B7A3E004E8B5A /* KG_XunShiReportDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiReportDetailCell.h; sourceTree = "<group>"; };
+		258D294B246B7A3F004E8B5A /* KG_XunShiReportDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiReportDetailCell.m; sourceTree = "<group>"; };
+		258D294D246BCBEF004E8B5A /* KG_XunShiResultCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiResultCell.h; sourceTree = "<group>"; };
+		258D294E246BCBEF004E8B5A /* KG_XunShiResultCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiResultCell.m; sourceTree = "<group>"; };
+		258D2950246BD4B7004E8B5A /* KG_XunShiDetailLogCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiDetailLogCell.h; sourceTree = "<group>"; };
+		258D2951246BD4B7004E8B5A /* KG_XunShiDetailLogCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiDetailLogCell.m; sourceTree = "<group>"; };
+		258D2954246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_ConditionSearchTableViewCell.h; sourceTree = "<group>"; };
+		258D2955246BF9DA004E8B5A /* RS_ConditionSearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_ConditionSearchCell.h; sourceTree = "<group>"; };
+		258D2956246BF9DA004E8B5A /* RS_ConditionSearchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_ConditionSearchView.h; sourceTree = "<group>"; };
+		258D2957246BF9DA004E8B5A /* RS_ConditionSearchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_ConditionSearchModel.m; sourceTree = "<group>"; };
+		258D2958246BF9DA004E8B5A /* RS_ConditionSearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_ConditionSearchCell.m; sourceTree = "<group>"; };
+		258D2959246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_ConditionSearchTableViewCell.m; sourceTree = "<group>"; };
+		258D295A246BF9DA004E8B5A /* RS_ConditionSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_ConditionSearchModel.h; sourceTree = "<group>"; };
+		258D295B246BF9DA004E8B5A /* RS_ConditionSearchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_ConditionSearchView.m; sourceTree = "<group>"; };
+		258D2960246BFB43004E8B5A /* RS_JSONModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_JSONModel.m; sourceTree = "<group>"; };
+		258D2961246BFB44004E8B5A /* RS_JSONModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_JSONModel.h; sourceTree = "<group>"; };
+		258D2963246BFE45004E8B5A /* NSString+RSMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+RSMethod.h"; sourceTree = "<group>"; };
+		258D2964246BFE45004E8B5A /* NSString+RSMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+RSMethod.m"; sourceTree = "<group>"; };
+		258D2966246BFF0A004E8B5A /* RS_VillageURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_VillageURL.h; sourceTree = "<group>"; };
+		258D2967246BFF0A004E8B5A /* RS_EnableDraggingButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_EnableDraggingButton.h; sourceTree = "<group>"; };
+		258D2968246BFF0A004E8B5A /* RS_VillageURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_VillageURL.m; sourceTree = "<group>"; };
+		258D2969246BFF0B004E8B5A /* RS_EnableDraggingButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_EnableDraggingButton.m; sourceTree = "<group>"; };
+		258D296A246BFF0B004E8B5A /* RS_BottomButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_BottomButtonView.m; sourceTree = "<group>"; };
+		258D296B246BFF0B004E8B5A /* RS_BottomButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_BottomButtonView.h; sourceTree = "<group>"; };
+		258D296F246C0410004E8B5A /* RS_CollectionAlignmentFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RS_CollectionAlignmentFlowLayout.m; sourceTree = "<group>"; };
+		258D2970246C0411004E8B5A /* RS_CollectionAlignmentFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RS_CollectionAlignmentFlowLayout.h; sourceTree = "<group>"; };
+		258D2972246C078B004E8B5A /* UIImage+RSMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RSMethod.m"; sourceTree = "<group>"; };
+		258D2973246C078B004E8B5A /* UIImage+RSMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RSMethod.h"; sourceTree = "<group>"; };
 		258E1E2323C7182200F4ED7E /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
 		258E1E2423C7182200F4ED7E /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		258E1E2623C7185D00F4ED7E /* Single.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Single.h; sourceTree = "<group>"; };
+		258ED6F324629CFA00639B37 /* KG_CommonGaojingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CommonGaojingView.h; sourceTree = "<group>"; };
+		258ED6F424629CFA00639B37 /* KG_CommonGaojingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonGaojingView.m; sourceTree = "<group>"; };
+		258ED6F624629D1400639B37 /* KG_CommonGaoJingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CommonGaoJingCell.h; sourceTree = "<group>"; };
+		258ED6F724629D1400639B37 /* KG_CommonGaoJingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonGaoJingCell.m; sourceTree = "<group>"; };
+		2593B5B4246D4C2100BBB964 /* KG_ZhiXiuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ZhiXiuViewController.h; sourceTree = "<group>"; };
+		2593B5B5246D4C2100BBB964 /* KG_ZhiXiuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiXiuViewController.m; sourceTree = "<group>"; };
+		2593B5B8246D523500BBB964 /* KG_ZhiXiuCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ZhiXiuCell.h; sourceTree = "<group>"; };
+		2593B5B9246D523500BBB964 /* KG_ZhiXiuCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiXiuCell.m; sourceTree = "<group>"; };
+		25950A8A24596F3C00BCCA8B /* MBProgressHUD+XMG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+XMG.m"; sourceTree = "<group>"; };
+		25950A8B24596F3C00BCCA8B /* MBProgressHUD+XMG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+XMG.h"; sourceTree = "<group>"; };
+		25950A8E245973B100BCCA8B /* KG_CommonDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CommonDetailViewController.h; sourceTree = "<group>"; };
+		25950A8F245973B100BCCA8B /* KG_CommonDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonDetailViewController.m; sourceTree = "<group>"; };
+		25950A9124597AD500BCCA8B /* KG_CommonDetailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CommonDetailView.h; sourceTree = "<group>"; };
+		25950A9224597AD500BCCA8B /* KG_CommonDetailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonDetailView.m; sourceTree = "<group>"; };
+		25950A9424598C0F00BCCA8B /* KG_CommonDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CommonDetailCell.h; sourceTree = "<group>"; };
+		25950A9524598C0F00BCCA8B /* KG_CommonDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonDetailCell.m; sourceTree = "<group>"; };
 		25B2F8CC23D6A21E0001AF4A /* machine_dvor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_dvor.png; sourceTree = "<group>"; };
 		25B2F8CD23D6A21E0001AF4A /* machine_rs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_rs.png; sourceTree = "<group>"; };
 		25B2F8CE23D6A21E0001AF4A /* machine_kongkai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = machine_kongkai.png; sourceTree = "<group>"; };
@@ -1325,6 +1479,7 @@
 		250B885D23C5785D00C79136 /* BaseVC */ = {
 			isa = PBXGroup;
 			children = (
+				25950A8924596F3C00BCCA8B /* MBProgressHUD */,
 				25D1F05324249072007E5870 /* JSHHTTPSessionManager.h */,
 				25D1F05424249072007E5870 /* JSHHTTPSessionManager.m */,
 				25D1F05524249072007E5870 /* WYLHTTPSessionManager.h */,
@@ -1399,222 +1554,11 @@
 		2581ED5E24504B39002B1D9F /* ZhiWei智维 */ = {
 			isa = PBXGroup;
 			children = (
-				2582C8A42452E2720058D20D /* SegmentTap */,
-				2582C89B245269CC0058D20D /* 巡视报告详情 */,
-				2581ED6124504B5A002B1D9F /* Controller */,
-				2581ED6024504B54002B1D9F /* View */,
-				2581ED5F24504B50002B1D9F /* Model */,
+				258D287E246A6C99004E8B5A /* 例行维护 */,
+				258D287F246A6C9A004E8B5A /* 特殊保障 */,
+				258D2880246A6C9A004E8B5A /* 一键巡视 */,
 			);
 			path = "ZhiWei智维";
-			sourceTree = "<group>";
-		};
-		2581ED5F24504B50002B1D9F /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2581ED6524504B7E002B1D9F /* KG_ZhiWeiModel.h */,
-				2581ED6624504B7E002B1D9F /* KG_ZhiWeiModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		2581ED6024504B54002B1D9F /* View */ = {
-			isa = PBXGroup;
-			children = (
-				2582C897245165E30058D20D /* KG_ZhiWeiNaviTopView.h */,
-				2582C898245165E30058D20D /* KG_ZhiWeiNaviTopView.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2581ED6124504B5A002B1D9F /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				2581ED6224504B6E002B1D9F /* KG_ZhiWeiViewController.h */,
-				2581ED6324504B6E002B1D9F /* KG_ZhiWeiViewController.m */,
-				2581ED6B24506104002B1D9F /* 子类视图 */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		2581ED6B24506104002B1D9F /* 子类视图 */ = {
-			isa = PBXGroup;
-			children = (
-				25CFDA7224511DAB002EEDC5 /* 特殊保障 */,
-				2581ED7024506144002B1D9F /* 例行维护 */,
-				2581ED6F24506137002B1D9F /* 一键巡视 */,
-			);
-			path = "子类视图";
-			sourceTree = "<group>";
-		};
-		2581ED6F24506137002B1D9F /* 一键巡视 */ = {
-			isa = PBXGroup;
-			children = (
-				2582C87D24511F820058D20D /* Model */,
-				2582C87C24511F7A0058D20D /* View */,
-				2581ED6C24506124002B1D9F /* KG_YiJianXunShiViewController.h */,
-				2581ED6D24506124002B1D9F /* KG_YiJianXunShiViewController.m */,
-			);
-			path = "一键巡视";
-			sourceTree = "<group>";
-		};
-		2581ED7024506144002B1D9F /* 例行维护 */ = {
-			isa = PBXGroup;
-			children = (
-				2582C88024511F930058D20D /* Controller */,
-				2582C87F24511F8E0058D20D /* View */,
-				2582C87E24511F870058D20D /* Model */,
-			);
-			path = "例行维护";
-			sourceTree = "<group>";
-		};
-		2582C87C24511F7A0058D20D /* View */ = {
-			isa = PBXGroup;
-			children = (
-				2582C894245122340058D20D /* KG_YiJianXunShiCell.h */,
-				2582C895245122340058D20D /* KG_YiJianXunShiCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2582C87D24511F820058D20D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2582C891245120EC0058D20D /* KG_YiJianXunShiModel.h */,
-				2582C892245120EC0058D20D /* KG_YiJianXunShiModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		2582C87E24511F870058D20D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2582C88E245120810058D20D /* KG_LiXingWeiHuModel.h */,
-				2582C88F245120810058D20D /* KG_LiXingWeiHuModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		2582C87F24511F8E0058D20D /* View */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8AB245518380058D20D /* KG_LiXingWeiHuCell.h */,
-				2582C8AC245518380058D20D /* KG_LiXingWeiHuCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2582C88024511F930058D20D /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				2582C88724511FDE0058D20D /* KG_LiXingWeiHuViewController.h */,
-				2582C88824511FDE0058D20D /* KG_LiXingWeiHuViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		2582C88124511F9A0058D20D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2582C88B245120690058D20D /* KG_TeShuBaoZhangModel.h */,
-				2582C88C245120690058D20D /* KG_TeShuBaoZhangModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		2582C88224511F9F0058D20D /* View */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8AE245557910058D20D /* KG_TeShuBaoZhangCell.h */,
-				2582C8AF245557910058D20D /* KG_TeShuBaoZhangCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2582C88324511FA40058D20D /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				2582C88424511FBD0058D20D /* KG_TeShuBaoZhangViewController.h */,
-				2582C88524511FBD0058D20D /* KG_TeShuBaoZhangViewController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		2582C89B245269CC0058D20D /* 巡视报告详情 */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8C5245677BD0058D20D /* 日志 */,
-				2582C8C1245672170058D20D /* 巡视结果 */,
-				2582C8B724556D570058D20D /* 巡视内容-雷达机房 */,
-				2582C8A0245271370058D20D /* View */,
-				2582C89F245271320058D20D /* Model */,
-				2582C89C245271260058D20D /* KG_XunShiReportDetailViewController.h */,
-				2582C89D245271260058D20D /* KG_XunShiReportDetailViewController.m */,
-			);
-			path = "巡视报告详情";
-			sourceTree = "<group>";
-		};
-		2582C89F245271320058D20D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8A12452714C0058D20D /* KG_XunShiReportDetailModel.h */,
-				2582C8A22452714C0058D20D /* KG_XunShiReportDetailModel.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		2582C8A0245271370058D20D /* View */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8B124555F0F0058D20D /* KG_XunShiTopView.h */,
-				2582C8B224555F0F0058D20D /* KG_XunShiTopView.m */,
-				2582C8B4245560BE0058D20D /* KG_XunShiTopCell.h */,
-				2582C8B5245560BE0058D20D /* KG_XunShiTopCell.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2582C8A42452E2720058D20D /* SegmentTap */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8A62452E31B0058D20D /* FlipTableView.h */,
-				2582C8A52452E31B0058D20D /* FlipTableView.m */,
-				2582C8A82452E31B0058D20D /* SegmentTapView.h */,
-				2582C8A72452E31B0058D20D /* SegmentTapView.m */,
-			);
-			path = SegmentTap;
-			sourceTree = "<group>";
-		};
-		2582C8B724556D570058D20D /* 巡视内容-雷达机房 */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8B824556DBF0058D20D /* KG_XunShiRadarView.h */,
-				2582C8B924556DBF0058D20D /* KG_XunShiRadarView.m */,
-				2582C8BB24558B260058D20D /* KG_RadarEnvCell.h */,
-				2582C8BC24558B260058D20D /* KG_RadarEnvCell.m */,
-				2582C8BE245594EC0058D20D /* KG_RadarEquipCell.h */,
-				2582C8BF245594EC0058D20D /* KG_RadarEquipCell.m */,
-			);
-			path = "巡视内容-雷达机房";
-			sourceTree = "<group>";
-		};
-		2582C8C1245672170058D20D /* 巡视结果 */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8C22456737D0058D20D /* KG_XunShiResultView.h */,
-				2582C8C32456737D0058D20D /* KG_XunShiResultView.m */,
-			);
-			path = "巡视结果";
-			sourceTree = "<group>";
-		};
-		2582C8C5245677BD0058D20D /* 日志 */ = {
-			isa = PBXGroup;
-			children = (
-				2582C8C6245677D10058D20D /* KG_XunShiLogView.h */,
-				2582C8C7245677D10058D20D /* KG_XunShiLogView.m */,
-				2582C8C9245677FB0058D20D /* KG_XunShiSegmentView.h */,
-				2582C8CA245677FB0058D20D /* KG_XunShiSegmentView.m */,
-			);
-			path = "日志";
 			sourceTree = "<group>";
 		};
 		2584D609244403600059A949 /* Model */ = {
@@ -1796,6 +1740,542 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		258D287E246A6C99004E8B5A /* 例行维护 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "例行维护";
+			sourceTree = "<group>";
+		};
+		258D287F246A6C9A004E8B5A /* 特殊保障 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "特殊保障";
+			sourceTree = "<group>";
+		};
+		258D2880246A6C9A004E8B5A /* 一键巡视 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2881246A6C9A004E8B5A /* 历史任务 */,
+				258D2889246A6C9A004E8B5A /* 巡检报告 */,
+				258D288E246A6C9A004E8B5A /* CXDatePickerView */,
+				258D2896246A6C9A004E8B5A /* 通用弹窗 */,
+				258D28B0246A6C9A004E8B5A /* Controller */,
+				258D28D1246A6C9A004E8B5A /* 巡视报告详情 */,
+				258D28F5246A6C9A004E8B5A /* 新建内容 */,
+				258D28FF246A6C9A004E8B5A /* 操作指引 */,
+				258D2902246A6C9A004E8B5A /* 新建巡视内容 */,
+				258D2907246A6C9A004E8B5A /* Model */,
+				258D290A246A6C9A004E8B5A /* View */,
+				258D290D246A6C9A004E8B5A /* SegmentTap */,
+				258D2912246A6C9A004E8B5A /* 联系人 */,
+			);
+			path = "一键巡视";
+			sourceTree = "<group>";
+		};
+		258D2881246A6C9A004E8B5A /* 历史任务 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2882246A6C9A004E8B5A /* Controller */,
+				258D2885246A6C9A004E8B5A /* Model */,
+				258D2886246A6C9A004E8B5A /* View */,
+			);
+			path = "历史任务";
+			sourceTree = "<group>";
+		};
+		258D2882246A6C9A004E8B5A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				258D2884246A6C9A004E8B5A /* KG_HistoryTaskViewController.h */,
+				258D2883246A6C9A004E8B5A /* KG_HistoryTaskViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		258D2885246A6C9A004E8B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		258D2886246A6C9A004E8B5A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				258D2887246A6C9A004E8B5A /* KG_HistoryTaskCell.h */,
+				258D2888246A6C9A004E8B5A /* KG_HistoryTaskCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		258D2889246A6C9A004E8B5A /* 巡检报告 */ = {
+			isa = PBXGroup;
+			children = (
+				258D288B246A6C9A004E8B5A /* KG_XunJianReportViewController.h */,
+				258D288D246A6C9A004E8B5A /* KG_XunJianReportViewController.m */,
+				258D288C246A6C9A004E8B5A /* KG_XunJianReportCell.h */,
+				258D288A246A6C9A004E8B5A /* KG_XunJianReportCell.m */,
+			);
+			path = "巡检报告";
+			sourceTree = "<group>";
+		};
+		258D288E246A6C9A004E8B5A /* CXDatePickerView */ = {
+			isa = PBXGroup;
+			children = (
+				258D2893246A6C9A004E8B5A /* CXDatePickerView.h */,
+				258D288F246A6C9A004E8B5A /* CXDatePickerView.m */,
+				258D2892246A6C9A004E8B5A /* timeViewController.h */,
+				258D2890246A6C9A004E8B5A /* timeViewController.m */,
+				258D2891246A6C9A004E8B5A /* NSDate+CXCategory.h */,
+				258D2894246A6C9A004E8B5A /* NSDate+CXCategory.m */,
+				258D2895246A6C9A004E8B5A /* PickerViewParameter.h */,
+			);
+			path = CXDatePickerView;
+			sourceTree = "<group>";
+		};
+		258D2896246A6C9A004E8B5A /* 通用弹窗 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2897246A6C9A004E8B5A /* 巡检大修周期 */,
+				258D289C246A6C9A004E8B5A /* 选择内容 */,
+				258D28A1246A6C9A004E8B5A /* 新建巡检任务 */,
+				258D28A6246A6C9A004E8B5A /* 选择设备 */,
+				258D28AB246A6C9A004E8B5A /* 选择设备类 */,
+			);
+			path = "通用弹窗";
+			sourceTree = "<group>";
+		};
+		258D2897246A6C9A004E8B5A /* 巡检大修周期 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2898246A6C9A004E8B5A /* KG_XunJianWeekView.h */,
+				258D289A246A6C9A004E8B5A /* KG_XunJianWeekView.m */,
+				258D2899246A6C9A004E8B5A /* KG_XunJianWeekCell.h */,
+				258D289B246A6C9A004E8B5A /* KG_XunJianWeekCell.m */,
+			);
+			path = "巡检大修周期";
+			sourceTree = "<group>";
+		};
+		258D289C246A6C9A004E8B5A /* 选择内容 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28A0246A6C9A004E8B5A /* KG_CommonSelContentView.h */,
+				258D289D246A6C9A004E8B5A /* KG_CommonSelContentView.m */,
+				258D289E246A6C9A004E8B5A /* KG_ComminSelContentCell.h */,
+				258D289F246A6C9A004E8B5A /* KG_ComminSelContentCell.m */,
+			);
+			path = "选择内容";
+			sourceTree = "<group>";
+		};
+		258D28A1246A6C9A004E8B5A /* 新建巡检任务 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28A3246A6C9A004E8B5A /* KG_XunJianTaskCell.h */,
+				258D28A5246A6C9A004E8B5A /* KG_XunJianTaskCell.m */,
+				258D28A2246A6C9A004E8B5A /* KG_XunJianTaskView.h */,
+				258D28A4246A6C9A004E8B5A /* KG_XunJianTaskView.m */,
+			);
+			path = "新建巡检任务";
+			sourceTree = "<group>";
+		};
+		258D28A6246A6C9A004E8B5A /* 选择设备 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28AA246A6C9A004E8B5A /* KG_CommonSelEquipCell.h */,
+				258D28A8246A6C9A004E8B5A /* KG_CommonSelEquipCell.m */,
+				258D28A9246A6C9A004E8B5A /* KG_CommonSelEquipView.h */,
+				258D28A7246A6C9A004E8B5A /* KG_CommonSelEquipView.m */,
+			);
+			path = "选择设备";
+			sourceTree = "<group>";
+		};
+		258D28AB246A6C9A004E8B5A /* 选择设备类 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28AE246A6C9A004E8B5A /* KG_SelEquipClassView.h */,
+				258D28AC246A6C9A004E8B5A /* KG_SelEquipClassView.m */,
+				258D28AF246A6C9A004E8B5A /* KG_SelEquipClassCell.h */,
+				258D28AD246A6C9A004E8B5A /* KG_SelEquipClassCell.m */,
+			);
+			path = "选择设备类";
+			sourceTree = "<group>";
+		};
+		258D28B0246A6C9A004E8B5A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				258D28B2246A6C9A004E8B5A /* 子类视图 */,
+				258D28D0246A6C9A004E8B5A /* KG_ZhiWeiViewController.h */,
+				258D28B1246A6C9A004E8B5A /* KG_ZhiWeiViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		258D28B2246A6C9A004E8B5A /* 子类视图 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28B3246A6C9A004E8B5A /* 例行维护 */,
+				258D28BD246A6C9A004E8B5A /* 一键巡视 */,
+				258D28C6246A6C9A004E8B5A /* 特殊保障 */,
+			);
+			path = "子类视图";
+			sourceTree = "<group>";
+		};
+		258D28B3246A6C9A004E8B5A /* 例行维护 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28B4246A6C9A004E8B5A /* Controller */,
+				258D28B7246A6C9A004E8B5A /* Model */,
+				258D28BA246A6C9A004E8B5A /* View */,
+			);
+			path = "例行维护";
+			sourceTree = "<group>";
+		};
+		258D28B4246A6C9A004E8B5A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				258D28B5246A6C9A004E8B5A /* KG_LiXingWeiHuViewController.h */,
+				258D28B6246A6C9A004E8B5A /* KG_LiXingWeiHuViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		258D28B7246A6C9A004E8B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				258D28B8246A6C9A004E8B5A /* KG_LiXingWeiHuModel.h */,
+				258D28B9246A6C9A004E8B5A /* KG_LiXingWeiHuModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		258D28BA246A6C9A004E8B5A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				258D28BB246A6C9A004E8B5A /* KG_LiXingWeiHuCell.h */,
+				258D28BC246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		258D28BD246A6C9A004E8B5A /* 一键巡视 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28BF246A6C9A004E8B5A /* Model */,
+				258D28C2246A6C9A004E8B5A /* View */,
+				258D28C5246A6C9A004E8B5A /* KG_YiJianXunShiViewController.m */,
+				258D28BE246A6C9A004E8B5A /* KG_YiJianXunShiViewController.h */,
+			);
+			path = "一键巡视";
+			sourceTree = "<group>";
+		};
+		258D28BF246A6C9A004E8B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				258D28C1246A6C9A004E8B5A /* KG_YiJianXunShiModel.h */,
+				258D28C0246A6C9A004E8B5A /* KG_YiJianXunShiModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		258D28C2246A6C9A004E8B5A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				258D28C3246A6C9A004E8B5A /* KG_YiJianXunShiCell.h */,
+				258D28C4246A6C9A004E8B5A /* KG_YiJianXunShiCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		258D28C6246A6C9A004E8B5A /* 特殊保障 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28C7246A6C9A004E8B5A /* Controller */,
+				258D28CA246A6C9A004E8B5A /* Model */,
+				258D28CD246A6C9A004E8B5A /* View */,
+			);
+			path = "特殊保障";
+			sourceTree = "<group>";
+		};
+		258D28C7246A6C9A004E8B5A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				258D28C9246A6C9A004E8B5A /* KG_TeShuBaoZhangViewController.h */,
+				258D28C8246A6C9A004E8B5A /* KG_TeShuBaoZhangViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		258D28CA246A6C9A004E8B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				258D28CB246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.h */,
+				258D28CC246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		258D28CD246A6C9A004E8B5A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				258D28CE246A6C9A004E8B5A /* KG_TeShuBaoZhangCell.h */,
+				258D28CF246A6C9A004E8B5A /* KG_TeShuBaoZhangCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		258D28D1246A6C9A004E8B5A /* 巡视报告详情 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28D2246A6C9A004E8B5A /* 底部输入栏 */,
+				258D28D5246A6C9A004E8B5A /* 巡视内容-雷达机房 */,
+				258D28DD246A6C9A004E8B5A /* 操作 */,
+				258D28E2246A6C9A004E8B5A /* Model */,
+				258D28E5246A6C9A004E8B5A /* View */,
+				258D28EA246A6C9A004E8B5A /* 巡视结果 */,
+				258D28ED246A6C9A004E8B5A /* KG_XunShiReportDetailViewController.h */,
+				258D28DC246A6C9A004E8B5A /* KG_XunShiReportDetailViewController.m */,
+				258D294A246B7A3E004E8B5A /* KG_XunShiReportDetailCell.h */,
+				258D294B246B7A3F004E8B5A /* KG_XunShiReportDetailCell.m */,
+				258D28EE246A6C9A004E8B5A /* 日志 */,
+			);
+			path = "巡视报告详情";
+			sourceTree = "<group>";
+		};
+		258D28D2246A6C9A004E8B5A /* 底部输入栏 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28D4246A6C9A004E8B5A /* KG_XunShiBottomTextView.h */,
+				258D28D3246A6C9A004E8B5A /* KG_XunShiBottomTextView.m */,
+			);
+			path = "底部输入栏";
+			sourceTree = "<group>";
+		};
+		258D28D5246A6C9A004E8B5A /* 巡视内容-雷达机房 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28D9246A6C9A004E8B5A /* KG_XunShiRadarView.h */,
+				258D28D7246A6C9A004E8B5A /* KG_XunShiRadarView.m */,
+				258D28D6246A6C9A004E8B5A /* KG_RadarEquipCell.h */,
+				258D28DA246A6C9A004E8B5A /* KG_RadarEquipCell.m */,
+				258D28D8246A6C9A004E8B5A /* KG_RadarEnvCell.h */,
+				258D28DB246A6C9A004E8B5A /* KG_RadarEnvCell.m */,
+			);
+			path = "巡视内容-雷达机房";
+			sourceTree = "<group>";
+		};
+		258D28DD246A6C9A004E8B5A /* 操作 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28E0246A6C9A004E8B5A /* KG_XunShiHandleCell.h */,
+				258D28DE246A6C9A004E8B5A /* KG_XunShiHandleCell.m */,
+				258D28E1246A6C9A004E8B5A /* KG_XunShiHandleView.h */,
+				258D28DF246A6C9A004E8B5A /* KG_XunShiHandleView.m */,
+			);
+			path = "操作";
+			sourceTree = "<group>";
+		};
+		258D28E2246A6C9A004E8B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				258D28E4246A6C9A004E8B5A /* KG_XunShiReportDetailModel.h */,
+				258D28E3246A6C9A004E8B5A /* KG_XunShiReportDetailModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		258D28E5246A6C9A004E8B5A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				258D28E9246A6C9A004E8B5A /* KG_XunShiTopCell.h */,
+				258D28E7246A6C9A004E8B5A /* KG_XunShiTopCell.m */,
+				258D28E8246A6C9A004E8B5A /* KG_XunShiTopView.h */,
+				258D28E6246A6C9A004E8B5A /* KG_XunShiTopView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		258D28EA246A6C9A004E8B5A /* 巡视结果 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28EB246A6C9A004E8B5A /* KG_XunShiResultView.h */,
+				258D28EC246A6C9A004E8B5A /* KG_XunShiResultView.m */,
+				258D294D246BCBEF004E8B5A /* KG_XunShiResultCell.h */,
+				258D294E246BCBEF004E8B5A /* KG_XunShiResultCell.m */,
+			);
+			path = "巡视结果";
+			sourceTree = "<group>";
+		};
+		258D28EE246A6C9A004E8B5A /* 日志 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28F4246A6C9A004E8B5A /* KG_XunShiLogView.h */,
+				258D28F1246A6C9A004E8B5A /* KG_XunShiLogView.m */,
+				258D28EF246A6C9A004E8B5A /* KG_XunShiSegmentView.h */,
+				258D28F2246A6C9A004E8B5A /* KG_XunShiSegmentView.m */,
+				258D28F3246A6C9A004E8B5A /* KG_XunShiLogCell.h */,
+				258D28F0246A6C9A004E8B5A /* KG_XunShiLogCell.m */,
+				258D2950246BD4B7004E8B5A /* KG_XunShiDetailLogCell.h */,
+				258D2951246BD4B7004E8B5A /* KG_XunShiDetailLogCell.m */,
+			);
+			path = "日志";
+			sourceTree = "<group>";
+		};
+		258D28F5246A6C9A004E8B5A /* 新建内容 */ = {
+			isa = PBXGroup;
+			children = (
+				258D28F9246A6C9A004E8B5A /* Model */,
+				258D28F7246A6C9A004E8B5A /* KG_NewContentViewController.h */,
+				258D28FD246A6C9A004E8B5A /* KG_NewContentViewController.m */,
+				258D28F8246A6C9A004E8B5A /* KG_NewContentCell.h */,
+				258D28FC246A6C9A004E8B5A /* KG_NewContentCell.m */,
+				258D28F6246A6C9A004E8B5A /* KG_NewContentTextCell.h */,
+				258D28FE246A6C9A004E8B5A /* KG_NewContentTextCell.m */,
+			);
+			path = "新建内容";
+			sourceTree = "<group>";
+		};
+		258D28F9246A6C9A004E8B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				258D28FA246A6C9A004E8B5A /* KG_NewContentModel.m */,
+				258D28FB246A6C9A004E8B5A /* KG_NewContentModel.h */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		258D28FF246A6C9A004E8B5A /* 操作指引 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2901246A6C9A004E8B5A /* KG_OperationGuideViewController.h */,
+				258D2900246A6C9A004E8B5A /* KG_OperationGuideViewController.m */,
+			);
+			path = "操作指引";
+			sourceTree = "<group>";
+		};
+		258D2902246A6C9A004E8B5A /* 新建巡视内容 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2903246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.h */,
+				258D2905246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m */,
+				258D2906246A6C9A004E8B5A /* KG_XunShiRoomCell.h */,
+				258D2904246A6C9A004E8B5A /* KG_XunShiRoomCell.m */,
+			);
+			path = "新建巡视内容";
+			sourceTree = "<group>";
+		};
+		258D2907246A6C9A004E8B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				258D2909246A6C9A004E8B5A /* KG_ZhiWeiModel.h */,
+				258D2908246A6C9A004E8B5A /* KG_ZhiWeiModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		258D290A246A6C9A004E8B5A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				258D290C246A6C9A004E8B5A /* KG_ZhiWeiNaviTopView.h */,
+				258D290B246A6C9A004E8B5A /* KG_ZhiWeiNaviTopView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		258D290D246A6C9A004E8B5A /* SegmentTap */ = {
+			isa = PBXGroup;
+			children = (
+				258D290F246A6C9A004E8B5A /* SegmentTapView.h */,
+				258D2910246A6C9A004E8B5A /* SegmentTapView.m */,
+				258D290E246A6C9A004E8B5A /* FlipTableView.h */,
+				258D2911246A6C9A004E8B5A /* FlipTableView.m */,
+			);
+			path = SegmentTap;
+			sourceTree = "<group>";
+		};
+		258D2912246A6C9A004E8B5A /* 联系人 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2913246A6C9A004E8B5A /* KG_ContactViewController.h */,
+				258D2914246A6C9A004E8B5A /* KG_ContactViewController.m */,
+			);
+			path = "联系人";
+			sourceTree = "<group>";
+		};
+		258D2953246BF9DA004E8B5A /* 筛选控件 */ = {
+			isa = PBXGroup;
+			children = (
+				258D2973246C078B004E8B5A /* UIImage+RSMethod.h */,
+				258D2972246C078B004E8B5A /* UIImage+RSMethod.m */,
+				258D2970246C0411004E8B5A /* RS_CollectionAlignmentFlowLayout.h */,
+				258D296F246C0410004E8B5A /* RS_CollectionAlignmentFlowLayout.m */,
+				258D296B246BFF0B004E8B5A /* RS_BottomButtonView.h */,
+				258D296A246BFF0B004E8B5A /* RS_BottomButtonView.m */,
+				258D2967246BFF0A004E8B5A /* RS_EnableDraggingButton.h */,
+				258D2969246BFF0B004E8B5A /* RS_EnableDraggingButton.m */,
+				258D2966246BFF0A004E8B5A /* RS_VillageURL.h */,
+				258D2968246BFF0A004E8B5A /* RS_VillageURL.m */,
+				258D2963246BFE45004E8B5A /* NSString+RSMethod.h */,
+				258D2964246BFE45004E8B5A /* NSString+RSMethod.m */,
+				258D2961246BFB44004E8B5A /* RS_JSONModel.h */,
+				258D2960246BFB43004E8B5A /* RS_JSONModel.m */,
+				258D2956246BF9DA004E8B5A /* RS_ConditionSearchView.h */,
+				258D295B246BF9DA004E8B5A /* RS_ConditionSearchView.m */,
+				258D2955246BF9DA004E8B5A /* RS_ConditionSearchCell.h */,
+				258D2958246BF9DA004E8B5A /* RS_ConditionSearchCell.m */,
+				258D2954246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.h */,
+				258D2959246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m */,
+				258D295A246BF9DA004E8B5A /* RS_ConditionSearchModel.h */,
+				258D2957246BF9DA004E8B5A /* RS_ConditionSearchModel.m */,
+			);
+			path = "筛选控件";
+			sourceTree = "<group>";
+		};
+		2593B5B3246D4C0500BBB964 /* ZhiXiu智修 */ = {
+			isa = PBXGroup;
+			children = (
+				2593B5B4246D4C2100BBB964 /* KG_ZhiXiuViewController.h */,
+				2593B5B5246D4C2100BBB964 /* KG_ZhiXiuViewController.m */,
+				2593B5B7246D522000BBB964 /* View */,
+			);
+			path = "ZhiXiu智修";
+			sourceTree = "<group>";
+		};
+		2593B5B7246D522000BBB964 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2593B5B8246D523500BBB964 /* KG_ZhiXiuCell.h */,
+				2593B5B9246D523500BBB964 /* KG_ZhiXiuCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		25950A8924596F3C00BCCA8B /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				25950A8B24596F3C00BCCA8B /* MBProgressHUD+XMG.h */,
+				25950A8A24596F3C00BCCA8B /* MBProgressHUD+XMG.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		25950A8D2459739A00BCCA8B /* 通用详情页 */ = {
+			isa = PBXGroup;
+			children = (
+				25950A8E245973B100BCCA8B /* KG_CommonDetailViewController.h */,
+				25950A8F245973B100BCCA8B /* KG_CommonDetailViewController.m */,
+				25950A9124597AD500BCCA8B /* KG_CommonDetailView.h */,
+				25950A9224597AD500BCCA8B /* KG_CommonDetailView.m */,
+				25950A9424598C0F00BCCA8B /* KG_CommonDetailCell.h */,
+				25950A9524598C0F00BCCA8B /* KG_CommonDetailCell.m */,
+				258ED6F324629CFA00639B37 /* KG_CommonGaojingView.h */,
+				258ED6F424629CFA00639B37 /* KG_CommonGaojingView.m */,
+				258ED6F624629D1400639B37 /* KG_CommonGaoJingCell.h */,
+				258ED6F724629D1400639B37 /* KG_CommonGaoJingCell.m */,
+			);
+			path = "通用详情页";
+			sourceTree = "<group>";
+		};
 		25B7953B2428F18900F8C0FC /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1823,19 +2303,11 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		25CFDA7224511DAB002EEDC5 /* 特殊保障 */ = {
-			isa = PBXGroup;
-			children = (
-				2582C88324511FA40058D20D /* Controller */,
-				2582C88224511F9F0058D20D /* View */,
-				2582C88124511F9A0058D20D /* Model */,
-			);
-			path = "特殊保障";
-			sourceTree = "<group>";
-		};
 		25D1F04B24245796007E5870 /* ThirdPhases(三期开发) */ = {
 			isa = PBXGroup;
 			children = (
+				2593B5B3246D4C0500BBB964 /* ZhiXiu智修 */,
+				258D2953246BF9DA004E8B5A /* 筛选控件 */,
 				2581ED5E24504B39002B1D9F /* ZhiWei智维 */,
 				25EEB376243F1E2800B9F803 /* ZhiTai(智态) */,
 				25EEB3172433303900B9F803 /* ZhiHuan(智环) */,
@@ -1918,6 +2390,7 @@
 		25EEB3172433303900B9F803 /* ZhiHuan(智环) */ = {
 			isa = PBXGroup;
 			children = (
+				25950A8D2459739A00BCCA8B /* 通用详情页 */,
 				2584D6152446FC8E0059A949 /* 空调 */,
 				2584D609244403600059A949 /* Model */,
 				25EEB356243EFDC900B9F803 /* NiControlSearch(搜索) */,
@@ -2966,16 +3439,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				258D295C246BF9DA004E8B5A /* RS_ConditionSearchModel.m in Sources */,
 				18E8DFB221F0BC9C00D5449F /* EzvizTrans.h in Sources */,
 				271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */,
 				18E8DFB321F0BC9C00D5449F /* HikDec.h in Sources */,
+				258D2924246A6C9A004E8B5A /* KG_SelEquipClassView.m in Sources */,
+				258D293F246A6C9A004E8B5A /* KG_NewContentCell.m in Sources */,
 				18E8DFB421F0BC9C00D5449F /* VideoItems.h in Sources */,
 				18E8DFB521F0BC9C00D5449F /* MachineItems.h in Sources */,
-				2582C8AD245518380058D20D /* KG_LiXingWeiHuCell.m in Sources */,
 				2581ED5A244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m in Sources */,
 				18E8DFB621F0BC9C00D5449F /* Preview.h in Sources */,
 				18E8DFB121F0BC8600D5449F /* hcnetsdk.h in Sources */,
 				2584D61E2446FF000059A949 /* KG_KongTiaoDetailViewController.m in Sources */,
+				258D292C246A6C9A004E8B5A /* KG_YiJianXunShiViewController.m in Sources */,
 				25EEB35C243EFE1700B9F803 /* KG_NiControlSearchViewController.m in Sources */,
 				18E8DFB021F0BC5D00D5449F /* IOSPlayM4.h in Sources */,
 				18E8DFAF21F0BC4100D5449F /* DeviceInfo.h in Sources */,
@@ -2983,26 +3459,30 @@
 				1F8AB5601F0CB9EB00256218 /* FrameHttpRequest.m in Sources */,
 				FE419F72206E2AB000A35A2F /* StationScrollViewController.m in Sources */,
 				250B883223BD73CB00C79136 /* FrameLocModel.m in Sources */,
+				258D291C246A6C9A004E8B5A /* KG_XunJianWeekView.m in Sources */,
 				ECA60FCE21AFFD3B00690698 /* BasicViewController.m in Sources */,
 				2581ED55244E8C7A002B1D9F /* KG_ZhiTaiBottomCell.m in Sources */,
 				FEF6695F206F2C9400F3CF2B /* EditPwdController.m in Sources */,
 				25D1F05724249072007E5870 /* JSHHTTPSessionManager.m in Sources */,
 				18B5545921B913DE00026734 /* WarnCell.m in Sources */,
-				2582C8C8245677D10058D20D /* KG_XunShiLogView.m in Sources */,
+				258D2929246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m in Sources */,
 				25EEB34C243D5C4400B9F803 /* KG_NiControlView.m in Sources */,
 				189B6CC921C6835500434DF5 /* PatrolRemindCell.m in Sources */,
+				258D2952246BD4B7004E8B5A /* KG_XunShiDetailLogCell.m in Sources */,
 				EC025D8B21C8BEDC001A3F5E /* LYEmptyView.m in Sources */,
-				2582C8A92452E31B0058D20D /* FlipTableView.m in Sources */,
 				EC4C0C1521B6282A00E23EFA /* TechnicalManualViewController.m in Sources */,
 				25EEB39F24404A4300B9F803 /* KG_DMETransFirstView.m in Sources */,
 				25893EAC2429A78C00D92C0F /* FrameBottomCell.m in Sources */,
 				EC5DBF0C21BA493800F00882 /* customTableView.m in Sources */,
-				2582C88D245120690058D20D /* KG_TeShuBaoZhangModel.m in Sources */,
+				258D2933246A6C9A004E8B5A /* KG_RadarEnvCell.m in Sources */,
+				2593B5BA246D523500BBB964 /* KG_ZhiXiuCell.m in Sources */,
 				FEFD280520746129004821E1 /* AlarmDetailController.m in Sources */,
+				258D296C246BFF0B004E8B5A /* RS_VillageURL.m in Sources */,
 				25EEB375243F095E00B9F803 /* KG_SearchCell.m in Sources */,
 				EC025D8A21C8BEDC001A3F5E /* UIView+LYExtension.m in Sources */,
 				2584D63124497B950059A949 /* KG_ZhiTaiEquipCell.m in Sources */,
 				FEFD280B20746726004821E1 /* AlarmItems.m in Sources */,
+				258D2935246A6C9A004E8B5A /* KG_XunShiHandleCell.m in Sources */,
 				250B882323B9D00700C79136 /* BMKClusterItem.m in Sources */,
 				FE419F75206E2C1C00A35A2F /* MachineItems.m in Sources */,
 				ECA60FC421AFDF2400690698 /* NSString+Extension.m in Sources */,
@@ -3011,28 +3491,38 @@
 				258CDE2A24284BD400B870D6 /* KG_FrameBottonCell.m in Sources */,
 				25EEB37D243FF92000B9F803 /* KG_MonitorFirstView.m in Sources */,
 				1F8AB55E1F0CB9EB00256218 /* FrameViewController.m in Sources */,
+				258D2974246C078B004E8B5A /* UIImage+RSMethod.m in Sources */,
+				258D293B246A6C9A004E8B5A /* KG_XunShiLogCell.m in Sources */,
+				25950A9624598C0F00BCCA8B /* KG_CommonDetailCell.m in Sources */,
 				FE050A92205BF5D300A4AD93 /* StationItems.m in Sources */,
-				2582C8A32452714C0058D20D /* KG_XunShiReportDetailModel.m in Sources */,
 				EC8795DD21B4D9A4000F3CC1 /* SearchView.m in Sources */,
+				258D293C246A6C9A004E8B5A /* KG_XunShiLogView.m in Sources */,
 				FE216F40209D929700E523DE /* StationMachineInfoListController.m in Sources */,
+				258D2948246A6C9A004E8B5A /* FlipTableView.m in Sources */,
+				258D2921246A6C9A004E8B5A /* KG_XunJianTaskCell.m in Sources */,
 				251F3F9323C5A0AE00217E73 /* RS_ColorManager.m in Sources */,
 				25EEB39C24404A3000B9F803 /* KG_DMETransSecondView.m in Sources */,
+				258D2962246BFB44004E8B5A /* RS_JSONModel.m in Sources */,
+				258D2945246A6C9A004E8B5A /* KG_ZhiWeiModel.m in Sources */,
 				25EEB3892440090400B9F803 /* KG_TransBottomView.m in Sources */,
-				2582C8CB245677FB0058D20D /* KG_XunShiSegmentView.m in Sources */,
-				2582C88924511FDE0058D20D /* KG_LiXingWeiHuViewController.m in Sources */,
 				FEE2492A206CB9B200D62197 /* PatroTextViewCell.m in Sources */,
 				FE416DB8205CAE060044229F /* PersonalSetController.m in Sources */,
 				FE050A86205B539A00A4AD93 /* PersonalViewController.m in Sources */,
+				258D294F246BCBEF004E8B5A /* KG_XunShiResultCell.m in Sources */,
 				EC4C0C3021B67C6100E23EFA /* technicalManualListModel.m in Sources */,
+				258D291E246A6C9A004E8B5A /* KG_CommonSelContentView.m in Sources */,
 				25D1F05224249005007E5870 /* DataManager.m in Sources */,
 				2584D634244D78FF0059A949 /* KG_JifangView.m in Sources */,
 				FE60F3E520A97BC100E18C73 /* StationairConditionerController.m in Sources */,
+				258D2928246A6C9A004E8B5A /* KG_LiXingWeiHuModel.m in Sources */,
 				250B887323C578F700C79136 /* AlarmDetailInfoController.m in Sources */,
 				1F8AB55F1F0CB9EB00256218 /* FrameBaseRequest.m in Sources */,
+				258D292A246A6C9A004E8B5A /* KG_YiJianXunShiModel.m in Sources */,
 				ECA60FBE21AFD23500690698 /* UIView+LX_Frame.m in Sources */,
 				EC61EA0621C8835400FACC83 /* HSIEmptyDataSetView.m in Sources */,
 				25EEB3212434798300B9F803 /* KG_UpsAlertCell.m in Sources */,
 				EC51DEC921BF508F00D68F47 /* SparePartListModel.m in Sources */,
+				258D295F246BF9DA004E8B5A /* RS_ConditionSearchView.m in Sources */,
 				EC025D8921C8BEDC001A3F5E /* UIView+Empty.m in Sources */,
 				EC5E52FF21B7D729009212D7 /* ValueModel.m in Sources */,
 				FEE2494D206CFC0000D62197 /* StationDetailController.m in Sources */,
@@ -3042,31 +3532,38 @@
 				FE416DC1205CBF950044229F /* PersonalAPPIntroduceController.m in Sources */,
 				EC5E523021B75D59009212D7 /* PopularCollectionViewCell.m in Sources */,
 				FEF66956206F18FF00F3CF2B /* PersonalMsgController.m in Sources */,
+				258D292E246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.m in Sources */,
 				185EC22A21CA3678004EBFE0 /* CommonExtension.m in Sources */,
 				FEFD280820746175004821E1 /* AlarmMachineListController.m in Sources */,
-				2582C8BD24558B260058D20D /* KG_RadarEnvCell.m in Sources */,
-				2582C8C0245594EC0058D20D /* KG_RadarEquipCell.m in Sources */,
 				2584D61024440C110059A949 /* KG_DetailRightModel.m in Sources */,
 				25EEB355243EC8F200B9F803 /* KG_NiControlCell.m in Sources */,
-				2581ED6E24506124002B1D9F /* KG_YiJianXunShiViewController.m in Sources */,
 				EC4C0C2D21B67C2E00E23EFA /* CategoryModel.m in Sources */,
+				258D296D246BFF0B004E8B5A /* RS_EnableDraggingButton.m in Sources */,
+				258D2917246A6C9A004E8B5A /* KG_XunJianReportCell.m in Sources */,
+				258D291A246A6C9A004E8B5A /* timeViewController.m in Sources */,
+				258D2939246A6C9A004E8B5A /* KG_XunShiTopCell.m in Sources */,
 				2584D61B2446FE660059A949 /* KG_KongTiaoScrollViewController.m in Sources */,
+				258D2930246A6C9A004E8B5A /* KG_XunShiBottomTextView.m in Sources */,
 				FE24525C20AE5F0C00CA0D98 /* StationMachinePictureController.m in Sources */,
 				2584D62A24494F4B0059A949 /* KG_ZhiTaiModel.m in Sources */,
 				FE050A8F205BF52900A4AD93 /* PersonalChooseStationController.m in Sources */,
 				250B882623B9D00700C79136 /* BMKClusterAlgorithm.m in Sources */,
+				258D293D246A6C9A004E8B5A /* KG_XunShiSegmentView.m in Sources */,
 				ECA60FC721AFE0DF00690698 /* UIApplication+Visible.m in Sources */,
 				EC4E9AD221B0DA2400B69476 /* HomeCarouselView.m in Sources */,
 				EC70A5F421C109E500F858EE /* CCZTrotingLabel.m in Sources */,
 				25893EE4242B511900D92C0F /* KG_ScrollListDetailModel.m in Sources */,
 				EC273FA421C37C5100A34EC2 /* MSLaunchOperation.m in Sources */,
+				258D2971246C0411004E8B5A /* RS_CollectionAlignmentFlowLayout.m in Sources */,
 				EC8795E321B4E2CB000F3CC1 /* EquipmentStatusModel.m in Sources */,
+				258D292F246A6C9A004E8B5A /* KG_TeShuBaoZhangCell.m in Sources */,
 				EC5E530521B7DABF009212D7 /* TelModel.m in Sources */,
 				EC51DED521BF63B800D68F47 /* NSString+Extension.m in Sources */,
 				FE281623208D70EE00918C76 /* DeviceInfo.m in Sources */,
-				2582C8C42456737D0058D20D /* KG_XunShiResultView.m in Sources */,
 				FEE2492D206CB9E100D62197 /* PatroTitleCell.m in Sources */,
 				FE1AB3E520A1B9BB0026DDF2 /* AlarmUserItems.m in Sources */,
+				258D296E246BFF0B004E8B5A /* RS_BottomButtonView.m in Sources */,
+				258ED6F824629D1400639B37 /* KG_CommonGaoJingCell.m in Sources */,
 				258E1E2523C7182200F4ED7E /* UserManager.m in Sources */,
 				250B884A23BD835200C79136 /* NSArray+SMSafeMethod.m in Sources */,
 				25D1F05B2424A9F3007E5870 /* KG_OverAlertView.m in Sources */,
@@ -3074,18 +3571,23 @@
 				FEFD280220746108004821E1 /* AlarmListController.m in Sources */,
 				271825CB236C177600D68C18 /* StationSectionView.m in Sources */,
 				FEE24927206CB97200D62197 /* PatroRadioCell.m in Sources */,
+				258D295D246BF9DA004E8B5A /* RS_ConditionSearchCell.m in Sources */,
 				251F3F9923C5B5EB00217E73 /* AlarmClassInfoCell.m in Sources */,
 				18482D8D21C7D9F70064FE8B /* WSLPhotoZoom.m in Sources */,
 				25EEB31E2434756100B9F803 /* KG_UpsAlertView.m in Sources */,
 				EC4C0C1121B60C9600E23EFA /* ZYSpreadSubButton.m in Sources */,
 				EC51DEC521BF483C00D68F47 /* RecordTableViewCell.m in Sources */,
+				258D293E246A6C9A004E8B5A /* KG_NewContentModel.m in Sources */,
 				2584D60C2444037E0059A949 /* KG_MachineStationModel.m in Sources */,
 				1F8AB55C1F0CB9EB00256218 /* FrameNavigationController.m in Sources */,
 				258CDE3524285D7800B870D6 /* FrameScrollListCell.m in Sources */,
 				FE77AD142069F1FD00CE8866 /* PatrolHistoryCell.m in Sources */,
-				2582C8B0245557910058D20D /* KG_TeShuBaoZhangCell.m in Sources */,
+				258D292D246A6C9A004E8B5A /* KG_TeShuBaoZhangViewController.m in Sources */,
 				FEE24921206CB8ED00D62197 /* PatroLabelCell.m in Sources */,
+				258D2949246A6C9A004E8B5A /* KG_ContactViewController.m in Sources */,
 				25EEB346243C720800B9F803 /* KG_PowView.m in Sources */,
+				258D2932246A6C9A004E8B5A /* KG_RadarEquipCell.m in Sources */,
+				258D2916246A6C9A004E8B5A /* KG_HistoryTaskCell.m in Sources */,
 				25EEB38F24403E1900B9F803 /* KG_TransBottomCell.m in Sources */,
 				EC5E530221B7D99B009212D7 /* VenderModel.m in Sources */,
 				FEE24936206CDADC00D62197 /* FrameHomeController.m in Sources */,
@@ -3096,54 +3598,60 @@
 				25893EE1242AFF4300D92C0F /* KG_ScrollListModel.m in Sources */,
 				FEE2491E206CB89C00D62197 /* Patroltems.m in Sources */,
 				250B882C23B9D0CD00C79136 /* CluserAnnotation.m in Sources */,
+				258D2965246BFE45004E8B5A /* NSString+RSMethod.m in Sources */,
 				250B887623C5790D00C79136 /* AlarmDetailInfoCell.m in Sources */,
 				25EEB380243FF93200B9F803 /* KG_MonitorSecondView.m in Sources */,
+				258D291F246A6C9A004E8B5A /* KG_ComminSelContentCell.m in Sources */,
 				18CAAD8321B76130003C8B39 /* RankController.m in Sources */,
 				2584D62E24497A190059A949 /* KG_ZhiTaiEquipView.m in Sources */,
 				25EEB38C24401E4800B9F803 /* KG_MonitorCell.m in Sources */,
 				25EEB386243FF97F00B9F803 /* KG_TransSecondView.m in Sources */,
+				258D2927246A6C9A004E8B5A /* KG_LiXingWeiHuViewController.m in Sources */,
 				2584D63E244E82930059A949 /* KG_ZhiTaiBottomView.m in Sources */,
 				EC5E52FC21B7D6C5009212D7 /* PersonModel.m in Sources */,
-				2582C8B6245560BE0058D20D /* KG_XunShiTopCell.m in Sources */,
 				189938FB21C1EFFC0026B6AB /* ValueWeatherStationMoel.m in Sources */,
+				258D2943246A6C9A004E8B5A /* KG_XunShiRoomCell.m in Sources */,
 				FE050A95205BF61B00A4AD93 /* ChooseStationCell.m in Sources */,
-				2581ED6724504B7E002B1D9F /* KG_ZhiWeiModel.m in Sources */,
 				FE050A89205B549F00A4AD93 /* PersonalInfoController.m in Sources */,
 				2584D6142445874D0059A949 /* KG_MachineDetailModel.m in Sources */,
+				258D2940246A6C9A004E8B5A /* KG_NewContentViewController.m in Sources */,
+				258D2920246A6C9A004E8B5A /* KG_XunJianTaskView.m in Sources */,
+				258D2915246A6C9A004E8B5A /* KG_HistoryTaskViewController.m in Sources */,
 				1F8AB55D1F0CB9EB00256218 /* FrameTabBarController.m in Sources */,
 				250B882F23B9D11E00C79136 /* CluseterAnnotationView.m in Sources */,
 				258CDE2D24285D1500B870D6 /* FrameScrollList.m in Sources */,
 				EC5DBF1021BA49E800F00882 /* CustomTableViewCell.m in Sources */,
 				EC8795E021B4E0F2000F3CC1 /* EquipmentDetailsModel.m in Sources */,
-				2582C896245122340058D20D /* KG_YiJianXunShiCell.m in Sources */,
 				FEF6695C206F21A900F3CF2B /* MsgItems.m in Sources */,
 				18CB1CCE21C7433400F40413 /* MediaModel.m in Sources */,
 				250B885923C46D7700C79136 /* StationMachineDetailMoreController.m in Sources */,
+				258D2941246A6C9A004E8B5A /* KG_NewContentTextCell.m in Sources */,
 				189938FE21C1F05D0026B6AB /* ValueClassModel.m in Sources */,
 				25EEB39624404A0200B9F803 /* KG_DMEMonitorFirstView.m in Sources */,
 				25D1F05824249072007E5870 /* WYLHTTPSessionManager.m in Sources */,
 				250B886823C578A500C79136 /* CommonBaseViewController.m in Sources */,
 				25EEB349243D5BF600B9F803 /* KG_PowerOffView.m in Sources */,
-				2582C89E245271260058D20D /* KG_XunShiReportDetailViewController.m in Sources */,
 				EC8795DA21B4C3F9000F3CC1 /* WheelModel.m in Sources */,
+				25950A9324597AD500BCCA8B /* KG_CommonDetailView.m in Sources */,
+				258D2923246A6C9A004E8B5A /* KG_CommonSelEquipCell.m in Sources */,
 				25EEB33D243C1C0500B9F803 /* KG_StationDetailModel.m in Sources */,
-				2582C8BA24556DBF0058D20D /* KG_XunShiRadarView.m in Sources */,
-				2582C893245120EC0058D20D /* KG_YiJianXunShiModel.m in Sources */,
-				2582C8AA2452E31B0058D20D /* SegmentTapView.m in Sources */,
 				250B882423B9D00700C79136 /* BMKClusterQuadtree.m in Sources */,
 				ECA60FC121AFDE4600690698 /* UIColor+Extension.m in Sources */,
 				25D1F05F2424B01C007E5870 /* UtilsJSH.m in Sources */,
+				25950A8C24596F3C00BCCA8B /* MBProgressHUD+XMG.m in Sources */,
 				25EEB37A243F1E6B00B9F803 /* KG_ZhiTaiView.m in Sources */,
 				EC4C0C2921B65C4300E23EFA /* XDMultTableView.m in Sources */,
-				2582C899245165E30058D20D /* KG_ZhiWeiNaviTopView.m in Sources */,
 				FEE24933206CC69400D62197 /* PatrolHistoryController.m in Sources */,
 				FEE24932206CC4AB00D62197 /* PatrolDetailController.m in Sources */,
 				250B885223BD857300C79136 /* NSObject+SafeMethod.m in Sources */,
 				FEE24924206CB92E00D62197 /* PatroTextFieldCell.m in Sources */,
+				258D2938246A6C9A004E8B5A /* KG_XunShiTopView.m in Sources */,
 				EC61EA0521C8835400FACC83 /* UIScrollView+EmptyDataSet.m in Sources */,
 				25EEB329243481BE00B9F803 /* KG_SecondFloorViewController.m in Sources */,
 				2584D63A244D8E370059A949 /* KG_RoomInfoView.m in Sources */,
 				250B886C23C578A500C79136 /* BaseVC.m in Sources */,
+				258D291D246A6C9A004E8B5A /* KG_XunJianWeekCell.m in Sources */,
+				2593B5B6246D4C2100BBB964 /* KG_ZhiXiuViewController.m in Sources */,
 				25EEB350243EC17300B9F803 /* KG_NiControlViewController.m in Sources */,
 				250B886923C578A500C79136 /* WYLNavigationController.m in Sources */,
 				FEB8F6092079B0E50064F358 /* AlarmMachineTypeListController.m in Sources */,
@@ -3153,6 +3661,7 @@
 				18B34DE421C348330021C2E6 /* UploadCell.m in Sources */,
 				FEE2491B206CB7B400D62197 /* PatrolSetController.m in Sources */,
 				18E8DFB821F0C23100D5449F /* Preview.mm in Sources */,
+				258D295E246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m in Sources */,
 				C1F8F174205BB32B0070CFE6 /* LoginViewController.m in Sources */,
 				FE77AD112069DD6400CE8866 /* PatrolSetShowController.m in Sources */,
 				FE416DC4205CC1E50044229F /* PersonalFollowUsController.m in Sources */,
@@ -3160,11 +3669,12 @@
 				25EEB39924404A1B00B9F803 /* KG_DMEMonitorSecondView.m in Sources */,
 				FE419F66206DEB1C00A35A2F /* StationRoomController.m in Sources */,
 				250B882523B9D00700C79136 /* BMKClusterManager.m in Sources */,
-				2582C8B324555F0F0058D20D /* KG_XunShiTopView.m in Sources */,
+				258D2944246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m in Sources */,
+				258D2947246A6C9A004E8B5A /* SegmentTapView.m in Sources */,
 				2584D62124485D240059A949 /* KG_GaojingView.m in Sources */,
 				250B886A23C578A500C79136 /* BaseNavigationController.m in Sources */,
+				258D292B246A6C9A004E8B5A /* KG_YiJianXunShiCell.m in Sources */,
 				EC70A5F521C109E500F858EE /* CCZTrotingAttribute.m in Sources */,
-				2582C890245120810058D20D /* KG_LiXingWeiHuModel.m in Sources */,
 				187673F021C0B7A7004C1E8D /* PatrolEquipmentController..m in Sources */,
 				FEF66959206F191900F3CF2B /* PersonalMsgListController.m in Sources */,
 				2581ED5D24503324002B1D9F /* KG_ZhiTaiStationModel.m in Sources */,
@@ -3173,10 +3683,15 @@
 				25EEB340243C71E600B9F803 /* KG_SecView.m in Sources */,
 				EC4E9ADF21B122F200B69476 /* YQSlideMenuController.m in Sources */,
 				FE9C814E2065103B001136FA /* PatrolController.m in Sources */,
+				258D291B246A6C9A004E8B5A /* NSDate+CXCategory.m in Sources */,
 				EC4E9AE021B122F200B69476 /* UIViewController+YQSlideMenu.m in Sources */,
 				1892F5812106E49B00534833 /* FrameGroupItem.m in Sources */,
+				258D2931246A6C9A004E8B5A /* KG_XunShiRadarView.m in Sources */,
+				258D2942246A6C9A004E8B5A /* KG_OperationGuideViewController.m in Sources */,
 				EC273FA321C37C5100A34EC2 /* MSLaunchView.m in Sources */,
+				258D2934246A6C9A004E8B5A /* KG_XunShiReportDetailViewController.m in Sources */,
 				FE662C8C205E27C4001FD73E /* PersonalPatrolController.m in Sources */,
+				258ED6F524629CFA00639B37 /* KG_CommonGaojingView.m in Sources */,
 				18CAAD8E21B7DE4C003C8B39 /* PatrolSpecialController.m in Sources */,
 				258CDE232428435000B870D6 /* KG_FrameBottomAlertView.m in Sources */,
 				2584D625244938AC0059A949 /* KG_ZhiTaiViewController.m in Sources */,
@@ -3184,14 +3699,15 @@
 				250B885523C42E6C00C79136 /* RadarTableViewCell.m in Sources */,
 				18482D8B21C7D9F70064FE8B /* WSLPictureBrowseView.m in Sources */,
 				FE77AD0E2069DB7D00CE8866 /* UIViewController+CBPopup.m in Sources */,
-				2581ED6424504B6E002B1D9F /* KG_ZhiWeiViewController.m in Sources */,
 				EC5E52EA21B7B4DB009212D7 /* ContactsCell.m in Sources */,
 				25D1F04E24245A15007E5870 /* KG_MapShowStyleViewController.m in Sources */,
 				18CAAD8B21B773B1003C8B39 /* StationRankCell.m in Sources */,
 				250B887923C5792100C79136 /* AlarmDetailInfoModel.m in Sources */,
 				EC51DECF21BF5D3100D68F47 /* AtcAttachmentRecordsModel.m in Sources */,
+				258D2918246A6C9A004E8B5A /* KG_XunJianReportViewController.m in Sources */,
 				FE419F69206E070A00A35A2F /* StationVideoListController.m in Sources */,
 				EC5E52DE21B7A28D009212D7 /* PopularModel.m in Sources */,
+				258D2925246A6C9A004E8B5A /* KG_SelEquipClassCell.m in Sources */,
 				EC025D9521C8DC02001A3F5E /* DIYNoDataView.m in Sources */,
 				1892F57E2106E46E00534833 /* FrameSettingItem.m in Sources */,
 				FE416DC7205CC8C40044229F /* PersonalSendOpinionController.m in Sources */,
@@ -3204,18 +3720,26 @@
 				1F8AB44B1F0C77C100256218 /* main.m in Sources */,
 				25EEB3322434AE1100B9F803 /* KG_CenterCell.m in Sources */,
 				EC5E52E121B7AE37009212D7 /* ContactManufacturerView.m in Sources */,
+				258D294C246B7A3F004E8B5A /* KG_XunShiReportDetailCell.m in Sources */,
 				EC4B9D0F21CB78B000D45F9D /* PhotoBrowseViewController.m in Sources */,
 				EC51DEC021BF482000D68F47 /* SparePartTableViewCell.m in Sources */,
 				2584D637244D79AE0059A949 /* KG_JifangCell.m in Sources */,
+				258D2946246A6C9A004E8B5A /* KG_ZhiWeiNaviTopView.m in Sources */,
 				18482D8C21C7D9F70064FE8B /* UIImageView+GIF.m in Sources */,
 				FE416DBB205CB4ED0044229F /* PersonalEditPwdController.m in Sources */,
 				FE816958206E5A35000F8E29 /* StationMachineDetailController.m in Sources */,
+				258D293A246A6C9A004E8B5A /* KG_XunShiResultView.m in Sources */,
 				EC5E523521B77034009212D7 /* FilePreviewViewController.m in Sources */,
+				258D2926246A6C9A004E8B5A /* KG_ZhiWeiViewController.m in Sources */,
+				258D2919246A6C9A004E8B5A /* CXDatePickerView.m in Sources */,
 				FE678486205F90CB00D655DB /* PersonalPatrolItems.m in Sources */,
+				25950A90245973B200BCCA8B /* KG_CommonDetailViewController.m in Sources */,
 				25EEB33624372C0200B9F803 /* KG_PowerOnView.m in Sources */,
-				2582C88624511FBD0058D20D /* KG_TeShuBaoZhangViewController.m in Sources */,
 				FE419F6F206E163700A35A2F /* StationMachineController.m in Sources */,
+				258D2937246A6C9A004E8B5A /* KG_XunShiReportDetailModel.m in Sources */,
+				258D2922246A6C9A004E8B5A /* KG_CommonSelEquipView.m in Sources */,
 				FE050A8C205BD1BC00A4AD93 /* PersonalEditMobileController.m in Sources */,
+				258D2936246A6C9A004E8B5A /* KG_XunShiHandleView.m in Sources */,
 				EC4C0C1021B60C9600E23EFA /* ZYSpreadButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_TransBottomView : UIView
 
+@property (nonatomic,strong) NSDictionary * bottomDic;
 @end
 
 NS_ASSUME_NONNULL_END

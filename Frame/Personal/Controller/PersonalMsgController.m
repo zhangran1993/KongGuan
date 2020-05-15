@@ -215,11 +215,11 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         [_yujingNumLabel setHidden:YES];
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            return;
-        }
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            return;
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -249,11 +249,11 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         [_gonggaoNumLabel setHidden:YES];
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            return;
-        }
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            return;
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -283,11 +283,11 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         [_newsNumLabel setHidden:YES];
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            return;
-        }
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            return;
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

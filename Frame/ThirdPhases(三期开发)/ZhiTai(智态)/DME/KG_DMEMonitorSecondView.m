@@ -106,18 +106,18 @@
    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
      
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         cell.titleLabel.text = safeString(titleString);
         if ([safeString(titleString) containsString:@"开"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }else {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
         }
     }
     
-    if (indexPath.row == 1) {
+    if (indexPath.section == 1) {
         cell.titleLabel.text = safeString(titleString);
-        if ([safeString(titleString) containsString:@"正常"]) {
+        if ([safeString(titleString) containsString:@"工作"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }else {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
@@ -126,11 +126,10 @@
     
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (indexPath.row == 2) {
-        if ([titleString isEqualToString:@"监视器2"] ) {
+    if (indexPath.section == 2) {
+        cell.titleLabel.text = safeString(titleString);
+        if ([titleString containsString:@"监视器"] ) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#0032AF"];
-        }else {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }
     }
     
@@ -174,7 +173,7 @@
         
     }else if([safeString(pangluDic[@"valueAlias"]) isEqualToString:@"旁路都关闭"]){
         
-        pangluString = @"旁路：开";
+        pangluString = @"旁路：关";
     }else if([safeString(pangluDic[@"valueAlias"]) isEqualToString:@"B旁路"]){
         pangluString = @"旁路：开";
         
@@ -182,6 +181,8 @@
         pangluString = @"旁路：关";
         
     }
+    [_dataArray replaceObjectAtIndex:0 withObject:pangluString];
+    [self.tableView reloadData];
 }
 
 - (void)setCheckDic:(NSDictionary *)checkDic{
@@ -203,5 +204,6 @@
         
     }
     [_dataArray replaceObjectAtIndex:1 withObject:checkString];
+    [self.tableView reloadData];
 }
 @end

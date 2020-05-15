@@ -340,13 +340,13 @@
     } failure:^(NSError *error)  {
         _submitNum = 0;
         FrameLog(@"请求失败，返回数据 : %@",error);
-        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }
+//        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//            [self.navigationController popToViewController:viewCtl animated:YES];
+//            return;
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

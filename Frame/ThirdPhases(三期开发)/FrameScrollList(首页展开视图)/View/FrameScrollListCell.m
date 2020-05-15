@@ -91,11 +91,11 @@
         //正常
         self.firstStatusLabel.image = [UIImage imageNamed:@"level_normal"];
     }else{
-        int isNull = isNull( dic[@"num"]);
-        NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+        int isNullm = isNullm( dic[@"num"]);
+        NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
         self.firstNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
         self.firstNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-        if (isNull >0) {
+        if (isNullm >0) {
             self.firstNumLabel.hidden = NO;
         }else {
             self.firstNumLabel.hidden = YES;
@@ -116,11 +116,11 @@
         //正常
         self.secondStatusLabel.image = [UIImage imageNamed:@"level_normal"];
     }else{
-        int isNull = isNull( dic[@"num"]);
-        NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+        int isNullm = isNullm( dic[@"num"]);
+        NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
         self.secondNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
         self.secondNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-        if (isNull >0) {
+        if (isNullm >0) {
             self.secondNumLabel.hidden = NO;
         }else {
             self.secondNumLabel.hidden = YES;
@@ -140,11 +140,11 @@
         //正常
         self.thirdStatusLabel.image = [UIImage imageNamed:@"level_normal"];
     }else{
-        int isNull = isNull( dic[@"num"]);
-        NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+        int isNullm = isNullm( dic[@"num"]);
+        NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
         self.thirdNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
         self.thirdNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-        if (isNull >0) {
+        if (isNullm >0) {
             self.thirdNumLabel.hidden = NO;
         }else {
             self.thirdNumLabel.hidden = YES;
@@ -164,11 +164,11 @@
         //正常
         self.fourthStatusLabel.image = [UIImage imageNamed:@"level_normal"];
     }else{
-        int isNull = isNull( dic[@"num"]);
-        NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+        int isNullm = isNullm( dic[@"num"]);
+        NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
         self.fourthNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
         self.fourthNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-        if (isNull >0) {
+        if (isNullm >0) {
             self.fourthNumLabel.hidden = NO;
         }else {
             self.fourthNumLabel.hidden = YES;

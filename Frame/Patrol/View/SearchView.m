@@ -11,6 +11,7 @@
 #import "FrameBaseRequest.h"
 #import "UIColor+Extension.h"
 #import "NSString+Extension.h"
+
 @implementation SearchView
 - (instancetype)initWithFrame:(CGRect)frame {
     if ([super initWithFrame:frame]) {
@@ -69,8 +70,9 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.searchField resignFirstResponder];
-    int isNull = isNull(self.searchField.text);
-    if(isNull==0){
+   
+    int isNullm = isNullm(self.searchField.text);
+    if(isNullm==0){
         [FrameBaseRequest showMessage:@"请输入搜索内容"];
         return YES;
     }

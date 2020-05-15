@@ -168,8 +168,25 @@
         self.watchVideo(dic[@"code"], dic[@"name"]);
     }
 }
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-   
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"%ld",(long)indexPath.row);
+    NSArray *listArr = self.nextArray[indexPath.section];
+    NSDictionary *dataD = listArr[indexPath.row];
+    NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"detail"][@"station"]];
+      for (NSString*s in [dataDic allKeys]) {
+          if ([dataDic[s] isEqual:[NSNull null]]) {
+              [dataDic setObject:@"" forKey:s];
+          }
+      }
+      
+      
+      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+      [userDefaults setObject:dataDic forKey:@"station"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    if (self.selStation) {
+        self.selStation();
+    }
 }
 
 -(UITableView *)tableView {
@@ -237,9 +254,9 @@
     //    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=%@",@"stationCategory"]];
     
     
-    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcDictionary?type_code=stationCategory";
+//    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcDictionary?type_code=stationCategory";
     //    __weak typeof(self) weakSelf = self;
-    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=stationCategory"]];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -264,9 +281,9 @@
     //    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=%@",@"stationCategory"]];
     
     
-    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationList";
+//    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationList";
     //    __weak typeof(self) weakSelf = self;
-    
+     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationList"]];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         
         NSInteger code = [[result objectForKey:@"errCode"] intValue];

@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 
-@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
                                                         
 @end
@@ -35,7 +35,8 @@
 }
 //初始化数据
 - (void)initData {
-    self.dataArray = [NSArray arrayWithObjects:@"自身状态：正常",@"数据状态：正常",@"旁路：关",@"开启",@"监视器1", nil];
+    NSArray *arr = [NSArray arrayWithObjects:@"系统正常",@"-",@"通信", nil];
+    [self.dataArray addObjectsFromArray:arr];
 }
 
 //创建视图
@@ -72,9 +73,9 @@
     }
     return _tableView;
 }
--(NSArray *)dataArray{
+-(NSMutableArray *)dataArray{
     if (!_dataArray) {
-        _dataArray = [NSArray array];
+        _dataArray = [[NSMutableArray alloc]init];
     }
     return _dataArray;
 }
@@ -106,6 +107,14 @@
     
     cell.titleLabel.text = safeString(titleString);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (indexPath.section == 0) {
+        cell.titleLabel.text = safeString(titleString);
+        if ([safeString(titleString) containsString:@"正常"]) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }
+    }
     
     return cell;
 }
@@ -135,5 +144,20 @@
     return 1.f;
 }
 
-
+- (void)setBottomDic:(NSDictionary *)bottomDic {
+    _bottomDic = bottomDic;
+    
+    NSString *checkString = @"系统正常";
+    //监视器A
+    if([safeString(bottomDic[@"valueAlias"]) isEqualToString:@"系统正常"]){
+        checkString = @"系统正常";
+        
+    }else if([safeString(bottomDic[@"valueAlias"]) isEqualToString:@"系统维护"]){
+        
+        checkString = @"系统维护";
+    }
+    [_dataArray replaceObjectAtIndex:0 withObject:checkString];
+    [self.tableView reloadData];
+    
+}
 @end

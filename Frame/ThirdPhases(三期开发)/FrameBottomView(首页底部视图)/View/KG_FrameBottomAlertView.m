@@ -148,11 +148,11 @@
             //正常
             cell.firstStatusLabel.image = [UIImage imageNamed:@"level_normal"];
         }else{
-            int isNull = isNull( dic[@"num"]);
-            NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+            int isNullm = isNullm( dic[@"num"]);
+            NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
             cell.firstNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
             cell.firstNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-            if (isNull >0) {
+            if (isNullm >0) {
                 cell.firstNumLabel.hidden = NO;
             }else {
                 cell.firstNumLabel.hidden = YES;
@@ -174,11 +174,11 @@
                   //正常
                   cell.secondStatusLabel.image = [UIImage imageNamed:@"level_normal"];
               }else{
-                  int isNull = isNull( dic[@"num"]);
-                  NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+                  int isNullm = isNullm( dic[@"num"]);
+                  NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
                   cell.secondNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
                   cell.secondNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-                  if (isNull >0) {
+                  if (isNullm >0) {
                       cell.secondNumLabel.hidden = NO;
                   }else {
                       cell.secondNumLabel.hidden = YES;
@@ -199,11 +199,11 @@
                   //正常
                   cell.thirdStatusLabel.image = [UIImage imageNamed:@"level_normal"];
               }else{
-                  int isNull = isNull( dic[@"num"]);
-                  NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+                  int isNullm = isNullm( dic[@"num"]);
+                  NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
                   cell.thirdNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
                   cell.thirdNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-                  if (isNull >0) {
+                  if (isNullm >0) {
                       cell.thirdNumLabel.hidden = NO;
                   }else {
                       cell.thirdNumLabel.hidden = YES;
@@ -224,11 +224,11 @@
                   //正常
                   cell.fourthStatusLabel.image = [UIImage imageNamed:@"level_normal"];
               }else{
-                  int isNull = isNull( dic[@"num"]);
-                  NSString *equipNum = isNull == 1?dic[@"num"]:@"0";
+                  int isNullm = isNullm( dic[@"num"]);
+                  NSString *equipNum = isNullm == 1?dic[@"num"]:@"0";
                   cell.fourthNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
                   cell.fourthNumLabel.backgroundColor = [self getTextColor:dic[@"level"]];
-                  if (isNull >0) {
+                  if (isNullm >0) {
                       cell.fourthNumLabel.hidden = NO;
                   }else {
                       cell.fourthNumLabel.hidden = YES;

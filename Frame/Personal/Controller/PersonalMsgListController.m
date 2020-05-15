@@ -218,15 +218,15 @@
         [self.tableview.mj_footer endRefreshing];
         //self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//            [self.navigationController popToViewController:viewCtl animated:YES];
+//            return;
+//        }else if(responses.statusCode == 502){
+//            
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -388,13 +388,13 @@
         } failure:^(NSError *error)  {
             FrameLog(@"errorerrorerrorerrorerrorerror : %ld",(long)error.code);
             FrameLog(@"请求失败，返回数据 : %@",error);
-            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-                [self.navigationController popToViewController:viewCtl animated:YES];
-                return;
-            }
+//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                [FrameBaseRequest logout];
+//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//                [self.navigationController popToViewController:viewCtl animated:YES];
+//                return;
+//            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         }];
@@ -421,13 +421,13 @@
             return ;
         } failure:^(NSError *error)  {
             FrameLog(@"请求失败，返回数据 : %@",error);
-            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-                [self.navigationController popToViewController:viewCtl animated:YES];
-                return;
-            }
+//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                [FrameBaseRequest logout];
+//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//                [self.navigationController popToViewController:viewCtl animated:YES];
+//                return;
+//            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         }];
@@ -476,13 +476,13 @@
         return ;
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }
+//        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//            [self.navigationController popToViewController:viewCtl animated:YES];
+//            return;
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -554,13 +554,13 @@
             [self setupTable];//刷新列表
         }  failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
-            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-                [self.navigationController popToViewController:viewCtl animated:YES];
-                return;
-            }
+//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                [FrameBaseRequest logout];
+//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//                [self.navigationController popToViewController:viewCtl animated:YES];
+//                return;
+//            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];
@@ -593,13 +593,13 @@
             [self setupTable];//刷新列表
         }  failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
-            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-                [self.navigationController popToViewController:viewCtl animated:YES];
-                return;
-            }
+//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                [FrameBaseRequest logout];
+//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//                [self.navigationController popToViewController:viewCtl animated:YES];
+//                return;
+//            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];

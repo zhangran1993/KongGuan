@@ -568,7 +568,7 @@
                     self.transSecondView.workDic = dic;
                 }
             }
-        }else if ([dic[@"name"] containsString:@"旁路"]) {
+        }else if ([dic[@"name"] containsString:@"监测器旁路状态"]) {
             
             self.monitorFirstView.pangluDic =dic;
             self.monitorSecondView.pangluDic =dic;

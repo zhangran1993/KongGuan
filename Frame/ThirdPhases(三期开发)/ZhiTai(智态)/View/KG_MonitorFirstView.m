@@ -16,7 +16,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 
-@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
                                                         
 @end
@@ -35,7 +35,8 @@
 }
 //初始化数据
 - (void)initData {
-    self.dataArray = [NSArray arrayWithObjects:@"自身状态：正常",@"数据状态：正常",@"旁路：关",@"开启",@"监视器1", nil];
+    NSArray *arr = [NSArray arrayWithObjects:@"自身状态：正常",@"数据状态：正常",@"旁路：关",@"开启",@"监视器1", nil];
+    [self.dataArray addObjectsFromArray:arr];
 }
 
 //创建视图
@@ -72,9 +73,9 @@
     }
     return _tableView;
 }
--(NSArray *)dataArray{
+-(NSMutableArray *)dataArray{
     if (!_dataArray) {
-        _dataArray = [NSArray array];
+        _dataArray = [[NSMutableArray alloc]init];
     }
     return _dataArray;
 }
@@ -105,6 +106,41 @@
     NSString *titleString = self.dataArray[indexPath.section];
     
     cell.titleLabel.text = safeString(titleString);
+    if (indexPath.section == 0) {
+        if ([safeString(titleString) containsString:@"正常"]) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }
+    }
+    if (indexPath.section == 1) {
+        if ([safeString(titleString) containsString:@"正常"]) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }
+    }
+    if (indexPath.section == 2) {
+        if ([safeString(titleString) containsString:@"开"]) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }
+    }
+    if (indexPath.section == 3) {
+        if ([safeString(titleString) containsString:@"开启"]) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }
+    }
+    if (indexPath.section == 4) {
+        cell.titleLabel.text = safeString(titleString);
+        if ([titleString containsString:@"监视器"] ) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#0032AF"];
+        }
+    }
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -133,5 +169,75 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
+}
+
+- (void)setCheckDic:(NSDictionary *)checkDic{
+    _checkDic = checkDic;
+    
+    NSString *checkString = @"自身状态：正常";
+    //监视器A
+    if([safeString(checkDic[@"valueAlias"]) isEqualToString:@"正常"]){
+        checkString = @"自身状态：正常";
+        
+    }else if([safeString(checkDic[@"valueAlias"]) isEqualToString:@"故障"]){
+        
+        checkString = @"自身状态：故障";
+    }
+    [_dataArray replaceObjectAtIndex:0 withObject:checkString];
+    [self.tableView reloadData];
+}
+
+- (void)setDataDic:(NSDictionary *)dataDic {
+    _dataDic = dataDic;
+    NSString *dataString = @"数据正常";
+    //监视器A
+    if([safeString(dataDic[@"valueAlias"]) isEqualToString:@"正常"]){
+        dataString = @"数据正常";
+        
+    }else if([safeString(dataDic[@"valueAlias"]) isEqualToString:@"预警"]){
+        
+        dataString = @"数据预警";
+    }else if([safeString(dataDic[@"valueAlias"]) isEqualToString:@"告警"]){
+        dataString = @"数据告警";
+    }
+    
+    [_dataArray replaceObjectAtIndex:1 withObject:dataString];
+    [self.tableView reloadData];
+}
+- (void)setWorkDic:(NSDictionary *)workDic {
+    _workDic = workDic;
+    NSString *dataString = @"数据正常";
+    //监视器A
+    if([safeString(workDic[@"valueAlias"]) isEqualToString:@"工作"]){
+        dataString = @"旁路：开";
+        
+    }else if([safeString(workDic[@"valueAlias"]) isEqualToString:@"维护"]){
+        
+        dataString = @"旁路：关";
+    }else if([safeString(workDic[@"valueAlias"]) isEqualToString:@"监视器1旁路"]){
+        dataString = @"旁路：开";
+    }else if([safeString(workDic[@"valueAlias"]) isEqualToString:@"监视器2旁路"]){
+        dataString = @"旁路：关";
+    }
+    
+    [_dataArray replaceObjectAtIndex:2 withObject:dataString];
+    [self.tableView reloadData];
+}
+
+- (void)setEquipStatusDic:(NSDictionary *)equipStatusDic {
+    _equipStatusDic = equipStatusDic;
+    
+    NSString *dataString = @"开启";
+    //监视器A
+    if([safeString(equipStatusDic[@"valueAlias"]) isEqualToString:@"监视器1开"]){
+        dataString = @"开启";
+        
+    }else if([safeString(equipStatusDic[@"valueAlias"]) isEqualToString:@"监视器1关"]){
+        
+        dataString = @"关闭";
+    }
+    
+    [_dataArray replaceObjectAtIndex:3 withObject:dataString];
+    [self.tableView reloadData];
 }
 @end

@@ -256,7 +256,7 @@
         machineImg.image = [UIImage imageNamed:@"machine_rs"];
     }else {
 //         [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
-        [machineImg sd_setImageWithURL:[NSURL URLWithString: [@"http://10.33.33.147:8089" stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
+        [machineImg sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:safeString(_machineDetail[@"picture"])]]];
               
     }
     

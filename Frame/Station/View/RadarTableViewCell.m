@@ -38,21 +38,22 @@
     
     UIImageView *img = [[UIImageView alloc]init];
     [self addSubview:img];
-    img.backgroundColor  = [UIColor colorWithRed:95.f/255.f green:175.f/255.f blue:251.f/255.f alpha:1.f];
-    img.layer.cornerRadius = 4;
+    img.backgroundColor  = [UIColor colorWithHexString:@"#95A8D7"];
+    img.layer.cornerRadius = 3;
     img.layer.masksToBounds = YES;
     [img mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@8);
-        make.height.equalTo(@8);
-        make.left.equalTo(@20);
-        make.top.equalTo(@21);
+        make.width.equalTo(@6);
+        make.height.equalTo(@6);
+        make.left.equalTo(@23);
+        make.top.equalTo(@24);
     }];
     
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.numberOfLines = 0;
-    self.titleLabel.textColor = [UIColor colorWithHexString:@"#222222"];
+    self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo (self.mas_left).offset(50);
         make.top.equalTo(self.mas_top);
@@ -62,11 +63,12 @@
     
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
-    self.detailLabel.textAlignment = NSTextAlignmentLeft;
+    self.detailLabel.font = [UIFont systemFontOfSize:14];
+    self.detailLabel.textAlignment = NSTextAlignmentRight;
     self.detailLabel.numberOfLines = 1;
-    self.detailLabel.textColor = [UIColor colorWithHexString:@"#222222"];
+    self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo (self.titleLabel.mas_right).offset(30);
+        make.left.equalTo (self.mas_right).offset(-60);
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
         make.width.lessThanOrEqualTo(@200);

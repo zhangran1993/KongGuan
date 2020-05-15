@@ -130,7 +130,7 @@
 - (IBAction)LoginOk:(id)sender {
     [_userText  endEditing:YES];
     [_pwdText  endEditing:YES];
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/login"];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/login"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"username"] = _userText.text;
     NSString * pwd = _pwdText.text;//registrationID
@@ -140,7 +140,9 @@
     params[@"password"] = password;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    params[@"registrationId"] = [userDefaults objectForKey:@"registrationID"];
+//    params[@"registrationId"] = [userDefaults objectForKey:@"registrationID"];
+    params[@"registrationId"] = @"1d13c2dc-fb3a-441f-976d-7a7537018245";
+    params[@"specificStationCode"] = @"HCDHT";
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
@@ -148,27 +150,28 @@
             return ;
         }
         NSLog(@"resultresult %@",result);
+        NSDictionary *userDic = result[@"value"][@"userInfo"];
         //[userDefaults setObject:result[@"value"][@"contactLevel"] forKey:@"contactLevel"];
         //[userDefaults setObject:result[@"value"][@"customerId"] forKey:@"customerId"];
         //[userDefaults setObject:result[@"value"][@"email"] forKey:@"email"];
         //[userDefaults setObject:result[@"value"][@"enabled"] forKey:@"enabled"];
         //[userDefaults setObject:result[@"value"][@"expert"] forKey:@"expert"];
-        [userDefaults setObject:result[@"value"][@"hang"]  forKey:@"hang"];
-        [userDefaults setObject:[CommonExtension returnWithString:result[@"value"][@"icon"]]  forKey:@"icon"];
-        [userDefaults setObject:[CommonExtension returnWithString:result[@"value"][@"id"]]  forKey:@"id"];
-        [userDefaults setObject:[CommonExtension returnWithString:result[@"value"][@"name"]]  forKey:@"name"];
+        [userDefaults setObject:safeString(userDic[@"hang"]) forKey:@"hang"];
+        [userDefaults setObject:[CommonExtension returnWithString:userDic[@"icon"]]  forKey:@"icon"];
+        [userDefaults setObject:[CommonExtension returnWithString:userDic[@"id"]]  forKey:@"id"];
+        [userDefaults setObject:[CommonExtension returnWithString:userDic[@"name"]]  forKey:@"name"];
         //[userDefaults setObject:result[@"value"][@"orgId"] forKey:@"orgId"];
         //[userDefaults setObject:result[@"value"][@"orgName"] forKey:@"orgName"];
         //[userDefaults setObject:result[@"value"][@"remark"] forKey:@"remark"];
-        [userDefaults setObject:result[@"value"][@"role"]  forKey:@"role"];
+        [userDefaults setObject:userDic[@"role"]  forKey:@"role"];
         //[userDefaults setObject:result[@"value"][@"sync"] forKey:@"sync"];
-        [userDefaults setObject:[CommonExtension returnWithString:result[@"value"][@"tel"]]  forKey:@"tel"];
-        [userDefaults setObject:[CommonExtension returnWithString:result[@"value"][@"userAccount"]]  forKey:@"userAccount"];
+        [userDefaults setObject:[CommonExtension returnWithString:userDic[@"tel"]]  forKey:@"tel"];
+        [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"userAccount"];
         [userDefaults setObject:password forKey:@"password"];
         //如果和上一个用户不一样，就清掉这个缓存
-        if(![result[@"value"][@"userAccount"] isEqualToString:[userDefaults objectForKey:@"lastAserAccount"]]){
+        if(![userDic[@"userAccount"] isEqualToString:[userDefaults objectForKey:@"lastAserAccount"]]){
             [userDefaults removeObjectForKey:@"station"];
-            [userDefaults setObject:[CommonExtension returnWithString:result[@"value"][@"userAccount"]]  forKey:@"lastAserAccount"];
+            [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"lastAserAccount"];
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
         
@@ -177,7 +180,7 @@
          [self.navigationController setNavigationBarHidden:NO animated:true];
         
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.navigationController.tabBarController setSelectedIndex:2];
+        [self.navigationController.tabBarController setSelectedIndex:0];
         
         //[self.navigationController popViewControllerAnimated:YES];
         [self.navigationController popToRootViewControllerAnimated:YES];

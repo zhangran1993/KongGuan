@@ -232,15 +232,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+       
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -250,8 +242,8 @@
 //其中，stationCode是台站编码，engineRoomCode是机房编码
 - (void)getTemHuiData {
 //    NSString *  FrameRequestURL  =  @"http://10.33.33.147:8089/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS";
-    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/envRoomInfo/%@/%@",_station_code,@""];
-    
+//    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/envRoomInfo/%@/%@",_station_code,@""];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envRoomInfo/%@/%@",_station_code,@""]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -265,15 +257,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+      
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -288,8 +272,8 @@
 //{
 
 -(void)getMachineDetailList{
-    NSString *  FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/envDeviceInfo/%@/%@",_station_code,_category];
-    
+//    NSString *  FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/envDeviceInfo/%@/%@",_station_code,_category];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envDeviceInfo/%@/%@",_station_code,_category]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -357,15 +341,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+       
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -386,15 +362,15 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//            [self.navigationController popToViewController:viewCtl animated:YES];
+//            return;
+//        }else if(responses.statusCode == 502){
+//            
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         

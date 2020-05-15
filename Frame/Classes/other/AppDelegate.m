@@ -398,10 +398,10 @@
     if([viewController.title isEqualToString:@"台站管理"]||[viewController.title isEqualToString:@"告警管理"]){
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if(![userDefaults objectForKey:@"station"]){
-            if(tabBarController.selectedIndex != 2){
-                [tabBarController setSelectedIndex:2];
-                tabBarController.selectedIndex = 2;
-                tabBarController.tabBarController.selectedIndex = 2;
+            if(tabBarController.selectedIndex != 0){
+                [tabBarController setSelectedIndex:0];
+                tabBarController.selectedIndex = 0;
+                tabBarController.tabBarController.selectedIndex = 0;
             }
             
             [FrameBaseRequest showMessage:@"请选择台站"];

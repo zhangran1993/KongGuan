@@ -447,16 +447,16 @@
         [self.onetableview.mj_footer endRefreshing];
         //self.onetableview.mj_footer.state = MJRefreshStateNoMoreData;
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.navigationController pushViewController:login animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            
+//            LoginViewController *login = [[LoginViewController alloc] init];
+//            [self.navigationController pushViewController:login animated:YES];
+//            return;
+//        }else if(responses.statusCode == 502){
+//            
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -740,14 +740,14 @@
                 //[self.onetableview.mj_header beginRefreshing];
             }  failure:^(NSError *error) {
                 NSLog(@"请求失败 原因：%@",error);
-                if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-                    [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                    [FrameBaseRequest logout];
-                    
-                    LoginViewController *login = [[LoginViewController alloc] init];
-                    [self.navigationController pushViewController:login animated:YES];
-                    return;
-                }
+//                if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+//                    [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                    [FrameBaseRequest logout];
+//
+//                    LoginViewController *login = [[LoginViewController alloc] init];
+//                    [self.navigationController pushViewController:login animated:YES];
+//                    return;
+//                }
                 [FrameBaseRequest showMessage:@"网络链接失败"];
                 return ;
             } ];
@@ -858,16 +858,16 @@
         } failure:^(NSURLSessionDataTask *error)  {
             FrameLog(@"请求失败，返回数据 : %@",error);
             NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                
-                LoginViewController *login = [[LoginViewController alloc] init];
-                [self.navigationController pushViewController:login animated:YES];
-                return;
-            }else if(responses.statusCode == 502){
-                
-            }
+//            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                [FrameBaseRequest logout];
+//
+//                LoginViewController *login = [[LoginViewController alloc] init];
+//                [self.navigationController pushViewController:login animated:YES];
+//                return;
+//            }else if(responses.statusCode == 502){
+//
+//            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
             
@@ -983,16 +983,16 @@
         } failure:^(NSURLSessionDataTask *error)  {
             FrameLog(@"请求失败，返回数据 : %@",error);
             NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                
-                LoginViewController *login = [[LoginViewController alloc] init];
-                [self.navigationController pushViewController:login animated:YES];
-                return;
-            }else if(responses.statusCode == 502){
-                
-            }
+//            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                [FrameBaseRequest logout];
+//
+//                LoginViewController *login = [[LoginViewController alloc] init];
+//                [self.navigationController pushViewController:login animated:YES];
+//                return;
+//            }else if(responses.statusCode == 502){
+//
+//            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         }];

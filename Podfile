@@ -23,6 +23,7 @@ target 'Frame' do
     pod 'SDAutoLayout', '~> 2.1.7'
     pod 'DZNEmptyDataSet'
     pod 'MBProgressHUD'
+    pod 'JSONModel'
     #pod 'Pgyer'
     #pod 'PgyUpdate'
 

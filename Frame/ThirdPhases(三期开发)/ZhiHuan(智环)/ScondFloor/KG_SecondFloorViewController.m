@@ -73,7 +73,7 @@
      
     UISwipeGestureRecognizer * recognizer;
     recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
-    [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionUp)];
     [self.view addGestureRecognizer:recognizer];
     
 }
@@ -81,9 +81,10 @@
     if(recognizer.direction ==UISwipeGestureRecognizerDirectionDown)
     {
         NSLog(@"swipe down");
-        [self.navigationController popViewControllerAnimated:YES];
+       
     }if(recognizer.direction ==UISwipeGestureRecognizerDirectionUp)
     {
+         [self.navigationController popViewControllerAnimated:YES];
         NSLog(@"swipe up");
     }
     if(recognizer.direction ==UISwipeGestureRecognizerDirectionLeft)
@@ -237,8 +238,8 @@
 //请求方式：GET
 
 - (void)getStationData {
-    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c";
-    
+//    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c";
+     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c"]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -275,7 +276,8 @@
 //}]
 
 - (void)getStationStatusData {
-    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcAlarmInfo/status";
+//    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcAlarmInfo/status";
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcAlarmInfo/status"]];
     NSMutableArray *paramsArr = [NSMutableArray array];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"name"] = @"stationCode";
@@ -313,8 +315,8 @@
 //如: /intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod
 - (void)getStationHealthData {
     
-    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod";
-    
+//    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod";
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod"]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -361,8 +363,8 @@
     dispatch_group_enter(group);
     dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c";
-        
+//        NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c";
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c"]];
         [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
             NSInteger code = [[result objectForKey:@"errCode"] intValue];
             if(code  <= -1){

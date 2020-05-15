@@ -217,15 +217,15 @@ static NSString * const FrameCellID = @"PatrolHistory";
         [_stationTabView.mj_footer endRefreshing];
         //_stationTabView.mj_footer.state = MJRefreshStateNoMoreData;
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//            [FrameBaseRequest logout];
+//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//            [self.navigationController popToViewController:viewCtl animated:YES];
+//            return;
+//        }else if(responses.statusCode == 502){
+//            
+//        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -373,15 +373,15 @@ static NSString * const FrameCellID = @"PatrolHistory";
             
         } failure:^(NSURLSessionDataTask *error)  {
             NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-                [FrameBaseRequest logout];
-                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-                [self.navigationController popToViewController:viewCtl animated:YES];
-                return;
-            }else if(responses.statusCode == 502){
-                
-            }
+//            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+//                [FrameBaseRequest logout];
+//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+//                [self.navigationController popToViewController:viewCtl animated:YES];
+//                return;
+//            }else if(responses.statusCode == 502){
+//
+//            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
             

@@ -12,8 +12,6 @@
 #import "PatrolEquipmentController.h"
 #import "FrameBaseRequest.h"
 #import "StationItems.h"
-#import "HomeCarouselView.h"
-#import "YQSlideMenuController.h"
 #import "UIViewController+YQSlideMenu.h"
 #import "PersonalMsgListController.h"
 #import "PersonalMsgController.h"
@@ -28,15 +26,13 @@
 #import "UIView+LX_Frame.h"
 #import "AlarmDetailInfoController.h"
 #import "BMKClusterManager.h"
-#import "JPUSHService.h"
 #import "KG_FrameBottomAlertView.h"
 #import "FrameScrollList.h"
-
+#import "NSString+MD5.h"
 #import "StationVideoListController.h"
 #import "KG_SecondFloorViewController.h"
 #import "KG_NewTarBarViewController.h"
-#import "KG_ZhiTaiView.h"
-#import "KG_DMEView.h"
+#import "CXDatePickerView.h"
 /*
  *点聚合Annotation
  */
@@ -94,58 +90,52 @@
     _size = size;
     
 }
-
 @end
 
 @interface FrameHomeController ()<UINavigationControllerDelegate,BMKMapViewDelegate,UITableViewDelegate,UITableViewDataSource,CCZTrotingLabelDelegate,UIGestureRecognizerDelegate>{
-    BMKMapView* _mapView;
-    UIWindow * healthWindow;
-    UIButton *leftButton;
+    BMKMapView        *_mapView;
+    UIWindow          *healthWindow;
+    UIButton          *leftButton;
     BMKClusterManager *_clusterManager;//点聚合管理类
-    NSInteger _clusterZoom;//聚合级别
-    NSMutableArray *_clusterCaches;//点聚合缓存标注
+    NSInteger         _clusterZoom;//聚合级别
+    NSMutableArray    *_clusterCaches;//点聚合缓存标注
 }
-@property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
-@property (strong, nonatomic) NSMutableArray<StationItems *> * PatrolRemindItem;
-@property (strong, nonatomic) NSMutableArray * StationAlertArray;
-@property(strong,nonatomic)UITableView *stationTabView;
-@property(strong,nonatomic)UITableView *PatrolRemindTabView;
-@property(weak,nonatomic) UIView *PatrolRemindView;
-@property(weak,nonatomic) UIView *AlarmView;
+@property (strong, nonatomic)    NSMutableArray<StationItems *> * StationItem;
+@property (strong, nonatomic)    NSMutableArray<StationItems *> * PatrolRemindItem;
+@property (strong, nonatomic)    NSMutableArray * StationAlertArray;
+@property (strong,nonatomic)     UITableView *stationTabView;
+@property (strong,nonatomic)     UITableView *PatrolRemindTabView;
+@property (weak,nonatomic)       UIView *PatrolRemindView;
+@property (weak,nonatomic)       UIView *AlarmView;
 
 
-@property(strong,nonatomic)UITableView *stationAlertView;
+@property (strong,nonatomic)     UITableView *stationAlertView;
+@property (weak,nonatomic)       UIView *AlertView;
+@property (nonatomic,copy)       NSArray * stationList;
 
-@property(weak,nonatomic) UIView *AlertView;
-
-
-@property (nonatomic,copy) NSArray * stationList;
-//@property (strong, nonatomic) NSMutableArray<MsgItems *> * msgList;
-@property (nonatomic,copy) NSMutableDictionary* stationDIC;
-@property (nonatomic,copy) NSMutableArray<ClusterAnnotation *> *clusters;
-@property (nonatomic,copy) NSMutableArray<ClusterAnnotation *> *clusters2;
-@property NSString * FrameCellID;
-@property NSString * PatrolCellID;
-@property  int annoNum;
-@property (nonatomic, weak)UIView *carouselView;
-@property (nonatomic, strong) CCZTrotingLabel *rotingLabel;
-@property (nonatomic, strong) UIWebView *webView;
-@property  BOOL alreadyShow;
-@property (nonatomic, strong) NSMutableArray *annotationViewArray;
-@property (nonatomic, assign) BOOL isTap;
-@property (nonatomic, assign) BOOL isFirstEnter;
+@property (nonatomic,copy)       NSMutableDictionary* stationDIC;
+@property (nonatomic,copy)       NSMutableArray<ClusterAnnotation *> *clusters;
+@property (nonatomic,copy)       NSMutableArray<ClusterAnnotation *> *clusters2;
+@property                        NSString * FrameCellID;
+@property                        NSString * PatrolCellID;
+@property                        int annoNum;
+@property (nonatomic, weak)      UIView *carouselView;
+@property (nonatomic, strong)    CCZTrotingLabel *rotingLabel;
+@property (nonatomic, strong)    UIWebView *webView;
+@property                        BOOL alreadyShow;
+@property (nonatomic, strong)    NSMutableArray *annotationViewArray;
+@property (nonatomic, assign)    BOOL isTap;
+@property (nonatomic, assign)    BOOL isFirstEnter;
 //定时刷新的定时器
-@property (nonatomic, strong) NSTimer* repeatTimer;
+@property (nonatomic, strong)    NSTimer* repeatTimer;
 
 
-@property (nonatomic, strong) KG_FrameBottomAlertView *bottomAlertView;
+@property (nonatomic, strong)    KG_FrameBottomAlertView *bottomAlertView;
 
-@property (nonatomic, strong) FrameScrollList *scrollListView;
+@property (nonatomic, strong)    FrameScrollList *scrollListView;
 
-@property (nonatomic, strong) UIView *topBgView;
-
-
-@property (nonatomic, strong) NSDictionary *currentStationDic;
+@property (nonatomic, strong)    UIView *topBgView;
+@property (nonatomic, strong)    NSDictionary *currentStationDic;
 @end
 
 @implementation FrameHomeController
@@ -156,31 +146,23 @@
     
     [BMKMapView customMapStyle:path];
     
-    
-    
     //[BMKMapView enableCustomMapStyle:YES];//打开个性化地图
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-   [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-
     
-   
-    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBarHidden = YES;
     [_clusterCaches removeAllObjects];
     for (NSInteger i = 3; i <= 21; i++) {
         [_clusterCaches addObject:[NSMutableArray array]];
     }
+    //获取当前的台站信息
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"station"]){
         self.currentStationDic = [userDefaults objectForKey:@"station"];
     }
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"alpha0"] forBarMetrics:UIBarMetricsDefault];
-        self.navigationItem.title = @" ";
         
         if([CommonExtension isFirstLauch] == 1){//==2
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstLoginNotify) name:@"firstLoginNotify" object:nil];
@@ -190,87 +172,44 @@
         return;
     }
     [UserManager shareUserManager].loginSuccess = YES;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation2"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationItem.title = @"智慧台站";
+    
     [self.rotingLabel walk];
     
-    if(_clusters){
-        
-    }else{
+    if(!_clusters){
         [self addMapView];
-        
     }
-//    [self getStationData];
     [self quertFrameData];
     //预警提醒
-    if(!self.AlarmView){//||[[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstView"]
+    if(!self.AlarmView){
         [self isAlarmShow];
     }
+    //轮播数据
     [self wheelData];
     if(!self.PatrolRemindView){//||[[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstView"]
         [self isPatrolRemindShow];
     }
     [self getNewsNum];
     [self dataReport];
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        if (!self.repeatTimer) {
-            self.repeatTimer = [NSTimer timerWithTimeInterval:100.f target:self selector:@selector(refreshMap) userInfo:nil repeats:YES];
-            [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
-            [[NSRunLoop currentRunLoop] run];
-            
-        }
-    });
-    if(_bottomAlertView ==  nil){
-        [JSHmainWindow addSubview:self.bottomAlertView];
+    //    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    //        if (!self.repeatTimer) {
+    //            self.repeatTimer = [NSTimer timerWithTimeInterval:100.f target:self selector:@selector(refreshMap) userInfo:nil repeats:YES];
+    //            [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
+    //            [[NSRunLoop currentRunLoop] run];
+    //
+    //        }
+    //    });
+    //
+    if (self.currentStationDic.count >0 && _bottomAlertView !=nil) {
+        _bottomAlertView.dataDic = self.currentStationDic;
     }
-  
-   
 }
-//刷新地图页面 间隔10s
-- (void)refreshMap {
-    NSLog(@"refresh------");
-    NSString *FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationList";
-       
-    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
-        //        self.carouselView.frame = CGRectMake(20, -1, WIDTH_SCREEN-40, 40);
-        NSInteger code = [[result objectForKey:@"errCode"] intValue];
-        if(code  <= -1){
-            [FrameBaseRequest showMessage:result[@"errMsg"]];
-            return ;
-        }
-        _stationList = [result[@"value"] copy];
-        //
-        [_mapView removeAnnotations:_clusters2];
-        [_mapView removeAnnotations:_clusters];
-        [self addClusters];
-       
-        
-    } failure:^(NSURLSessionDataTask *error)  {
-        FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest logout];
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-            
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.navigationController pushViewController:login animated:YES];
-            
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
-        //        [FrameBaseRequest showMessage:@"网络链接失败"];
-        return ;
-        
-    }];
-}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
     [self.repeatTimer invalidate];
     self.repeatTimer = nil;
     [self closeAlertView];
-    
     [self.topBgView removeFromSuperview];
     self.topBgView = nil;
     [self.scrollListView removeFromSuperview];
@@ -280,46 +219,114 @@
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+    [self login];
+    [self initViewData];
+    [self createNaviView];
+    //进入前台
+    [self notificationMonitoring];
+}
+- (void)login {
     
    
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(20),NSForegroundColorAttributeName:[UIColor whiteColor]}] ;
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/login"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"username"] = @"zhangying";
+    NSString * pwd = @"111111";//registrationID
+    
+    NSString *password=[[[[pwd MD5]  stringByAppendingString:params[@"username"]] MD5] MD5];
+    
+    params[@"password"] = password;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    //    params[@"registrationId"] = [userDefaults objectForKey:@"registrationID"];
+    params[@"registrationId"] = @"1d13c2dc-fb3a-441f-976d-7a7537018245";
+    params[@"specificStationCode"] = @"HCDHT";
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            [FrameBaseRequest showMessage:[result objectForKey:@"errMsg"]];
+            return ;
+        }
+        NSLog(@"resultresult %@",result);
+      
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+        [UserManager shareUserManager].loginSuccess = YES;
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+    return ;
+}
+//初始化数据
+- (void)initViewData {
+    
     self.StationAlertArray = [NSMutableArray array];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(alertMessage:) name:@"alertMessage" object:nil];
     self.alreadyShow = false;
     _FrameCellID = @"WarnTableViewCell";
     self.PatrolCellID = @"PatrolRemindCell";
-    [super viewDidLoad];
-    self.annotationViewArray = [NSMutableArray array];
     
+    self.annotationViewArray = [NSMutableArray array];
+    _clusterCaches = [[NSMutableArray alloc] init];
+    
+    //点聚合管理类
+    _clusterManager = [[BMKClusterManager alloc] init];
+    
+    
+}
+//创建导航视图
+- (void)createNaviView {
     //导航栏左侧按钮
     leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     leftButton.frame = CGRectMake(0,0, 35, 35);
     [leftButton setBackgroundImage:[UIImage imageNamed:@"personal_icon"] forState:UIControlStateNormal];
     [leftButton addTarget:self action:@selector(leftButtonClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
-    [self notificationMonitoring];
-    _clusterCaches = [[NSMutableArray alloc] init];
     
-    
-    //点聚合管理类
-    _clusterManager = [[BMKClusterManager alloc] init];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
-        return;
-    }
-    
-//    [JSHmainWindow addSubview:self.bottomAlertView];
 }
-- (void)quertFrameData{
-    NSString *FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationList";
-    
-    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+//刷新地图页面 间隔10s
+- (void)refreshMap {
+    NSLog(@"refresh------");
+    //    NSString *FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationList";
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationList"]];
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        //        self.carouselView.frame = CGRectMake(20, -1, WIDTH_SCREEN-40, 40);
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        _stationList = [result[@"value"] copy];
+        _stationList = result[@"value"] ;
+        //
+        [_mapView removeAnnotations:_clusters2];
+        [_mapView removeAnnotations:_clusters];
+        [self addClusters];
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+}
+- (void)quertFrameData{
+    //    NSString *FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationList";
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationList"]];
+    [MBProgressHUD showMessage:@"" toView:JSHmainWindow];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUDForView:JSHmainWindow];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        _stationList = result[@"value"];
         [UserManager shareUserManager].stationList = _stationList;
         [_mapView removeAnnotations:_clusters2];
         [_mapView removeAnnotations:_clusters];
@@ -335,15 +342,21 @@
             self.currentStationDic = [_stationList firstObject];
         }
         [UserManager shareUserManager].currentStationDic = self.currentStationDic;
+        if(_bottomAlertView ==  nil){
+            [JSHmainWindow addSubview:self.bottomAlertView];
+        }
+        
+        
     } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUDForView:JSHmainWindow];
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         //[FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -365,22 +378,22 @@
         
         self.bottomAlertView.hidden= YES;
         if(_scrollListView == nil){
-           
+            
             [self.view insertSubview:self.topBgView belowSubview:self.carouselView];
             [JSHmainWindow addSubview:self.scrollListView];
-
+            
             //   //动画出现
             [UIView animateWithDuration:0.3
                                   delay:0
                                 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 
-                 [self.scrollListView setFrame:CGRectMake(0, 62 + Height_StatusBar+50, SCREEN_WIDTH, SCREEN_HEIGHT -(62 + Height_StatusBar)-50-TABBAR_HEIGHT )];
+                [self.scrollListView setFrame:CGRectMake(0, 62 + Height_StatusBar+50, SCREEN_WIDTH, SCREEN_HEIGHT -(62 + Height_StatusBar)-50-TABBAR_HEIGHT )];
                 
             } completion:^(BOOL finished) {
                 
                 
             }];
-           
+            
             
         }else {
             
@@ -394,7 +407,7 @@
             } completion:^(BOOL finished) {
                 
                 
-                      }];
+            }];
             [self.topBgView setHidden:NO];
             [self.scrollListView setHidden:NO];
             self.scrollListView.refreshData = @"YES";
@@ -407,29 +420,29 @@
         
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
         
-       
-       
+        
+        
         [UIView animateWithDuration:0.3
                               delay:0
                             options:UIViewAnimationOptionCurveEaseIn animations:^{
             
-          
+            
             [self.scrollListView setFrame:CGRectMake(0, SCREEN_HEIGHT - TABBAR_HEIGHT-97, SCREEN_WIDTH, SCREEN_HEIGHT -(62 + Height_StatusBar))];
             self.bottomAlertView.hidden = NO;
-                   [self.scrollListView setHidden:YES];
-                   [self.topBgView setHidden:YES];
-                   
+            [self.scrollListView setHidden:YES];
+            [self.topBgView setHidden:YES];
+            
         } completion:^(BOOL finished) {
             
             
         }];
         [self.carouselView mas_makeConstraints:^(MASConstraintMaker *make) {
-                      make.top.equalTo(self.view.mas_top).offset(20 + Height_StatusBar);
-                      make.left.equalTo(self.view.mas_left).offset(20);
-                      //                make.right.equalTo(self.view.mas_right).offset(20);
-                      make.width.equalTo(@(SCREEN_WIDTH-40));
-                      make.height.equalTo(@50);
-                  }];
+            make.top.equalTo(self.view.mas_top).offset(20 + Height_StatusBar);
+            make.left.equalTo(self.view.mas_left).offset(20);
+            //                make.right.equalTo(self.view.mas_right).offset(20);
+            make.width.equalTo(@(SCREEN_WIDTH-40));
+            make.height.equalTo(@50);
+        }];
     }
     
 }
@@ -513,132 +526,10 @@
  轮播数据
  */
 - (void)wheelData {
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/getTop5Alarm"];
-//    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-//        NSInteger code = [[result objectForKey:@"errCode"] intValue];
-//        if(code  <= -1){
-//            [FrameBaseRequest showMessage:result[@"errMsg"]];
-//            return ;
-//        }
-//        NSMutableArray *modelArray = [NSMutableArray array];
-//        if (result[@"value"][@"top5Alarm"] && [result[@"value"][@"top5Alarm"] isKindOfClass:[NSArray class]]) {
-//            for (NSDictionary *dict in result[@"value"][@"top5Alarm"]) {
-//                WheelModel *model = [WheelModel mj_objectWithKeyValues:dict];
-//                [modelArray addObject:model];
-//            }
-//            [self.carouselView removeFromSuperview];
-//            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 0, WIDTH_SCREEN-40, 50)];
-//
-//            view.backgroundColor = [UIColor colorWithHexString:@"#678FDA"];
-//            view.layer.cornerRadius = 23;
-//            view.layer.masksToBounds = YES;
-//            [self.view addSubview:view];
-//            self.carouselView = view;
-//
-//            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 40, view.lx_height)];
-//            self.webView.opaque = NO;
-//            self.webView.userInteractionEnabled = NO;//用户不可交互
-//            self.webView.backgroundColor = [UIColor whiteColor];
-//
-//            UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(3,3, 44, 44)];
-//            [view addSubview:img];
-//            img.image = [UIImage imageNamed:[self getNotiImage:[NSString stringWithFormat:@"%@",result[@"value"][@"maxLevel"]]]];
-//            UIView *notiView= [[UIView alloc]initWithFrame:CGRectMake(35,0 , 18, 18)];
-//
-//            [view addSubview:notiView];
-//
-//            UIImageView *notiimage = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 18, 18)];
-//            [notiView addSubview:notiimage];
-//            notiimage.image = [UIImage imageNamed:@"noti_image"];
-//
-//            UILabel *notiLabel = [[UILabel alloc]initWithFrame:CGRectMake(4, 4, 10, 10)];
-//            [notiView addSubview:notiLabel];
-//
-//            notiLabel.textAlignment = NSTextAlignmentCenter;
-//            notiLabel.font = [UIFont systemFontOfSize:14];
-//            notiLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-//
-//            NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
-//            NSString *maxLevel = [NSString stringWithFormat:@"%@",result[@"value"][@"maxLevel"]]  ;
-//
-//            if([maxLevel isEqualToString:@"0"]){
-//                img.image = [UIImage imageNamed:@"alert_prompt"];
-//            }else if([maxLevel isEqualToString:@"1"]){
-//                img.image = [UIImage imageNamed:@"alert_secondary"];
-//            }else if([maxLevel isEqualToString:@"2"]){
-//                img.image = [UIImage imageNamed:@"alert_secondary"];
-//            }else if([maxLevel isEqualToString:@"3"]){
-//                img.image = [UIImage imageNamed:@"alert_important"];
-//            }else if([maxLevel isEqualToString:@"4"]){
-//                img.image = [UIImage imageNamed:@"alert_urgent"];
-//            }else{
-//                img.image = [UIImage imageNamed:@"alert_prompt"];
-//            }
-//
-//
-//            self.rotingLabel = [[CCZTrotingLabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.webView.frame), 0, SCREEN_WIDTH - 85-20-20, view.lx_height)];
-//            self.rotingLabel.delegate = self;
-//            self.rotingLabel.backgroundColor = [UIColor clearColor];
-//            self.rotingLabel.pause = 0.5;
-//            self.rotingLabel.type = CCZWalkerTypeDescend;
-//            self.rotingLabel.rate = RateNormal;
-//            self.rotingLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-//            self.rotingLabel.font = [UIFont systemFontOfSize:14];
-//            [view addSubview:self.rotingLabel];
-//            [self.rotingLabel trotingWithAttribute:^(CCZTrotingAttribute * _Nonnull attribute) {
-//                NSLog(@"%@",attribute);
-//            }];
-//            UIImageView *rightArrowimage = [[UIImageView alloc]initWithFrame:CGRectMake(self.rotingLabel.frame.origin.x + self.rotingLabel.frame.size.width +25, 21, 5, 8)];
-//            rightArrowimage.image = [UIImage imageNamed:@"right_arrow"];
-//            [view addSubview:rightArrowimage];
-//            notiLabel.text = [NSString stringWithFormat:@"%d",(int)modelArray.count];
-//            if (modelArray.count > 0) {
-//                NSMutableArray *arr = [NSMutableArray array];
-//                for (int i = 0; i < modelArray.count; i++) {
-//                    WheelModel *model = modelArray[i];
-//                    [arr addObject:model.context];
-//                }
-//                NSArray *array = [arr copy];
-//                [self.rotingLabel addTexts:array];
-//            } else {
-//                [self.rotingLabel addTexts:[@[@"设备运行正常"] mutableCopy]];
-//            }
-//            [self.carouselView mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.equalTo(self.view.mas_top).offset(20 + Height_StatusBar);
-//                make.left.equalTo(self.view.mas_left).offset(20);
-//                //                make.right.equalTo(self.view.mas_right).offset(20);
-//                make.width.equalTo(@(SCREEN_WIDTH-40));
-//                make.height.equalTo(@50);
-//            }];
-//            [img mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.equalTo(self.carouselView.mas_top);
-//                make.left.equalTo(self.carouselView.mas_left);
-//                make.width.equalTo(@50);
-//                make.height.equalTo(@50);
-//            }];
-//            [self.rotingLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.top.equalTo(self.carouselView.mas_top);
-//                make.left.equalTo(img.mas_right).offset(5);
-//                make.right.equalTo(self.carouselView.mas_right).offset(-20);
-//
-//                make.height.equalTo(@50);
-//            }];
-//        }
-//    } failure:^(NSURLSessionDataTask *error)  {
-//        FrameLog(@"请求失败，返回数据 : %@",error);
-//        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
-//        //[FrameBaseRequest showMessage:@"网络链接失败"];
-//        return ;
-//    }];
-    
-     FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/topAlarm";
-    
+    //    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/getTop5Alarm"];
+    //
+    //    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/topAlarm";
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/topAlarm"]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -658,6 +549,7 @@
             view.layer.cornerRadius = 23;
             view.layer.masksToBounds = YES;
             [self.view addSubview:view];
+            [self.view bringSubviewToFront:view];
             self.carouselView = view;
             
             self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 40, view.lx_height)];
@@ -682,7 +574,7 @@
             notiLabel.textAlignment = NSTextAlignmentCenter;
             notiLabel.font = [UIFont systemFontOfSize:12];
             notiLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-           
+            
             NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
             NSString *maxLevel = [NSString stringWithFormat:@"%@",result[@"value"][@"maxLevel"]]  ;
             
@@ -724,7 +616,7 @@
                 notiLabel.text = @"99";
                 [notiLabel setFrame:CGRectMake(0, 4, 18, 10)];
             }
-           
+            
             if([maxLevel isEqualToString:@"5"]){
                 notiimage.image = [UIImage imageNamed:@"noti_image"];
             }else if([maxLevel isEqualToString:@"4"]){
@@ -739,7 +631,7 @@
                 notiimage.image = [UIImage imageNamed:@"noti_image"];
             }
             
-          
+            
             if (modelArray.count > 0) {
                 NSMutableArray *arr = [NSMutableArray array];
                 for (int i = 0; i < modelArray.count; i++) {
@@ -772,16 +664,16 @@
                 make.height.equalTo(@50);
             }];
         }
-            
-        } failure:^(NSURLSessionDataTask *error)  {
-            FrameLog(@"请求失败，返回数据 : %@",error);
-            NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         //[FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -817,7 +709,7 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        _stationList = [result[@"value"] copy];
+        _stationList = result[@"value"] ;
         
         [_mapView removeAnnotations:_clusters2];
         [_mapView removeAnnotations:_clusters];
@@ -826,22 +718,22 @@
             [self performSelector:@selector(changemapView) withObject:nil afterDelay:.1f];
             _isFirstEnter = YES;
         }
-     
+        
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest logout];
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-            
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.navigationController pushViewController:login animated:YES];
-            
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest logout];
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+        //
+        //            LoginViewController *login = [[LoginViewController alloc] init];
+        //            [self.navigationController pushViewController:login animated:YES];
+        //
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -1053,9 +945,7 @@
     aclusters2 =nil;
     _clusters = [aclusters mutableCopy];
     aclusters =nil;
-    //    [_mapView addAnnotations:_clusters];
-    //    [_mapView addAnnotations:_clusters2];
-    //    [self removeClusters];
+    
     [self updateClusters];
     
 }
@@ -1175,7 +1065,7 @@
         NSDictionary *dic = item.locDic;
         if (isSafeDictionary(dic)) {
             equipmentStatus += [ dic[@"equipmentStatus"][@"num"] intValue];
-           
+            
             if([dic[@"equipmentStatus"][@"level"] intValue] <equipmentLevel  &&[dic[@"equipmentStatus"][@"level"] intValue] >0){
                 equipmentLevel = [dic[@"equipmentStatus"][@"level"] intValue];
             }
@@ -1197,8 +1087,8 @@
                 //正常
             }else{
                 
-                int isNull = isNull(dic[@"equipmentStatus"][@"num"]);
-                NSString *equipNum = isNull == 1?dic[@"equipmentStatus"][@"num"]:@"0";
+                int isNullm = isNullm(dic[@"equipmentStatus"][@"num"]);
+                NSString *equipNum = isNullm == 1?dic[@"equipmentStatus"][@"num"]:@"0";
                 eqlNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
                 eqpImage.image = [UIImage imageNamed:[self getLevelImage:dic[@"equipmentStatus"][@"level"]]];
                 
@@ -1265,8 +1155,8 @@
         }
     }
     if (securityLevel == 5) {
-          securityLevel = 0;
-      }
+        securityLevel = 0;
+    }
     if (dataList.count == 1) {
         //安防
         for (BMKClusterItem *item in dataList) {
@@ -1278,11 +1168,11 @@
                 //正常
                 securityImage.image = [UIImage imageNamed:@"level_normal"];
             }else{
-                int isNull = isNull( dic[@"securityStatus"][@"num"]);
-                NSString *equipNum = isNull == 1?dic[@"securityStatus"][@"num"]:@"0";
+                int isNullm = isNullm( dic[@"securityStatus"][@"num"]);
+                NSString *equipNum = isNullm == 1?dic[@"securityStatus"][@"num"]:@"0";
                 securityNumLabel.text = [NSString stringWithFormat:@"%@",equipNum];
                 securityNumLabel.backgroundColor = [self getTextColor:dic[@"securityStatus"][@"level"]];
-                if (isNull >0) {
+                if (isNullm >0) {
                     securityNumLabel.hidden = NO;
                 }else {
                     securityNumLabel.hidden = YES;
@@ -1344,7 +1234,7 @@
         make.top.equalTo(envImage.mas_top).offset(-3);
         make.width.height.equalTo(@8);
     }];
-
+    
     //    environmentStatus
     
     int environmentLevel = 5;
@@ -1373,12 +1263,12 @@
                 //正常
                 envImage.image = [UIImage imageNamed:@"level_normal"];
             }else{
-                int isNull = isNull( dic[@"environmentStatus"][@"num"]);
-                NSString *equipNum = isNull == 1?dic[@"environmentStatus"][@"num"]:@"0";
+                int isNullm = isNullm( dic[@"environmentStatus"][@"num"]);
+                NSString *equipNum = isNullm == 1?dic[@"environmentStatus"][@"num"]:@"0";
                 envNumLabel.text = [NSString stringWithFormat:@"%@",equipNum] ;
                 envNumLabel.backgroundColor = [self getTextColor:dic[@"environmentStatus"][@"level"]];
                 envImage.image = [UIImage imageNamed:[self getLevelImage:dic[@"environmentStatus"][@"level"]]];
-                if (isNull >0) {
+                if (isNullm >0) {
                     envNumLabel.hidden = NO;
                 }else {
                     envNumLabel.hidden = YES;
@@ -1402,7 +1292,7 @@
         }
         
     }
-       
+    
     
     UILabel * powerLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(18), FrameWidth(33), FrameWidth(75),  FrameWidth(27))];
     powerLabel.text = @"动力:";
@@ -1442,9 +1332,9 @@
         make.width.height.equalTo(@8);
     }];
     
-   
     
-     //power
+    
+    //power
     int powerLevel = 5;
     int powerStatus = 0;
     for (BMKClusterItem *item in dataList) {
@@ -1458,8 +1348,8 @@
         }
     }
     if (powerLevel == 5) {
-           powerLevel = 0;
-       }
+        powerLevel = 0;
+    }
     if (dataList.count == 1) {
         //power
         for (BMKClusterItem *item in dataList) {
@@ -1471,13 +1361,13 @@
                 powerImage.image = [UIImage imageNamed:@"level_normal"];
                 
             }else{
-                int isNull = isNull(  dic[@"powerStatus"][@"num"]);
-                NSString *equipNum = isNull == 1? dic[@"powerStatus"][@"num"]:@"0";
+                int isNullm = isNullm(  dic[@"powerStatus"][@"num"]);
+                NSString *equipNum = isNullm == 1? dic[@"powerStatus"][@"num"]:@"0";
                 powerNumLabel.text = [NSString stringWithFormat:@"%@",equipNum] ;
                 powerNumLabel.backgroundColor = [self getTextColor:dic[@"powerStatus"][@"level"]];
                 powerImage.image = [UIImage imageNamed:[self getLevelImage:dic[@"powerStatus"][@"level"]]];
                 
-                if (isNull >0) {
+                if (isNullm >0) {
                     powerNumLabel.hidden = NO;
                 }else {
                     powerNumLabel.hidden = YES;
@@ -2119,7 +2009,7 @@
     
 }
 - (void)saveDefaultData:(NSDictionary *)dataD {
-   
+    
     NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD[@"station"]];
     for (NSString*s in [dataDic allKeys]) {
         if ([dataDic[s] isEqual:[NSNull null]]) {
@@ -2151,9 +2041,7 @@
             [powerDic setObject:@"" forKey:s];
         }
     }
-    
-    
-      
+
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:dataDic forKey:@"station"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -2173,9 +2061,9 @@
     [userDefaults4 setObject:powerDic forKey:@"powerStatus"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-//    [self.navigationController.tabBarController setSelectedIndex:2];
+    //    [self.navigationController.tabBarController setSelectedIndex:2];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
-  
+    
     
     [self.navigationController.navigationBar setHidden:YES];
     [self.tabBarController.tabBar setHidden:YES];
@@ -2185,7 +2073,7 @@
 }
 
 - (void)selDefaultData:(NSDictionary *)dataD {
-   
+    
     NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:dataD];
     for (NSString*s in [dataDic allKeys]) {
         if ([dataDic[s] isEqual:[NSNull null]]) {
@@ -2219,7 +2107,7 @@
     }
     
     
-      
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:dataDic forKey:@"station"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -2239,9 +2127,9 @@
     [userDefaults4 setObject:powerDic forKey:@"powerStatus"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-//    [self.navigationController.tabBarController setSelectedIndex:2];
+    //    [self.navigationController.tabBarController setSelectedIndex:2];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"choiceStationNotification" object:self];
-  
+    
     
     [self.navigationController.navigationBar setHidden:YES];
     [self.tabBarController.tabBar setHidden:YES];
@@ -2322,19 +2210,23 @@
     NSLog(@"healthBtnClick");
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
     
-    //    RankController *Rank = [[RankController alloc] init];
-    //    [self.navigationController pushViewController:Rank animated:YES];
-//    KG_SecondFloorViewController *Rank = [[KG_SecondFloorViewController alloc] init];
-//   [self.navigationController pushViewController:Rank animated:YES];
-    KG_DMEView *Rank = [[KG_DMEView alloc]init];
-    Rank.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:Rank];
-    [Rank mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left).offset(16);
-        make.right.equalTo(self.view.mas_right).offset(-16);
-        make.top.equalTo(@10);
-        make.bottom.equalTo(self.view.mas_bottom);
+    
+    
+    //年-月-日-时-分
+    CXDatePickerView *datepicker = [[CXDatePickerView alloc] initWithDateStyle:CXDateStyleShowYearMonthDayHourMinute CompleteBlock:^(NSDate *selectDate) {
+        
+        NSString *dateString = [selectDate stringWithFormat:@"yyyy-MM-dd HH:mm"];
+        NSLog(@"选择的日期：%@",dateString);
+        //        [btn setTitle:dateString forState:UIControlStateNormal];
     }];
+    datepicker.dateLabelColor = [UIColor colorWithHexString:@"#24252A"];//年-月-日-时-分 颜色
+    datepicker.datePickerColor = [UIColor blackColor];//滚轮日期颜色
+    datepicker.headerViewColor = [UIColor colorWithHexString:@"#F6F7F9"]; // 顶部视图背景颜色
+    datepicker.doneButtonColor = [UIColor colorWithHexString:@"#004EC4"]; // 确认按钮字体颜色
+    datepicker.cancelButtonColor = [UIColor colorWithHexString:@"#24252A"]; // 取消按钮颜色
+    datepicker.shadeViewAlphaWhenShow = 0.3;
+    datepicker.showAnimationTime = 0.4;
+    [datepicker show];
 }
 - (void)showAlertMessage:(NSMutableArray *)array {
     
@@ -2536,12 +2428,12 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -2646,13 +2538,13 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-            
-            return;
-        }else if(responses.statusCode == 502){
-            
-        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+        //
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -2869,12 +2761,12 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            
-            return;
-        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //
+        //            return;
+        //        }
         //[FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -2990,7 +2882,13 @@
             StationVideo.station_name = stationName;
             [self.navigationController pushViewController:StationVideo animated:YES];
         };
-        
+        _scrollListView.selStation = ^{
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            if([userDefaults objectForKey:@"station"]){
+                [self selDefaultData: [userDefaults objectForKey:@"station"]];
+            }
+            
+        };
         _scrollListView.sliderDown = ^(BOOL isSliderDown) {
             if (isSliderDown) {
                 [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
@@ -3011,6 +2909,7 @@
     }
     return _scrollListView;
 }
+//底部view
 - (KG_FrameBottomAlertView *)bottomAlertView {
     if (!_bottomAlertView) {
         _bottomAlertView = [[KG_FrameBottomAlertView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT - TABBAR_HEIGHT-97, SCREEN_WIDTH, 97)];
@@ -3018,11 +2917,11 @@
             _bottomAlertView.dataDic = self.currentStationDic;
         }
         _bottomAlertView.watchVideo = ^(NSString * _Nonnull stationCode, NSString * _Nonnull stationName) {
-               StationVideoListController  *StationVideo = [[StationVideoListController alloc] init];
-               StationVideo.station_code = stationCode;
-               StationVideo.station_name = stationName;
-               [self.navigationController pushViewController:StationVideo animated:YES];
-           };
+            StationVideoListController  *StationVideo = [[StationVideoListController alloc] init];
+            StationVideo.station_code = stationCode;
+            StationVideo.station_name = stationName;
+            [self.navigationController pushViewController:StationVideo animated:YES];
+        };
         _bottomAlertView.selStation = ^{
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             if([userDefaults objectForKey:@"station"]){
@@ -3053,6 +2952,8 @@
     }
     return _bottomAlertView;
 }
+
+//获得文字颜色
 - (UIColor *)getTextColor:(NSString *)level {
     UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
     
@@ -3067,7 +2968,6 @@
     }else if ([level isEqualToString:@"1"]) {
         textColor = [UIColor colorWithHexString:@"F62546"];
     }
-    
     //紧急
     return textColor;
 }

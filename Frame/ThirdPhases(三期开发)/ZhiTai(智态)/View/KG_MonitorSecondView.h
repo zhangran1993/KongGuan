@@ -12,6 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_MonitorSecondView : UIView
 
+
+@property (nonatomic, strong) NSDictionary *checkDic;
+
+@property (nonatomic, strong) NSDictionary *dataDic;
+
+@property (nonatomic, strong) NSDictionary *workDic;
+
+@property (nonatomic, strong) NSDictionary *equipStatusDic;
 @end
 
 NS_ASSUME_NONNULL_END

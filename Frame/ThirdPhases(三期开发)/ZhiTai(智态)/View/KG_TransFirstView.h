@@ -11,6 +11,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_TransFirstView : UIView
 
+
+@property (nonatomic ,strong) NSDictionary *workDic;
+
+@property (nonatomic ,strong) NSDictionary *hotDic;
+
+@property (nonatomic ,strong) NSDictionary *statusDic;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

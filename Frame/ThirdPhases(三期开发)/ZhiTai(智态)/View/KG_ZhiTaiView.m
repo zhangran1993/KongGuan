@@ -613,6 +613,44 @@
     
     //工作机
     
-    
+    //工作机
+    for (NSDictionary *dic in list) {
+        if ([dic[@"name"] containsString:@"监视器1自身状态"]) {
+            
+            self.monitorFirstView.checkDic = dic;
+        }else if ([dic[@"name"] containsString:@"监视器1数据状态"]) {
+            self.monitorFirstView.dataDic = dic;
+        }else if ([dic[@"name"] containsString:@"监视器工作状态"]) {
+            self.monitorFirstView.workDic = dic;
+        }else if ([dic[@"name"] containsString:@"监视器1状态"]) {
+            self.monitorFirstView.equipStatusDic = dic;
+        }else if ([dic[@"name"] containsString:@"监视器2自身状态"]) {
+            
+            self.monitorSecondView.checkDic = dic;
+        }else if ([dic[@"name"] containsString:@"监视器2数据状态"]) {
+            self.monitorSecondView.dataDic = dic;
+        }else if ([dic[@"name"] containsString:@"监视器工作状态"]) {
+            self.monitorSecondView.workDic = dic;
+        }else if ([dic[@"name"] containsString:@"监视器2状态"]) {
+            self.monitorSecondView.equipStatusDic = dic;
+        }else if ([dic[@"name"] containsString:@"系统状态"]) {
+            self.transBottomView.bottomDic = dic;
+        }else if ([dic[@"name"] containsString:@"工作机"]) {
+           
+            if ([dataDic[@"name"] containsString:@"热备"]) {
+                self.transFirstView.hotDic = dic;
+                self.transFirstView.workDic = dic;
+                self.transSecondView.hotDic = dic;
+                self.transSecondView.workDic = dic;
+            }
+            
+        }else if ([dic[@"name"] containsString:@"发射机1状态"]) {
+            self.transFirstView.statusDic = dic;
+        }else if ([dic[@"name"] containsString:@"发射机2状态"]) {
+            self.transSecondView.statusDic = dic;
+        }
+        
+    }
+        
 }
 @end

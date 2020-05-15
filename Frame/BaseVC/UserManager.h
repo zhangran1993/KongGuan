@@ -19,4 +19,13 @@ interfaceSingle(UserManager)
 @property(nonatomic, strong) NSDictionary *currentStationDic;
 
 @property(nonatomic, strong) NSArray *stationList;
+
+//执行负责人
+@property(nonatomic, strong) NSArray *exeHeadArr;
+
+//执行负责人
+@property(nonatomic, strong) NSArray *executiveList;
+
+//获取任务状态字典接口
+@property(nonatomic, strong) NSArray *taskStatusArr;
 @end
