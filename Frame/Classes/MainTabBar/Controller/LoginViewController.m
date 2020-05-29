@@ -12,8 +12,8 @@
 #import "FrameBaseRequest.h"
 #import "PersonalPatrolItems.h"
 #import "NSString+MD5.h"
-
-
+#import "KG_LoginVIew.h"
+#import "KG_LoginSelStationViewController.h"
 @interface LoginViewController ()<UITextViewDelegate>
 //@property (nonatomic,assign) NSInteger isshow;
 @property (weak, nonatomic) IBOutlet UITextField *userText;
@@ -23,74 +23,84 @@
 @property (retain, nonatomic) IBOutlet UIButton *LoginBtn;
 @property (retain, nonatomic) IBOutlet UIView *bgView;
 
+@property (strong, nonatomic) KG_LoginVIew *loginView;
+
 @end
 
 @implementation LoginViewController
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"LoginViewController viewWillAppear");
+    
     self.title = @" ";
-    
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"alpha0"]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"alpha0"] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController setNavigationBarHidden:YES animated:YES]; //设置隐藏
-     self.navigationController.navigationBar.tintColor = [UIColor clearColor];
-    
-    
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"alpha0"] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
-    self.navigationItem.leftBarButtonItem = leftItem;
+   
+//    [self.navigationController setNavigationBarHidden:YES];
+     
+//    [self.navigationController.navigationBar setShadowImage:[UIImage imageNamed:@"alpha0"]];
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"alpha0"] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setTranslucent:YES];
+//    [self.navigationController setNavigationBarHidden:YES animated:YES]; //设置隐藏
+//     self.navigationController.navigationBar.tintColor = [UIColor clearColor];
+//
+//
+//    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"alpha0"] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+//    self.navigationItem.leftBarButtonItem = leftItem;
     //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] init];
-    
+   
 }
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_UserView release];
-    [_PwdView release];
-    [_LoginBtn release];
-    [_bgView release];
+//    [_UserView release];
+//    [_PwdView release];
+//    [_LoginBtn release];
+//    [_bgView release];
     [super dealloc];
 }
 -(void)viewWillDisappear:(BOOL)animated{
-     [self.navigationController setNavigationBarHidden:NO animated:animated];
+//     [self.navigationController setNavigationBarHidden:NO animated:animated];
     NSLog(@"LoginViewController viewWillDisappear");
 }
 
 - (void)viewDidLoad {
-    //背景的阴影
-    _bgView.layer.cornerRadius = 15;
-    _bgView.layer.shadowColor = [UIColor colorWithRed:64/255.0 green:159/255.0 blue:243/255.0 alpha:0.35].CGColor;
-    
-    _bgView.layer.shadowOpacity = 1.0f;
-    //阴影的圆角
-    _bgView.layer.shadowRadius = 8.f;
-    //阴影偏移量
-    _bgView.layer.shadowOffset = CGSizeMake(0,0);
-    
-    
-    _UserView.layer.borderColor = [UIColor colorWithHexString:@"#e6e6e6"].CGColor;
-    
-    _UserView.layer.borderWidth = 1.3;
-    _UserView.layer.cornerRadius = 8;
-    
-    _PwdView.layer.borderColor = [UIColor colorWithHexString:@"#e6e6e6"].CGColor;
-    
-    _PwdView.layer.borderWidth = 1.3;
-    _PwdView.layer.cornerRadius = 8;
-    
-    
-    
-    _userText.delegate = self;
-    _userText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的帐号或手机号" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"],NSFontAttributeName:FontSize(16)
-                                                                                              
-    }];
-//    [_userText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
-    //_userText.text = @"ceshi";
-    _pwdText.delegate = self;
-    _pwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的密码" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"],NSFontAttributeName:FontSize(16)}];
-//    [_pwdText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
-    
-    _LoginBtn.layer.cornerRadius = 8;
-    [_LoginBtn setBackgroundColor:[UIColor colorWithHexString:@"#409ff3"]];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES animated:true];
+    self.tabBarController.tabBar.hidden = YES;
+    [self createLoginView];
+//    //背景的阴影
+//    _bgView.layer.cornerRadius = 15;
+//    _bgView.layer.shadowColor = [UIColor colorWithRed:64/255.0 green:159/255.0 blue:243/255.0 alpha:0.35].CGColor;
+//    
+//    _bgView.layer.shadowOpacity = 1.0f;
+//    //阴影的圆角
+//    _bgView.layer.shadowRadius = 8.f;
+//    //阴影偏移量
+//    _bgView.layer.shadowOffset = CGSizeMake(0,0);
+//    
+//    
+//    _UserView.layer.borderColor = [UIColor colorWithHexString:@"#e6e6e6"].CGColor;
+//    
+//    _UserView.layer.borderWidth = 1.3;
+//    _UserView.layer.cornerRadius = 8;
+//    
+//    _PwdView.layer.borderColor = [UIColor colorWithHexString:@"#e6e6e6"].CGColor;
+//    
+//    _PwdView.layer.borderWidth = 1.3;
+//    _PwdView.layer.cornerRadius = 8;
+//    
+//    
+//    
+//    _userText.delegate = self;
+//    _userText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的帐号或手机号" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"],NSFontAttributeName:FontSize(16)
+//                                                                                              
+//    }];
+////    [_userText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
+//    //_userText.text = @"ceshi";
+//    _pwdText.delegate = self;
+//    _pwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入您的密码" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#dbdbdb"],NSFontAttributeName:FontSize(16)}];
+////    [_pwdText setValue:FontSize(16) forKeyPath:@"_placeholderLabel.font"];
+//    
+//    _LoginBtn.layer.cornerRadius = 8;
+//    [_LoginBtn setBackgroundColor:[UIColor colorWithHexString:@"#409ff3"]];
 }
 - (IBAction)forgetPwd:(id)sender {
     
@@ -100,6 +110,28 @@
     [self.navigationController pushViewController:EditPwd animated:YES];
     
     return;
+}
+
+- (void)createLoginView {
+    
+    [self.view addSubview:self.loginView];
+    weakify(self)
+    self.loginView.runClick = ^{
+        [FrameBaseRequest showMessage:@"运行中心暂未开放，敬请期待"];
+        
+    };
+    self.loginView.stationClick = ^{
+        strongify(self);
+        KG_LoginSelStationViewController *VC = [[KG_LoginSelStationViewController alloc]init];
+              [self.navigationController pushViewController:VC animated:YES];
+        
+    };
+    [self.loginView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
 }
 -(void)backAction{
     
@@ -177,10 +209,10 @@
         
         [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
         self.navigationController.navigationBar.translucent = NO;
-         [self.navigationController setNavigationBarHidden:NO animated:true];
+//         [self.navigationController setNavigationBarHidden:NO animated:true];
         
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.navigationController.tabBarController setSelectedIndex:0];
+        [self.navigationController.tabBarController setSelectedIndex:2];
         
         //[self.navigationController popViewControllerAnimated:YES];
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -194,5 +226,12 @@
     } ];
     
     return ;
+}
+
+- (KG_LoginVIew *)loginView {
+    if (!_loginView) {
+        _loginView = [[KG_LoginVIew alloc]init];
+    }
+    return _loginView;
 }
 @end

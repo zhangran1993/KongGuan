@@ -55,14 +55,15 @@
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.text = @"旁路供电";
+    self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
-        make.left.equalTo(self.iconImage.mas_right).offset(9);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.iconImage.mas_left).offset(-9);
+        make.left.equalTo(self.mas_left);
         make.height.equalTo(self.mas_height);
     }];
 

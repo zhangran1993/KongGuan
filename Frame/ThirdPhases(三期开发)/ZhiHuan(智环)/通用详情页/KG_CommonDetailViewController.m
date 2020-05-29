@@ -11,7 +11,8 @@
 #import "KG_MachineDetailModel.h"
 #import "KG_UpsAlertView.h"
 #import "StationMachineDetailMoreController.h"
-
+#import "KG_NiControlViewController.h"
+#import "KG_KongTiaoControlView.h"
 @interface KG_CommonDetailViewController ()<UIScrollViewDelegate>
 //topview
 @property (nonatomic, strong) UIView         *topView;
@@ -48,11 +49,36 @@
     [self initData];
     
     [self createTopView];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlLog:) name:@"controlLog" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreCanshu:) name:@"moreCanshu" object:nil];
    
     
 }
+-(void)dealloc
+{
+    [super dealloc];
+   
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
+}
+
+- (void)controlLog:(NSNotification *)notification {
+    KG_NiControlViewController *vc = [[KG_NiControlViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)moreCanshu:(NSNotification *)notification {
+    NSDictionary * Detail = notification.object;
+    StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
+    vc.machineDetail = Detail;
+
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+       
 - (void)initData {
     
     self.currIndex = 0;
@@ -61,15 +87,21 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+      [self.navigationController setNavigationBarHidden:NO];
     [self createNaviView];
     
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    _upsAlertView = nil;
-    [_upsAlertView removeFromSuperview];
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    
+    [self.navigationController setNavigationBarHidden:YES];
+    
+    
+    
 }
+
 - (void)createNaviView {
     
     UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -276,16 +308,25 @@
     if ([safeString(dataDic[@"alias"]) isEqualToString:@"水浸"]) {
         equipStr = @"device_shuijin";
     }
-    self.topLeftImage.image =  [UIImage imageNamed:equipStr];
+    NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
+    self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",equipStr]];
+    if ([equipStr containsString:@"空调"]) {
+        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"空调"]];
+    }else if ([equipStr containsString:@"漏水"]) {
+        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"水浸"]];
+    
+    }
+    
     self.topTitleLabel.text = safeString(dataDic[@"alias"]);
-    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",dataDic[@"alarmLevel"]]]];
-    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",dataDic[@"alarmLevel"]]];
-    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",dataDic[@"alarmNum"]];
-    if([dataDic[@"alarmNum"] intValue] ==0) {
+    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
+    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
+    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
+    if([totalDic[@"toltalNum"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;
     }
+     
     
 }
 
@@ -307,6 +348,55 @@
     [self.view addSubview:scrollView];
     _scrollView = scrollView;
     
+    if ([self.machine_name isEqualToString:@"空调"]) {
+        NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
+           for (int i = 0; i < self.dataArray.count; i++) {
+               
+               KG_KongTiaoControlView *viewcon= [[KG_KongTiaoControlView alloc] initWithFrame:CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH-32, self.scrollView.frame.size.height)];
+               
+               equipmentDetailsModel *detailModel = self.dataArray[i];
+               
+               NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
+               viewcon.alarmArray = detailModel.equipmentAlarmInfo;
+                                              
+               viewcon.dataDic = dataDic;
+               viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
+               NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
+               
+               NSDictionary * Detail = @{@"station_name":_station_name,
+                                         @"machine_name":_machine_name,
+                                         @"name":equipmentDetails[i][@"equipment"][@"alias"],
+                                         @"alias":equipmentDetails[i][@"equipment"][@"alias"],
+                                         @"code":equipmentDetails[i][@"equipment"][@"code"],
+                                         @"roomName":equipmentDetails[i][@"equipment"][@"roomName"],
+                                         @"picture":equipmentDetails[i][@"equipment"][@"picture"],
+                                         @"status":equipmentDetails[i][@"status"],
+                                         @"level":equipmentDetails[i][@"level"]?equipmentDetails[i][@"level"]:@"",
+                                         @"num":equipmentDetails[i][@"num"]?equipmentDetails[i][@"num"]:@"",
+                                         @"category":equipmentDetails[i][@"equipment"][@"category"],
+                                         @"tagList":equipmentDetails[i][@"equipment"][@"measureTagList"],
+                                         
+                                         
+                                         @"description":equipmentDetails[i][@"equipment"][@"description"]
+               };
+               viewcon.moreAction = ^{
+                   StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
+                   vc.machineDetail = Detail;
+                   
+                   [self.navigationController pushViewController:vc animated:YES];
+               };
+               
+               
+               
+               NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
+               [_scrollView addSubview:viewcon];
+               
+           }
+           
+    }else {
+        
+ 
+    
     
     NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
     for (int i = 0; i < self.dataArray.count; i++) {
@@ -316,6 +406,8 @@
         equipmentDetailsModel *detailModel = self.dataArray[i];
         
         NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
+        viewcon.alarmArray = detailModel.equipmentAlarmInfo;
+                                       
         viewcon.dataDic = dataDic;
         viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
         NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
@@ -332,6 +424,8 @@
                                   @"num":equipmentDetails[i][@"num"]?equipmentDetails[i][@"num"]:@"",
                                   @"category":equipmentDetails[i][@"equipment"][@"category"],
                                   @"tagList":equipmentDetails[i][@"equipment"][@"measureTagList"],
+                                  
+                                  
                                   @"description":equipmentDetails[i][@"equipment"][@"description"]
         };
         viewcon.moreAction = ^{
@@ -347,7 +441,8 @@
         [_scrollView addSubview:viewcon];
         
     }
-    
+    }
+      
     
     
 }
@@ -381,11 +476,12 @@
         if(self.dataArray.count ==0){
             return;
         }
-        [self refreshData];
+       
         NSDictionary *di = [self.dataArray[self.currIndex] mj_keyValues];
         _station_code = safeString(di[@"equipment"][@"stationCode"]);
         _station_name = safeString(di[@"equipment"][@"stationName"]);
         self.title = [NSString stringWithFormat:@"%@-%@",safeString(di[@"equipment"][@"stationName"]),safeString(di[@"equipment"][@"name"])];
+         [self refreshData];
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -406,12 +502,19 @@
     if ([safeString(dataDic[@"alias"]) isEqualToString:@"水浸"]) {
         equipStr = @"device_shuijin";
     }
-    self.topLeftImage.image =  [UIImage imageNamed:equipStr];
+    NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
+    self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",equipStr]];
+    if ([equipStr containsString:@"空调"]) {
+        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"空调"]];
+    }else if ([equipStr containsString:@"漏水"]) {
+        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"水浸"]];
+    
+    }
     self.topTitleLabel.text = safeString(dataDic[@"alias"]);
-    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",dataDic[@"alarmLevel"]]]];
-    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",dataDic[@"alarmLevel"]]];
-    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",dataDic[@"alarmNum"]];
-    if([dataDic[@"alarmNum"] intValue] ==0) {
+    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
+    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
+    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
+    if([totalDic[@"toltalNum"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;

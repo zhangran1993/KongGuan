@@ -16,5 +16,17 @@
 
 implementationSingle(UserManager)
 
-
+- (void)saveStationData:(NSDictionary *)dataD {
+       
+    
+    [UserManager shareUserManager].currentStationDic = dataD;
+  
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:dataD forKey:@"station"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+   
+    
+}
 @end

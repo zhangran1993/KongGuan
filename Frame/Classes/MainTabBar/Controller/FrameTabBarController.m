@@ -16,7 +16,7 @@
 #import "DataCenterViewController.h"
 #import "YQSlideMenuController.h"
 #import "FrameNavigationController.h"
-
+#import "KG_RunZhiYunViewController.h"
 #import "FrameBaseRequest.h"
 
 @interface FrameTabBarController ()<YQContentViewControllerDelegate>

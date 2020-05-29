@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_NewTarBarViewController : UITabBarController
-
+-(UINavigationController *)NavController;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -29,6 +29,8 @@
 @property (nonatomic, strong) KG_TransFirstView *transFirstView;
 @property (nonatomic, strong) KG_TransSecondView *transSecondView;
 @property (nonatomic, strong) KG_TransBottomView *transBottomView;
+
+@property (nonatomic, strong) NSDictionary *detailDic;
 @end
 @implementation KG_ZhiTaiView
 
@@ -43,7 +45,11 @@
     }
     return self;
 }
-
+- (void)rightMethod {
+    if (self.clickToDetail) {
+        self.clickToDetail(self.detailDic);
+    }
+}
 //创建视图
 -(void)setupDataSubviews
 {
@@ -57,6 +63,16 @@
         make.height.width.equalTo(@20);
         make.top.equalTo(self.mas_top).offset(17);
     }];
+    UIButton *rightBtn  = [[UIButton alloc]init];
+    [self addSubview:rightBtn];
+   
+    [rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right);
+        make.width.height.equalTo(@100);
+        make.top.equalTo(self.mas_top);
+        make.height.equalTo(@54);
+    }];
+    [rightBtn addTarget:self action:@selector(rightMethod) forControlEvents:UIControlEventTouchUpInside];
     
     self.topTitleLabel = [[UILabel alloc]init];
     [self addSubview:self.topTitleLabel];
@@ -610,8 +626,17 @@
     _dataDic = dataDic;
     NSArray *array = dataDic[@"equipmentDetails"];
     NSArray *list = [array firstObject][@"equipment"][@"measureTagList"];
+   if (array.count == 1) {
+       NSDictionary *dd =[array firstObject][@"equipment"];
+       NSDictionary * Detail = @{ @"tagList":dd[@"measureTagList"],
+                                  @"station_name":dd[@"stationName"],
+                                  @"machine_name":dd[@"name"],
+                                  @"name":dd[@"name"]
+                                  
+       };
+       self.detailDic = Detail;
+   }
     
-    //工作机
     
     //工作机
     for (NSDictionary *dic in list) {

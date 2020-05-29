@@ -69,14 +69,6 @@
     }
     return _tableView;
 }
--(NSArray *)dataArray{
-    if (!_dataArray) {
-        _dataArray = [NSArray array];
-    }
-    return _dataArray;
-}
-
-
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -108,5 +100,8 @@
   
 }
 
-
+- (void)setDataArray:(NSArray *)dataArray {
+    _dataArray = dataArray;
+    [self.tableView reloadData];
+}
 @end

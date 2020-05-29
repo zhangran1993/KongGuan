@@ -115,7 +115,7 @@
 
 - (void)setupTable{
     ///api/atcVideoList/{station_code}
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/atcVideoList/%@",_station_code]];//
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/atcVideoList/%@",_station_code]];//
     NSLog(@"%@",FrameRequestURL);
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -385,7 +385,7 @@
     if(self.StationItem){
         [self getStationList];
     }else{
-        NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/allStationList"];
         NSLog(@"%@",FrameRequestURL);
         [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
             NSInteger code = [[result objectForKey:@"errCode"] intValue];

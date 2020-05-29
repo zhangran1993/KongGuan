@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KG_GaoJingModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_ZhiXiuCell : UITableViewCell
@@ -20,10 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) UIImageView *iconImage;
 @property (nonatomic,strong) UIImageView *gaojingImage;
 @property (nonatomic,strong) UILabel *powLabel;
-
+@property (nonatomic,strong) UILabel *detailLabel;
 @property (nonatomic,strong) UIImageView *statusImage;
 
 @property (nonatomic,strong) UIButton *confirmBtn;
+
+@property (nonatomic,strong) KG_GaoJingModel *model;
+
+@property (nonatomic,copy) NSString *showLeftSrcollView;
 @end
 
 NS_ASSUME_NONNULL_END

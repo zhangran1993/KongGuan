@@ -32,7 +32,9 @@
 #import "StationVideoListController.h"
 #import "KG_SecondFloorViewController.h"
 #import "KG_NewTarBarViewController.h"
-#import "CXDatePickerView.h"
+
+#import "KG_RunZhiYunViewController.h"
+
 /*
  *点聚合Annotation
  */
@@ -136,6 +138,7 @@
 
 @property (nonatomic, strong)    UIView *topBgView;
 @property (nonatomic, strong)    NSDictionary *currentStationDic;
+
 @end
 
 @implementation FrameHomeController
@@ -151,6 +154,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
+    [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBarHidden = YES;
     [_clusterCaches removeAllObjects];
@@ -163,7 +167,7 @@
         self.currentStationDic = [userDefaults objectForKey:@"station"];
     }
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
-        
+
         if([CommonExtension isFirstLauch] == 1){//==2
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstLoginNotify) name:@"firstLoginNotify" object:nil];
         }else{
@@ -172,9 +176,9 @@
         return;
     }
     [UserManager shareUserManager].loginSuccess = YES;
-    
+
     [self.rotingLabel walk];
-    
+
     if(!_clusters){
         [self addMapView];
     }
@@ -190,15 +194,15 @@
     }
     [self getNewsNum];
     [self dataReport];
-    //    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    //        if (!self.repeatTimer) {
-    //            self.repeatTimer = [NSTimer timerWithTimeInterval:100.f target:self selector:@selector(refreshMap) userInfo:nil repeats:YES];
-    //            [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
-    //            [[NSRunLoop currentRunLoop] run];
-    //
-    //        }
-    //    });
-    //
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        if (!self.repeatTimer) {
+            self.repeatTimer = [NSTimer timerWithTimeInterval:100.f target:self selector:@selector(refreshMap) userInfo:nil repeats:YES];
+            [[NSRunLoop currentRunLoop] addTimer:self.repeatTimer forMode:NSRunLoopCommonModes];
+            [[NSRunLoop currentRunLoop] run];
+            
+        }
+    });
     if (self.currentStationDic.count >0 && _bottomAlertView !=nil) {
         _bottomAlertView.dataDic = self.currentStationDic;
     }
@@ -225,40 +229,53 @@
     [self createNaviView];
     //进入前台
     [self notificationMonitoring];
+   
+    
 }
 - (void)login {
+    NSString *userString = @"";
+    NSString *passString = @"";
+       
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"password"]){
+        passString = [userDefaults objectForKey:@"password"];
+    }
+    if([userDefaults objectForKey:@"loginName"]){
+        userString = [userDefaults objectForKey:@"loginName"];
+    }
+    if (userString.length == 0 ||passString.length == 0) {
+        return;
+    }
     
-   
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/login"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"username"] = @"zhangying";
-    NSString * pwd = @"111111";//registrationID
-    
+    params[@"username"] = userString;
+    NSString * pwd = passString;//registrationID
+
     NSString *password=[[[[pwd MD5]  stringByAppendingString:params[@"username"]] MD5] MD5];
-    
+
     params[@"password"] = password;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
+   
     //    params[@"registrationId"] = [userDefaults objectForKey:@"registrationID"];
     params[@"registrationId"] = @"1d13c2dc-fb3a-441f-976d-7a7537018245";
     params[@"specificStationCode"] = @"HCDHT";
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
-            [FrameBaseRequest showMessage:[result objectForKey:@"errMsg"]];
+           
             return ;
         }
         NSLog(@"resultresult %@",result);
-      
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
         [UserManager shareUserManager].loginSuccess = YES;
-        
+
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
-    
+
     return ;
 }
 //初始化数据
@@ -309,7 +326,7 @@
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+       
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -351,13 +368,13 @@
         [MBProgressHUD hideHUDForView:JSHmainWindow];
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-        //            return;
-        //        }else if(responses.statusCode == 502){
-        //
-        //        }
-        //[FrameBaseRequest showMessage:@"网络链接失败"];
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
 }
@@ -501,6 +518,8 @@
     if(![userDefaults objectForKey:@"userAccount"]||[[userDefaults objectForKey:@"userAccount"] isEqualToString:@""]){
         //跳转登陆页
         LoginViewController *login = [[LoginViewController alloc] init];
+
+        login.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:login animated:YES];
         return ;
     }
@@ -575,7 +594,7 @@
             notiLabel.font = [UIFont systemFontOfSize:12];
             notiLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
             
-            NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
+//            NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle]pathForResource:@"green" ofType:@"gif"]];
             NSString *maxLevel = [NSString stringWithFormat:@"%@",result[@"value"][@"maxLevel"]]  ;
             
             if([maxLevel isEqualToString:@"5"]){
@@ -723,18 +742,18 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-        //            [FrameBaseRequest logout];
-        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-        //
-        //            LoginViewController *login = [[LoginViewController alloc] init];
-        //            [self.navigationController pushViewController:login animated:YES];
-        //
-        //            return;
-        //        }else if(responses.statusCode == 502){
-        //
-        //        }
-        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest logout];
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
     }];
@@ -836,7 +855,7 @@
 //f缩放回调
 - (void)pinchAction:(UIPinchGestureRecognizer*)recognizer{
     
-    CGFloat velocity = recognizer.velocity;
+//    CGFloat velocity = recognizer.velocity;
     CGFloat scale = recognizer.scale;
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
         if(scale>1.0){
@@ -987,7 +1006,7 @@
     }
     
     //    annotationView.centerOffset =  CGPointMake(0, -FrameWidth(80));
-    UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(-75,0, 164,  59)];
+    UIImageView * bgImg = [[UIImageView alloc]initWithFrame:CGRectMake(0,0, 164,  59)];
     
     
     bgImg.image = [UIImage imageNamed:@"map_alertbgImage"];
@@ -2209,24 +2228,10 @@
 -(void)healthBtnClick{
     NSLog(@"healthBtnClick");
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
+    RankController *vc = [[RankController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
     
     
-    
-    //年-月-日-时-分
-    CXDatePickerView *datepicker = [[CXDatePickerView alloc] initWithDateStyle:CXDateStyleShowYearMonthDayHourMinute CompleteBlock:^(NSDate *selectDate) {
-        
-        NSString *dateString = [selectDate stringWithFormat:@"yyyy-MM-dd HH:mm"];
-        NSLog(@"选择的日期：%@",dateString);
-        //        [btn setTitle:dateString forState:UIControlStateNormal];
-    }];
-    datepicker.dateLabelColor = [UIColor colorWithHexString:@"#24252A"];//年-月-日-时-分 颜色
-    datepicker.datePickerColor = [UIColor blackColor];//滚轮日期颜色
-    datepicker.headerViewColor = [UIColor colorWithHexString:@"#F6F7F9"]; // 顶部视图背景颜色
-    datepicker.doneButtonColor = [UIColor colorWithHexString:@"#004EC4"]; // 确认按钮字体颜色
-    datepicker.cancelButtonColor = [UIColor colorWithHexString:@"#24252A"]; // 取消按钮颜色
-    datepicker.shadeViewAlphaWhenShow = 0.3;
-    datepicker.showAnimationTime = 0.4;
-    [datepicker show];
 }
 - (void)showAlertMessage:(NSMutableArray *)array {
     

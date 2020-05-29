@@ -204,6 +204,7 @@
     
     [self stationAction];
 }
+
 - (void)historyAction {
 
     KG_HistoryTaskViewController *vc = [[KG_HistoryTaskViewController alloc]init];
@@ -491,7 +492,7 @@
     NSLog(@"1");
     [UserManager shareUserManager].currentStationDic = [model mj_keyValues];
     [self.rightButton setTitle:safeString(model.name) forState:UIControlStateNormal];
-    
+    [[UserManager shareUserManager] saveStationData:[model mj_keyValues]];
     
     
     [self cb_dismissPopupViewControllerAnimated:YES completion:nil];

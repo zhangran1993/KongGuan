@@ -12,7 +12,8 @@
 }
 @property (nonatomic, strong) UIButton *bgBtn ;
 @property (nonatomic, strong) NSArray *dataArray;
-
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) UITextView *textView;
 @end
 @implementation KG_PowerOnView
 
@@ -90,7 +91,7 @@
     }];
     
     UIView *passView = [[UIView alloc]init];
-    passView.backgroundColor = [UIColor colorWithHexString:@"#E6E8ED"];
+    passView.backgroundColor = [UIColor colorWithRed:248/255.0 green:249/255.0 blue:250/255.0 alpha:1.0];
     [centerView addSubview:passView];
     [passView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(centerView.mas_left).offset(16);
@@ -99,10 +100,10 @@
         make.right.equalTo(centerView.mas_right).offset(-19);
     }];
     
-    UITextField *textField = [[UITextField alloc]init];
-    [passView addSubview:textField];
-    textField.textColor = [UIColor colorWithHexString:@"##24252A"];
-    [textField mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.textField = [[UITextField alloc]init];
+    [passView addSubview:self.textField];
+    self.textField.textColor = [UIColor colorWithHexString:@"#24252A"];
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.right.bottom.left.equalTo(passView);
     }];
     
@@ -115,7 +116,7 @@
     remarkPromptLabel.numberOfLines = 1;
     [remarkPromptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(centerView.mas_left).offset(15);
-        make.top.equalTo(centerView.mas_top).offset(60);
+        make.top.equalTo(passView.mas_bottom).offset(9);
         make.width.equalTo(@100);
         make.height.equalTo(@17);
     }];
@@ -127,17 +128,17 @@
     [remarkView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(centerView.mas_left).offset(16);
         make.right.equalTo(centerView.mas_right).offset(-19);
-        make.width.equalTo(@235);
-        make.height.equalTo(@19);
+       
+        make.height.equalTo(@50);
         make.top.equalTo(remarkPromptLabel.mas_bottom).offset(4);
     }];
-    UITextView *textView = [[UITextView alloc]init];
-    [remarkView addSubview:remarkView];
-    textView.textColor = [UIColor colorWithHexString:@"#24252A"];
-    [textView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.textView = [[UITextView alloc]init];
+    [remarkView addSubview:self.textView];
+    self.textView.textColor = [UIColor colorWithHexString:@"#24252A"];
+    [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.height.width.equalTo(remarkView);
     }];
-    
+    self.textView.backgroundColor =  [UIColor colorWithRed:248/255.0 green:249/255.0 blue:250/255.0 alpha:1.0];
     
     UIView *lineView = [[UIView alloc]init];
     lineView.backgroundColor = [UIColor colorWithHexString:@"#E6E8ED"];
@@ -175,13 +176,35 @@
         make.width.equalTo(@135);
         make.height.equalTo(@43);
     }];
+    UIView *botLine = [[UIView alloc]init];
+    botLine.backgroundColor = [UIColor colorWithHexString:@"#E6E8ED"];
+    [centerView addSubview:botLine];
+    [botLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(centerView.mas_centerX);
+        make.bottom.equalTo(centerView.mas_bottom);
+        make.width.equalTo(@1);
+        make.height.equalTo(@43);
+    }];
 }
 //取消
 - (void)cancelMethod:(UIButton *)button {
-    
+    self.hidden = YES;
+    [self.textField resignFirstResponder];
 }
 //确定
 - (void)confirmMethod:(UIButton *)button {
+    
+}
+- (void)buttonClickMethod:(UIButton *)button {
+    self.hidden = YES;
+    [self.textField resignFirstResponder];
+    [self.textView resignFirstResponder];
+}
+-(BOOL)textFieldShouldReturn:(UITextField*)textField {
+    
+    [textField resignFirstResponder];
+    
+    return YES;
     
 }
 @end

@@ -37,7 +37,8 @@
     //MBProgressHUDBackgroundStyleSolidColor这个枚举值是实心颜色的意思，在这个枚举的基础上，你可以设置任意你想要的颜色。bezelView的另外一个枚举值是MBProgressHUDBackgroundStyleBlur，意思是 毛玻璃，如果设置了这个枚举值， 那么你不管设置什么颜色都不会有半透明效果。
     hud.bezelView.style = MBProgressHUDBackgroundStyleSolidColor;
     //设置背景色和透明度
-    hud.bezelView.backgroundColor = [UIColor colorWithHexString:@"#222222" alpha:0.7];
+    hud.bezelView.backgroundColor = [UIColor colorWithHexString:@"#222222"];
+    hud.bezelView.alpha =0.7;
     //设置字体颜色
     hud.detailsLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     hud.detailsLabel.font = FontBold(16); // 蓝湖：一级+通用+弹窗-toast 版本1

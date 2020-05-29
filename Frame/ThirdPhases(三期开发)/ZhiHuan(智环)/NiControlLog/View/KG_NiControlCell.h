@@ -12,12 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_NiControlCell : UITableViewCell
 
-@property (nonatomic,strong)UILabel * timeLabel;
-@property (nonatomic,strong)UILabel * titleLabel;
-@property (nonatomic,strong)UILabel * detailLabel;
-@property (nonatomic,strong)UILabel * remarkLabel;
+@property (nonatomic,strong)   UILabel * timeLabel;
+@property (nonatomic,strong)   UILabel * titleLabel;
+@property (nonatomic,strong)   UILabel * detailLabel;
+@property (nonatomic,strong)   UILabel * remarkLabel;
 
-@property (strong, nonatomic)UIImageView *selectImageView;
+@property (strong, nonatomic)  UIImageView *selectImageView;
+
+@property (strong, nonatomic) NSDictionary *dataDic;
 
 @end
 

@@ -22,12 +22,14 @@
 #import <SDImageCache.h>
 #import "KG_SecView.h"
 #import "KG_EnvView.h"
-#import "KG_PowView.h""
+#import "KG_PowView.h"
 #import "KG_StationDetailModel.h"
 #import "KG_SecondFloorViewController.h"
 #import "KG_MachineStationModel.h"
 #import "KG_KongTiaoViewController.h"
 #import "KG_CommonDetailViewController.h"
+#import "KG_ZhiTaiStationModel.h"
+#import "LoginViewController.h"
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
@@ -73,6 +75,7 @@
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property (strong, nonatomic) NSMutableDictionary *dataDic;
 //天气
+@property (strong, nonatomic) NSDictionary *currentStationDic;
 @property (strong, nonatomic) NSDictionary *weatherDic;
 @property (strong, nonatomic) KG_StationDetailModel *dataModel;
 
@@ -86,19 +89,24 @@
 @property (strong, nonatomic) NSMutableArray *temArray;
 @property (strong, nonatomic) UIImageView *topImage1;
 
+
+@property(strong,nonatomic)   NSArray *stationArray;
+@property(strong,nonatomic)   UITableView *stationTabView;
+
 @end
 
 @implementation StationDetailController
 #pragma mark - 全局常量
 
-
-#pragma mark - life cycle 生命周期方法
-
 - (void)viewDidLoad {
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(20),NSForegroundColorAttributeName:[UIColor whiteColor]}] ;
-//    self.navigationController.delegate = self;
-   
+    [super viewDidLoad];
+    [self createData];
+}
+
+- (void)createData {
+    
     [self createNaviTopView];
     [self createTopView];
     
@@ -132,11 +140,10 @@
     self.filterTabView.separatorStyle = NO;
     self.modelArray = [NSMutableArray array];
     self.statusArray = [NSMutableArray array];
-    [super viewDidLoad];
+    
     [self loadData];
     self.dataModel = [[KG_StationDetailModel alloc]init];
     [self queryStationDetailData];
-    
     
 }
 - (void)loadData {
@@ -161,19 +168,14 @@
         if([getAllStation indexOfObject:_station_code] != NSNotFound){
             
         }else{
-           
+            
             [FrameBaseRequest showMessage:@"您没有当前台站的权限"];
             [self.tabBarController setSelectedIndex:2];
             return ;
         }
         
-    }else{
-        [FrameBaseRequest showMessage:@"请选择台站"];
-        [self.tabBarController setSelectedIndex:2];
-        return ;
     }
     
-    [self setupTable];
     self.view.backgroundColor = [UIColor whiteColor];
     //去除分割线
     //[self.view addSubview:_tableview];
@@ -191,8 +193,6 @@
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
     [self.view addSubview:topImage];
     topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
-    [self stationBtn];
-    
     
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
@@ -227,11 +227,41 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
+    self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.rightButton.titleLabel.font = FontSize(12);
+    self.rightButton.layer.borderColor = [[UIColor colorWithHexString:@"#DFDFDF"]CGColor];
+    self.rightButton.layer.borderWidth = 0.5f;
+    self.rightButton.layer.cornerRadius = 12.5f;
+    self.rightButton.layer.masksToBounds = YES;
+    
+    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    [self.rightButton setTitle:@"黄城导航台" forState:UIControlStateNormal];
+    self.rightButton.frame = CGRectMake(0,0,81,22);
+    [self.rightButton setImage:[UIImage imageNamed:@"arrow_right"] forState:UIControlStateNormal];
+    [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 70, 0,0 )];
+    [self.rightButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0,0 )];
+    [self.view addSubview:self.rightButton];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    if (currDic.count) {
+        [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
+    [self.rightButton addTarget:self action:@selector(rightAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@81);
+        make.centerY.equalTo(backBtn.mas_centerY);
+        make.height.equalTo(@22);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+    }];
+    
     
 }
+
+- (void)rightAction {
+    [self stationAction];
+}
 - (void)getTemHuiData {
-//    NSString *  FrameRequestURL  =  @"http://10.33.33.147:8089/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS";
-     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS"]];
+    //    NSString *  FrameRequestURL  =  @"http://10.33.33.147:8089/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS";
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS"]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -245,15 +275,15 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-//            [self.navigationController popToViewController:viewCtl animated:YES];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+        //            [self.navigationController popToViewController:viewCtl animated:YES];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -263,8 +293,8 @@
     [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     
 }
+
 - (void)createTopView{
-    
     [self.runView removeFromSuperview];
     self.runView = nil;
     self.runView= [[UIView alloc]init];
@@ -475,7 +505,6 @@
 
 - (void)refreshData {
     //设备监测
-    
     NSDictionary *secDic = self.dataModel.securityStatus;
     if (isSafeDictionary(secDic)) {
         if([secDic[@"status"] isEqualToString:@"0"]){
@@ -548,9 +577,9 @@
 - (void)queryStationDetailData{
     
     NSDictionary *dic = [UserManager shareUserManager].currentStationDic;
-//    NSString *FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/%@",dic[@"code"]];
-     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationEnvInfo/%@",dic[@"code"]]];
-//    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/35TXFC";
+    //    NSString *FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/%@",dic[@"code"]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationEnvInfo/%@",dic[@"code"]]];
+    //    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationEnvInfo/35TXFC";
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -573,8 +602,10 @@
         
         if(_stationDetail[@"station"][@"picture"]){
             _imageUrl= _stationDetail[@"station"][@"picture"];//
-          
-          
+            if(safeString(_stationDetail[@"station"][@"thumbnail"]).length >0 ){
+                _imageUrl= _stationDetail[@"station"][@"thumbnail"];//
+            }
+            
             [self.topImage1 sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_imageUrl]] placeholderImage:[UIImage imageNamed:@"machine_rs"] ];
         }
         
@@ -619,12 +650,12 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         //[FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -648,7 +679,7 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-  
+    
 }
 
 //展示navigation背景色
@@ -662,18 +693,18 @@
 
 #pragma mark--上传用户使用情况的接口，这个接口在台站管理页面、首页每次进入调用一次
 - (void)dataReport {
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/dataReport/%@",@"stationManagement"]];
-    [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
-        NSInteger code = [[result objectForKey:@"errCode"] intValue];
-        if(code != 0){
-            [FrameBaseRequest showMessage:[result objectForKey:@"errMsg"]];
-            return ;
-        }
-        NSLog(@"请求成功");
-    } failure:^(NSError *error) {
-        [FrameBaseRequest showMessage:@"网络链接失败"];
-        return ;
-    }];
+    //    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/dataReport/%@",@"stationManagement"]];
+    //    [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
+    //        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+    //        if(code != 0){
+    //            [FrameBaseRequest showMessage:[result objectForKey:@"errMsg"]];
+    //            return ;
+    //        }
+    //        NSLog(@"请求成功");
+    //    } failure:^(NSError *error) {
+    //        [FrameBaseRequest showMessage:@"网络链接失败"];
+    //        return ;
+    //    }];
 }
 
 
@@ -687,9 +718,8 @@
 - (void)setupTable{
     
     
-    [self stationBtn];
     //    _station_code = @"S5";
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/stationInfo/%@/%@",_airport,_station_code]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/api/stationInfo/%@/%@",_airport,_station_code]];
     NSLog(@"%@",FrameRequestURL);
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -751,16 +781,16 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//
-//            LoginViewController *login = [[LoginViewController alloc] init];
-//            [self.navigationController pushViewController:login animated:YES];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //
+        //            LoginViewController *login = [[LoginViewController alloc] init];
+        //            [self.navigationController pushViewController:login animated:YES];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -772,7 +802,8 @@
 }
 
 -(void)getWeather{
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/weather/%@/%@/",_latitude,_longitude]];
+    //    http://10.33.33.147:8089/intelligent/api/weather/36.317888/120.111424/
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/weather/%@/%@/",_latitude,_longitude]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -787,16 +818,16 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//
-//            LoginViewController *login = [[LoginViewController alloc] init];
-//            [self.navigationController pushViewController:login animated:YES];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //
+        //            LoginViewController *login = [[LoginViewController alloc] init];
+        //            [self.navigationController pushViewController:login animated:YES];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -875,6 +906,10 @@
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView == self.stationTabView){
+        
+        return 40;
+    }
     if(tableView != self.filterTabView){
         if(indexPath.row==0){
             return  allHeight+FrameWidth(20);//+
@@ -927,6 +962,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView == self.filterTabView){
         return self.StationItem.count;
+    }else if(tableView == self.stationTabView){
+        return self.stationArray.count;
     }
     return 1;
 }
@@ -960,7 +997,19 @@
         }
         
         return cell;
+    }else if(tableView == self.stationTabView){
+        
+        UITableViewCell *cell = [[UITableViewCell alloc] init];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
+        KG_ZhiTaiStationModel *model = self.stationArray[indexPath.row];
+        cell.textLabel.text = safeString(model.name) ;
+        cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        
+        return cell;
+        
     }
+    
     
     UITableViewCell *thiscell = [[UITableViewCell alloc] init];
     thiscell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
@@ -999,33 +1048,33 @@
     
     float viewHeight =128;
     
-   
+    
     
     UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0, 225, WIDTH_SCREEN, viewHeight)];
     view3.backgroundColor = [UIColor whiteColor];
     //    [thiscell addSubview:view3];
     
-  
+    
     NSString *stationString = @"";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     UIImageView *BigImg = [[UIImageView alloc]init];
-      
     
+    BigImg.contentMode = UIViewContentModeScaleAspectFit;
     if (self.dataModel.roomList.count) {
-        [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:self.dataModel.roomList[0][@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]];
+        [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:self.dataModel.roomList[0][@"picture"]]] placeholderImage:[UIImage imageNamed:@"huan_noStationBgImage"]];
         if([userDefaults objectForKey:@"zhihuanImage"]){
             stationString = [userDefaults objectForKey:@"zhihuanImage"];
             
             for (int i=0; i<self.dataModel.roomList.count; i++) {
                 
                 if([stationString isEqualToString:self.dataModel.roomList[i][@"code"]]) {
-                    [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:self.dataModel.roomList[i][@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]];
+                    [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:self.dataModel.roomList[i][@"picture"]]] placeholderImage:[UIImage imageNamed:@"huan_noStationBgImage"]];
                     break;
                 }
             }
         }
     }
-  
+    
     
     UIView *bgImage = [[UIView alloc] init];
     bgImage.frame = CGRectMake(96,51,231,150);
@@ -1050,7 +1099,7 @@
         make.height.equalTo(@128);
         make.top.equalTo(bgImage.mas_top).offset(11);
     }];
-
+    
     
     UIView *view4 = [[UIView alloc] init];
     view4.backgroundColor = [UIColor whiteColor];
@@ -1142,8 +1191,11 @@
         make.width.equalTo(@38);
         make.height.equalTo(@25);
     }];
-    tempNumLabel.text = safeString([NSString stringWithFormat:@"%@",self.dataModel.station[@"temperature"]]);
     
+    tempNumLabel.text = safeString(self.dataModel.station[@"temperature"]);
+    if ([safeString(self.dataModel.station[@"temperature"]) doubleValue] == 0) {
+        tempNumLabel.text = @"0";
+    }
     UILabel *tempTitleLabel = [[UILabel alloc]init];
     tempTitleLabel.text = @"℃";
     [tempView addSubview:tempTitleLabel];
@@ -1169,6 +1221,9 @@
     if (self.temArray.count == 2) {
         KG_MachineStationModel *temDic = self.temArray[1];
         tempNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
+        if ([safeString(temDic.valueAlias) doubleValue] == 0) {
+            tempNumLabel.text = @"0";
+        }
         tempBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
     }
     
@@ -1239,8 +1294,10 @@
         make.width.equalTo(@38);
         make.height.equalTo(@25);
     }];
-    humidityNumLabel.text = safeString([NSString stringWithFormat:@"%@",self.dataModel.station[@"humidity"]]);
-    
+    humidityNumLabel.text = safeString(self.dataModel.station[@"humidity"]);
+    if ([safeString(self.dataModel.station[@"humidity"]) doubleValue] == 0) {
+        humidityNumLabel.text = @"0";
+    }
     
     UILabel *humidityTitleLabel = [[UILabel alloc]init];
     humidityTitleLabel.text = @"%";
@@ -1267,6 +1324,9 @@
     if (self.temArray.count == 2) {
         KG_MachineStationModel *temDic = self.temArray[0];
         humidityNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
+        if ([safeString(temDic.valueAlias) doubleValue] == 0) {
+            humidityNumLabel.text = @"0";
+        }
         humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
     }
     UIImageView *humidityStatusImage = [[UIImageView alloc]init];
@@ -1789,8 +1849,11 @@
         make.right.equalTo(self.secView.mas_right);
         make.height.equalTo(@149);
     }];
-    UIImageView *bottomBgImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"weather_sunny"]];
-    
+    UIImageView *bottomBgImage = [[UIImageView alloc] init];
+    bottomBgImage.image =[UIImage imageNamed:@"weather_sunny"];
+    if (self.weatherDic.count) {
+        bottomBgImage.image = [UIImage imageNamed:safeString(self.weatherDic[@"condition"])];
+    }
     bottomBgImage.frame = CGRectMake(0,0, WIDTH_SCREEN-32,149);
     
     bottomBgImage.contentMode = UIViewContentModeScaleAspectFill;
@@ -1900,7 +1963,9 @@
         make.centerY.equalTo(tqLabel.mas_centerY);
     }];
     
-    
+    if(self.weatherDic.count) {
+        tqImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@_icon",safeString(self.weatherDic[@"condition"])]];
+    }
     
     
     
@@ -1980,10 +2045,10 @@
 - (void)queryWeatherData:(NSString *)lat withLon:(NSString *)lon {
     
     
-//    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
-//    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/weather/36.317888/120.111424/";
-//    FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/weather/%@/%@/",lat,lon];
-//    NSLog(@"%@",FrameRequestURL);
+    //    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
+    //    FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/weather/36.317888/120.111424/";
+    //    FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/weather/%@/%@/",lat,lon];
+    //    NSLog(@"%@",FrameRequestURL);
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/weather/%@/%@/",lat,lon]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -1997,16 +2062,16 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//
-//            LoginViewController *login = [[LoginViewController alloc] init];
-//            [self.navigationController pushViewController:login animated:YES];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //
+        //            LoginViewController *login = [[LoginViewController alloc] init];
+        //            [self.navigationController pushViewController:login animated:YES];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -2129,14 +2194,13 @@
     StationRoom.room_name = _objects0[nlabel.tag - 1][@"alias"];
     StationRoom.station_code = _station_code;
     StationRoom.station_name = _station_name;
-   
+    
     [[NSUserDefaults standardUserDefaults] setObject:_objects0[nlabel.tag - 1][@"code"] forKey:@"zhihuanImage"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.tableview reloadData];
-    [self.navigationController pushViewController:StationRoom animated:YES];
-       
-      
+    
+    
 }
 
 
@@ -2264,124 +2328,19 @@
     StationMachine.mList = mList;
     [self.navigationController pushViewController:StationMachine animated:YES];
 }
--(void)stationBtn{
-    if(!self.rightButton){
-        self.rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,  FrameWidth(120), FrameWidth(30))];
-        
-        [self.rightButton addTarget:self action:@selector(stationAction) forControlEvents:UIControlEventTouchUpInside];
-        self.rightButton.titleLabel.font = FontSize(15);
-        
-        self.rightButton.titleLabel.textAlignment = NSTextAlignmentRight;
-        self.rightButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        self.rightButton.titleLabel.numberOfLines = 2;
-        if(![CommonExtension isEmptyWithString:_station_name]){
-            
-            
-            NSMutableString* str1=[[NSMutableString alloc]initWithString:_station_name];//存在堆区，可变字符串
-            float strLength = floor(str1.length/7);
-            if(strLength > 0){
-                for (int i =1; i <= strLength &&i <= 2; i++) {
-                    [str1 insertString:@"\n"atIndex:(7*i + (i-1))];//把一个字符串插入另一个字符串中的某一个位置
-                }
-                
-                [self.rightButton setTitle:str1 forState:UIControlStateNormal];
-            }else{
-                [self.rightButton setTitle:_station_name forState:UIControlStateNormal];
-                CGSize size = [self.rightButton.titleLabel.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(15),NSFontAttributeName,nil]];
-                
-                [self.rightButton setFrameWidth:size.width+3];
-            }
-            
-        }
-        //        
-        //        [self.navigationView addSubview:self.rightButton];
-        //        
-        //        [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        //            make.right.height.equalTo(self.navigationView.mas_right).offset(-20);
-        //            make.centerY.equalTo(self.titleLabel.mas_centerY);
-        //            make.width.equalTo(@200);
-        //        }];
-        
-    }else{
-        if(![CommonExtension isEmptyWithString:_station_name]){
-            NSMutableString* str1=[[NSMutableString alloc]initWithString:_station_name];//存在堆区，可变字符串
-            float strLength = floor(str1.length/7);
-            
-            if(strLength > 0){
-                for (int i =1; i <= strLength &&i <= 2; i++) {
-                    [str1 insertString:@"\n"atIndex:(7*i + (i-1))];//把一个字符串插入另一个字符串中的某一个位置
-                }
-                
-                [self.rightButton setTitle:str1 forState:UIControlStateNormal];
-            }else{
-                [self.rightButton setTitle:_station_name forState:UIControlStateNormal];
-                CGSize size = [self.rightButton.titleLabel.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(15),NSFontAttributeName,nil]];
-                
-                [self.rightButton setFrameWidth:size.width+3];
-            }
-        }
-        
-    }
-    
-    
-    
-}
+
 -(void)stationAction {
-    //if(self.StationItem){
-    //    [self getStationList];
-    //}else{
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
-    NSLog(@"%@",FrameRequestURL);
-    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-        NSInteger code = [[result objectForKey:@"errCode"] intValue];
-        if(code  <= -1){
-            [FrameBaseRequest showMessage:result[@"errMsg"]];
-            return ;
-        }
-        NSMutableArray<StationItems *> * SItem = [[StationItems class] mj_objectArrayWithKeyValuesArray:[result objectForKey:@"value"] ];
-        NSMutableArray<StationItems *> * radar = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"雷达台站"}]];
-        NSMutableArray<StationItems *> * navigation = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"导航台站"}]];
-        NSMutableArray<StationItems *> * local = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"本场"}]];
-        NSMutableArray<StationItems *> * shelter = [[StationItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"alias":@"方舱"}]];
-        //[navigation addObject:radar];
-        
-        for(StationItems *item in SItem){
-            
-            if([item.category isEqualToString:@"navigation"]){
-                [navigation addObject:item];
-            }else if([item.category isEqualToString:@"radar"]){
-                [radar addObject:item];
-            }else if([item.category isEqualToString:@"local"]){
-                [local addObject:item];
-            }else if([item.category isEqualToString:@"shelter"]){
-                [shelter addObject:item];
-            }
-        }
-        [radar addObjectsFromArray:navigation];
-        [radar addObjectsFromArray:local];
-        [radar addObjectsFromArray:shelter];
-        self.StationItem = [radar copy];
-        
-        [self getStationList];
-        
-    } failure:^(NSURLSessionDataTask *error)  {
-        FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//
-//            LoginViewController *login = [[LoginViewController alloc] init];
-//            [self.navigationController pushViewController:login animated:YES];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
-        [FrameBaseRequest showMessage:@"网络链接失败"];
-        return ;
-        
-    }];
-    // }
+    
+    
+    NSArray *array = [UserManager shareUserManager].stationList;
+    
+    NSMutableArray *list = [NSMutableArray array];
+    for (NSDictionary *stationDic in array) {
+        [list addObject:stationDic[@"station"]];
+    }
+    self.stationArray = [KG_ZhiTaiStationModel mj_objectArrayWithKeyValuesArray:list];
+    [self getStationList];
+    
     
     
 }
@@ -2389,43 +2348,65 @@
 
 -(void)getStationList{
     
-    float moreheight = FrameWidth(900);
-    if(HEIGHT_SCREEN == 812){
-        moreheight = -FrameWidth(1100);
-    }
-    
     UIViewController *vc = [UIViewController new];
-    vc.view.frame = CGRectMake(FrameWidth(320), FrameWidth(128), FrameWidth(320),  moreheight);
+    //按钮背景 点击消失
+    UIButton * bgBtn = [[UIButton alloc]init];
+    [vc.view addSubview:bgBtn];
+    [bgBtn setBackgroundColor:[UIColor colorWithHexString:@"#000000"]];
+    bgBtn.alpha = 0.1;
+    [bgBtn addTarget:self action:@selector(closeFrame) forControlEvents:UIControlEventTouchUpInside];
+    [bgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(vc.view.mas_top);
+        make.left.equalTo(vc.view.mas_left);
+        make.right.equalTo(vc.view.mas_right);
+        make.bottom.equalTo(vc.view.mas_bottom);
+    }];
+    
+    [vc.view addSubview:bgBtn];
+    vc.view.frame = CGRectMake(0, NAVIGATIONBAR_HEIGHT -64 +44, SCREEN_WIDTH,  SCREEN_HEIGHT);
     //_vc.view.layer.cornerRadius = 4.0;
     vc.view.layer.masksToBounds = YES;
-    UIImageView * xialaImage = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, FrameWidth(300),  FrameWidth(20))];
-    xialaImage.image = [UIImage imageNamed:@"station_pulldown_right"];
-    [vc.view addSubview:xialaImage];
-    float tabelHeight = self.StationItem.count * FrameWidth(56);
-    if(tabelHeight > FrameWidth(400)){
-        tabelHeight = FrameWidth(400);
-    }
-    UIView *alphaView = [[UIView alloc]initWithFrame:CGRectMake(0, tabelHeight, FrameWidth(300),  FrameWidth(1000))];
-    alphaView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *viewTapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closeFrame)];
-    [alphaView addGestureRecognizer:viewTapGesture];
-    [viewTapGesture setNumberOfTapsRequired:1];
-    [vc.view addSubview:alphaView];
+    UIImageView *topImage = [[UIImageView alloc]init];
+    topImage.image = [UIImage imageNamed:@"slider_up"];
     
+    [vc.view addSubview:topImage];
     //设置滚动
-    _filterTabView = [[UITableView alloc] initWithFrame:CGRectMake(0, FrameWidth(20), FrameWidth(300) , tabelHeight)];
-    _filterTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    [vc.view addSubview:_filterTabView];
-    _filterTabView.dataSource = self;
-    _filterTabView.delegate = self;
-    [self.filterTabView reloadData];
+    self.stationTabView = [[UITableView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH -162- 16, FrameWidth(20), 162 ,294)];
+    self.stationTabView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    [vc.view addSubview:self.stationTabView];
+    self.stationTabView.dataSource = self;
+    self.stationTabView.delegate = self;
+    self.stationTabView.separatorStyle = NO;
+    [self.stationTabView reloadData];
+    float xDep = NAVIGATIONBAR_HEIGHT;
+    
+    [self.stationTabView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(vc.view.mas_top).offset(xDep);
+        make.right.equalTo(vc.view.mas_right).offset(-16);
+        make.width.equalTo(@162);
+        make.height.equalTo(@311);
+    }];
+    self.stationTabView.layer.cornerRadius = 8.f;
+    self.stationTabView.layer.masksToBounds = YES;
+    [topImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.stationTabView.mas_top).offset(-7);
+        make.right.equalTo(vc.view.mas_right).offset(-28);
+        make.width.equalTo(@25);
+        make.height.equalTo(@7);
+    }];
     
     
     
-    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentRight overlayDismissed:nil];
+    
+    
+    
+    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentLeft overlayDismissed:nil];
     
 }
-
+-(void)closeFrame{//消失
+    
+    [self cb_dismissPopupViewControllerAnimated:YES completion:nil];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     // 点击了第indexPath.row行Cell所做的操作
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -2455,20 +2436,21 @@
             [userDefaults setObject:thisStation2 forKey:@"station"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [self setupTable];
+            //            [self setupTable];
         }
         
+    }else if(tableView == self.stationTabView) {
+        KG_ZhiTaiStationModel *model = self.stationArray[indexPath.row];
+        NSLog(@"1");
+        [UserManager shareUserManager].currentStationDic = [model mj_keyValues];
+        [self.rightButton setTitle:safeString(model.name) forState:UIControlStateNormal];
+        [[UserManager shareUserManager] saveStationData:[model mj_keyValues]];
+        _station_name = safeString(model.name);
+        _station_code = safeString(model.code);
+        [self queryStationDetailData];
+        [self cb_dismissPopupViewControllerAnimated:YES completion:nil];
     }
 }
--(void)closeFrame{
-    
-    [self cb_dismissPopupViewControllerAnimated:YES completion:nil];
-}
-
-
-
-
-
 
 //判断字典是否为空
 -(BOOL)isBlankDictionary:(NSDictionary *)dic {
@@ -2581,7 +2563,7 @@
     }else if ([string isEqualToString:@"env"]) {
         [listArr addObjectsFromArray:self.dataModel.enviromentDetails];
     }
-   
+    
     KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
     StationMachine.category = safeString(dic[@"code"]);
     StationMachine.machine_name = safeString(dic[@"name"]);
@@ -2597,16 +2579,16 @@
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-   
+    
 }
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 
 {
     if (scrollView.contentOffset.y <-120) {
-           NSLog(@"11111111%f",scrollView.contentOffset.y);
-           KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
-           [self.navigationController pushViewController:vc animated:nil];
-       }
+        NSLog(@"11111111%f",scrollView.contentOffset.y);
+        KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:nil];
+    }
     
 }
 

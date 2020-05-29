@@ -80,7 +80,7 @@
         return;
     }
     self.titleLabel.text = [NSString stringWithFormat:@"%@",self.dataDic[@"station"][@"name"]];
-    [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebHost,self.dataDic[@"station"][@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
+    [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,self.dataDic[@"station"][@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
     NSDictionary *dic = [dataDic objectForKey:@"equipmentStatus"];
 
 

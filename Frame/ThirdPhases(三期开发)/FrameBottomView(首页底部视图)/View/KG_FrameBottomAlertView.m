@@ -114,7 +114,7 @@
     [cell.watchVideoButton addTarget:self action:@selector(buttonClickedMethod:) forControlEvents:UIControlEventTouchUpInside];
    
    
-    [cell.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebHost,self.dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]  ];
+    [cell.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,self.dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"]  ];
     cell.titleLabel.text = [NSString stringWithFormat:@"%@",safeString(self.dataDic[@"name"])];
     cell.backgroundColor = [UIColor whiteColor];
     cell.firstNumLabel.layer.cornerRadius = 4.f;

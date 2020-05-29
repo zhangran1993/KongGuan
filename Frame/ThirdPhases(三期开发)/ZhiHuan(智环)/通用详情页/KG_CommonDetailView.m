@@ -296,17 +296,28 @@
 }
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
-    self.dataArray = dataDic[@"measureTagList"];
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+    for (NSDictionary *dic in dataDic[@"measureTagList"]) {
+        if ([dic[@"emphasis"] boolValue]) {
+            [arr addObject:dic];
+        }
+    }
+     
+    self.dataArray = arr;
     
     [self refreshData];
 }
 
 - (void)refreshData {
-    [self.equipImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebHost,_dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
+    [self.equipImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(_dataDic[@"alias"]),safeString(_dataDic[@"name"])];
     
     NSString *code = safeString(_dataDic[@"name"]);
-    self.leftImage.image = [UIImage imageNamed:@"UPS"];
+    self.leftImage.image = [UIImage imageNamed:code];
+    
+    if ([code containsString:@"空调"]) {
+        self.leftImage.image = [UIImage imageNamed:@"空调"];
+    }
     if([code isEqualToString:@"UPS"]){
         self.leftImage.image = [UIImage imageNamed:@"device_UPS"];
     }else if([code isEqualToString:@"水浸"]){
@@ -458,6 +469,7 @@
             make.top.equalTo(_centerView.mas_top).offset(22);
         }];
         self.centerGaoJingView = [[KG_CommonGaojingView alloc]init];
+        self.centerGaoJingView.dataArray = self.alarmArray;
         [_centerView addSubview:self.centerGaoJingView];
         [self.centerGaoJingView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.centerImageView.mas_right).offset(5);
@@ -469,5 +481,10 @@
         
     }
     return _centerView;
+}
+
+- (void)setAlarmArray:(NSArray *)alarmArray {
+    _alarmArray = alarmArray;
+    
 }
 @end

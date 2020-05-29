@@ -8,18 +8,27 @@
 
 #import "KG_NiControlViewController.h"
 #import "KG_NiControlCell.h"
-@interface KG_NiControlViewController ()<UITableViewDelegate,UITableViewDataSource>{
+#import "KG_NiControlSearchViewController.h"
+#import "WYLDatePickerView.h"
+@interface KG_NiControlViewController ()<UITableViewDelegate,UITableViewDataSource,WYLDatePickerViewDelegate>{
     
 }
 @property (nonatomic, strong) UIButton *bgBtn ;
 
 @property (nonatomic, strong) UITableView *tableView;
 
+@property (nonatomic ,strong) NSMutableArray *paraArr;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
-@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) UILabel *totolTitle;
 
-      
+@property (nonatomic ,assign) int pageNum;
+@property (nonatomic ,assign) int pageSize;
+@property (nonatomic ,assign) NSInteger btnIndex;
+@property (nonatomic, copy)   NSString *startStr;
+@property (nonatomic, copy)   NSString *endStr;
 
+@property (nonatomic,strong)WYLDatePickerView *dataPickerview; //选择日期
 @end
 
 @implementation KG_NiControlViewController
@@ -27,8 +36,126 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+   
+    [self initViewData];
+    [self createNaviTopView];
     [self createSearchUI];
     [self setupDataSubviews];
+    [self queryData];
+    [self.view addSubview:self.dataPickerview];
+}
+
+- (void)createNaviTopView {
+    UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
+    [leftButon setImage:[UIImage imageNamed:@"back_black"] forState:UIControlStateNormal];
+    [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
+    //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
+    [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
+    self.navigationItem.leftBarButtonItem = fixedButton;
+    UIButton *rightButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    rightButon.frame = CGRectMake(0,0,24,24);
+    [rightButon setImage:[UIImage imageNamed:@"search_icon"] forState:UIControlStateNormal];
+    rightButon.titleLabel.font = [UIFont systemFontOfSize:16];
+    [rightButon setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+    [rightButon addTarget:self action:@selector(serachMethod) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightfixedButton = [[UIBarButtonItem alloc]initWithCustomView:rightButon];
+    
+    self.navigationItem.rightBarButtonItems = @[rightfixedButton];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.title = [NSString stringWithFormat:@"反向操作日志"];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
+    
+    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+    
+    self.navigationController.navigationBar.translucent = NO;
+    
+    //去掉透明后导航栏下边的黑边
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+}
+//搜索方法
+- (void)serachMethod {
+    KG_NiControlSearchViewController *vc = [[KG_NiControlSearchViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)initViewData {
+    self.btnIndex = 0;
+    self.pageNum = 1;
+    self.pageSize = 10;
+    //初始化为日
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = @"HCDHT";
+    [self.paraArr addObject:paraDic];
+    
+    
+    NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+    paraDic1[@"name"] = @"engineRoomCode";
+    paraDic1[@"type"] = @"eq";
+    paraDic1[@"content"] = @"";
+    [self.paraArr addObject:paraDic1];
+    
+    
+    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
+    paraDic2[@"name"] = @"equipmentGroup";
+    paraDic2[@"type"] = @"eq";
+    paraDic2[@"content"] = @"security";
+    [self.paraArr addObject:paraDic2];
+}
+- (void)queryData {
+    
+    
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcBackward/log/%d/%d",WebNewHost,self.pageNum,self.pageSize];
+      WS(weakSelf);
+      [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+          NSInteger code = [[result objectForKey:@"errCode"] intValue];
+          if(code  <= -1){
+              [FrameBaseRequest showMessage:result[@"errMsg"]];
+              
+              return ;
+          }
+          [self.tableView.mj_footer endRefreshing];
+       
+          [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
+          int pages = [result[@"value"][@"pages"] intValue];
+          
+          if (self.pageNum >= pages) {
+              [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+              
+          }else {
+              if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                  [weakSelf.tableView.mj_footer resetNoMoreData];
+              }
+          }
+          self.totolTitle.text = [NSString stringWithFormat:@"共%lu条",(unsigned long)self.dataArray.count];
+          
+          [self.tableView reloadData];
+        
+      } failure:^(NSError *error)  {
+          FrameLog(@"请求失败，返回数据 : %@",error);
+          
+          [FrameBaseRequest showMessage:@"网络链接失败"];
+          return ;
+      }];
 }
 
 - (void)createSearchUI {
@@ -43,16 +170,16 @@
         make.height.equalTo(@44);
     }];
     
-    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
+    self.totolTitle= [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
    
-    titleLabel.text = @"";
+    self.totolTitle.text = [NSString stringWithFormat:@"共%@条",@"0"];
    
     
-    titleLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
-    titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    [searchView addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.totolTitle.textColor = [UIColor colorWithHexString:@"#BABCC4"];
+    self.totolTitle.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.totolTitle.textAlignment = NSTextAlignmentLeft;
+    [searchView addSubview:self.totolTitle];
+    [self.totolTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left).offset(16);
         make.width.equalTo(@100);
         make.top.equalTo(self.view.mas_top);
@@ -110,10 +237,18 @@
 
 
 - (void)startButtonClick:(UIButton *)button {
-    
+    self.btnIndex = 0;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
+        [self.dataPickerview  show];
+    }];
 }
 - (void)endButtonClick:(UIButton *)button {
-    
+    self.btnIndex = 1;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
+        [self.dataPickerview  show];
+    }];
 }
 - (void)resetButtonClick:(UIButton *)button {
     
@@ -148,14 +283,21 @@
     }
     return _tableView;
 }
--(NSArray *)dataArray{
+-(NSMutableArray *)dataArray{
     if (!_dataArray) {
-        _dataArray = [NSArray array];
+        _dataArray = [[NSMutableArray alloc]init];
     }
     return _dataArray;
 }
 
 
+- (NSMutableArray *)paraArr {
+    if (!_paraArr) {
+        _paraArr = [[NSMutableArray alloc] init];
+    }
+    
+    return _paraArr;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -164,7 +306,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 50;
+    return 135;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -176,35 +318,60 @@
     }
     NSDictionary *dataDic = self.dataArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    cell.dataDic = dataDic;
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
-    return 50.f;
-}
-
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
-    headView.backgroundColor = [UIColor whiteColor];
-    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
-    if(self.dataArray.count ){
-        titleLabel.text = safeString(self.dataArray[section][@"name"]);
-    }
-    
-    titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.font = [UIFont systemFontOfSize:14];
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    [headView addSubview:titleLabel];
-    return headView;
-}
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
 }
+- (WYLDatePickerView *)dataPickerview
+{
+    if (!_dataPickerview) {
+        WYLDatePickerView *dateView = [[WYLDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-300, self.view.frame.size.width, 300) withDatePickerType:WYLDatePickerTypeYMDHM];
+        dateView.delegate = self;
+        dateView.title = @"请选择时间";
+        dateView.isSlide = YES;
+        dateView.toolBackColor = [UIColor colorWithHexString:@"#F7F7F7"];
+        dateView.toolTitleColor = [UIColor colorWithHexString:@"#555555"];
+        dateView.saveTitleColor = [UIColor colorWithHexString:@"#EA3425"];
+        dateView.cancleTitleColor = [UIColor colorWithHexString:@"#EA3425"];
+        _dataPickerview = dateView;
+        
+    }
+    return _dataPickerview;
+}
+- (NSString *)conversionOfTime:(NSString *)time
+{
+    NSString *dateStr;
+    //2019-03
+    NSString *year = [time substringToIndex:4];
+    NSString *month = [time substringFromIndex:5];
+    dateStr = [NSString stringWithFormat:@"%@年%@期",year,month];
+    return dateStr;
+}
+#pragma mark - customDelegate - Method -
+//选择时间确定按钮
+- (void)datePickerViewSaveBtnClickDelegate:(NSString *)timer{
+    if (self.btnIndex == 0) {
+        self.startStr = timer;
+        NSLog(@"%@",self.startStr);
+    }else {
+        self.endStr = timer;
+        NSLog(@"%@",self.endStr);
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
+    }];
+}
+//选择时间取消按钮
+- (void)datePickerViewCancelBtnClickDelegate{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
+    }];
+}
+
 
 @end

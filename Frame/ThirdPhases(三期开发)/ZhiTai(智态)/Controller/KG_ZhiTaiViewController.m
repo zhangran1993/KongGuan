@@ -19,6 +19,7 @@
 #import "LoginViewController.h"
 #import "KG_ZhiTaiStationModel.h"
 #import "UIViewController+CBPopup.h"
+#import "StationMachineDetailMoreController.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -101,7 +102,8 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
-    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -340,8 +342,12 @@
         make.height.equalTo(@120);
         make.width.equalTo(@183);
     }];
-    [picImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,roomInfo[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
-    
+   
+    if(safeString(roomInfo[@"thumbnail"]).length >0 ){
+         [picImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,roomInfo[@"thumbnail"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
+    }else {
+        [picImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,roomInfo[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
+    }
     
     
     
@@ -470,6 +476,15 @@
             self.demView.layer.cornerRadius = 10;
             self.demView.layer.masksToBounds = YES;
             self.demView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 550);
+            self.demView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
+                
+            
+             
+                   StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
+                   vc.machineDetail = dataDic;
+
+                   [self.navigationController pushViewController:vc animated:YES];
+            };
             [_scrollView addSubview:self.demView];
             
         }else {
@@ -478,6 +493,12 @@
             self.dvorView.layer.cornerRadius = 10;
             self.dvorView.layer.masksToBounds = YES;
             self.dvorView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 600);
+            self.dvorView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
+                StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
+                vc.machineDetail = dataDic;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+            };
             [_scrollView addSubview:self.dvorView];
             
         }

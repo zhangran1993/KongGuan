@@ -7,7 +7,7 @@
 //
 
 #import "KG_ZhiXiuCell.h"
-
+#import "KG_LeftScrollPromptView.h"
 
 @implementation KG_ZhiXiuCell
 
@@ -30,16 +30,6 @@
 }
 
 - (void)createSubviewsView {
-    
-//
-//    @property (nonatomic,strong) UILabel *roomLabel;
-//
-//    @property (nonatomic,strong) UILabel *timeLabel;
-//
-//    @property (nonatomic,strong) UIView *lineView;
-//    @property (nonatomic,strong) UIImageView *iconImage;
-//    @property (nonatomic,strong) UIImageView *gaojingImage;
-//    @property (nonatomic,strong) UILabel *powLabel;
     
     self.roomLabel = [[UILabel alloc]init];
     [self addSubview:self.roomLabel];
@@ -79,47 +69,150 @@
     self.confirmBtn = [[UIButton alloc]init];
     [self addSubview:self.confirmBtn];
     [self.confirmBtn setTitle:@"未确认" forState:UIControlStateNormal];
+    [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#AABBCD"] forState:UIControlStateNormal];
+    self.confirmBtn.layer.cornerRadius = 5;
+    self.confirmBtn.layer.masksToBounds = YES;
     [self.confirmBtn addTarget:self action:@selector(buttonClock:) forControlEvents:UIControlEventTouchUpInside];
     self.confirmBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.confirmBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F8"]];
     [self.confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_right).offset(-16);
+        make.right.equalTo(self.mas_right).offset(-16);
         make.width.equalTo(@58);
         make.height.equalTo(@28);
         make.bottom.equalTo(self.mas_bottom).offset(-25);
     }];
+    UIView *lineView = [[UIView alloc]init];
+    [self addSubview:lineView];
+    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(16);
+        make.right.equalTo(self.mas_right).offset(-16);
+        make.height.equalTo(@1);
+        make.top.equalTo(self.timeLabel.mas_bottom).offset(8);
+    }];
     
     self.iconImage = [[UIImageView alloc]init];
+    self.iconImage.image = [UIImage imageNamed:@"gaojing_red"];
     [self addSubview:self.iconImage];
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-18);
+        make.left.equalTo(self.mas_left).offset(14);
         make.width.equalTo(@20);
         make.height.equalTo(@20);
-        make.top.equalTo(self.mas_top).offset(18);
+        make.top.equalTo(lineView.mas_bottom).offset(12);
     }];
-    self.gaojingImage.image = [UIImage imageNamed:@"gaojing_red"];
-    
-    self.gaojingImage = [[UIImageView alloc]init];
-    [self addSubview:self.gaojingImage];
-    [self.gaojingImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-18);
-        make.width.equalTo(@20);
-        make.height.equalTo(@20);
-        make.top.equalTo(self.mas_top).offset(18);
-    }];
-    self.gaojingImage.image = [UIImage imageNamed:@"gaojing_red"];
-    
     
     self.powLabel = [[UILabel alloc]init];
     [self addSubview:self.powLabel];
-    self.powLabel.text = @"导航DVOR";
+    self.powLabel.text = @"电池组2#";
     self.powLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.powLabel.font = [UIFont systemFontOfSize:12];
     [self.powLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(16);
-        make.top.equalTo(self.roomLabel.mas_bottom);
+        make.left.equalTo(self.iconImage.mas_right).offset(14);
+        make.top.equalTo(lineView.mas_bottom).offset(11);
+        make.height.equalTo(@21);
+        make.width.equalTo(@200);
+    }];
+    self.gaojingImage.image = [UIImage imageNamed:@"gaojing_red"];
+    self.gaojingImage = [[UIImageView alloc]init];
+    [self addSubview:self.gaojingImage];
+    [self.gaojingImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(14);
+        make.width.equalTo(@20);
+        make.height.equalTo(@20);
+        make.top.equalTo(self.iconImage.mas_bottom).offset(8);
+    }];
+    self.gaojingImage.image = [UIImage imageNamed:@"gaojing_red"];
+    
+    
+    self.detailLabel = [[UILabel alloc]init];
+    [self addSubview:self.detailLabel];
+    self.detailLabel.text = @"电池组2#";
+    self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    self.detailLabel.font = [UIFont systemFontOfSize:12];
+    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.gaojingImage.mas_right).offset(14);
+        make.top.equalTo(self.powLabel.mas_bottom).offset(8);
         make.height.equalTo(@24);
         make.width.equalTo(@200);
     }];
+    
+    
+}
+
+
+- (void)setModel:(KG_GaoJingModel *)model {
+    _model = model;
+    
+    self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(model.stationName),safeString(model.equipmentName)];
+    self.iconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(model.stationCode)]];
+    
+    self.timeLabel.text = [self timestampToTimeStr:safeString(model.happenTime)];
+    
+    
+    self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(model.level)]];
+    
+    [self.confirmBtn setTitle:safeString(model.status) forState:UIControlStateNormal];
+    
+    self.powLabel.text = safeString(model.equipmentName);
+    
+    self.detailLabel.text = safeString(model.name);
+}
+
+- (void)buttonClock:(UIButton *)button {
+    
+    
+}
+//将时间戳转换为时间字符串
+- (NSString *)timestampToTimeStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
+    }
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+    
+}
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
+}
+- (NSString *)getLevelImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"正常"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"提示"]) {
+        levelString = @"level_prompt";
+    }else if ([level isEqualToString:@"次要"]) {
+        levelString = @"level_ciyao";
+    }else if ([level isEqualToString:@"重要"]) {
+        levelString = @"level_important";
+    }else if ([level isEqualToString:@"紧急"]) {
+        levelString = @"level_jinji";
+    }
+    
+    //紧急
+    return levelString;
+}
+
+- (void)setShowLeftSrcollView:(NSString *)showLeftSrcollView {
+    if ([showLeftSrcollView isEqualToString:@"1"]) {
+        KG_LeftScrollPromptView *view=  [[KG_LeftScrollPromptView alloc]init];
+        [self addSubview:view];
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.mas_left);
+            make.right.equalTo(self.mas_right);
+            make.top.equalTo(self.mas_top);
+            make.bottom.equalTo(self.mas_bottom);
+        }];
+    }
+    
 }
 @end

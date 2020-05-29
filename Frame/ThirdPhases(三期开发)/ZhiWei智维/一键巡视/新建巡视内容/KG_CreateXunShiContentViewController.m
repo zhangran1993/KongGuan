@@ -34,9 +34,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"新建巡视任务";
+    self.view.backgroundColor = [UIColor whiteColor];
     [self createTableView];
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:NO];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    
+      [self.navigationController setNavigationBarHidden:YES];
+    
+    
+    
+}
 
 - (void)createTableView {
     [self.view addSubview:self.tableView];
@@ -172,7 +185,7 @@
         
         self.stationBtn = [[UIButton alloc]init];
         [headView addSubview:self.stationBtn];
-        [self.stationBtn setBackgroundImage:[UIImage imageNamed:@"add_btnIcon"] forState:UIControlStateNormal];
+       
         self.stationBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [self.stationBtn setTitle:@"请选择台站" forState:UIControlStateNormal];
         [self.stationBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];

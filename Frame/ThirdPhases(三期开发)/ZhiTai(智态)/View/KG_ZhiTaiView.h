@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_ZhiTaiView : UIView
-
+@property (nonatomic,strong) void(^clickToDetail)(NSDictionary *detailDic);
 @property (nonatomic,strong) NSDictionary *dataDic;
 @end
 

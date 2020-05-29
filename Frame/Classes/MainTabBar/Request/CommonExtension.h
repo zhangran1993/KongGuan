@@ -43,4 +43,7 @@
 @property (nonatomic, weak)id<ParentViewDelegate>delegate;
 +(int)isFirstLauch;
 + (float)heightForString:(NSString *)value fontSize:(UIFont*)fontSize andWidth:(float)width ;
+
+
++ (NSString *) getDeviceIcon:(NSString *)code ;
 @end

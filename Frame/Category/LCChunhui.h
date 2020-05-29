@@ -28,6 +28,10 @@
 #import "FrameBaseRequest.h"
 #import "MBProgressHUD+XMG.h"
 #import "NSString+RSMethod.h"
+#import "NSString+MD5.h"
+#import "TZImagePickerController.h"
+#import "TZImageManager.h"
+#import <Photos/Photos.h>
 #define XZShare [UtilsJSH standarInstance]
 //MARK:判断手机机型
 #define JSHmainWindow [UIApplication sharedApplication].keyWindow

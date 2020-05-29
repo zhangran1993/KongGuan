@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic ,copy) void (^moreAction)();
 @property (nonatomic, strong) NSDictionary *dataDic;
+
+@property (nonatomic, strong) NSArray *alarmArray;
 @end
 
 NS_ASSUME_NONNULL_END

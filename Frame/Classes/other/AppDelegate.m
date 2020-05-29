@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "FrameViewController.h"
-#import "FrameTabBarController.h"
+#import "KG_NewTarBarViewController.h"
 #import "FrameBaseRequest.h"
 #import "JPUSHService.h"
 #import "PersonalViewController.h"
@@ -18,6 +18,7 @@
 #import "UIImageView+WebCache.h"
 #import <AFNetworkReachabilityManager.h>
 #import "UIColor+Extension.h"
+#import "StationDetailController.h"
 // iOS10注册APNs所需头文件
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
@@ -95,7 +96,7 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
 
     // 2.设置窗口的根控制器
-    FrameTabBarController *FrameTabBar = [[FrameTabBarController alloc] init];
+    KG_NewTarBarViewController *FrameTabBar = [[KG_NewTarBarViewController alloc] init];
     FrameTabBar.delegate = self;
     // 3.显示窗口
     //[self.window makeKeyAndVisible];

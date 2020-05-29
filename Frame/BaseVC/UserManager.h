@@ -28,4 +28,8 @@ interfaceSingle(UserManager)
 
 //获取任务状态字典接口
 @property(nonatomic, strong) NSArray *taskStatusArr;
+
+- (void)saveStationData:(NSDictionary *)dataD ;
+    
+
 @end

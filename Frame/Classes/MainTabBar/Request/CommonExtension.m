@@ -429,4 +429,43 @@
     return size.height;
 }
 
++ (NSString *) getDeviceIcon:(NSString *)code  {
+    NSString *iconString = @"水浸";
+    if([code isEqualToString:@"immersion"]){
+        iconString =@"水浸";
+    }else if([code isEqualToString:@"smoke"]){
+        iconString =@"烟感";
+    }else if([code isEqualToString:@"precisionAirConditioner"]){
+        iconString =@"精密空调";
+    }else if([code isEqualToString:@"airConditioner"]){
+        iconString =@"空调";
+    }else if([code isEqualToString:@"infrared"]){
+        iconString =@"红外";
+    }else if([code isEqualToString:@"temperatureHygrometer"]){
+        iconString =@"温湿度";
+    }else if([code isEqualToString:@"ups"]){
+        iconString =@"UPS";
+    }else if([code isEqualToString:@"electric"]){
+        iconString =@"市电";
+    }else if([code isEqualToString:@"distribution_box"]){
+        iconString =@"配电柜";
+    }else if([code isEqualToString:@"battery"]){
+        iconString =@"蓄电池";
+    }else if([code isEqualToString:@"diesel"]){
+        iconString =@"柴油发电机";
+    }else if([code isEqualToString:@"electricityMeter"]){
+        iconString =@"电量仪";
+    }else if([code isEqualToString:@"ats"]){
+        iconString =@"ATS";
+    }else if([code isEqualToString:@"airSwitch"]){
+        iconString =@"空开";
+    }else if([code isEqualToString:@"accessControl"]){
+        iconString =@"门禁";
+    }else if([code isEqualToString:@"electricFence"]){
+        iconString =@"电子栅栏";
+    }else if([code isEqualToString:@"monitor"]){
+        iconString =@"监控";
+    }
+    return iconString;
+}
 @end

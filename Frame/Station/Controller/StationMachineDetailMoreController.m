@@ -24,6 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     self.radarList = [NSMutableArray arrayWithCapacity:0];
     [self createNaviView];
     [self loadTableView];
@@ -79,12 +80,23 @@
 }
 
 - (void)queryData {
-    self.radarList  = _machineDetail[@"tagList"];
+    
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+    for (NSDictionary *dic in _machineDetail[@"tagList"]) {
+        if ([dic[@"emphasis"] boolValue]) {
+            [arr addObject:dic];
+        }
+    }
+    self.radarList  = arr;
     [self.radarTableView reloadData];
     self.title = [NSString stringWithFormat:@"%@-%@",safeString(_machineDetail[@"station_name"]),safeString(_machineDetail[@"machine_name"])];
     NSString *code = safeString(_machineDetail[@"name"]);
-       self.topIconImage.image = [UIImage imageNamed:@"UPS"];
-       if([code isEqualToString:@"UPS"]){
+    
+    self.topIconImage.image = [UIImage imageNamed:code];
+    if ([code containsString:@"空调"]) {
+        self.topIconImage.image = [UIImage imageNamed:@"空调"];
+    }
+    if([code isEqualToString:@"UPS"]){
            self.topIconImage.image = [UIImage imageNamed:@"device_UPS"];
        }else if([code isEqualToString:@"水浸"]){
            self.topIconImage.image = [UIImage imageNamed:@"device_shuijin"];

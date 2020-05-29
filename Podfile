@@ -24,6 +24,7 @@ target 'Frame' do
     pod 'DZNEmptyDataSet'
     pod 'MBProgressHUD'
     pod 'JSONModel'
+    pod 'TZImagePickerController' 
     #pod 'Pgyer'
     #pod 'PgyUpdate'
 

@@ -9,7 +9,7 @@
 #import "RS_ConditionSearchView.h"
 #import "RS_BottomButtonView.h"
 #import "RS_ConditionSearchTableViewCell.h"
-#import "CXDatePickerView.h"
+
 
 @interface RS_ConditionSearchView ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -26,7 +26,7 @@
 /** 清空筛选/确定 */
 @property (nonatomic, strong) RS_BottomButtonView *bottomView;
 /** 时间选择控件 */
-@property (nonatomic, strong) CXDatePickerView *datePicker;
+@property (nonatomic, strong) UIDatePicker *datePicker;
 /** 区间-时间 */
 @property (nonatomic, strong) RS_ConditionSearchModel *timeIntervalModel;
 
@@ -165,7 +165,7 @@
     [shadowButton addTarget:self action:@selector(hideDatePicker) forControlEvents:UIControlEventTouchUpInside];
     shadowButton.backgroundColor = RGBA(0, 0, 0, 0.5);
     
-    _datePicker = [[CXDatePickerView alloc] init];
+    _datePicker = [[UIDatePicker alloc] init];
     [shadowButton addSubview:_datePicker];
    
     [_datePicker show];

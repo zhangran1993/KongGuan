@@ -55,9 +55,9 @@
 
 #pragma mark - 日历获取在9.x之后的系统使用currentCalendar会出异常。在8.0之后使用系统新API。
 - (NSCalendar *)currentCalendar {
-    if ([NSCalendar respondsToSelector:@selector(calendarWithIdentifier:)]) {
-        return [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    }
+//    if ([NSCalendar respondsToSelector:@selector(calendarWithIdentifier:)]) {
+//        return [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+//    }
     return [NSCalendar currentCalendar];
 }
 

@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic,strong) NSDictionary *dataDic;
+
+@property (nonatomic,strong) void(^clickToDetail)(NSDictionary *dataDic);
 @end
 
 NS_ASSUME_NONNULL_END
