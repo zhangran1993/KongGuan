@@ -58,10 +58,19 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+      [self.navigationController setNavigationBarHidden:NO];
     
- 
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    
+    [self.navigationController setNavigationBarHidden:YES];
+    
+    
+    
+}
 
 - (UIImage*)createImageWithColor: (UIColor*) color{
     CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
@@ -92,47 +101,14 @@
     self.title = [NSString stringWithFormat:@"%@-%@",safeString(_machineDetail[@"station_name"]),safeString(_machineDetail[@"machine_name"])];
     NSString *code = safeString(_machineDetail[@"name"]);
     
-    self.topIconImage.image = [UIImage imageNamed:code];
-    if ([code containsString:@"空调"]) {
-        self.topIconImage.image = [UIImage imageNamed:@"空调"];
-    }
-    if([code isEqualToString:@"UPS"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_UPS"];
-       }else if([code isEqualToString:@"水浸"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_shuijin"];
-       }else if([code isEqualToString:@"烟感"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_yangan"];
-       }else if([code isEqualToString:@"空调"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_kongtiao"];
-       }else if([code isEqualToString:@"蓄电池"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_xudianchi"];
-       }else if([code isEqualToString:@"柴油发电机"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_chaiyou"];
-       }else if([code isEqualToString:@"电量仪"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_dianliangyi"];
-       }else if([code isEqualToString:@"空开"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_kongtiao"];
-       }else if([code isEqualToString:@"电子围栏"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_zhalan"];
-       }else if([code isEqualToString:@"门禁"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_menjin"];
-       }else if([code isEqualToString:@"视频监测"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_video"];
-       }else if([code isEqualToString:@"温湿度"]){
-           self.topIconImage.image = [UIImage imageNamed:@"device_wenshidu"];
-       }else {
-           self.topIconImage.image = [UIImage imageNamed:@"device_UPS"];
-       }
-       self.topTitleLabel.text = safeString(_machineDetail[@"name"]);
+    self.topIconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(_machineDetail[@"category"])]];
+    
+    self.topTitleLabel.text = safeString(_machineDetail[@"name"]);
 }
 #pragma mark - private methods 私有方法
 
 
 
--(void)viewWillDisappear:(BOOL)animated{
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.translucent = NO;
-}
 
 -(void)viewDidAppear:(BOOL)animated{
     // NSLog(@"viewDidAppear");
@@ -177,6 +153,7 @@
     
     self.topIconImage = [[UIImageView alloc]init];
     [headView addSubview:self.topIconImage];
+    self.topIconImage.contentMode = UIViewContentModeScaleAspectFill;
     [self.topIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headView.mas_left).offset(21);
         make.width.equalTo(@11);
@@ -236,8 +213,8 @@
             cell = [[RadarTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RadarTableViewCell"];
         }
         cell.titleLabel.text = safeString(self.radarList[indexPath.row][@"name"]) ;
-        cell.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(self.radarList[indexPath.row][@"valueAlias"]),safeString(self.radarList[indexPath.row][@"unit"])] ;
-        
+        cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(self.radarList[indexPath.row][@"valueAlias"])] ;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     return nil;

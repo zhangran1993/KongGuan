@@ -100,7 +100,7 @@
     
     self.titleLabel.text = safeString(dataDic[@"name"]);
     
-    self.valueLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dataDic[@"valueAlias"]),safeString(dataDic[@"unit"])];
+    self.valueLabel.text = [NSString stringWithFormat:@"%@",safeString(dataDic[@"valueAlias"])];
     
     
 }

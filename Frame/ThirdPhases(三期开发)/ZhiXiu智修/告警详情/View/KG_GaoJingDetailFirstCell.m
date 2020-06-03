@@ -237,11 +237,13 @@
         sta = @"已解决";
     }
     
-   [self.confirmBtn setTitle:sta forState:UIControlStateNormal];
-   self.powLabel.text = safeString(dic[@"equipmentName"]);
+    [self.confirmBtn setTitle:sta forState:UIControlStateNormal];
+    self.powLabel.text = safeString(dic[@"equipmentName"]);
     self.iconImage.image = [UIImage imageNamed: [CommonExtension getDeviceIcon:safeString(dic[@"equipmentCategory"])]];
-    
-   self.detailLabel.text = safeString(dic[@"name"]);
+    if(safeString(dic[@"equipmentCategory"]).length == 0){
+        self.iconImage.image = [UIImage imageNamed: safeString(dic[@"equipmentName"])];
+    }
+    self.detailLabel.text = safeString(dic[@"name"]);
     
     if ([dic[@"hangupStatus"] boolValue]) {
         [self.hangUpStautsBtn setTitle:@"解除挂起" forState:UIControlStateNormal];

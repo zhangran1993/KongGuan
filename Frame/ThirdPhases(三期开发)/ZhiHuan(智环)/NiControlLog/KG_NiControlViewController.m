@@ -36,7 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-   
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self initViewData];
     [self createNaviTopView];
     [self createSearchUI];
@@ -78,6 +78,17 @@
 - (void)serachMethod {
     KG_NiControlSearchViewController *vc = [[KG_NiControlSearchViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
+    
+}
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:NO];
+  
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    [self.navigationController setNavigationBarHidden:YES];
     
 }
 - (UIImage*)createImageWithColor: (UIColor*) color{
@@ -330,7 +341,7 @@
 - (WYLDatePickerView *)dataPickerview
 {
     if (!_dataPickerview) {
-        WYLDatePickerView *dateView = [[WYLDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-300, self.view.frame.size.width, 300) withDatePickerType:WYLDatePickerTypeYMDHM];
+        WYLDatePickerView *dateView = [[WYLDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:WYLDatePickerTypeYMDHM];
         dateView.delegate = self;
         dateView.title = @"请选择时间";
         dateView.isSlide = YES;

@@ -462,7 +462,7 @@
     }else if([code isEqualToString:@"accessControl"]){
         iconString =@"门禁";
     }else if([code isEqualToString:@"electricFence"]){
-        iconString =@"电子栅栏";
+        iconString =@"电子围栏";
     }else if([code isEqualToString:@"monitor"]){
         iconString =@"监控";
     }

@@ -12,6 +12,8 @@
 #import "Masonry.h"
 #import "BAUISlider.h"
 #import "KG_PowerOnView.h"
+
+#import "KG_NiControlView.h"
 @interface KG_KongTiaoControlViewController ()
 
 @property (nonatomic ,strong) UIButton *moreBtn ;
@@ -39,8 +41,21 @@
 
 @property (nonatomic, strong) UILabel *tempSelLabel;
 @property (nonatomic, strong) KG_PowerOnView *powOnView;
-
+@property (nonatomic, strong) KG_NiControlView *niControlView;
 @property (nonatomic, strong) UIView *sliderBgView;
+@property (nonatomic, strong) UIButton *btn1;
+@property (nonatomic, strong) UIButton *btn2;
+@property (nonatomic, strong) UIButton *btn3;
+@property (nonatomic, strong) UIImageView *weatherImage;
+
+@property (nonatomic, copy) NSString *textString;
+
+@property (nonatomic, copy) NSString *modelString;
+@property (nonatomic, assign)int  temValue;
+@property (nonatomic, copy) NSString *textFieldString;
+
+@property (nonatomic, strong) UIButton *confirmBtn ;
+
 @end
 
 @implementation KG_KongTiaoControlViewController
@@ -49,6 +64,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.currIndex = 0;
+    self.modelString = @"switch";
+    self.temValue = 16;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self createView];
     [self createSliderView];
@@ -84,14 +101,18 @@
 //    self.doubleSliderView.y = 185 - 10+120+45;
     
     self.umberSlider = [[BAUISlider alloc] initWithFrame:CGRectMake(50, 100, self.view.frame.size.width-100, 30)];
-       self.umberSlider.titleStyle = TopTitleStyle;
-       self.umberSlider.isShowTitle = YES;
-       //设置最大和最小值
-       self.umberSlider.minimumValue = 0;
-       self.umberSlider.maximumValue = 100;
-       self.umberSlider.maximumTrackTintColor = [UIColor colorWithHexString:@"#F0F0F3"];//设置滑块线条的颜色（右边）,默认是灰色
-       self.umberSlider.thumbTintColor = [UIColor colorWithHexString:@"#C8CFE1"];///设置滑块按钮的颜色
-       [self.view addSubview:self.umberSlider];
+    self.umberSlider.titleStyle = TopTitleStyle;
+    self.umberSlider.isShowTitle = YES;
+    //设置最大和最小值
+    self.umberSlider.minimumValue = 0;
+    self.umberSlider.maximumValue = 100;
+    self.umberSlider.maximumTrackTintColor = [UIColor colorWithHexString:@"#F0F0F3"];//设置滑块线条的颜色（右边）,默认是灰色
+    self.umberSlider.thumbTintColor = [UIColor colorWithHexString:@"#C8CFE1"];///设置滑块按钮的颜色
+    [self.view addSubview:self.umberSlider];
+    self.umberSlider.valueChange = ^(int value) {
+        self.tempTitle.text = [NSString stringWithFormat:@"%d",value];
+        self.temValue = value;
+    };
     [self.umberSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tempSelLabel.mas_right).offset(5);
         make.height.equalTo(@55);
@@ -250,16 +271,16 @@
         make.left.equalTo(self.view.mas_left).offset((SCREEN_WIDTH -32 -194)/2);
     }];
     
-    UIImageView *weatherImage = [[UIImageView alloc]init];
-    [self.view addSubview:weatherImage];
-    weatherImage.image = [UIImage imageNamed:@"kongtiao_weather"];
-    [weatherImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.weatherImage  = [[UIImageView alloc]init];
+    [self.view addSubview:self.weatherImage];
+    self.weatherImage.image = [UIImage imageNamed:@"kongtiao_weather"];
+    [self.weatherImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@24);
         make.top.equalTo(bgImage.mas_top).offset(60);
         make.centerX.equalTo(bgImage.mas_centerX);
     }];
     self.tempTitle = [[UILabel alloc]init];
-    self.tempTitle.text = [NSString stringWithFormat:@"%@",@"20"];
+    self.tempTitle.text = [NSString stringWithFormat:@"%@",@"16"];
     self.tempTitle.textColor = [UIColor colorWithHexString:@"#939CB4"];
     self.tempTitle.textAlignment = NSTextAlignmentCenter;
     self.tempTitle.font = [UIFont systemFontOfSize:30 weight:UIFontWeightMedium];
@@ -269,7 +290,7 @@
     [self.tempTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@42);
         
-        make.top.equalTo(weatherImage.mas_bottom).offset(2);
+        make.top.equalTo(self.weatherImage.mas_bottom).offset(2);
         make.centerX.equalTo(bgImage.mas_centerX);
     }];
     
@@ -283,7 +304,7 @@
     [tempUnitTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@42);
         make.width.equalTo(@100);
-        make.top.equalTo(weatherImage.mas_bottom).offset(2);
+        make.top.equalTo(self.weatherImage.mas_bottom).offset(2);
         make.left.equalTo(self.tempTitle.mas_right);
     }];
     
@@ -320,30 +341,33 @@
         make.left.equalTo(self.view.mas_left).offset(16);
     }];
     
-    UIButton *btn1 = [[UIButton alloc]init];
-    [btn1 setImage:[UIImage imageNamed:@"制热可选未选中"] forState:UIControlStateNormal];
-    [self.view addSubview:btn1];
-    [btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.btn1 = [[UIButton alloc]init];
+    [self.btn1 setImage:[UIImage imageNamed:@"制热可选选中"] forState:UIControlStateNormal];
+    [self.btn1 addTarget:self action:@selector(btn1Method) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.btn1];
+    [self.btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@40);
         make.left.equalTo(self.modelTitle.mas_right).offset(4);
         make.centerY.equalTo(self.modelTitle.mas_centerY);
     }];
     
-    UIButton *btn2 = [[UIButton alloc]init];
-    [self.view addSubview:btn2];
-    [btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
-    [btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.btn2 = [[UIButton alloc]init];
+    [self.view addSubview:self.btn2];
+    [self.btn2 addTarget:self action:@selector(btn2Method) forControlEvents:UIControlEventTouchUpInside];
+    [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
+    [self.btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@40);
-        make.left.equalTo(btn1.mas_right).offset(22);
+        make.left.equalTo(self.btn1.mas_right).offset(22);
         make.centerY.equalTo(self.modelTitle.mas_centerY);
     }];
     
-    UIButton *btn3 = [[UIButton alloc]init];
-    [self.view addSubview:btn3];
-    [btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
-    [btn3 mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.btn3 = [[UIButton alloc]init];
+    [self.view addSubview:self.btn3];
+    [self.btn3 addTarget:self action:@selector(btn3Method) forControlEvents:UIControlEventTouchUpInside];
+    [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
+    [self.btn3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@40);
-        make.left.equalTo(btn2.mas_right).offset(22);
+        make.left.equalTo(self.btn2.mas_right).offset(22);
         make.centerY.equalTo(self.modelTitle.mas_centerY);
     }];
     
@@ -362,21 +386,47 @@
     
     
     
-    UIButton *confirmBtn = [[UIButton alloc]init];
-    [self.view addSubview:confirmBtn];
-    [confirmBtn setTitle:@"确认操作" forState:UIControlStateNormal];
-    [confirmBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F9"]];
-    confirmBtn.titleLabel.font =[UIFont systemFontOfSize:14];
-    [confirmBtn setTitleColor:[UIColor colorWithHexString:@"#C2CDDE"] forState:UIControlStateNormal];
-    [confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.confirmBtn = [[UIButton alloc]init];
+    [self.view addSubview:self.confirmBtn];
+    [self.confirmBtn setTitle:@"确认操作" forState:UIControlStateNormal];
+    [self.confirmBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F9"]];
+    self.confirmBtn.titleLabel.font =[UIFont systemFontOfSize:14];
+    [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#C2CDDE"] forState:UIControlStateNormal];
+    [self.confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left).offset(20);
         make.right.equalTo(self.view.mas_right).offset(-21);
         make.height.equalTo(@37);
         make.bottom.equalTo(self.view.mas_bottom).offset(-18);
     }];
-    [confirmBtn addTarget:self action:@selector(confirmMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [self.confirmBtn addTarget:self action:@selector(confirmMethod:) forControlEvents:UIControlEventTouchUpInside];
     
     
+    
+}
+//
+- (void)btn1Method {
+    self.modelString = @"switch";
+    self.weatherImage.hidden = NO;
+    self.tempTextTitle.text = [NSString stringWithFormat:@"制热"];
+    [self.btn1 setImage:[UIImage imageNamed:@"制热可选选中"] forState:UIControlStateNormal];
+    [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
+    [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
+}
+- (void)btn2Method {
+    self.modelString = @"temperature";
+    self.weatherImage.hidden = YES;
+    self.tempTextTitle.text = [NSString stringWithFormat:@"环境温度"];
+    [self.btn1 setImage:[UIImage imageNamed:@"制热可选未选中"] forState:UIControlStateNormal];
+    [self.btn2 setImage:[UIImage imageNamed:@"制冷可选选中"] forState:UIControlStateNormal];
+    [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
+    
+}
+- (void)btn3Method {
+    self.modelString = @"damp";
+    self.weatherImage.hidden = YES;
+    [self.btn1 setImage:[UIImage imageNamed:@"制热可选未选中"] forState:UIControlStateNormal];
+    [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
+    [self.btn3 setImage:[UIImage imageNamed:@"除湿可选选中"] forState:UIControlStateNormal];
     
 }
 - (UIImage*)createImageWithColor: (UIColor*) color{
@@ -399,15 +449,63 @@
 }
 
 - (void)confirmMethod:(UIButton *)button {
+    self.niControlView.hidden = NO;
+    self.niControlView.textString = ^(NSString * _Nonnull textStr) {
+        self.textString = textStr;
+    };
+    self.niControlView.textFieldString = ^(NSString * _Nonnull textFieldStr) {
+        self.textFieldString = textFieldStr;
+    };
+    self.niControlView.confirmMethod = ^{
+        [self confirmMethod];
+    };
     
     
 }
-
+- (void)confirmMethod {
+    
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcEquipment/sendCmd",WebNewHost];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"operatorId"] = safeString(self.dataDic[@"operatorId"]);
+    paramDic[@"operatorName"] = @"管理员";//操作人名称
+    paramDic[@"password"] = safeString(self.textFieldString);//密码
+    paramDic[@"stationCode"] = safeString(self.dataDic[@"stationCode"]);//台站编码
+    paramDic[@"description"] = safeString(self.textString); //操作备注
+    paramDic[@"equipmentCode"] = safeString(self.dataDic[@"code"]);//设备编码
+    paramDic[@"value"] = [NSString stringWithFormat:@"%d",self.temValue];//设备设置数值
+    paramDic[@"mode"] = safeString(self.modelString);//设备设置模式
+   
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        NSString *str =safeString(result[@"value"][@"result"]);
+        if ([str isEqualToString:@"Password Error"]) {
+            NSLog(@"密码错误");
+        }else if ([str isEqualToString:@"Success Send"]) {
+            NSLog(@"设置成功");
+        }
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+}
 
 - (void)powMethod:(UIButton *)button {
-    if( self.powOnView.hidden == YES) {
-        self.powOnView.hidden = NO;
-    }
+    
+    self.powOnView.hidden = NO;
+    self.powOnView.textString = ^(NSString * _Nonnull textStr) {
+        self.textString = textStr;
+    };
+    self.powOnView.textFieldString = ^(NSString * _Nonnull textFieldStr) {
+        self.textFieldString = textFieldStr;
+    };
     
 }
 
@@ -445,6 +543,24 @@
     
 }
 
+- (KG_NiControlView *)niControlView {
+    
+    if (!_niControlView) {
+        _niControlView = [[KG_NiControlView alloc]init];
+        [JSHmainWindow addSubview:self.niControlView];
+        [self.niControlView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+        
+    }
+    return _niControlView;
+    
+}
+
+
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
     
@@ -456,10 +572,14 @@
     _dataDic = dataDic;
     NSString *code = safeString(_dataDic[@"category"]);
     NSString *name = safeString(_dataDic[@"name"]);
-    self.leftIcon.image = [UIImage imageNamed:name];
-    
-    if ([code isEqualToString:@"airConditioner"]) {
-        self.leftIcon.image = [UIImage imageNamed:@"空调"];
+    self.leftIcon.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(_dataDic[@"category"])]];
+    if (safeString(dataDic[@"reverseControl"])) {
+        [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        self.confirmBtn.userInteractionEnabled = YES;
+    }else {
+         [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#C2CDDE"] forState:UIControlStateNormal];
+        self.confirmBtn.userInteractionEnabled = NO;
     }
+
 }
 @end

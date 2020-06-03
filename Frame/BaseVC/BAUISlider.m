@@ -109,6 +109,11 @@
 //    //滑块的值
 
     self.sliderValueLabel.text = [NSString stringWithFormat:@"%d℃",(int)(self.value/100 *8) +16];
+    if (self.valueChange) {
+        self.valueChange((int)(self.value/100 *8) +16);
+    }
+
+
 }
 
 

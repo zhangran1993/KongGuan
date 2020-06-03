@@ -113,7 +113,7 @@
                 self.closeMethod(index);
             }
         };
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.dataArray[indexPath.row]]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebNewHost,self.dataArray[indexPath.row]]];
         [cell.iconImage sd_setImageWithURL:url];
         return cell;
         

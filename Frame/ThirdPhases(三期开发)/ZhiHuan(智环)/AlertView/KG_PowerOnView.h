@@ -11,7 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_PowerOnView : UIView
+@property (nonatomic,copy) void(^textString)(NSString *textStr);
+@property (nonatomic,copy) void(^textFieldString)(NSString *textFieldStr);
 
+
+@property (nonatomic,copy) void(^hideKeyBoard)();
 @end
 
 NS_ASSUME_NONNULL_END

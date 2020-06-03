@@ -297,6 +297,7 @@
                                    @"station_name":dataDic[@"stationName"],
                                    @"machine_name":dataDic[@"name"],
                                    @"name":dataDic[@"name"],
+                                    @"category":dataDic[@"category"],
 
                                    
         };

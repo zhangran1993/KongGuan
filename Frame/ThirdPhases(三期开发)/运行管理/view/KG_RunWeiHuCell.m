@@ -74,5 +74,11 @@
 
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
+    self.titleLabel.text = safeString(dataDic[@"title"]);
+    if ([safeString(dataDic[@"tipsStatus"]) boolValue]) {
+        self.iconImage.backgroundColor = [UIColor colorWithHexString:@"#03C3B6"];
+    }else {
+        self.iconImage.backgroundColor = [UIColor colorWithHexString:@"#424242"];
+    }
 }
 @end

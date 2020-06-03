@@ -77,7 +77,7 @@
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.text = @"技术主任张树剑";
     [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@100);
+        make.width.equalTo(@150);
         make.left.equalTo(self.iconImage.mas_right).offset(4);
         make.centerY.equalTo(self.iconImage.mas_centerY);
         make.height.equalTo(@24);
@@ -99,5 +99,33 @@
 
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
+    self.titleLabel.text = safeString(dataDic[@"title"]);
+    
+    self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dataDic[@"submitterName"]),safeString(dataDic[@"postName"])];
+    
+    self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"createTime"])];
+}
+
+
+//将时间戳转换为时间字符串
+- (NSString *)timestampToTimeStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
+    }
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+    
+}
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
 }
 @end

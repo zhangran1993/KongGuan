@@ -497,19 +497,12 @@
     
     equipmentDetailsModel *detailModel = self.dataArray[self.currIndex];
     NSDictionary *dataDic = detailModel.equipment;
-    NSString *equipStr = @"device_UPS";
+    NSString *equipStr = [CommonExtension getDeviceIcon:safeString(dataDic[@"category"])];
     self.topTitleLabel.text = safeString(dataDic[@"alias"]);
-    if ([safeString(dataDic[@"alias"]) isEqualToString:@"水浸"]) {
-        equipStr = @"device_shuijin";
-    }
+   
     NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
-    self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",equipStr]];
-    if ([equipStr containsString:@"空调"]) {
-        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"空调"]];
-    }else if ([equipStr containsString:@"漏水"]) {
-        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"水浸"]];
-    
-    }
+  
+    self.topLeftImage.image =  [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(dataDic[@"category"])]];
     self.topTitleLabel.text = safeString(dataDic[@"alias"]);
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];

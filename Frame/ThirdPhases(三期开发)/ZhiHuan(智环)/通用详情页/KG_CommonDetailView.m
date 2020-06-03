@@ -178,6 +178,7 @@
     self.leftImage  = [[UIImageView alloc]init];
     [self.topView addSubview:self.leftImage];
     self.leftImage.image = [UIImage imageNamed:@""];
+    self.leftImage.contentMode = UIViewContentModeScaleAspectFill;
     [self.leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.topView.mas_bottom).offset(-14);
         make.height.equalTo(@16.5);
@@ -379,7 +380,7 @@
         self.angle = 0;
         
         [self startAnimation];
-        if ([self.dataDic[@"measureTagList"] count]) {
+        if ([self.dataDic[@"measureTagList"] count] ) {
             
             self.gaojingView = [[KG_GaojingView alloc]init];
             [self.topView addSubview:self.gaojingView];

@@ -11,5 +11,5 @@ typedef enum : NSUInteger{
 //是否显示百分比
 @property (nonatomic,assign) BOOL isShowTitle;
 @property (nonatomic,assign) TitleStyle titleStyle;
-
+@property (nonatomic,strong) void(^valueChange)(int value);
 @end

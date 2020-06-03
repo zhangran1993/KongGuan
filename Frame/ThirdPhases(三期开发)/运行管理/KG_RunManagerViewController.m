@@ -11,7 +11,13 @@
 #import "KG_StationReportCell.h"
 #import "KG_RunWeiHuCell.h"
 #import "KG_RunReportCell.h"
-@interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+#import "UIViewController+YQSlideMenu.h"
+#import "KG_RunZhiHuiYunViewController.h"
+#import "KG_StationReportAlarmViewController.h"
+#import "KG_RunPromptViewController.h"
+#import "KG_JiaoJieBanRecordViewController.h"
+#import "KG_RunListViewController.h"
+@interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UINavigationControllerDelegate>
 @property (strong, nonatomic) NSDictionary *currentStationDic;
 
 
@@ -26,22 +32,26 @@
 
 @property (nonatomic, strong)  NSDictionary *loginNameInfo;
 
-@property (nonatomic, strong)  NSArray    *reportListArr;
-@property (nonatomic, strong)  NSArray    *stationTaskInfoArr;
+@property (nonatomic, strong)  NSArray    *reportListArr;//维护
+@property (nonatomic, strong)  NSArray    *stationTaskInfoArr;//台站任务提醒
+@property (nonatomic, strong)  NSArray    *stationRunReportArr;//台站运行报告arr
+@property (nonatomic, strong)  NSArray    *jiaojiebanListArr;//维护
 
 @property (nonatomic, strong)  UITableView *reportTableView;//1
 @property (nonatomic, strong)  UITableView *weihuTableView;//2
 @property (nonatomic, strong)  UITableView *runReportTableView;//3
 @property (nonatomic, strong)  UITableView *tableView;//3
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong)  NSDictionary *jiaoJieBanInfo;
 @end
 
 @implementation KG_RunManagerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.delegate =self;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-       [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
@@ -70,10 +80,24 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
+    [self.navigationController setNavigationBarHidden:NO];
     
+}
+
+
+-(void)navigationController:(UINavigationController*)
+
+navigationController willShowViewController:
+
+(UIViewController *)viewController animated:(BOOL)animated
+
+{
+    
+    [viewController viewWillAppear:animated];
     
 }
 - (void)login {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *userString = @"";
     NSString *passString = @"";
     
@@ -114,10 +138,9 @@
         [self queryData];
         [self quertFrameData];
         
-        
         [UserManager shareUserManager].loginSuccess = YES;
-      
-       
+        
+        [UserManager shareUserManager].userID = result[@"value"][@"userInfo"][@"id"];
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -130,7 +153,9 @@
 
 
 - (void)queryData{
-  
+    [self getRunPromptDetailData];
+    [self getRunReportDetailData];
+    [self queryJiaoJieBaneListData];
     // 创建全局队列
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     // 创建组
@@ -145,22 +170,25 @@
     });
     dispatch_group_async(group, queue, ^{
         // 请求三
-        [self getTodayReportInfo:group];
+        [self getJiaoJieBanStatus:group];
+        //        [self getRunPromptData:group];
     });
     
     dispatch_group_notify(group, queue, ^{
-       
+        
         NSLog(@"请求完成");
         NSLog(@"当前线程：%@，是否是主线程：%@...7777···",[NSThread currentThread],[NSThread isMainThread]?@"是":@"否");//当前线程：<NSThread: 0x60400026a540>{number = 3, name = (null)}，是否是主线程：否...7777···
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"当前线程：%@，是否是主线程：%@...8888···",[NSThread currentThread],[NSThread isMainThread]?@"是":@"否");//当前线程：<NSThread: 0x604000069700>{number = 1, name = main}，是否是主线程：是...8888···
             [self createUI];
+            [MBProgressHUD hideHUD];
+            
         });
         
         //
         
     });
-   
+    
     
     
 }
@@ -177,7 +205,7 @@
         }
         
         [UserManager shareUserManager].stationList = result[@"value"];
-    
+        
         [self createData];
         
     } failure:^(NSURLSessionDataTask *error)  {
@@ -215,11 +243,11 @@
         }
     }
     NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:self.currentStationDic];
-      for (NSString*s in [dataDic allKeys]) {
-          if ([dataDic[s] isEqual:[NSNull null]]) {
-              [dataDic setObject:@"" forKey:s];
-          }
-      }
+    for (NSString*s in [dataDic allKeys]) {
+        if ([dataDic[s] isEqual:[NSNull null]]) {
+            [dataDic setObject:@"" forKey:s];
+        }
+    }
     [userDefaults setObject:dataDic forKey:@"station"];
     
     [UserManager shareUserManager].currentStationDic = self.currentStationDic;
@@ -230,30 +258,30 @@
     [self setupDataSubviews];
     //第一个
     [self setUpStationReportView];
-//    //第二个
+    //    //第二个
     [self setUpWeihuView];
-//    //第三个
+    //    //第三个
     [self setUpRunReportView];
-//
+    //
     [self setUpJiaoJieBanView];
-//
+    //
     [self setUpzhihuiyunView];
-//
-//
+    //
+    //
     
 }
 
 - (void) setUpDataTableView{
     //scroView
     
-//    [self.view addSubview:self.tableView];
-//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.view.mas_left);
-//        make.right.equalTo(self.view.mas_right);
-//        make.width.equalTo(self.view.mas_width);
-//        make.height.equalTo(self.view.mas_height);
-//    }];
-//    [self.tableView reloadData];
+    //    [self.view addSubview:self.tableView];
+    //    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.left.equalTo(self.view.mas_left);
+    //        make.right.equalTo(self.view.mas_right);
+    //        make.width.equalTo(self.view.mas_width);
+    //        make.height.equalTo(self.view.mas_height);
+    //    }];
+    //    [self.tableView reloadData];
     
     self.scrollView = [[UIScrollView alloc] init];
     NSLog(@"SCREEN_HEIGHT %f",SCREEN_HEIGHT);
@@ -279,7 +307,7 @@
     
     self.zhihuiyunView =  [[UIView alloc]init];
     [self.scrollView addSubview:self.zhihuiyunView];
-//    zhihuiyun_gotoImage
+    //    zhihuiyun_gotoImage
     [self.zhihuiyunView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scrollView.mas_left);
         make.right.equalTo(self.scrollView.mas_right);
@@ -303,10 +331,42 @@
     titleLabel.text = @"智慧云";
     titleLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightHeavy];
     titleLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//       make.left.equalTo(bgImage.mas_left).offset(2)
-//    }];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(bgImage.mas_left).offset(24);
+        make.top.equalTo(bgImage.mas_top).offset(19);
+        make.width.equalTo(@100);
+        make.height.equalTo(@28);
+    }];
     
+    UILabel *detailLabel = [[UILabel alloc]init];
+    [self.zhihuiyunView addSubview:detailLabel];
+    detailLabel.text = @"零备件/技术资料/巡视维护记录";
+    detailLabel.font = [UIFont systemFontOfSize:14];
+    detailLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(bgImage.mas_left).offset(24);
+        make.top.equalTo(titleLabel.mas_bottom).offset(5);
+        make.width.equalTo(@250);
+        make.height.equalTo(@28);
+    }];
+    
+    UIButton *goToZhiYunBtn = [[UIButton alloc]init];
+    [self.zhihuiyunView addSubview:goToZhiYunBtn];
+    [goToZhiYunBtn setImage:[UIImage imageNamed:@"zhihuiyun_gotoImage"] forState:UIControlStateNormal];
+    [goToZhiYunBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.zhihuiyunView.mas_right).offset(-15);
+        make.width.height.equalTo(@64);
+        make.centerY.equalTo(self.zhihuiyunView.mas_centerY);
+    }];
+    [goToZhiYunBtn addTarget:self action:@selector(goToZhiHuiYunMethod) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+//跳转智慧云
+- (void)goToZhiHuiYunMethod {
+    
+    KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
+    vc.isPush = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)setUpJiaoJieBanView {
@@ -319,7 +379,7 @@
         make.top.equalTo(self.runReprtView.mas_bottom);
         make.height.equalTo(@94);
     }];
-        
+    
     
     UILabel *titleLabel = [[UILabel alloc]init];
     [self.jiaojiebanView addSubview:titleLabel];
@@ -354,12 +414,12 @@
         make.width.equalTo(@100);
         make.height.equalTo(@17);
     }];
-//
+    //
     
     UIImageView *centerImage = [[UIImageView alloc]init];
     [self.jiaojiebanView addSubview:centerImage];
     centerImage.image = [UIImage imageNamed:@"jiaojiebanjiantou"];
-   
+    
     
     UIView *leftView = [[UIView alloc]init];
     [self.jiaojiebanView addSubview:leftView];
@@ -413,7 +473,7 @@
         make.top.equalTo(titleLabel.mas_bottom).offset(10);
         make.height.equalTo(@40);
     }];
-       
+    
     
     UIImageView *rightIcon = [[UIImageView alloc]init];
     [rightView addSubview:rightIcon];
@@ -465,6 +525,8 @@
 }
 //交接班记录
 - (void)jiaojieBanRecord{
+    KG_JiaoJieBanRecordViewController *vc = [[KG_JiaoJieBanRecordViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 
@@ -576,12 +638,13 @@
     jiaobanBtn.titleLabel.font  = [UIFont systemFontOfSize:16];
     [self.runReprtView addSubview:jiaobanBtn];
     [jiaobanBtn addTarget:self action:@selector(jiaobanMethod) forControlEvents:UIControlEventTouchUpInside];
-   
+    
     
     UIButton *jiebanBtn  = [[UIButton alloc]init];
     [jiebanBtn setBackgroundColor:[UIColor clearColor]];
     jiebanBtn.layer.borderWidth = 1;
     jiebanBtn.layer.cornerRadius = 20;
+    jiebanBtn.titleLabel.font  = [UIFont systemFontOfSize:16];
     [jiebanBtn setTitle:@"接班"  forState:UIControlStateNormal];
     jiebanBtn.layer.masksToBounds = YES;
     jiebanBtn.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
@@ -601,6 +664,43 @@
         make.right.equalTo(jiebanBtn.mas_left).offset(-9);
         make.width.equalTo(@64);
     }];
+    //是否为接班人
+    if([self.jiaoJieBanInfo[@"isSuccessor"] boolValue]) {
+        jiebanBtn.layer.borderColor =  [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
+        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"##2F5ED1"] forState:UIControlStateNormal];
+        jiebanBtn.userInteractionEnabled = YES;
+    }else {
+        jiebanBtn.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
+        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        jiebanBtn.userInteractionEnabled = NO;
+    }
+    //是否为交班人
+    if([self.jiaoJieBanInfo[@"isHandoverPerson"] boolValue]) {
+        jiaobanBtn.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
+        [jiaobanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        jiaobanBtn.userInteractionEnabled = YES;
+    }else {
+        jiaobanBtn.layer.borderColor = [[UIColor colorWithHexString:@"#E3E3E5"] CGColor];
+        [jiaobanBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+        jiaobanBtn.userInteractionEnabled = NO;
+    }
+    //是否能生成运行报告
+    if([self.jiaoJieBanInfo[@"isHandoverPerson"] boolValue]) {
+        createReportView.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
+        createReportView.layer.borderWidth = 0.5;
+        createIcon.image = [UIImage imageNamed:@"run_createIcon"];
+        createReportLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        createReportBtn.userInteractionEnabled = YES;
+        createReportView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+    }else {
+        createReportView.layer.borderColor = [[UIColor colorWithHexString:@"#E3E3E5"] CGColor];
+        createReportView.layer.borderWidth = 0.5;
+        createIcon.image = [UIImage imageNamed:@"create_unselIcon"];
+        createReportLabel.textColor = [UIColor colorWithHexString:@"#BEBFC7"];
+        createReportBtn.userInteractionEnabled = NO;
+        createReportView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        
+    }
     
     UIView *lineView = [[UIView alloc]init];
     lineView.backgroundColor = [UIColor colorWithHexString:@"#E1E1E5"];
@@ -615,11 +715,28 @@
 
 //交班
 - (void)jiaobanMethod {
-    
+//    交班接口：
+//    请求地址：/atcChangeShiftsRecord/shiftHandover/{post}/{runReportId}
+//    请求方式：POST
+//    请求参数：post岗位编码 runReportId报告id
+//    请求返回：
+//    如：
+//    {
+//        "errCode": 0,
+//        "errMsg": "",
+//        "value": true              //交接成功返回true
+//    }
 }
 //接班
 - (void)jiebanMethod {
-    
+//    接班接口：
+//    请求地址：/atcChangeShiftsRecord/succession/{post}/{runReportId}
+//    请求方式：POST
+//    请求参数：post岗位编码 runReportId报告id
+//    请求返回：
+//    如：
+//    {
+//        "errCode": 0,
 }
 //生成运行报告
 - (void)CreateReportMethod {
@@ -627,7 +744,9 @@
 }
 //
 - (void)reportRightMethod {
-    
+    KG_RunListViewController *vc = [[KG_RunListViewController alloc]init];
+//    vc.dataArray = self.stationRunReportArr;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 //第二个维护view
@@ -669,6 +788,17 @@
         make.left.equalTo(shuLineIcon.mas_right).offset(9);
         make.centerY.equalTo(self.stationWeihuView.mas_centerY);
     }];
+    UIButton *rightBtn1 = [[UIButton alloc]init];
+    
+    [self.stationWeihuView addSubview:rightBtn1];
+    [rightBtn1 addTarget:self action:@selector(weihuMethod) forControlEvents:UIControlEventTouchUpInside];
+    [rightBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@50);
+        make.centerY.equalTo(self.stationWeihuView.mas_centerY);
+        make.right.equalTo(self.stationWeihuView.mas_right);
+    }];
+    
+    
     
     UIButton *rightBtn = [[UIButton alloc]init];
     [rightBtn setImage:[UIImage imageNamed:@"common_right"] forState:UIControlStateNormal];
@@ -684,7 +814,10 @@
 }
 //维护显示全部
 - (void)weihuMethod{
-     
+    KG_RunPromptViewController *vc = [[KG_RunPromptViewController alloc]init];
+    
+    vc.dataArray = self.reportListArr;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 //台站任务提醒
 - (void)setUpStationReportView {
@@ -708,14 +841,14 @@
             
         }else {
             
-           [self.stationReportView mas_makeConstraints:^(MASConstraintMaker *make) {
+            [self.stationReportView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.scrollView.mas_left).offset(16);
                 make.right.equalTo(self.scrollView.mas_right).offset(-16);
                 make.top.equalTo(self.navigationView.mas_bottom).offset(10);
                 make.height.equalTo(@(58+(32 *self.stationTaskInfoArr.count) ));
             }];
         }
-       
+        
     }
     
     
@@ -760,7 +893,7 @@
     [totalBtn addTarget:self action:@selector(watahTotalMethod) forControlEvents:UIControlEventTouchUpInside];
     
     if (self.stationTaskInfoArr.count == 0) {
-
+        
         UIView *noDataView = [[UIView alloc]init];
         [self.stationReportView addSubview:noDataView];
         noDataView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
@@ -770,7 +903,7 @@
             make.height.equalTo(@58);
             make.top.equalTo(self.stationReportView.mas_top).offset(44);
         }];
-
+        
         UILabel *noDataLabel = [[UILabel alloc]init];
         [noDataView addSubview:noDataLabel];
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
@@ -803,7 +936,7 @@
     UIImageView *bgImage1 = [[UIImageView alloc]init];
     [self.stationReportView addSubview:bgImage1];
     bgImage1.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-   
+    
     
     [bgImage1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.stationReportView.mas_left);
@@ -815,7 +948,7 @@
     UIImageView *bgImage = [[UIImageView alloc]init];
     [self.stationReportView addSubview:bgImage];
     bgImage.image = [UIImage imageNamed:@"run_longCircle"];
-//    bgImage.contentMode = UIViewContentModeScaleAspectFill;
+    //    bgImage.contentMode = UIViewContentModeScaleAspectFill;
     
     [bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.stationReportView.mas_left);
@@ -824,11 +957,16 @@
         make.height.equalTo(@18);
     }];
     
-       
+    
 }
 //查看全部
 - (void)watahTotalMethod {
     
+    KG_StationReportAlarmViewController *vc = [[KG_StationReportAlarmViewController alloc]init];
+    vc.dataArray = self.stationTaskInfoArr;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    //    [self.navigationController pushViewController:vc animated:YES];
     
 }
 //创建视图
@@ -845,30 +983,37 @@
         make.top.equalTo(self.scrollView.mas_top);
     }];
     
-
+    
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.backgroundColor = [UIColor grayColor];
+    UIButton *leftImage = [[UIButton alloc] init];
+    
     [self.navigationView addSubview:leftImage];
     leftImage.layer.cornerRadius =17.f;
     leftImage.layer.masksToBounds = YES;
-   
+    [leftImage setImage:[UIImage imageNamed:@"personal_head"] forState:UIControlStateNormal];
+    [leftImage addTarget:self action:@selector(leftCenterButtonClick) forControlEvents:UIControlEventTouchUpInside];
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-
+    
     /** 添加标题栏 **/
     [self.navigationView addSubview:titleLabel];
-  
+    
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftImage.mas_right).offset(8);
         make.height.equalTo(@22);
         make.width.equalTo(@150);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
-    titleLabel.text = @"张颖-今日值班";
+    NSString *name = safeString(self.loginNameInfo[@"userName"]);
+    NSString *zhiban = @"今日值班";
+    if ([self.loginNameInfo[@"isOnDuty"] boolValue]) {
+        zhiban = @"今日不值班";
+    }
+    titleLabel.text = [NSString stringWithFormat:@"%@-%@",name,zhiban];
+    
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.navigationView.mas_left).offset(16);
         make.width.height.equalTo(@34);
@@ -886,9 +1031,15 @@
         make.centerY.equalTo(titleLabel.mas_centerY);
     }];
     [zhibanBtn addTarget:self action:@selector(zhibanMethod) forControlEvents:UIControlEventTouchUpInside];
-
+    
 }
-
+/**
+ 弹出个人中心
+ */
+- (void)leftCenterButtonClick {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+    [self.slideMenuController showMenu];
+}
 //查看值班表
 - (void)zhibanMethod {
     
@@ -971,7 +1122,7 @@
             dispatch_group_leave(group);
         }];
     });
-
+    
 }
 
 //请求地址：/atcPatrolRecode/getCurrTaskInfo
@@ -990,7 +1141,7 @@
                 [FrameBaseRequest showMessage:result[@"errMsg"]];
                 return ;
             }
-            self.reportListArr = result[@"value"];
+            //            self.reportListArr = result[@"value"];
             dispatch_group_leave(group);
             NSLog(@"完成1");
         } failure:^(NSURLSessionDataTask *error)  {
@@ -1010,11 +1161,9 @@
     if ([tableView isEqual:self.reportTableView]) {
         return self.stationTaskInfoArr.count;
     }else if ([tableView isEqual:self.weihuTableView]) {
-        return 2;
+        return self.reportListArr.count;
     }else if ([tableView isEqual:self.runReportTableView]) {
         return 2;
-    }else if ([tableView isEqual:self.tableView]) {
-        return 1;
     }
     return 0;
 }
@@ -1096,7 +1245,7 @@
             cell = [[KG_RunWeiHuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunWeiHuCell"];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSDictionary *dataDic = self.stationTaskInfoArr[indexPath.row];
+        NSDictionary *dataDic = self.reportListArr[indexPath.row];
         cell.dataDic = dataDic;
         
         return cell;
@@ -1107,18 +1256,12 @@
             cell = [[KG_RunReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportCell"];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSDictionary *dataDic = self.stationTaskInfoArr[indexPath.row];
+        NSDictionary *dataDic = self.stationRunReportArr[indexPath.row];
         cell.dataDic = dataDic;
         
         return cell;
-    }else if ([tableView isEqual:self.runReportTableView]) {
-        
-        UITableViewCell *cell = [[UITableViewCell alloc] init];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
-        [self createUI];
-        return cell;
     }
-   
+    
     return nil;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -1129,8 +1272,6 @@
         return 32;
     }else if ([tableView isEqual:self.runReportTableView]) {
         return 80;
-    }else if ([tableView isEqual:self.tableView]) {
-        return 1000;
     }
     return 50;
 }
@@ -1145,14 +1286,201 @@
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     //在这里设置一下 不然滚动不了
-     self.scrollView.contentSize = CGSizeMake(0, SCREEN_HEIGHT +120);
+    self.scrollView.contentSize = CGSizeMake(0, SCREEN_HEIGHT +120);
 }
 - (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate {
     if(decelerate) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            printf("STOP IT!!\n");
-//            [scrollView setContentOffset:scrollView.contentOffset animated:NO];
-//        });
+        //        dispatch_async(dispatch_get_main_queue(), ^{
+        //            printf("STOP IT!!\n");
+        //            [scrollView setContentOffset:scrollView.contentOffset animated:NO];
+        //        });
     }
+}
+///intelligent/atcRunPrompt/{pageNum}/{pageSize}
+//请求方式：POST
+//请求Body：
+//{
+//    "stationCode": "XXX",         //台站编码，非必填
+//    "title": "XXX",               //名字，非必填
+//    "time": "XXX",               //时间，非必填，过滤time介于开始~结束时间之间
+//}
+- (void)getRunPromptData:(dispatch_group_t)group {
+    
+    
+    dispatch_group_enter(group);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunPrompt/1/20"];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        params[@"stationCode"] = self.currentStationDic[@"stationCode"];
+        
+        params[@"title"] = @"";
+        params[@"time"] = @"";
+        
+        [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            if(code != 0){
+                
+                return ;
+            }
+            
+            NSLog(@"resultresult %@",result);
+            self.reportListArr = result[@"value"][@"records"];
+            
+            dispatch_group_leave(group);
+        }  failure:^(NSError *error) {
+            NSLog(@"请求失败 原因：%@",error);
+            dispatch_group_leave(group);
+            [FrameBaseRequest showMessage:@"网络链接失败"];
+            return ;
+        } ];
+    });
+    
+}
+- (void)getRunPromptDetailData{
+    
+    
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunPrompt/1/20"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"stationCode"] = self.currentStationDic[@"stationCode"];
+    
+    params[@"title"] = @"";
+    params[@"time"] = @"";
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"resultresult %@",result);
+        self.reportListArr = result[@"value"][@"records"];
+        [self.weihuTableView reloadData];
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+    
+}
+//查询运行报告列表接口：
+//请求地址：/atcRunReport/{pageNum}/{pageSize}
+//请求方式：POST
+//请求Body：
+//{
+//"title": "XXX",          //名字，非必填
+//    "time": "XXX",          //提交时间，非必填，格式"2020-05-25"。提交时间在time当天
+//"reportRange": "XXX"    //报告范围，非必填
+//}
+//请求返回：
+
+- (void)getRunReportDetailData{
+    
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunReport/1/2"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"reportRange"] = self.currentStationDic[@"stationCode"];
+    
+    params[@"title"] = @"";
+    params[@"time"] = @"";
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"resultresult %@",result);
+        self.stationRunReportArr = result[@"value"][@"records"];
+        [self.runReportTableView reloadData];
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+    
+}
+
+//交接班状态接口：
+//请求地址：/atcChangeShiftsRecord /verification/{userId}
+//请求方式：GET
+//请求返回：
+//如：
+
+- (void)getJiaoJieBanStatus :(dispatch_group_t)group {
+    dispatch_group_enter(group);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        
+        
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/verification/%@",[UserManager shareUserManager].userID]];
+        
+        [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+            
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            if(code  <= -1){
+                [FrameBaseRequest showMessage:result[@"errMsg"]];
+                return ;
+            }
+            self.jiaoJieBanInfo = result[@"value"];
+            NSLog(@"完成3");
+            dispatch_group_leave(group);
+            
+            NSLog(@"");
+        } failure:^(NSURLSessionDataTask *error)  {
+            FrameLog(@"请求失败，返回数据 : %@",error);
+            
+            dispatch_group_leave(group);
+            
+        }];
+    });
+}
+
+//查询交接班列表接口：
+//请求地址：/atcChangeShiftsRecord /{pageNum}/{pageSize}
+//请求方式：POST
+//请求Body：
+//{
+//"post": "XXX",       //岗位，非必填
+//"time": "XXX",               //日期，非必填
+//}
+//
+//请求返回：
+//如：
+
+- (void)queryJiaoJieBaneListData {
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcChangeShiftsRecord/1/20"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    params[@"post"] = @"";
+    params[@"time"] = @"";
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        self.jiaojiebanListArr = result[@"value"][@"records"];
+        
+        
+        NSLog(@"resultresult %@",result);
+       
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+    
 }
 @end

@@ -113,7 +113,7 @@
                 self.closeVideoMethod(index);
             }
         };
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.videoArray[indexPath.row]]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebNewHost,self.videoArray[indexPath.row]]];
 
         // 获取第一帧图片
         AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:url options:nil];

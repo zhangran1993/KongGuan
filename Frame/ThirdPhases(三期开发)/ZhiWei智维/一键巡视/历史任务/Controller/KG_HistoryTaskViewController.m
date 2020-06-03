@@ -64,6 +64,17 @@
         make.bottom.equalTo(self.view.mas_bottom);
     }];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:NO];
+  
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    [self.navigationController setNavigationBarHidden:YES];
+    
+}
 //创建导航栏视图
 -  (void)createNaviTopView {
     UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];

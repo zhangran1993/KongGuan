@@ -32,6 +32,7 @@
 #import "TZImagePickerController.h"
 #import "TZImageManager.h"
 #import <Photos/Photos.h>
+#import "FrameNavigationController.h"
 #define XZShare [UtilsJSH standarInstance]
 //MARK:判断手机机型
 #define JSHmainWindow [UIApplication sharedApplication].keyWindow

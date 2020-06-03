@@ -76,6 +76,8 @@
      @{NSFontAttributeName:[UIFont systemFontOfSize:18],
        
     NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:NO];
 }
 
 - (void)dealloc {
@@ -83,6 +85,12 @@
     [super dealloc];
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
+    
+}
 /**
  颜色转图片
  
@@ -175,12 +183,6 @@
     
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    NSLog(@"StationVideoListController viewWillDisappear");
-     [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
-
-      self.navigationController.navigationBar.translucent = YES;
-}
 
 -(void)viewDidAppear:(BOOL)animated{
     // NSLog(@"viewDidAppear");

@@ -68,7 +68,7 @@
     self.detailLabel.numberOfLines = 1;
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo (self.mas_right).offset(-60);
+        make.right.equalTo (self.mas_right).offset(-20);
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
         make.width.lessThanOrEqualTo(@200);

@@ -12,7 +12,6 @@
 		18482D8D21C7D9F70064FE8B /* WSLPhotoZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 18482D8A21C7D9F70064FE8B /* WSLPhotoZoom.m */; };
 		184871B021D642DC007F8066 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 184871AF21D642DC007F8066 /* Default.png */; };
 		184871BA21D64B3C007F8066 /* 960.png in Resources */ = {isa = PBXBuildFile; fileRef = 184871B921D64B3B007F8066 /* 960.png */; };
-		184871BC21D64B8E007F8066 /* 1136.png in Resources */ = {isa = PBXBuildFile; fileRef = 184871BB21D64B8E007F8066 /* 1136.png */; };
 		1848AB3D21DCE0F400EFB255 /* PatrolSetShowController.h in Sources */ = {isa = PBXBuildFile; fileRef = FE77AD0F2069DD5900CE8866 /* PatrolSetShowController.h */; };
 		1848AB3E21DCE0F400EFB255 /* PatrolSetShowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE77AD102069DD6400CE8866 /* PatrolSetShowController.m */; };
 		1848AB3F21DCE14400EFB255 /* BasicViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = ECA60FCC21AFFD3B00690698 /* BasicViewController.h */; };
@@ -448,6 +447,69 @@
 		25B2F8D723D6A21E0001AF4A /* machine_ats.png in Resources */ = {isa = PBXBuildFile; fileRef = 25B2F8D123D6A21E0001AF4A /* machine_ats.png */; };
 		25B7953A2428C2D700F8C0FC /* KG_OverAlertCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B795392428C2D700F8C0FC /* KG_OverAlertCenterView.m */; };
 		25B795402428F1BB00F8C0FC /* KG_OverAlertCenterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B7953F2428F1BB00F8C0FC /* KG_OverAlertCenterCell.m */; };
+		25C4B6A52480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B6A42480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m */; };
+		25C4B6A92480F20400BA84F4 /* KG_JiaoJieBanAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B6A82480F20400BA84F4 /* KG_JiaoJieBanAlertView.m */; };
+		25C4B6AD24848A8200BA84F4 /* KG_StationReportAlarmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B6AC24848A8200BA84F4 /* KG_StationReportAlarmViewController.m */; };
+		25C4B6B124848AA600BA84F4 /* KG_StationReportAlarmCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B6B024848AA600BA84F4 /* KG_StationReportAlarmCell.m */; };
+		25C4B6D42484927200BA84F4 /* 状态标签-已完成@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6B42484926E00BA84F4 /* 状态标签-已完成@2x.png */; };
+		25C4B6D52484927200BA84F4 /* 状态标签-待执行@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6B52484926E00BA84F4 /* 状态标签-待执行@2x.png */; };
+		25C4B6D62484927200BA84F4 /* 逾期未完成打卡@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6B62484926E00BA84F4 /* 逾期未完成打卡@3x.png */; };
+		25C4B6D72484927200BA84F4 /* 类型标签-现场巡视@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6B72484926E00BA84F4 /* 类型标签-现场巡视@3x.png */; };
+		25C4B6D82484927200BA84F4 /* 逾期已完成打卡@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6B82484926E00BA84F4 /* 逾期已完成打卡@3x.png */; };
+		25C4B6D92484927200BA84F4 /* 状态标签-预期已完成@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6B92484926F00BA84F4 /* 状态标签-预期已完成@3x.png */; };
+		25C4B6DA2484927200BA84F4 /* 状态标签-待指派@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6BA2484926F00BA84F4 /* 状态标签-待指派@3x.png */; };
+		25C4B6DB2484927200BA84F4 /* 状态标签-待执行@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6BB2484926F00BA84F4 /* 状态标签-待执行@3x.png */; };
+		25C4B6DC2484927200BA84F4 /* 状态标签-待指派@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6BC2484926F00BA84F4 /* 状态标签-待指派@2x.png */; };
+		25C4B6DD2484927200BA84F4 /* 类型标签-例行维护@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6BD2484926F00BA84F4 /* 类型标签-例行维护@2x.png */; };
+		25C4B6DE2484927200BA84F4 /* 状态标签-进行中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6BE2484926F00BA84F4 /* 状态标签-进行中@3x.png */; };
+		25C4B6DF2484927200BA84F4 /* 状态标签-进行中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6BF2484926F00BA84F4 /* 状态标签-进行中@2x.png */; };
+		25C4B6E02484927200BA84F4 /* 正常打卡@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C02484926F00BA84F4 /* 正常打卡@2x.png */; };
+		25C4B6E12484927200BA84F4 /* 状态标签-待领取@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C12484927000BA84F4 /* 状态标签-待领取@3x.png */; };
+		25C4B6E22484927200BA84F4 /* 类型标签-特殊保障@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C22484927000BA84F4 /* 类型标签-特殊保障@3x.png */; };
+		25C4B6E32484927200BA84F4 /* station_ReportNoData@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C32484927000BA84F4 /* station_ReportNoData@2x.png */; };
+		25C4B6E42484927200BA84F4 /* 类型标签-例行维护.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C42484927000BA84F4 /* 类型标签-例行维护.png */; };
+		25C4B6E52484927200BA84F4 /* 类型标签-一键巡视@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C52484927000BA84F4 /* 类型标签-一键巡视@2x.png */; };
+		25C4B6E62484927200BA84F4 /* 类型标签-特殊保障.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C62484927000BA84F4 /* 类型标签-特殊保障.png */; };
+		25C4B6E72484927200BA84F4 /* 状态标签-逾期未完成@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C72484927100BA84F4 /* 状态标签-逾期未完成@3x.png */; };
+		25C4B6E82484927200BA84F4 /* 逾期未完成打卡@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C82484927100BA84F4 /* 逾期未完成打卡@2x.png */; };
+		25C4B6E92484927200BA84F4 /* 逾期已完成打卡@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6C92484927100BA84F4 /* 逾期已完成打卡@2x.png */; };
+		25C4B6EA2484927200BA84F4 /* 状态标签-待领取@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6CA2484927100BA84F4 /* 状态标签-待领取@2x.png */; };
+		25C4B6EB2484927200BA84F4 /* 正常打卡@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6CB2484927100BA84F4 /* 正常打卡@3x.png */; };
+		25C4B6EC2484927200BA84F4 /* 类型标签-例行维护@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6CC2484927100BA84F4 /* 类型标签-例行维护@3x.png */; };
+		25C4B6ED2484927200BA84F4 /* 类型标签-特殊保障@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6CD2484927100BA84F4 /* 类型标签-特殊保障@2x.png */; };
+		25C4B6EE2484927200BA84F4 /* 状态标签-逾期未完成@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6CE2484927100BA84F4 /* 状态标签-逾期未完成@2x.png */; };
+		25C4B6EF2484927200BA84F4 /* 类型标签-一键巡视@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6CF2484927200BA84F4 /* 类型标签-一键巡视@3x.png */; };
+		25C4B6F02484927200BA84F4 /* 类型标签-现场巡视@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6D02484927200BA84F4 /* 类型标签-现场巡视@2x.png */; };
+		25C4B6F12484927200BA84F4 /* 状态标签-已完成@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6D12484927200BA84F4 /* 状态标签-已完成@3x.png */; };
+		25C4B6F22484927200BA84F4 /* station_ReportNoData@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6D22484927200BA84F4 /* station_ReportNoData@3x.png */; };
+		25C4B6F32484927200BA84F4 /* 状态标签-预期已完成@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6D32484927200BA84F4 /* 状态标签-预期已完成@2x.png */; };
+		25C4B6FE2484A09F00BA84F4 /* 备件标签-备品@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6F42484A09D00BA84F4 /* 备件标签-备品@2x.png */; };
+		25C4B6FF2484A09F00BA84F4 /* 备件标签-报废@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6F52484A09E00BA84F4 /* 备件标签-报废@2x.png */; };
+		25C4B7002484A09F00BA84F4 /* 备件标签-使用中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6F62484A09E00BA84F4 /* 备件标签-使用中@2x.png */; };
+		25C4B7012484A09F00BA84F4 /* 备件标签-报废@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6F72484A09E00BA84F4 /* 备件标签-报废@3x.png */; };
+		25C4B7022484A09F00BA84F4 /* 备件标签-备品@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6F82484A09E00BA84F4 /* 备件标签-备品@3x.png */; };
+		25C4B7032484A09F00BA84F4 /* 备件标签-损坏@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6F92484A09E00BA84F4 /* 备件标签-损坏@3x.png */; };
+		25C4B7042484A09F00BA84F4 /* 备件标签-维修@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6FA2484A09E00BA84F4 /* 备件标签-维修@2x.png */; };
+		25C4B7052484A09F00BA84F4 /* 备件标签-损坏@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6FB2484A09E00BA84F4 /* 备件标签-损坏@2x.png */; };
+		25C4B7062484A09F00BA84F4 /* 备件标签-维修@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6FC2484A09F00BA84F4 /* 备件标签-维修@3x.png */; };
+		25C4B7072484A09F00BA84F4 /* 备件标签-使用中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C4B6FD2484A09F00BA84F4 /* 备件标签-使用中@3x.png */; };
+		25C4B70B2484A0D400BA84F4 /* KG_RunPromptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B70A2484A0D400BA84F4 /* KG_RunPromptViewController.m */; };
+		25C4B70F2484A0F300BA84F4 /* KG_RunPromptCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B70E2484A0F300BA84F4 /* KG_RunPromptCell.m */; };
+		25C4B7132484A85700BA84F4 /* KG_JiaoJieBanRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7122484A85700BA84F4 /* KG_JiaoJieBanRecordViewController.m */; };
+		25C4B7162484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7152484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.m */; };
+		25C4B71A2484F29500BA84F4 /* KG_RunListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7192484F29500BA84F4 /* KG_RunListViewController.m */; };
+		25C4B71D2484F33000BA84F4 /* KG_RunListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B71C2484F33000BA84F4 /* KG_RunListCell.m */; };
+		25C4B72124861C2600BA84F4 /* KG_CreateReportAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B72024861C2600BA84F4 /* KG_CreateReportAlertView.m */; };
+		25C4B7252486201300BA84F4 /* KG_RunReportDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7242486201300BA84F4 /* KG_RunReportDetailViewController.m */; };
+		25C4B7292486213200BA84F4 /* KG_RunReportDetailFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7282486213200BA84F4 /* KG_RunReportDetailFirstCell.m */; };
+		25C4B72C2486227700BA84F4 /* KG_RunReportDetailSecondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B72B2486227700BA84F4 /* KG_RunReportDetailSecondCell.m */; };
+		25C4B72F2486229F00BA84F4 /* KG_RunReportDetailThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B72E2486229F00BA84F4 /* KG_RunReportDetailThirdCell.m */; };
+		25C4B732248622AD00BA84F4 /* KG_RunReportDetailFourthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B731248622AD00BA84F4 /* KG_RunReportDetailFourthCell.m */; };
+		25C4B735248622BA00BA84F4 /* KG_RunReportDetailFifthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B734248622BA00BA84F4 /* KG_RunReportDetailFifthCell.m */; };
+		25C4B738248622C700BA84F4 /* KG_RunReportDetailSixthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B737248622C700BA84F4 /* KG_RunReportDetailSixthCell.m */; };
+		25C4B73B24865CA000BA84F4 /* KG_RunReportDetailCommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B73A24865CA000BA84F4 /* KG_RunReportDetailCommonCell.m */; };
+		25C4B73E24865F8C00BA84F4 /* KG_RunReportDetailSeventhCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B73D24865F8C00BA84F4 /* KG_RunReportDetailSeventhCell.m */; };
+		25C4B74124865FB500BA84F4 /* KG_RunReportDetailEighthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B74024865FB500BA84F4 /* KG_RunReportDetailEighthCell.m */; };
 		25D1F04E24245A15007E5870 /* KG_MapShowStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F04D24245A15007E5870 /* KG_MapShowStyleViewController.m */; };
 		25D1F05224249005007E5870 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05024249005007E5870 /* DataManager.m */; };
 		25D1F05724249072007E5870 /* JSHHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05424249072007E5870 /* JSHHTTPSessionManager.m */; };
@@ -516,6 +578,7 @@
 		25EDC5B5247F64120006821C /* KG_StationReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC5B4247F64120006821C /* KG_StationReportCell.m */; };
 		25EDC5B8247F8EED0006821C /* KG_RunWeiHuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC5B7247F8EED0006821C /* KG_RunWeiHuCell.m */; };
 		25EDC5BB247F98EC0006821C /* KG_RunReportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC5BA247F98EC0006821C /* KG_RunReportCell.m */; };
+		25EDC5BD2480B1130006821C /* 1125.png in Resources */ = {isa = PBXBuildFile; fileRef = 25EDC5BC2480B1110006821C /* 1125.png */; };
 		25EEB2D2242D86B700B9F803 /* station_zhiweiunsel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25EEB2BE242D86B400B9F803 /* station_zhiweiunsel@3x.png */; };
 		25EEB2D3242D86B700B9F803 /* station_zhitaisel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25EEB2BF242D86B400B9F803 /* station_zhitaisel@3x.png */; };
 		25EEB2D4242D86B700B9F803 /* station_zhihuanunsel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25EEB2C0242D86B500B9F803 /* station_zhihuanunsel@3x.png */; };
@@ -773,7 +836,6 @@
 		18482D8A21C7D9F70064FE8B /* WSLPhotoZoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSLPhotoZoom.m; sourceTree = "<group>"; };
 		184871AF21D642DC007F8066 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		184871B921D64B3B007F8066 /* 960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 960.png; sourceTree = "<group>"; };
-		184871BB21D64B8E007F8066 /* 1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1136.png; sourceTree = "<group>"; };
 		185A5F2621D46FFE0065085C /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib/libstdc++.6.0.9.tbd"; sourceTree = DEVELOPER_DIR; };
 		185A5F2821D470760065085C /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		185A5F3021D48DD30065085C /* Preview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preview.h; sourceTree = "<group>"; };
@@ -1376,6 +1438,90 @@
 		25B795392428C2D700F8C0FC /* KG_OverAlertCenterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_OverAlertCenterView.m; sourceTree = "<group>"; };
 		25B7953E2428F1BB00F8C0FC /* KG_OverAlertCenterCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_OverAlertCenterCell.h; sourceTree = "<group>"; };
 		25B7953F2428F1BB00F8C0FC /* KG_OverAlertCenterCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_OverAlertCenterCell.m; sourceTree = "<group>"; };
+		25C4B6A32480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunZhiHuiYunViewController.h; sourceTree = "<group>"; };
+		25C4B6A42480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunZhiHuiYunViewController.m; sourceTree = "<group>"; };
+		25C4B6A72480F20400BA84F4 /* KG_JiaoJieBanAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_JiaoJieBanAlertView.h; sourceTree = "<group>"; };
+		25C4B6A82480F20400BA84F4 /* KG_JiaoJieBanAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_JiaoJieBanAlertView.m; sourceTree = "<group>"; };
+		25C4B6AB24848A8200BA84F4 /* KG_StationReportAlarmViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_StationReportAlarmViewController.h; sourceTree = "<group>"; };
+		25C4B6AC24848A8200BA84F4 /* KG_StationReportAlarmViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_StationReportAlarmViewController.m; sourceTree = "<group>"; };
+		25C4B6AF24848AA600BA84F4 /* KG_StationReportAlarmCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_StationReportAlarmCell.h; sourceTree = "<group>"; };
+		25C4B6B024848AA600BA84F4 /* KG_StationReportAlarmCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_StationReportAlarmCell.m; sourceTree = "<group>"; };
+		25C4B6B42484926E00BA84F4 /* 状态标签-已完成@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-已完成@2x.png"; sourceTree = "<group>"; };
+		25C4B6B52484926E00BA84F4 /* 状态标签-待执行@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-待执行@2x.png"; sourceTree = "<group>"; };
+		25C4B6B62484926E00BA84F4 /* 逾期未完成打卡@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "逾期未完成打卡@3x.png"; sourceTree = "<group>"; };
+		25C4B6B72484926E00BA84F4 /* 类型标签-现场巡视@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-现场巡视@3x.png"; sourceTree = "<group>"; };
+		25C4B6B82484926E00BA84F4 /* 逾期已完成打卡@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "逾期已完成打卡@3x.png"; sourceTree = "<group>"; };
+		25C4B6B92484926F00BA84F4 /* 状态标签-预期已完成@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-预期已完成@3x.png"; sourceTree = "<group>"; };
+		25C4B6BA2484926F00BA84F4 /* 状态标签-待指派@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-待指派@3x.png"; sourceTree = "<group>"; };
+		25C4B6BB2484926F00BA84F4 /* 状态标签-待执行@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-待执行@3x.png"; sourceTree = "<group>"; };
+		25C4B6BC2484926F00BA84F4 /* 状态标签-待指派@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-待指派@2x.png"; sourceTree = "<group>"; };
+		25C4B6BD2484926F00BA84F4 /* 类型标签-例行维护@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-例行维护@2x.png"; sourceTree = "<group>"; };
+		25C4B6BE2484926F00BA84F4 /* 状态标签-进行中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-进行中@3x.png"; sourceTree = "<group>"; };
+		25C4B6BF2484926F00BA84F4 /* 状态标签-进行中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-进行中@2x.png"; sourceTree = "<group>"; };
+		25C4B6C02484926F00BA84F4 /* 正常打卡@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "正常打卡@2x.png"; sourceTree = "<group>"; };
+		25C4B6C12484927000BA84F4 /* 状态标签-待领取@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-待领取@3x.png"; sourceTree = "<group>"; };
+		25C4B6C22484927000BA84F4 /* 类型标签-特殊保障@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-特殊保障@3x.png"; sourceTree = "<group>"; };
+		25C4B6C32484927000BA84F4 /* station_ReportNoData@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "station_ReportNoData@2x.png"; sourceTree = "<group>"; };
+		25C4B6C42484927000BA84F4 /* 类型标签-例行维护.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-例行维护.png"; sourceTree = "<group>"; };
+		25C4B6C52484927000BA84F4 /* 类型标签-一键巡视@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-一键巡视@2x.png"; sourceTree = "<group>"; };
+		25C4B6C62484927000BA84F4 /* 类型标签-特殊保障.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-特殊保障.png"; sourceTree = "<group>"; };
+		25C4B6C72484927100BA84F4 /* 状态标签-逾期未完成@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-逾期未完成@3x.png"; sourceTree = "<group>"; };
+		25C4B6C82484927100BA84F4 /* 逾期未完成打卡@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "逾期未完成打卡@2x.png"; sourceTree = "<group>"; };
+		25C4B6C92484927100BA84F4 /* 逾期已完成打卡@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "逾期已完成打卡@2x.png"; sourceTree = "<group>"; };
+		25C4B6CA2484927100BA84F4 /* 状态标签-待领取@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-待领取@2x.png"; sourceTree = "<group>"; };
+		25C4B6CB2484927100BA84F4 /* 正常打卡@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "正常打卡@3x.png"; sourceTree = "<group>"; };
+		25C4B6CC2484927100BA84F4 /* 类型标签-例行维护@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-例行维护@3x.png"; sourceTree = "<group>"; };
+		25C4B6CD2484927100BA84F4 /* 类型标签-特殊保障@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-特殊保障@2x.png"; sourceTree = "<group>"; };
+		25C4B6CE2484927100BA84F4 /* 状态标签-逾期未完成@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-逾期未完成@2x.png"; sourceTree = "<group>"; };
+		25C4B6CF2484927200BA84F4 /* 类型标签-一键巡视@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-一键巡视@3x.png"; sourceTree = "<group>"; };
+		25C4B6D02484927200BA84F4 /* 类型标签-现场巡视@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "类型标签-现场巡视@2x.png"; sourceTree = "<group>"; };
+		25C4B6D12484927200BA84F4 /* 状态标签-已完成@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-已完成@3x.png"; sourceTree = "<group>"; };
+		25C4B6D22484927200BA84F4 /* station_ReportNoData@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "station_ReportNoData@3x.png"; sourceTree = "<group>"; };
+		25C4B6D32484927200BA84F4 /* 状态标签-预期已完成@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "状态标签-预期已完成@2x.png"; sourceTree = "<group>"; };
+		25C4B6F42484A09D00BA84F4 /* 备件标签-备品@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@2x.png"; sourceTree = "<group>"; };
+		25C4B6F52484A09E00BA84F4 /* 备件标签-报废@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@2x.png"; sourceTree = "<group>"; };
+		25C4B6F62484A09E00BA84F4 /* 备件标签-使用中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@2x.png"; sourceTree = "<group>"; };
+		25C4B6F72484A09E00BA84F4 /* 备件标签-报废@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@3x.png"; sourceTree = "<group>"; };
+		25C4B6F82484A09E00BA84F4 /* 备件标签-备品@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@3x.png"; sourceTree = "<group>"; };
+		25C4B6F92484A09E00BA84F4 /* 备件标签-损坏@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@3x.png"; sourceTree = "<group>"; };
+		25C4B6FA2484A09E00BA84F4 /* 备件标签-维修@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修@2x.png"; sourceTree = "<group>"; };
+		25C4B6FB2484A09E00BA84F4 /* 备件标签-损坏@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@2x.png"; sourceTree = "<group>"; };
+		25C4B6FC2484A09F00BA84F4 /* 备件标签-维修@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修@3x.png"; sourceTree = "<group>"; };
+		25C4B6FD2484A09F00BA84F4 /* 备件标签-使用中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@3x.png"; sourceTree = "<group>"; };
+		25C4B7092484A0D400BA84F4 /* KG_RunPromptViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunPromptViewController.h; sourceTree = "<group>"; };
+		25C4B70A2484A0D400BA84F4 /* KG_RunPromptViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunPromptViewController.m; sourceTree = "<group>"; };
+		25C4B70D2484A0F300BA84F4 /* KG_RunPromptCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunPromptCell.h; sourceTree = "<group>"; };
+		25C4B70E2484A0F300BA84F4 /* KG_RunPromptCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunPromptCell.m; sourceTree = "<group>"; };
+		25C4B7112484A85700BA84F4 /* KG_JiaoJieBanRecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_JiaoJieBanRecordViewController.h; sourceTree = "<group>"; };
+		25C4B7122484A85700BA84F4 /* KG_JiaoJieBanRecordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_JiaoJieBanRecordViewController.m; sourceTree = "<group>"; };
+		25C4B7142484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_JiaoJieBanRecordCell.h; sourceTree = "<group>"; };
+		25C4B7152484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_JiaoJieBanRecordCell.m; sourceTree = "<group>"; };
+		25C4B7182484F29500BA84F4 /* KG_RunListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunListViewController.h; sourceTree = "<group>"; };
+		25C4B7192484F29500BA84F4 /* KG_RunListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunListViewController.m; sourceTree = "<group>"; };
+		25C4B71B2484F33000BA84F4 /* KG_RunListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunListCell.h; sourceTree = "<group>"; };
+		25C4B71C2484F33000BA84F4 /* KG_RunListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunListCell.m; sourceTree = "<group>"; };
+		25C4B71F24861C2600BA84F4 /* KG_CreateReportAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateReportAlertView.h; sourceTree = "<group>"; };
+		25C4B72024861C2600BA84F4 /* KG_CreateReportAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateReportAlertView.m; sourceTree = "<group>"; };
+		25C4B7232486201300BA84F4 /* KG_RunReportDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailViewController.h; sourceTree = "<group>"; };
+		25C4B7242486201300BA84F4 /* KG_RunReportDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailViewController.m; sourceTree = "<group>"; };
+		25C4B7272486213200BA84F4 /* KG_RunReportDetailFirstCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailFirstCell.h; sourceTree = "<group>"; };
+		25C4B7282486213200BA84F4 /* KG_RunReportDetailFirstCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailFirstCell.m; sourceTree = "<group>"; };
+		25C4B72A2486227700BA84F4 /* KG_RunReportDetailSecondCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailSecondCell.h; sourceTree = "<group>"; };
+		25C4B72B2486227700BA84F4 /* KG_RunReportDetailSecondCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailSecondCell.m; sourceTree = "<group>"; };
+		25C4B72D2486229F00BA84F4 /* KG_RunReportDetailThirdCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailThirdCell.h; sourceTree = "<group>"; };
+		25C4B72E2486229F00BA84F4 /* KG_RunReportDetailThirdCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailThirdCell.m; sourceTree = "<group>"; };
+		25C4B730248622AD00BA84F4 /* KG_RunReportDetailFourthCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailFourthCell.h; sourceTree = "<group>"; };
+		25C4B731248622AD00BA84F4 /* KG_RunReportDetailFourthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailFourthCell.m; sourceTree = "<group>"; };
+		25C4B733248622BA00BA84F4 /* KG_RunReportDetailFifthCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailFifthCell.h; sourceTree = "<group>"; };
+		25C4B734248622BA00BA84F4 /* KG_RunReportDetailFifthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailFifthCell.m; sourceTree = "<group>"; };
+		25C4B736248622C700BA84F4 /* KG_RunReportDetailSixthCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailSixthCell.h; sourceTree = "<group>"; };
+		25C4B737248622C700BA84F4 /* KG_RunReportDetailSixthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailSixthCell.m; sourceTree = "<group>"; };
+		25C4B73924865CA000BA84F4 /* KG_RunReportDetailCommonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailCommonCell.h; sourceTree = "<group>"; };
+		25C4B73A24865CA000BA84F4 /* KG_RunReportDetailCommonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailCommonCell.m; sourceTree = "<group>"; };
+		25C4B73C24865F8C00BA84F4 /* KG_RunReportDetailSeventhCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailSeventhCell.h; sourceTree = "<group>"; };
+		25C4B73D24865F8C00BA84F4 /* KG_RunReportDetailSeventhCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailSeventhCell.m; sourceTree = "<group>"; };
+		25C4B73F24865FB500BA84F4 /* KG_RunReportDetailEighthCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailEighthCell.h; sourceTree = "<group>"; };
+		25C4B74024865FB500BA84F4 /* KG_RunReportDetailEighthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailEighthCell.m; sourceTree = "<group>"; };
 		25D1F04C24245A15007E5870 /* KG_MapShowStyleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_MapShowStyleViewController.h; sourceTree = "<group>"; };
 		25D1F04D24245A15007E5870 /* KG_MapShowStyleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_MapShowStyleViewController.m; sourceTree = "<group>"; };
 		25D1F05024249005007E5870 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
@@ -1465,6 +1611,7 @@
 		25EDC5B7247F8EED0006821C /* KG_RunWeiHuCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunWeiHuCell.m; sourceTree = "<group>"; };
 		25EDC5B9247F98EC0006821C /* KG_RunReportCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportCell.h; sourceTree = "<group>"; };
 		25EDC5BA247F98EC0006821C /* KG_RunReportCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportCell.m; sourceTree = "<group>"; };
+		25EDC5BC2480B1110006821C /* 1125.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1125.png; sourceTree = "<group>"; };
 		25EEB2BE242D86B400B9F803 /* station_zhiweiunsel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "station_zhiweiunsel@3x.png"; sourceTree = "<group>"; };
 		25EEB2BF242D86B400B9F803 /* station_zhitaisel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "station_zhitaisel@3x.png"; sourceTree = "<group>"; };
 		25EEB2C0242D86B500B9F803 /* station_zhihuanunsel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "station_zhihuanunsel@3x.png"; sourceTree = "<group>"; };
@@ -1922,6 +2069,7 @@
 		189B0FC121B6639D0077C860 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				25EDC5BC2480B1110006821C /* 1125.png */,
 				2543B6BD240751DC00829016 /* baidu_map_style.json */,
 				25B2F8D123D6A21E0001AF4A /* machine_ats.png */,
 				25B2F8CF23D6A21E0001AF4A /* machine_dme.png */,
@@ -1930,7 +2078,6 @@
 				25B2F8CD23D6A21E0001AF4A /* machine_rs.png */,
 				25B2F8D023D6A21E0001AF4A /* machine_ups.png */,
 				184871B921D64B3B007F8066 /* 960.png */,
-				184871BB21D64B8E007F8066 /* 1136.png */,
 				184871AF21D642DC007F8066 /* Default.png */,
 				18CB1CC421C7402600F40413 /* red.gif */,
 				189B0FBD21B663950077C860 /* yellow.gif */,
@@ -2782,6 +2929,7 @@
 		25893EAE2429FDE700D92C0F /* source */ = {
 			isa = PBXGroup;
 			children = (
+				25C4B6B2248491CA00BA84F4 /* 运行管理 */,
 				25EDC57F247E55440006821C /* tabbar */,
 				25EDC52C247B66FA0006821C /* 智修 */,
 				2580EE76247922E600E7D36B /* 设备大图 */,
@@ -3432,6 +3580,185 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		25C4B6A22480E19500BA84F4 /* 运行智慧云 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B6A32480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.h */,
+				25C4B6A42480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m */,
+			);
+			path = "运行智慧云";
+			sourceTree = "<group>";
+		};
+		25C4B6A62480F1C900BA84F4 /* 交接班弹窗 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B6A72480F20400BA84F4 /* KG_JiaoJieBanAlertView.h */,
+				25C4B6A82480F20400BA84F4 /* KG_JiaoJieBanAlertView.m */,
+			);
+			path = "交接班弹窗";
+			sourceTree = "<group>";
+		};
+		25C4B6AA24848A6100BA84F4 /* 台站任务提醒 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B6AE24848A9000BA84F4 /* view */,
+				25C4B6AB24848A8200BA84F4 /* KG_StationReportAlarmViewController.h */,
+				25C4B6AC24848A8200BA84F4 /* KG_StationReportAlarmViewController.m */,
+			);
+			path = "台站任务提醒";
+			sourceTree = "<group>";
+		};
+		25C4B6AE24848A9000BA84F4 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B6AF24848AA600BA84F4 /* KG_StationReportAlarmCell.h */,
+				25C4B6B024848AA600BA84F4 /* KG_StationReportAlarmCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25C4B6B2248491CA00BA84F4 /* 运行管理 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B6B3248491D500BA84F4 /* 巡视icon */,
+			);
+			path = "运行管理";
+			sourceTree = "<group>";
+		};
+		25C4B6B3248491D500BA84F4 /* 巡视icon */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B6F52484A09E00BA84F4 /* 备件标签-报废@2x.png */,
+				25C4B6F72484A09E00BA84F4 /* 备件标签-报废@3x.png */,
+				25C4B6F42484A09D00BA84F4 /* 备件标签-备品@2x.png */,
+				25C4B6F82484A09E00BA84F4 /* 备件标签-备品@3x.png */,
+				25C4B6F62484A09E00BA84F4 /* 备件标签-使用中@2x.png */,
+				25C4B6FD2484A09F00BA84F4 /* 备件标签-使用中@3x.png */,
+				25C4B6FB2484A09E00BA84F4 /* 备件标签-损坏@2x.png */,
+				25C4B6F92484A09E00BA84F4 /* 备件标签-损坏@3x.png */,
+				25C4B6FA2484A09E00BA84F4 /* 备件标签-维修@2x.png */,
+				25C4B6FC2484A09F00BA84F4 /* 备件标签-维修@3x.png */,
+				25C4B6C42484927000BA84F4 /* 类型标签-例行维护.png */,
+				25C4B6BD2484926F00BA84F4 /* 类型标签-例行维护@2x.png */,
+				25C4B6CC2484927100BA84F4 /* 类型标签-例行维护@3x.png */,
+				25C4B6C62484927000BA84F4 /* 类型标签-特殊保障.png */,
+				25C4B6CD2484927100BA84F4 /* 类型标签-特殊保障@2x.png */,
+				25C4B6C22484927000BA84F4 /* 类型标签-特殊保障@3x.png */,
+				25C4B6D02484927200BA84F4 /* 类型标签-现场巡视@2x.png */,
+				25C4B6B72484926E00BA84F4 /* 类型标签-现场巡视@3x.png */,
+				25C4B6C52484927000BA84F4 /* 类型标签-一键巡视@2x.png */,
+				25C4B6CF2484927200BA84F4 /* 类型标签-一键巡视@3x.png */,
+				25C4B6C82484927100BA84F4 /* 逾期未完成打卡@2x.png */,
+				25C4B6B62484926E00BA84F4 /* 逾期未完成打卡@3x.png */,
+				25C4B6C92484927100BA84F4 /* 逾期已完成打卡@2x.png */,
+				25C4B6B82484926E00BA84F4 /* 逾期已完成打卡@3x.png */,
+				25C4B6C02484926F00BA84F4 /* 正常打卡@2x.png */,
+				25C4B6CB2484927100BA84F4 /* 正常打卡@3x.png */,
+				25C4B6CA2484927100BA84F4 /* 状态标签-待领取@2x.png */,
+				25C4B6C12484927000BA84F4 /* 状态标签-待领取@3x.png */,
+				25C4B6B52484926E00BA84F4 /* 状态标签-待执行@2x.png */,
+				25C4B6BB2484926F00BA84F4 /* 状态标签-待执行@3x.png */,
+				25C4B6BC2484926F00BA84F4 /* 状态标签-待指派@2x.png */,
+				25C4B6BA2484926F00BA84F4 /* 状态标签-待指派@3x.png */,
+				25C4B6BF2484926F00BA84F4 /* 状态标签-进行中@2x.png */,
+				25C4B6BE2484926F00BA84F4 /* 状态标签-进行中@3x.png */,
+				25C4B6B42484926E00BA84F4 /* 状态标签-已完成@2x.png */,
+				25C4B6D12484927200BA84F4 /* 状态标签-已完成@3x.png */,
+				25C4B6CE2484927100BA84F4 /* 状态标签-逾期未完成@2x.png */,
+				25C4B6C72484927100BA84F4 /* 状态标签-逾期未完成@3x.png */,
+				25C4B6D32484927200BA84F4 /* 状态标签-预期已完成@2x.png */,
+				25C4B6B92484926F00BA84F4 /* 状态标签-预期已完成@3x.png */,
+				25C4B6C32484927000BA84F4 /* station_ReportNoData@2x.png */,
+				25C4B6D22484927200BA84F4 /* station_ReportNoData@3x.png */,
+			);
+			path = "巡视icon";
+			sourceTree = "<group>";
+		};
+		25C4B7082484A0B800BA84F4 /* 运行提示 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B7092484A0D400BA84F4 /* KG_RunPromptViewController.h */,
+				25C4B70A2484A0D400BA84F4 /* KG_RunPromptViewController.m */,
+				25C4B70C2484A0DA00BA84F4 /* view */,
+			);
+			path = "运行提示";
+			sourceTree = "<group>";
+		};
+		25C4B70C2484A0DA00BA84F4 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B70D2484A0F300BA84F4 /* KG_RunPromptCell.h */,
+				25C4B70E2484A0F300BA84F4 /* KG_RunPromptCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25C4B7102484A83B00BA84F4 /* 交接班记录 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B7112484A85700BA84F4 /* KG_JiaoJieBanRecordViewController.h */,
+				25C4B7122484A85700BA84F4 /* KG_JiaoJieBanRecordViewController.m */,
+				25C4B7142484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.h */,
+				25C4B7152484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.m */,
+			);
+			path = "交接班记录";
+			sourceTree = "<group>";
+		};
+		25C4B7172484F27E00BA84F4 /* 运行列表 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B7182484F29500BA84F4 /* KG_RunListViewController.h */,
+				25C4B7192484F29500BA84F4 /* KG_RunListViewController.m */,
+				25C4B71B2484F33000BA84F4 /* KG_RunListCell.h */,
+				25C4B71C2484F33000BA84F4 /* KG_RunListCell.m */,
+			);
+			path = "运行列表";
+			sourceTree = "<group>";
+		};
+		25C4B71E24861B4B00BA84F4 /* 生成报告列表弹窗 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B71F24861C2600BA84F4 /* KG_CreateReportAlertView.h */,
+				25C4B72024861C2600BA84F4 /* KG_CreateReportAlertView.m */,
+			);
+			path = "生成报告列表弹窗";
+			sourceTree = "<group>";
+		};
+		25C4B72224861FF300BA84F4 /* 运行报告详情页 */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B7232486201300BA84F4 /* KG_RunReportDetailViewController.h */,
+				25C4B7242486201300BA84F4 /* KG_RunReportDetailViewController.m */,
+				25C4B726248620EC00BA84F4 /* view */,
+			);
+			path = "运行报告详情页";
+			sourceTree = "<group>";
+		};
+		25C4B726248620EC00BA84F4 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25C4B7272486213200BA84F4 /* KG_RunReportDetailFirstCell.h */,
+				25C4B7282486213200BA84F4 /* KG_RunReportDetailFirstCell.m */,
+				25C4B72A2486227700BA84F4 /* KG_RunReportDetailSecondCell.h */,
+				25C4B72B2486227700BA84F4 /* KG_RunReportDetailSecondCell.m */,
+				25C4B72D2486229F00BA84F4 /* KG_RunReportDetailThirdCell.h */,
+				25C4B72E2486229F00BA84F4 /* KG_RunReportDetailThirdCell.m */,
+				25C4B730248622AD00BA84F4 /* KG_RunReportDetailFourthCell.h */,
+				25C4B731248622AD00BA84F4 /* KG_RunReportDetailFourthCell.m */,
+				25C4B733248622BA00BA84F4 /* KG_RunReportDetailFifthCell.h */,
+				25C4B734248622BA00BA84F4 /* KG_RunReportDetailFifthCell.m */,
+				25C4B736248622C700BA84F4 /* KG_RunReportDetailSixthCell.h */,
+				25C4B737248622C700BA84F4 /* KG_RunReportDetailSixthCell.m */,
+				25C4B73C24865F8C00BA84F4 /* KG_RunReportDetailSeventhCell.h */,
+				25C4B73D24865F8C00BA84F4 /* KG_RunReportDetailSeventhCell.m */,
+				25C4B73F24865FB500BA84F4 /* KG_RunReportDetailEighthCell.h */,
+				25C4B74024865FB500BA84F4 /* KG_RunReportDetailEighthCell.m */,
+				25C4B73924865CA000BA84F4 /* KG_RunReportDetailCommonCell.h */,
+				25C4B73A24865CA000BA84F4 /* KG_RunReportDetailCommonCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		25D1F04B24245796007E5870 /* ThirdPhases(三期开发) */ = {
 			isa = PBXGroup;
 			children = (
@@ -3530,6 +3857,14 @@
 		25EDC57B247E39580006821C /* 运行管理 */ = {
 			isa = PBXGroup;
 			children = (
+				25C4B72224861FF300BA84F4 /* 运行报告详情页 */,
+				25C4B71E24861B4B00BA84F4 /* 生成报告列表弹窗 */,
+				25C4B7172484F27E00BA84F4 /* 运行列表 */,
+				25C4B7102484A83B00BA84F4 /* 交接班记录 */,
+				25C4B7082484A0B800BA84F4 /* 运行提示 */,
+				25C4B6AA24848A6100BA84F4 /* 台站任务提醒 */,
+				25C4B6A62480F1C900BA84F4 /* 交接班弹窗 */,
+				25C4B6A22480E19500BA84F4 /* 运行智慧云 */,
 				25EDC57C247E52FE0006821C /* KG_RunManagerViewController.h */,
 				25EDC57D247E52FE0006821C /* KG_RunManagerViewController.m */,
 				25EDC5B2247F63F40006821C /* view */,
@@ -4517,11 +4852,13 @@
 				258484F224765ADD00F0AB09 /* 雾@3x.png in Resources */,
 				EC4B9D1021CB78B000D45F9D /* PhotoBrowseViewController.xib in Resources */,
 				2580EE702479214500E7D36B /* 导航DVOR@2x.png in Resources */,
+				25C4B6D82484927200BA84F4 /* 逾期已完成打卡@3x.png in Resources */,
 				EC5E52EB21B7B4DB009212D7 /* ContactsCell.xib in Resources */,
 				2580EEAB2479234400E7D36B /* 导航DME2@3x.png in Resources */,
 				2580EE4A2479214500E7D36B /* 蓄电池@2x.png in Resources */,
 				25EEB314242D9AEB00B9F803 /* mine_sel@2x.png in Resources */,
 				258484F124765ADD00F0AB09 /* 雪@3x.png in Resources */,
+				25C4B7012484A09F00BA84F4 /* 备件标签-报废@3x.png in Resources */,
 				FE39766F20B2BE47005ED252 /* custom_config in Resources */,
 				25EEB30B242D9AEB00B9F803 /* mystation_unsel@3x.png in Resources */,
 				2580EEB02479234400E7D36B /* 导航DME2@2x.png in Resources */,
@@ -4541,18 +4878,20 @@
 				25EDC571247CE8D70006821C /* 应急处理gray@2x.png in Resources */,
 				2587BF88247775CF00BFAF52 /* 制冷icon@2x.png in Resources */,
 				FE050A97205BF62300A4AD93 /* ChooseStationCell.xib in Resources */,
+				25C4B6E92484927200BA84F4 /* 逾期已完成打卡@2x.png in Resources */,
 				2580EED92479234400E7D36B /* 空开2@2x.png in Resources */,
 				2584858A24765BEB00F0AB09 /* 中雪_icon@3x.png in Resources */,
 				2584857B24765BEB00F0AB09 /* 森林火险_icon@2x.png in Resources */,
+				25C4B6E22484927200BA84F4 /* 类型标签-特殊保障@3x.png in Resources */,
 				2580EE492479214500E7D36B /* 蓄电池@3x.png in Resources */,
 				2580EE6F2479214500E7D36B /* 空开@2x.png in Resources */,
 				25EDC5A2247E56670006821C /* 智云@2x.png in Resources */,
 				25893EAB2429A78C00D92C0F /* FrameBottomCell.xib in Resources */,
 				258484E924765ADD00F0AB09 /* 沙尘@2x.png in Resources */,
 				25EDC5B1247E62A30006821C /* stationList.plist in Resources */,
-				184871BC21D64B8E007F8066 /* 1136.png in Resources */,
 				25EEB2DF242D86B700B9F803 /* station_zhixiuunsel@2x.png in Resources */,
 				2584858124765BEB00F0AB09 /* 霾_icon@3x.png in Resources */,
+				25C4B6E52484927200BA84F4 /* 类型标签-一键巡视@2x.png in Resources */,
 				2580EEB42479234400E7D36B /* 电量仪2@3x.png in Resources */,
 				2580EE622479214500E7D36B /* 导航DVOR@3x.png in Resources */,
 				25EDC573247CE8D70006821C /* 故障通告gray@2x.png in Resources */,
@@ -4561,6 +4900,7 @@
 				25EDC538247B67DF0006821C /* 设备排故@2x.png in Resources */,
 				2584854F24765BEB00F0AB09 /* 持续高温_icon@3x.png in Resources */,
 				18B34DE921C34E7D0021C2E6 /* UploadCell.xib in Resources */,
+				25C4B7032484A09F00BA84F4 /* 备件标签-损坏@3x.png in Resources */,
 				25EDC56F247CE8D70006821C /* 告警确认gray@2x.png in Resources */,
 				2584857A24765BEB00F0AB09 /* 晴_icon@2x.png in Resources */,
 				25EEB30D242D9AEB00B9F803 /* zhiyun_sel@2x.png in Resources */,
@@ -4571,7 +4911,9 @@
 				25EEB30C242D9AEB00B9F803 /* zhixiu_sel@3x.png in Resources */,
 				2584857F24765BEB00F0AB09 /* 中雪_icon@2x.png in Resources */,
 				2580EECD2479234400E7D36B /* 水浸2@3x.png in Resources */,
+				25C4B6F32484927200BA84F4 /* 状态标签-预期已完成@2x.png in Resources */,
 				2580EEB22479234400E7D36B /* 门禁2@3x.png in Resources */,
+				25C4B6E82484927200BA84F4 /* 逾期未完成打卡@2x.png in Resources */,
 				2584856B24765BEB00F0AB09 /* 雾_icon@3x.png in Resources */,
 				2580EEBB2479234400E7D36B /* 烟感2@3x.png in Resources */,
 				258484EC24765ADD00F0AB09 /* 多云@2x.png in Resources */,
@@ -4607,6 +4949,8 @@
 				184871BA21D64B3C007F8066 /* 960.png in Resources */,
 				2584856924765BEB00F0AB09 /* 道路冰雪_icon@3x.png in Resources */,
 				25EEB2D3242D86B700B9F803 /* station_zhitaisel@3x.png in Resources */,
+				25C4B6E32484927200BA84F4 /* station_ReportNoData@2x.png in Resources */,
+				25C4B6E42484927200BA84F4 /* 类型标签-例行维护.png in Resources */,
 				258484E824765ADD00F0AB09 /* 雪@2x.png in Resources */,
 				2580EED32479234400E7D36B /* 电量仪2@2x.png in Resources */,
 				2584856524765BEB00F0AB09 /* 火险_icon@2x.png in Resources */,
@@ -4623,6 +4967,7 @@
 				2580EED22479234400E7D36B /* 电子围栏2@2x.png in Resources */,
 				2584855824765BEB00F0AB09 /* 霜冻_icon@3x.png in Resources */,
 				2580EE6C2479214500E7D36B /* ATS@2x.png in Resources */,
+				25C4B6F02484927200BA84F4 /* 类型标签-现场巡视@2x.png in Resources */,
 				2580EEC22479234400E7D36B /* 门禁2@2x.png in Resources */,
 				25EDC53D247B67DF0006821C /* 告警解决@2x.png in Resources */,
 				2584856824765BEB00F0AB09 /* 道路结冰_icon@3x.png in Resources */,
@@ -4630,13 +4975,16 @@
 				25B2F8D723D6A21E0001AF4A /* machine_ats.png in Resources */,
 				2584854D24765BEB00F0AB09 /* 持续低温_icon@3x.png in Resources */,
 				25EEB306242D9AEB00B9F803 /* zhiyun_unsel@2x.png in Resources */,
+				25C4B6EC2484927200BA84F4 /* 类型标签-例行维护@3x.png in Resources */,
 				25EEB313242D9AEB00B9F803 /* mystation_sel@2x.png in Resources */,
 				2584855E24765BEB00F0AB09 /* 多云_icon@3x.png in Resources */,
 				2584858924765BEB00F0AB09 /* 雷电_icon@3x.png in Resources */,
 				25EDC56C247CE8D70006821C /* 告警解决gray@2x.png in Resources */,
 				2587BF92247775CF00BFAF52 /* 制热 icon@3x.png in Resources */,
+				25C4B6D62484927200BA84F4 /* 逾期未完成打卡@3x.png in Resources */,
 				2584855624765BEB00F0AB09 /* 阵雪_icon@3x.png in Resources */,
 				25B2F8D223D6A21E0001AF4A /* machine_dvor.png in Resources */,
+				25C4B6EB2484927200BA84F4 /* 正常打卡@3x.png in Resources */,
 				25EDC570247CE8D70006821C /* 设备排故gray@2x.png in Resources */,
 				2580EECB2479234400E7D36B /* 温湿度2@2x.png in Resources */,
 				EC5E523621B77034009212D7 /* FilePreviewViewController.xib in Resources */,
@@ -4646,6 +4994,8 @@
 				2580EED02479234400E7D36B /* 红外传感器2@2x.png in Resources */,
 				2584855D24765BEB00F0AB09 /* 暴雨_icon@3x.png in Resources */,
 				2580EEB82479234400E7D36B /* 二次雷达 2@3x.png in Resources */,
+				25C4B6E12484927200BA84F4 /* 状态标签-待领取@3x.png in Resources */,
+				25C4B6D52484927200BA84F4 /* 状态标签-待执行@2x.png in Resources */,
 				2587BF85247775CF00BFAF52 /* 除湿@3x.png in Resources */,
 				2580EE602479214500E7D36B /* 导航DME@3x.png in Resources */,
 				2584859124765BEB00F0AB09 /* 小雨_icon@2x.png in Resources */,
@@ -4659,6 +5009,7 @@
 				25EEB2DE242D86B700B9F803 /* station_zhitaisel@2x.png in Resources */,
 				25EDC53F247B67DF0006821C /* 故障通告@2x.png in Resources */,
 				2584857824765BEB00F0AB09 /* 雷阵雨_icon@3x.png in Resources */,
+				25C4B6D92484927200BA84F4 /* 状态标签-预期已完成@3x.png in Resources */,
 				2580EE662479214500E7D36B /* 精密空调@2x.png in Resources */,
 				2580EEAE2479234400E7D36B /* UPS2@2x.png in Resources */,
 				258484F324765ADD00F0AB09 /* 雾@2x.png in Resources */,
@@ -4685,8 +5036,10 @@
 				2580EED42479234400E7D36B /* ATS2@3x.png in Resources */,
 				25EEB2D9242D86B700B9F803 /* station_zhihuanunsel@2x.png in Resources */,
 				2584855724765BEB00F0AB09 /* 扬沙_icon@2x.png in Resources */,
+				25C4B7062484A09F00BA84F4 /* 备件标签-维修@3x.png in Resources */,
 				2580EE562479214500E7D36B /* 传输设备@3x.png in Resources */,
 				25EDC5AA247E56680006821C /* 智维@2x.png in Resources */,
+				25C4B6F12484927200BA84F4 /* 状态标签-已完成@3x.png in Resources */,
 				2584855A24765BEB00F0AB09 /* 降温_icon@2x.png in Resources */,
 				2580EE522479214500E7D36B /* 柜式空调@2x.png in Resources */,
 				25EDC598247E56670006821C /* 智态@2x.png in Resources */,
@@ -4711,8 +5064,11 @@
 				2580EE452479214500E7D36B /* 红外传感器@3x.png in Resources */,
 				2584858324765BEB00F0AB09 /* 大雪_icon@3x.png in Resources */,
 				2580EEAF2479234400E7D36B /* UPS2@3x.png in Resources */,
+				25C4B6EF2484927200BA84F4 /* 类型标签-一键巡视@3x.png in Resources */,
 				25EDC5A3247E56670006821C /* 智环@2x.png in Resources */,
+				25C4B6F22484927200BA84F4 /* station_ReportNoData@3x.png in Resources */,
 				2587BF93247775CF00BFAF52 /* 除湿不可选@2x.png in Resources */,
+				25C4B6FE2484A09F00BA84F4 /* 备件标签-备品@2x.png in Resources */,
 				25EEB308242D9AEB00B9F803 /* zhixiu_unsel@2x.png in Resources */,
 				25EDC599247E56670006821C /* 运行管理_sel@2x.png in Resources */,
 				2580EE4D2479214500E7D36B /* 电子围栏@3x.png in Resources */,
@@ -4724,6 +5080,7 @@
 				2584858E24765BEB00F0AB09 /* 霾_icon@2x.png in Resources */,
 				2580EE642479214500E7D36B /* 精密空调@3x.png in Resources */,
 				2584855C24765BEB00F0AB09 /* 森林火险_icon@3x.png in Resources */,
+				25C4B6E02484927200BA84F4 /* 正常打卡@2x.png in Resources */,
 				2584855324765BEB00F0AB09 /* 持续高温_icon@2x.png in Resources */,
 				25EEB312242D9AEB00B9F803 /* task_sel@3x.png in Resources */,
 				258484FB24765ADD00F0AB09 /* 雨@3x.png in Resources */,
@@ -4753,13 +5110,17 @@
 				2580EE4F2479214500E7D36B /* 视频@2x.png in Resources */,
 				25EDC59C247E56670006821C /* 智维@3x.png in Resources */,
 				2584855024765BEB00F0AB09 /* 降温_icon@3x.png in Resources */,
+				25C4B6DB2484927200BA84F4 /* 状态标签-待执行@3x.png in Resources */,
 				2580EE5A2479214500E7D36B /* UPS@2x.png in Resources */,
 				2587BF87247775CF00BFAF52 /* 制冷可选选中@2x.png in Resources */,
+				25C4B6EE2484927200BA84F4 /* 状态标签-逾期未完成@2x.png in Resources */,
 				2587BF91247775CF00BFAF52 /* 制热可选选中@3x.png in Resources */,
 				258484ED24765ADD00F0AB09 /* 雨夹雪@3x.png in Resources */,
 				2580EEB62479234400E7D36B /* 场监雷达2@3x.png in Resources */,
 				EC61EA0421C8835400FACC83 /* HSIEmptyDataSetView.xib in Resources */,
 				25EEB2DC242D86B700B9F803 /* station_zhiweisel@3x.png in Resources */,
+				25C4B6DD2484927200BA84F4 /* 类型标签-例行维护@2x.png in Resources */,
+				25C4B6E62484927200BA84F4 /* 类型标签-特殊保障.png in Resources */,
 				2580EE512479214500E7D36B /* 温湿度@2x.png in Resources */,
 				25EEB300242D9AEB00B9F803 /* zhiwei_sel@2x.png in Resources */,
 				25EEB2E0242D86B700B9F803 /* station_zhiweiunsel@2x.png in Resources */,
@@ -4775,8 +5136,10 @@
 				2580EEB32479234400E7D36B /* 传输设备2@2x.png in Resources */,
 				18CB1CCA21C7402600F40413 /* green0.gif in Resources */,
 				258484FC24765ADD00F0AB09 /* 阴@3x.png in Resources */,
+				25C4B6FF2484A09F00BA84F4 /* 备件标签-报废@2x.png in Resources */,
 				258484F524765ADD00F0AB09 /* 雷阵雨伴冰雹@2x.png in Resources */,
 				2580EEC42479234400E7D36B /* 柜式空调2@2x.png in Resources */,
+				25C4B6ED2484927200BA84F4 /* 类型标签-特殊保障@2x.png in Resources */,
 				C1F8F177205BBCD50070CFE6 /* LoginViewController.xib in Resources */,
 				EC4C0C1B21B62EAD00E23EFA /* TechnicalManualTableViewCell.xib in Resources */,
 				258484F624765ADD00F0AB09 /* 多云@3x.png in Resources */,
@@ -4784,12 +5147,14 @@
 				25EEB30A242D9AEB00B9F803 /* task_sel@2x.png in Resources */,
 				2580EE742479214500E7D36B /* 电量仪@3x.png in Resources */,
 				2580EE6E2479214500E7D36B /* 配电柜@2x.png in Resources */,
+				25C4B6DA2484927200BA84F4 /* 状态标签-待指派@3x.png in Resources */,
 				2584855524765BEB00F0AB09 /* 道路结冰_icon@2x.png in Resources */,
 				2580EE532479214500E7D36B /* 导航DME@2x.png in Resources */,
 				25B2F8D623D6A21E0001AF4A /* machine_ups.png in Resources */,
 				2584858D24765BEB00F0AB09 /* 持续低温_icon@2x.png in Resources */,
 				25EEB309242D9AEB00B9F803 /* zhixiu_unsel@3x.png in Resources */,
 				25EDC5AC247E56680006821C /* 智环_sel@3x.png in Resources */,
+				25C4B6E72484927200BA84F4 /* 状态标签-逾期未完成@3x.png in Resources */,
 				2580EEB52479234400E7D36B /* ATS2@2x.png in Resources */,
 				25B2F8D523D6A21E0001AF4A /* machine_dme.png in Resources */,
 				25EDC59E247E56670006821C /* 智维_sel@3x.png in Resources */,
@@ -4811,10 +5176,13 @@
 				2580EED62479234400E7D36B /* VHF地空通信设备2@3x.png in Resources */,
 				2584858424765BEB00F0AB09 /* 高温_icon@3x.png in Resources */,
 				2584856324765BEB00F0AB09 /* 台风_icon@2x.png in Resources */,
+				25C4B6DF2484927200BA84F4 /* 状态标签-进行中@2x.png in Resources */,
 				25EEB302242D9AEB00B9F803 /* mine_sel@3x.png in Resources */,
 				2584859024765BEB00F0AB09 /* 大风_icon@3x.png in Resources */,
 				271825CD236C177E00D68C18 /* StationSectionView.xib in Resources */,
+				25C4B6D42484927200BA84F4 /* 状态标签-已完成@2x.png in Resources */,
 				2584855224765BEB00F0AB09 /* 阵雪_icon@2x.png in Resources */,
+				25C4B7002484A09F00BA84F4 /* 备件标签-使用中@2x.png in Resources */,
 				25EDC59A247E56670006821C /* 智云@3x.png in Resources */,
 				2580EEC62479234400E7D36B /* 柜式空调2@3x.png in Resources */,
 				25B2F8D323D6A21E0001AF4A /* machine_rs.png in Resources */,
@@ -4823,9 +5191,13 @@
 				2584856D24765BEB00F0AB09 /* 冻雨_icon@2x.png in Resources */,
 				189B6CCA21C6835500434DF5 /* PatrolRemindCell.xib in Resources */,
 				2587BF8F247775CF00BFAF52 /* 制热可选选中@2x.png in Resources */,
+				25C4B7072484A09F00BA84F4 /* 备件标签-使用中@3x.png in Resources */,
+				25C4B7042484A09F00BA84F4 /* 备件标签-维修@2x.png in Resources */,
 				25EEB2E5242D86B700B9F803 /* station_zhiyunsel@2x.png in Resources */,
 				2584858724765BEB00F0AB09 /* 雷阵雨伴冰雹_icon@2x.png in Resources */,
+				25C4B6D72484927200BA84F4 /* 类型标签-现场巡视@3x.png in Resources */,
 				2580EED12479234400E7D36B /* 视频2@2x.png in Resources */,
+				25C4B7022484A09F00BA84F4 /* 备件标签-备品@3x.png in Resources */,
 				2584854E24765BEB00F0AB09 /* 大风_icon@2x.png in Resources */,
 				2584856424765BEB00F0AB09 /* 寒潮_icon@2x.png in Resources */,
 				2580EE4C2479214500E7D36B /* 空调@2x.png in Resources */,
@@ -4836,9 +5208,12 @@
 				EC5DBF1121BA49E800F00882 /* CustomTableViewCell.xib in Resources */,
 				2587BF8C247775CF00BFAF52 /* 制冷不可选@3x.png in Resources */,
 				2580EEBD2479234400E7D36B /* 红外对射2@3x.png in Resources */,
+				25C4B6DE2484927200BA84F4 /* 状态标签-进行中@3x.png in Resources */,
 				25EDC56B247CE8D70006821C /* 应急处理gray@3x.png in Resources */,
 				2580EECF2479234400E7D36B /* 柴油发电机2@3x.png in Resources */,
 				258484EE24765ADD00F0AB09 /* 霾@2x.png in Resources */,
+				25EDC5BD2480B1130006821C /* 1125.png in Resources */,
+				25C4B6EA2484927200BA84F4 /* 状态标签-待领取@2x.png in Resources */,
 				2584858524765BEB00F0AB09 /* 暴雪_icon@2x.png in Resources */,
 				25EEB2DB242D86B700B9F803 /* station_zhiyununsel@3x.png in Resources */,
 				2587BF86247775CF00BFAF52 /* 除湿可选选中@2x.png in Resources */,
@@ -4847,6 +5222,7 @@
 				25EDC537247B67DF0006821C /* 应急处理@3x.png in Resources */,
 				2580EE442479214500E7D36B /* 红外对射@3x.png in Resources */,
 				25EEB2FF242D9AEB00B9F803 /* mystation_sel@3x.png in Resources */,
+				25C4B6DC2484927200BA84F4 /* 状态标签-待指派@2x.png in Resources */,
 				2587BF8A247775CF00BFAF52 /* 制热可选未选中@2x.png in Resources */,
 				25EEB2E1242D86B700B9F803 /* station_zhixiuunsel@3x.png in Resources */,
 				2580EEC72479234400E7D36B /* 配电柜2@2x.png in Resources */,
@@ -4857,6 +5233,7 @@
 				25EDC5A5247E56670006821C /* 智环_sel@2x.png in Resources */,
 				2580EE6D2479214500E7D36B /* 场监雷达@3x.png in Resources */,
 				2584854824765BEB00F0AB09 /* 雨夹雪_icon@2x.png in Resources */,
+				25C4B7052484A09F00BA84F4 /* 备件标签-损坏@2x.png in Resources */,
 				2584857C24765BEB00F0AB09 /* 干旱_icon@2x.png in Resources */,
 				2580EEC92479234400E7D36B /* 传输设备2@3x.png in Resources */,
 				2580EEC32479234400E7D36B /* 导航DVOR2@3x.png in Resources */,
@@ -4977,6 +5354,7 @@
 				2581ED5A244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m in Sources */,
 				18E8DFB621F0BC9C00D5449F /* Preview.h in Sources */,
 				18E8DFB121F0BC8600D5449F /* hcnetsdk.h in Sources */,
+				25C4B74124865FB500BA84F4 /* KG_RunReportDetailEighthCell.m in Sources */,
 				2584D61E2446FF000059A949 /* KG_KongTiaoDetailViewController.m in Sources */,
 				258D292C246A6C9A004E8B5A /* KG_YiJianXunShiViewController.m in Sources */,
 				25EEB35C243EFE1700B9F803 /* KG_NiControlSearchViewController.m in Sources */,
@@ -4998,12 +5376,14 @@
 				25EDC556247BCDCB0006821C /* KG_SelVideoView.m in Sources */,
 				18B5545921B913DE00026734 /* WarnCell.m in Sources */,
 				25EDC57E247E52FE0006821C /* KG_RunManagerViewController.m in Sources */,
+				25C4B71D2484F33000BA84F4 /* KG_RunListCell.m in Sources */,
 				258D2929246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m in Sources */,
 				25EEB34C243D5C4400B9F803 /* KG_NiControlView.m in Sources */,
 				189B6CC921C6835500434DF5 /* PatrolRemindCell.m in Sources */,
 				258D2952246BD4B7004E8B5A /* KG_XunShiDetailLogCell.m in Sources */,
 				EC025D8B21C8BEDC001A3F5E /* LYEmptyView.m in Sources */,
 				EC4C0C1521B6282A00E23EFA /* TechnicalManualViewController.m in Sources */,
+				25C4B73E24865F8C00BA84F4 /* KG_RunReportDetailSeventhCell.m in Sources */,
 				25EEB39F24404A4300B9F803 /* KG_DMETransFirstView.m in Sources */,
 				25893EAC2429A78C00D92C0F /* FrameBottomCell.m in Sources */,
 				2587BF9E2477A33600BFAF52 /* UIView+Extension.m in Sources */,
@@ -5031,6 +5411,7 @@
 				1F8AB55E1F0CB9EB00256218 /* FrameViewController.m in Sources */,
 				258D2974246C078B004E8B5A /* UIImage+RSMethod.m in Sources */,
 				258D293B246A6C9A004E8B5A /* KG_XunShiLogCell.m in Sources */,
+				25C4B70B2484A0D400BA84F4 /* KG_RunPromptViewController.m in Sources */,
 				25950A9624598C0F00BCCA8B /* KG_CommonDetailCell.m in Sources */,
 				FE050A92205BF5D300A4AD93 /* StationItems.m in Sources */,
 				EC8795DD21B4D9A4000F3CC1 /* SearchView.m in Sources */,
@@ -5058,6 +5439,7 @@
 				1F8AB55F1F0CB9EB00256218 /* FrameBaseRequest.m in Sources */,
 				258D292A246A6C9A004E8B5A /* KG_YiJianXunShiModel.m in Sources */,
 				ECA60FBE21AFD23500690698 /* UIView+LX_Frame.m in Sources */,
+				25C4B735248622BA00BA84F4 /* KG_RunReportDetailFifthCell.m in Sources */,
 				EC61EA0621C8835400FACC83 /* HSIEmptyDataSetView.m in Sources */,
 				25EEB3212434798300B9F803 /* KG_UpsAlertCell.m in Sources */,
 				EC51DEC921BF508F00D68F47 /* SparePartListModel.m in Sources */,
@@ -5110,6 +5492,7 @@
 				258188D12473CA5F00AE3DF6 /* KG_ZhiXiuModel.m in Sources */,
 				FE1AB3E520A1B9BB0026DDF2 /* AlarmUserItems.m in Sources */,
 				2584843924760A1100F0AB09 /* KG_TechInfoCell.m in Sources */,
+				25C4B6A92480F20400BA84F4 /* KG_JiaoJieBanAlertView.m in Sources */,
 				258D296E246BFF0B004E8B5A /* RS_BottomButtonView.m in Sources */,
 				258ED6F824629D1400639B37 /* KG_CommonGaoJingCell.m in Sources */,
 				258E1E2523C7182200F4ED7E /* UserManager.m in Sources */,
@@ -5128,6 +5511,7 @@
 				25EEB31E2434756100B9F803 /* KG_UpsAlertView.m in Sources */,
 				EC4C0C1121B60C9600E23EFA /* ZYSpreadSubButton.m in Sources */,
 				25EDC559247BCE000006821C /* KG_SelVideoCollectionViewCell.m in Sources */,
+				25C4B7292486213200BA84F4 /* KG_RunReportDetailFirstCell.m in Sources */,
 				EC51DEC521BF483C00D68F47 /* RecordTableViewCell.m in Sources */,
 				258D293E246A6C9A004E8B5A /* KG_NewContentModel.m in Sources */,
 				2584D60C2444037E0059A949 /* KG_MachineStationModel.m in Sources */,
@@ -5146,6 +5530,7 @@
 				EC5E530221B7D99B009212D7 /* VenderModel.m in Sources */,
 				FEE24936206CDADC00D62197 /* FrameHomeController.m in Sources */,
 				25EEB393244040CD00B9F803 /* KG_DMEView.m in Sources */,
+				25C4B72F2486229F00BA84F4 /* KG_RunReportDetailThirdCell.m in Sources */,
 				FEFD281020748719004821E1 /* AlarmListCell.m in Sources */,
 				18B34DE721C34A230021C2E6 /* uploadModel.m in Sources */,
 				EC70A5F621C109E500F858EE /* CCZAngelWalker.m in Sources */,
@@ -5165,6 +5550,7 @@
 				2584D63E244E82930059A949 /* KG_ZhiTaiBottomView.m in Sources */,
 				EC5E52FC21B7D6C5009212D7 /* PersonModel.m in Sources */,
 				189938FB21C1EFFC0026B6AB /* ValueWeatherStationMoel.m in Sources */,
+				25C4B72C2486227700BA84F4 /* KG_RunReportDetailSecondCell.m in Sources */,
 				258D2943246A6C9A004E8B5A /* KG_XunShiRoomCell.m in Sources */,
 				FE050A95205BF61B00A4AD93 /* ChooseStationCell.m in Sources */,
 				FE050A89205B549F00A4AD93 /* PersonalInfoController.m in Sources */,
@@ -5179,6 +5565,7 @@
 				EC8795E021B4E0F2000F3CC1 /* EquipmentDetailsModel.m in Sources */,
 				FEF6695C206F21A900F3CF2B /* MsgItems.m in Sources */,
 				18CB1CCE21C7433400F40413 /* MediaModel.m in Sources */,
+				25C4B738248622C700BA84F4 /* KG_RunReportDetailSixthCell.m in Sources */,
 				258188CA2472A4E800AE3DF6 /* KG_LoginSelStaionModel.m in Sources */,
 				250B885923C46D7700C79136 /* StationMachineDetailMoreController.m in Sources */,
 				258D2941246A6C9A004E8B5A /* KG_NewContentTextCell.m in Sources */,
@@ -5207,6 +5594,8 @@
 				EC61EA0521C8835400FACC83 /* UIScrollView+EmptyDataSet.m in Sources */,
 				25EEB329243481BE00B9F803 /* KG_SecondFloorViewController.m in Sources */,
 				2584D63A244D8E370059A949 /* KG_RoomInfoView.m in Sources */,
+				25C4B7252486201300BA84F4 /* KG_RunReportDetailViewController.m in Sources */,
+				25C4B6AD24848A8200BA84F4 /* KG_StationReportAlarmViewController.m in Sources */,
 				250B886C23C578A500C79136 /* BaseVC.m in Sources */,
 				258D291D246A6C9A004E8B5A /* KG_XunJianWeekCell.m in Sources */,
 				2593B5B6246D4C2100BBB964 /* KG_ZhiXiuViewController.m in Sources */,
@@ -5231,18 +5620,21 @@
 				25EEB39924404A1B00B9F803 /* KG_DMEMonitorSecondView.m in Sources */,
 				FE419F66206DEB1C00A35A2F /* StationRoomController.m in Sources */,
 				250B882523B9D00700C79136 /* BMKClusterManager.m in Sources */,
+				25C4B70F2484A0F300BA84F4 /* KG_RunPromptCell.m in Sources */,
 				258188C7247283D300AE3DF6 /* KG_LoginSelStationCell.m in Sources */,
 				258D2944246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m in Sources */,
 				258D2947246A6C9A004E8B5A /* SegmentTapView.m in Sources */,
 				2584D62124485D240059A949 /* KG_GaojingView.m in Sources */,
 				250B886A23C578A500C79136 /* BaseNavigationController.m in Sources */,
 				258D292B246A6C9A004E8B5A /* KG_YiJianXunShiCell.m in Sources */,
+				25C4B7132484A85700BA84F4 /* KG_JiaoJieBanRecordViewController.m in Sources */,
 				EC70A5F521C109E500F858EE /* CCZTrotingAttribute.m in Sources */,
 				187673F021C0B7A7004C1E8D /* PatrolEquipmentController..m in Sources */,
 				FEF66959206F191900F3CF2B /* PersonalMsgListController.m in Sources */,
 				2581ED5D24503324002B1D9F /* KG_ZhiTaiStationModel.m in Sources */,
 				EC025D8821C8BEDC001A3F5E /* LYEmptyBaseView.m in Sources */,
 				FEAD852A207F4A790046026F /* NSString+MD5.m in Sources */,
+				25C4B73B24865CA000BA84F4 /* KG_RunReportDetailCommonCell.m in Sources */,
 				25EDC55F247CA2790006821C /* KG_GaoJingDetailModel.m in Sources */,
 				25EEB340243C71E600B9F803 /* KG_SecView.m in Sources */,
 				EC4E9ADF21B122F200B69476 /* YQSlideMenuController.m in Sources */,
@@ -5257,12 +5649,14 @@
 				FE662C8C205E27C4001FD73E /* PersonalPatrolController.m in Sources */,
 				258ED6F524629CFA00639B37 /* KG_CommonGaojingView.m in Sources */,
 				18CAAD8E21B7DE4C003C8B39 /* PatrolSpecialController.m in Sources */,
+				25C4B6B124848AA600BA84F4 /* KG_StationReportAlarmCell.m in Sources */,
 				25EDC54A247BAA7B0006821C /* KG_SelPhotoAddCell.m in Sources */,
 				258CDE232428435000B870D6 /* KG_FrameBottomAlertView.m in Sources */,
 				2584D625244938AC0059A949 /* KG_ZhiTaiViewController.m in Sources */,
 				1F8AB5611F0CB9EB00256218 /* AppDelegate.m in Sources */,
 				250B885523C42E6C00C79136 /* RadarTableViewCell.m in Sources */,
 				18482D8B21C7D9F70064FE8B /* WSLPictureBrowseView.m in Sources */,
+				25C4B7162484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.m in Sources */,
 				FE77AD0E2069DB7D00CE8866 /* UIViewController+CBPopup.m in Sources */,
 				EC5E52EA21B7B4DB009212D7 /* ContactsCell.m in Sources */,
 				25D1F04E24245A15007E5870 /* KG_MapShowStyleViewController.m in Sources */,
@@ -5298,7 +5692,9 @@
 				FE816958206E5A35000F8E29 /* StationMachineDetailController.m in Sources */,
 				258D293A246A6C9A004E8B5A /* KG_XunShiResultView.m in Sources */,
 				EC5E523521B77034009212D7 /* FilePreviewViewController.m in Sources */,
+				25C4B6A52480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m in Sources */,
 				258D2926246A6C9A004E8B5A /* KG_ZhiWeiViewController.m in Sources */,
+				25C4B71A2484F29500BA84F4 /* KG_RunListViewController.m in Sources */,
 				FE678486205F90CB00D655DB /* PersonalPatrolItems.m in Sources */,
 				25950A90245973B200BCCA8B /* KG_CommonDetailViewController.m in Sources */,
 				25EEB33624372C0200B9F803 /* KG_PowerOnView.m in Sources */,
@@ -5306,8 +5702,10 @@
 				258D2937246A6C9A004E8B5A /* KG_XunShiReportDetailModel.m in Sources */,
 				258188CD2473726C00AE3DF6 /* KG_NewLoginViewController.m in Sources */,
 				258D2922246A6C9A004E8B5A /* KG_CommonSelEquipView.m in Sources */,
+				25C4B72124861C2600BA84F4 /* KG_CreateReportAlertView.m in Sources */,
 				FE050A8C205BD1BC00A4AD93 /* PersonalEditMobileController.m in Sources */,
 				258D2936246A6C9A004E8B5A /* KG_XunShiHandleView.m in Sources */,
+				25C4B732248622AD00BA84F4 /* KG_RunReportDetailFourthCell.m in Sources */,
 				EC4C0C1021B60C9600E23EFA /* ZYSpreadButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

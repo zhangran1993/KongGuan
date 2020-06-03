@@ -136,9 +136,15 @@
 
 - (void)setPowArray:(NSArray *)powArray {
     _powArray = powArray;
-    self.dataArray = powArray;
+    
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+    
+    for (NSDictionary *dic in powArray) {
+        if ([dic[@"picShow"] boolValue]) {
+            [arr addObject:dic];
+        }
+    }
+    self.dataArray = arr;
     [self.tableView reloadData];
-    
-    
 }
 @end

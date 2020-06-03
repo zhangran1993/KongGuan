@@ -324,7 +324,7 @@
     [self.runView addSubview:zhihuanRunLabel];
     zhihuanRunLabel.text = @"智环运行情况";
     zhihuanRunLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    zhihuanRunLabel.font = [UIFont systemFontOfSize:18];
+    zhihuanRunLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
     zhihuanRunLabel.numberOfLines = 1;
     zhihuanRunLabel.textAlignment = NSTextAlignmentLeft;
     [zhihuanRunLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -393,7 +393,7 @@
     [self.runView addSubview:envLalbel];
     envLalbel.text = @"环境监测";
     envLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    envLalbel.font = [UIFont systemFontOfSize:14];
+    envLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     envLalbel.numberOfLines = 1;
     envLalbel.textAlignment = NSTextAlignmentLeft;
     [envLalbel mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -20,6 +20,7 @@
 #import "KG_ZhiTaiStationModel.h"
 #import "UIViewController+CBPopup.h"
 #import "StationMachineDetailMoreController.h"
+#import "StationVideoListController.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -404,8 +405,11 @@
     return textColor;
 }
 - (void)rightButtonClicked:(UIButton *)button {
-    
-    
+     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    StationVideoListController  *StationVideo = [[StationVideoListController alloc] init];
+    StationVideo.station_code = safeString(currDic[@"code"]);
+    StationVideo.station_name = safeString(currDic[@"stationName"]);;
+    [self.navigationController pushViewController:StationVideo animated:YES];
 }
 /** 标题栏 **/
 - (UILabel *)titleLabel {
