@@ -157,11 +157,12 @@
     NSInteger firstHeight = 44 ;
     //第一层 model.childrens 44
     //第二层 model.childrens firstobject  44
-    NSArray *secondArr = [model.childrens firstObject][@"childrens"];
+    NSArray *secondArr = model.childrens;
     NSInteger secondHeight = [secondArr count] *44;
     //第三层
     NSInteger thirdHeight = 0;
     NSInteger fourthHeight = 0;
+   
     for (NSDictionary *dic in secondArr) {
         NSArray *thirdArr = dic[@"childrens"];
         thirdHeight += thirdArr.count *30;
@@ -171,7 +172,10 @@
         }
     }
     totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
- 
+    NSLog(@"第一层高度：-----------%ld",(long)firstHeight);
+    NSLog(@"第2层高度：-----------%ld",(long)secondHeight);
+    NSLog(@"第3层高度：-----------%ld",(long)thirdHeight);
+    NSLog(@"第4层高度：-----------%ld",(long)fourthHeight);
     return totalHeight;
 
 }

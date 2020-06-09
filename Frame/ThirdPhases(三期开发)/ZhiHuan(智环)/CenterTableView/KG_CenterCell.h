@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (retain, nonatomic) IBOutlet UIImageView *lineImage;
 @property (retain, nonatomic) IBOutlet UILabel *redDotImage;
 
-@property (retain, nonatomic) NSDictionary *dataDic;
+@property (strong, nonatomic) NSDictionary *dataDic;
 @end
 
 NS_ASSUME_NONNULL_END

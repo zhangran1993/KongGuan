@@ -19,6 +19,11 @@
 
 @property(strong,nonatomic)UIButton *setMsgButton;
 
+
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
+
 @end
 
 @implementation PersonalAboutUsController
@@ -28,6 +33,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self createNaviTopView];
+    
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
+    
     self.title = @"关于";
     [self backBtn];
     [self loadBgView];
@@ -41,9 +52,9 @@
     //logo和版本
     UIImageView *logoImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     
-    logoImg.frame = CGRectMake(WIDTH_SCREEN/2-FrameWidth(60), FrameWidth(60), FrameWidth(120), FrameWidth(120));
+    logoImg.frame = CGRectMake(WIDTH_SCREEN/2-FrameWidth(60), FrameWidth(60)+ Height_NavBar, FrameWidth(120), FrameWidth(120));
     
-    UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-FrameWidth(60),FrameWidth(200) ,FrameWidth(120), 20)];
+    UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-FrameWidth(60),FrameWidth(200)+Height_NavBar ,FrameWidth(120), 20)];
     vsersionLabel.textAlignment = NSTextAlignmentCenter;
     vsersionLabel.font = FontSize(17);
     vsersionLabel.text = AppVersion;
@@ -51,7 +62,7 @@
     
     [self.view addSubview:logoImg];
     //版本评分
-    UIView *gradeView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(310), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *gradeView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(310)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     gradeView.backgroundColor = [UIColor whiteColor];
     [gradeView setUserInteractionEnabled:YES];
     [gradeView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clicktograde)]];
@@ -66,7 +77,7 @@
     [gradeView addSubview:gradeImg];
     [self.view addSubview:gradeView];
     //APP介绍
-    UIView *introduceView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(390), WIDTH_SCREEN, FrameWidth(79))];
+    UIView *introduceView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(390)+Height_NavBar, WIDTH_SCREEN, FrameWidth(79))];
     introduceView.backgroundColor = [UIColor whiteColor];
     [introduceView setUserInteractionEnabled:YES];
     [introduceView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(APPIntroduce)]];
@@ -81,7 +92,7 @@
     [introduceView addSubview:introduceImg];
     [self.view addSubview:introduceView];
     //关注我们
-    UIView *followView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(470), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *followView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(470)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     followView.backgroundColor = [UIColor whiteColor];
     [followView setUserInteractionEnabled:YES];
     [followView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(follow)]];
@@ -96,7 +107,7 @@
     [followView addSubview:followImg];
     [self.view addSubview:followView];
     //意见反馈
-    UIView *opinionView = [[UIView alloc] initWithFrame:CGRectMake(0,FrameWidth(550), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *opinionView = [[UIView alloc] initWithFrame:CGRectMake(0,FrameWidth(550)+ Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     opinionView.backgroundColor = [UIColor whiteColor];
     [opinionView setUserInteractionEnabled:YES];
     [opinionView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(opinion)]];
@@ -163,6 +174,78 @@
 
 
 
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor clearColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor clearColor];
+    topImage.image = [self createImageWithColor:[UIColor clearColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"关于我们";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
 
 @end
 

@@ -109,7 +109,7 @@
     
     self.nameTitle.text = safeString(dic[@"operatorName"]);
     self.detailTitle.text= safeString(dic[@"content"]);
-    [self.headImage sd_setImageWithURL:@"" placeholderImage:[UIImage imageNamed:@"personal_head"]];
+    [self.headImage sd_setImageWithURL:@"" placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
 }
 
 //将时间戳转换为时间字符串

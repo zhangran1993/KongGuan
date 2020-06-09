@@ -259,9 +259,9 @@
 - (void)rightAction {
     [self stationAction];
 }
-- (void)getTemHuiData {
+- (void)getTemHuiData :(NSString *) stationCode withCode:(NSString *)code{
     //    NSString *  FrameRequestURL  =  @"http://10.33.33.147:8089/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS";
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envRoomInfo/HCDHT/HCDHT-PDS"]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envRoomInfo/%@/%@",stationCode,code]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -353,7 +353,7 @@
     [self.runView addSubview:anfangLalbel];
     anfangLalbel.text = @"安防监测";
     anfangLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    anfangLalbel.font = [UIFont systemFontOfSize:14];
+    anfangLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     anfangLalbel.numberOfLines = 1;
     anfangLalbel.textAlignment = NSTextAlignmentLeft;
     [anfangLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -433,7 +433,7 @@
     [self.runView addSubview:powerLalbel];
     powerLalbel.text = @"动力监测";
     powerLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    powerLalbel.font = [UIFont systemFontOfSize:14];
+    powerLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     powerLalbel.numberOfLines = 1;
     powerLalbel.textAlignment = NSTextAlignmentLeft;
     
@@ -644,7 +644,7 @@
         [self.dataModel mj_setKeyValues:result[@"value"]];
         [self refreshData];
         [self queryWeatherData:self.dataModel.station[@"latitude"] withLon:self.dataModel.station[@"longitude"]];
-        [self getTemHuiData];
+       
         NSLog(@"1");
         
     } failure:^(NSURLSessionDataTask *error)  {
@@ -1100,6 +1100,22 @@
         make.top.equalTo(bgImage.mas_top).offset(11);
     }];
     
+    UIButton *rightBtn = [[UIButton alloc]init];
+    [rightBtn setTitle:@"查看视频" forState:UIControlStateNormal];
+     [thiscell addSubview:rightBtn];
+    [rightBtn setImage:[UIImage imageNamed:@"watchvideo_right"] forState:UIControlStateNormal];
+    [rightBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 66, 0, 0)];
+    [rightBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
+    rightBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [rightBtn addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(bgView.mas_right).offset(-20);
+        make.bottom.equalTo(bgView.mas_bottom).offset(-8);
+        make.height.equalTo(@20);
+        make.width.equalTo(@70);
+    }];
+   
+    
     
     UIView *view4 = [[UIView alloc] init];
     view4.backgroundColor = [UIColor whiteColor];
@@ -1169,7 +1185,7 @@
     [tempView addSubview:tempLabel];
     tempLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     tempLabel.numberOfLines = 1;
-    tempLabel.font = [UIFont systemFontOfSize:14];
+    tempLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     tempLabel.textAlignment = NSTextAlignmentLeft;
     [tempLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(tempImage.mas_right).offset(4);
@@ -1194,7 +1210,7 @@
     
     tempNumLabel.text = safeString(self.dataModel.station[@"temperature"]);
     if ([safeString(self.dataModel.station[@"temperature"]) doubleValue] == 0) {
-        tempNumLabel.text = @"0";
+        tempNumLabel.text = @"__";
     }
     UILabel *tempTitleLabel = [[UILabel alloc]init];
     tempTitleLabel.text = @"℃";
@@ -1222,7 +1238,7 @@
         KG_MachineStationModel *temDic = self.temArray[1];
         tempNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
         if ([safeString(temDic.valueAlias) doubleValue] == 0) {
-            tempNumLabel.text = @"0";
+            tempNumLabel.text = @"__";
         }
         tempBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
     }
@@ -1272,7 +1288,7 @@
     [humidityView addSubview:humidityLabel];
     humidityLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     humidityLabel.numberOfLines = 1;
-    humidityLabel.font = [UIFont systemFontOfSize:14];
+    humidityLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     humidityLabel.textAlignment = NSTextAlignmentLeft;
     [humidityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(humidityImage.mas_right).offset(4);
@@ -1296,7 +1312,7 @@
     }];
     humidityNumLabel.text = safeString(self.dataModel.station[@"humidity"]);
     if ([safeString(self.dataModel.station[@"humidity"]) doubleValue] == 0) {
-        humidityNumLabel.text = @"0";
+        humidityNumLabel.text = @"__";
     }
     
     UILabel *humidityTitleLabel = [[UILabel alloc]init];
@@ -1325,7 +1341,7 @@
         KG_MachineStationModel *temDic = self.temArray[0];
         humidityNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
         if ([safeString(temDic.valueAlias) doubleValue] == 0) {
-            humidityNumLabel.text = @"0";
+            humidityNumLabel.text = @"__";
         }
         humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
     }
@@ -2200,6 +2216,8 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.tableview reloadData];
     
+    [self getTemHuiData:_objects0[nlabel.tag - 1][@"stationCode"] withCode:_objects0[nlabel.tag - 1][@"code"]];
+    
     
 }
 
@@ -2587,11 +2605,38 @@
     if (scrollView.contentOffset.y <-120) {
         NSLog(@"11111111%f",scrollView.contentOffset.y);
         KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
+        vc.dataModel = self.dataModel;
+        CATransition* transition = [CATransition animation];
+        
+        transition.duration =0.4f;
+        
+        transition.type = kCATransitionMoveIn;
+        
+        transition.subtype = kCATransitionFromBottom;
+        
+        [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+        
+        
         [self.navigationController pushViewController:vc animated:nil];
     }
     
 }
+- (void)pop
 
+{
+    
+    CATransition* transition = [CATransition animation];
+    
+    transition.duration =0.4f;
+    
+    transition.type = kCATransitionReveal;
+    
+    transition.subtype = kCATransitionFromBottom;
+    
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController popViewControllerAnimated:NO];
+    
+}
 
 //- (void)navigationController:(UINavigationController*)navigationController willShowViewController:(UIViewController*)viewController animated:(BOOL)animated
 //{

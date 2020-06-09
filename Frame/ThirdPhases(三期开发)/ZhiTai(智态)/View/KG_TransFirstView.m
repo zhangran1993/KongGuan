@@ -110,23 +110,28 @@
         cell.titleLabel.text = safeString(titleString);
         if ([safeString(titleString) containsString:@"关机"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
-        }else {
+        }else if ([safeString(titleString) containsString:@"主机"]) {
+            cell.titleLabel.text = @"主机";
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-            if ([safeString(titleString) containsString:@"热备"]) {
+        }else{
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+            if ([safeString(titleString) containsString:@"备机"]) {
                 cell.titleLabel.text = @"备机";
-                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-            }else if ([safeString(titleString) containsString:@"冷备"]) {
-                cell.titleLabel.text = @"备机";
-                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#EDF2FC"];
+                if ([self.hotDic[@"valueAlias"] isEqualToString:@"冷备份"]) {
+                    cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+                }else {
+                    cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+                }
+                
             }
         }
         
     }
     if(indexPath.section == 1) {
-        if ([safeString(titleString) containsString:@"正常"]) {
+        if ([safeString(titleString) containsString:@"工作"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }else {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
         }
     }
     if (indexPath.section == 2) {
@@ -177,12 +182,7 @@
         pangluString = @"主机";
     }else if([safeString(workDic[@"valueAlias"]) isEqualToString:@"B机"]){
         pangluString = @"备机";
-        if([safeString(workDic[@"valueAlias"]) isEqualToString:@"热备"]){
-            pangluString = @"热备";
-            
-        }else {
-            pangluString = @"冷备";
-        }
+       
     }
     [_dataArray replaceObjectAtIndex:0 withObject:pangluString];
     [self.tableView reloadData];

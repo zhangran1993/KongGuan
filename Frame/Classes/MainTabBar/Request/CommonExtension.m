@@ -468,4 +468,46 @@
     }
     return iconString;
 }
+
++ (NSString *) getWorkType:(NSString *)typeCode  {
+    NSString *iconString = @"站总值班";
+    if([typeCode isEqualToString:@"masterShift"]){
+        iconString = @"站总值班";
+    }else if([typeCode isEqualToString:@"operationTectMaster"]){
+        iconString = @"运行管理技术主任";
+    }else if([typeCode isEqualToString:@"departShift"]){
+        iconString = @"部值班";
+    }else if([typeCode isEqualToString:@"yuejiadaoRadar"]){
+        iconString = @"薛家岛导航运行岗";
+    }else if([typeCode isEqualToString:@"controlShiftOne"]){
+        iconString = @"管制服务岗1";
+    }else if([typeCode isEqualToString:@"controlShirtTwo"]){
+        iconString = @"管制服务岗2";
+    }else if([typeCode isEqualToString:@"rongchengRadar"]){
+        iconString = @"荣成雷达运行岗";
+    }else if([typeCode isEqualToString:@"yantaiRadar"]){
+        iconString = @"烟台雷达运行岗";
+    }else if([typeCode isEqualToString:@"huangchengGps"]){
+        iconString = @"黄城导航运行岗";
+    }else if([typeCode isEqualToString:@"jimoRadar"]){
+        iconString = @"即墨雷达运行岗";
+    }else if([typeCode isEqualToString:@"lingtingRadar"]){
+        iconString = @"流亭雷达运行岗";
+    }else if([typeCode isEqualToString:@"managementTectMaster"]){
+        iconString = @"管制服务技术主任";
+    }else if([typeCode isEqualToString:@"equipmentShirt"]){
+        iconString = @"设备维护岗";
+    }else if([typeCode isEqualToString:@"equipmentInspection"]){
+        iconString = @"设备巡检岗";
+    }else if([typeCode isEqualToString:@"radarSupport"]){
+        iconString = @"雷达技术支持";
+    }else if([typeCode isEqualToString:@"benchangPower"]){
+        iconString = @"本场动力保障岗";
+    }else if([typeCode isEqualToString:@"gpsSupport"]){
+        iconString = @"导航技术支持";
+    }else if([typeCode isEqualToString:@"dongsanbianGps"]){
+        iconString = @"东三边导航运行岗";
+    }
+    return iconString;
+}
 @end

@@ -17,7 +17,22 @@
 #import "KG_RunPromptViewController.h"
 #import "KG_JiaoJieBanRecordViewController.h"
 #import "KG_RunListViewController.h"
-@interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UINavigationControllerDelegate>
+#import "PersonalPatrolController.h"
+#import "KG_JiaoJieBanAlertView.h"
+#import "KG_RunReportDetailViewController.h"
+#import "KG_RunJiaoJieBanCell.h"
+#import "KG_CreateReportAlertView.h"
+#import "ZRDatePickerView.h"
+#import "KG_RunManagerFirstCell.h"
+#import "KG_RunManagerSecondCell.h"
+#import "KG_RunManagerThirdCell.h"
+#import "KG_RunManagerFourthCell.h"
+#import "KG_RunMangerFifthCell.h"
+#import "KG_ChooseJiaoJieBanAlertView.h"
+
+
+
+@interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UINavigationControllerDelegate,WYLDatePickerViewDelegate>
 @property (strong, nonatomic) NSDictionary *currentStationDic;
 
 
@@ -35,14 +50,23 @@
 @property (nonatomic, strong)  NSArray    *reportListArr;//维护
 @property (nonatomic, strong)  NSArray    *stationTaskInfoArr;//台站任务提醒
 @property (nonatomic, strong)  NSArray    *stationRunReportArr;//台站运行报告arr
-@property (nonatomic, strong)  NSArray    *jiaojiebanListArr;//维护
+@property (nonatomic, strong)  NSArray    *jiaojiebanListArr;
 
 @property (nonatomic, strong)  UITableView *reportTableView;//1
 @property (nonatomic, strong)  UITableView *weihuTableView;//2
 @property (nonatomic, strong)  UITableView *runReportTableView;//3
+@property (nonatomic, strong)  UITableView *jiaoJieBanTableView;//3
 @property (nonatomic, strong)  UITableView *tableView;//3
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong)  NSDictionary *jiaoJieBanInfo;
+@property (nonatomic, strong) ZRDatePickerView *dataPickerview;
+@property (nonatomic, strong)  KG_JiaoJieBanAlertView *jiaoJieBanAlertView;
+@property (nonatomic, strong)  KG_CreateReportAlertView *createReportAlertView;
+@property (nonatomic, strong)  KG_ChooseJiaoJieBanAlertView *jieBanAlertView;
+@property (nonatomic ,assign) int currIndex;
+
+@property (nonatomic,copy) NSString *startTime;
+@property (nonatomic,copy) NSString *endTime;
 @end
 
 @implementation KG_RunManagerViewController
@@ -53,6 +77,10 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    
+//
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshYunxingData) name:@"refreshYunxingData" object:nil];
+     
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
     
@@ -77,10 +105,33 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"station"]){
+        NSDictionary *cuDic = [userDefaults objectForKey:@"station"];
+        if (![cuDic[@"code"] isEqualToString:self.currentStationDic[@"code"]]) {
+            self.currentStationDic = cuDic;
+          
+            [self queryData];
+            [self quertFrameData];
+            
+        }
+        
+    }else {
+        [self queryData];
+        [self quertFrameData];
+    }
+    
+           
+}
+
+- (void)refreshYunxingData {
+   
+    [self queryData];
+    [self quertFrameData];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-    [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController setNavigationBarHidden:YES];
     
 }
 
@@ -156,6 +207,7 @@ navigationController willShowViewController:
     [self getRunPromptDetailData];
     [self getRunReportDetailData];
     [self queryJiaoJieBaneListData];
+    [self queryTypeData];
     // 创建全局队列
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     // 创建组
@@ -180,7 +232,9 @@ navigationController willShowViewController:
         NSLog(@"当前线程：%@，是否是主线程：%@...7777···",[NSThread currentThread],[NSThread isMainThread]?@"是":@"否");//当前线程：<NSThread: 0x60400026a540>{number = 3, name = (null)}，是否是主线程：否...7777···
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"当前线程：%@，是否是主线程：%@...8888···",[NSThread currentThread],[NSThread isMainThread]?@"是":@"否");//当前线程：<NSThread: 0x604000069700>{number = 1, name = main}，是否是主线程：是...8888···
+            [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [self createUI];
+            
             [MBProgressHUD hideHUD];
             
         });
@@ -254,18 +308,19 @@ navigationController willShowViewController:
 }
 
 - (void)createUI {
-    [self setUpDataTableView];
     [self setupDataSubviews];
-    //第一个
-    [self setUpStationReportView];
-    //    //第二个
-    [self setUpWeihuView];
-    //    //第三个
-    [self setUpRunReportView];
-    //
-    [self setUpJiaoJieBanView];
-    //
-    [self setUpzhihuiyunView];
+    [self setUpDataTableView];
+   
+//    //第一个
+//    [self setUpStationReportView];
+//    //    //第二个
+//    [self setUpWeihuView];
+//    //    //第三个
+//    [self setUpRunReportView];
+//    //
+//    [self setUpJiaoJieBanView];
+//    //
+//    [self setUpzhihuiyunView];
     //
     //
     
@@ -274,33 +329,35 @@ navigationController willShowViewController:
 - (void) setUpDataTableView{
     //scroView
     
-    //    [self.view addSubview:self.tableView];
-    //    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.left.equalTo(self.view.mas_left);
-    //        make.right.equalTo(self.view.mas_right);
-    //        make.width.equalTo(self.view.mas_width);
-    //        make.height.equalTo(self.view.mas_height);
-    //    }];
-    //    [self.tableView reloadData];
-    
-    self.scrollView = [[UIScrollView alloc] init];
-    NSLog(@"SCREEN_HEIGHT %f",SCREEN_HEIGHT);
-    NSLog(@"HEIGHT_SCREEN %f",HEIGHT_SCREEN);
-    self.scrollView.frame = CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT);
-    self.scrollView.delegate = self;
-    self.scrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    self.scrollView.pagingEnabled = YES;
-    self.scrollView.scrollEnabled = YES;
-    self.scrollView.contentSize = CGSizeMake(0, SCREEN_HEIGHT +120);
-    self.scrollView.showsVerticalScrollIndicator = NO;
-    self.scrollView.showsHorizontalScrollIndicator = NO;
-    [self.view addSubview:self.scrollView];
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.mas_top);
-        make.bottom.equalTo(self.view.mas_bottom);
+        make.width.equalTo(self.view.mas_width);
+        make.top.equalTo(self.navigationView.mas_bottom).offset(5);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-TABBAR_HEIGHT);
     }];
+    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [self.tableView reloadData];
+//
+//    self.scrollView = [[UIScrollView alloc] init];
+//    NSLog(@"SCREEN_HEIGHT %f",SCREEN_HEIGHT);
+//    NSLog(@"HEIGHT_SCREEN %f",HEIGHT_SCREEN);
+//    self.scrollView.frame = CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT);
+//    self.scrollView.delegate = self;
+//    self.scrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+//    self.scrollView.pagingEnabled = YES;
+//    self.scrollView.scrollEnabled = YES;
+//    self.scrollView.contentSize = CGSizeMake(0, SCREEN_HEIGHT +120);
+//    self.scrollView.showsVerticalScrollIndicator = NO;
+//    self.scrollView.showsHorizontalScrollIndicator = NO;
+//    [self.view addSubview:self.scrollView];
+//    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.view.mas_left);
+//        make.right.equalTo(self.view.mas_right);
+//        make.top.equalTo(self.view.mas_top);
+//        make.bottom.equalTo(self.view.mas_bottom).offset(-TABBAR_HEIGHT);
+//    }];
 }
 //智慧云view
 - (void)setUpzhihuiyunView {
@@ -309,8 +366,8 @@ navigationController willShowViewController:
     [self.scrollView addSubview:self.zhihuiyunView];
     //    zhihuiyun_gotoImage
     [self.zhihuiyunView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.scrollView.mas_left);
-        make.right.equalTo(self.scrollView.mas_right);
+        make.left.equalTo(self.scrollView.mas_left).offset(16);
+        make.right.equalTo(self.scrollView.mas_right).offset(-16);
         make.top.equalTo(self.jiaojiebanView.mas_bottom).offset(15);
         make.height.equalTo(@94);
     }];
@@ -373,26 +430,47 @@ navigationController willShowViewController:
     self.jiaojiebanView =  [[UIView alloc]init];
     [self.scrollView addSubview:self.jiaojiebanView];
     
+  
     [self.jiaojiebanView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scrollView.mas_left);
         make.right.equalTo(self.scrollView.mas_right);
         make.top.equalTo(self.runReprtView.mas_bottom);
-        make.height.equalTo(@94);
+        make.height.equalTo(@(self.jiaojiebanListArr.count *80+40));
     }];
     
+    UIView *leftView = [[UIView alloc]init];
+    leftView.backgroundColor = [UIColor colorWithHexString:@"#2A6EFD"];
+    [self.runReprtView addSubview:leftView];
+    leftView.layer.cornerRadius = 2;
+    leftView.layer.masksToBounds = YES;
+    [leftView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.jiaojiebanView.mas_left).offset(16);
+        make.width.equalTo(@4);
+        make.top.equalTo(self.jiaojiebanView.mas_top).offset(10);
+        make.height.equalTo(@15);
+    }];
     
     UILabel *titleLabel = [[UILabel alloc]init];
     [self.jiaojiebanView addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.font = [UIFont systemFontOfSize:12];
-    titleLabel.text = [NSString stringWithFormat:@"%@:%@",@"交接班岗位",@"管制服务岗"];
+    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.text = [NSString stringWithFormat:@"%@",@"交接班记录"];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.jiaojiebanView.mas_left).offset(28);
-        make.top.equalTo(self.jiaojiebanView.mas_top).offset(10);
+        make.left.equalTo(leftView.mas_right).offset(4);
+        make.centerY.equalTo(leftView.mas_centerY);
         make.width.equalTo(@200);
         make.height.equalTo(@17);
     }];
-    
+    UIButton *Btn1 = [[UIButton alloc]init];
+
+    [self.jiaojiebanView addSubview:Btn1];
+    [Btn1 addTarget:self action:@selector(jiaojieBanRecord) forControlEvents:UIControlEventTouchUpInside];
+    [Btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@100);
+        make.centerY.equalTo(titleLabel.mas_centerY);
+        make.right.equalTo(self.jiaojiebanView.mas_right).offset(-16);
+    }];
+
     UIButton *reportRightBtn = [[UIButton alloc]init];
     [reportRightBtn setImage:[UIImage imageNamed:@"common_right"] forState:UIControlStateNormal];
     [self.jiaojiebanView addSubview:reportRightBtn];
@@ -407,7 +485,7 @@ navigationController willShowViewController:
     recordLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     recordLabel.font = [UIFont systemFontOfSize:12];
     recordLabel.textAlignment = NSTextAlignmentRight;
-    recordLabel.text = [NSString stringWithFormat:@"交接班记录"];
+    recordLabel.text = [NSString stringWithFormat:@""];
     [recordLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(reportRightBtn.mas_left);
         make.centerY.equalTo(titleLabel.mas_centerY);
@@ -416,102 +494,14 @@ navigationController willShowViewController:
     }];
     //
     
-    UIImageView *centerImage = [[UIImageView alloc]init];
-    [self.jiaojiebanView addSubview:centerImage];
-    centerImage.image = [UIImage imageNamed:@"jiaojiebanjiantou"];
-    
-    
-    UIView *leftView = [[UIView alloc]init];
-    [self.jiaojiebanView addSubview:leftView];
-    int viewWidth =( SCREEN_WIDTH -32 -38 )/2;
-    leftView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    [leftView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.jiaojiebanView.mas_left).offset(16);
-        make.width.equalTo(@(viewWidth));
-        make.top.equalTo(titleLabel.mas_bottom).offset(10);
-        make.height.equalTo(@40);
+    [self.jiaojiebanView addSubview:self.jiaoJieBanTableView];
+    [self.jiaoJieBanTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.jiaojiebanView.mas_left);
+        make.right.equalTo(self.jiaojiebanView.mas_right);
+        make.top.equalTo(recordLabel.mas_bottom).offset(10);
+        make.height.equalTo(@(self.jiaojiebanListArr.count *80));
     }];
-    
-    UIImageView *leftIcon = [[UIImageView alloc]init];
-    [leftView addSubview:leftIcon];
-    leftIcon.backgroundColor = [UIColor blueColor];
-    [leftIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@22);
-        make.left.equalTo(leftView.mas_left).offset(12);
-        make.centerY.equalTo(leftView.mas_centerY);
-    }];
-    UILabel *leftTitleLabel = [[UILabel alloc]init];
-    [leftView addSubview:leftTitleLabel];
-    leftTitleLabel.text = @"张树剑告";
-    leftTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    leftTitleLabel.font = [UIFont systemFontOfSize:12];
-    [leftTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftIcon.mas_right).offset(9);
-        make.top.equalTo(leftView.mas_top).offset(5);
-        make.right.equalTo(leftView.mas_right);
-        make.height.equalTo(@17);
-    }];
-    UILabel *leftTimeLabel = [[UILabel alloc]init];
-    [leftView addSubview:leftTimeLabel];
-    leftTimeLabel.text = @"2020.05.07 08:00:23";
-    leftTimeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    leftTimeLabel.font = [UIFont systemFontOfSize:10];
-    [leftTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftIcon.mas_right).offset(9);
-        make.top.equalTo(leftTitleLabel.mas_bottom);
-        make.right.equalTo(leftView.mas_right);
-        make.height.equalTo(@14);
-    }];
-    
-    
-    UIView *rightView = [[UIView alloc]init];
-    [self.jiaojiebanView addSubview:rightView];
-    rightView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    [rightView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.jiaojiebanView.mas_right).offset(-16);
-        make.width.equalTo(@(viewWidth));
-        make.top.equalTo(titleLabel.mas_bottom).offset(10);
-        make.height.equalTo(@40);
-    }];
-    
-    
-    UIImageView *rightIcon = [[UIImageView alloc]init];
-    [rightView addSubview:rightIcon];
-    rightIcon.backgroundColor = [UIColor blueColor];
-    [rightIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@22);
-        make.left.equalTo(rightView.mas_left).offset(12);
-        make.centerY.equalTo(rightView.mas_centerY);
-    }];
-    UILabel *rightTitleLabel = [[UILabel alloc]init];
-    [rightView addSubview:rightTitleLabel];
-    rightTitleLabel.text = @"张树剑告";
-    rightTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    rightTitleLabel.font = [UIFont systemFontOfSize:12];
-    [rightTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(rightIcon.mas_right).offset(9);
-        make.top.equalTo(rightView.mas_top).offset(5);
-        make.right.equalTo(rightView.mas_right);
-        make.height.equalTo(@17);
-    }];
-    UILabel *rightTimeLabel = [[UILabel alloc]init];
-    [rightView addSubview:rightTimeLabel];
-    rightTimeLabel.text = @"2020.05.07 08:00:23";
-    rightTimeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    rightTimeLabel.font = [UIFont systemFontOfSize:10];
-    [rightTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(rightIcon.mas_right).offset(9);
-        make.top.equalTo(rightTitleLabel.mas_bottom);
-        make.right.equalTo(rightView.mas_right);
-        make.height.equalTo(@14);
-    }];
-    
-    [centerImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@14);
-        make.centerY.equalTo(leftView.mas_centerY);
-        make.left.equalTo(leftView.mas_right).offset(11);
-    }];
-    
+    [self.jiaoJieBanTableView reloadData];
     UIView *lineView = [[UIView alloc]init];
     lineView.backgroundColor = [UIColor colorWithHexString:@"#E1E1E5"];
     [self.jiaojiebanView addSubview:lineView];
@@ -519,7 +509,7 @@ navigationController willShowViewController:
         make.height.equalTo(@0.5);
         make.left.equalTo(self.jiaojiebanView.mas_left).offset(15);
         make.right.equalTo(self.jiaojiebanView.mas_right).offset(-17);
-        make.top.equalTo(leftView.mas_bottom).offset(16);
+        make.top.equalTo(self.jiaoJieBanTableView.mas_bottom).offset(0.5);
     }];
     
 }
@@ -544,8 +534,10 @@ navigationController willShowViewController:
     UIView *leftView = [[UIView alloc]init];
     leftView.backgroundColor = [UIColor colorWithHexString:@"#2A6EFD"];
     [self.runReprtView addSubview:leftView];
+    leftView.layer.cornerRadius = 2;
+    leftView.layer.masksToBounds = YES;
     [leftView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.stationWeihuView.mas_left).offset(16);
+        make.left.equalTo(self.runReprtView.mas_left).offset(16);
         make.width.equalTo(@4);
         make.top.equalTo(self.stationWeihuView.mas_bottom).offset(22);
         make.height.equalTo(@15);
@@ -667,11 +659,11 @@ navigationController willShowViewController:
     //是否为接班人
     if([self.jiaoJieBanInfo[@"isSuccessor"] boolValue]) {
         jiebanBtn.layer.borderColor =  [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"##2F5ED1"] forState:UIControlStateNormal];
+        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
         jiebanBtn.userInteractionEnabled = YES;
     }else {
-        jiebanBtn.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        jiebanBtn.layer.borderColor = [[UIColor colorWithHexString:@"#E3E3E5"] CGColor];
+        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
         jiebanBtn.userInteractionEnabled = NO;
     }
     //是否为交班人
@@ -685,16 +677,16 @@ navigationController willShowViewController:
         jiaobanBtn.userInteractionEnabled = NO;
     }
     //是否能生成运行报告
-    if([self.jiaoJieBanInfo[@"isHandoverPerson"] boolValue]) {
+    if([self.jiaoJieBanInfo[@"isRunReport"] boolValue]) {
         createReportView.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-        createReportView.layer.borderWidth = 0.5;
+        createReportView.layer.borderWidth = 1;
         createIcon.image = [UIImage imageNamed:@"run_createIcon"];
         createReportLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
         createReportBtn.userInteractionEnabled = YES;
         createReportView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
     }else {
         createReportView.layer.borderColor = [[UIColor colorWithHexString:@"#E3E3E5"] CGColor];
-        createReportView.layer.borderWidth = 0.5;
+        createReportView.layer.borderWidth = 1;
         createIcon.image = [UIImage imageNamed:@"create_unselIcon"];
         createReportLabel.textColor = [UIColor colorWithHexString:@"#BEBFC7"];
         createReportBtn.userInteractionEnabled = NO;
@@ -726,6 +718,29 @@ navigationController willShowViewController:
 //        "errMsg": "",
 //        "value": true              //交接成功返回true
 //    }
+    if ([self.jiaoJieBanInfo[@"handoverInfo"] count] == 1) {
+        KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
+        
+        vc.dataDic = [self.jiaoJieBanInfo[@"handoverInfo"] firstObject];
+        
+        vc.pushType = @"jieban";
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        self.jiaoJieBanAlertView.hidden = NO;
+        self.jiaoJieBanAlertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic) {
+            self.jiaoJieBanAlertView.hidden = YES;
+            KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
+            
+            vc.dataDic = dataDic;
+            
+            vc.pushType = @"jiaoban";
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+    }
+    
+    
+   
+   
 }
 //接班
 - (void)jiebanMethod {
@@ -737,12 +752,111 @@ navigationController willShowViewController:
 //    如：
 //    {
 //        "errCode": 0,
+//
+    
+    if ([self.jiaoJieBanInfo[@"successInfo"] count] == 1) {
+        KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
+        
+        vc.dataDic = [self.jiaoJieBanInfo[@"successInfo"] firstObject];
+        
+        vc.pushType = @"jieban";
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        self.jieBanAlertView.hidden = NO;
+        self.jieBanAlertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic) {
+            self.jieBanAlertView.hidden = YES;
+            KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
+            
+            vc.dataDic = dataDic;
+            
+            vc.pushType = @"jieban";
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        
+    }
+   
+    
+   
+    
+    
+    
 }
 //生成运行报告
 - (void)CreateReportMethod {
+    self.createReportAlertView.hidden = NO;
+    self.createReportAlertView.selTimeBlockMethod = ^(NSInteger tag) {
+        self.currIndex = (int)tag;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
+            [self.dataPickerview  show];
+        }];
+    };
+    self.createReportAlertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull endTime) {
+        self.createReportAlertView .hidden = YES;
+        
+        [self  getReportIdData:dataDic withEndTime:endTime];
+       
+       
+    };
+}
+//新增运行报告接口：
+//请求地址：/atcRunReport/
+//请求方式：POST
+//请求Body：
+//{
+//    "title":"xxx",
+//    "reportRange":"xxx",
+//    "startTime":xxx,
+//    "endTime":xxxx,
+//    "post":"xxx",
+//    "submitter":"xxx",
+//    "fileUrl":"xxx"
+//}请求返回：
+- (void)getReportIdData:(NSDictionary *)dataDic withEndTime:(NSString *)endTime {
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunReport"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(dataDic[@"post"])],safeString(dataDic[@"time"]),safeString(endTime),@"运行报告"];
+    params[@"title"] = title;
+    params[@"reportRange"] =safeString(dataDic[@"stationName"]);
+    params[@"startTime"] =[self CurTimeMilSec:safeString(dataDic[@"time"])] ;
+    params[@"endTime"] = [self CurTimeMilSec:safeString(endTime)];
+    params[@"post"] = safeString(dataDic[@"post"]);
+    params[@"submitter"] = safeString(self.loginNameInfo[@"userName"]);
+   
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        NSMutableDictionary *ddic = [[NSMutableDictionary alloc]initWithCapacity:0];
+        [ddic addEntriesFromDictionary:dataDic];
+        [ddic setValue:safeString(result[@"value"][@"id"]) forKey:@"id"];
+        NSLog(@"resultresult %@",result);
+        KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
+        vc.endTime = endTime;
+        vc.dataDic = ddic;
+        vc.pushType = @"create";
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+       
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
     
 }
-//
+-(NSString *) CurTimeMilSec:(NSString*)pstrTime
+{
+    NSDateFormatter *pFormatter= [[NSDateFormatter alloc]init];
+    [pFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *pCurrentDate = [pFormatter dateFromString:pstrTime];
+    return [NSString stringWithFormat:@"%.f",[pCurrentDate timeIntervalSince1970] * 1000];
+}
+
+
 - (void)reportRightMethod {
     KG_RunListViewController *vc = [[KG_RunListViewController alloc]init];
 //    vc.dataArray = self.stationRunReportArr;
@@ -975,12 +1089,12 @@ navigationController willShowViewController:
     /** 导航栏 **/
     self.navigationView = [[UIView alloc]init];
     self.navigationView.backgroundColor = [UIColor clearColor];
-    [self.scrollView addSubview:self.navigationView];
+    [self.view addSubview:self.navigationView];
     [self.navigationView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.scrollView.mas_left);
-        make.right.equalTo(self.scrollView.mas_right);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
         make.height.equalTo(@(NAVIGATIONBAR_HEIGHT));
-        make.top.equalTo(self.scrollView.mas_top);
+        make.top.equalTo(self.view.mas_top);
     }];
     
     
@@ -990,7 +1104,7 @@ navigationController willShowViewController:
     [self.navigationView addSubview:leftImage];
     leftImage.layer.cornerRadius =17.f;
     leftImage.layer.masksToBounds = YES;
-    [leftImage setImage:[UIImage imageNamed:@"personal_head"] forState:UIControlStateNormal];
+    [leftImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     [leftImage addTarget:self action:@selector(leftCenterButtonClick) forControlEvents:UIControlEventTouchUpInside];
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -1004,13 +1118,13 @@ navigationController willShowViewController:
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftImage.mas_right).offset(8);
         make.height.equalTo(@22);
-        make.width.equalTo(@150);
+        make.width.equalTo(@250);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
     NSString *name = safeString(self.loginNameInfo[@"userName"]);
-    NSString *zhiban = @"今日值班";
+    NSString *zhiban = @"今日不值班";
     if ([self.loginNameInfo[@"isOnDuty"] boolValue]) {
-        zhiban = @"今日不值班";
+        zhiban = @"今日值班";
     }
     titleLabel.text = [NSString stringWithFormat:@"%@-%@",name,zhiban];
     
@@ -1042,7 +1156,8 @@ navigationController willShowViewController:
 }
 //查看值班表
 - (void)zhibanMethod {
-    
+    PersonalPatrolController *PatrolController = [[PersonalPatrolController alloc] init];
+    [self.navigationController pushViewController:PatrolController animated:YES];
     
 }
 
@@ -1050,6 +1165,9 @@ navigationController willShowViewController:
 - (void)loginSuccess {
     if (self.currentStationDic.count == 0) {
         [self login];
+    }else {
+        [self queryData];
+        [self quertFrameData];
     }
 }
 #pragma mark - life cycle 生命周期方法
@@ -1155,17 +1273,25 @@ navigationController willShowViewController:
 }
 
 
-
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    return 5;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if ([tableView isEqual:self.reportTableView]) {
-        return self.stationTaskInfoArr.count;
-    }else if ([tableView isEqual:self.weihuTableView]) {
-        return self.reportListArr.count;
-    }else if ([tableView isEqual:self.runReportTableView]) {
-        return 2;
-    }
-    return 0;
+//    if ([tableView isEqual:self.reportTableView]) {
+//        return self.stationTaskInfoArr.count;
+//    }else if ([tableView isEqual:self.weihuTableView]) {
+//        return self.reportListArr.count;
+//    }else if ([tableView isEqual:self.runReportTableView]) {
+//        return 2;
+//    }else if ([tableView isEqual:self.jiaoJieBanTableView]) {
+//        return self.jiaojiebanListArr.count;
+//    }
+//    return 0;
+    
+    return 1;
+    
 }
 
 
@@ -1198,7 +1324,7 @@ navigationController willShowViewController:
 }
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
@@ -1209,6 +1335,21 @@ navigationController willShowViewController:
     }
     return _tableView;
 }
+- (UITableView *)jiaoJieBanTableView {
+    if (!_jiaoJieBanTableView) {
+        _jiaoJieBanTableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _jiaoJieBanTableView.delegate = self;
+        _jiaoJieBanTableView.dataSource = self;
+        _jiaoJieBanTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        _jiaoJieBanTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _jiaoJieBanTableView.scrollEnabled = YES;
+        
+        
+    }
+    return _jiaoJieBanTableView;
+}
+
+
 
 - (UITableView *)weihuTableView {
     if (!_weihuTableView) {
@@ -1224,61 +1365,210 @@ navigationController willShowViewController:
     return _weihuTableView;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.01)];
+    
+    return headView;
+    
+}
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    return 0.01f;
+}
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    return footView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    
+    return 10;
+}
 
+- (void)gotoDetailPage:(NSDictionary *)dataDic {
+
+    KG_RunReportDetailViewController *vc = [[KG_RunReportDetailViewController alloc]init];
+    
+    vc.dataDic = dataDic;
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([tableView isEqual:self.reportTableView]) {
-        KG_StationReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_StationReportCell"];
+    
+    if (indexPath.section == 0) {
+         KG_RunManagerFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerFirstCell"];
         if (cell == nil) {
-            cell = [[KG_StationReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_StationReportCell"];
+            cell = [[KG_RunManagerFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerFirstCell"];
+            cell.stationTaskInfoArr = self.stationTaskInfoArr;
         }
+        cell.watchTotal = ^{
+            [self watahTotalMethod];
+        };
+        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSDictionary *dataDic = self.stationTaskInfoArr[indexPath.row];
-        cell.dataDic = dataDic;
+        
         
         return cell;
-    }else if ([tableView isEqual:self.weihuTableView]) {
-        
-        KG_RunWeiHuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunWeiHuCell"];
+    }else if (indexPath.section == 1) {
+        KG_RunManagerSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerSecondCell"];
         if (cell == nil) {
-            cell = [[KG_RunWeiHuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunWeiHuCell"];
+            cell = [[KG_RunManagerSecondCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerSecondCell"];
+            cell.reportListArr = self.reportListArr;
         }
+        cell.weihuBlockMethod = ^{
+            [self weihuMethod];
+        };
+       
+        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSDictionary *dataDic = self.reportListArr[indexPath.row];
-        cell.dataDic = dataDic;
+        
         
         return cell;
-    }else if ([tableView isEqual:self.runReportTableView]) {
-        
-        KG_RunReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportCell"];
+    }else if (indexPath.section == 2) {
+        KG_RunManagerThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerThirdCell"];
         if (cell == nil) {
-            cell = [[KG_RunReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportCell"];
+            cell = [[KG_RunManagerThirdCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerThirdCell"];
+            cell.jiaoJieBanInfo = self.jiaoJieBanInfo;
+            cell.stationRunReportArr = self.stationRunReportArr;
         }
+        cell.runReportBlockMethod = ^{
+            [self reportRightMethod];
+        };
+        cell.gotoDetailBlockMethod = ^(NSDictionary * _Nonnull dic) {
+                   [self gotoDetailPage:dic];
+               };
+        cell.jiaobanBlockMethod = ^{
+            [self jiaobanMethod];
+        };
+        cell.jiebanBlockMethod = ^{
+            [self jiebanMethod];
+        };
+        cell.createReportBlockMethod = ^{
+            [self CreateReportMethod];
+        };
+        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSDictionary *dataDic = self.stationRunReportArr[indexPath.row];
-        cell.dataDic = dataDic;
         
+       
+        return cell;
+    }else if (indexPath.section == 3) {
+        KG_RunManagerFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerFourthCell"];
+        if (cell == nil) {
+            cell = [[KG_RunManagerFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerFourthCell"];
+            cell.jiaojiebanListArr = self.jiaojiebanListArr;
+            
+        }
+        cell.jiaojiebanBlockMethod  = ^{
+            [self jiaojieBanRecord];
+        };
+        
+        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
+    }else if (indexPath.section == 4) {
+        KG_RunMangerFifthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunMangerFifthCell"];
+        if (cell == nil) {
+            cell = [[KG_RunMangerFifthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunMangerFifthCell"];
+        }
+        cell.gotuYunBlockMethod = ^{
+            [self goToZhiHuiYunMethod];
+        };
+        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+       
         return cell;
     }
     
+//    if ([tableView isEqual:self.reportTableView]) {
+//        KG_StationReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_StationReportCell"];
+//        if (cell == nil) {
+//            cell = [[KG_StationReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_StationReportCell"];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        NSDictionary *dataDic = self.stationTaskInfoArr[indexPath.row];
+//        cell.dataDic = dataDic;
+//
+//        return cell;
+//    }else if ([tableView isEqual:self.weihuTableView]) {
+//
+//        KG_RunWeiHuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunWeiHuCell"];
+//        if (cell == nil) {
+//            cell = [[KG_RunWeiHuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunWeiHuCell"];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        NSDictionary *dataDic = self.reportListArr[indexPath.row];
+//        cell.dataDic = dataDic;
+//
+//        return cell;
+//    }else if ([tableView isEqual:self.runReportTableView]) {
+//
+//        KG_RunReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportCell"];
+//        if (cell == nil) {
+//            cell = [[KG_RunReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportCell"];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        NSDictionary *dataDic = self.stationRunReportArr[indexPath.row];
+//        cell.dataDic = dataDic;
+//
+//        return cell;
+//    }else if ([tableView isEqual:self.jiaoJieBanTableView]) {
+//
+//        KG_RunJiaoJieBanCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunJiaoJieBanCell"];
+//        if (cell == nil) {
+//            cell = [[KG_RunJiaoJieBanCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunJiaoJieBanCell"];
+//        }
+//        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        NSDictionary *dataDic = self.jiaojiebanListArr[indexPath.row];
+//        cell.dic = dataDic;
+//
+//        return cell;
+//    }
+//
     return nil;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([tableView isEqual:self.reportTableView]) {
-        return 32;
-    }else if ([tableView isEqual:self.weihuTableView]) {
-        return 32;
-    }else if ([tableView isEqual:self.runReportTableView]) {
-        return 80;
+
+    
+    if(indexPath.section == 0){
+        if (self.stationTaskInfoArr.count == 0) {
+            return 53+44;
+        }else {
+            if (self.stationTaskInfoArr.count >=3) {
+                return 53+96;
+            }else {
+                return 53+(32 *self.stationTaskInfoArr.count);
+            }
+            
+        }
+        return 150;
+    }else if(indexPath.section == 1){
+        return 72;
+    }else if(indexPath.section == 2){
+        return 125 +80*self.stationRunReportArr.count;
+    }else if(indexPath.section == 3){
+        return self.jiaojiebanListArr.count *80+40;
+    }else if(indexPath.section == 4){
+        return 94;
     }
+    
     return 50;
 }
 
 
+//KG_RunReportDetailViewController *vc = [[KG_RunReportDetailViewController alloc]init];
+//  NSDictionary *dataDic = self.dataArray[indexPath.section];
+//  vc.dataDic = dataDic;
+//  [self.navigationController pushViewController:vc animated:YES];
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+ 
     
     //    NSString *str = self.dataArray[indexPath.row];
     
@@ -1286,7 +1576,7 @@ navigationController willShowViewController:
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     //在这里设置一下 不然滚动不了
-    self.scrollView.contentSize = CGSizeMake(0, SCREEN_HEIGHT +120);
+    self.scrollView.contentSize = CGSizeMake(0, SCREEN_HEIGHT +120+self.jiaojiebanListArr.count *80);
 }
 - (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate {
     if(decelerate) {
@@ -1356,8 +1646,7 @@ navigationController willShowViewController:
         
         NSLog(@"resultresult %@",result);
         self.reportListArr = result[@"value"][@"records"];
-        [self.weihuTableView reloadData];
-        
+      
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
         
@@ -1397,8 +1686,7 @@ navigationController willShowViewController:
         
         NSLog(@"resultresult %@",result);
         self.stationRunReportArr = result[@"value"][@"records"];
-        [self.runReportTableView reloadData];
-        
+      
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
         
@@ -1469,9 +1757,19 @@ navigationController willShowViewController:
             
             return ;
         }
-        self.jiaojiebanListArr = result[@"value"][@"records"];
-        
-        
+        NSMutableArray *dateArr = [NSMutableArray arrayWithCapacity:0];
+        NSArray *arr = result[@"value"][@"records"];
+        NSDate *date=[NSDate date];
+        NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+        for (NSDictionary *dateDic in arr) {
+           
+            NSString *ti = [self timestampToTimeStr:safeString(dateDic[@"createTime"])];
+            if ([timeStr isEqualToString:ti]) {
+                [dateArr addObject:dateDic];
+            }
+        }
+        self.jiaojiebanListArr = dateArr;
+      
         NSLog(@"resultresult %@",result);
        
     }  failure:^(NSError *error) {
@@ -1483,4 +1781,168 @@ navigationController willShowViewController:
     
     
 }
+- (KG_CreateReportAlertView *)createReportAlertView {
+    
+    if (!_createReportAlertView) {
+        _createReportAlertView = [[KG_CreateReportAlertView alloc]initWithCondition:self.jiaoJieBanInfo];
+        [JSHmainWindow addSubview:_createReportAlertView];
+        [_createReportAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+        
+    }
+    return _createReportAlertView;
+    
+}
+- (KG_ChooseJiaoJieBanAlertView *)jieBanAlertView {
+    
+    if (!_jieBanAlertView) {
+        _jieBanAlertView = [[KG_ChooseJiaoJieBanAlertView alloc]initWithCondition:self.jiaoJieBanInfo];
+        [JSHmainWindow addSubview:_jieBanAlertView];
+        [_jieBanAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+        
+    }
+    return _jieBanAlertView;
+    
+}
+- (KG_JiaoJieBanAlertView *)jiaoJieBanAlertView {
+    
+    if (!_jiaoJieBanAlertView) {
+        _jiaoJieBanAlertView = [[KG_JiaoJieBanAlertView alloc]initWithCondition:self.jiaoJieBanInfo];
+        [JSHmainWindow addSubview:_jiaoJieBanAlertView];
+        [_jiaoJieBanAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+        
+    }
+    return _jiaoJieBanAlertView;
+    
+}
+
+- (void)queryTypeData {
+    
+    //    获取任务状态字典接口：
+    //    请求地址：/intelligent/atcDictionary?type_code=taskStatus
+    //    请求方式：GET
+    //    请求返回：
+    //    如：http://192.168.100.173:8089/intelligent/atcDictionary?type_code=taskStatus
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=shiftPositionCategory"]];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        
+        NSLog(@"1");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+      
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+    
+    
+}
+- (BOOL)validateWithDate:(NSDate *)date
+{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *now = [NSDate date];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:now];
+//    components.hour = 8;
+    // 当天起始时间
+    NSDate *startDate = [calendar dateFromComponents:components];
+    // 当天结束时间
+    NSDate *expireDate = [calendar dateByAddingUnit:NSCalendarUnitDay value:1 toDate:startDate options:0];
+    
+    if ([date compare:startDate] == NSOrderedDescending && [date compare:expireDate] == NSOrderedAscending) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+//将时间戳转换为时间字符串
+- (NSString *)timestampToTimeStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
+    }
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+    
+}
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
+}
+
+- (ZRDatePickerView *)dataPickerview
+{
+    if (!_dataPickerview) {
+        _dataPickerview = [[ZRDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:WYLDatePickerTypeYMD];
+        _dataPickerview.delegate = self;
+        _dataPickerview.title = @"请选择时间";
+        _dataPickerview.isSlide = NO;
+        _dataPickerview.toolBackColor = [UIColor colorWithHexString:@"#F7F7F7"];
+        _dataPickerview.toolTitleColor = [UIColor colorWithHexString:@"#555555"];
+        _dataPickerview.saveTitleColor = [UIColor colorWithHexString:@"#EA3425"];
+        _dataPickerview.cancleTitleColor = [UIColor colorWithHexString:@"#EA3425"];
+        
+        [self.view addSubview:_dataPickerview];
+        
+    }
+    return _dataPickerview;
+}
+
+- (void)datePickerViewSaveBtnClickDelegate:(NSString *)timer {
+  
+    if (self.currIndex == 0) {
+        self.startTime = timer;
+       
+        
+    }else {
+        //end
+        self.endTime = timer;
+       
+    }
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
+        
+        [self.dataPickerview  show];
+    }];
+    
+}
+/**
+ 取消按钮代理方法
+ */
+- (void)datePickerViewCancelBtnClickDelegate {
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
+        [self.dataPickerview  show];
+    }];
+}
+
 @end

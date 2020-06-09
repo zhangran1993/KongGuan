@@ -143,14 +143,14 @@
 - (void)setModel:(KG_GaoJingModel *)model {
     _model = model;
     
-    self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(model.stationName),safeString(model.equipmentName)];
-    self.iconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(model.stationCode)]];
+    self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(model.stationName),safeString(model.engineRoomName)];
+    self.iconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(model.equipmentCategory)]];
     
     self.timeLabel.text = [self timestampToTimeStr:safeString(model.happenTime)];
     
     
     self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(model.level)]];
-    
+    self.gaojingImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(model.level)]];
     [self.confirmBtn setTitle:safeString(model.status) forState:UIControlStateNormal];
     
     self.powLabel.text = safeString(model.equipmentName);
@@ -162,6 +162,25 @@
     
     
 }
+- (NSString *)getGaoJingImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"正常"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"提示"]) {
+        levelString = @"gaojing_prompt";
+    }else if ([level isEqualToString:@"次要"]) {
+        levelString = @"gaojing_ciyao";
+    }else if ([level isEqualToString:@"重要"]) {
+        levelString = @"gaojing_important";
+    }else if ([level isEqualToString:@"紧急"]) {
+        levelString = @"gaojing_red";
+    }
+    //紧急
+    return levelString;
+}
+
+
 //将时间戳转换为时间字符串
 - (NSString *)timestampToTimeStr:(NSString *)timestamp {
     if (isSafeObj(timestamp)==NO) {

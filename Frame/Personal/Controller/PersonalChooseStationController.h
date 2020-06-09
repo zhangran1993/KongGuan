@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PersonalChooseStationController : UITableViewController
+@interface PersonalChooseStationController : UIViewController
 
 
 @end

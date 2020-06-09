@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_JiaoJieBanRecordViewController : UIViewController
-@property (nonatomic,strong) NSArray *dataArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

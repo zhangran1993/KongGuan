@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_JiaoJieBanRecordCell : UITableViewCell
 
+@property (nonatomic ,strong) NSDictionary *dic;
+
 @end
 
 NS_ASSUME_NONNULL_END

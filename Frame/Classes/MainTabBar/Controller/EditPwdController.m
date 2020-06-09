@@ -228,7 +228,7 @@
     }
     params[@"mobile"] = _mobileText.text;
     _nowMobile = [_mobileText.text copy];
-    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/api/sms/%@/%@",WebHost,_nowMobile,@"old"];
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/api/sms/%@/%@",WebNewHost,_nowMobile,@"old"];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];

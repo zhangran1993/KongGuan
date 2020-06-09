@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_RunReportDetailCommonCell : UITableViewCell
 
+
+@property (nonatomic ,copy) NSString *string;
 @end
 
 NS_ASSUME_NONNULL_END

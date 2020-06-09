@@ -33,6 +33,11 @@
 @property (nonatomic,assign)  double hasMore;
 
 @property(nonatomic) UITableView *tableview;
+
+
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
 @end
 
 @implementation PersonalMsgListController
@@ -46,19 +51,21 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    self.navigationItem.title = _thistitle;//详情
+    [self createNaviTopView];
     
+    self.navigationItem.title = _thistitle;//详情
+     [self setupTable];
 }
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"PersonalMsgListController viewWillAppear");
-    [self setupTable];
+   
 }
 #pragma mark - private methods 私有方法
 
 - (void)setupTable{
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN,HEIGHT_SCREEN-ZNAVViewH)];
+    self.tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, Height_NavBar, WIDTH_SCREEN,HEIGHT_SCREEN-ZNAVViewH)];
     
     self.tableview.backgroundColor = BGColor;
     
@@ -78,7 +85,7 @@
     self.tableview.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, FrameWidth(30))];
     self.tableview.separatorStyle = UITableViewCellSelectionStyleNone;
     
-    
+ 
     [self.view addSubview:self.tableview];
     
     // 头部刷新控件
@@ -88,6 +95,12 @@
     // 尾部刷新控件
     self.tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotificationAction) name:kNetworkStatusNotification object:nil];
+    [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.navigationView.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
     
 }
 
@@ -155,9 +168,9 @@
         //self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
         return ;
     }
-    NSString * pageNow = [NSString stringWithFormat:@"/api/%@/%ld/%ld",self.type,(long)self.pageNum,(long)self.pageSize];
+    NSString * pageNow = [NSString stringWithFormat:@"/intelligent/api/%@/%ld/%ld",self.type,(long)self.pageNum,(long)self.pageSize];
     
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:pageNow];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:pageNow];
     NSLog(@"loadMoreDataloadMoreData %@",FrameRequestURL);
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -370,7 +383,7 @@
 
         
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/addUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/addUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
         
         
         [FrameBaseRequest postWithUrl:FrameRequestURL param:params  success:^(id result) {
@@ -407,7 +420,7 @@
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
        
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/deleteUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/deleteUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
         
         [FrameBaseRequest deleteWithUrl:FrameRequestURL param:params  success:^(id result) {
             FrameLog(@"请求result返回数据 : %@",result);
@@ -460,7 +473,7 @@
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     //NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/addUserAlarm/%@",self.msgList[indexPath.row].id]];
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/addUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/addUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
     
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params  success:^(id result) {
         FrameLog(@"请求result返回数据 : %@",result);
@@ -541,7 +554,7 @@
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"是否要清空列表？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil]];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-        NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/deleteUserAlarmList/%@",self.putType]];
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/deleteUserAlarmList/%@",self.putType]];
         [FrameBaseRequest deleteWithUrl:FrameRequestURL param:nil success:^(id result) {
             
             NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -580,7 +593,7 @@
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"是否全部设置成已读？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil]];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-        NSString *  FrameRequestURL = [WebHost stringByAppendingString:[NSString stringWithFormat:@"/api/addUserAlarmList/%@",self.putType]];
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/addUserAlarmList/%@",self.putType]];
         [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
             
             NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -614,6 +627,80 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
+}
+
+
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.image = [self createImageWithColor:[UIColor whiteColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = _thistitle;
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
 }
 @end
 

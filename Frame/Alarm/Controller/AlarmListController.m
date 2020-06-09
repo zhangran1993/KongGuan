@@ -820,7 +820,7 @@
    // if(self.StationItem){
    //     [self getStationList];
    // }else{
-        NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/allStationList"];
         NSLog(@"FrameRequestURL %@",FrameRequestURL);
         [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
             NSInteger code = [[result objectForKey:@"errCode"] intValue];

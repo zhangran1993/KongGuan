@@ -44,8 +44,22 @@
 }
 
 - (void)createSubviewsView {
-    
+//
+    UIImageView *bgImage = [[UIImageView alloc]init];
+    [self addSubview:bgImage];
    
+    [bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.top.equalTo(self.mas_top);
+        make.bottom.equalTo(self.mas_bottom).offset(-1);
+        make.width.equalTo(self.mas_width);
+    }];
+    bgImage.backgroundColor = [UIColor whiteColor];
+    bgImage.layer.cornerRadius = 9;
+    bgImage.layer.masksToBounds = YES;
+    
+    
+    
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -62,7 +76,7 @@
     [self addSubview:self.iconImage];
     self.iconImage.layer.cornerRadius =11.f;
     self.iconImage.layer.masksToBounds = YES;
-    self.iconImage.backgroundColor = [UIColor colorWithHexString:@"#2B8EFF"];
+    self.iconImage.image = [UIImage imageNamed:@"head_blueIcon"];
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(5);

@@ -227,7 +227,9 @@
         }
         NSLog(@"resultresult %@",result);
         NSDictionary *userDic = result[@"value"][@"userInfo"];
-       
+        [userDefaults setObject:safeString(userDic[@"userSource"]) forKey:@"userSource"];
+        [userDefaults setObject:safeString(userDic[@"customerId"]) forKey:@"customerId"];
+        [userDefaults setObject:safeString(userDic[@"companyId"]) forKey:@"companyId"];
         [userDefaults setObject:safeString(userDic[@"hang"]) forKey:@"hang"];
         [userDefaults setObject:safeString(userDic[@"specificStationCode"]) forKey:@"specificStationCode"];
         [userDefaults setObject:[CommonExtension returnWithString:userDic[@"icon"]]  forKey:@"icon"];

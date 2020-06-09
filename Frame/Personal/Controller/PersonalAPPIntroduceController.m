@@ -12,7 +12,9 @@
 
 @interface PersonalAPPIntroduceController (){
 }
-
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
 @end
 
 @implementation PersonalAPPIntroduceController
@@ -23,6 +25,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"APP介绍";
+    
+    
+    [self.navigationController setNavigationBarHidden:YES];
+    [self createNaviTopView];
     [self backBtn];
     [self loadBgView];
     
@@ -33,16 +39,16 @@
     //logo和版本
     UIImageView *logoImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     
-    logoImg.frame = CGRectMake(WIDTH_SCREEN/2-FrameWidth(60), FrameWidth(60), FrameWidth(120), FrameWidth(120));
+    logoImg.frame = CGRectMake(WIDTH_SCREEN/2-FrameWidth(60), FrameWidth(60) +Height_NavBar, FrameWidth(120), FrameWidth(120));
     
-    UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-FrameWidth(60),FrameWidth(200) ,FrameWidth(120), 20)];
+    UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-FrameWidth(60),FrameWidth(200)+Height_NavBar ,FrameWidth(120), 20)];
     vsersionLabel.textAlignment = NSTextAlignmentCenter;
     vsersionLabel.text = AppVersion;
     [self.view addSubview:vsersionLabel];
     
     [self.view addSubview:logoImg];
     //APP介绍
-    UILabel * intoductionLabel = [[UILabel alloc] initWithFrame:CGRectMake((WIDTH_SCREEN -FrameWidth(580))/2, FrameWidth(270), FrameWidth(580),FrameWidth(580))];
+    UILabel * intoductionLabel = [[UILabel alloc] initWithFrame:CGRectMake((WIDTH_SCREEN -FrameWidth(580))/2, FrameWidth(270)+Height_NavBar, FrameWidth(580),FrameWidth(580))];
     
     intoductionLabel.numberOfLines = 20;
     intoductionLabel.font = FontSize(17);
@@ -91,8 +97,78 @@
 }
 
 
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor clearColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor clearColor];
+    topImage.image = [self createImageWithColor:[UIColor clearColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"APP介绍";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+
 @end
-
-
-
 

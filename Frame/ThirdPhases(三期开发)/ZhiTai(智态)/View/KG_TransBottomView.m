@@ -115,7 +115,11 @@
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
         }
     }
-    
+    if (indexPath.section == 1){
+        
+        cell.titleLabel.text = [self timestampToTimeStr];
+     
+    }
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -159,5 +163,26 @@
     [_dataArray replaceObjectAtIndex:0 withObject:checkString];
     [self.tableView reloadData];
     
+}
+
+
+//将时间戳转换为时间字符串
+- (NSString *)timestampToTimeStr {
+   
+    NSDate *date=[NSDate date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+    
+}
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
 }
 @end

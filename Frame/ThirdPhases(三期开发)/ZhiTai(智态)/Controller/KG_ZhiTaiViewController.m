@@ -21,6 +21,7 @@
 #import "UIViewController+CBPopup.h"
 #import "StationMachineDetailMoreController.h"
 #import "StationVideoListController.h"
+#import "KG_CommonDetailViewController.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -234,7 +235,7 @@
     [self.runView addSubview:zhihuanRunLabel];
     zhihuanRunLabel.text = @"智态运行情况";
     zhihuanRunLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    zhihuanRunLabel.font = [UIFont systemFontOfSize:18];
+    zhihuanRunLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
     zhihuanRunLabel.numberOfLines = 1;
     zhihuanRunLabel.textAlignment = NSTextAlignmentLeft;
     [zhihuanRunLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -498,10 +499,16 @@
             self.dvorView.layer.masksToBounds = YES;
             self.dvorView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 600);
             self.dvorView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
-                StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
-                vc.machineDetail = dataDic;
+                KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
+                StationMachine.category = safeString(dataDic[@"code"]);
+                StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
+                StationMachine.station_name = safeString(dataDic[@"stationName"]);;
+                StationMachine.station_code = safeString(dataDic[@"code"]);
+                StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+               
+                [self.navigationController pushViewController:StationMachine animated:YES];
                 
-                [self.navigationController pushViewController:vc animated:YES];
+               
             };
             [_scrollView addSubview:self.dvorView];
             

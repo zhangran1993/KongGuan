@@ -51,32 +51,7 @@
         make.bottom.equalTo(self.mas_bottom);
     }];
     
-    UIView *tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 50)];
-    self.tableView.tableHeaderView = tableHeadView;
-    
-    UIImageView *iconImage = [[UIImageView alloc]init];
-    [tableHeadView addSubview:iconImage];
-    iconImage.image = [UIImage imageNamed:@"runReport_happenResultIcon"];
-    [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(tableHeadView.mas_left).offset(16);
-        make.top.equalTo(tableHeadView.mas_top).offset(21);
-        make.width.height.equalTo(@16);
-    }];
-    
-    UILabel * titleLabel = [[UILabel alloc]init];
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    titleLabel.numberOfLines = 0;
-    titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.font = [UIFont systemFontOfSize:14];
-    titleLabel.text = @"设备发生问题及处理情况";
-    [tableHeadView addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(iconImage.mas_right).offset(4);
-        make.top.equalTo(tableHeadView.mas_top).offset(16);
-        make.width.equalTo(@250);
-        make.height.equalTo(@24);
-    }];
-    
+ 
     [self.tableView reloadData];
 }
 - (UITableView *)tableView {
@@ -102,16 +77,37 @@
 
 #pragma mark - TableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return self.dataArray.count;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
+    if(section == 0 ){
+        
+        return self.model.autoAlarm.count;
+    }else {
+        return self.model.manualAlarm.count;
+    }
     return   2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if (indexPath.section == 0) {
+        NSDictionary *dic = self.model.autoAlarm[indexPath.row];
+        NSString *str = [NSString stringWithFormat:@"%d.%@%@",(int)indexPath.row +1,safeString(dic[@"name"]),safeString(dic[@"description"])];
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        return fontRect.size.height +24;
+        
+    }else {
+        NSDictionary *dic = self.model.manualAlarm[indexPath.row];
+        NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"recordDescription"])];
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        return fontRect.size.height+24;
+    }
+//    CGRect fontRect = [dic[@"content"] boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+//    NSLog(@"%f",fontRect.size.height);
     return 100;
 }
 
@@ -121,7 +117,15 @@
     if (cell == nil) {
         cell = [[KG_RunReportDetailCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailCommonCell"];
     }
-   
+    if (indexPath.section == 0) {
+        NSDictionary *dic = self.model.autoAlarm[indexPath.row];
+        NSString *str = [NSString stringWithFormat:@"%d.%@%@",(int)indexPath.row +1,safeString(dic[@"name"]),safeString(dic[@"description"])];
+        cell.string = str;
+    }else {
+        NSDictionary *dic = self.model.manualAlarm[indexPath.row];
+        NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"recordDescription"])];
+        cell.string = str;
+    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -141,11 +145,30 @@
     UIImageView *leftImage = [[UIImageView alloc]init];
     leftImage.backgroundColor = [UIColor colorWithHexString:@"#447AF1"];
     [headView addSubview:leftImage];
+    leftImage.layer.cornerRadius = 2;
+    leftImage.layer.masksToBounds = YES;
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headView.mas_left).offset(26);
         make.centerY.equalTo(headView.mas_centerY);
+        make.width.equalTo(@4);
+        make.height.equalTo(@16);
+    }];
+    UILabel *titleLabel = [[UILabel alloc]init];
+    [headView addSubview:titleLabel];
+    titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    titleLabel.font = [UIFont systemFontOfSize:14];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(leftImage.mas_right).offset(6);
+        make.top.equalTo(headView.mas_top);
+        make.height.equalTo(headView.mas_height);
+        make.width.equalTo(@200);
     }];
     
+    if (section == 0) {
+        titleLabel.text = @"设备实时监控";
+    }else {
+        titleLabel.text = @"运行事件";
+    }
     return headView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -160,6 +183,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
     return 0.01f;
+}
+
+
+- (void)setModel:(KG_RunReportDeatilModel *)model {
+    _model = model;
+    [self.tableView reloadData];
 }
 
 

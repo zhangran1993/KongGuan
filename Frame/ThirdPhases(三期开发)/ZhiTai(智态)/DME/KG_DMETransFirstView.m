@@ -98,10 +98,21 @@
     
     cell.titleLabel.text = safeString(titleString);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if ([titleString isEqualToString:@"发射机1"]) {
-        cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#0032AF"];
-    }else {
-        cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    if (indexPath.section == 2) {
+        if ([titleString isEqualToString:@"发射机1"]) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#0032AF"];
+            
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }
+    }
+    if (indexPath.section == 1) {
+        
+        if ([titleString isEqualToString:@"冷备"]) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }
     }
     return cell;
 }
@@ -141,7 +152,7 @@
         
     }else {
         workString = @"热备";
-        if([self.rebeiDic[@"valueAlias"] isEqualToString:@"冷备"]){
+        if([self.rebeiDic[@"valueAlias"] isEqualToString:@"冷备份"]){
             workString = @"冷备";
             
         }

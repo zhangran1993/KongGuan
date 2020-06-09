@@ -36,6 +36,13 @@
 @property(strong,nonatomic)PGDatePicker *DatePicker;
 @property NSDate *NdDate;
 @property (nonatomic, strong)DIYNoDataView *backView;
+
+
+
+
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
 @end
 
 @implementation PersonalPatrolController
@@ -48,10 +55,14 @@
 
 - (void)viewDidLoad {
     NSLog(@"viewDidLoad");
+    [self createNaviTopView];
+       
     [super viewDidLoad];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
     self.navigationItem.title = @"值班信息";
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
-    _oneView =  [[UIView alloc] initWithFrame:CGRectMake(0,FrameWidth(100), WIDTH_SCREEN, HEIGHT_SCREEN)];
+    _oneView =  [[UIView alloc] initWithFrame:CGRectMake(0,Height_NavBar, WIDTH_SCREEN, HEIGHT_SCREEN)];
     _oneView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_oneView];
     //添加左右按钮
@@ -75,7 +86,7 @@
     
     [self setDateNow];
     [self backBtn];
-    
+   
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotificationAction) name:kNetworkStatusNotification object:nil];
 }
 
@@ -223,11 +234,76 @@
 #pragma mark - private methods 私有方法
 
 
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.image = [self createImageWithColor:[UIColor clearColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"值班表";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+
 
 -(void)viewWillAppear:(BOOL)animated{
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.translucent = NO;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
 }
 
 
@@ -259,9 +335,9 @@
  */
 - (void)loadMoreData{
     //_dateStrA = @"2018-10-16";
-    NSString * current_date = [NSString stringWithFormat:@"/api/dutyList/%@",_dateStrA];
+    NSString * current_date = [NSString stringWithFormat:@"/intelligent/api/dutyList/%@",_dateStrA];
     
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:current_date];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:current_date];
    
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil  success:^(id result) {
         
@@ -467,6 +543,40 @@
     _chooseDay = 0;
     [self loadMoreData];
 }
+////创建导航栏视图
+//-  (void)createNaviTopView {
+//    UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
+//    [leftButon setImage:[UIImage imageNamed:@"back_gray"] forState:UIControlStateNormal];
+//    [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
+//    //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
+//    [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
+//    self.navigationItem.leftBarButtonItem = fixedButton;
+//
+//
+//    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+//    self.title = [NSString stringWithFormat:@"值班表"];
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
+//
+//    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+//
+//    self.navigationController.navigationBar.translucent = NO;
+//
+//    //去掉透明后导航栏下边的黑边
+//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+//}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+
 
 @end
 

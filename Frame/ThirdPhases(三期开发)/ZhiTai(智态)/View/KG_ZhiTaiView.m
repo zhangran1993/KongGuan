@@ -629,9 +629,11 @@
    if (array.count == 1) {
        NSDictionary *dd =[array firstObject][@"equipment"];
        NSDictionary * Detail = @{ @"tagList":dd[@"measureTagList"],
-                                  @"station_name":dd[@"stationName"],
+                                  @"stationName":dd[@"stationName"],
                                   @"machine_name":dd[@"name"],
-                                  @"name":dd[@"name"]
+                                  @"name":dd[@"name"],
+                                  @"code":dd[@"code"],
+                                  @"engineRoomCode":dd[@"engineRoomCode"]
                                   
        };
        self.detailDic = Detail;
@@ -661,14 +663,17 @@
         }else if ([dic[@"name"] containsString:@"系统状态"]) {
             self.transBottomView.bottomDic = dic;
         }else if ([dic[@"name"] containsString:@"工作机"]) {
-           
-            if ([dataDic[@"name"] containsString:@"热备"]) {
-                self.transFirstView.hotDic = dic;
-                self.transFirstView.workDic = dic;
-                self.transSecondView.hotDic = dic;
-                self.transSecondView.workDic = dic;
-            }
             
+            for (NSDictionary *dd in list) {
+                if ([dd[@"name"] containsString:@"备机状态"]) {
+                    self.transFirstView.hotDic = dd;
+                    self.transSecondView.hotDic = dd;
+                    
+                }
+                
+            }
+            self.transFirstView.workDic = dic;
+            self.transSecondView.workDic = dic;
         }else if ([dic[@"name"] containsString:@"发射机1状态"]) {
             self.transFirstView.statusDic = dic;
         }else if ([dic[@"name"] containsString:@"发射机2状态"]) {

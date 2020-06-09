@@ -26,6 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
 @property (nonatomic, strong) NSDictionary *dataDic;
+
+@property (nonatomic, copy) NSString *  secondString;
+
+
+@property (nonatomic, assign) NSInteger rowCount;
+
+@property (nonatomic, strong) NSArray *listArray;
 @end
 
 NS_ASSUME_NONNULL_END

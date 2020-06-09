@@ -149,9 +149,10 @@
     }
     if (indexPath.section == 2) {
         if ([safeString(titleString) containsString:@"开"]) {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-        }else {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+            
         }
     }
     if (indexPath.section == 3) {

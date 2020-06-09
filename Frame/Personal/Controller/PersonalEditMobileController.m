@@ -29,6 +29,11 @@
 @property(strong,nonatomic)UIButton *sureItems;
 @property(copy,nonatomic)NSString * nowMobile;
 
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
+
+
 @end
 
 @implementation PersonalEditMobileController
@@ -38,6 +43,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [self.navigationController setNavigationBarHidden:YES];
+    [self createNaviTopView];
     self.title = @"更换手机";
     [self backBtn];
     [self loadBgView];
@@ -49,7 +57,7 @@
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     //已绑定手机号
-    UIView *oldMobileView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(20), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *oldMobileView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(20)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     oldMobileView.backgroundColor = [UIColor whiteColor];
     UILabel *oldMobileTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
     oldMobileTitleLabel.font = FontSize(17);
@@ -97,7 +105,7 @@
     [self.view addSubview:oldVerifView];
     
     //新手机号
-    UIView *mobileView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(200), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *mobileView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(200) + Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     mobileView.backgroundColor = [UIColor whiteColor];
     UILabel *mobileLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
     mobileLabel.font = FontSize(17);
@@ -121,7 +129,7 @@
     
     
     //新验证码
-    UIView *verifView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(290), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *verifView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(290) + Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     verifView.backgroundColor = [UIColor whiteColor];
     UILabel *verifLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
     verifLabel.font = FontSize(17);
@@ -205,7 +213,7 @@
     if(_oldChangeButton == button){
         type = @"old";
     }
-    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/api/sms/%@/%@",WebHost,mobile,type];
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/api/sms/%@/%@",WebNewHost,mobile,type];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -330,7 +338,7 @@
     params[@"origin"] = _oldMobileLabel.text;
     params[@"new"] = _mobileText.text;
     
-    NSString *FrameRequestURL = [WebHost stringByAppendingString:@"/api/modifytel"];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/modifytel"];
     [FrameBaseRequest putWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -393,6 +401,79 @@
 }
 
 
+
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.image = [self createImageWithColor:[UIColor whiteColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"更换手机";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
 
 @end
 

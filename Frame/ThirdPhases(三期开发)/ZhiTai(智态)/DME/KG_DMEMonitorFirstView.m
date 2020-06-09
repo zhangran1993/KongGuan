@@ -101,9 +101,10 @@
     if (indexPath.section == 0) {
         cell.titleLabel.text = safeString(titleString);
         if ([safeString(titleString) containsString:@"开"]) {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-        }else {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+           
         }
     }
     

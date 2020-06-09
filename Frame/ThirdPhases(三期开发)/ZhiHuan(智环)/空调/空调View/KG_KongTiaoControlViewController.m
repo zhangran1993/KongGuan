@@ -12,7 +12,7 @@
 #import "Masonry.h"
 #import "BAUISlider.h"
 #import "KG_PowerOnView.h"
-
+#import "CircleView.h"
 #import "KG_NiControlView.h"
 @interface KG_KongTiaoControlViewController ()
 
@@ -21,9 +21,9 @@
 @property(nonatomic, strong)BAUISlider *umberSlider;//买入数量百分比
 @property(nonatomic, strong)UILabel *sliderValueLabel;//滑块下面的值
 @property (nonatomic ,strong) UIImageView *leftIcon;
-
+@property (nonatomic ,strong) CircleView *circleView;
 @property (nonatomic ,strong) UILabel *leftTitle;
-
+@property (nonatomic ,strong) UIButton *powBtn;
 @property (nonatomic ,strong) UILabel *tempTitle;
 @property (nonatomic ,strong) UILabel *tempTextTitle;
 
@@ -52,6 +52,7 @@
 
 @property (nonatomic, copy) NSString *modelString;
 @property (nonatomic, assign)int  temValue;
+@property (nonatomic, copy)NSString  *switchStatus;
 @property (nonatomic, copy) NSString *textFieldString;
 
 @property (nonatomic, strong) UIButton *confirmBtn ;
@@ -66,6 +67,7 @@
     self.currIndex = 0;
     self.modelString = @"switch";
     self.temValue = 16;
+    self.switchStatus = @"off";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self createView];
     [self createSliderView];
@@ -251,15 +253,15 @@
         make.height.equalTo(@0.5);
     }];
     
-    UIButton *powBtn = [[UIButton alloc]init];
-    [self.view addSubview:powBtn];
-    [powBtn setImage:[UIImage imageNamed:@"kongtiao_powOff"] forState:UIControlStateNormal];
-    [powBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.powBtn = [[UIButton alloc]init];
+    [self.view addSubview:self.powBtn];
+    [self.powBtn setImage:[UIImage imageNamed:@"kongtiao_powOff"] forState:UIControlStateNormal];
+    [self.powBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@60);
         make.top.equalTo(lineView.mas_bottom).offset(7);
         make.right.equalTo(self.view.mas_right).offset(-13);
     }];
-    [powBtn addTarget:self action:@selector(powMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [self.powBtn addTarget:self action:@selector(powMethod:) forControlEvents:UIControlEventTouchUpInside];
     
     
     UIImageView *bgImage = [[UIImageView alloc]init];
@@ -269,6 +271,19 @@
         make.width.height.equalTo(@194);
         make.top.equalTo(lineView.mas_bottom).offset(22);
         make.left.equalTo(self.view.mas_left).offset((SCREEN_WIDTH -32 -194)/2);
+    }];
+    
+   
+    
+    self.circleView = [[CircleView alloc] initWithFrame:CGRectMake(200, 100, 200, 200)];
+    //进度条宽度
+    self.circleView.strokelineWidth = 5;
+    [self.view addSubview:_circleView];
+    
+    [self.circleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@100);
+        make.centerX.equalTo(bgImage.mas_centerX);
+        make.centerY.equalTo(bgImage.mas_centerY);
     }];
     
     self.weatherImage  = [[UIImageView alloc]init];
@@ -343,6 +358,7 @@
     
     self.btn1 = [[UIButton alloc]init];
     [self.btn1 setImage:[UIImage imageNamed:@"制热可选选中"] forState:UIControlStateNormal];
+    self.btn1.enabled = NO;
     [self.btn1 addTarget:self action:@selector(btn1Method) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.btn1];
     [self.btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -472,9 +488,15 @@
     paramDic[@"stationCode"] = safeString(self.dataDic[@"stationCode"]);//台站编码
     paramDic[@"description"] = safeString(self.textString); //操作备注
     paramDic[@"equipmentCode"] = safeString(self.dataDic[@"code"]);//设备编码
-    paramDic[@"value"] = [NSString stringWithFormat:@"%d",self.temValue];//设备设置数值
-    paramDic[@"mode"] = safeString(self.modelString);//设备设置模式
-   
+    
+    if ([self.modelString isEqualToString:@"switch"]) {
+        paramDic[@"value"] = [NSString stringWithFormat:@"%@",self.switchStatus];//设备设置数值
+        paramDic[@"mode"] = safeString(self.modelString);//设备设置模式
+        
+    }else {
+        paramDic[@"value"] = [NSString stringWithFormat:@"%d",self.temValue];//设备设置数值
+        paramDic[@"mode"] = safeString(self.modelString);//设备设置模式
+    }
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -498,7 +520,15 @@
 }
 
 - (void)powMethod:(UIButton *)button {
-    
+    self.modelString = @"switch";
+    if ([self.switchStatus isEqualToString:@"off"]) {
+        self.switchStatus = @"on";
+        [self.powBtn setImage:[UIImage imageNamed:@"kongtiao_powOn"] forState:UIControlStateNormal];
+    }else {
+        self.switchStatus = @"off";
+        [self.powBtn setImage:[UIImage imageNamed:@"kongtiao_powOff"] forState:UIControlStateNormal];
+        
+    }
     self.powOnView.hidden = NO;
     self.powOnView.textString = ^(NSString * _Nonnull textStr) {
         self.textString = textStr;
@@ -506,6 +536,7 @@
     self.powOnView.textFieldString = ^(NSString * _Nonnull textFieldStr) {
         self.textFieldString = textFieldStr;
     };
+    
     
 }
 

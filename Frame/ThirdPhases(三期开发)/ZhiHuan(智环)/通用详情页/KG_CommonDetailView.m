@@ -206,7 +206,7 @@
     [self.topView addSubview:self.moreBtn];
     [self.moreBtn addTarget:self action:@selector(moreMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.moreBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
-    self.moreBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.moreBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.moreBtn setImage:[UIImage imageNamed:@"blue_jiantou"] forState:UIControlStateNormal];
     [self.moreBtn setTitle:@"更多参数" forState:UIControlStateNormal];
     [self.moreBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 75, 0, 0)];
@@ -288,7 +288,7 @@
         cell = [[KG_CommonDetailCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_CommonDetailCell"];
     }
     NSDictionary *dic = self.dataArray[indexPath.row];
-    
+    cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     cell.titleLabel.text = safeString(dic[@"name"]);
     cell.rightLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dic[@"valueAlias"]),safeString(dic[@"unit"])];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -311,41 +311,13 @@
 
 - (void)refreshData {
     [self.equipImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
-    self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(_dataDic[@"alias"]),safeString(_dataDic[@"name"])];
+    self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(_dataDic[@"roomName"]),safeString(_dataDic[@"name"])];
     
     NSString *code = safeString(_dataDic[@"name"]);
-    self.leftImage.image = [UIImage imageNamed:code];
-    
-    if ([code containsString:@"空调"]) {
-        self.leftImage.image = [UIImage imageNamed:@"空调"];
-    }
-    if([code isEqualToString:@"UPS"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_UPS"];
-    }else if([code isEqualToString:@"水浸"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_shuijin"];
-    }else if([code isEqualToString:@"烟感"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_yangan"];
-    }else if([code isEqualToString:@"空调"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_kongtiao"];
-    }else if([code isEqualToString:@"蓄电池"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_xudianchi"];
-    }else if([code isEqualToString:@"柴油发电机"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_chaiyou"];
-    }else if([code isEqualToString:@"电量仪"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_dianliangyi"];
-    }else if([code isEqualToString:@"空开"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_kongtiao"];
-    }else if([code isEqualToString:@"电子围栏"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_zhalan"];
-    }else if([code isEqualToString:@"门禁"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_menjin"];
-    }else if([code isEqualToString:@"视频监测"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_video"];
-    }else if([code isEqualToString:@"温湿度"]){
-        self.leftImage.image = [UIImage imageNamed:@"device_wenshidu"];
-    }else {
-        self.leftImage.image = [UIImage imageNamed:@"device_UPS"];
-    }
+    self.leftImage.image =  [UIImage imageNamed:[NSString stringWithFormat:@"%@",[CommonExtension getDeviceIcon:safeString(_dataDic[@"category"])]]];
+     
+      
+   
     self.leftTitle.text = safeString(_dataDic[@"name"]);
     
     if([self.dataDic[@"alias"] containsString:@"空调"]){
@@ -464,10 +436,10 @@
         [_centerView addSubview:self.centerImageView];
         self.centerImageView.image = [UIImage imageNamed:@"alert_urgent"];
         [self.centerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.equalTo(@36);
-            make.height.equalTo(@40);
+            make.width.equalTo(@44);
+            make.height.equalTo(@44);
             make.left.equalTo(_centerView.mas_left).offset(10);
-            make.top.equalTo(_centerView.mas_top).offset(22);
+            make.centerY.equalTo(_centerView.mas_centerY);
         }];
         self.centerGaoJingView = [[KG_CommonGaojingView alloc]init];
         self.centerGaoJingView.dataArray = self.alarmArray;

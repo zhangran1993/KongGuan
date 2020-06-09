@@ -65,6 +65,22 @@
         }
 
         self.dataArray = [KG_LoginSelStaionModel mj_objectArrayWithKeyValuesArray:result[@"value"]];
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([userDefaults objectForKey:@"selStationCode"]) {
+            NSString *sCode = [userDefaults objectForKey:@"selStationCode"];
+            for (KG_LoginSelStaionModel *model in self.dataArray) {
+                for (stationListModel *detailModel1 in model.stationList) {
+                    if ([sCode isEqual:detailModel1.stationCode]) {
+                        detailModel1.isSelected = YES;
+                        
+                    }else {
+                        detailModel1.isSelected = NO;
+                    }
+                }
+            }
+        }
+ 
         [self.tableView reloadData];
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
@@ -295,6 +311,10 @@
         for (stationListModel *detailModel1 in model.stationList) {
             if ([detailModel1 isEqual:detailModel]) {
                 detailModel1.isSelected = !detailModel.isSelected;
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:safeString(detailModel.stationName) forKey:@"selStationName"];
+                [userDefaults setObject:safeString(detailModel.stationCode) forKey:@"selStationCode"];
+                [userDefaults synchronize];
             }else {
                 detailModel1.isSelected = NO;
             }

@@ -76,8 +76,7 @@
         make.width.equalTo(@250);
         make.height.equalTo(@24);
     }];
-    
-    [self.tableView reloadData];
+   
 }
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -112,7 +111,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 26;
+    NSDictionary *dic = self.model.changeManagement[indexPath.row];
+    NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"title"])];
+    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+    NSLog(@"%f",fontRect.size.height);
+    
+    return fontRect.size.height +24;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -121,7 +125,9 @@
     if (cell == nil) {
         cell = [[KG_RunReportDetailCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailCommonCell"];
     }
-   
+    NSDictionary *dic = self.model.changeManagement[indexPath.row];
+    NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"recordDescription"])];
+    cell.string = str;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -153,6 +159,11 @@
     return 24.f;
 }
 
+- (void)setModel:(KG_RunReportDeatilModel *)model {
+    _model = model;
+    
+       [self.tableView reloadData];
+}
 
 
 @end

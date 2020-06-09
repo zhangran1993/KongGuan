@@ -112,8 +112,8 @@
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
         }else {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-            if ([safeString(titleString) containsString:@"热备"]) {
-                cell.titleLabel.text = @"备机";
+            if ([safeString(titleString) containsString:@"主机"]) {
+                cell.titleLabel.text = @"工作";
                 cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
             }else if ([safeString(titleString) containsString:@"冷备"]) {
                 cell.titleLabel.text = @"备机";
@@ -123,10 +123,22 @@
         
     }
     if(indexPath.section == 1) {
-        if ([safeString(titleString) containsString:@"正常"]) {
+        if ([safeString(titleString) containsString:@"工作"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }else {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+        }
+        cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        if ([safeString(titleString) containsString:@"主机"]) {
+            cell.titleLabel.text = @"主机";
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }else if ([safeString(titleString) containsString:@"备机"]) {
+            cell.titleLabel.text = @"备机";
+            if ([self.hotDic[@"valueAlias"] isEqualToString:@"冷备份"]) {
+                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+            }else {
+                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+            }
         }
     }
     if (indexPath.section == 2) {
@@ -177,7 +189,7 @@
         pangluString = @"主机";
     }else if([safeString(workDic[@"valueAlias"]) isEqualToString:@"A机"]){
         pangluString = @"备机";
-        if([safeString(workDic[@"valueAlias"]) isEqualToString:@"热备"]){
+        if([safeString(self.hotDic[@"valueAlias"]) isEqualToString:@"热备份"]){
             pangluString = @"热备";
             
         }else {
@@ -198,13 +210,13 @@
     _statusDic = statusDic;
     NSString *pangluString = @"正常关闭";
     //监视器A
-    if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"发射机1正常关闭"]){
+    if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"发射机2正常关闭"]){
         pangluString = @"正常关闭";
         
     }else if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"告警关闭"]){
         
         pangluString = @"告警关闭";
-    }else if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"发射机2未关"]){
+    }else if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"未关闭"]){
         
         pangluString = @"正常工作";
     }

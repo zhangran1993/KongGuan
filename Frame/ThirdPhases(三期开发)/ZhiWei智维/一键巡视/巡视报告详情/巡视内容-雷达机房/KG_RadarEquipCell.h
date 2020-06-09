@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIImageView *leftIcon ;
 
 @property (nonatomic, strong) UILabel *titleLabel;
-
+@property (nonatomic, strong) UILabel *detailLabel;
 @property (nonatomic, strong) UILabel *tempLabel;
 @property (nonatomic, strong) UIImageView *zhexianIcon ;
 @property (nonatomic, strong) UIImageView *starIcon ;

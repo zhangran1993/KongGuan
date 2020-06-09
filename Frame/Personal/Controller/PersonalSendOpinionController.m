@@ -29,6 +29,12 @@
 @property(strong,nonatomic)UIView *addressView;
 @property(strong,nonatomic)UIButton *addressbtn;
 
+
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
+
+
 @end
 
 @implementation PersonalSendOpinionController
@@ -39,6 +45,9 @@
 - (void)viewDidLoad {
     [self backBtn];
     self.title = @"意见反馈";
+
+    [self.navigationController setNavigationBarHidden:YES];
+    [self createNaviTopView];
     [self loadBgView];
     [super viewDidLoad];
     if(_imageurls.count <= 0){
@@ -55,26 +64,26 @@
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     //文字内容
-    UILabel  *opinionLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(23),FrameWidth(35) ,FrameWidth(220), 20)];
+    UILabel  *opinionLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(23),FrameWidth(35) +Height_NavBar ,FrameWidth(220), 20)];
     opinionLabel.textAlignment = NSTextAlignmentLeft;
     opinionLabel.text = @"问题和意见";
     opinionLabel.font = FontSize(18);
     [self.view addSubview:opinionLabel];
     //问题主题
-    UIView *opinionView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(90), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *opinionView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(90)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     opinionView.backgroundColor = [UIColor whiteColor];
   
     _titletext = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(20), 0, FrameWidth(500), FrameWidth(80))];
     _titletext.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"您的主题" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(17)}];
     //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
 //    [_titletext setValue:FontSize(17) forKeyPath:@"_placeholderLabel.font"];
-    [_titletext setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.6] forKeyPath:@"_placeholderLabel.textColor"];
+//    [_titletext setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.6] forKeyPath:@"_placeholderLabel.textColor"];
     _titletext.tag=2;
     _titletext.delegate = self;
     [opinionView addSubview:_titletext];
     [self.view addSubview:opinionView];
     //问题描述
-    UIView *opiniondescView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(180), WIDTH_SCREEN, FrameWidth(320))];
+    UIView *opiniondescView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(180) +Height_NavBar, WIDTH_SCREEN, FrameWidth(320))];
     opiniondescView.backgroundColor = [UIColor whiteColor];
     
     _desctext = [[UITextView alloc]initWithFrame:CGRectMake(5, 10, WIDTH_SCREEN-10, opiniondescView.frame.size.height-20)];
@@ -93,7 +102,7 @@
     [self.view addSubview:opiniondescView];
     //上传问题截图
     
-    UILabel  *opinionImgLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(23),FrameWidth(530) ,FrameWidth(220), 20)];
+    UILabel  *opinionImgLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(23),FrameWidth(530)+Height_NavBar ,FrameWidth(220), 20)];
     opinionImgLabel.textAlignment = NSTextAlignmentLeft;
     opinionImgLabel.text = @"上传问题截图";
     opinionImgLabel.font = FontSize(18);
@@ -103,7 +112,7 @@
     
     
     //图片上传
-    UIView *ImgView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(580), WIDTH_SCREEN, FrameWidth(135))];
+    UIView *ImgView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(580)+Height_NavBar, WIDTH_SCREEN, FrameWidth(135))];
     ImgView.backgroundColor = [UIColor whiteColor];
     
     
@@ -154,7 +163,7 @@
     
     
     //问题提交
-    UIButton *submitButton = [[UIButton alloc] initWithFrame: CGRectMake((WIDTH_SCREEN-FrameWidth(470))/2, FrameWidth(820), FrameWidth(470), FrameWidth(80))];
+    UIButton *submitButton = [[UIButton alloc] initWithFrame: CGRectMake((WIDTH_SCREEN-FrameWidth(470))/2, FrameWidth(820)+Height_NavBar, FrameWidth(470), FrameWidth(80))];
     [submitButton setTitle:@"问题提交" forState:UIControlStateNormal];
     [submitButton addTarget:self action:@selector(submit) forControlEvents:UIControlEventTouchUpInside];
     [submitButton.layer setCornerRadius:FrameWidth(40)]; //设置矩形四个圆角半径
@@ -574,6 +583,79 @@
     UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return scaledImage;
+}
+
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor clearColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor clearColor];
+    topImage.image = [self createImageWithColor:[UIColor clearColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"意见反馈";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
 }
 
 @end

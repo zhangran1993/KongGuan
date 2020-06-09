@@ -55,7 +55,14 @@
 
 - (void)createUI{
   
- 
+    self.bgImage = [[UIImageView alloc]init];
+    [self addSubview:self.bgImage];
+    [self.bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.top.equalTo(self.mas_top);
+        make.right.equalTo(self.mas_right);
+        make.bottom.equalTo(self.mas_bottom);
+    }];
   
     
     self.titleLabel = [[UILabel alloc]init];
@@ -69,6 +76,19 @@
         make.width.equalTo(@200);
         make.height.equalTo(@20);
     }];
+    
+    self.statusImage  = [[UIImageView alloc]init];
+    
+    self.statusImage.contentMode = UIViewContentModeScaleAspectFit;
+    self.statusImage.image = [UIImage imageNamed:@"jiaojiebanjiantou"];
+    [self addSubview:self.statusImage];
+    [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.mas_centerX);
+        make.bottom.equalTo(self.bgImage.mas_bottom).offset(-12);
+        make.width.height.equalTo(@8);
+    }];
+    
+    
     self.leftLabel = [[UILabel alloc]init];
     [self addSubview:self.leftLabel];
     self.leftLabel.textColor = [UIColor colorWithHexString:@"#626470"];
@@ -78,24 +98,13 @@
     
     [self.leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
-        make.width.equalTo(@((SCREEN_WIDTH -32-34)/2));
+        make.width.equalTo(@((SCREEN_WIDTH -32-20)/2));
         make.top.equalTo(self.titleLabel.mas_bottom).offset(4);
-       
+
     }];
      
     
-    self.statusImage  = [[UIImageView alloc]init];
     
-    self.statusImage.contentMode = UIViewContentModeScaleAspectFit;
-    self.statusImage.image = [UIImage imageNamed:@"jiaojiebanjiantou"];
-    [self addSubview:self.statusImage];
-    [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_centerX);
-        make.centerY.equalTo(self.bgImage.mas_top);
-        make.width.height.equalTo(@8);
-    }];
-    
-   
     self.rightLabel = [[UILabel alloc]init];
     [self addSubview:self.rightLabel];
     self.rightLabel.textColor = [UIColor colorWithHexString:@"#626470"];
@@ -105,7 +114,7 @@
     [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.bgImage.mas_right).offset(-16);
         make.bottom.equalTo(self.bgImage.mas_bottom).offset(-11 );
-        make.width.equalTo(@200);
+        make.width.equalTo(@((SCREEN_WIDTH -32-34)/2));
         make.height.equalTo(@17);
     }];
     
@@ -123,6 +132,38 @@
     
     
     
+}
+
+- (void)setDic:(NSDictionary *)dic {
+    _dic = dic;
+    self.titleLabel.text = safeString(dic[@"postName"]);
+    self.leftLabel.text = [NSString stringWithFormat:@"%@ %@",[self timestampToTimeStr:safeString(dic[@"createTime"])],safeString(dic[@"handoverName"])];
+    
+    
+    self.rightLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dic[@"successorName"]),[self timestampToTimeStr:safeString(dic[@"acceptTime"])]];
+     
+}
+
+//将时间戳转换为时间字符串
+- (NSString *)timestampToTimeStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
+    }
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+    
+}
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
 }
 @end
 

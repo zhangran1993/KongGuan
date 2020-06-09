@@ -89,8 +89,16 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-   
-    return 124;
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    if (dataDic.count) {
+        
+        NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
+        if (biaoqianArr.count) {
+            return 124;
+        }
+    }
+    return  98;
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -100,6 +108,7 @@
         cell = [[KG_StationReportAlarmCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_StationReportAlarmCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSDictionary *dic = self.dataArray[indexPath.section];
     cell.dic = dic;
     return cell;
@@ -200,7 +209,7 @@
         make.centerX.equalTo(self.navigationView.mas_centerX);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
-    self.titleLabel.text = @"运行报告";
+    self.titleLabel.text = @"台站任务提醒";
     
     /** 返回按钮 **/
     UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];

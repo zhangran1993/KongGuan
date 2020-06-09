@@ -221,13 +221,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
-    NSArray *listArray = self.dataArray[section][@"childrens"];
-    
-    return listArray.count;
+    NSDictionary *dic = self.listArray[section];
+    NSArray *arr = dic[@"childrens"];
+    return arr.count;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-   return self.dataArray.count;
+   return self.listArray.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -239,8 +238,10 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    NSDictionary *dataDic = self.dataArray[indexPath.section];
-    NSDictionary *detailDic = dataDic[@"childrens"][indexPath.row];
+//    self.dataArray = self.dataDic[indexPath.section];
+    NSDictionary *dic = self.listArray[indexPath.section];
+    NSArray *arr = dic[@"childrens"];
+    NSDictionary *detailDic = arr[indexPath.row];
     cell.dataDic = detailDic;
    
     return cell;
@@ -281,13 +282,10 @@
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:self.titleLabel];
-    NSDictionary *dataDic = self.dataArray[section];
-    if (dataDic.count) {
-        self.titleLabel.text = safeString(dataDic[@"title"]);
-        if(safeString(dataDic[@"title"]).length == 0){
-            self.titleLabel.text = safeString(dataDic[@"measureTagName"]);
-            
-        }
+    NSDictionary *dic = self.listArray[section];
+    self.titleLabel.text = safeString(dic[@"equipmentName"]);
+    if (safeString(dic[@"equipmentName"]).length == 0) {
+        self.titleLabel.text = safeString(dic[@"title"]);
     }
     
     [self.titleLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -315,10 +313,22 @@
     
     return 30.f;
 }
-
+- (void)setSecondString:(NSString *)secondString {
+    _secondString = secondString;
+}
 - (void)setDataDic:(NSDictionary *)dataDic {
+   
     _dataDic = dataDic;
-    self.dataArray =dataDic[@"childrens"];
+    self.dataArray = dataDic[@"childrens"];
+    
+    
+}
+- (void)setRowCount:(NSInteger)rowCount {
+    _rowCount = rowCount;
+}
+
+- (void)setListArray:(NSArray *)listArray {
+    _listArray = listArray;
     [self.tableView reloadData];
 }
 @end

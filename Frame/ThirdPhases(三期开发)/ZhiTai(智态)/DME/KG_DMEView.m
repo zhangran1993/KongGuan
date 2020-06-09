@@ -591,11 +591,13 @@
     for (NSDictionary *dic in list) {
         if ([dic[@"name"] isEqualToString:@"工作机"]) {
             for (NSDictionary *dataDic in list) {
-                if ([dataDic[@"name"] containsString:@"热备"]) {
-                    self.transFirstView.workDic = dic;
-                    self.transSecondView.workDic = dic;
+                if ([dataDic[@"name"] containsString:@"备机状态"]) {
+                    self.transFirstView.rebeiDic = dataDic;
+                    self.transSecondView.rebeiDic = dataDic;
                 }
             }
+            self.transFirstView.workDic = dic;
+             self.transSecondView.workDic = dic;
         }else if ([dic[@"name"] containsString:@"监测器旁路状态"]) {
             
             self.monitorFirstView.pangluDic =dic;

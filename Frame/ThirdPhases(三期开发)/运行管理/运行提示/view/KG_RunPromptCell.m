@@ -86,12 +86,13 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
-    self.titleLabel.numberOfLines = 1;
+    self.titleLabel.numberOfLines = 2;
+    [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgImage.mas_left).offset(16);
         make.top.equalTo(self.bgImage.mas_top).offset(13);
-        make.width.equalTo(@200);
-        make.height.equalTo(@22);
+        make.right.equalTo(self.statusImage.mas_left).offset(-5);
+        
     }];
     
     

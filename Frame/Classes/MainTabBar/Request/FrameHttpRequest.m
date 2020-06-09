@@ -125,7 +125,7 @@
     //[session.requestSerializer requestWithMethod:@"POST" URLString:url parameters:params error:nil];
     [session POST:url parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSHTTPCookieStorage* cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        NSArray<NSHTTPCookie *> *cookies = [cookieStorage cookiesForURL:[NSURL URLWithString:WebHost]];
+        NSArray<NSHTTPCookie *> *cookies = [cookieStorage cookiesForURL:[NSURL URLWithString:WebNewHost]];
         //NSMutableArray<NSDictionary *> *propertiesList = [[NSMutableArray alloc] init];
         [cookies enumerateObjectsUsingBlock:^(NSHTTPCookie * _Nonnull cookie, NSUInteger idx, BOOL * _Nonnull stop) {
             NSMutableDictionary *properties = [[cookie properties] mutableCopy];

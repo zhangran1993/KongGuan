@@ -319,8 +319,8 @@
         userIconImageV.layer.masksToBounds=YES;
         userIconImageV.layer.cornerRadius=FrameWidth(60); //设置为图片宽度的一半出来为圆形
         if([userDefaults objectForKey:@"icon"]){
-            
-            [userIconImageV sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"personal_head"]];
+//            NSString *iconString = [userDefaults objectForKey:@"icon"];
+            [userIconImageV sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
         }
         [userIconImageV setUserInteractionEnabled:YES];
         [userIconImageV addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gotoInfo)]];
@@ -480,7 +480,7 @@
 -(void)postLogout{
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
-    NSString *FrameRequestURL = [WebHost stringByAppendingString:@"/api/logout"];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/logout"];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:params success:^(id result) {
         NSLog(@"/api/logout ---%@---%@", params, result);

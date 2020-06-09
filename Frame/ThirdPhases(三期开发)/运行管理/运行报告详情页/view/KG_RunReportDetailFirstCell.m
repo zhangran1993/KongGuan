@@ -59,7 +59,7 @@
     [self addSubview:self.iconImage];
     self.iconImage.layer.cornerRadius =11.f;
     self.iconImage.layer.masksToBounds = YES;
-    self.iconImage.backgroundColor = [UIColor colorWithHexString:@"#2B8EFF"];
+    self.iconImage.image = [UIImage imageNamed:@"head_blueIcon"];
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(9);
@@ -92,5 +92,38 @@
         make.centerY.equalTo(self.iconImage.mas_centerY);
         make.height.equalTo(@24);
     }];
+}
+
+- (void)setModel:(KG_RunReportDeatilModel *)model {
+    _model = model;
+    NSDictionary *dic = model.info;
+    self.titleLabel.text = safeString(dic[@"title"]);
+    
+    self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dic[@"submitterName"]),safeString(dic[@"postName"])];
+    
+    self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"createTime"])];
+}
+
+
+//将时间戳转换为时间字符串
+- (NSString *)timestampToTimeStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
+    }
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+    
+}
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
 }
 @end

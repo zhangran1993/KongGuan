@@ -38,18 +38,34 @@
 }
 
 - (void)createSubviewsView {
+    
+    UIView *bgView = [[UIView alloc]init];
+    [self addSubview:bgView];
+    bgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(26);
+        make.right.equalTo(self.mas_right).offset(-15);
+        make.height.equalTo(self.mas_height);
+        make.top.equalTo(self.mas_top);
+    }];
+    
     self.titleLabel = [[UILabel alloc]init];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.numberOfLines = 0;
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
-    [self addSubview:self.titleLabel];
+    
+    [bgView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(16);
-        make.right.equalTo(self.mas_right).offset(-16);
-        make.top.equalTo(self.mas_top);
-        make.bottom.equalTo(self.mas_bottom);
+        make.left.equalTo(bgView.mas_left).offset(13);
+        make.right.equalTo(bgView.mas_right).offset(-13);
+        make.top.equalTo(bgView.mas_top);
+        make.bottom.equalTo(bgView.mas_bottom);
     }];
                                      
+}
+- (void)setString:(NSString *)string {
+    _string = string;
+    self.titleLabel.text = safeString(string);
 }
 @end

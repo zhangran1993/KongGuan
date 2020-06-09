@@ -90,9 +90,9 @@
     [self addSubview:self.statusImage];
     [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.bgImage.mas_right);
-        make.top.equalTo(self.bgImage.mas_top).offset(16);
+        make.top.equalTo(self.bgImage.mas_top).offset(14);
        
-        make.height.equalTo(@22);
+        make.height.equalTo(@26);
     }];
     
     self.titleLabel = [[UILabel alloc]init];
@@ -133,7 +133,7 @@
     [self addSubview:self.timeImage];
     [self.timeImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgImage.mas_left).offset(15);
-        make.top.equalTo(self.detailImage.mas_bottom).offset(13);
+        make.bottom.equalTo(self.mas_bottom).offset(-14);
         make.width.equalTo(@12);
         make.height.equalTo(@12);
     }];
@@ -197,6 +197,38 @@
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dic[@"leaderName"])];
     
     self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dic[@"status"])]]];
+    NSArray *biaoqianArr = dic[@"atcSpecialTagList"];
+    if (biaoqianArr.count) {
+        [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.bgImage.mas_left).offset(15);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(11);
+            make.width.equalTo(@12);
+            make.height.equalTo(@12);
+        }];
+        
+        [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.detailImage.mas_right).offset(4);
+            make.top.equalTo(self.typeImage.mas_bottom).offset(7);
+            make.width.equalTo(@200);
+            make.height.equalTo(@20);
+        }];
+    }else {
+        [self.detailImage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.bgImage.mas_left).offset(15);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(11);
+            make.width.equalTo(@12);
+            make.height.equalTo(@0);
+        }];
+        
+        [self.detailLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.detailImage.mas_right).offset(4);
+            make.top.equalTo(self.typeImage.mas_bottom).offset(7);
+            make.width.equalTo(@200);
+            make.height.equalTo(@0);
+        }];
+    }
+
+
 }
 
 - (NSString *)getTaskStatus :(NSString *)status {
@@ -226,7 +258,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     

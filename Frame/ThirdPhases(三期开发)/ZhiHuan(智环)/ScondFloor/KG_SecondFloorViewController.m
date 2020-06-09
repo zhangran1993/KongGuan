@@ -84,7 +84,7 @@
        
     }if(recognizer.direction ==UISwipeGestureRecognizerDirectionUp)
     {
-         [self.navigationController popViewControllerAnimated:YES];
+         [self pop];
         NSLog(@"swipe up");
     }
     if(recognizer.direction ==UISwipeGestureRecognizerDirectionLeft)
@@ -95,6 +95,23 @@
     {
         NSLog(@"swipe right");
     }
+    
+}
+- (void)pop
+
+{
+    
+    CATransition* transition = [CATransition animation];
+    
+    transition.duration =0.4f;
+    
+    transition.type = kCATransitionReveal;
+    
+    transition.subtype = kCATransitionFromTop;
+    
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    
+    [self.navigationController popViewControllerAnimated:NO];
     
 }
 
@@ -239,7 +256,7 @@
 
 - (void)getStationData {
 //    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c";
-     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c"]];
+     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/%@",self.dataModel.station[@"id"]]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -315,8 +332,10 @@
 //如: /intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod
 - (void)getStationHealthData {
     
+    
+    
 //    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod";
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod"]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/%@/comprehensiveScoringMethod",self.dataModel.station[@"code"]]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -426,7 +445,7 @@
     self.bottomRightTitle.text = [NSString stringWithFormat:@"%@",safeString(self.stationDic[@"useStatus"])];
     self.bottomRightTitle.textColor = [UIColor colorWithHexString:@"#2FFFE2"];
     
-    self.bottomCenterTitle.text = [NSString stringWithFormat:@"%@",safeString(self.stationDic[@"competentUnit"])];
+    self.bottomCenterTitle.text = [NSString stringWithFormat:@"%@",safeString(self.stationDic[@"name"])];
     NSString *timeStr = [self timestampToTimeStr:self.stationDic[@"lastUpdateTime"]];
     self.bottomLeftTitle.text = [NSString stringWithFormat:@"%@年投产",timeStr];
     

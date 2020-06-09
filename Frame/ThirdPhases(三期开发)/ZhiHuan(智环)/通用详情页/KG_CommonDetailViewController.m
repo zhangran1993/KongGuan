@@ -309,14 +309,8 @@
         equipStr = @"device_shuijin";
     }
     NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
-    self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",equipStr]];
-    if ([equipStr containsString:@"空调"]) {
-        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"空调"]];
-    }else if ([equipStr containsString:@"漏水"]) {
-        self.topLeftImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2",@"水浸"]];
-    
-    }
-    
+    self.topLeftImage.image =  [UIImage imageNamed:[NSString stringWithFormat:@"%@2",[CommonExtension getDeviceIcon:safeString(dataDic[@"category"])]]];
+      
     self.topTitleLabel.text = safeString(dataDic[@"alias"]);
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
@@ -456,6 +450,7 @@
 
 -(void)getMachineDetailList{
 //    NSString *  FrameRequestURL = [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/envDeviceInfo/%@/%@",_station_code,_category];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
      NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envDeviceInfo/%@/%@",_station_code,_category]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -463,6 +458,7 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
+       [MBProgressHUD hideHUDForView:JSHmainWindow];
         self.detailModel = nil;
         [self.dataArray removeAllObjects];
         if (self.detailModel == nil) {
@@ -481,12 +477,12 @@
         _station_code = safeString(di[@"equipment"][@"stationCode"]);
         _station_name = safeString(di[@"equipment"][@"stationName"]);
         self.title = [NSString stringWithFormat:@"%@-%@",safeString(di[@"equipment"][@"stationName"]),safeString(di[@"equipment"][@"name"])];
-         [self refreshData];
+        [self refreshData];
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-      
+        [MBProgressHUD hideHUDForView:JSHmainWindow];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -502,7 +498,9 @@
    
     NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
   
-    self.topLeftImage.image =  [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(dataDic[@"category"])]];
+    self.topLeftImage.image =  [UIImage imageNamed:[NSString stringWithFormat:@"%@2",[CommonExtension getDeviceIcon:safeString(dataDic[@"category"])]]];
+    
+    
     self.topTitleLabel.text = safeString(dataDic[@"alias"]);
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];

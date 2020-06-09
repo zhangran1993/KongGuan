@@ -15,6 +15,8 @@
 #import "KG_RunReportDetailSixthCell.h"
 #import "KG_RunReportDetailSeventhCell.h"
 #import "KG_RunReportDetailEighthCell.h"
+#import "KG_RunReportDeatilModel.h"
+#import "KG_RunReportDetailNinethCell.h"
 @interface KG_RunReportDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -24,7 +26,7 @@
 @property (nonatomic, strong)  UILabel   *titleLabel;
 @property (nonatomic, strong)  UIView    *navigationView;
 @property (nonatomic, strong)  UIButton  *rightButton;
-
+@property (nonatomic, strong)  KG_RunReportDeatilModel *dataModel;
 @end
 
 @implementation KG_RunReportDetailViewController
@@ -44,7 +46,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-  
+    self.dataModel = [[KG_RunReportDeatilModel alloc]init];
     [self createNaviTopView];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
@@ -56,6 +58,32 @@
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     [self.tableView reloadData];
+    [self queryData];
+}
+
+- (void)queryData {
+    NSString *rId = safeString(self.dataDic[@"atcRunReportId"]);
+    if (rId.length == 0) {
+        rId = self.dataDic[@"id"];
+    }
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcRunReport/%@",rId]];
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        [self.dataModel mj_setKeyValues:result[@"value"]];
+        [self.tableView reloadData];
+        NSLog(@"完成");
+        
+        NSLog(@"");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSLog(@"完成");
+        
+    }];
 }
 
 -(NSMutableArray *)dataArray{
@@ -95,7 +123,9 @@
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
+    if ([self.pushType isEqualToString:@"jieban"] ||[self.pushType isEqualToString:@"jiaoban"] || [self.pushType isEqualToString:@"create"]) {
+        return 9;
+    }
     return 8;
 }
 
@@ -109,19 +139,83 @@
     if (indexPath.section == 0) {
         return 105;
     }else if (indexPath.section == 1) {
-        return 300;
+        int height = 0;
+        for (NSDictionary *dic in self.dataModel.autoAlarm) {
+            NSString *str = [NSString stringWithFormat:@"%d.%@%@",(int)indexPath.row +1,safeString(dic[@"name"]),safeString(dic[@"description"])];
+            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+            NSLog(@"%f",fontRect.size.height);
+            height += fontRect.size.height;
+        }
+        int height1 = 0;
+        for (NSDictionary *dic in self.dataModel.manualAlarm) {
+            CGRect fontRect = [safeString(dic[@"recordDescription"]) boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+            NSLog(@"%f",fontRect.size.height);
+            height1 += fontRect.size.height;
+        }
+        
+        return height +height1 +88+60 + self.dataModel.manualAlarm.count *24 + self.dataModel.autoAlarm.count *24;
     }else if (indexPath.section == 2) {
-        return 141;
+        int height = 0;
+        for (NSDictionary *dic in self.dataModel.changeManagement) {
+            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"title"])];
+            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+            NSLog(@"%f",fontRect.size.height);
+            height += fontRect.size.height;
+        }
+        
+        return height +self.dataModel.otherAlarm.count *24 +60;
     }else if (indexPath.section == 3) {
-        return 260;
+        
+        int height = 0;
+        for (NSDictionary *dic in self.dataModel.otherAlarm) {
+            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"recordDescription"])];
+            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+            NSLog(@"%f",fontRect.size.height);
+            height += fontRect.size.height;
+        }
+        return height +self.dataModel.otherAlarm.count *24 +60;
     }else if (indexPath.section == 4) {
-        return 165;
+        int height = 0;
+        for (NSDictionary *dic in self.dataModel.runPrompt) {
+            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"content"])];
+            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+            NSLog(@"%f",fontRect.size.height);
+            height += fontRect.size.height;
+        }
+        return height +self.dataModel.runPrompt.count *24 +60;
     }else if (indexPath.section == 5) {
-        return 130;
+        
+        int height = 0;
+        if (self.dataModel.info.count >0) {
+            NSString *json1=safeString(self.dataModel.info[@"fileUrl"]) ;
+            if (json1.length >0) {
+                 NSData *jsonData = [json1 dataUsingEncoding:NSUTF8StringEncoding];
+                           NSError *err;
+                           NSArray *arr = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                          options:NSJSONReadingMutableContainers
+                                                                            error:&err];
+                           
+                           for (NSDictionary *dic in arr) {
+                               NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"name"])];
+                               CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+                               NSLog(@"%f",fontRect.size.height);
+                               height += fontRect.size.height;
+                           }
+                            return height +arr.count *24 +60;
+            }
+           
+        }
+      
+       
+        return 60;
     }else if (indexPath.section == 6) {
         return 95;
     }else if (indexPath.section == 7) {
-        return 160;
+       
+        return self.dataModel.changeShifts.count *80 +60;
+    }else if (indexPath.section == 8) {
+       
+        return 86;
     }
     return 81;
 }
@@ -131,65 +225,223 @@
         KG_RunReportDetailFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailFirstCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailFirstCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+        cell.model = self.dataModel;
         return cell;
   
     }else if (indexPath.section == 1) {
         KG_RunReportDetailSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailSecondCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailSecondCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailSecondCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 2) {
         KG_RunReportDetailThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailThirdCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailThirdCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailThirdCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 3) {
         KG_RunReportDetailFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailFourthCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailFourthCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+         cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 4) {
         KG_RunReportDetailFifthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailFifthCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailFifthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailFifthCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+         cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 5) {
         KG_RunReportDetailSixthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailSixthCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailSixthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailSixthCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 6) {
         KG_RunReportDetailSeventhCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailSeventhCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailSeventhCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailSeventhCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+//        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 7) {
         KG_RunReportDetailEighthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailEighthCell"];
         if (cell == nil) {
             cell = [[KG_RunReportDetailEighthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailEighthCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+        cell.model = self.dataModel;
+        return cell;
+    }else if (indexPath.section == 8) {
+        KG_RunReportDetailNinethCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailNinethCell"];
+        if (cell == nil) {
+            cell = [[KG_RunReportDetailNinethCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailNinethCell"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        }
+        if ([self.pushType isEqualToString:@"jieban"]) {
+            [cell.centerBtn setTitle:@"接班" forState:UIControlStateNormal];
+        }else if ([self.pushType isEqualToString:@"jiaoban"]) {
+            [cell.centerBtn setTitle:@"交班" forState:UIControlStateNormal];
+        }else {
+            [cell.centerBtn setTitle:@"生成运行报告" forState:UIControlStateNormal];
+        }
+        [cell.centerBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
         return cell;
     }
     return nil;
 }
 
+- (void)buttonClicked:(UIButton *)btn {
+    if ([self.pushType isEqualToString:@"jieban"]) {
+        [self jiebanMethod];
+    }else if ([self.pushType isEqualToString:@"jiaoban"]) {
+        [self jiaobanMethod];
+    }else {
+        [self createReportMethod];
+    }
+    
+}
 
+//交班接口：
+//请求地址：/atcChangeShiftsRecord/shiftHandover/{post}/{runReportId}
+//请求方式：POST
+//请求参数：post岗位编码 runReportId报告id
+//请求返回：
+//如：
+//{
+//    "errCode": 0,
+//    "errMsg": "",
+//    "value": true              //交接成功返回true
+//}
+//
+//接班接口：
+//请求地址：/atcChangeShiftsRecord/succession/{post}/{runReportId}
+//请求方式：POST
+//请求参数：post岗位编码 runReportId报告id
+//请求返回：
+//如：
+//{
+//接班
+- (void)jiebanMethod{
+    
+    NSString *rId = safeString(self.dataDic[@"atcRunReportId"]);
+    if (rId.length == 0) {
+        rId = self.dataDic[@"id"];
+    }
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/succession/%@/%@",safeString(self.dataDic[@"post"]),rId]];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"请求成功");
+        if ([result[@"value"] boolValue]) {
+            [MBProgressHUD showSuccess:@"接班成功"];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+               
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+          
+}
+//交班
+- (void)jiaobanMethod{
+    NSString *rId = safeString(self.dataDic[@"atcRunReportId"]);
+    if (rId.length == 0) {
+        rId = self.dataDic[@"id"];
+    }
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/shiftHandover/%@/%@",safeString(self.dataDic[@"post"]),rId]];
+   
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
+           NSInteger code = [[result objectForKey:@"errCode"] intValue];
+           if(code != 0){
+               
+               return ;
+           }
+        if ([result[@"value"] boolValue]) {
+           [FrameBaseRequest showMessage:@"交班成功"];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+         NSLog(@"请求成功");
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        
+       }  failure:^(NSError *error) {
+           NSLog(@"请求失败 原因：%@",error);
+           
+           [FrameBaseRequest showMessage:@"网络链接失败"];
+           return ;
+       } ];
+       
+    
+}
+//生成运行报告
+- (void)createReportMethod{
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunReport"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(self.dataDic[@"post"])],safeString(self.dataDic[@"time"]),safeString(self.endTime),@"运行报告"];
+    params[@"title"] = title;
+    params[@"reportRange"] =safeString(self.dataDic[@"stationName"]);
+    params[@"startTime"] =[self CurTimeMilSec:safeString(self.dataDic[@"time"])] ;
+    params[@"endTime"] = [self CurTimeMilSec:safeString(self.endTime)];
+    params[@"post"] = safeString(self.dataDic[@"post"]);
+    params[@"submitter"] = safeString(self.dataModel.info[@"submitter"]);
+    params[@"id"] = safeString(self.dataDic[@"id"]);
+    if (self.dataModel.info.count >0) {
+        NSString *json1=safeString(self.dataModel.info[@"fileUrl"]) ;
+        if (json1.length >0) {
+             params[@"fileUrl"] = safeString(self.dataModel.info[@"fileUrl"]);
+        }
+        
+    }
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+      [FrameBaseRequest showMessage:@"生成报告成功"];
+      [self.navigationController popViewControllerAnimated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+               
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
 
+}
+-(NSString *) CurTimeMilSec:(NSString*)pstrTime
+{
+    NSDateFormatter *pFormatter= [[NSDateFormatter alloc]init];
+    [pFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSDate *pCurrentDate = [pFormatter dateFromString:pstrTime];
+    return [NSString stringWithFormat:@"%.f",[pCurrentDate timeIntervalSince1970] * 1000];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
  
@@ -198,7 +450,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
-   
+    headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return headView;
 }
 

@@ -17,7 +17,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -50,43 +50,56 @@
         make.width.equalTo(@150);
     }];
     
-    self.tempLabel = [[UILabel alloc]init];
-    [self addSubview:self.tempLabel];
-    self.tempLabel.text = @"18℃";
-    self.tempLabel.textColor = [UIColor colorWithHexString:@"#626470"];
-    self.tempLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-    self.tempLabel.numberOfLines = 1;
-    self.tempLabel.textAlignment = NSTextAlignmentRight;
-    
-    self.zhexianIcon = [[UIImageView alloc]init];
-    [self addSubview:self.zhexianIcon];
-    self.zhexianIcon.image = [UIImage imageNamed:@"zhexian_image"];
-    
-    
-    self.starIcon = [[UIImageView alloc]init];
-    [self addSubview:self.starIcon];
-    self.starIcon.image = [UIImage imageNamed:@"gray_starImage"];
-    [self.starIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.detailLabel = [[UILabel alloc]init];
+    [self addSubview:self.detailLabel];
+    self.detailLabel.textColor =[UIColor colorWithHexString:@"#626470"];
+    self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.detailLabel.textAlignment = NSTextAlignmentRight;
+    [self.detailLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
-        make.right.equalTo(self.mas_right).offset(-33.5);
-        make.height.equalTo(@12);
-        make.width.equalTo(@12);
-    }];
-    
-    [self.zhexianIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
-        make.right.equalTo(self.starIcon.mas_right).offset(-14);
-        make.height.equalTo(@14);
-        make.width.equalTo(@14);
-    }];
-    [self.tempLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.zhexianIcon.mas_left).offset(-14);
-        make.height.equalTo(@15);
-        make.centerY.equalTo(self.mas_centerY);
-        make.width.lessThanOrEqualTo(@100);
+        make.right.equalTo(self.mas_right).offset(-20);
+        make.height.equalTo(self.mas_height);
+        make.width.equalTo(@150);
     }];
     
     
+    //    self.tempLabel = [[UILabel alloc]init];
+    //    [self addSubview:self.tempLabel];
+    //    self.tempLabel.text = @"18℃";
+    //    self.tempLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+    //    self.tempLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    //    self.tempLabel.numberOfLines = 1;
+    //    self.tempLabel.textAlignment = NSTextAlignmentRight;
+    //
+    //    self.zhexianIcon = [[UIImageView alloc]init];
+    //    [self addSubview:self.zhexianIcon];
+    //    self.zhexianIcon.image = [UIImage imageNamed:@"zhexian_image"];
+    //
+    //
+    //    self.starIcon = [[UIImageView alloc]init];
+    //    [self addSubview:self.starIcon];
+    //    self.starIcon.image = [UIImage imageNamed:@"gray_starImage"];
+    //    [self.starIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.centerY.equalTo(self.mas_centerY);
+    //        make.right.equalTo(self.mas_right).offset(-33.5);
+    //        make.height.equalTo(@12);
+    //        make.width.equalTo(@12);
+    //    }];
+    //
+    //    [self.zhexianIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.centerY.equalTo(self.mas_centerY);
+    //        make.right.equalTo(self.starIcon.mas_right).offset(-14);
+    //        make.height.equalTo(@14);
+    //        make.width.equalTo(@14);
+    //    }];
+    //    [self.tempLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.right.equalTo(self.zhexianIcon.mas_left).offset(-14);
+    //        make.height.equalTo(@15);
+    //        make.centerY.equalTo(self.mas_centerY);
+    //        make.width.lessThanOrEqualTo(@100);
+    //    }];
+    //
+    //
     //    @property (nonatomic, strong) UIView *detailView;
     //    @property (nonatomic, strong) UILabel *detailTitleLabel;
     //    @property (nonatomic, strong) UILabel *detailTxtLabel;
@@ -131,32 +144,6 @@
             make.height.equalTo(@12);
         }];
     }
-    NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
-    self.segmentedControl = [[UISegmentedControl alloc]initWithItems:array];
-    self.segmentedControl.frame = CGRectMake(SCREEN_WIDTH - 32 -84, 8,84,24);
-    
-    
-    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
-    
-    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:10.0f]}forState:UIControlStateNormal];
-    [self addSubview:self.segmentedControl];
-    self.segmentedControl.selectedSegmentIndex = 0;
-    self.segmentedControl.tintColor = [UIColor redColor];
-    self.segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
-    self.segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
-    [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]]
-                                     forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [self.segmentedControl addTarget:self action:@selector(change:) forControlEvents:UIControlEventValueChanged];
-      
-    [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#2F5ED1"]]
-                                     forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-   
-    [self.segmentedControl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-32);
-        make.centerY.equalTo(self.mas_centerY);
-        make.width.equalTo(@100);
-        make.height.equalTo(@24);
-    }];
    
 }
 
@@ -174,37 +161,68 @@
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
     
-    self.titleLabel.text = safeString(dataDic[@"title"]);
-    if (safeString(dataDic[@"title"]).length == 0) {
-        self.titleLabel.text = safeString(dataDic[@"measureTagName"]);
-        if (safeString(dataDic[@"measureTagName"]).length == 0) {
-            self.titleLabel.text = safeString(dataDic[@"engineRoomName"]);
-            
-            if (safeString(dataDic[@"engineRoomName"]).length == 0) {
-                self.titleLabel.text = safeString(dataDic[@"value"]);
-                
-                
-            }
-        }
+    
+    self.titleLabel.text = safeString(dataDic[@"measureTagName"]);
+    if (safeString(dataDic[@"measureTagName"]).length == 0) {
+        self.titleLabel.text = safeString(dataDic[@"title"]);
     }
-    self.segmentedControl.hidden = YES;
+    self.detailLabel.text = safeString(dataDic[@"measureValueAlias"]);
+    if (safeString(dataDic[@"measureValueAlias"]).length == 0) {
+        self.titleLabel.text = safeString(dataDic[@"title"]);
+    }
+    
     if([safeString(dataDic[@"type"]) isEqualToString:@"input"]) {
         
     }else if([safeString(dataDic[@"type"])  isEqualToString:@"charset"]) {
-        self.segmentedControl.hidden = NO;
-        self.tempLabel.hidden = YES;
-        self.zhexianIcon.hidden = YES;
-        self.starIcon.hidden = YES;
+        
     }else if([safeString(dataDic[@"type"]) isEqualToString:@"textarea"]) {
         
     }else if([safeString(dataDic[@"type"])  isEqualToString:@"select"]) {
         
     }else if([safeString(dataDic[@"type"]) isEqualToString:@"input"]) {
         
+        
+        if ([dataDic[@"childrens"] count] >0) {
+            NSDictionary *dd = [dataDic[@"childrens"] firstObject];
+            NSString *value = dd[@"value"];
+            
+            NSArray *array =   [value componentsSeparatedByString:@"@&@"];
+            [self createSegment:array];
+        }
     }
-   
+    
 }
-
+- (void)createSegment:(NSArray *)arr {
+    NSArray *array = arr;
+   
+    [self.segmentedControl removeFromSuperview];
+    
+    self.segmentedControl = [[UISegmentedControl alloc]initWithItems:array];
+    self.segmentedControl.frame = CGRectMake(SCREEN_WIDTH - 32 -84, 8,84,24);
+    
+    
+    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
+    
+    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:10.0f]}forState:UIControlStateNormal];
+    [self addSubview:self.segmentedControl];
+    self.segmentedControl.selectedSegmentIndex = 0;
+    self.segmentedControl.tintColor = [UIColor redColor];
+    self.segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
+    self.segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
+    [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]]
+                                     forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.segmentedControl addTarget:self action:@selector(change:) forControlEvents:UIControlEventValueChanged];
+    
+    [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#2F5ED1"]]
+                                     forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    [self.segmentedControl mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).offset(-32);
+        make.centerY.equalTo(self.mas_centerY);
+        make.width.equalTo(@100);
+        make.height.equalTo(@24);
+    }];
+}
 - (void)change:(UISegmentedControl *)sender {
     NSLog(@"测试");
     self.segmentedControl.selectedSegmentIndex = sender.selectedSegmentIndex;

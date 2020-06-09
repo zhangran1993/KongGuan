@@ -29,6 +29,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
+ 
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -113,7 +114,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-   
+    NSDictionary *dataDic = self.dataArray[indexPath.section];
+    NSString *str = [NSString stringWithFormat:@"%@",safeString(dataDic[@"title"])];
+    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 32-32, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+    if(fontRect.size.height >17) {
+      return 81 +20;
+    }
     return 81;
 }
 
@@ -124,7 +130,7 @@
         cell = [[KG_RunListCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_StationReportAlarmCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     }
-   
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSDictionary *dataDic = self.dataArray[indexPath.section];
     cell.dataDic = dataDic;
     return cell;
@@ -135,6 +141,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     KG_RunReportDetailViewController *vc = [[KG_RunReportDetailViewController alloc]init];
+    NSDictionary *dataDic = self.dataArray[indexPath.section];
+    vc.dataDic = dataDic;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -253,9 +261,9 @@
             
             return ;
         }
-        
+        [self.dataArray removeAllObjects];
         NSLog(@"resultresult %@",result);
-        self.dataArray = result[@"value"][@"records"];
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
         [self.tableView reloadData];
         
     }  failure:^(NSError *error) {
@@ -277,7 +285,7 @@
     
     params[@"title"] = @"";
     params[@"time"] = @"";
-    
+    WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
@@ -288,6 +296,16 @@
         NSLog(@"resultresult %@",result);
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
         [self.tableView reloadData];
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);

@@ -20,6 +20,10 @@
 @property(strong,nonatomic)UIImageView *setMsgImg;
 
 
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
+
 @end
 
 @implementation PersonalSetController
@@ -29,6 +33,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self createNaviTopView];
+    
+   
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
+    
     self.title = @"设置";
     [self backBtn];
     [self loadBgView];
@@ -37,7 +47,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.translucent = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"viewWillDisappear");
@@ -49,7 +59,7 @@
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     //消息通知
-    UIView *setMsgView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(20), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *setMsgView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(20)+ Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     setMsgView.backgroundColor = [UIColor whiteColor];
     UILabel *setMsgLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
     setMsgLabel.text = @"消息通知";
@@ -74,7 +84,7 @@
     [setMsgView addSubview:_setMsgImg];
     [self.view addSubview:setMsgView];
     //修改密码
-    UIView *editPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(118), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *editPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(118)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     editPwdView.backgroundColor = [UIColor whiteColor];
     [editPwdView setUserInteractionEnabled:YES];
     [editPwdView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editPwd)]];
@@ -91,7 +101,7 @@
     [self.view addSubview:editPwdView];
     
     //关于我们
-    UIView *aboutUsView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(214), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *aboutUsView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(214)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     aboutUsView.backgroundColor = [UIColor whiteColor];
     [aboutUsView setUserInteractionEnabled:YES];
     [aboutUsView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(aboutUs)]];
@@ -228,6 +238,78 @@
 
 
 
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.image = [self createImageWithColor:[UIColor whiteColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"修改密码";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
 @end
 
 

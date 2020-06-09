@@ -17,6 +17,8 @@
 @property (nonatomic ,strong) NSArray *dataArray;
 @property (nonatomic ,strong) UILabel *topTitle;
 @property (nonatomic ,strong) UILabel *titleLabel;
+
+@property (nonatomic ,copy) NSString *seondString;
 @end
 
 @implementation KG_XunShiRadarView
@@ -53,7 +55,6 @@
         make.top.equalTo(self.mas_top);
         make.right.equalTo(self.mas_right);
         make.height.equalTo(@44);
-        
     }];
     
     UIImageView *shuImage = [[UIImageView alloc]init];
@@ -126,11 +127,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
     return 1;
   
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-     return self.dataArray.count;
+     return [self.detailModel.childrens count];
 }
     
 
@@ -143,10 +145,8 @@
     }
    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    NSDictionary *dataDic = self.dataArray[indexPath.section];
-   
-    cell.dataDic = dataDic;
-    
+  
+    cell.listArray = self.detailModel.childrens[indexPath.section][@"childrens"];
 //    if(indexPath.row == 0) {
 //        cell.leftIcon.hidden = NO;
 //        cell.segmentedControl.hidden = YES;
@@ -174,41 +174,37 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    
+    self.dataArray =  self.detailModel.childrens[indexPath.section][@"childrens"];
     NSDictionary *dataDic = self.dataArray[indexPath.row];
      
     NSInteger thirdHeight = 0;
     NSInteger fourthHeight = 0;
    
     
-    NSDictionary *detailArr = self.dataArray[indexPath.section];
-        NSArray *thirdArr = detailArr[@"childrens"];
-        thirdHeight = thirdArr.count *30;
-        for (NSDictionary *detailArr in thirdArr) {
-            NSArray *fourthArr = detailArr[@"childrens"];
-            fourthHeight += fourthArr.count *30;
-        }
+    
+    NSArray *thirdArr = self.dataArray;
+    thirdHeight = thirdArr.count *30;
+    for (NSDictionary *detailArr in thirdArr) {
+        NSArray *fourthArr = detailArr[@"childrens"];
+        fourthHeight += fourthArr.count *30;
+    }
     
     
-    
-    
+    NSLog(@"第5层高度：-----------%ld",(long)thirdHeight);
+    NSLog(@"第6层高度：-----------%ld",(long)fourthHeight);
     return thirdHeight +fourthHeight;
 }
 
-
+//1层
 - (void)setDetailModel:(taskDetail *)detailModel {
     _detailModel = detailModel;
     NSDictionary *dic = [detailModel.childrens firstObject];
-    self.topTitle.text = safeString(dic[@"title"]) ;
-    if (safeString(dic[@"title"]).length == 0) {
+    self.topTitle.text = safeString(dic[@"stationName"]) ;
+    if (safeString(dic[@"stationName"]).length == 0) {
         self.topTitle.text = safeString(dic[@"engineRoomName"]) ;
-        if (safeString(dic[@"engineRoomName"]) .length == 0) {
-               self.topTitle.text = safeString(dic[@"stationName"]) ;
-           }
+       
     }
-
-  
-    self.dataArray = [detailModel.childrens firstObject][@"childrens"];
+    
    
     [self.tableView reloadData];
     
@@ -235,18 +231,11 @@
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:self.titleLabel];
-    NSDictionary *dataDic = self.dataArray[section];
-    if (dataDic.count) {
-        self.titleLabel.text = safeString(dataDic[@"title"]);
-        if(safeString(dataDic[@"title"]).length == 0){
-            self.titleLabel.text = safeString(dataDic[@"measureTagName"]);
-            if(safeString(dataDic[@"measureTagName"]).length == 0){
-                       self.titleLabel.text = safeString(dataDic[@"equipmentName"]);
-                       
-                   }
-        }
-       
-    }
+    NSArray *arr = self.detailModel.childrens;
+    NSDictionary *dataDic = arr[section];
+  
+    self.titleLabel.text = safeString(dataDic[@"title"]);
+    
     
     [self.titleLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(headView.mas_centerY);

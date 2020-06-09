@@ -87,6 +87,7 @@
     if (cell == nil) {
         cell = [[KG_CommonGaoJingCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_CommonGaoJingCell"];
     }
+    cell.backgroundColor = [UIColor colorWithHexString:@"#F9FAFC"];
     NSDictionary *dic = self.dataArray[indexPath.row];
     
     cell.titleLabel.text = safeString(dic[@"name"]);

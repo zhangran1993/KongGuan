@@ -102,6 +102,10 @@
     }else if ([dataDic[@"status"] isEqualToString:@"4"]) {
         self.statusLabel.text = @"逾期完成";
        
+    }else if ([dataDic[@"status"] isEqualToString:@"5"]) {
+        self.statusLabel.text = @"待领取";
+    }else if ([dataDic[@"status"] isEqualToString:@"6"]) {
+        self.statusLabel.text = @"待指派";
     }
 }
 @end

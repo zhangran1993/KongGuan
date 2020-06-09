@@ -46,4 +46,6 @@
 
 
 + (NSString *) getDeviceIcon:(NSString *)code ;
+
++ (NSString *) getWorkType:(NSString *)typeCode ;
 @end

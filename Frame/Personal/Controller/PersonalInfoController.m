@@ -21,6 +21,11 @@
 @property NSString *imgUrl;
 @property(strong,nonatomic)UIImageView *headImage;
 
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
+
+
 
 @end
 
@@ -32,15 +37,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的信息";
+
+    [self.navigationController setNavigationBarHidden:YES];
+    [self createNaviTopView];
     [self backBtn];
+    
+    [self loadBgView];
 }
 
 -(void) viewWillAppear:(BOOL)animated{
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.translucent = NO;
     self.edgesForExtendedLayout=UIRectEdgeBottom;
-    
-    [self loadBgView];
+   
 }
 
 -(void)loadBgView{
@@ -50,7 +59,7 @@
     if (viewX == ZNAVViewH) {
         viewX = 0;
     }
-    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,viewX, WIDTH_SCREEN, FrameWidth(125))];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0,viewX+ Height_NavBar, WIDTH_SCREEN, FrameWidth(125))];
     headView.backgroundColor = [UIColor whiteColor];
     [headView setUserInteractionEnabled:YES];
     [headView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(getImageFromIpc:)]];
@@ -68,7 +77,7 @@
     NSString *tel = [userDefaults objectForKey:@"tel"];
     
     _headImage = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(15), FrameWidth(95), FrameWidth(95))];
-    [_headImage sd_setImageWithURL:[NSURL URLWithString: [WebHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"personal_head"]];
+    [_headImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"personal_head"]];
     
     _headImage.layer.masksToBounds=YES;
     _headImage.layer.cornerRadius=FrameWidth(95)/2;
@@ -211,7 +220,7 @@
 - (void)upDateHeadIcon:(UIImage *)photo{
     
     //请求地址
-    NSString *FrameRequestURL = [WebHost stringByAppendingString:@"/api/modifyImg"];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/modifyImg"];
     
     //photo.压缩
     NSData * datapng = UIImageJPEGRepresentation(photo, 0.3);
@@ -248,7 +257,7 @@
         [userDefaults setObject:response forKey:@"icon"];
         
         [[NSUserDefaults standardUserDefaults] synchronize];
-        _imgUrl = [WebHost stringByAppendingString:response];
+        _imgUrl = [WebNewHost stringByAppendingString:response];
         
         [_headImage sd_setImageWithURL:[NSURL URLWithString: _imgUrl] placeholderImage:[UIImage imageNamed:@"personal_head"]];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
@@ -289,6 +298,81 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor clearColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor clearColor];
+    topImage.image = [self createImageWithColor:[UIColor clearColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"我的信息";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+
 
 @end
 

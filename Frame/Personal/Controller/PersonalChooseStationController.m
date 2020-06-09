@@ -19,7 +19,7 @@
 #import "HSIEmptyDataSetView.h"
 #import "UIScrollView+EmptyDataSet.h"
 
-@interface PersonalChooseStationController ()<EmptyDataSetDelegate>
+@interface PersonalChooseStationController ()<EmptyDataSetDelegate,UITableViewDelegate,UITableViewDataSource>
 
 /** 存放数据模型的数组 */
 @property (strong, nonatomic) NSMutableArray<StationItems *> * stations;
@@ -27,6 +27,14 @@
 @property (nonatomic,assign) NSInteger pageNum;
 @property (nonatomic,assign) NSInteger pageSize;
 @property (nonatomic,assign)  double hasMore;
+
+@property (strong, nonatomic) UITableView *tableView;
+
+
+
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UIButton  *rightButton;
 @end
 
 @implementation PersonalChooseStationController
@@ -39,17 +47,33 @@ static NSString * const FrameCellID = @"ChooseStation";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self createNaviTopView];
+    //初始化tableview
+    [self.view addSubview:self.tableView];
     [self setupTable];
-    [self backBtn];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.navigationView.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
+    
+    [self.tableView reloadData];
+    
+    [super viewDidLoad];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
+   
     self.navigationItem.title = @"所属台站";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotificationAction) name:kNetworkStatusNotification object:nil];
+     [self loadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    [self loadData];
+   
 }
 -(void)viewWillDisappear:(BOOL)animated{
 }
@@ -74,6 +98,19 @@ static NSString * const FrameCellID = @"ChooseStation";
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation2"] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController popViewControllerAnimated:YES];
 }
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.backgroundColor = self.view.backgroundColor;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.scrollEnabled = YES;
+        
+    }
+    return _tableView;
+}
+
 #pragma mark - private methods 私有方法
 
 - (void)setupTable{
@@ -83,10 +120,10 @@ static NSString * const FrameCellID = @"ChooseStation";
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ChooseStationCell class]) bundle:nil] forCellReuseIdentifier:FrameCellID];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //self.view.backgroundColor = [UIColor whiteColor];
-    // 头部刷新控件
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
-    [self.tableView.mj_header beginRefreshing];
-    
+//    // 头部刷新控件
+//    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
+//    [self.tableView.mj_header beginRefreshing];
+//    
     // 尾部刷新控件
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
 }
@@ -153,6 +190,7 @@ static NSString * const FrameCellID = @"ChooseStation";
     _hasMore = true;
     [self loadMoreData];
 }
+
 /**
  *  加载更多数据
  */
@@ -165,7 +203,7 @@ static NSString * const FrameCellID = @"ChooseStation";
     }
     // 请求参数（根据接口文档编写）
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    NSString *  FrameRequestURL = [WebHost stringByAppendingString:@"/api/allStationList"];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/allStationList"];
     //params[@"mid"] = mid;
     //FrameRequestURL = [FrameRequestURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:params  success:^(id result) {
@@ -295,6 +333,78 @@ static NSString * const FrameCellID = @"ChooseStation";
      */
 }
 
+- (void)createNaviTopView {
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor clearColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor clearColor];
+    topImage.image = [self createImageWithColor:[UIColor clearColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"所属台站";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+   
+}
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
 
 @end
 
