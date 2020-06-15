@@ -113,19 +113,31 @@
                 self.closeVideoMethod(index);
             }
         };
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebNewHost,self.videoArray[indexPath.row]]];
-
-        // 获取第一帧图片
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:url options:nil];
-        AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        generate.appliesPreferredTrackTransform = YES;
-        NSError *err = NULL;
-        CMTime time = CMTimeMake(1, 2);
-        CGImageRef oneRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
-        UIImage *oneImg = [[UIImage alloc] initWithCGImage:oneRef];
-
-
-        cell.iconImage.image = oneImg;
+        NSString *str = safeString(self.videoArray[indexPath.row]);
+        if ([str containsString:@"http"]) {
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.videoArray[indexPath.row]]];
+            // 获取第一帧图片
+            AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:url options:nil];
+            AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+            generate.appliesPreferredTrackTransform = YES;
+            NSError *err = NULL;
+            CMTime time = CMTimeMake(1, 2);
+            CGImageRef oneRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+            UIImage *oneImg = [[UIImage alloc] initWithCGImage:oneRef];
+            cell.iconImage.image = oneImg;
+        }else {
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebNewHost,self.videoArray[indexPath.row]]];
+            // 获取第一帧图片
+            AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:url options:nil];
+            AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+            generate.appliesPreferredTrackTransform = YES;
+            NSError *err = NULL;
+            CMTime time = CMTimeMake(1, 2);
+            CGImageRef oneRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+            UIImage *oneImg = [[UIImage alloc] initWithCGImage:oneRef];
+            cell.iconImage.image = oneImg;
+        }
+      
         return cell;
         
     }

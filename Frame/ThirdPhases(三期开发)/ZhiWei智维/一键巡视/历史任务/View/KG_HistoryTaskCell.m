@@ -258,7 +258,7 @@
         ss = @"待执行";
     }else if ([status isEqualToString:@"1"]) {
         ss = @"进行中";
-    }else if ([status isEqualToString:@"0"]) {
+    }else if ([status isEqualToString:@"2"]) {
         ss = @"已完成";
     }else if ([status isEqualToString:@"3"]) {
         ss = @"逾期未完成";

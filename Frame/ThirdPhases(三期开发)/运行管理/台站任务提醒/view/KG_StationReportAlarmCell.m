@@ -26,6 +26,10 @@
 @property (nonatomic,strong) UIImageView *timeImage;
 @property (nonatomic,strong) UILabel *timeLabel;
 
+@property (nonatomic,strong) UIView *statusView;
+
+@property (nonatomic,strong) UIButton *taskButton;
+
 @property (nonatomic,strong) UILabel *personLabel;
 
 @end
@@ -99,34 +103,27 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
-    self.titleLabel.numberOfLines = 1;
+    self.titleLabel.numberOfLines = 2;
+    [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgImage.mas_left).offset(16);
         make.top.equalTo(self.typeImage.mas_bottom).offset(7);
-        make.width.equalTo(@200);
-        make.height.equalTo(@22);
+        make.right.equalTo(self.bgImage.mas_right).offset(-60);
+       
     }];
     
-    self.detailImage = [[UIImageView alloc]init];
-    [self addSubview:self.detailImage];
-    [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
+  
+    self.statusView = [[UIView alloc]init];
+    [self addSubview:self.statusView];
+    [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgImage.mas_left).offset(15);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(11);
-        make.width.equalTo(@12);
+        make.right.equalTo(self.bgImage.mas_right).offset(-15);
         make.height.equalTo(@12);
     }];
     
-    self.detailLabel = [[UILabel alloc]init];
-    [self addSubview:self.detailLabel];
-    self.detailLabel.textColor = [UIColor colorWithHexString:@"#03C3B6"];
-    self.detailLabel.font = [UIFont systemFontOfSize:14];
-    self.detailLabel.numberOfLines = 1;
-    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.detailImage.mas_right).offset(4);
-        make.top.equalTo(self.typeImage.mas_bottom).offset(7);
-        make.width.equalTo(@200);
-        make.height.equalTo(@20);
-    }];
+    
+    
     
     self.timeImage = [[UIImageView alloc]init];
     self.timeImage.image = [UIImage imageNamed:@"station_timeIcon"];
@@ -144,7 +141,7 @@
     self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.numberOfLines = 1;
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.detailImage.mas_right).offset(4);
+        make.left.equalTo(self.timeImage.mas_right).offset(4);
         make.centerY.equalTo(self.timeImage.mas_centerY);
         make.width.equalTo(@200);
         make.height.equalTo(@20);
@@ -163,8 +160,27 @@
         make.height.equalTo(@17);
     }];
     
+    self.taskButton = [[UIButton alloc]init];
+    [self addSubview:self.taskButton];
+    [self.taskButton setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+    [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
+    [self.taskButton setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    self.taskButton.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    [self.taskButton addTarget:self action:@selector(taskButtonMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [self.taskButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bgImage.mas_right).offset(-16);
+        make.centerY.equalTo(self.timeImage.mas_centerY);
+        make.width.equalTo(@70);
+        make.height.equalTo(@24);
+    }];
     
     
+}
+
+- (void)taskButtonMethod:(UIButton *)btn {
+    if (self.getTask) {
+        self.getTask(self.dic);
+    }
     
 }
 ///一键巡视oneTouchTour
@@ -197,38 +213,69 @@
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dic[@"leaderName"])];
     
     self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dic[@"status"])]]];
-    NSArray *biaoqianArr = dic[@"atcSpecialTagList"];
-    if (biaoqianArr.count) {
-        [self.detailImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.bgImage.mas_left).offset(15);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(11);
-            make.width.equalTo(@12);
-            make.height.equalTo(@12);
-        }];
+    NSArray *biaoqianArr = dic[@"atcPatrolRoomList"];
+    if (biaoqianArr.count  &&[safeString(dic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+        self.statusView.hidden = NO;
         
-        [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.detailImage.mas_right).offset(4);
-            make.top.equalTo(self.typeImage.mas_bottom).offset(7);
-            make.width.equalTo(@200);
-            make.height.equalTo(@20);
-        }];
+       [self createSignView:biaoqianArr];
     }else {
-        [self.detailImage mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.bgImage.mas_left).offset(15);
-            make.top.equalTo(self.titleLabel.mas_bottom).offset(11);
-            make.width.equalTo(@12);
-            make.height.equalTo(@0);
-        }];
-        
-        [self.detailLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.detailImage.mas_right).offset(4);
-            make.top.equalTo(self.typeImage.mas_bottom).offset(7);
-            make.width.equalTo(@200);
-            make.height.equalTo(@0);
-        }];
+//        self.statusView.hidden = YES;
+    }
+    
+    if ([safeString(dic[@"status"]) isEqualToString:@"5"]) {
+        self.taskButton.hidden = NO;
+        [self.taskButton setTitle:@"领取任务" forState:UIControlStateNormal];
+    }else if ([safeString(dic[@"status"]) isEqualToString:@"6"]) {
+        self.taskButton.hidden = NO;
+        [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
+    }else {
+        self.taskButton.hidden = YES;
     }
 
 
+}
+
+- (void)createSignView :(NSArray *)array{
+    [self.statusView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    CGFloat witdth = 0;
+    CGFloat orX = 0;
+    for (int i =0; i<array.count; i++) {
+        CGRect fontRect = [safeString(array[i][@"engineRoomName"]) boundingRectWithSize:CGSizeMake(MAXFLOAT,12) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        
+       
+        witdth = fontRect.size.width ;
+        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 1.5, 9, 9)];
+        if ([safeString(self.dic[@"status"]) isEqualToString:@"3"])  {
+            detailImage.image = [UIImage imageNamed:@"gray_qizi"];
+        }else if ([safeString(self.dic[@"status"]) isEqualToString:@"4"])  {
+            detailImage.image = [UIImage imageNamed:@"red_qizi"];
+        }else {
+            detailImage.image = [UIImage imageNamed:@"lv_qizi"];
+        }
+        [self.statusView addSubview:detailImage];
+        
+       
+        UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(12 +orX, 0,witdth, 12)];
+        detailLabel.text = safeString(array[i][@"engineRoomName"]);
+        [self.statusView addSubview:detailLabel];
+        if ([safeString(self.dic[@"status"]) isEqualToString:@"3"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+        }else if ([safeString(self.dic[@"status"]) isEqualToString:@"4"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
+        }else {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#03C3B6"];
+        }
+       
+        detailLabel.font = [UIFont systemFontOfSize:12];
+        detailLabel.numberOfLines = 1;
+        orX += fontRect.size.width+12 ;
+    }
+    
+   
+   
+    
+ 
+   
 }
 
 - (NSString *)getTaskStatus :(NSString *)status {
@@ -237,7 +284,7 @@
         ss = @"待执行";
     }else if ([status isEqualToString:@"1"]) {
         ss = @"进行中";
-    }else if ([status isEqualToString:@"0"]) {
+    }else if ([status isEqualToString:@"2"]) {
         ss = @"已完成";
     }else if ([status isEqualToString:@"3"]) {
         ss = @"逾期未完成";

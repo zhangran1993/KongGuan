@@ -72,7 +72,7 @@
     [oldMobileView addSubview:_oldMobileLabel];
     [self.view addSubview:oldMobileView];
     //旧手机号验证码
-    UIView *oldVerifView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(110), WIDTH_SCREEN, FrameWidth(80))];
+    UIView *oldVerifView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(110)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
     oldVerifView.backgroundColor = [UIColor whiteColor];
     UILabel *oldVerifLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20),0, WIDTH_SCREEN/2,FrameWidth(80))];
     oldVerifLabel.font = FontSize(17);
@@ -160,7 +160,7 @@
     [verifView addSubview:_changeButton];
     [self.view addSubview:verifView];
     
-    UIButton *submitButton = [[UIButton alloc] initWithFrame: CGRectMake((WIDTH_SCREEN-FrameWidth(470))/2, FrameWidth(470), FrameWidth(470), FrameWidth(80))];
+    UIButton *submitButton = [[UIButton alloc] initWithFrame: CGRectMake((WIDTH_SCREEN-FrameWidth(470))/2, FrameWidth(470) +Height_NavBar, FrameWidth(470), FrameWidth(80))];
     [submitButton setTitle:@"更换手机号码" forState:UIControlStateNormal];
     [submitButton addTarget:self action:@selector(submitAll) forControlEvents:UIControlEventTouchUpInside];
     [submitButton.layer setCornerRadius:FrameWidth(40)]; //设置矩形四个圆角半径

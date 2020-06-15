@@ -9,11 +9,15 @@
 #import "KG_YiJianXunShiViewController.h"
 #import "KG_YiJianXunShiCell.h"
 #import "KG_XunShiReportDetailViewController.h"
+#import "KG_OnsiteInspectionView.h"
 @interface KG_YiJianXunShiViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic ,strong) UITableView *tableView;
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 @property (nonatomic ,strong) UIButton *addBtn;
+
+@property (nonatomic ,strong) NSDictionary *alertInfo;
+@property (nonatomic, strong)  KG_OnsiteInspectionView *alertView;
 @end
 
 @implementation KG_YiJianXunShiViewController
@@ -43,6 +47,7 @@
         make.right.equalTo(self.view.mas_right).offset(-12.5);
         make.width.height.equalTo(@56);
     }];
+    self.addBtn.enabled = NO;
     [self.view bringSubviewToFront:self.addBtn];
     
 }
@@ -145,10 +150,12 @@
 }
 
 - (void)getTask:(NSDictionary *)dataDic {
+    NSString *userID = [UserManager shareUserManager].userID ;
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
-    paramDic[@"id"] = safeString(dataDic[@"id"]) ;
-    paramDic[@"patrolName"] = safeString(dataDic[@"patrolName"]) ;
+     paramDic[@"id"] = safeString(dataDic[@"id"]);
+        paramDic[@"patrolName"] = safeString(userID);
+       
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -174,25 +181,39 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     NSArray *listArray = self.dataArray[indexPath.section][@"taskInfo"];
     if (listArray.count) {
         NSDictionary *dataDic = listArray[indexPath.row];
-        if (self.didsel) {
-            self.didsel(dataDic, @"yijianxunshi");
+        
+        self.alertInfo = dataDic;
+        if ([safeString(self.alertInfo[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+//            normalInspection一键巡视
+            self.alertView.hidden = NO;
+        }else {
+            if (self.didsel) {
+                self.didsel(dataDic, @"yijianxunshi");
+            }
         }
+     
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *listArray = self.dataArray[indexPath.section][@"taskInfo"];
-    if (listArray.count) {
+    if (listArray.count ) {
         NSDictionary *dataDic = listArray[indexPath.row];
-        NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
-        if (biaoqianArr.count) {
-            return 118;
+        
+        NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
+        if (biaoqianArr.count  &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+            return 124;
+        }else {
+            return  98;
         }
     }
     return  98;
+    
+       
 }
 //获取选择台站下当天的一键巡视任务时间轴接口：
 
@@ -245,4 +266,23 @@
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
     return footView;
 }
+
+
+- (KG_OnsiteInspectionView *)alertView {
+    
+    if (!_alertView) {
+        _alertView = [[KG_OnsiteInspectionView alloc]initWithCondition:self.alertInfo];
+        [JSHmainWindow addSubview:_alertView];
+        [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+        
+    }
+    return _alertView;
+    
+}
+
 @end

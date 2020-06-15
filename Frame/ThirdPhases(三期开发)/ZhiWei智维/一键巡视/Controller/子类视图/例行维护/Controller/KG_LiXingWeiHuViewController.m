@@ -154,10 +154,12 @@
     return cell;
 }
 - (void)getTask:(NSDictionary *)dataDic {
+    NSString *userID = [UserManager shareUserManager].userID ;
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
-    paramDic[@"id"] = @"";
-    paramDic[@"patrolName"] = @"";
+     paramDic[@"id"] = safeString(dataDic[@"id"]);
+        paramDic[@"patrolName"] = safeString(userID);
+       
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -177,13 +179,12 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *listArray = self.dataArray[indexPath.section][@"taskInfo"];
-    if (listArray.count) {
-        NSDictionary *dataDic = listArray[indexPath.row];
-        if (self.didsel) {
-            self.didsel(dataDic, @"lixingweihu");
-        }
+    
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    if (self.didsel) {
+        self.didsel(dataDic, @"lixingweihu");
     }
+    
     
 }
 
@@ -244,14 +245,16 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *dataDic = self.dataArray[indexPath.row];
-    if (dataDic.count) {
-        
-        NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
-        if (biaoqianArr.count) {
-            return 118;
-        }
-    }
-    return  98;
+      if (dataDic.count) {
+          
+          NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
+          if (biaoqianArr.count &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+              return 124;
+          }else {
+              return  98;
+          }
+      }
+      return  98;
 }
 
 

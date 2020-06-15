@@ -131,7 +131,7 @@
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(6);
         make.top.equalTo(self.topView.mas_top).offset(24);
-        make.width.equalTo(@120);
+        make.right.equalTo(self.topView.mas_right).offset(-20);
         make.height.equalTo(@21);
     }];
     

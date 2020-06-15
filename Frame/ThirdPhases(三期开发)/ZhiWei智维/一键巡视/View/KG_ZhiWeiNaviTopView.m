@@ -81,6 +81,7 @@
             self.didsel(dataDic, statusType);
         }
     };
+    
     one.addMethod  = ^(NSString * _Nonnull statusType) {
         if (self.addMethod) {
             self.addMethod(statusType);

@@ -22,6 +22,7 @@
 #import "StationMachineDetailMoreController.h"
 #import "StationVideoListController.h"
 #import "KG_CommonDetailViewController.h"
+#import "UIViewController+YQSlideMenu.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -76,8 +77,10 @@
     self.dataModel = [[KG_ZhiTaiModel alloc]init];
     self.currIndex = 0;
     self.jifangString = @"";
-    [self createNaviTopView];
+    
     [self createScrollView];
+    [self createNaviTopView];
+    
     [self getData];
     
     
@@ -87,10 +90,10 @@
 
 - (void)createScrollView
 {
-    self.bgScrollView = [[UIScrollView alloc] init];
+    self.bgScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
     NSLog(@"SCREEN_HEIGHT %f",SCREEN_HEIGHT);
     NSLog(@"HEIGHT_SCREEN %f",HEIGHT_SCREEN);
-    self.bgScrollView.frame = CGRectMake(0, NAVIGATIONBAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    
     self.bgScrollView.delegate = self;
     self.bgScrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
@@ -99,13 +102,28 @@
     [self.view addSubview:self.bgScrollView];
     self.bgScrollView.showsVerticalScrollIndicator = YES;
     self.bgScrollView.showsHorizontalScrollIndicator = YES;
-    
+    if(@available(iOS 11.0, *)) {
+        self.bgScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+       }
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+      [self.bgScrollView addSubview:topImage1];
+      topImage1.contentMode = UIViewContentModeScaleToFill;
+      topImage1.image  =[UIImage imageNamed:@"machine_rs"];
+      
+      UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+      [self.bgScrollView addSubview:topImage];
+      topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
+    [self getData];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    if (currDic.count) {
+        [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -113,14 +131,7 @@
 }
 - (void)createNaviTopView {
     
-    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
-    [self.view addSubview:topImage1];
-    topImage1.contentMode = UIViewContentModeScaleAspectFill;
-    topImage1.image  =[UIImage imageNamed:@"machine_rs"];
-    
-    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
-    [self.view addSubview:topImage];
-    topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
+  
     
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
@@ -143,20 +154,28 @@
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@44);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
-        make.left.equalTo(self.navigationView.mas_left);
+        make.left.equalTo(self.navigationView.mas_left).offset(10);
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
     UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"back_icon");
+    leftImage.image = IMAGE(@"head_icon");
     [backBtn addSubview:leftImage];
+    leftImage.contentMode = UIViewContentModeScaleAspectFill;
+    leftImage.layer.cornerRadius = 17.f;
+    leftImage.layer.masksToBounds = YES;
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@34);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-    
-    self.rightButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+    }
+    self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightButton.titleLabel.font = FontSize(12);
     self.rightButton.layer.borderColor = [[UIColor colorWithHexString:@"#FFFFFF"]CGColor];
     self.rightButton.layer.borderWidth = 0.5f;
@@ -168,7 +187,9 @@
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
     }
-    
+    [self.rightButton setImage:[UIImage imageNamed:@"arrow_right"] forState:UIControlStateNormal];
+    [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 70, 0,0 )];
+    [self.rightButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0,0 )];
     self.rightButton.frame = CGRectMake(0,0,81,22);
     [self.view addSubview:self.rightButton];
     [self.rightButton addTarget:self action:@selector(rightAction) forControlEvents:UIControlEventTouchUpInside];
@@ -178,6 +199,8 @@
         make.height.equalTo(@22);
         make.right.equalTo(self.view.mas_right).offset(-16);
     }];
+    //单台站不可点击
+    self.rightButton.userInteractionEnabled = NO;
     
 }
 - (void)rightAction {
@@ -186,8 +209,15 @@
     
 }
 - (void)backButtonClick:(UIButton *)button {
-    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
-    
+//    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
+    [self leftCenterButtonClick];
+}
+/**
+ 弹出个人中心
+ */
+- (void)leftCenterButtonClick {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+    [self.slideMenuController showMenu];
 }
 
 - (void)createTopView{
@@ -205,7 +235,7 @@
         runHeight = 112;
     }
     
-    self.runView= [[UIView alloc]initWithFrame:CGRectMake(16, 24, SCREEN_WIDTH -32, runHeight +233)];
+    self.runView= [[UIView alloc]initWithFrame:CGRectMake(16, NAVIGATIONBAR_HEIGHT +24, SCREEN_WIDTH -32, runHeight +233)];
     [self.bgScrollView addSubview:self.runView];
     self.runView.backgroundColor = [UIColor whiteColor];
     self.runView.layer.cornerRadius = 9;
@@ -483,12 +513,14 @@
             self.demView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 550);
             self.demView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
                 
-            
-             
-                   StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
-                   vc.machineDetail = dataDic;
-
-                   [self.navigationController pushViewController:vc animated:YES];
+                KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
+                StationMachine.category = safeString(dataDic[@"category"]);
+                StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
+                StationMachine.station_name = safeString(dataDic[@"stationName"]);;
+                StationMachine.station_code = safeString(dataDic[@"stationCode"]);
+                StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+                
+                [self.navigationController pushViewController:StationMachine animated:YES];
             };
             [_scrollView addSubview:self.demView];
             
@@ -500,10 +532,10 @@
             self.dvorView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 600);
             self.dvorView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
                 KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
-                StationMachine.category = safeString(dataDic[@"code"]);
+                StationMachine.category = safeString(dataDic[@"category"]);
                 StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
                 StationMachine.station_name = safeString(dataDic[@"stationName"]);;
-                StationMachine.station_code = safeString(dataDic[@"code"]);
+                StationMachine.station_code = safeString(dataDic[@"stationCode"]);
                 StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
                
                 [self.navigationController pushViewController:StationMachine animated:YES];
@@ -544,8 +576,22 @@
         viewcon.titleString =safeString(listArr[i][@"name"]) ;
         NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
         viewcon.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        viewcon.currDic = listArr[i];
         [_scrollView addSubview:viewcon];
-        
+        viewcon.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
+            NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+            if (currDic.count == 0) {
+                return ;
+            }
+            KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
+            StationMachine.category = safeString(dataDic[@"category"]);
+            StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
+            StationMachine.station_name = safeString(dataDic[@"stationName"]);;
+            StationMachine.station_code = safeString(currDic[@"code"]);
+            StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+            
+            [self.navigationController pushViewController:StationMachine animated:YES];
+        };
         
     }
 }

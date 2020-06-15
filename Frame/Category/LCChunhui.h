@@ -46,7 +46,7 @@
 #define iPhoneX ((IS_IPHONE_X == YES || IS_IPHONE_Xr == YES || IS_IPHONE_Xs == YES || IS_IPHONE_Xs_Max == YES) ? YES : NO)
 #define LCColor(hexColor)  [UIColor colorWithHexString:hexColor]
 
-#define NAVIGATIONBAR_HEIGHT (iPhoneX ? 88  : 64)
+#define NAVIGATIONBAR_HEIGHT ((IS_IPHONE_X == YES || IS_IPHONE_Xr == YES || IS_IPHONE_Xs == YES || IS_IPHONE_Xs_Max == YES) ? 88.0 : 64.0)
 #define kDefectHeight  (iPhoneX ? 34.0 : 0.0)
 #define TABBAR_HEIGHT (iPhoneX ? (49+kDefectHeight) : 49)
 
@@ -242,7 +242,7 @@
 #define SafeAreaBottomMargin ((IS_IPHONE_X == YES || IS_IPHONE_Xr == YES || IS_IPHONE_Xs == YES || IS_IPHONE_Xs_Max == YES) ? 21.0 : 0.0)
 
 // 判断是否为iPhone x 或者 xs
-#define iPhoneX [[UIScreen mainScreen] bounds].size.width == 375.0f && [[UIScreen mainScreen] bounds].size.height == 812.0f
+//#define iPhoneX [[UIScreen mainScreen] bounds].size.width == 375.0f && [[UIScreen mainScreen] bounds].size.height == 812.0f
 // 判断是否为iPhone xr 或者 xs max
 #define iPhoneXR [[UIScreen mainScreen] bounds].size.width == 414.0f && [[UIScreen mainScreen] bounds].size.height == 896.0f
 // 是全面屏手机

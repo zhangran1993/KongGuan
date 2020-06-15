@@ -44,6 +44,9 @@
 
 @property (strong, nonatomic)   NSArray *receiveArr;
 
+
+@property (nonatomic, strong)   UIView       *tableHeadView;
+
 @end
 
 @implementation KG_XunShiReportDetailViewController
@@ -55,10 +58,11 @@
     self.radarModel = [[taskDetail alloc]init];
     self.powerModel = [[taskDetail alloc]init];
     self.upsModel = [[taskDetail alloc]init];
-    [self queryReportDetailData];
-    [self getTemplateData];
     [self createNaviTopView];
     [self createDataView];
+    [self queryReportDetailData];
+    [self getTemplateData];
+   
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
     
@@ -66,6 +70,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     NSLog(@"StationDetailController viewWillAppear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     self.navigationController.navigationBarHidden = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -75,32 +80,75 @@
 }
 
 - (void)createDataView{
-    [self.view addSubview:self.xunshiTopView];
+    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 266)];
+    [self.view addSubview:self.tableView];
+    [self.tableHeadView addSubview:self.xunshiTopView];
+    self.tableView.tableHeaderView = self.tableHeadView;
+    
     self.xunshiTopView.layer.cornerRadius = 10;
     self.xunshiTopView.layer.masksToBounds = YES;
     self.xunshiTopView.shouqiMethod = ^{
+        UIView *tableHeaderView =self.tableView.tableHeaderView;
+
+        CGRect frame = tableHeaderView.frame;
+
+        [tableHeaderView removeFromSuperview];
+
+        self.tableView.tableHeaderView =nil;
+
+        frame.size.height =128.0+54;// 新高度
+
+        tableHeaderView.frame = frame;
+
+        self.tableView.tableHeaderView = tableHeaderView;
+
         [self.xunshiTopView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left);
-            make.right.equalTo(self.view.mas_right);
-            make.top.equalTo(self.navigationView.mas_bottom).offset(20);
-            make.height.equalTo(@128);
+            make.left.equalTo(self.tableHeadView.mas_left);
+            make.right.equalTo(self.tableHeadView.mas_right);
+            make.top.equalTo(self.tableHeadView.mas_top);
+            make.height.equalTo(@(128 +54));
         }];
     };
+    
+    self.xunshiTopView.zhankaiMethod = ^{
+        UIView *tableHeaderView =self.tableView.tableHeaderView;
+        
+        CGRect frame = tableHeaderView.frame;
+        
+        [tableHeaderView removeFromSuperview];
+        
+        self.tableView.tableHeaderView =nil;
+        
+        frame.size.height =266.0;// 新高度
+        
+        tableHeaderView.frame = frame;
+        
+        self.tableView.tableHeaderView = tableHeaderView;
+        
+        [self.xunshiTopView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.tableHeadView.mas_left);
+            make.right.equalTo(self.tableHeadView.mas_right);
+            make.top.equalTo(self.tableHeadView.mas_top);
+            make.height.equalTo(@(266));
+        }];
+    };
+    
+    
+    
     [self.xunshiTopView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.navigationView.mas_bottom).offset(20);
+        make.left.equalTo(self.tableHeadView.mas_left);
+        make.right.equalTo(self.tableHeadView.mas_right);
+        make.top.equalTo(self.tableHeadView.mas_top);
         make.height.equalTo(@256);
     }];
- 
-    [self.view addSubview:self.tableView];
+   
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.xunshiTopView.mas_bottom).offset(10);
+        make.top.equalTo(self.navigationView.mas_bottom);
         make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);         make.bottom.equalTo(self.view.mas_bottom);
+        make.right.equalTo(self.view.mas_right);        make.bottom.equalTo(self.view.mas_bottom);
     }];
-   
+    
 }
 
 - (UITableView *)tableView {

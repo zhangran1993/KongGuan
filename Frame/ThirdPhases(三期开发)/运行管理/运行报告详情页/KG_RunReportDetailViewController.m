@@ -152,18 +152,22 @@
             NSLog(@"%f",fontRect.size.height);
             height1 += fontRect.size.height;
         }
+        if(self.dataModel.manualAlarm.count == 0 &&self.dataModel.autoAlarm.count ==0){
+            
+            return 88;
+        }
         
         return height +height1 +88+60 + self.dataModel.manualAlarm.count *24 + self.dataModel.autoAlarm.count *24;
     }else if (indexPath.section == 2) {
         int height = 0;
         for (NSDictionary *dic in self.dataModel.changeManagement) {
-            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"title"])];
+            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"implementationCase"])];
             CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
             NSLog(@"%f",fontRect.size.height);
             height += fontRect.size.height;
         }
         
-        return height +self.dataModel.otherAlarm.count *24 +60;
+        return height +self.dataModel.changeManagement.count *24 +60;
     }else if (indexPath.section == 3) {
         
         int height = 0;

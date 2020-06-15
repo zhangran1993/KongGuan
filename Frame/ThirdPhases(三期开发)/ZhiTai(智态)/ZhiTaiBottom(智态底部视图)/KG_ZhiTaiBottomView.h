@@ -13,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KG_ZhiTaiBottomView : UIView
 @property(nonatomic, strong) NSArray *secArray;
 @property (nonatomic,strong) NSString*titleString;
+
+@property (nonatomic,strong) void(^clickToDetail)(NSDictionary *dataDic);
+@property (nonatomic,strong) NSDictionary *currDic;
+@property (nonatomic,assign) int currIndex;
 @end
 
 NS_ASSUME_NONNULL_END

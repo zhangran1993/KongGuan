@@ -29,7 +29,7 @@
 #import "KG_RunManagerFourthCell.h"
 #import "KG_RunMangerFifthCell.h"
 #import "KG_ChooseJiaoJieBanAlertView.h"
-
+#import <SDWebImage/UIButton+WebCache.h>
 
 
 @interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UINavigationControllerDelegate,WYLDatePickerViewDelegate>
@@ -102,13 +102,16 @@
     
 }
 -(void)viewWillAppear:(BOOL)animated{
+   
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"station"]){
         NSDictionary *cuDic = [userDefaults objectForKey:@"station"];
+        
         if (![cuDic[@"code"] isEqualToString:self.currentStationDic[@"code"]]) {
+            
             self.currentStationDic = cuDic;
           
             [self queryData];
@@ -148,7 +151,7 @@ navigationController willShowViewController:
     
 }
 - (void)login {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+   
     NSString *userString = @"";
     NSString *passString = @"";
     
@@ -204,6 +207,7 @@ navigationController willShowViewController:
 
 
 - (void)queryData{
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [self getRunPromptDetailData];
     [self getRunReportDetailData];
     [self queryJiaoJieBaneListData];
@@ -251,7 +255,7 @@ navigationController willShowViewController:
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationList"]];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-        [MBProgressHUD hideHUDForView:JSHmainWindow];
+       
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
@@ -263,12 +267,18 @@ navigationController willShowViewController:
         [self createData];
         
     } failure:^(NSURLSessionDataTask *error)  {
-        [MBProgressHUD hideHUDForView:JSHmainWindow];
+      
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+          
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            [self.navigationController popToViewController:viewCtl animated:YES];
             return;
+         
         }else if(responses.statusCode == 502){
             
         }
@@ -328,7 +338,8 @@ navigationController willShowViewController:
 
 - (void) setUpDataTableView{
     //scroView
-    
+    self.tableView = nil;
+    [self.tableView removeFromSuperview];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
@@ -723,7 +734,7 @@ navigationController willShowViewController:
         
         vc.dataDic = [self.jiaoJieBanInfo[@"handoverInfo"] firstObject];
         
-        vc.pushType = @"jieban";
+        vc.pushType = @"jiaoban";
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         self.jiaoJieBanAlertView.hidden = NO;
@@ -1106,6 +1117,14 @@ navigationController willShowViewController:
     leftImage.layer.masksToBounds = YES;
     [leftImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     [leftImage addTarget:self action:@selector(leftCenterButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+//        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+//        [leftImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal];
+        [leftImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+        
+    }
     UILabel * titleLabel = [[UILabel alloc] init];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -1768,7 +1787,14 @@ navigationController willShowViewController:
                 [dateArr addObject:dateDic];
             }
         }
-        self.jiaojiebanListArr = dateArr;
+       
+        NSMutableArray *aa = [NSMutableArray arrayWithCapacity:0];
+         for (NSDictionary *dd in dateArr) {
+             if ([safeString(dd[@"handoverName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]|| [safeString(dd[@"successorName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]) {
+                 [aa addObject:dd];
+             }
+         }
+         self.jiaojiebanListArr = aa;
       
         NSLog(@"resultresult %@",result);
        

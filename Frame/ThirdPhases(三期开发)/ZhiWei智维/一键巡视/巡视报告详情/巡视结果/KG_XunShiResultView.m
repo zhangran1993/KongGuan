@@ -79,6 +79,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self.taskDescription.length == 0) {
         cell.textLabel.text = @"一切情况正常";
     }else {

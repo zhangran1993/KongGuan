@@ -16,6 +16,7 @@
 #import "KG_ZhiXiuCell.h"
 #import "KG_GaoJingModel.h"
 #import "KG_GaoJingDetailViewController.h"
+#import "UIViewController+YQSlideMenu.h"
 @interface KG_ZhiXiuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -71,7 +72,19 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
-     [self queryGaoJingData];
+    [self.paraArr removeAllObjects];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(currDic[@"code"]);
+    [self.paraArr addObject:paraDic];
+    [self queryGaoJingData];
+    
+    if (currDic.count) {
+        [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -288,22 +301,31 @@
     /** 返回按钮 **/
     UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
   
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationView addSubview:backBtn];
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@44);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
-        make.left.equalTo(self.navigationView.mas_left);
+        make.left.equalTo(self.navigationView.mas_left).offset(10);
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
     UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"");
+    leftImage.image = IMAGE(@"head_blueIcon");
     [backBtn addSubview:leftImage];
+    leftImage.contentMode = UIViewContentModeScaleAspectFill;
+    leftImage.layer.cornerRadius = 17.f;
+    leftImage.layer.masksToBounds = YES;
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@34);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
-   
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+    }
     UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     histroyBtn.titleLabel.font = FontSize(12);
     
@@ -346,10 +368,13 @@
         make.right.equalTo(histroyBtn.mas_left).offset(-6);
     }];
     
-  
+  //单台站不可点击
+  self.rightButton.userInteractionEnabled = NO;
     
     
 }
+
+
 
 - (void)screenAction{
     
@@ -361,8 +386,16 @@
 
 
 - (void)backButtonClick:(UIButton *)button {
-    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
+    [self leftCenterButtonClick];
+//    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     
+}
+/**
+ 弹出个人中心
+ */
+- (void)leftCenterButtonClick {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+    [self.slideMenuController showMenu];
 }
 /** 标题栏 **/
 - (UILabel *)titleLabel {
@@ -510,13 +543,13 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if(self.dataArray.count >1 &&indexPath.section == 1) {
              
-            if (![userDefaults objectForKey:@"firstZhiXiu"]) {
-                [userDefaults setObject:@"1" forKey:@"firstZhiXiu"];
-                [userDefaults synchronize];
-                cell.showLeftSrcollView = @"1";
-               
-                
-            }
+//            if (![userDefaults objectForKey:@"firstZhiXiu"]) {
+//                [userDefaults setObject:@"1" forKey:@"firstZhiXiu"];
+//                [userDefaults synchronize];
+//                cell.showLeftSrcollView = @"1";
+//
+//
+//            }
         }
         
         return cell;

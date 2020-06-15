@@ -8,6 +8,12 @@
 
 #import "KG_YiJianXunShiCell.h"
 
+@interface KG_YiJianXunShiCell(){
+    
+}
+
+@property (nonatomic,strong) UIView *statusView;
+@end
 @implementation KG_YiJianXunShiCell
 
 - (void)awakeFromNib {
@@ -131,23 +137,37 @@
         make.width.height.equalTo(@6);
     }];
     
+   
+    
+    
+    self.statusImage  = [[UIImageView alloc]init];
+    [self.statusImage sizeToFit];
+    self.statusImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:self.statusImage];
+    [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.rightView.mas_right);
+        make.top.equalTo(self.rightView.mas_top).offset(14);
+        
+        make.height.equalTo(@26);
+    }];
+    
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
     self.roomLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
-    self.roomLabel.numberOfLines = 1;
+    self.roomLabel.numberOfLines = 2;
     self.roomLabel.text = @"雷达机房";
+    [self.roomLabel sizeToFit];
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(8);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.rightView.mas_right).offset(-60);
         make.centerY.equalTo(self.iconImage.mas_centerY);
     }];
     
-    
     self.statusLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.statusLabel];
-    self.statusLabel.text = @"进行中";
+    self.statusLabel.text = @"";
     self.statusLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
@@ -173,61 +193,50 @@
         make.height.equalTo(@14);
     }];
     
-    self.starImage = [[UIImageView alloc]init];
-    [self.rightView addSubview:self.starImage];
-    self.starImage.image = [UIImage imageNamed:@"yellow_staricon"];
-    [self.starImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImage.mas_left);
-        make.top.equalTo(self.detailLabel.mas_bottom).offset(9.5);
-        make.width.height.equalTo(@12);
+    
+    self.statusView = [[UIView alloc]init];
+    [self addSubview:self.statusView];
+    [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.rightView.mas_left).offset(15);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(11);
+        make.right.equalTo(self.rightView.mas_right).offset(-15);
+        make.height.equalTo(@12);
     }];
-    self.starLabel = [[UILabel alloc]init];
-    [self.rightView addSubview:self.starLabel];
-    self.starLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.starLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
-    self.starLabel.textAlignment = NSTextAlignmentLeft;
-    self.starLabel.numberOfLines = 1;
-    self.starLabel.text = @"20#电池内阻";
-    [self.starLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.starImage.mas_right).offset(6);
-        make.right.equalTo(self.rightView.mas_right).offset(-20);
-        make.centerY.equalTo(self.starImage.mas_centerY);
-        make.height.equalTo(@14);
-    }];
+    
+ 
     self.timeImage = [[UIImageView alloc]init];
-    [self.rightView addSubview:self.timeImage];
-    self.timeImage.image = [UIImage imageNamed:@"calendar_icon"];
+    self.timeImage.image = [UIImage imageNamed:@"station_timeIcon"];
+    [self addSubview:self.timeImage];
     [self.timeImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImage.mas_left);
-        make.bottom.equalTo(self.rightView.mas_bottom).offset(-16);
-        make.width.height.equalTo(@12);
+        make.left.equalTo(self.rightView.mas_left).offset(15);
+        make.bottom.equalTo(self.mas_bottom).offset(-14);
+        make.width.equalTo(@12);
+        make.height.equalTo(@12);
     }];
+    
     self.timeLabel = [[UILabel alloc]init];
-    [self.rightView addSubview:self.timeLabel];
-    self.timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.timeLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
-    self.timeLabel.textAlignment = NSTextAlignmentLeft;
+    [self addSubview:self.timeLabel];
+    self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.numberOfLines = 1;
-    self.timeLabel.text = @"2020.01.12 09:00";
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.starImage.mas_right).offset(6);
-        make.right.equalTo(self.rightView.mas_right).offset(-20);
+        make.left.equalTo(self.timeImage.mas_right).offset(4);
         make.centerY.equalTo(self.timeImage.mas_centerY);
-        make.height.equalTo(@14);
+        make.width.equalTo(@200);
+        make.height.equalTo(@20);
     }];
     
     self.personLabel = [[UILabel alloc]init];
-    [self.rightView addSubview:self.personLabel];
-    self.personLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.personLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
+    [self addSubview:self.personLabel];
+    self.personLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    self.personLabel.font = [UIFont systemFontOfSize:12];
     self.personLabel.textAlignment = NSTextAlignmentRight;
     self.personLabel.numberOfLines = 1;
-    self.personLabel.text = @"执行负责人：王雪";
     [self.personLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@150);
-        make.right.equalTo(self.rightView.mas_right).offset(-20);
-        make.centerY.equalTo(self.timeImage.mas_centerY);
-        make.height.equalTo(@14);
+        make.right.equalTo(self.rightView.mas_right).offset(-16);
+        make.centerY.equalTo(self.timeLabel.mas_centerY);
+        make.width.equalTo(@200);
+        make.height.equalTo(@17);
     }];
     
     self.taskButton = [[UIButton alloc]init];
@@ -251,7 +260,7 @@
         
     }else {
         //领取任务
-       //领取任务
+        //领取任务
         if(self.taskMethod){
             self.taskMethod(self.dataDic);
         }
@@ -260,11 +269,12 @@
 - (void)setDataDic:(NSDictionary *)dataDic{
     _dataDic = dataDic;
     self.roomLabel.text = safeString(dataDic[@"engineRoomName"]);
-    self.statusLabel.text = [self getTaskStatus:safeString(dataDic[@"status"])];
+    self.statusLabel.text = @"";
+    self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dataDic[@"status"])]]]; 
     self.statusLabel.textColor = [self getTaskColor:safeString(dataDic[@"status"])];
     
     self.detailLabel.text = safeString(dataDic[@"taskName"]);
-    self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"createTime"])];
+    self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"patrolIntervalTime"])];
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dataDic[@"leaderName"])];
     if([safeString(dataDic[@"status"]) isEqualToString:@"5"]){
         
@@ -277,28 +287,16 @@
     }else {
         self.taskButton.hidden = YES;
     }
-    NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
-    if (biaoqianArr.count) {
-        NSMutableString *s = [NSMutableString string];
-       
-        for (NSDictionary *dic in biaoqianArr) {
-            [s appendString:dic[@"specialTagName"]];
-        }
-        self.starLabel.text = safeString(s);
-        [self.starLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@14);
-        }];
-        [self.starImage mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@12);
-        }];
-    }else {
-        [self.starLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@0);
-        }];
-        [self.starImage mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@0);
-        }];
-    }
+ 
+    
+    NSArray *biaoqianArr = self.dataDic[@"atcPatrolRoomList"];
+       if (biaoqianArr.count &&[safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+           self.statusView.hidden = NO;
+           
+           [self createSignView:biaoqianArr];
+       }else {
+           //        self.statusView.hidden = YES;
+       }
 }
 
 - (NSString *)getTaskStatus :(NSString *)status {
@@ -307,7 +305,7 @@
         ss = @"待执行";
     }else if ([status isEqualToString:@"1"]) {
         ss = @"进行中";
-    }else if ([status isEqualToString:@"0"]) {
+    }else if ([status isEqualToString:@"2"]) {
         ss = @"已完成";
     }else if ([status isEqualToString:@"3"]) {
         ss = @"逾期未完成";
@@ -366,4 +364,43 @@
     return formatter;
 }
 
+- (void)createSignView :(NSArray *)array{
+    [self.statusView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    CGFloat witdth = 0;
+    CGFloat orX = 0;
+    for (int i =0; i<array.count; i++) {
+        CGRect fontRect = [safeString(array[i][@"engineRoomName"]) boundingRectWithSize:CGSizeMake(MAXFLOAT,12) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        
+       
+        witdth = fontRect.size.width ;
+        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 1.5, 9, 9)];
+        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+            detailImage.image = [UIImage imageNamed:@"gray_qizi"];
+        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
+            detailImage.image = [UIImage imageNamed:@"red_qizi"];
+        }else {
+            detailImage.image = [UIImage imageNamed:@"lv_qizi"];
+        }
+        [self.statusView addSubview:detailImage];
+        
+       
+        UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(12 +orX, 0,witdth, 12)];
+        detailLabel.text = safeString(array[i][@"engineRoomName"]);
+        [self.statusView addSubview:detailLabel];
+        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
+        }else {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#03C3B6"];
+        }
+       
+        detailLabel.font = [UIFont systemFontOfSize:12];
+        detailLabel.numberOfLines = 1;
+        orX += fontRect.size.width+12 ;
+    }
+    
+   
+   
+}
 @end

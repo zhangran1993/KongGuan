@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,copy)void (^addMethod )(NSString *statusType);
 
-
+@property (nonatomic,copy)void (^xianchangxunshi )(NSDictionary *dataDic);
 @property (nonatomic,copy) NSString * xunshiString;
 @end
 

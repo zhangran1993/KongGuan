@@ -175,8 +175,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     self.dataArray =  self.detailModel.childrens[indexPath.section][@"childrens"];
-    NSDictionary *dataDic = self.dataArray[indexPath.row];
-     
+   
     NSInteger thirdHeight = 0;
     NSInteger fourthHeight = 0;
    

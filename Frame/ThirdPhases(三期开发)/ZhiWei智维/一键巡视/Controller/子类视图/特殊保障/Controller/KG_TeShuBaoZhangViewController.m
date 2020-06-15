@@ -162,10 +162,12 @@
 //    "patrolName": "1d13c2dc-fb3a-441f-976d-7a7537018245"
 //}
 - (void)getTask:(NSDictionary *)dataDic {
+    NSString *userID = [UserManager shareUserManager].userID ;
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
-    paramDic[@"id"] = @"";
-    paramDic[@"patrolName"] = @"";
+     paramDic[@"id"] = safeString(dataDic[@"id"]);
+        paramDic[@"patrolName"] = safeString(userID);
+       
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -186,13 +188,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSArray *listArray = self.dataArray[indexPath.section][@"taskInfo"];
-    if (listArray.count) {
-        NSDictionary *dataDic = listArray[indexPath.row];
-        if (self.didsel) {
-            self.didsel(dataDic, @"teshubaozhang");
-        }
+   
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    if (self.didsel) {
+        self.didsel(dataDic, @"teshubaozhang");
     }
+    
 }
 
 - (void)createView {
@@ -206,6 +207,7 @@
         make.right.equalTo(self.view.mas_right).offset(-12.5);
         make.width.height.equalTo(@56);
     }];
+    self.addBtn.enabled = NO;
     [self.view bringSubviewToFront:self.addBtn];
 }
 
@@ -250,12 +252,15 @@
     NSDictionary *dataDic = self.dataArray[indexPath.row];
     if (dataDic.count) {
         
-        NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
-        if (biaoqianArr.count) {
-            return 118;
+        NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
+        if (biaoqianArr.count &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+            return 124;
+        }else {
+            return 98;
         }
     }
     return  98;
+    
 }
 
 

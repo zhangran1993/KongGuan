@@ -120,7 +120,7 @@
     [self.view addSubview:nameView];
     
     
-    UIView *mobileView = [[UIView alloc] initWithFrame:CGRectMake( 0, FrameWidth(260),WIDTH_SCREEN, FrameWidth(80))];
+    UIView *mobileView = [[UIView alloc] initWithFrame:CGRectMake( 0, CGRectGetMaxY(nameView.frame) ,WIDTH_SCREEN, FrameWidth(80))];
     mobileView.backgroundColor = [UIColor whiteColor];
     
     UILabel *mobileTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(25), WIDTH_SCREEN/2,20)];
@@ -146,7 +146,7 @@
     [self.view addSubview:mobileView];
     
     
-    UIView *positionView = [[UIView alloc] initWithFrame:CGRectMake( 0, FrameWidth(355),WIDTH_SCREEN, FrameWidth(80))];
+    UIView *positionView = [[UIView alloc] initWithFrame:CGRectMake( 0, CGRectGetMaxY(mobileView.frame),WIDTH_SCREEN, FrameWidth(80))];
     positionView.backgroundColor = [UIColor whiteColor];
     
     UILabel *positionTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(25), WIDTH_SCREEN/2,20)];

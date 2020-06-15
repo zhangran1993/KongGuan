@@ -40,7 +40,21 @@
 - (void)initData {
     //    self.dataArray = [NSArray arrayWithObjects:@"1",@"2",@"3", nil];
 }
-
+- (void)rightMethod {
+    
+    NSDictionary * Detail = @{ 
+                               @"stationName":safeString(self.currDic[@"stationName"]) ,
+                               @"machine_name":safeString(self.currDic[@"name"]),
+                               @"name":safeString(self.currDic[@"name"]),
+                               @"stationCode":safeString(self.currDic[@"stationCode"]),
+                               @"code":safeString(self.currDic[@"code"]),
+                               @"engineRoomCode":safeString(self.currDic[@"engineRoomCode"]),
+                               @"category":safeString(self.currDic[@"category"])
+                               };
+    if (self.clickToDetail) {
+        self.clickToDetail(Detail);
+    }
+}
 //创建视图
 -(void)setupDataSubviews
 {
@@ -148,6 +162,17 @@
         make.width.lessThanOrEqualTo(@250);
         
     }];
+    UIButton *rightBtn  = [[UIButton alloc]init];
+    [self addSubview:rightBtn];
+    
+    [rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right);
+        make.width.height.equalTo(@100);
+        make.top.equalTo(self.mas_top);
+        make.height.equalTo(@54);
+    }];
+    [rightBtn addTarget:self action:@selector(rightMethod) forControlEvents:UIControlEventTouchUpInside];
+    
     UIImageView *rightImage = [[UIImageView alloc]init];
     rightImage.image = [UIImage imageNamed:@"right_iconImage"];
     [tableHeadView addSubview:rightImage];
@@ -199,6 +224,9 @@
     return tableHeadView;
 }
 
+- (void)setCurrIndex:(int )currIndex {
+    _currIndex = currIndex;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -218,6 +246,8 @@
     _titleString = titleString;
     [self.tableView reloadData];
 }
-
+- (void)setCurrDic:(NSDictionary *)currDic {
+    _currDic = currDic;
+}
 
 @end

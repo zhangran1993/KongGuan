@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,copy)void (^addMethod )(NSString *statusType);
 
+
 @end
 
 NS_ASSUME_NONNULL_END

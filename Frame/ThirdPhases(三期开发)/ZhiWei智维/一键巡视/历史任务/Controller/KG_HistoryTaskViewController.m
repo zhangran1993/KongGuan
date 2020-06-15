@@ -218,7 +218,7 @@
     if (dataDic.count) {
         
         NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
-        if (biaoqianArr.count) {
+        if (biaoqianArr.count ) {
             return 118;
         }
     }
@@ -245,10 +245,12 @@
 }
 
 - (void)getTask:(NSDictionary *)dataDic {
+    NSString *userID = [UserManager shareUserManager].userID ;
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
-    paramDic[@"id"] = @"";
-    paramDic[@"patrolName"] = @"";
+     paramDic[@"id"] = safeString(dataDic[@"id"]);
+        paramDic[@"patrolName"] = safeString(userID);
+       
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];

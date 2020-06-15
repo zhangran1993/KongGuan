@@ -30,6 +30,7 @@
 #import "KG_CommonDetailViewController.h"
 #import "KG_ZhiTaiStationModel.h"
 #import "LoginViewController.h"
+#import "UIViewController+YQSlideMenu.h"
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
@@ -93,6 +94,8 @@
 @property(strong,nonatomic)   NSArray *stationArray;
 @property(strong,nonatomic)   UITableView *stationTabView;
 
+@property (nonatomic, strong)  UIView *tableHeadView;
+
 @end
 
 @implementation StationDetailController
@@ -101,21 +104,35 @@
 - (void)viewDidLoad {
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(20),NSForegroundColorAttributeName:[UIColor whiteColor]}] ;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshZhiHuanData) name:@"refreshZhiHuanData" object:nil];
+      
     [super viewDidLoad];
     [self createData];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    if (currDic.count) {
+        [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
+}
+
+- (void)refreshZhiHuanData {
+    
+    [self loadData];
+    
+    [self queryStationDetailData];
 }
 
 - (void)createData {
     
-    [self createNaviTopView];
-    [self createTopView];
+    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
     
+   
     float moreheight = ZNAVViewH;
     if(HEIGHT_SCREEN == 812){
         moreheight = FrameWidth(280);
     }
     
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 215,WIDTH_SCREEN, HEIGHT_SCREEN - ZNAVViewH -MLTabBarHeight)];
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0,WIDTH_SCREEN, HEIGHT_SCREEN)];
     self.tableview.estimatedRowHeight = 0;
     self.tableview.estimatedSectionHeaderHeight = 0;
     self.tableview.estimatedSectionFooterHeight = 0;
@@ -124,7 +141,7 @@
         NSLog(@"StationDetailController viewDidLoad");
         self.tableview.contentInsetAdjustmentBehavior =UIScrollViewContentInsetAdjustmentNever;
     }
-    
+    self.tableview.tableHeaderView = self.tableHeadView;
     self.tableview.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//64和49自己看效果，是否应该改成0
     self.tableview.scrollIndicatorInsets =self.tableview.contentInset;
     
@@ -140,6 +157,8 @@
     self.filterTabView.separatorStyle = NO;
     self.modelArray = [NSMutableArray array];
     self.statusArray = [NSMutableArray array];
+    [self createNaviTopView];
+    [self createTopView];
     
     [self loadData];
     self.dataModel = [[KG_StationDetailModel alloc]init];
@@ -186,12 +205,12 @@
 - (void)createNaviTopView {
     
     self.topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
-    [self.view addSubview:self.topImage1];
+    [self.tableHeadView addSubview:self.topImage1];
     self.topImage1.contentMode = UIViewContentModeScaleAspectFill;
     self.topImage1.image  =[UIImage imageNamed:@"machine_rs"];
     
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
-    [self.view addSubview:topImage];
+    [self.tableHeadView addSubview:topImage];
     topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
     
     /** 导航栏 **/
@@ -215,17 +234,26 @@
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@44);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
-        make.left.equalTo(self.navigationView.mas_left);
+        make.left.equalTo(self.navigationView.mas_left).offset(10);
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
     UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"back_icon");
+    leftImage.image = IMAGE(@"head_icon");
+    leftImage.layer.cornerRadius = 17.f;
+    leftImage.contentMode = UIViewContentModeScaleAspectFill;
+    leftImage.layer.masksToBounds = YES;
     [backBtn addSubview:leftImage];
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@34);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+    }
     
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightButton.titleLabel.font = FontSize(12);
@@ -240,7 +268,7 @@
     [self.rightButton setImage:[UIImage imageNamed:@"arrow_right"] forState:UIControlStateNormal];
     [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 70, 0,0 )];
     [self.rightButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0,0 )];
-    [self.view addSubview:self.rightButton];
+    [self.navigationView addSubview:self.rightButton];
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
@@ -250,9 +278,10 @@
         make.width.equalTo(@81);
         make.centerY.equalTo(backBtn.mas_centerY);
         make.height.equalTo(@22);
-        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.right.equalTo(self.navigationView.mas_right).offset(-16);
     }];
-    
+    //单台站不可点击
+    self.rightButton.userInteractionEnabled = NO;
     
 }
 
@@ -290,25 +319,32 @@
     }];
 }
 - (void)backButtonClick:(UIButton *)button {
-    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
+    [self leftCenterButtonClick];
+//    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     
 }
-
+/**
+ 弹出个人中心
+ */
+- (void)leftCenterButtonClick {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+    [self.slideMenuController showMenu];
+}
 - (void)createTopView{
     [self.runView removeFromSuperview];
     self.runView = nil;
-    self.runView= [[UIView alloc]init];
-    [self.view addSubview:self.runView];
+    self.runView= [[UIView alloc]initWithFrame:CGRectMake(16, NAVIGATIONBAR_HEIGHT+24, SCREEN_WIDTH-32, 100)];
+    [self.tableHeadView addSubview:self.runView];
     self.runView.backgroundColor = [UIColor whiteColor];
     self.runView.layer.cornerRadius = 9;
     self.runView.layer.masksToBounds = YES;
-    [self.runView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +24);
-        make.left.equalTo(self.view.mas_left).offset(16);
-        make.right.equalTo(self.view.mas_right).offset(-16);
-        make.height.equalTo(@100);
-    }];
-    
+//    [self.runView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +24);
+//        make.left.equalTo(self.view.mas_left).offset(16);
+//        make.right.equalTo(self.view.mas_right).offset(-16);
+//        make.height.equalTo(@100);
+//    }];
+//
     UIImageView *runBgImage = [[UIImageView alloc]init];
     [self.runView addSubview:runBgImage];
     runBgImage.contentMode = UIViewContentModeScaleAspectFill;
@@ -499,7 +535,14 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.navigationController setNavigationBarHidden:YES];
+    [self loadData];
+      
+    [self queryStationDetailData];
     [self.tableview reloadData];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    if (currDic.count) {
+        [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
 }
 
 
@@ -1047,7 +1090,7 @@
     //大图
     
     float viewHeight =128;
-    
+    int widthh = SCREEN_WIDTH - 32 - 16- 73-7 -16;
     
     
     UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0, 225, WIDTH_SCREEN, viewHeight)];
@@ -1061,7 +1104,7 @@
     
     BigImg.contentMode = UIViewContentModeScaleAspectFit;
     if (self.dataModel.roomList.count) {
-        [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:self.dataModel.roomList[0][@"picture"]]] placeholderImage:[UIImage imageNamed:@"huan_noStationBgImage"]];
+        [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:safeString(self.dataModel.roomList[0][@"picture"])]] placeholderImage:[UIImage imageNamed:@"huan_noStationBgImage"]];
         if([userDefaults objectForKey:@"zhihuanImage"]){
             stationString = [userDefaults objectForKey:@"zhihuanImage"];
             
@@ -1088,16 +1131,17 @@
     [bgView addSubview:bgImage];
     [bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(bgView.mas_right).offset(-16);
-        make.width.equalTo(@231);
+        make.width.equalTo(@(widthh));
         make.height.equalTo(@150);
         make.top.equalTo(bgView.mas_top).offset(51);
     }];
     [bgView addSubview:BigImg];//station_right
     [BigImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(bgView.mas_right).offset(-33);
-        make.width.equalTo(@195);
-        make.height.equalTo(@128);
-        make.top.equalTo(bgImage.mas_top).offset(11);
+       
+        make.centerX.equalTo(bgImage.mas_centerX);
+        make.height.equalTo(@140);
+        make.width.equalTo(@(widthh));
+        make.top.equalTo(bgImage.mas_top).offset(5);
     }];
     
     UIButton *rightBtn = [[UIButton alloc]init];
@@ -1129,6 +1173,7 @@
         }
         
     }
+    
     for (int i=0; i<self.dataModel.roomList.count; i++) {
         UIButton *btn  =[[UIButton alloc]init];
         btn.tag = i+1;
@@ -1158,7 +1203,7 @@
     [tempView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(thiscell.mas_left).offset(14);
         make.top.equalTo(bgView.mas_bottom).offset(10);
-        make.width.equalTo(@170);
+        make.width.equalTo(@((SCREEN_WIDTH -28-10)/2));
         make.height.equalTo(@92);
     }];
     UIImageView *tempCenterImage = [[UIImageView alloc]init];
@@ -1261,7 +1306,7 @@
     [humidityView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(thiscell.mas_right).offset(-14);
         make.top.equalTo(bgView.mas_bottom).offset(10);
-        make.width.equalTo(@170);
+        make.width.equalTo(@((SCREEN_WIDTH -28-10)/2));
         make.height.equalTo(@92);
     }];
     UIImageView *humidityCenterImage = [[UIImageView alloc]init];
@@ -1867,8 +1912,17 @@
     }];
     UIImageView *bottomBgImage = [[UIImageView alloc] init];
     bottomBgImage.image =[UIImage imageNamed:@"weather_sunny"];
-    if (self.weatherDic.count) {
+    if (self.weatherDic.count ) {
         bottomBgImage.image = [UIImage imageNamed:safeString(self.weatherDic[@"condition"])];
+        if ([safeString(self.weatherDic[@"condition"]) containsString:@"雨"]){
+             bottomBgImage.image = [UIImage imageNamed:safeString(@"雨")];
+        }else if ([safeString(self.weatherDic[@"condition"]) containsString:@"雪"]){
+             bottomBgImage.image = [UIImage imageNamed:safeString(@"雪")];
+        }
+        if (bottomBgImage.image == nil) {
+             bottomBgImage.image =[UIImage imageNamed:@"weather_sunny"];
+        }
+        
     }
     bottomBgImage.frame = CGRectMake(0,0, WIDTH_SCREEN-32,149);
     
@@ -2602,7 +2656,7 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 
 {
-    if (scrollView.contentOffset.y <-120) {
+    if (scrollView.contentOffset.y <-100) {
         NSLog(@"11111111%f",scrollView.contentOffset.y);
         KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
         vc.dataModel = self.dataModel;

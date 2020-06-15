@@ -218,28 +218,18 @@
     
     
     [self.monitorFirstView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(32);
+        make.right.equalTo(leftGrayHengImage1.mas_left);
         make.height.equalTo(@80);
         make.width.equalTo(@98);
         make.top.equalTo(leftIconImage.mas_bottom).offset(8);
     }];
     
-    [self.monitorSecondView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-33);
-        make.height.equalTo(@80);
-        make.width.equalTo(@98);
-        make.top.equalTo(leftIconImage.mas_bottom).offset(8);
-    }];
+   
     
-    [self.transFirstView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(32);
-        make.height.equalTo(@80);
-        make.width.equalTo(@98);
-        make.top.equalTo(self.monitorFirstView.mas_bottom).offset(30);
-    }];
+  
     
     [self.transSecondView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-33);
+        make.left.equalTo(self.monitorSecondView.mas_left);
         make.height.equalTo(@80);
         make.width.equalTo(@98);
         make.top.equalTo(self.monitorFirstView.mas_bottom).offset(30);
@@ -323,9 +313,14 @@
         make.left.equalTo(centerArrow2.mas_right);
         make.centerY.equalTo(rightGrayHengImage.mas_centerY);
         make.height.equalTo(@1);
-        make.right.equalTo(self.monitorSecondView.mas_left);
+        make.width.equalTo(@10);
     }];
-    
+    [self.monitorSecondView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(rightGrayHengImage1.mas_right);
+        make.height.equalTo(@80);
+        make.width.equalTo(@98);
+        make.top.equalTo(leftIconImage.mas_bottom).offset(8);
+    }];
     
     //中间竖线
     UIImageView *centerShuImage = [[UIImageView alloc]init];
@@ -337,17 +332,22 @@
         make.width.equalTo(@1);
         make.height.equalTo(@(202 - 6));
     }];
-    
+    [self.transFirstView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(centerShuImage.mas_left).offset(-40);
+        make.height.equalTo(@80);
+        make.width.equalTo(@98);
+        make.top.equalTo(self.monitorFirstView.mas_bottom).offset(30);
+    }];
     
     //底部右边绿色竖线
     UIImageView *centerBottomGreenLine = [[UIImageView alloc]init];
     [self addSubview:centerBottomGreenLine];
     centerBottomGreenLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
     [centerBottomGreenLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.transFirstView.mas_right);
+        make.right.equalTo(centerShuImage.mas_left).offset(-6);
         make.top.equalTo(topIconImage.mas_bottom).offset(202);
         make.height.equalTo(@1);
-        make.width.equalTo(@32);
+        make.left.equalTo(self.transFirstView.mas_right);
     }];
     //底部右边绿色竖线
     UIImageView *centerBottomGreenXieLine = [[UIImageView alloc]init];
@@ -409,7 +409,7 @@
     [self addSubview:bottomBlueLeftLine];
     bottomBlueLeftLine.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
     [bottomBlueLeftLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(18);
+        make.right.equalTo(self.monitorFirstView.mas_left);
         make.top.equalTo(self.monitorFirstView.mas_bottom).offset(-14);
         make.height.equalTo(@1);
         make.width.equalTo(@14);
@@ -420,9 +420,9 @@
     [self addSubview:bottomBlueShuLeftLine];
     bottomBlueShuLeftLine.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
     [bottomBlueShuLeftLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(18);
+        make.right.equalTo(bottomBlueLeftLine.mas_left);
         make.top.equalTo(self.monitorFirstView.mas_bottom).offset(-14);
-        make.height.equalTo(@198);
+        make.height.equalTo(@199);
         make.width.equalTo(@1);
     }];
     
@@ -431,7 +431,7 @@
     [self addSubview:bottomBlueRightLine];
     bottomBlueRightLine.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
     [bottomBlueRightLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-19);
+        make.left.equalTo(self.monitorSecondView.mas_right);
         make.top.equalTo(self.monitorFirstView.mas_bottom).offset(-14);
         make.height.equalTo(@1);
         make.width.equalTo(@14);
@@ -442,7 +442,7 @@
     [self addSubview:bottomBlueShuRightLine];
     bottomBlueShuRightLine.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
     [bottomBlueShuRightLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-19);
+        make.left.equalTo(bottomBlueRightLine.mas_right);
         make.top.equalTo(self.monitorFirstView.mas_bottom).offset(-14);
         make.height.equalTo(@198);
         make.width.equalTo(@1);
@@ -495,7 +495,7 @@
         make.right.equalTo(bottomRightLine1.mas_left);
         make.bottom.equalTo(bottomRightLine1.mas_bottom);
         make.height.equalTo(@1);
-        make.width.equalTo(@43);
+        make.width.equalTo(@45);
     }];
     UIImageView *bottomRight3 = [[UIImageView alloc]init];
     [self addSubview:bottomRight3];
@@ -504,7 +504,7 @@
         make.right.equalTo(bottomBlueRightLine.mas_right);
         make.bottom.equalTo(bottomRightLine2.mas_bottom).offset(7);
         make.height.equalTo(@1);
-        make.width.equalTo(@106);
+        make.width.equalTo(@108);
     }];
     
     UIView * transBottomView = [[UIView alloc]init];
@@ -576,9 +576,13 @@
     if (array.count == 1) {
         NSDictionary *dd =[array firstObject][@"equipment"];
         NSDictionary * Detail = @{ @"tagList":dd[@"measureTagList"],
-                                   @"station_name":dd[@"stationName"],
-                                   @"machine_name":dd[@"name"],
-                                   @"name":dd[@"name"]
+                                   @"stationName":safeString(dd[@"stationName"]) ,
+                                   @"machine_name":safeString(dd[@"name"]),
+                                   @"name":safeString(dd[@"name"]),
+                                   @"stationCode":safeString(dd[@"stationCode"]),
+                                   @"code":safeString(dd[@"code"]),
+                                   @"engineRoomCode":safeString(dd[@"engineRoomCode"]),
+                                   @"category":safeString(dd[@"category"])
                                    
         };
         self.detailDic = Detail;

@@ -26,10 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UILabel *personLabel;
 
-
+@property (nonatomic, strong) UIImageView *statusImage;
 @property (nonatomic, strong) UIButton *taskButton;
 
 @property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic,strong) UIView *statusView;
 
 @property (nonatomic, copy) void(^taskMethod)(NSDictionary *dic);
 @end

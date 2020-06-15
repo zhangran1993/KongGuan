@@ -62,7 +62,7 @@
         make.width.equalTo(@150);
     }];
     
-    
+    [self createSegment];
     //    self.tempLabel = [[UILabel alloc]init];
     //    [self addSubview:self.tempLabel];
     //    self.tempLabel.text = @"18℃";
@@ -160,40 +160,54 @@
 
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
-    
+    self.segmentedControl.hidden = YES;
+    if ([safeString(dataDic[@"measureTagName"]) isEqualToString:@"当前模式"]) {
+        NSLog(@"1");
+    }
+    if ([safeString(dataDic[@"measureTagName"]) isEqualToString:@"湿度"]) {
+        NSLog(@"2");
+    }
     
     self.titleLabel.text = safeString(dataDic[@"measureTagName"]);
     if (safeString(dataDic[@"measureTagName"]).length == 0) {
         self.titleLabel.text = safeString(dataDic[@"title"]);
     }
     self.detailLabel.text = safeString(dataDic[@"measureValueAlias"]);
-    if (safeString(dataDic[@"measureValueAlias"]).length == 0) {
-        self.titleLabel.text = safeString(dataDic[@"title"]);
+    if (safeString(dataDic[@"unit"]).length > 0) {
+       self.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dataDic[@"measureValueAlias"]),safeString(dataDic[@"unit"])];
     }
     
-    if([safeString(dataDic[@"type"]) isEqualToString:@"input"]) {
+     if([safeString(dataDic[@"selectType"])  isEqualToString:@"charset"]) {
         
-    }else if([safeString(dataDic[@"type"])  isEqualToString:@"charset"]) {
+    }else if([safeString(dataDic[@"selectType"]) isEqualToString:@"textarea"]) {
         
-    }else if([safeString(dataDic[@"type"]) isEqualToString:@"textarea"]) {
+    }else if([safeString(dataDic[@"selectType"])  isEqualToString:@"select"]) {
         
-    }else if([safeString(dataDic[@"type"])  isEqualToString:@"select"]) {
+    }else if([safeString(dataDic[@"selectType"]) isEqualToString:@"input"]) {
         
-    }else if([safeString(dataDic[@"type"]) isEqualToString:@"input"]) {
-        
-        
+        self.segmentedControl.hidden = NO;
         if ([dataDic[@"childrens"] count] >0) {
             NSDictionary *dd = [dataDic[@"childrens"] firstObject];
-            NSString *value = dd[@"value"];
-            
-            NSArray *array =   [value componentsSeparatedByString:@"@&@"];
-            [self createSegment:array];
+            NSString *value = safeString(dd[@"value"]) ;
+            if (value.length >0) {
+                
+                NSArray *array =   [value componentsSeparatedByString:@"@&@"];
+                if (array.count == 2) {
+                    [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
+                    [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
+                    
+                }
+            }
+          
+           
         }
+        self.detailLabel.hidden = YES;
     }
     
 }
-- (void)createSegment:(NSArray *)arr {
-    NSArray *array = arr;
+- (void)createSegment {
+   
+    NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
    
     [self.segmentedControl removeFromSuperview];
     
@@ -217,7 +231,7 @@
                                      forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
     [self.segmentedControl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-32);
+        make.right.equalTo(self.mas_right).offset(-20);
         make.centerY.equalTo(self.mas_centerY);
         make.width.equalTo(@100);
         make.height.equalTo(@24);

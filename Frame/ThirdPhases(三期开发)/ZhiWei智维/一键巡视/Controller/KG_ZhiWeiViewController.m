@@ -15,6 +15,7 @@
 #import "RS_ConditionSearchView.h"
 #import "KG_HistoryTaskViewController.h"
 #import "KG_CreateXunShiContentViewController.h"
+#import "UIViewController+YQSlideMenu.h"
 @interface KG_ZhiWeiViewController ()<UITableViewDelegate,UITableViewDataSource>
 /**  标题栏 */
 @property (nonatomic, strong)  UILabel   *titleLabel;
@@ -83,6 +84,15 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
+    [self.naviTopView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.naviTopView = nil;
+    [self.naviTopView removeFromSuperview];
+    [self createSegmentView];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    if (currDic.count) {
+        [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
+   
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -120,17 +130,26 @@
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@44);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
-        make.left.equalTo(self.navigationView.mas_left);
+        make.left.equalTo(self.navigationView.mas_left).offset(10);
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
     UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"ZhiWei_Lefticon");
+    leftImage.image = IMAGE(@"head_blueIcon");
     [backBtn addSubview:leftImage];
+    leftImage.layer.cornerRadius = 17.f;
+    leftImage.contentMode = UIViewContentModeScaleAspectFill;
+    leftImage.layer.masksToBounds = YES;
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@34);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+    }
     UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     histroyBtn.titleLabel.font = FontSize(12);
     
@@ -173,7 +192,14 @@
         make.height.equalTo(@22);
         make.right.equalTo(histroyBtn.mas_left).offset(-6);
     }];
+    //单台站不可点击
+    self.rightButton.userInteractionEnabled = NO;
+    [self createSegmentView];
     
+    
+}
+
+- (void)createSegmentView {
     self.naviTopView = [[KG_ZhiWeiNaviTopView alloc]init];
     self.naviTopView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.naviTopView];
@@ -197,24 +223,33 @@
         make.width.equalTo(@(SCREEN_WIDTH));
         make.top.equalTo(self.navigationView.mas_bottom);
     }];
-    
-    
 }
+
 - (void)rightAction {
     
     [self stationAction];
 }
 
 - (void)historyAction {
-
+    
     KG_HistoryTaskViewController *vc = [[KG_HistoryTaskViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)backButtonClick:(UIButton *)button {
-    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
+    [self leftCenterButtonClick];
+//    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     
 }
+/**
+ 弹出个人中心
+ */
+- (void)leftCenterButtonClick {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+    [self.slideMenuController showMenu];
+}
+
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_StationReportAlarmCell : UITableViewCell
 
-
+@property (nonatomic, strong) void(^getTask)(NSDictionary *dataDic);
 @property (nonatomic, strong) NSDictionary *dic;
 
 @end

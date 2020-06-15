@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) NSDictionary *dataDic;
 
 @property (nonatomic,copy) void (^shouqiMethod)();
+@property (nonatomic,copy) void (^zhankaiMethod)();
 @end
 
 NS_ASSUME_NONNULL_END

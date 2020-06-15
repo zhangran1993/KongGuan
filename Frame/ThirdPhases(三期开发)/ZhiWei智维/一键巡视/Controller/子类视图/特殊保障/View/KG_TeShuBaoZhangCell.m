@@ -8,6 +8,7 @@
 
 #import "KG_TeShuBaoZhangCell.h"
 
+
 @implementation KG_TeShuBaoZhangCell
 
 - (void)awakeFromNib {
@@ -71,11 +72,30 @@
         make.width.equalTo(@200);
         make.centerY.equalTo(self.iconImage.mas_centerY);
     }];
+    self.statusView = [[UIView alloc]init];
+    [self addSubview:self.statusView];
+    [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.rightView.mas_left).offset(15);
+        make.top.equalTo(self.roomLabel.mas_bottom).offset(11);
+        make.right.equalTo(self.rightView.mas_right).offset(-15);
+        make.height.equalTo(@12);
+    }];
+       
     
+    self.statusImage  = [[UIImageView alloc]init];
+    [self.statusImage sizeToFit];
+    self.statusImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:self.statusImage];
+    [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.rightView.mas_right);
+        make.top.equalTo(self.rightView.mas_top).offset(14);
+        
+        make.height.equalTo(@26);
+    }];
     
     self.statusLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.statusLabel];
-    self.statusLabel.text = @"进行中";
+    self.statusLabel.text = @"";
     self.statusLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
@@ -185,9 +205,8 @@
 - (void)setDataDic:(NSDictionary *)dataDic{
     _dataDic = dataDic;
     self.roomLabel.text = safeString(dataDic[@"engineRoomName"]);
-    self.statusLabel.text = [self getTaskStatus:safeString(dataDic[@"status"])];
-    self.statusLabel.textColor = [self getTaskColor:safeString(dataDic[@"status"])];
-    
+    self.statusLabel.text = @"";
+    self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dataDic[@"status"])]]];
     self.detailLabel.text = safeString(dataDic[@"taskName"]);
     self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"createTime"])];
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dataDic[@"leaderName"])];
@@ -202,27 +221,78 @@
     }else {
         self.taskButton.hidden = YES;
     }
-    NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
-    if (biaoqianArr.count) {
-        NSMutableString *s = [NSMutableString string];
-        for (NSDictionary *dic in biaoqianArr) {
-            [s appendString:dic[@"specialTagName"]];
-        }
-        self.starLabel.text = safeString(s);
-        [self.starLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@14);
-        }];
-        [self.starImage mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@12);
-        }];
+//    NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
+//    if (biaoqianArr.count) {
+//        NSMutableString *s = [NSMutableString string];
+//        for (NSDictionary *dic in biaoqianArr) {
+//            [s appendString:dic[@"specialTagName"]];
+//        }
+//        self.starLabel.text = safeString(s);
+//        [self.starLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(@14);
+//        }];
+//        [self.starImage mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(@12);
+//        }];
+//    }else {
+//        [self.starLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(@0);
+//        }];
+//        [self.starImage mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.equalTo(@0);
+//        }];
+//    }
+    NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
+    if (biaoqianArr.count  &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+        self.statusView.hidden = NO;
+        
+        [self createSignView:biaoqianArr];
     }else {
-        [self.starLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@0);
-        }];
-        [self.starImage mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@0);
-        }];
+        //        self.statusView.hidden = YES;
     }
+}
+
+- (void)createSignView :(NSArray *)array{
+    [self.statusView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    CGFloat witdth = 0;
+    CGFloat orX = 0;
+    for (int i =0; i<array.count; i++) {
+        CGRect fontRect = [safeString(array[i][@"engineRoomName"]) boundingRectWithSize:CGSizeMake(MAXFLOAT,12) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        
+       
+        witdth = fontRect.size.width ;
+        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 1.5, 9, 9)];
+        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+            detailImage.image = [UIImage imageNamed:@"gray_qizi"];
+        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
+            detailImage.image = [UIImage imageNamed:@"red_qizi"];
+        }else {
+            detailImage.image = [UIImage imageNamed:@"lv_qizi"];
+        }
+        [self.statusView addSubview:detailImage];
+        
+       
+        UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(12 +orX, 0,witdth, 12)];
+        detailLabel.text = safeString(array[i][@"engineRoomName"]);
+        [self.statusView addSubview:detailLabel];
+        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
+        }else {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#03C3B6"];
+        }
+       
+        detailLabel.font = [UIFont systemFontOfSize:12];
+        detailLabel.numberOfLines = 1;
+        orX += fontRect.size.width+12 ;
+    }
+    
+   
+   
+    
+ 
+   
 }
 
 - (NSString *)getTaskStatus :(NSString *)status {
@@ -231,7 +301,7 @@
         ss = @"待执行";
     }else if ([status isEqualToString:@"1"]) {
         ss = @"进行中";
-    }else if ([status isEqualToString:@"0"]) {
+    }else if ([status isEqualToString:@"2"]) {
         ss = @"已完成";
     }else if ([status isEqualToString:@"3"]) {
         ss = @"逾期未完成";

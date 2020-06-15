@@ -72,7 +72,7 @@
     self.statusLabel = [[UILabel alloc]init];
     [self addSubview:self.statusLabel];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#2B8EFF"];
-    self.statusLabel.font = [UIFont systemFontOfSize:14];
+    self.statusLabel.font = [UIFont systemFontOfSize:13];
     self.statusLabel.textAlignment = NSTextAlignmentRight;
     self.statusLabel.text = @"进行中";
     [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {

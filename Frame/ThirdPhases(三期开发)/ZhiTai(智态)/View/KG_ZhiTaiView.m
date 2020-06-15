@@ -125,7 +125,7 @@
     centerTianXianImage.backgroundColor = [UIColor clearColor];
     centerTianXianImage.image = [UIImage imageNamed:@"tianxian_top"];
     [centerTianXianImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(75);
+        make.left.equalTo(self.mas_left).offset(((SCREEN_WIDTH-32)/2-92));
         make.top.equalTo(self.topLineImage.mas_bottom).offset(13);
         make.height.equalTo(@12);
         make.width.equalTo(@14);
@@ -139,7 +139,7 @@
         make.left.equalTo(centerTianXianImage.mas_right);
         make.centerY.equalTo(centerTianXianImage.mas_centerY);
         make.height.equalTo(@1);
-        make.width.equalTo(@94);
+        make.right.equalTo(self.mas_right).offset(-((SCREEN_WIDTH -32)/2));
     }];
     
     //一共 7个状态 1234567 来表示
@@ -225,7 +225,7 @@
         make.width.equalTo(@126);
     }];
     
-    //顶部右边灰色竖线
+    //顶部右边灰色竖线r
     UIImageView *centerTopShuLine = [[UIImageView alloc]init];
     [self addSubview:centerTopShuLine];
     centerTopShuLine.backgroundColor = [UIColor colorWithHexString:@"#C7C7C7"];
@@ -256,7 +256,7 @@
         make.left.equalTo(grayView.mas_right);
         make.centerY.equalTo(grayView.mas_centerY);
         make.height.equalTo(@1);
-        make.width.equalTo(@27);
+        make.right.equalTo(centerTopShuLine.mas_left).offset(-10);
     }];
     //顶部右边绿色竖线
     UIImageView *centerTopGreenShuLine = [[UIImageView alloc]init];
@@ -277,7 +277,7 @@
         make.left.equalTo(centerTopGreenLine.mas_left).offset(-14);
         make.top.equalTo(centerTopGreenLine.mas_bottom).offset(238);
         make.height.equalTo(@1);
-        make.width.equalTo(@34);
+        make.right.equalTo(centerTopGreenShuLine.mas_left).offset(-6);
     }];
     //底部右边绿色竖线
     UIImageView *centerBottomGreenXieLine = [[UIImageView alloc]init];
@@ -363,7 +363,7 @@
         make.left.equalTo(centerArrow1.mas_right).offset(2);
         make.centerY.equalTo(centerGrayLine1.mas_centerY);
         make.height.equalTo(@1);
-        make.width.equalTo(@40);
+        make.right.equalTo(centerTopShuLine.mas_right).offset(21);
     }];
 
     UIImageView *centerArrow2 = [[UIImageView alloc]init];
@@ -384,7 +384,7 @@
         make.left.equalTo(centerArrow2.mas_right);
         make.centerY.equalTo(centerGrayLine1.mas_centerY);
         make.height.equalTo(@1);
-        make.width.equalTo(@15);
+        make.right.equalTo(self.monitorSecondView.mas_left);
     }];
 
     //底部蓝色左横线
@@ -442,6 +442,17 @@
         make.height.equalTo(@88);
         make.width.equalTo(@1);
     }];
+    
+    self.transBottomView = [[KG_TransBottomView alloc]init];
+    self.transBottomView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:self.transBottomView];
+    [self.transBottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.mas_centerX);
+        make.width.equalTo(@130);
+        make.height.equalTo(@80);
+        make.top.equalTo(self.transSecondView.mas_bottom).offset(63);
+    }];
+    
     UIImageView *bottomLeftLine2 = [[UIImageView alloc]init];
     [self addSubview:bottomLeftLine2];
     bottomLeftLine2.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
@@ -449,7 +460,7 @@
         make.left.equalTo(bottomLeftLine1.mas_left);
         make.bottom.equalTo(bottomLeftLine1.mas_bottom);
         make.height.equalTo(@1);
-        make.width.equalTo(@27);
+        make.right.equalTo(self.transBottomView.mas_left);
     }];
 
     UIImageView *bottomLeftLine3 = [[UIImageView alloc]init];
@@ -459,7 +470,7 @@
         make.right.equalTo(bottomLeftLine2.mas_right);
         make.bottom.equalTo(bottomLeftLine2.mas_bottom).offset(30 );
         make.height.equalTo(@1);
-        make.width.equalTo(@90);
+        make.left.equalTo(bottomBlueShuLeftLine.mas_right);
     }];
     //右边
     UIImageView *bottomRightLine1 = [[UIImageView alloc]init];
@@ -478,7 +489,7 @@
         make.right.equalTo(bottomRightLine1.mas_left);
         make.bottom.equalTo(bottomRightLine1.mas_bottom);
         make.height.equalTo(@1);
-        make.width.equalTo(@27);
+        make.left.equalTo(self.transBottomView.mas_right);
     }];
     UIImageView *bottomRight3 = [[UIImageView alloc]init];
     [self addSubview:bottomRight3];
@@ -487,7 +498,7 @@
         make.right.equalTo(bottomBlueRightLine.mas_right);
         make.bottom.equalTo(bottomRightLine2.mas_bottom).offset(30);
         make.height.equalTo(@1);
-        make.width.equalTo(@90);
+        make.left.equalTo(self.transBottomView.mas_right);
     }];
 
     UIImageView *bottomGreen1 = [[UIImageView alloc]init];
@@ -530,15 +541,6 @@
         make.width.equalTo(@29);
     }];
 
-    self.transBottomView = [[KG_TransBottomView alloc]init];
-    self.transBottomView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:self.transBottomView];
-    [self.transBottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_centerX);
-        make.width.equalTo(@130);
-        make.height.equalTo(@80);
-        make.top.equalTo(self.transSecondView.mas_bottom).offset(63);
-    }];
 
 
     UIImageView *bottomBlue1= [[UIImageView alloc]init];
@@ -629,12 +631,13 @@
    if (array.count == 1) {
        NSDictionary *dd =[array firstObject][@"equipment"];
        NSDictionary * Detail = @{ @"tagList":dd[@"measureTagList"],
-                                  @"stationName":dd[@"stationName"],
-                                  @"machine_name":dd[@"name"],
-                                  @"name":dd[@"name"],
-                                  @"code":dd[@"code"],
-                                  @"engineRoomCode":dd[@"engineRoomCode"]
-                                  
+                                  @"stationName":safeString(dd[@"stationName"]) ,
+                                  @"machine_name":safeString(dd[@"name"]),
+                                  @"name":safeString(dd[@"name"]),
+                                  @"code":safeString(dd[@"code"]),
+                                  @"engineRoomCode":safeString(dd[@"engineRoomCode"]),
+                                  @"category":safeString(dd[@"category"]),
+                                  @"stationCode":safeString(dd[@"stationCode"])
        };
        self.detailDic = Detail;
    }

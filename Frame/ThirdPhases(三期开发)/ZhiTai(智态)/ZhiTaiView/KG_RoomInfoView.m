@@ -83,7 +83,7 @@
         _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = YES;
+        _tableView.scrollEnabled = NO;
         //tableview逆时针旋转90度。
         _tableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
         // scrollbar 不显示

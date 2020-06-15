@@ -51,11 +51,20 @@
         make.bottom.equalTo(self.mas_bottom);
     }];
     
-    
+    UIView *bgView = [[UIView alloc]init];
+    [self addSubview:bgView];
+    bgView.backgroundColor = [UIColor whiteColor];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.mas_bottom);
+        make.right.equalTo(self.mas_right);
+        make.left.equalTo(self.mas_left);
+        make.width.equalTo(@(SCREEN_WIDTH));
+        make.height.equalTo(@(176+44+3+30));
+    }];
     
     [self addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.mas_bottom).offset(-47);
+        make.bottom.equalTo(self.mas_bottom).offset(-30);
         make.right.equalTo(self.mas_right);
         make.left.equalTo(self.mas_left);
         make.width.equalTo(@(SCREEN_WIDTH));

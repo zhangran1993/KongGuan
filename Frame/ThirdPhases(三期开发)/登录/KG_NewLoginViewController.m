@@ -20,6 +20,8 @@
 
 @property (nonatomic,copy)    NSString     *userString;
 @property (nonatomic,copy)    NSString     *passString;
+
+@property (nonatomic,strong) NSDictionary *  currentStationDic;
 @end
 
 @implementation KG_NewLoginViewController
@@ -123,6 +125,12 @@
         make.left.equalTo(self.view.mas_left).offset(45);
         make.right.equalTo(self.view.mas_right).offset(-40);
     }];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"loginName"]) {
+        self.userTextField.text = safeString([userDefaults objectForKey:@"loginName"]);
+        self.userString = safeString([userDefaults objectForKey:@"loginName"]);
+    }
+      //    params[@"registrationId"] = [userDefaults objectForKey:@"registrationID"];
     
     [self.userTextField addTarget:self action:@selector(textEdit:) forControlEvents:UIControlEventEditingChanged];
     UIView *lineView = [[UIView alloc]init];
@@ -225,8 +233,14 @@
             
             return ;
         }
+        int stationAuth = [result[@"value"][@"stationAuth"] intValue];
+        if (stationAuth ==0) {
+           [FrameBaseRequest showMessage:@"您没有该台站的登录权限，请选择您权限内的台站"];
+            return;
+        }
         NSLog(@"resultresult %@",result);
         NSDictionary *userDic = result[@"value"][@"userInfo"];
+        
         [userDefaults setObject:safeString(userDic[@"userSource"]) forKey:@"userSource"];
         [userDefaults setObject:safeString(userDic[@"customerId"]) forKey:@"customerId"];
         [userDefaults setObject:safeString(userDic[@"companyId"]) forKey:@"companyId"];
@@ -246,20 +260,33 @@
         //如果和上一个用户不一样，就清掉这个缓存
         if(![userDic[@"userAccount"] isEqualToString:[userDefaults objectForKey:@"lastAserAccount"]]){
             [userDefaults removeObjectForKey:@"station"];
+            [self quertFrameData];
             [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"lastAserAccount"];
-        }
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
-        [UserManager shareUserManager].loginSuccess = YES;
-       
-        for (UIViewController *VC in self.navigationController.viewControllers) {
-            if ([VC isKindOfClass:[KG_RunManagerViewController class]]) {
-                [self.navigationController.tabBarController setSelectedIndex:2];
-                       
-                 [self.navigationController popToViewController:VC animated:YES];
+             [[NSUserDefaults standardUserDefaults] synchronize];
+        }else {
+              [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"lastAserAccount"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+            [UserManager shareUserManager].loginSuccess = YES;
+            int num = 0;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+            for (UIViewController *VC in self.navigationController.viewControllers) {
+                if ([VC isKindOfClass:[KG_RunManagerViewController class]]) {
+                    num ++;
+                    [self.navigationController.tabBarController setSelectedIndex:2];
+                    
+                    [self.navigationController popToViewController:VC animated:YES];
+                }
             }
+            
+            if (num == 0 &&self.navigationController.viewControllers.count >0) {
+                [self.navigationController.tabBarController setSelectedIndex:2];
+                
+                [self.navigationController popToViewController:[self.navigationController.viewControllers firstObject] animated:YES];
+            }
+            
         }
+       
       
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -290,4 +317,87 @@
 {
     [self.view endEditing:YES];
 }
+- (void)quertFrameData{
+    //    NSString *FrameRequestURL = @"http://10.33.33.147:8089/intelligent/api/stationList";
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationList"]];
+    
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUDForView:JSHmainWindow];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        
+        [UserManager shareUserManager].stationList = result[@"value"];
+        
+        [self createData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUDForView:JSHmainWindow];
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+}
+
+- (void)createData {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"station"]){
+        self.currentStationDic = [userDefaults objectForKey:@"station"];
+    }else {
+        self.currentStationDic = [[UserManager shareUserManager].stationList firstObject][@"station"];
+    }
+    NSString *specificStationCode = @"";
+    if([userDefaults objectForKey:@"specificStationCode"]){
+        specificStationCode = [userDefaults objectForKey:@"specificStationCode"];
+    }
+    if (specificStationCode.length >0) {
+        for (NSDictionary *stationDic in [UserManager shareUserManager].stationList) {
+            if ([safeString(stationDic[@"station"][@"code"])  isEqualToString:specificStationCode]) {
+                self.currentStationDic = stationDic[@"station"];
+                break;
+            }
+        }
+    }
+    NSMutableDictionary *dataDic = [[NSMutableDictionary alloc]initWithDictionary:self.currentStationDic];
+    for (NSString*s in [dataDic allKeys]) {
+        if ([dataDic[s] isEqual:[NSNull null]]) {
+            [dataDic setObject:@"" forKey:s];
+        }
+    }
+    [userDefaults setObject:dataDic forKey:@"station"];
+    
+    [UserManager shareUserManager].currentStationDic = self.currentStationDic;
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+    [UserManager shareUserManager].loginSuccess = YES;
+    
+    int num = 0;
+    for (UIViewController *VC in self.navigationController.viewControllers) {
+        if ([VC isKindOfClass:[KG_RunManagerViewController class]]) {
+            num ++;
+            [self.navigationController.tabBarController setSelectedIndex:2];
+            
+            [self.navigationController popToViewController:VC animated:YES];
+        }
+    }
+    
+    if (num == 0 &&self.navigationController.viewControllers.count >0) {
+        [self.navigationController.tabBarController setSelectedIndex:2];
+//          [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiHuanData" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers firstObject] animated:YES];
+       
+    }
+}
+
 @end

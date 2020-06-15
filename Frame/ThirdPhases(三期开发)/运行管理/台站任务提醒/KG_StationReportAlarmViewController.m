@@ -8,6 +8,8 @@
 
 #import "KG_StationReportAlarmViewController.h"
 #import "KG_StationReportAlarmCell.h"
+#import "KG_OnsiteInspectionView.h"
+#import "KG_XunShiReportDetailViewController.h"
 @interface KG_StationReportAlarmViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -17,6 +19,8 @@
 @property (nonatomic, strong)  UILabel   *titleLabel;
 @property (nonatomic, strong)  UIView    *navigationView;
 @property (nonatomic, strong)  UIButton  *rightButton;
+@property (nonatomic, strong)  KG_OnsiteInspectionView *alertView;
+@property (nonatomic,strong)  NSDictionary *alertInfo;
 @end
 
 @implementation KG_StationReportAlarmViewController
@@ -90,11 +94,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.row];
-    if (dataDic.count) {
+    if (dataDic.count ) {
         
-        NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
-        if (biaoqianArr.count) {
+        NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
+        if (biaoqianArr.count &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
             return 124;
+        }else {
+            return  98;
         }
     }
     return  98;
@@ -111,6 +117,10 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSDictionary *dic = self.dataArray[indexPath.section];
     cell.dic = dic;
+    
+    cell.getTask = ^(NSDictionary * _Nonnull dataDic) {
+        [self getTask:dataDic];
+    };
     return cell;
 }
 
@@ -118,7 +128,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
- 
+    self.alertInfo = self.dataArray[indexPath.section];
+    if([safeString(self.alertInfo[@"status"]) isEqualToString:@"5"]){
+         [FrameBaseRequest showMessage:@"请先领取任务"];
+        return;
+    }
+    if ([safeString(self.alertInfo[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+         self.alertView.hidden = NO;
+        
+    }else {
+        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+        vc.dataDic = self.alertInfo;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+   
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -252,4 +275,47 @@
     return _titleLabel;
 }
 
+- (KG_OnsiteInspectionView *)alertView {
+    
+    if (!_alertView) {
+        _alertView = [[KG_OnsiteInspectionView alloc]initWithCondition:self.alertInfo];
+        [JSHmainWindow addSubview:_alertView];
+        [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+        
+    }
+    return _alertView;
+    
+}
+
+
+- (void)getTask:(NSDictionary *)dataDic {
+    
+    NSString *userID = [UserManager shareUserManager].userID ;
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(dataDic[@"id"]);
+    paramDic[@"patrolName"] = safeString(userID);
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [FrameBaseRequest showMessage:@"领取任务成功"];
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+    
+}
 @end

@@ -73,7 +73,7 @@
                 for (stationListModel *detailModel1 in model.stationList) {
                     if ([sCode isEqual:detailModel1.stationCode]) {
                         detailModel1.isSelected = YES;
-                        
+                        self.selLabel.text = [NSString stringWithFormat:@"已选:%@", safeString(detailModel1.stationName)];
                     }else {
                         detailModel1.isSelected = NO;
                     }
