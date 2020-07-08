@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_SelVideoCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, strong) UIImageView *iconImage;
+@property (nonatomic, strong) UIButton *iconImage;
 
 @property (nonatomic, strong) UIButton *closeBtn;
 

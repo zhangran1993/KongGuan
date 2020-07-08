@@ -117,7 +117,7 @@
                 cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
             }else if ([safeString(titleString) containsString:@"冷备"]) {
                 cell.titleLabel.text = @"备机";
-                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#EDF2FC"];
+                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
             }
         }
         

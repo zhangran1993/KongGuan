@@ -81,7 +81,8 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self.taskDescription.length == 0) {
-        cell.textLabel.text = @"一切情况正常";
+//        cell.textLabel.text = @"一切情况正常";
+        cell.textLabel.text = @"--";
     }else {
         cell.textLabel.text = safeString(self.taskDescription);
     }

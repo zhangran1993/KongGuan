@@ -45,10 +45,15 @@
     [self loadBgView];
 }
 
--(void) viewWillAppear:(BOOL)animated{
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.translucent = NO;
-    self.edgesForExtendedLayout=UIRectEdgeBottom;
+
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
+    
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
    
 }
 
@@ -77,8 +82,11 @@
     NSString *tel = [userDefaults objectForKey:@"tel"];
     
     _headImage = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(15), FrameWidth(95), FrameWidth(95))];
-    [_headImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"personal_head"]];
-    
+    if([userDefaults objectForKey:@"icon"]){
+        [_headImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"personal_head"]];
+    }else {
+        _headImage.image = [UIImage imageNamed:@"personal_head"];
+    }
     _headImage.layer.masksToBounds=YES;
     _headImage.layer.cornerRadius=FrameWidth(95)/2;
     _headImage.tag = 1;

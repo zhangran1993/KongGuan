@@ -116,8 +116,8 @@
     self.powLabel = [[UILabel alloc]init];
     [self addSubview:self.powLabel];
     self.powLabel.text = @"电池组2#";
-    self.powLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    self.powLabel.font = [UIFont systemFontOfSize:12];
+    self.powLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    self.powLabel.font = [UIFont systemFontOfSize:14];
     [self.powLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(14);
         make.top.equalTo(lineImage.mas_bottom).offset(11);
@@ -139,8 +139,8 @@
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
     self.detailLabel.text = @"电池组2#";
-    self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    self.detailLabel.font = [UIFont systemFontOfSize:12];
+    self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    self.detailLabel.font = [UIFont systemFontOfSize:14];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.gaojingImage.mas_right).offset(14);
         make.top.equalTo(self.powLabel.mas_bottom).offset(8);
@@ -239,7 +239,17 @@
     
     [self.confirmBtn setTitle:sta forState:UIControlStateNormal];
     self.powLabel.text = safeString(dic[@"equipmentName"]);
-    self.iconImage.image = [UIImage imageNamed: [CommonExtension getDeviceIcon:safeString(dic[@"equipmentCategory"])]];
+    
+    self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-蓝",[CommonExtension getDeviceIcon:safeString(dic[@"equipmentCategory"])]]];
+    if([safeString(dic[@"category"]) isEqualToString:@"navigation"]){
+        if ([safeString(dic[@"type"]) isEqualToString:@"dme"]) {
+            self.iconImage.image =  [UIImage imageNamed:@"导航DME"];
+        }else if ([safeString(dic[@"type"]) isEqualToString:@"dvor"]) {
+            self.iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
+        }
+    }
+    
+    
     if(safeString(dic[@"equipmentCategory"]).length == 0){
         self.iconImage.image = [UIImage imageNamed: safeString(dic[@"equipmentName"])];
     }
@@ -277,7 +287,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     
@@ -292,18 +302,19 @@
     [formatter setTimeZone:timeZone];
     return formatter;
 }
+
 - (NSString *)getLevelImage:(NSString *)level {
     NSString *levelString = @"level_normal";
     
-    if ([level isEqualToString:@"正常"]) {
+    if ([level isEqualToString:@"0"]) {
         levelString = @"level_normal";
-    }else if ([level isEqualToString:@"提示"]) {
+    }else if ([level isEqualToString:@"4"]) {
         levelString = @"level_prompt";
-    }else if ([level isEqualToString:@"次要"]) {
+    }else if ([level isEqualToString:@"3"]) {
         levelString = @"level_ciyao";
-    }else if ([level isEqualToString:@"重要"]) {
+    }else if ([level isEqualToString:@"2"]) {
         levelString = @"level_important";
-    }else if ([level isEqualToString:@"紧急"]) {
+    }else if ([level isEqualToString:@"1"]) {
         levelString = @"level_jinji";
     }
     

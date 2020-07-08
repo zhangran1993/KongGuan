@@ -87,6 +87,12 @@
             self.addMethod();
         }
     };
+    self.selPhoneView.zhankaiMethod = ^(NSString * _Nonnull dataDic) {
+        if (self.zhankaiMethod) {
+            self.zhankaiMethod(dataDic);
+        }
+    };
+    
     self.selPhoneView.closeMethod = ^(NSInteger index) {
         if (self.closeMethod) {
             self.closeMethod(index);
@@ -102,7 +108,7 @@
    
     UIImageView *videoImage = [[UIImageView alloc]init];
     [self addSubview:videoImage];
-    videoImage.image = [UIImage imageNamed:@"pic_upload"];
+    videoImage.image = [UIImage imageNamed:@"video_upload"];
     [videoImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(lineImage.mas_bottom).offset(18);
@@ -128,6 +134,12 @@
             self.addVideoMethod();
         }
     };
+    self.selVideoView.playVideoMethod = ^(NSString * _Nonnull dataDic) {
+          if (self.playVideoMethod) {
+              self.playVideoMethod(dataDic);
+          }
+      };
+      
     self.selVideoView.closeVideoMethod = ^(NSInteger index) {
         if (self.closeVideoMethod) {
             self.closeVideoMethod(index);

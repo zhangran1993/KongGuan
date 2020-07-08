@@ -83,9 +83,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0 ){
         
-        return self.model.autoAlarm.count;
+        return 1;
     }else {
-        return self.model.manualAlarm.count;
+        return 1;
     }
     return   2;
 }
@@ -93,17 +93,22 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 0) {
-        NSDictionary *dic = self.model.autoAlarm[indexPath.row];
-        NSString *str = [NSString stringWithFormat:@"%d.%@%@",(int)indexPath.row +1,safeString(dic[@"name"]),safeString(dic[@"description"])];
+        NSString *str = self.model.info[@"autoAlarmContent"];
         CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
+        
+        if (safeString(self.model.info[@"autoAlarmContent"]).length== 0) {
+            return 0;
+        }
         return fontRect.size.height +24;
         
     }else {
-        NSDictionary *dic = self.model.manualAlarm[indexPath.row];
-        NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"recordDescription"])];
+        NSString *str = self.model.info[@"manualAlarmContent"];
         CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
+        if (safeString(self.model.info[@"manualAlarmContent"]).length== 0) {
+            return 0;
+        }
         return fontRect.size.height+24;
     }
 //    CGRect fontRect = [dic[@"content"] boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
@@ -118,12 +123,12 @@
         cell = [[KG_RunReportDetailCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailCommonCell"];
     }
     if (indexPath.section == 0) {
-        NSDictionary *dic = self.model.autoAlarm[indexPath.row];
-        NSString *str = [NSString stringWithFormat:@"%d.%@%@",(int)indexPath.row +1,safeString(dic[@"name"]),safeString(dic[@"description"])];
+        NSString *str = self.model.info[@"autoAlarmContent"];
+
         cell.string = str;
     }else {
-        NSDictionary *dic = self.model.manualAlarm[indexPath.row];
-        NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"recordDescription"])];
+        NSString *str = self.model.info[@"manualAlarmContent"];
+       
         cell.string = str;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

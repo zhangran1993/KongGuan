@@ -194,7 +194,7 @@
     [self.taskButton addTarget:self action:@selector(taskButtonMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.taskButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightView.mas_right).offset(-16);
-        make.centerY.equalTo(self.rightView.mas_centerY);
+        make.centerY.equalTo(self.timeLabel.mas_centerY);
         make.width.equalTo(@70);
         make.height.equalTo(@24);
     }];
@@ -225,12 +225,15 @@
         
         [self.taskButton setTitle:@"领取任务" forState:UIControlStateNormal];
         self.taskButton.hidden = NO;
+        self.personLabel.hidden = YES;
     }else if([safeString(dataDic[@"status"]) isEqualToString:@"6"]){
         
         [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
         self.taskButton.hidden = NO;
+        self.personLabel.hidden = YES;
     }else {
         self.taskButton.hidden = YES;
+        self.personLabel.hidden = NO;
     }
    
     NSArray *biaoqianArr = self.dataDic[@"atcPatrolRoomList"];
@@ -293,7 +296,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     
@@ -318,13 +321,13 @@
         
        
         witdth = fontRect.size.width ;
-        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 1.5, 9, 9)];
-        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 0, 12, 12)];
+        if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"0"])  {
             detailImage.image = [UIImage imageNamed:@"gray_qizi"];
-        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
-            detailImage.image = [UIImage imageNamed:@"red_qizi"];
-        }else {
+        }else if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"1"])  {
             detailImage.image = [UIImage imageNamed:@"lv_qizi"];
+        }else {
+            detailImage.image = [UIImage imageNamed:@"red_qizi"];
         }
         [self.statusView addSubview:detailImage];
         
@@ -332,14 +335,14 @@
         UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(12 +orX, 0,witdth, 12)];
         detailLabel.text = safeString(array[i][@"engineRoomName"]);
         [self.statusView addSubview:detailLabel];
-        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+        if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"0"])  {
             detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
-        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
-            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
-        }else {
+        }else if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"1"])  {
             detailLabel.textColor = [UIColor colorWithHexString:@"#03C3B6"];
+        }else {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
         }
-       
+        
         detailLabel.font = [UIFont systemFontOfSize:12];
         detailLabel.numberOfLines = 1;
         orX += fontRect.size.width+12 ;

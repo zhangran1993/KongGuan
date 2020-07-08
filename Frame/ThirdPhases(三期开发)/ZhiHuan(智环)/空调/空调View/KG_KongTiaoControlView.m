@@ -217,7 +217,7 @@
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0f]}forState:UIControlStateNormal];
     [self addSubview:self.segmentedControl];
     self.segmentedControl.selectedSegmentIndex = 0;
-    self.segmentedControl.tintColor = [UIColor redColor];
+    self.segmentedControl.tintColor = [UIColor whiteColor];
     self.segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
     self.segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
     [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]]

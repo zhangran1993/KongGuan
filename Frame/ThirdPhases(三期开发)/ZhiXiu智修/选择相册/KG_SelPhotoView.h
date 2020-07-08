@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSMutableArray *dataArray;
 @property (nonatomic ,strong) void(^closeMethod)(NSInteger index);
 @property (nonatomic ,strong) void(^addMethod)();
+@property (nonatomic ,strong) void(^zhankaiMethod)(NSString *dataDic);
 @end
 
 NS_ASSUME_NONNULL_END

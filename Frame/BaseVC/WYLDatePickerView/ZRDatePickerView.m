@@ -34,7 +34,7 @@
 @property (copy, nonatomic) NSString *minute; //选中分
 @property (copy, nonatomic) NSString *second; //选中秒
 /** 时间选择器类型 */
-@property(nonatomic , assign) WYLDatePickerType datePickerType;
+@property(nonatomic , assign) ZRDatePickerType datePickerType;
 
 @end
 
@@ -44,7 +44,7 @@
 #pragma mark - init
 /// 初始化
 /** 构造方法 */
-- (instancetype)initWithFrame:(CGRect)frame withDatePickerType:(WYLDatePickerType)datePickerType{
+- (instancetype)initWithFrame:(CGRect)frame withDatePickerType:(ZRDatePickerType)datePickerType{
      self = [super initWithFrame:frame];
     if (self) {
         self.maxYear = 2099;
@@ -63,10 +63,10 @@
 }
 
 #pragma mark ---- 根据DatePickerType初始化
--(void)creatDatePickerWithWYLDatePickerType:(WYLDatePickerType)datePickerType{
+-(void)creatDatePickerWithWYLDatePickerType:(ZRDatePickerType)datePickerType{
     switch (datePickerType) {
             
-        case WYLDatePickerTypeYMDHMS:
+        case ZRDatePickerTypeYMDHMS:
         {
             self.minuteArr = [[NSMutableArray alloc]init];
             [self.dataArray addObject:self.yearArr];
@@ -76,7 +76,7 @@
             
         }
             break;
-        case WYLDatePickerTypeYMDHM:
+        case ZRDatePickerTypeYMDHM:
         {
             self.minuteArr = [[NSMutableArray alloc]init];
             [self.dataArray addObject:self.yearArr];
@@ -86,7 +86,7 @@
         }
             break;
             
-        case WYLDatePickerTypeYMD:
+        case ZRDatePickerTypeYMD:
         {
             [self.dataArray addObject:self.yearArr];
             [self.dataArray addObject:self.monthArr];
@@ -94,13 +94,13 @@
         }
             break;
             
-        case WYLDatePickerTypeYM:
+        case ZRDatePickerTypeYM:
         {
             [self.dataArray addObject:self.yearArr];
             [self.dataArray addObject:self.monthArr];
         }
             break;
-        case WYLDatePickerTypeY:
+        case ZRDatePickerTypeY:
         {
             [self.dataArray addObject:self.yearArr];
         }
@@ -111,7 +111,7 @@
 }
 
 
-- (void) configDataWithWYLDatePickerType:(WYLDatePickerType)datePickerType {
+- (void) configDataWithWYLDatePickerType:(ZRDatePickerType)datePickerType {
     
     self.isSlide = YES;
     self.minuteInterval = 5;
@@ -122,29 +122,29 @@
     
     switch (datePickerType) {
             
-        case WYLDatePickerTypeYMDHMS:
+        case ZRDatePickerTypeYMDHMS:
         {
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
         }
             break;
-        case WYLDatePickerTypeYMDHM:
+        case ZRDatePickerTypeYMDHM:
         {
              [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         }
             break;
             
-        case WYLDatePickerTypeYMD:
+        case ZRDatePickerTypeYMD:
         {
              [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         }
             break;
             
-        case WYLDatePickerTypeYM:
+        case ZRDatePickerTypeYM:
         {
              [dateFormatter setDateFormat:@"yyyy-MM"];
         }
             break;
-        case WYLDatePickerTypeY:
+        case ZRDatePickerTypeY:
         {
             [dateFormatter setDateFormat:@"yyyy"];
         }
@@ -232,7 +232,7 @@
     NSMutableArray *timerArray = [NSMutableArray arrayWithArray:[newDate componentsSeparatedByString:@" "]];
     switch (self.datePickerType) {
           
-        case WYLDatePickerTypeYMDHMS:
+        case ZRDatePickerTypeYMDHMS:
         {
             [timerArray replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%@年", timerArray[0]]];
             [timerArray replaceObjectAtIndex:1 withObject:[NSString stringWithFormat:@"%@月", timerArray[1]]];
@@ -242,7 +242,7 @@
             [timerArray replaceObjectAtIndex:5 withObject:[NSString stringWithFormat:@"%@秒", timerArray[5]]];
         }
             break;
-        case WYLDatePickerTypeYMDHM:
+        case ZRDatePickerTypeYMDHM:
         {
             [timerArray replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%@年", timerArray[0]]];
             [timerArray replaceObjectAtIndex:1 withObject:[NSString stringWithFormat:@"%@月", timerArray[1]]];
@@ -252,7 +252,7 @@
         }
             break;
          
-        case WYLDatePickerTypeYMD:
+        case ZRDatePickerTypeYMD:
         {
             [timerArray replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%@年", timerArray[0]]];
             [timerArray replaceObjectAtIndex:1 withObject:[NSString stringWithFormat:@"%@月", timerArray[1]]];
@@ -260,13 +260,13 @@
         }
             break;
             
-        case WYLDatePickerTypeYM:
+        case ZRDatePickerTypeYM:
         {
             [timerArray replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%@年", timerArray[0]]];
             [timerArray replaceObjectAtIndex:1 withObject:[NSString stringWithFormat:@"%@月", timerArray[1]]];
         }
             break;
-        case WYLDatePickerTypeY:
+        case ZRDatePickerTypeY:
         {
             [timerArray replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%@年", timerArray[0]]];
         }
@@ -282,7 +282,7 @@
 - (void)setMinuteInterval:(NSInteger)minuteInterval {
     _minuteInterval = minuteInterval;
     
-    if (self.datePickerType == WYLDatePickerTypeYMDHM) {
+    if (self.datePickerType == ZRDatePickerTypeYMDHM) {
         if (self.minuteArr.count > 0) {
             [self.minuteArr removeAllObjects];
             self.minuteArr = [self configMinuteArray];
@@ -291,7 +291,7 @@
             self.minuteArr = [self configMinuteArray];
             [self.dataArray addObject:self.minuteArr];
         }
-    }else if(self.datePickerType == WYLDatePickerTypeYMDHMS){
+    }else if(self.datePickerType == ZRDatePickerTypeYMDHMS){
         if (self.minuteArr.count > 0) {
             [self.minuteArr removeAllObjects];
             self.minuteArr = [self configMinuteArray];
@@ -314,7 +314,7 @@
 - (void)show {
     self.year = self.timeArr[0];
     [self.pickerView selectRow:[self.yearArr indexOfObject:self.year] inComponent:0 animated:YES];
-    if (self.datePickerType != WYLDatePickerTypeY) {
+    if (self.datePickerType != ZRDatePickerTypeY) {
         self.month = [NSString stringWithFormat:@"%ld月", [self.timeArr[1] integerValue]];
         /// 重新格式化转一下，是因为如果是09月/日/时，数据源是9月/日/时,就会出现崩溃
         [self.pickerView selectRow:[self.monthArr indexOfObject:self.month] inComponent:1 animated:YES];        
@@ -322,7 +322,7 @@
     
     switch (self.datePickerType) {
             
-        case WYLDatePickerTypeYMDHMS:
+        case ZRDatePickerTypeYMDHMS:
         {
             self.day = [NSString stringWithFormat:@"%ld日", [self.timeArr[2] integerValue]];
             self.hour = [NSString stringWithFormat:@"%ld时", [self.timeArr[3] integerValue]];
@@ -348,7 +348,7 @@
         }
             break;
             
-        case WYLDatePickerTypeYMDHM:
+        case ZRDatePickerTypeYMDHM:
         {
             self.day = [NSString stringWithFormat:@"%ld日", [self.timeArr[2] integerValue]];
             self.hour = [NSString stringWithFormat:@"%ld时", [self.timeArr[3] integerValue]];
@@ -374,7 +374,7 @@
         }
             break;
         
-        case WYLDatePickerTypeYMD:
+        case ZRDatePickerTypeYMD:
         {
             self.day = [NSString stringWithFormat:@"%ld日", [self.timeArr[2] integerValue]];
             [self.pickerView selectRow:[self.dayArr indexOfObject:self.day] inComponent:2 animated:YES];
@@ -383,12 +383,12 @@
         }
             break;
             
-        case WYLDatePickerTypeYM:
+        case ZRDatePickerTypeYM:
         {
            
         }
             break;
-        case WYLDatePickerTypeY:
+        case ZRDatePickerTypeY:
         {
             
         }
@@ -406,7 +406,7 @@
     NSString *month = self.month.length == 3 ? [NSString stringWithFormat:@"%ld", self.month.integerValue] : [NSString stringWithFormat:@"0%ld", self.month.integerValue];
     switch (self.datePickerType) {
             
-        case WYLDatePickerTypeYMDHMS:
+        case ZRDatePickerTypeYMDHMS:
         {
             NSString *day = self.day.length == 3 ? [NSString stringWithFormat:@"%ld", self.day.integerValue] : [NSString stringWithFormat:@"0%ld", self.day.integerValue];
             NSString *hour = self.hour.length == 3 ? [NSString stringWithFormat:@"%ld", self.hour.integerValue] : [NSString stringWithFormat:@"0%ld", self.hour.integerValue];
@@ -416,7 +416,7 @@
         }
             break;
             
-        case WYLDatePickerTypeYMDHM:
+        case ZRDatePickerTypeYMDHM:
         {
             NSString *day = self.day.length == 3 ? [NSString stringWithFormat:@"%ld", self.day.integerValue] : [NSString stringWithFormat:@"0%ld", self.day.integerValue];
             NSString *hour = self.hour.length == 3 ? [NSString stringWithFormat:@"%ld", self.hour.integerValue] : [NSString stringWithFormat:@"0%ld", self.hour.integerValue];
@@ -426,7 +426,7 @@
         }
             break;
             
-        case WYLDatePickerTypeYMD:
+        case ZRDatePickerTypeYMD:
         {
             NSString *day = self.day.length == 3 ? [NSString stringWithFormat:@"%ld", self.day.integerValue] : [NSString stringWithFormat:@"0%ld", self.day.integerValue];
             
@@ -434,12 +434,12 @@
         }
             break;
             
-        case WYLDatePickerTypeYM:
+        case ZRDatePickerTypeYM:
         {
             self.selectStr = [NSString stringWithFormat:@"%ld-%@", [self.year integerValue], month];
         }
             break;
-        case WYLDatePickerTypeY:
+        case ZRDatePickerTypeY:
         {
             self.selectStr = [NSString stringWithFormat:@"%ld",self.year.integerValue];
             break;
@@ -480,7 +480,7 @@
     
     NSInteger time_integerValue = [self.timeArr[component] integerValue];
     
-    if (self.datePickerType == WYLDatePickerTypeYMDHM) {
+    if (self.datePickerType == ZRDatePickerTypeYMDHM) {
         
         switch (component) {
             case 0: { // 年
@@ -716,7 +716,7 @@
             default: break;
         }
         
-    }else if(self.datePickerType == WYLDatePickerTypeYMDHMS) {
+    }else if(self.datePickerType == ZRDatePickerTypeYMDHMS) {
         
         switch (component) {
             case 0: { // 年
@@ -963,7 +963,7 @@
             default: break;
         }
         
-    }else if (self.datePickerType == WYLDatePickerTypeYMD){
+    }else if (self.datePickerType == ZRDatePickerTypeYMD){
         
         switch (component) {
             case 0: { // 年
@@ -1110,7 +1110,7 @@
             default: break;
         }
         
-    }else if (self.datePickerType == WYLDatePickerTypeYM){
+    }else if (self.datePickerType == ZRDatePickerTypeYM){
         
         switch (component) {
             case 0: { // 年
@@ -1160,7 +1160,7 @@
                 
             default: break;
         }
-    } else if (self.datePickerType == WYLDatePickerTypeY) {
+    } else if (self.datePickerType == ZRDatePickerTypeY) {
         switch (component) {
             case 0: { // 年
                 
@@ -1292,30 +1292,30 @@
     
     switch (self.datePickerType) {
             
-        case WYLDatePickerTypeYMDHMS:
+        case ZRDatePickerTypeYMDHMS:
         {
             [df setDateFormat:@"yyyy年,MM月,dd日,HH时,mm分,ss秒"];
         }
             break;
             
-        case WYLDatePickerTypeYMDHM:
+        case ZRDatePickerTypeYMDHM:
         {
             [df setDateFormat:@"yyyy年,MM月,dd日,HH时,mm分"];
         }
             break;
             
-        case WYLDatePickerTypeYMD:
+        case ZRDatePickerTypeYMD:
         {
             [df setDateFormat:@"yyyy年,MM月,dd日"];
         }
             break;
             
-        case WYLDatePickerTypeYM:
+        case ZRDatePickerTypeYM:
         {
             [df setDateFormat:@"yyyy年,MM月"];
         }
             break;
-        case WYLDatePickerTypeY:
+        case ZRDatePickerTypeY:
         {
             [df setDateFormat:@"yyyy年"];
         }

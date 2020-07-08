@@ -147,14 +147,18 @@
     
     NSString *workString = @"工作";
     //监视器A
-    if([workDic[@"valueAlias"] isEqualToString:@"A机"]){
+    if([safeString(workDic[@"valueAlias"]) isEqualToString:@"A机"]){
         workString = @"工作";
         
     }else {
-        workString = @"热备";
-        if([self.rebeiDic[@"valueAlias"] isEqualToString:@"冷备份"]){
-            workString = @"冷备";
+        if(safeString(workDic[@"valueAlias"]).length == 0){
+            workString = @"工作";
             
+        }else {
+           
+            if([safeString(self.rebeiDic[@"valueAlias"]) isEqualToString:@"冷备份"]){
+                workString = @"冷备";
+            }
         }
     }
     [_dataArray replaceObjectAtIndex:1 withObject:workString];

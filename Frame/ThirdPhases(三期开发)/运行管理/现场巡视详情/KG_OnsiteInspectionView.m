@@ -120,7 +120,7 @@
     
     UILabel *timeTextLabel = [[UILabel alloc]init];
     [self.centerView addSubview:timeTextLabel];
-    timeTextLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"createTime"])];
+    timeTextLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"patrolIntervalTime"])];
     [timeTextLabel sizeToFit];
     timeTextLabel.font = [UIFont systemFontOfSize:14];
     timeTextLabel.textAlignment = NSTextAlignmentRight;

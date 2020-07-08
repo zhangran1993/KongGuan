@@ -12,16 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 typedef enum : NSUInteger {
-    WYLDatePickerTypeYMDHMS,
-    WYLDatePickerTypeYMDHM,
-    WYLDatePickerTypeYMD,
-    WYLDatePickerTypeYM,
-    WYLDatePickerTypeY
-} WYLDatePickerType;
+    ZRDatePickerTypeYMDHMS,
+    ZRDatePickerTypeYMDHM,
+    ZRDatePickerTypeYMD,
+    ZRDatePickerTypeYM,
+    ZRDatePickerTypeY
+} ZRDatePickerType;
 
 
 
-@protocol WYLDatePickerViewDelegate <NSObject>
+@protocol ZRDatePickerViewDelegate <NSObject>
 
 /**
  保存按钮代理方法
@@ -69,11 +69,11 @@ typedef enum : NSUInteger {
 /** 时间选择器背景颜色 */
 @property(nonatomic , strong) UIColor *datePickerColor;
 
-@property (weak, nonatomic) id <WYLDatePickerViewDelegate> delegate;
+@property (weak, nonatomic) id <ZRDatePickerViewDelegate> delegate;
 
 
 /** 构造方法 */
-- (instancetype)initWithFrame:(CGRect)frame withDatePickerType:(WYLDatePickerType)datePickerType;
+- (instancetype)initWithFrame:(CGRect)frame withDatePickerType:(ZRDatePickerType)datePickerType;
 
 /**
  显示  必须调用

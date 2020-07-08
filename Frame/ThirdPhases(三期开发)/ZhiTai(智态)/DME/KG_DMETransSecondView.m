@@ -146,13 +146,19 @@
     
     NSString *workString = @"工作";
     //监视器A
-    if([workDic[@"valueAlias"] isEqualToString:@"B机"]){
+    if([safeString(workDic[@"valueAlias"]) isEqualToString:@"B机"]){
         workString = @"工作";
         
     }else {
-        workString = @"热备";
-        if([self.rebeiDic[@"valueAlias"] isEqualToString:@"冷备份"]){
+        if(safeString(workDic[@"valueAlias"]).length == 0){
             workString = @"冷备";
+            
+        }else {
+            
+            
+            if([safeString(self.rebeiDic[@"valueAlias"]) isEqualToString:@"冷备份"]){
+                workString = @"冷备";
+            }
         }
             
     }

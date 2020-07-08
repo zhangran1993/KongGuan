@@ -16,6 +16,7 @@
 #import "KG_HistoryTaskViewController.h"
 #import "KG_CreateXunShiContentViewController.h"
 #import "UIViewController+YQSlideMenu.h"
+#import "KG_WeihuDailyReportDetailViewController.h"
 @interface KG_ZhiWeiViewController ()<UITableViewDelegate,UITableViewDataSource>
 /**  标题栏 */
 @property (nonatomic, strong)  UILabel   *titleLabel;
@@ -28,6 +29,9 @@
 
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic ,strong) RS_ConditionSearchView *searchView;
+
+@property (nonatomic, strong)  UIImageView    *leftIconImage;
+
 @end
 
 @implementation KG_ZhiWeiViewController
@@ -36,10 +40,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshZhiWeiData) name:@"refreshZhiWeiData" object:nil];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
     [self createNaviTopView];
     [self loadData];
+    [self getLeaderNameData];
     //    [self getTaskReportData];
     
     //    [self queryData];
@@ -49,6 +55,24 @@
     //    [self quertHeadListData];
     
 }
+//刷新智维页面数据
+- (void)refreshZhiWeiData {
+    
+    [self.naviTopView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.naviTopView = nil;
+    [self.naviTopView removeFromSuperview];
+    [self createSegmentView];
+}
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
 - (void)loadData {
     //获取任务状态字典接口：
     [self getTaskStatusDic];
@@ -92,7 +116,15 @@
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
     }
-   
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_blueIcon"];
+    }
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -134,21 +166,24 @@
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"head_blueIcon");
-    [backBtn addSubview:leftImage];
-    leftImage.layer.cornerRadius = 17.f;
-    leftImage.contentMode = UIViewContentModeScaleAspectFill;
-    leftImage.layer.masksToBounds = YES;
-    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@34);
+    self.leftIconImage = [[UIImageView alloc] init];
+    self.leftIconImage.image = IMAGE(@"head_blueIcon");
+    [backBtn addSubview:self.leftIconImage];
+    self.leftIconImage.layer.cornerRadius = 13.f;
+//    self.leftIconImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.leftIconImage.layer.masksToBounds = YES;
+    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@26);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_blueIcon"];
     }
     UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     histroyBtn.titleLabel.font = FontSize(12);
@@ -201,13 +236,27 @@
 
 - (void)createSegmentView {
     self.naviTopView = [[KG_ZhiWeiNaviTopView alloc]init];
+    self.naviTopView.selIndex = [UserManager shareUserManager].zhiweiSegmentCurIndex;
     self.naviTopView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.naviTopView];
     self.naviTopView.didsel = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull statusType) {
-        
-        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
-        vc.dataDic = dataDic;
-        [self.navigationController pushViewController:vc animated:YES];
+        if([safeString(dataDic[@"status"]) isEqualToString:@"5"]){
+            [FrameBaseRequest showMessage:@"请先领取任务"];
+            return;
+        }
+        NSString *ss = safeString(dataDic[@"patrolCode"]);
+        if ([ss isEqualToString:@"monthSafeguard"] || [ss isEqualToString:@"daySafeguard"]  || [ss isEqualToString:@"yearSafeguard"] ||[ss isEqualToString:@"weekSafeguard"]  ) {
+            
+            KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
+            vc.dataDic = dataDic;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+            vc.dataDic = dataDic;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+       
     };
     self.naviTopView.addMethod = ^(NSString * _Nonnull statusType) {
         KG_CreateXunShiContentViewController *vc = [[KG_CreateXunShiContentViewController alloc]init];
@@ -536,13 +585,28 @@
     self.naviTopView = [[KG_ZhiWeiNaviTopView alloc]init];
     self.naviTopView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.naviTopView];
+   
+    
     self.naviTopView.didsel = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull statusType) {
-        
-        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
-        vc.dataDic = dataDic;
-        [self.navigationController pushViewController:vc animated:YES];
+        if([safeString(dataDic[@"status"]) isEqualToString:@"5"]){
+            [FrameBaseRequest showMessage:@"请先领取任务"];
+            return;
+        }
+        NSString *ss = safeString(dataDic[@"patrolCode"]);
+        if ([ss isEqualToString:@"monthSafeguard"] || [ss isEqualToString:@"daySafeguard"]  || [ss isEqualToString:@"yearSafeguard"] ||[ss isEqualToString:@"weekSafeguard"]) {
+            
+            KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
+            vc.dataDic = dataDic;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+            vc.dataDic = dataDic;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
         
     };
+    
     [self.naviTopView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
@@ -604,4 +668,28 @@
     
     
 }
+
+- (void)getLeaderNameData {
+    
+//
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/userList"]];
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        [UserManager shareUserManager].leaderNameArray = result[@"value"];
+        NSLog(@"完成");
+       
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSLog(@"完成");
+        
+    }];
+
+}
+
 @end

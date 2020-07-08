@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) NSMutableArray *videoArray;
 @property (nonatomic ,strong) void(^closeVideoMethod)(NSInteger index);
 @property (nonatomic ,strong) void(^addVideoMethod)();
+@property (nonatomic ,strong) void(^playVideoMethod)(NSString *dataDic);
 @end
 
 NS_ASSUME_NONNULL_END

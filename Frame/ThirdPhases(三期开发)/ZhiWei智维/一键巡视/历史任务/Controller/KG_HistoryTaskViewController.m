@@ -10,7 +10,8 @@
 #import "KG_HistoryTaskCell.h"
 #import "SegmentTapView.h"
 #import "RS_ConditionSearchView.h"
-#import "KG_NiControlSearchViewController.h"
+#import "KG_NiControlSearchViewController.h"、、
+#import "KG_XunShiReportDetailViewController.h"
 @interface KG_HistoryTaskViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 
@@ -49,7 +50,7 @@
     [self loadData];
 }
 - (void)createSegmentView{
-    NSArray *array = @[@"全部",@"一键巡视",@"例行维护",@"特殊保障"];
+    NSArray *array = @[@"全部",@"常规巡视",@"例行维护",@"特殊保障"];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.segment = [[SegmentTapView alloc] initWithFrame:CGRectMake(0, 8, SCREEN_WIDTH, 44) withDataArray:array withFont:15];
     self.segment.delegate = self;
@@ -86,24 +87,24 @@
     UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
     self.navigationItem.leftBarButtonItem = fixedButton;
     
-    UIButton *rightButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    rightButon.frame = CGRectMake(0,0,24,24);
-    [rightButon setImage:[UIImage imageNamed:@"search_icon"] forState:UIControlStateNormal];
-    rightButon.titleLabel.font = [UIFont systemFontOfSize:16];
-    [rightButon setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
-    [rightButon addTarget:self action:@selector(serachMethod) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightfixedButton = [[UIBarButtonItem alloc]initWithCustomView:rightButon];
+//    UIButton *rightButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    rightButon.frame = CGRectMake(0,0,24,24);
+//    [rightButon setImage:[UIImage imageNamed:@"search_icon"] forState:UIControlStateNormal];
+//    rightButon.titleLabel.font = [UIFont systemFontOfSize:16];
+//    [rightButon setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+//    [rightButon addTarget:self action:@selector(serachMethod) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *rightfixedButton = [[UIBarButtonItem alloc]initWithCustomView:rightButon];
+//
+//    UIButton *screenButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    screenButon.frame = CGRectMake(0,0,24,24);
+//    [screenButon setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
+//    screenButon.titleLabel.font = [UIFont systemFontOfSize:16];
+//    [screenButon setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+//    [screenButon addTarget:self action:@selector(screenMethod) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *rightscreen = [[UIBarButtonItem alloc]initWithCustomView:screenButon];
+//
     
-    UIButton *screenButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    screenButon.frame = CGRectMake(0,0,24,24);
-    [screenButon setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
-    screenButon.titleLabel.font = [UIFont systemFontOfSize:16];
-    [screenButon setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
-    [screenButon addTarget:self action:@selector(screenMethod) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightscreen = [[UIBarButtonItem alloc]initWithCustomView:screenButon];
-    
-    
-    self.navigationItem.rightBarButtonItems = @[rightscreen,rightfixedButton];
+//    self.navigationItem.rightBarButtonItems = @[rightscreen,rightfixedButton];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     self.title = [NSString stringWithFormat:@"历史任务"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
@@ -219,10 +220,10 @@
         
         NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
         if (biaoqianArr.count ) {
-            return 118;
+            return 128;
         }
     }
-    return  98;
+    return  108;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -255,23 +256,26 @@
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-            [FrameBaseRequest showMessage:result[@"errMsg"]];
-            
+            [FrameBaseRequest showMessage:result[@"errMsg"]];  [FrameBaseRequest showMessage:@"领取失败"];
             return ;
         }
-       
+       [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
+       [FrameBaseRequest showMessage:@"领取成功"];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
-        [FrameBaseRequest showMessage:@"网络链接失败"];
+        [FrameBaseRequest showMessage:@"领取失败"];
+       
         return ;
     }];
     
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
+     
+    KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+    vc.dataDic = dataDic;
+    [self.navigationController pushViewController:vc animated:YES];
     //    NSString *str = self.dataArray[indexPath.row];
     
 }

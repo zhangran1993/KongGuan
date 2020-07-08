@@ -18,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,copy)void (^xianchangxunshi )(NSDictionary *dataDic);
 @property (nonatomic,copy) NSString * xunshiString;
+
+@property (nonatomic,assign) NSInteger selIndex;
+
+@property (nonatomic,strong) UISegmentedControl *segmentedControl;
 @end
 
 NS_ASSUME_NONNULL_END

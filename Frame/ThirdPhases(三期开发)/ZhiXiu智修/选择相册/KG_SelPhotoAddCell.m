@@ -43,8 +43,9 @@
     
     
 }
-//关闭方法
+//方法
 - (void)closeBtnMethod:(UIButton *)button {
+    [UserManager shareUserManager].isDeletePicture = NO;
     if (self.addMethod) {
         self.addMethod();
     }

@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_SecondFloorViewController : UIViewController
 @property (strong, nonatomic) KG_StationDetailModel *dataModel;
+@property (copy, nonatomic)  NSString *idStr;
+@property (copy, nonatomic)  NSString *codeStr;
 @end
 
 NS_ASSUME_NONNULL_END

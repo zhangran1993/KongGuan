@@ -47,6 +47,8 @@
 
 //第二个维护view
 - (void)setUpWeihuView {
+    [self.stationWeihuView removeFromSuperview];
+    self.stationWeihuView = nil;
     self.stationWeihuView = [[UIView alloc]init];
     [self addSubview:self.stationWeihuView];
     self.stationWeihuView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];

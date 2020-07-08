@@ -7,7 +7,7 @@
 //
 #import "KG_CreateReportAlertView.h"
 #import "ZRDatePickerView.h"
-@interface  KG_CreateReportAlertView()<UITableViewDelegate,UITableViewDataSource,WYLDatePickerViewDelegate>{
+@interface  KG_CreateReportAlertView()<UITableViewDelegate,UITableViewDataSource,ZRDatePickerViewDelegate>{
     
     
 }
@@ -528,7 +528,7 @@
 - (ZRDatePickerView *)dataPickerview
 {
     if (!_dataPickerview) {
-        _dataPickerview = [[ZRDatePickerView alloc] initWithFrame:CGRectMake(0, self.height, self.width, 300) withDatePickerType:WYLDatePickerTypeYMDHMS];
+        _dataPickerview = [[ZRDatePickerView alloc] initWithFrame:CGRectMake(0, self.height, self.width, 300) withDatePickerType:ZRDatePickerTypeYMDHMS];
         _dataPickerview.delegate = self;
         _dataPickerview.title = @"请选择时间";
         _dataPickerview.isSlide = NO;

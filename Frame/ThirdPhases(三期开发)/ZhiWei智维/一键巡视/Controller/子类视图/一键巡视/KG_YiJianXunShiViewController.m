@@ -189,6 +189,8 @@
         self.alertInfo = dataDic;
         if ([safeString(self.alertInfo[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
 //            normalInspection一键巡视
+            _alertView = nil;
+            [_alertView removeFromSuperview];
             self.alertView.hidden = NO;
         }else {
             if (self.didsel) {
@@ -206,12 +208,12 @@
         
         NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
         if (biaoqianArr.count  &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
-            return 124;
+            return 134;
         }else {
-            return  98;
+            return  108;
         }
     }
-    return  98;
+    return  108;
     
        
 }

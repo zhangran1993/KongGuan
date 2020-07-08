@@ -95,7 +95,7 @@
 @property(strong,nonatomic)   UITableView *stationTabView;
 
 @property (nonatomic, strong)  UIView *tableHeadView;
-
+@property (strong, nonatomic) UIImageView *leftIconImage;
 @end
 
 @implementation StationDetailController
@@ -124,7 +124,7 @@
 
 - (void)createData {
     
-    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100 +31 +NAVIGATIONBAR_HEIGHT)];
     
    
     float moreheight = ZNAVViewH;
@@ -204,15 +204,18 @@
 }
 - (void)createNaviTopView {
     
-    self.topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+    self.topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100+31+NAVIGATIONBAR_HEIGHT)];
     [self.tableHeadView addSubview:self.topImage1];
-    self.topImage1.contentMode = UIViewContentModeScaleAspectFill;
+//    self.topImage1.contentMode = UIViewContentModeScaleAspectFill;
     self.topImage1.image  =[UIImage imageNamed:@"machine_rs"];
-    
-    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
+//    self.topImage1.contentMode = UIViewContentModeScaleAspectFill;
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100+31+NAVIGATIONBAR_HEIGHT)];
     [self.tableHeadView addSubview:topImage];
+    topImage.contentMode = UIViewContentModeScaleAspectFill;
     topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
-    
+    if(IS_IPHONE_X_SERIES) {
+        topImage.image  =[UIImage imageNamed:@"zhihuan_bgfullimage"];
+    }
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
     self.navigationView.backgroundColor = [UIColor clearColor];
@@ -238,21 +241,24 @@
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"head_icon");
-    leftImage.layer.cornerRadius = 17.f;
-    leftImage.contentMode = UIViewContentModeScaleAspectFill;
-    leftImage.layer.masksToBounds = YES;
-    [backBtn addSubview:leftImage];
-    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@34);
+    self.leftIconImage = [[UIImageView alloc] init];
+    self.leftIconImage.image = IMAGE(@"head_icon");
+    self.leftIconImage.layer.cornerRadius = 13.f;
+//    self.leftIconImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.leftIconImage.layer.masksToBounds = YES;
+    [backBtn addSubview:self.leftIconImage];
+    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@26);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
     }
     
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -304,15 +310,15 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-        //            [FrameBaseRequest logout];
-        //            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-        //            [self.navigationController popToViewController:viewCtl animated:YES];
-        //            return;
-        //        }else if(responses.statusCode == 502){
-        //
-        //        }
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            [self.navigationController popToViewController:viewCtl animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -338,13 +344,13 @@
     self.runView.backgroundColor = [UIColor whiteColor];
     self.runView.layer.cornerRadius = 9;
     self.runView.layer.masksToBounds = YES;
-//    [self.runView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +24);
-//        make.left.equalTo(self.view.mas_left).offset(16);
-//        make.right.equalTo(self.view.mas_right).offset(-16);
-//        make.height.equalTo(@100);
-//    }];
-//
+    [self.runView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.tableHeadView.mas_bottom);
+        make.left.equalTo(self.tableHeadView.mas_left).offset(16);
+        make.right.equalTo(self.tableHeadView.mas_right).offset(-16);
+        make.height.equalTo(@100);
+    }];
+
     UIImageView *runBgImage = [[UIImageView alloc]init];
     [self.runView addSubview:runBgImage];
     runBgImage.contentMode = UIViewContentModeScaleAspectFill;
@@ -469,7 +475,7 @@
     [self.runView addSubview:powerLalbel];
     powerLalbel.text = @"动力监测";
     powerLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    powerLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    powerLalbel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
     powerLalbel.numberOfLines = 1;
     powerLalbel.textAlignment = NSTextAlignmentLeft;
     
@@ -542,6 +548,14 @@
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
     }
 }
 
@@ -650,6 +664,8 @@
             }
             
             [self.topImage1 sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_imageUrl]] placeholderImage:[UIImage imageNamed:@"machine_rs"] ];
+          
+            
         }
         
         if(_stationDetail[@"station"][@"address"]){
@@ -693,13 +709,16 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-        //            return;
-        //        }else if(responses.statusCode == 502){
-        //
-        //        }
-        //[FrameBaseRequest showMessage:@"网络链接失败"];
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
     
@@ -824,16 +843,16 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-        //            [FrameBaseRequest logout];
-        //
-        //            LoginViewController *login = [[LoginViewController alloc] init];
-        //            [self.navigationController pushViewController:login animated:YES];
-        //            return;
-        //        }else if(responses.statusCode == 502){
-        //
-        //        }
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -1103,20 +1122,7 @@
     UIImageView *BigImg = [[UIImageView alloc]init];
     
     BigImg.contentMode = UIViewContentModeScaleAspectFit;
-    if (self.dataModel.roomList.count) {
-        [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:safeString(self.dataModel.roomList[0][@"picture"])]] placeholderImage:[UIImage imageNamed:@"huan_noStationBgImage"]];
-        if([userDefaults objectForKey:@"zhihuanImage"]){
-            stationString = [userDefaults objectForKey:@"zhihuanImage"];
-            
-            for (int i=0; i<self.dataModel.roomList.count; i++) {
-                
-                if([stationString isEqualToString:self.dataModel.roomList[i][@"code"]]) {
-                    [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:self.dataModel.roomList[i][@"picture"]]] placeholderImage:[UIImage imageNamed:@"huan_noStationBgImage"]];
-                    break;
-                }
-            }
-        }
-    }
+    
     
     
     UIView *bgImage = [[UIView alloc] init];
@@ -1143,6 +1149,41 @@
         make.width.equalTo(@(widthh));
         make.top.equalTo(bgImage.mas_top).offset(5);
     }];
+    UIImageView *noDataImage = [[UIImageView alloc]init];
+    [bgView addSubview:noDataImage];
+    [noDataImage mas_makeConstraints:^(MASConstraintMaker *make) {
+       
+        make.centerX.equalTo(bgImage.mas_centerX);
+        make.height.equalTo(@63);
+        make.width.equalTo(@120);
+        make.centerY.equalTo(bgImage.mas_centerY);
+    }];
+    noDataImage.image = [UIImage imageNamed:@"huan_noStationBgImage"];
+    noDataImage.hidden = YES;
+    if (self.dataModel.roomList.count) {
+        [BigImg sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:safeString(self.dataModel.roomList[0][@"picture"])]] ];
+        if([userDefaults objectForKey:@"zhihuanImage"]){
+            stationString = [userDefaults objectForKey:@"zhihuanImage"];
+            
+            for (int i=0; i<self.dataModel.roomList.count; i++) {
+                
+                if([stationString isEqualToString:safeString(self.dataModel.roomList[i][@"code"])]) {
+                    [BigImg sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:safeString(self.dataModel.roomList[i][@"picture"])]] ];
+                    
+                    if(safeString(self.dataModel.roomList[i][@"picture"]).length == 0){
+                        
+                         noDataImage.hidden = NO;
+                    }
+                        
+                    break;
+                }
+            }
+        }
+    }
+    
+    
+    
+    
     
     UIButton *rightBtn = [[UIButton alloc]init];
     [rightBtn setTitle:@"查看视频" forState:UIControlStateNormal];
@@ -1901,11 +1942,11 @@
     //
     //    self.weatherDic
     //天气
-    UIView *bottomView =  [[UIView alloc] initWithFrame:CGRectMake(16, 800, WIDTH_SCREEN-32, 149)];
+    UIView *bottomView =  [[UIView alloc] init];
     bottomView.backgroundColor = [UIColor whiteColor];
     [thiscell addSubview:bottomView];
     [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.secView.mas_bottom).offset(20);
+        make.top.equalTo(self.secView.mas_bottom).offset(10);
         make.left.equalTo(self.secView.mas_left);
         make.right.equalTo(self.secView.mas_right);
         make.height.equalTo(@149);
@@ -1913,7 +1954,8 @@
     UIImageView *bottomBgImage = [[UIImageView alloc] init];
     bottomBgImage.image =[UIImage imageNamed:@"weather_sunny"];
     if (self.weatherDic.count ) {
-        bottomBgImage.image = [UIImage imageNamed:safeString(self.weatherDic[@"condition"])];
+        
+        bottomBgImage.image = [UIImage imageNamed:[CommonExtension getWeatherImage:safeString(self.weatherDic[@"condition"])]];
         if ([safeString(self.weatherDic[@"condition"]) containsString:@"雨"]){
              bottomBgImage.image = [UIImage imageNamed:safeString(@"雨")];
         }else if ([safeString(self.weatherDic[@"condition"]) containsString:@"雪"]){
@@ -1922,12 +1964,16 @@
         if (bottomBgImage.image == nil) {
              bottomBgImage.image =[UIImage imageNamed:@"weather_sunny"];
         }
-        
     }
-    bottomBgImage.frame = CGRectMake(0,0, WIDTH_SCREEN-32,149);
     
-    bottomBgImage.contentMode = UIViewContentModeScaleAspectFill;
     [bottomView addSubview:bottomBgImage];
+    
+    [bottomBgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(bottomView.mas_bottom);
+        make.left.equalTo(bottomView.mas_left);
+        make.right.equalTo(bottomView.mas_right);
+        make.top.equalTo(bottomView.mas_top);
+    }];
     
     UIImageView *locImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"loc_white"]];
     [bottomView addSubview:locImage];
@@ -2132,16 +2178,16 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-        //            [FrameBaseRequest logout];
-        //
-        //            LoginViewController *login = [[LoginViewController alloc] init];
-        //            [self.navigationController pushViewController:login animated:YES];
-        //            return;
-        //        }else if(responses.statusCode == 502){
-        //
-        //        }
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            return;
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -2656,7 +2702,16 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 
 {
-    if (scrollView.contentOffset.y <-100) {
+    NSLog(@"contentOffset====%f",self.tableview.contentOffset.y);
+    if (self.tableview.contentOffset.y > 0) {
+        float orY= self.tableview.contentOffset.y/167;
+      
+        self.navigationView.backgroundColor = [UIColor colorWithRed:10.f/255.f green:51.f/255.f blue:167/255.f alpha:orY];
+    }else {
+        self.navigationView.backgroundColor = [UIColor clearColor];
+    }
+    
+    if (scrollView.contentOffset.y <-120) {
         NSLog(@"11111111%f",scrollView.contentOffset.y);
         KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
         vc.dataModel = self.dataModel;
@@ -2671,10 +2726,21 @@
         [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
         
         
-        [self.navigationController pushViewController:vc animated:nil];
+        [self.navigationController pushViewController:vc animated:NO];
     }
     
 }
+
+//CA_EXTERN CATransitionType const kCATransitionFade
+//    API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+//CA_EXTERN CATransitionType const kCATransitionMoveIn
+//    API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+//CA_EXTERN CATransitionType const kCATransitionPush
+//    API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+//CA_EXTERN CATransitionType const kCATransitionReveal
+//    API_AVAILABLE(macos(10.5), ios(2.0), watchos(2.0), tvos(9.0));
+
+/* Common transition subtypes. */
 - (void)pop
 
 {
@@ -2719,6 +2785,25 @@
 //}
 //
 
+-(UIImage *)imageWithBgColor:(UIColor *)color {
+    
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    
+    UIGraphicsBeginImageContext(rect.size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return image;
+    
+}
 
 @end
 

@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *sysStatus;
 @property (nonatomic, copy) NSString *temperature;
 @property (nonatomic, copy) NSString *useStatus;
-
+@property (nonatomic, copy) NSString *thumbnail;
 @end
 
 @interface KG_ZhiTaiModel : NSObject

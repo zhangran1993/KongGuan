@@ -18,6 +18,8 @@
 #import "KG_ControlGaoJingAlertView.h"
 #import "StationVideoListController.h"
 #import "KG_RunZhiYunViewController.h"
+#import "KG_ReViewPhotoView.h"
+#import <AVKit/AVKit.h>
 @interface KG_GaoJingDetailViewController ()<UITableViewDelegate,UITableViewDataSource,TZImagePickerControllerDelegate>
 
 
@@ -36,6 +38,10 @@
 @property (nonatomic, copy) NSString *removeStartTime;
 @property (nonatomic, copy) NSString *removeEndTime;
 
+@property (nonatomic, strong) KG_ReViewPhotoView *rePhotoView;
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+
 @end
 
 @implementation KG_GaoJingDetailViewController
@@ -43,6 +49,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self initViewData];
     [self createNaviTopView];
     [self createTableView];
@@ -60,8 +67,9 @@
     NSString *idCode = safeString(self.model.id);
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/getAlarmInfo/%@",idCode]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
-        
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
@@ -90,7 +98,7 @@
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         
     }];
 }
@@ -99,34 +107,66 @@
     
 }
 
-//创建导航栏视图
--  (void)createNaviTopView {
-    UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
-    [leftButon setImage:[UIImage imageNamed:@"back_black"] forState:UIControlStateNormal];
-    [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
-    //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
-    [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
-    self.navigationItem.leftBarButtonItem = fixedButton;
+- (void)createNaviTopView {
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
     
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
     
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    self.title = [NSString stringWithFormat:@"告警详情"];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"告警详情";
     
-    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
     
-    self.navigationController.navigationBar.translucent = NO;
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
     
-    //去掉透明后导航栏下边的黑边
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+   
 }
 
+
+- (void)backButtonClick:(UIButton *)button {
+   
+     [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [self.navigationController setNavigationBarHidden:NO];
+    [self.navigationController setNavigationBarHidden:YES];
     
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -146,6 +186,8 @@
     return theImage;
 }
 
+
+
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -154,7 +196,7 @@
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.mas_top);
+        make.top.equalTo(self.navigationView.mas_bottom);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     [self.tableView reloadData];
@@ -267,9 +309,17 @@
         cell.addVideoMethod = ^{
             [self pushTZVideoPickerController];
         };
+        cell.playVideoMethod = ^(NSString * _Nonnull dataDic) {
+            [self playVideo:dataDic];
+        };
         cell.closeVideoMethod = ^(NSInteger index) {
             [self updateDetailInfo];
             NSLog(@"%@",self.videoArray);
+        };
+        cell.zhankaiMethod = ^(NSString * _Nonnull dataDic) {
+        
+            NSLog(@"%@",dataDic);
+            [self zhankaiImage:dataDic];
         };
         
         cell.videoArray = self.videoArray;
@@ -314,6 +364,16 @@
     }
     
     return nil;
+    
+}
+
+- (void)playVideo:(NSString *)dic {
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", dic]];
+    AVPlayerViewController *ctrl = [[AVPlayerViewController alloc] init];
+    ctrl.player= [[AVPlayer alloc]initWithURL:url];
+    [ctrl.player play];
+    [self presentViewController:ctrl animated:YES completion:nil];
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -419,6 +479,7 @@
     imagePickerVc.allowPickingOriginalPhoto = NO;
     imagePickerVc.allowPickingGif = NO;
     imagePickerVc.maxImagesCount = 1;
+    imagePickerVc.allowPickingVideo = NO;
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         NSLog(@"%@",photos);
         
@@ -462,6 +523,7 @@
     imagePickerVc.allowPickingOriginalPhoto = NO;
     imagePickerVc.allowPickingGif = NO;
     imagePickerVc.maxImagesCount = 1;
+    imagePickerVc.allowPickingImage = NO;
     //    [imagePickerVc didFinishPickingVideoHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
     //        NSLog(@"%@",photos);
     //        [self.videoArray removeAllObjects];
@@ -576,20 +638,26 @@
     paramDic[@"videosList"] = self.videoArray;
     paramDic[@"imageList"] = self.imageArray;
     paramDic[@"recordStatus"] =safeString(self.dataModel.info[@"recordStatus"]) ;
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
             return ;
         }
-        [FrameBaseRequest showMessage:@"设置成功"];
+        if([UserManager shareUserManager].isDeletePicture) {
+            [FrameBaseRequest showMessage:@"删除成功"];
+        }else {
+            [FrameBaseRequest showMessage:@"上传成功"];
+        }
+        
         [self.tableView reloadData];
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -690,6 +758,10 @@
 
 //确认
 - (void)confirmData {
+    if ([safeString(self.dataModel.info[@"status"]) isEqualToString:@"removed"]) {
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能确认"];
+        return;
+    }
     //    确认某个告警事件
     //    前提：告警事件没有被挂起，并且告警事件状态是未确认
     //     {
@@ -710,7 +782,10 @@
 }
 //解除
 - (void)removeData {
-    
+    if ([safeString(self.dataModel.info[@"status"]) isEqualToString:@"removed"]) {
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能解除"];
+        return;
+    }
     KG_ControlGaoJingAlertView *view = [[KG_ControlGaoJingAlertView alloc]init];
     [JSHmainWindow addSubview:view];
     view.selTime = ^(NSString * _Nonnull timeStr, int index) {
@@ -776,6 +851,11 @@
     //         "status":"",            //告警事件的状态编码，为空即可，必填
     //         "hangUp": true         //挂起标志，固定值，必填
     //    }
+    if ([safeString(self.dataModel.info[@"status"]) isEqualToString:@"removed"]) {
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能挂起"];
+        return;
+    }
+    
     [self.paramDic removeAllObjects];
     NSDictionary *dic = self.dataModel.info;
     if ([safeString(dic[@"hangupStatus"]) boolValue] == NO &&( [safeString(dic[@"status"]) isEqualToString:@"unconfirmed"] ||[safeString(dic[@"status"]) isEqualToString:@"confirmed"])){
@@ -828,6 +908,40 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
+}
+
+- (void)zhankaiImage:(NSString *)str {
+    
+    UIImageView *imageView = [[UIImageView alloc]init];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:str]];
+    UIImage *image = imageView.image;
+    KG_ReViewPhotoView *review = [[KG_ReViewPhotoView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) Photo:image];
+    
+    CATransition *transition = [CATransition animation];
+    transition.type = kCATransitionReveal;
+    transition.duration = 0.5;
+    [review.layer addAnimation:transition forKey:nil];
+    [self.navigationController.view addSubview:review];
+    review.longpressblock =^(UIImage *blockimage) {
+        UIAlertController *alertVc = [UIAlertController alertControllerWithTitle:@"保存图片" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *savephotoAction = [UIAlertAction actionWithTitle:@"保存到本地" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIImageWriteToSavedPhotosAlbum(imageView.image, self, @selector(imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), NULL);
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alertVc addAction:savephotoAction];
+        [alertVc addAction:cancelAction];
+        [self.navigationController presentViewController:alertVc animated:YES completion:^{
+            
+        }];
+  
+    };
+}
+
+// 指定回调方法
+- (void)imageSavedToPhotosAlbum:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+    NSLog(@"保存成功");
 }
 
 @end

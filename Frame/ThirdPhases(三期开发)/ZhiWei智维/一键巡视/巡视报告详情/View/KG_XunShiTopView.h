@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) KG_XunShiReportDetailModel *model;
 @property (nonatomic,strong) NSDictionary *dataDic;
-
+@property (nonatomic,strong) NSDictionary *dic;
 @property (nonatomic,copy) void (^shouqiMethod)();
 @property (nonatomic,copy) void (^zhankaiMethod)();
 @end

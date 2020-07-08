@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy)   NSString *cardDisplay;
 @property (nonatomic ,copy)   NSString *tendency;
 @property (nonatomic ,copy)   NSString *inputEnd;
-
+@property (nonatomic ,strong) NSDictionary  *systemAndEquipmentInfo;
            
 @end
 

@@ -64,7 +64,7 @@
     self.titleLabel.text = @"5月10日综合楼停电维护";
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(8);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.mas_right).offset(-10);
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
     }];

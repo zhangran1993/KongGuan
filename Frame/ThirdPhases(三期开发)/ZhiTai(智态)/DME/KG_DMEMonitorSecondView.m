@@ -167,7 +167,7 @@
 - (void)setPangluDic:(NSDictionary *)pangluDic{
     _pangluDic = pangluDic;
     
-    NSString *pangluString = @"旁路：开";
+    NSString *pangluString = @"旁路：关";
     //监视器A
     if([safeString(pangluDic[@"valueAlias"]) isEqualToString:@"旁路都打开"]){
         pangluString = @"旁路：开";

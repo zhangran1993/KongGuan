@@ -48,4 +48,5 @@
 + (NSString *) getDeviceIcon:(NSString *)code ;
 
 + (NSString *) getWorkType:(NSString *)typeCode ;
++ (NSString *) getWeatherImage:(NSString *)weather;
 @end

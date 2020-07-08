@@ -61,5 +61,8 @@
     _receiveArr = receiveArr;
     self.logView.receiveArr = receiveArr;
 }
-
+- (void)setLogArr:(NSArray *)logArr {
+    _logArr = logArr;
+    self.logView.logArr = logArr;
+}
 @end

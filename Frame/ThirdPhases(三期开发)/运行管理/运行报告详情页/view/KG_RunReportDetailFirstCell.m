@@ -49,6 +49,7 @@
     self.titleLabel.font = [UIFont systemFontOfSize:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"黄城导航台2020.02.02-2020\n11111";
+    self.titleLabel.numberOfLines = 0;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(17);
         make.right.equalTo(self.mas_right).offset(-15);

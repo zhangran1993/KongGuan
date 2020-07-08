@@ -145,6 +145,9 @@
         make.centerY.equalTo(tableHeadView.mas_centerY);
         
     }];
+    if(self.currDic.count) {
+        iconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(self.currDic[@"category"])]];
+    }
     
     UILabel *titleLabel = [[UILabel alloc]init];
     [tableHeadView addSubview:titleLabel];
@@ -193,12 +196,17 @@
         make.width.equalTo(@32);
         make.height.equalTo(@17);
     }];
-    
+    if(self.currDic.count) {
+        self.headStatusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(self.currDic[@"alarmLevel"])]];
+    }
     self.headNumLabel = [[UILabel alloc]init];
     [tableHeadView addSubview:self.headNumLabel];
     self.headNumLabel.layer.cornerRadius = 5.f;
     self.headNumLabel.layer.masksToBounds = YES;
     self.headNumLabel.text = @"1";
+    if(self.currDic.count) {
+           self.headNumLabel.text = safeString(self.currDic[@"alarmNum"]);
+       }
     self.headNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.headNumLabel.font = [UIFont systemFontOfSize:10];
     self.headNumLabel.numberOfLines = 1;
@@ -250,4 +258,22 @@
     _currDic = currDic;
 }
 
+- (NSString *)getLevelImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"0"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"4"]) {
+        levelString = @"level_prompt";
+    }else if ([level isEqualToString:@"3"]) {
+        levelString = @"level_ciyao";
+    }else if ([level isEqualToString:@"2"]) {
+        levelString = @"level_important";
+    }else if ([level isEqualToString:@"1"]) {
+        levelString = @"level_jinji";
+    }
+    
+    //紧急
+    return levelString;
+}
 @end

@@ -46,9 +46,12 @@
 }
 
 - (void)setUpJiaoJieBanView {
+    [self.jiaojiebanView removeFromSuperview];
+    self.jiaojiebanView = nil;
     self.jiaojiebanView =  [[UIView alloc]init];
     [self addSubview:self.jiaojiebanView];
-    
+    [_jiaoJieBanTableView removeFromSuperview];
+    _jiaoJieBanTableView = nil;
   
     [self.jiaojiebanView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);
@@ -139,7 +142,7 @@
         _jiaoJieBanTableView.dataSource = self;
         _jiaoJieBanTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _jiaoJieBanTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _jiaoJieBanTableView.scrollEnabled = YES;
+        _jiaoJieBanTableView.scrollEnabled = NO;
         
         
     }

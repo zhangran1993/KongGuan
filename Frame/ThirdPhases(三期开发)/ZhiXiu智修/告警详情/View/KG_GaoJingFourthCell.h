@@ -18,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,strong) void(^closeMethod)(NSInteger index);
 @property (nonatomic ,strong) void(^addVideoMethod)();
-
+@property (nonatomic ,strong) void(^zhankaiMethod)(NSString *dataDic);
+@property (nonatomic ,strong) void(^playVideoMethod)(NSString *dataDic);
 @property (nonatomic ,strong) void(^closeVideoMethod)(NSInteger index);
 @end
 

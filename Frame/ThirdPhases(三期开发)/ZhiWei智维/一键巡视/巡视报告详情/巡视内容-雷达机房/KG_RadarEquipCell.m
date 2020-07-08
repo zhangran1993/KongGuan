@@ -59,7 +59,7 @@
         make.centerY.equalTo(self.mas_centerY);
         make.right.equalTo(self.mas_right).offset(-20);
         make.height.equalTo(self.mas_height);
-        make.width.equalTo(@150);
+        make.width.equalTo(@250);
     }];
     
     [self createSegment];
@@ -189,13 +189,26 @@
         if ([dataDic[@"childrens"] count] >0) {
             NSDictionary *dd = [dataDic[@"childrens"] firstObject];
             NSString *value = safeString(dd[@"value"]) ;
+            NSString *valueNum = safeString(self.dataDic[@"measureValueAlias"]) ;
             if (value.length >0) {
                 
-                NSArray *array =   [value componentsSeparatedByString:@"@&@"];
+                NSArray *array = [value componentsSeparatedByString:@"@&@"];
                 if (array.count == 2) {
                     [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
                     [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
-                    
+                    if (valueNum.length >0) {
+                        if ([valueNum isEqualToString:array[0]]) {
+                            self.segmentedControl.selectedSegmentIndex = 0;
+                        
+                        }else if ([valueNum isEqualToString:array[1]]) {
+                            self.segmentedControl.selectedSegmentIndex = 1;
+                        
+                        }else {
+                            self.segmentedControl.selectedSegmentIndex = 2;
+                        }
+                    }else {
+                       self.segmentedControl.selectedSegmentIndex = 2;
+                    }
                 }
             }
           
@@ -213,14 +226,14 @@
     
     self.segmentedControl = [[UISegmentedControl alloc]initWithItems:array];
     self.segmentedControl.frame = CGRectMake(SCREEN_WIDTH - 32 -84, 8,84,24);
-    
+    self.segmentedControl.userInteractionEnabled = NO;
     
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
     
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:10.0f]}forState:UIControlStateNormal];
     [self addSubview:self.segmentedControl];
-    self.segmentedControl.selectedSegmentIndex = 0;
-    self.segmentedControl.tintColor = [UIColor redColor];
+   
+    self.segmentedControl.tintColor = [UIColor colorWithHexString:@"#2F5ED1"];
     self.segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
     self.segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
     [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]]

@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KG_XunShiLogView : UIView
 
 @property (nonatomic,strong) NSArray *receiveArr;
+
+@property (nonatomic,strong) NSArray *logArr;
 @end
 
 NS_ASSUME_NONNULL_END

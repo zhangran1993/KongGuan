@@ -339,14 +339,14 @@
 
 + (void)getWithUrl:(NSString *)url param:(id)param success:(void (^)(id))success failure:(void (^)(NSURLSessionDataTask *))failure
 {
-    [SVProgressHUD dismiss];
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];//背景色
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];//遮罩透明SVProgressHUDMaskTypeClear
-    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];//菊花控件
-    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];//旋转小图标的 颜色
-    [SVProgressHUD showWithStatus:@"加载中…"];
-    
+//    [SVProgressHUD dismiss];
+//    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+//    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];//背景色
+//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];//遮罩透明SVProgressHUDMaskTypeClear
+//    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];//菊花控件
+//    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];//旋转小图标的 颜色
+//    [SVProgressHUD showWithStatus:@"加载中…"];
+//
     NSDictionary *params = [param mj_keyValues];
     NSString * urla = url;
     for (NSString *key in params) {

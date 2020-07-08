@@ -315,10 +315,16 @@
     
     NSString *code = safeString(_dataDic[@"name"]);
     self.leftImage.image =  [UIImage imageNamed:[NSString stringWithFormat:@"%@",[CommonExtension getDeviceIcon:safeString(_dataDic[@"category"])]]];
-     
+    if([safeString(_dataDic[@"category"]) isEqualToString:@"navigation"]){
+        if ([safeString(_dataDic[@"type"]) isEqualToString:@"dme"]) {
+            self.leftImage.image =  [UIImage imageNamed:@"导航DME"];
+        }else if ([safeString(_dataDic[@"type"]) isEqualToString:@"dvor"]) {
+            self.leftImage.image =  [UIImage imageNamed:@"导航DVOR"];
+        }
+    }
       
    
-    self.leftTitle.text = safeString(_dataDic[@"name"]);
+    self.leftTitle.text = [NSString stringWithFormat:@"%@",safeString(self.machineName)];
     
     if([self.dataDic[@"alias"] containsString:@"空调"]){
         
@@ -450,10 +456,27 @@
             make.top.equalTo(_centerView.mas_top);
             make.right.equalTo(_centerView.mas_right);
         }];
+        UIButton *btn = [[UIButton alloc]init];
+        [_centerView addSubview:btn];
+        [btn addTarget:self action:@selector(buttonGotoDetail) forControlEvents:UIControlEventTouchUpInside];
+        [btn setBackgroundColor:[UIColor clearColor]];
+        [btn setTitle:@"" forState:UIControlStateNormal];
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_centerView.mas_left);
+            make.height.equalTo(_centerView.mas_height);
+            make.top.equalTo(_centerView.mas_top);
+            make.right.equalTo(_centerView.mas_right);
+        }];
        
         
     }
     return _centerView;
+}
+
+- (void)buttonGotoDetail {
+    if (self.gotoDetail) {
+        self.gotoDetail();
+    }
 }
 
 - (void)setAlarmArray:(NSArray *)alarmArray {

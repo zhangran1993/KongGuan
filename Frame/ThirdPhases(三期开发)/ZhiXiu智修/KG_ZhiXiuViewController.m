@@ -17,6 +17,7 @@
 #import "KG_GaoJingModel.h"
 #import "KG_GaoJingDetailViewController.h"
 #import "UIViewController+YQSlideMenu.h"
+#import "LoginViewController.h"
 @interface KG_ZhiXiuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -42,12 +43,16 @@
 
 @property(strong,nonatomic)   NSArray *stationArray;
 @property(strong,nonatomic)   UITableView *stationTabView;
+
+@property (nonatomic, strong)  UIImageView    *leftIconImage;
+
 @end
 
 @implementation KG_ZhiXiuViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     [self.navigationController setNavigationBarHidden:YES];
     // Do any additional setup after loading the view
     self.isOpenSwh = NO;
     
@@ -85,10 +90,18 @@
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
     }
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_blueIcon"];
+    }
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-     [self.navigationController setNavigationBarHidden:NO];
+//     [self.navigationController setNavigationBarHidden:NO];
     
 }
 - (void)createSegmentView{
@@ -202,8 +215,8 @@
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
+       
         
-        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
 }
@@ -272,7 +285,17 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         
-        
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else {
+            [FrameBaseRequest showMessage:@"网络链接失败"];
+        }
     }];
     
 }
@@ -310,21 +333,24 @@
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"head_blueIcon");
-    [backBtn addSubview:leftImage];
-    leftImage.contentMode = UIViewContentModeScaleAspectFill;
-    leftImage.layer.cornerRadius = 17.f;
-    leftImage.layer.masksToBounds = YES;
-    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@34);
+    self.leftIconImage = [[UIImageView alloc] init];
+    self.leftIconImage.image = IMAGE(@"head_blueIcon");
+    [backBtn addSubview:self.leftIconImage];
+//    self.leftIconImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.leftIconImage.layer.cornerRadius = 13.f;
+    self.leftIconImage.layer.masksToBounds = YES;
+    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@26);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_blueIcon"];
     }
     UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     histroyBtn.titleLabel.font = FontSize(12);
@@ -574,7 +600,7 @@
         [self cb_dismissPopupViewControllerAnimated:YES completion:nil];
         
     }else {
-        KG_GaoJingModel *model = self.dataArray[indexPath.row];
+        KG_GaoJingModel *model = self.dataArray[indexPath.section];
         KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
         vc.model = model;
         [self.navigationController pushViewController:vc animated:YES];

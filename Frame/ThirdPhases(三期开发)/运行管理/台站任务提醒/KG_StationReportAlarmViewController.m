@@ -14,7 +14,7 @@
 
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) UIView *noDataView;
-
+@property (nonatomic,strong) NSArray *dataArray;
 
 @property (nonatomic, strong)  UILabel   *titleLabel;
 @property (nonatomic, strong)  UIView    *navigationView;
@@ -27,6 +27,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     [self.navigationController setNavigationBarHidden:YES];
+   
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -38,7 +39,7 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
 
-       
+    [self getStationReportAlarmInfo];
     [self createNaviTopView];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
@@ -93,17 +94,17 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    NSDictionary *dataDic = self.dataArray[indexPath.section];
     if (dataDic.count ) {
         
         NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
         if (biaoqianArr.count &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
-            return 124;
+            return 134;
         }else {
-            return  98;
+            return  108;
         }
     }
-    return  98;
+    return  108;
     
 }
 
@@ -169,16 +170,12 @@
     return 0.001;
 }
 
-- (void)setDataArray:(NSArray *)dataArray {
-    _dataArray = dataArray;
-    
-    [self.tableView reloadData];
-    
-    if (dataArray.count == 0) {
-        [self.view addSubview:self.noDataView];
-        [self.view bringSubviewToFront:self.noDataView];
-    }
-}
+//- (void)setDataArray:(NSArray *)dataArray {
+//    _dataArray = dataArray;
+//
+//    [self.tableView reloadData];
+//
+//}
 
 - (UIView *)noDataView {
     
@@ -309,7 +306,7 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"领取任务成功"];
-        
+        [self getStationReportAlarmInfo];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         
@@ -318,4 +315,48 @@
     }];
     
 }
+
+
+//请求地址：/intelligent/atcPatrolRecode/getStationTaskInfo
+//请求方式：GET
+//请求返回内容格式：
+//{
+- (void)getStationReportAlarmInfo {
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/getStationTaskInfo"]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        
+        self.dataArray = result[@"value"];
+        if (self.dataArray.count == 0) {
+            [self.view addSubview:self.noDataView];
+            [self.view bringSubviewToFront:self.noDataView];
+        }else {
+            [_noDataView removeFromSuperview];
+            _noDataView = nil;
+        }
+        [self.tableView reloadData];
+        NSLog(@"2");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        NSLog(@"完成2");
+      
+    }];
+    
+    
+}
+
+//- (void)setListArray:(NSArray *)listArray {
+//    _listArray = listArray;
+//    self.dataArray = listArray;
+//
+//}
 @end

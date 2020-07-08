@@ -47,6 +47,8 @@
 }
 //台站任务提醒
 - (void)setUpStationReportView {
+    [self.stationReportView removeFromSuperview];
+    self.stationReportView = nil;
     self.stationReportView = [[UIView alloc]init];
     [self addSubview:self.stationReportView];
     if (self.stationTaskInfoArr.count == 0) {

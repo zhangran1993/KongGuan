@@ -113,6 +113,7 @@
                 self.closeVideoMethod(index);
             }
         };
+       
         NSString *str = safeString(self.videoArray[indexPath.row]);
         if ([str containsString:@"http"]) {
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.videoArray[indexPath.row]]];
@@ -124,7 +125,7 @@
             CMTime time = CMTimeMake(1, 2);
             CGImageRef oneRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
             UIImage *oneImg = [[UIImage alloc] initWithCGImage:oneRef];
-            cell.iconImage.image = oneImg;
+            [cell.iconImage setImage:oneImg forState:UIControlStateNormal];
         }else {
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebNewHost,self.videoArray[indexPath.row]]];
             // 获取第一帧图片
@@ -135,15 +136,24 @@
             CMTime time = CMTimeMake(1, 2);
             CGImageRef oneRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
             UIImage *oneImg = [[UIImage alloc] initWithCGImage:oneRef];
-            cell.iconImage.image = oneImg;
+             [cell.iconImage setImage:oneImg forState:UIControlStateNormal];
         }
-      
+        [cell.iconImage addTarget:self action:@selector(zhankaiBtnMethod:) forControlEvents:UIControlEventTouchUpInside];
+        cell.iconImage.tag = indexPath.row;
         return cell;
         
     }
     
     return nil;
-  
+    
+}
+
+- (void)zhankaiBtnMethod :(UIButton *)button {
+    NSString *str = safeString(self.videoArray[button.tag]);
+    if (self.playVideoMethod) {
+        self.playVideoMethod(str);
+    }
+    
 }
 
 #pragma mark  定义每个UICollectionViewCell的大小

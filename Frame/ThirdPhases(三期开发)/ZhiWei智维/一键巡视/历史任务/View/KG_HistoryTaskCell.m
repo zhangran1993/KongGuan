@@ -84,19 +84,28 @@
     }];
     
     
-    self.statusLabel = [[UILabel alloc]init];
-    [self.rightView addSubview:self.statusLabel];
-    self.statusLabel.text = @"进行中";
-    self.statusLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    self.statusLabel.textAlignment = NSTextAlignmentLeft;
-    self.statusLabel.numberOfLines = 1;
-    [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//    self.statusLabel = [[UILabel alloc]init];
+//    [self.rightView addSubview:self.statusLabel];
+//    self.statusLabel.text = @"进行中";
+//    self.statusLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+//    self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+//    self.statusLabel.textAlignment = NSTextAlignmentLeft;
+//    self.statusLabel.numberOfLines = 1;
+//    [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//       
+//    }];
+
+    
+    self.statusImage  = [[UIImageView alloc]init];
+    [self.statusImage sizeToFit];
+    self.statusImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:self.statusImage];
+    [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightView.mas_right).offset(-16);
         make.width.lessThanOrEqualTo(@100);
         make.centerY.equalTo(self.iconImage.mas_centerY);
     }];
-    
+      
     
     self.detailLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.detailLabel];
@@ -177,7 +186,7 @@
     [self.taskButton addTarget:self action:@selector(taskButtonMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.taskButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightView.mas_right).offset(-16);
-        make.centerY.equalTo(self.rightView.mas_centerY);
+        make.centerY.equalTo(self.timeLabel.mas_centerY);
         make.width.equalTo(@70);
         make.height.equalTo(@24);
     }];
@@ -198,9 +207,7 @@
 - (void)setDataDic:(NSDictionary *)dataDic{
     _dataDic = dataDic;
     self.roomLabel.text = safeString(dataDic[@"engineRoomName"]);
-    self.statusLabel.text = [self getTaskStatus:safeString(dataDic[@"status"])];
-    self.statusLabel.textColor = [self getTaskColor:safeString(dataDic[@"status"])];
-    
+    self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dataDic[@"status"])]]];
     self.detailLabel.text = safeString(dataDic[@"taskName"]);
     self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"createTime"])];
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dataDic[@"leaderName"])];
@@ -208,12 +215,15 @@
         
         [self.taskButton setTitle:@"领取任务" forState:UIControlStateNormal];
         self.taskButton.hidden = NO;
+        self.personLabel.hidden = YES;
     }else if([safeString(dataDic[@"status"]) isEqualToString:@"6"]){
         
         [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
         self.taskButton.hidden = NO;
+        self.personLabel.hidden = YES;
     }else {
         self.taskButton.hidden = YES;
+        self.personLabel.hidden = NO;
     }
     NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
     if (biaoqianArr.count) {

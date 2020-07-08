@@ -465,6 +465,8 @@
         iconString =@"电子围栏";
     }else if([code isEqualToString:@"monitor"]){
         iconString =@"监控";
+    }else if([code isEqualToString:@"vhf"]){
+        iconString =@"VHF地空通信设备";
     }
     return iconString;
 }
@@ -509,5 +511,54 @@
         iconString = @"东三边导航运行岗";
     }
     return iconString;
+}
+
++ (NSString *) getWeatherImage:(NSString *)weather  {
+    
+    NSString *ss = @"晴天";
+    if ([weather isEqualToString:@"晴朗"] || [weather isEqualToString:@"大部晴朗"] ||[weather isEqualToString:@"晴"] ) {
+        ss = @"晴";
+    }else if ([weather isEqualToString:@"多云"] || [weather isEqualToString:@"少云"] ) {
+        ss = @"多云";
+    }else if ([weather isEqualToString:@"阴"] ) {
+        ss = @"阴";
+    }else if ([weather isEqualToString:@"雨"] || [weather isEqualToString:@"阵雨"]
+              ||[weather isEqualToString:@"局部阵雨"] || [weather isEqualToString:@"小阵雨"]
+              ||[weather isEqualToString:@"强阵雨"] || [weather isEqualToString:@"冻雨"]
+              ||[weather isEqualToString:@"小雨"] || [weather isEqualToString:@"中雨"]
+              ||[weather isEqualToString:@"暴雨"] || [weather isEqualToString:@"大暴雨"]
+              ||[weather isEqualToString:@"特大暴雨"] || [weather isEqualToString:@"小到中雨"]
+              ||[weather isEqualToString:@"中到大雨"] || [weather isEqualToString:@"大到暴雨"]
+              ) {
+        ss = @"雨";
+    }else if ([weather isEqualToString:@"雪"] || [weather isEqualToString:@"阵雪"]
+              ||[weather isEqualToString:@"小阵雪"] || [weather isEqualToString:@"小雪"]
+              ||[weather isEqualToString:@"中雪"] || [weather isEqualToString:@"大雪"]
+              ||[weather isEqualToString:@"暴雪"] || [weather isEqualToString:@"小到中雪"]
+              
+              ) {
+        ss = @"雪";
+    }else if ([weather isEqualToString:@"雨夹雪"]) {
+        ss = @"雨夹雪";
+    }else if ([weather isEqualToString:@"雾"] || [weather isEqualToString:@"冻雾"] ) {
+        ss = @"雾";
+    }else if ([weather isEqualToString:@"霾"] ) {
+        ss = @"霾";
+    }else if ([weather isEqualToString:@"沙尘暴"] || [weather isEqualToString:@"浮沉"]
+              ||[weather isEqualToString:@"尘卷风"] || [weather isEqualToString:@"扬沙"]
+              ||[weather isEqualToString:@"强沙尘暴"] ) {
+        ss = @"沙尘";
+    }else if ([weather isEqualToString:@"雷电"] || [weather isEqualToString:@"雷暴"] ) {
+        ss = @"雷电";
+    }else if ([weather isEqualToString:@"雷阵雨"]  ) {
+        ss = @"雷阵雨";
+    }else if ([weather isEqualToString:@"雷阵雨伴有冰雹"] ||[weather isEqualToString:@"雷阵雨伴冰雹"] ) {
+        ss = @"雷阵雨伴冰雹";
+    }else if ([weather isEqualToString:@"冰雹"] ||[weather isEqualToString:@"冰粒"]
+              ||[weather isEqualToString:@"冰针"] ) {
+        ss = @"冰雹";
+    }
+    
+    return ss;
 }
 @end

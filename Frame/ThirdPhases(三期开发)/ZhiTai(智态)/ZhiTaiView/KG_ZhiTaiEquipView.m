@@ -114,14 +114,17 @@
         //奇数
         if (i == 0)
         {
-            
-            NSDictionary *dataDic = self.dataArray[row *2 +i];
-            cell.dataDic = dataDic;
-            
+            if (self.dataArray.count >(row *2 +i)) {
+                NSDictionary *dataDic = self.dataArray[row *2 +i];
+                cell.dataDic = dataDic;
+            }
             
         }else {
-            NSDictionary *detailDic = self.dataArray[row *2 +i];
-            cell.detailDic = detailDic;
+            if (self.dataArray.count >(row *2 +i)) {
+                NSDictionary *detailDic = self.dataArray[row *2 +i];
+                cell.detailDic = detailDic;
+            }
+          
         }
     }
     

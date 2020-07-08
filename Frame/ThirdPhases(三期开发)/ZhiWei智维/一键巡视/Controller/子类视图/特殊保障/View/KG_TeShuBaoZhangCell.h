@@ -17,9 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *roomLabel;
 @property (nonatomic, strong) UILabel *statusLabel;
 @property (nonatomic, strong) UILabel *detailLabel;
-
-@property (nonatomic, strong) UIImageView *starImage;
-@property (nonatomic, strong) UILabel *starLabel;
+//
+//@property (nonatomic, strong) UIImageView *starImage;
+//@property (nonatomic, strong) UILabel *starLabel;
 
 @property (nonatomic, strong) UIImageView *timeImage;
 @property (nonatomic, strong) UILabel *timeLabel;

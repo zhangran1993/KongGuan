@@ -90,20 +90,27 @@
 
 - (void)queryData {
     
-    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
-    for (NSDictionary *dic in _machineDetail[@"tagList"]) {
-        if ([dic[@"emphasis"] boolValue]) {
-            [arr addObject:dic];
-        }
-    }
-    self.radarList  = arr;
+//    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+//    for (NSDictionary *dic in _machineDetail[@"tagList"]) {
+//        if ([dic[@"emphasis"] boolValue]) {
+//            [arr addObject:dic];
+//        }
+//    }
+    self.radarList  = _machineDetail[@"tagList"];
     [self.radarTableView reloadData];
-    self.title = [NSString stringWithFormat:@"%@-%@",safeString(_machineDetail[@"station_name"]),safeString(_machineDetail[@"machine_name"])];
+    self.title = [NSString stringWithFormat:@"%@-%@",safeString(_machineDetail[@"roomName"]),safeString(_machineDetail[@"name"])];
     NSString *code = safeString(_machineDetail[@"name"]);
     
     self.topIconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(_machineDetail[@"category"])]];
-    
-    self.topTitleLabel.text = safeString(_machineDetail[@"name"]);
+    if([safeString(_machineDetail[@"category"]) isEqualToString:@"navigation"]){
+        if ([safeString(_machineDetail[@"machine_name"]) isEqualToString:@"导航-DME"]) {
+            self.topIconImage.image =  [UIImage imageNamed:@"导航DME"];
+        }else if ([safeString(_machineDetail[@"machine_name"]) isEqualToString:@"导航-DVOR"]) {
+            self.topIconImage.image =  [UIImage imageNamed:@"导航DVOR"];
+        }
+    }
+         
+    self.topTitleLabel.text =  [NSString stringWithFormat:@"%@-%@",safeString(_machineDetail[@"roomName"]),safeString(_machineDetail[@"name"])];
 }
 #pragma mark - private methods 私有方法
 
@@ -213,7 +220,7 @@
             cell = [[RadarTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RadarTableViewCell"];
         }
         cell.titleLabel.text = safeString(self.radarList[indexPath.row][@"name"]) ;
-        cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(self.radarList[indexPath.row][@"valueAlias"])] ;
+        cell.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(self.radarList[indexPath.row][@"valueAlias"]),safeString(self.radarList[indexPath.row][@"unit"])] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }

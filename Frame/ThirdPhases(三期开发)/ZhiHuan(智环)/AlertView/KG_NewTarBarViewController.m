@@ -97,12 +97,13 @@
     KG_RunManagerViewController *threeVC = [[KG_RunManagerViewController alloc]init];
     [self setUpOneChildViewController:threeVC image:[UIImage imageNamed:@"运行管理"] image2:[UIImage imageNamed:@"运行管理_sel"] title:@"运行"  type:0];
     // 添加第4个控制器
-    KG_ZhiWeiViewController *fourVC = [[KG_ZhiWeiViewController alloc]init];
-    [self setUpOneChildViewController:fourVC image:[UIImage imageNamed:@"智维"] image2:[UIImage imageNamed:@"智维_sel"] title:@"智维"  type:0];
+    KG_ZhiXiuViewController *fourVC = [[KG_ZhiXiuViewController alloc]init];
+    [self setUpOneChildViewController:fourVC image:[UIImage imageNamed:@"智修"] image2:[UIImage imageNamed:@"智修_sel"] title:@"智修"  type:0];
     
     // 添加第5个控制器
-    KG_ZhiXiuViewController *fiveVC = [[KG_ZhiXiuViewController alloc]init];
-    [self setUpOneChildViewController:fiveVC image:[UIImage imageNamed:@"智修"] image2:[UIImage imageNamed:@"智修_sel"] title:@"智修"  type:0];
+    KG_ZhiWeiViewController *fiveVC= [[KG_ZhiWeiViewController alloc]init];
+       [self setUpOneChildViewController:fiveVC image:[UIImage imageNamed:@"智维"] image2:[UIImage imageNamed:@"智维_sel"] title:@"智维"  type:0];
+    
     
     [self setSelectedIndex:2];
     self.selectedIndex = 2;
@@ -223,6 +224,66 @@
     }];
     
 }
+/**
+ 更新
+ */
+-(void)showUpdate:(NSString *) desc forceUpdate:(BOOL)forceUpdate{
+    UIViewController *vc = [UIViewController new];
+    
+    vc.view.frame = CGRectMake(0, 0, WIDTH_SCREEN,  HEIGHT_SCREEN);
+    vc.view.layer.masksToBounds = YES;
+    
+    UIView *commentView = [[UIView alloc]initWithFrame:CGRectMake(WIDTH_SCREEN/9, HEIGHT_SCREEN/6, WIDTH_SCREEN*7/9, FrameWidth(685))];
+    commentView.backgroundColor = [UIColor clearColor];
+    [vc.view addSubview:commentView];
+    
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"home_update_bg"]];
+    imgView.frame = commentView.bounds;
+    imgView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;//顶部固定，调整底部的距离
+    
+    [commentView insertSubview:imgView atIndex:0];
+    
+    UILabel * titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(50), FrameWidth(220), FrameWidth(380), FrameWidth(35))];
+    titleLabel.font = FontSize(14);
+    titleLabel.text = @"更新功能说明：";
+    [commentView addSubview:titleLabel];
+    
+    UILabel * descLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(50), FrameWidth(270), FrameWidth(390), FrameWidth(330))];
+    descLabel.font = FontSize(14);
+    descLabel.textColor = [UIColor lightGrayColor];
+    descLabel.text = desc;
+    //descLabel.textAlignment = NSTextAlignmentNatural;
+    descLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    descLabel.numberOfLines = 0;
+    
+    CGRect txRect = [desc boundingRectWithSize:CGSizeMake(FrameWidth(390),FrameWidth(330)) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:descLabel.font} context:nil];
+    descLabel.frame = CGRectMake(FrameWidth(50), FrameWidth(270),  FrameWidth(390), txRect.size.height);
+    [commentView addSubview:descLabel];
+    
+    
+    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(FrameWidth(60),FrameWidth(600),FrameWidth(370),FrameWidth(55))];
+    
+    [button addTarget:self action:@selector(isUpadte) forControlEvents:UIControlEventTouchUpInside];
+    [button setBackgroundImage:[UIImage imageNamed:@"home_update_btn"] forState:UIControlStateNormal];
+    
+    [commentView addSubview:button];
+    
+    
+    
+    UIButton *CloseBtn = [[UIButton alloc]initWithFrame:CGRectMake(WIDTH_SCREEN*7/9 - FrameWidth(35),-FrameWidth(10),FrameWidth(50),FrameWidth(50))];
+    
+    [CloseBtn addTarget:self action:@selector(tapAction) forControlEvents:UIControlEventTouchUpInside];
+    [CloseBtn setBackgroundImage:[UIImage imageNamed:@"home_update_close"] forState:UIControlStateNormal];
+    
+    [commentView addSubview:CloseBtn];
+    if( forceUpdate){
+        [CloseBtn setHidden:YES];
+    }
+    
+    [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromTop aligment:CBPopupViewAligmentTop overlayDismissed:nil];
+}
+
 
 
 @end

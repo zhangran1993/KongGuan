@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic,strong) NSArray *receiveArr;
+
+@property (nonatomic,strong) NSArray *logArr;
 @end
 
 NS_ASSUME_NONNULL_END

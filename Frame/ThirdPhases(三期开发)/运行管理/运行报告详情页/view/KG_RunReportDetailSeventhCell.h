@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_RunReportDetailSeventhCell : UITableViewCell
 @property (nonatomic ,strong) KG_RunReportDeatilModel *model;
+
+@property (nonatomic ,copy) NSString *pushType;
+@property (nonatomic,copy) void(^textString)(NSString *textStr);
 @end
 
 NS_ASSUME_NONNULL_END

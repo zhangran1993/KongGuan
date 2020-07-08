@@ -27,14 +27,14 @@
 }
 
 - (void)initView {
-    self.iconImage = [[UIImageView alloc]init];
+    self.iconImage = [[UIButton alloc]init];
     [self addSubview:self.iconImage];
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.width.height.equalTo(@70);
         make.left.equalTo(self.mas_left);
     }];
-    
+     
     
     self.closeBtn = [[UIButton alloc]init];
     [self addSubview:self.closeBtn];
@@ -51,11 +51,13 @@
 }
 //关闭方法
 - (void)closeBtnMethod:(UIButton *)button {
+    [UserManager shareUserManager].isDeletePicture = YES;
     if (self.closeMethod) {
         self.closeMethod(button.tag);
     }
     
 }
+
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
 

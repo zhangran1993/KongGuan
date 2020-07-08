@@ -48,23 +48,23 @@
         make.top.equalTo(self.mas_top);
     }];
     
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc]initWithItems:array];
-    segmentedControl.frame = CGRectMake(16, 8, SCREEN_WIDTH - 32,30);
-    [segmentedControl addTarget:self action:@selector(change:) forControlEvents:UIControlEventValueChanged];
+    self.segmentedControl = [[UISegmentedControl alloc]initWithItems:array];
+    self.segmentedControl.frame = CGRectMake(16, 8, SCREEN_WIDTH - 32,30);
+    [self.segmentedControl addTarget:self action:@selector(change:) forControlEvents:UIControlEventValueChanged];
     
     
-    [segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
+    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
     
-    [segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0f]}forState:UIControlStateNormal];
-    [self addSubview:segmentedControl];
-    segmentedControl.selectedSegmentIndex = 0;
-    segmentedControl.tintColor = [UIColor redColor];
-    segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
-    segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
-    [segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]]
+    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0f]}forState:UIControlStateNormal];
+    [self addSubview:self.segmentedControl];
+    self.segmentedControl.selectedSegmentIndex = 0;
+    self.segmentedControl.tintColor = [UIColor whiteColor];
+    self.segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
+    self.segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
+    [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]]
                                 forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
-    [segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#2F5ED1"]]
+    [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#2F5ED1"]]
                                 forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
     //scroView
@@ -115,6 +115,24 @@
         }
     };
     [scrollView addSubview:three.view];
+    
+    
+    [self.segmentedControl setSelectedSegmentIndex:[UserManager shareUserManager].zhiweiSegmentCurIndex];
+    switch ([UserManager shareUserManager].zhiweiSegmentCurIndex) {
+        case 0:
+            [scrollView setContentOffset:CGPointMake(0, 0)];
+            
+            break;
+        case 1:
+            [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH, 0)];
+            break;
+        case 2:
+            [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH*2, 0)];
+            break;
+        default:
+            break;
+    }
+   
 }
 - (void)change:(UISegmentedControl *)sender {
     NSLog(@"测试");
@@ -127,6 +145,7 @@
     }else if (sender.selectedSegmentIndex == 3){
         NSLog(@"4");
     }
+    [UserManager shareUserManager].zhiweiSegmentCurIndex = sender.selectedSegmentIndex;
     switch (sender.selectedSegmentIndex) {
         case 0:
             [scrollView setContentOffset:CGPointMake(0, 0)];
@@ -203,4 +222,5 @@
           
       }];
 }
+
 @end

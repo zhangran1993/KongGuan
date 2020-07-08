@@ -10,6 +10,7 @@
 #import "KG_SelPhotoCollectionViewCell.h"
 #import "KG_SelPhotoAddCell.h"
 #import "KG_ImagePickerView.h"
+#import <SDWebImage/UIButton+WebCache.h>
 @interface KG_SelPhotoView ()<UICollectionViewDataSource,UICollectionViewDelegate>{
     
 }
@@ -105,6 +106,7 @@
         }
         KG_SelPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"KG_SelPhotoCollectionViewCell" forIndexPath:indexPath];
         cell.closeBtn.tag = indexPath.row;
+       
         cell.closeMethod = ^(NSInteger index) {
             
             [self.dataArray removeObjectAtIndex:index];
@@ -116,18 +118,29 @@
         NSString *str = safeString(self.dataArray[indexPath.row]);
         if ([str containsString:@"http"]) {
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.dataArray[indexPath.row]]];
-            [cell.iconImage sd_setImageWithURL:url];
+//            [cell.iconImage sd_setImageWithURL:url];
+             [cell.iconImage sd_setImageWithURL:url forState:UIControlStateNormal];
         }else {
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebNewHost,self.dataArray[indexPath.row]]];
-            [cell.iconImage sd_setImageWithURL:url];
+           
+            [cell.iconImage sd_setImageWithURL:url forState:UIControlStateNormal];
         }
-        
+        [cell.iconImage addTarget:self action:@selector(zhankaiBtnMethod:) forControlEvents:UIControlEventTouchUpInside];
+        cell.iconImage.tag = indexPath.row;
         return cell;
         
     }
     
     return nil;
   
+}
+
+- (void)zhankaiBtnMethod :(UIButton *)button {
+     NSString *str = safeString(self.dataArray[button.tag]);
+    if (self.zhankaiMethod) {
+        self.zhankaiMethod(str);
+    }
+    
 }
 
 #pragma mark  定义每个UICollectionViewCell的大小

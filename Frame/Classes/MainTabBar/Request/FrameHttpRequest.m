@@ -126,6 +126,26 @@
     [session POST:url parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSHTTPCookieStorage* cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
         NSArray<NSHTTPCookie *> *cookies = [cookieStorage cookiesForURL:[NSURL URLWithString:WebNewHost]];
+        
+        
+        //获取cookie
+
+        NSArray*cookies1 = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+
+        //把cookie进行归档并转换为NSData类型
+
+        NSData*cookiesData = [NSKeyedArchiver archivedDataWithRootObject:cookies1];
+
+        //存储归档后的cookie
+
+        NSUserDefaults*userDefaults = [NSUserDefaults standardUserDefaults];
+
+        [userDefaults setObject: cookiesData forKey:@"cookie"];
+
+
+
+        
+        
         //NSMutableArray<NSDictionary *> *propertiesList = [[NSMutableArray alloc] init];
         [cookies enumerateObjectsUsingBlock:^(NSHTTPCookie * _Nonnull cookie, NSUInteger idx, BOOL * _Nonnull stop) {
             NSMutableDictionary *properties = [[cookie properties] mutableCopy];

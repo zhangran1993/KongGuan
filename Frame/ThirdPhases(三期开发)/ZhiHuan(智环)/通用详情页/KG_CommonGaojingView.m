@@ -77,7 +77,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if (self.dataArray.count == 1) {
+        return 80;
+    }
     return 40;
 }
 

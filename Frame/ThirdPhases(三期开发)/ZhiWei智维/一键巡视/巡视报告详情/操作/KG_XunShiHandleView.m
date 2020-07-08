@@ -131,14 +131,17 @@
     }
     
     cell.titleLabel.text = safeString(self.dataArray[indexPath.row]);
+    cell.titleLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     if (indexPath.row == 0) {
         cell.iconImage.image = [UIImage imageNamed:@"change_task"];
     }else if (indexPath.row == 1) {
-        cell.iconImage.image = [UIImage imageNamed:@"move_task"];
+        cell.iconImage.image = [UIImage imageNamed:@"move_task_gray"];
+        cell.titleLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
     }else if (indexPath.row == 2) {
         cell.iconImage.image = [UIImage imageNamed:@"report_task"];
     }else if (indexPath.row == 3) {
-        cell.iconImage.image = [UIImage imageNamed:@"delete_task"];
+        cell.iconImage.image = [UIImage imageNamed:@"delete_task_gray"];
+        cell.titleLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -148,16 +151,107 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-   
-    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    if (indexPath.row == 1 ||indexPath.row == 3) {
+        return;
+    }
+    NSString *dataStr = self.dataArray[indexPath.row];
+      
+    if (indexPath.row == 2) {
+        [self jiaoyanTijiao];
+       
+    }
    
     if (self.didsel) {
-        self.didsel(dataDic);
+        self.didsel(dataStr);
     }
     self.hidden = YES;
 }
 
 
 
+- (void)jiaoyanTijiao {
+   
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcRunReport/%@",@""]];
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+   
+        NSLog(@"完成");
+    
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSLog(@"完成");
+        
+    }];
+}
+//
+//任务保存/提交/移交校验接口：
+//请求地址：/intelligent/atcSafeguard/checkUpdate/{patrolId}/{oldUpdateTime}
+//其中，patrolId是任务的id；
+//oldUpdateTime是任务详情接口返回的taskLastUpdateTime字段，精确到ms的时间戳
+//请求方式：GET
+//请求返回：
+//  {
+//      "errCode": 0,
+//      "errMsg": "",
+//      "value": {
+//        "isUpdateEnable": true,            //可以正常提交
+//        "description": "Update Enable"
+//      }
+//}
+//
+//{
+//      "errCode": 0,
+//      "errMsg": "",
+//      "value": {
+//        "isUpdateEnable": false,            //前台提示用户是否要覆盖别人的提交
+//        "description": "Someone has changed this Task"
+//      }
+//}
+
+//请求地址：/intelligent/atcSafeguard/updateAtcPatrolRecode
+//请求方式：POST
+//请求Body：
+//{
+//    "id": "XXX",                                       //任务Id，必填
+//    "result": "{"XXX":"XXX"}",                          //存储巡查结果
+//    "status": "2",                                       //任务状态，固定为2
+//    "remark": "{"XXX":"XXX"}",                         //存储备注内容
+//    "patrolName": "XXX",                               //任务执行负责人Id
+//    "atcPatrolLabelList": ["name": "XXX"],                 //标签列表
+//"description": "XXX",                      //巡视结果，仅巡视任务支持，默认填充为空
+//    "atcPatrolWorkList": ["workPersonName": "XXX"]        //执行人id列表
+//}
+//其中：
+//result和remark采用JSONObject的数据格式，key存储父节点的id，value存内容。
+//如上图片所示：
+//result里面有两个key-value对，一个key是“环境内容”所在节点的id，value是“干净”；一个key是“告警延时”所在节点的id，value是“18s”。
+//remark里面有两个key-value对，参考如下模板内容配置页面，一个key是“环境内容”所在节点的id，value是“环境内容巡查准确”；一个key是“台站环境巡视”所在节点的id，value是“台站环境巡查正确”。
+//
+//请求返回：
+//如：
+//{
+//    "id": "0658e77a25a942fd8ae0be2ee73f658d",
+//    "result": "{
+//"99f29833-0c39-48f9-81b3-9246e25ee9f7":"干净",
+//"233b470f-0d6f-43a6-9f35-dcaa43657e27":"18s"
+//}",
+//    "status": "2",
+//     "description": "",
+//    "remark": "{
+//"99f29833-0c39-48f9-81b3-9246e25ee9f7":"环境内容巡查准确",
+//"fb86ae3a-1344-42f0-8fab-636f599b694b":"台站环境巡查正确"
+//}",
+//    "patrolName": "c27b7e2f-cea2-4c70-8e87-4c8ee166e5ff",
+//    "atcPatrolLabelList": [{"name": "DVOR"},{"name": "油机"}],
+//    "atcPatrolWorkList": [{
+//            "workPersonName": "1d13c2dc-fb3a-441f-976d-7a7537018245"
+//         }, {
+//            "workPersonName": "304df150-599b-4c60-8b36-9613d913c467"
+//    }]
+//}
 @end

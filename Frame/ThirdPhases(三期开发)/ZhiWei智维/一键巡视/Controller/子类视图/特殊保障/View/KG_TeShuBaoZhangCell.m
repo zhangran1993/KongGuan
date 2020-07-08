@@ -120,28 +120,28 @@
         make.top.equalTo(self.iconImage.mas_bottom).offset(12);
         make.height.equalTo(@14);
     }];
-    
-    self.starImage = [[UIImageView alloc]init];
-    [self.rightView addSubview:self.starImage];
-    self.starImage.image = [UIImage imageNamed:@"yellow_staricon"];
-    [self.starImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImage.mas_left);
-        make.top.equalTo(self.detailLabel.mas_bottom).offset(9.5);
-        make.width.height.equalTo(@12);
-    }];
-    self.starLabel = [[UILabel alloc]init];
-    [self.rightView addSubview:self.starLabel];
-    self.starLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.starLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
-    self.starLabel.textAlignment = NSTextAlignmentLeft;
-    self.starLabel.numberOfLines = 1;
-    self.starLabel.text = @"20#电池内阻";
-    [self.starLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.starImage.mas_right).offset(6);
-        make.right.equalTo(self.rightView.mas_right).offset(-20);
-        make.centerY.equalTo(self.starImage.mas_centerY);
-        make.height.equalTo(@14);
-    }];
+//
+//    self.starImage = [[UIImageView alloc]init];
+//    [self.rightView addSubview:self.starImage];
+//    self.starImage.image = [UIImage imageNamed:@"yellow_staricon"];
+//    [self.starImage mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.iconImage.mas_left);
+//        make.top.equalTo(self.detailLabel.mas_bottom).offset(9.5);
+//        make.width.height.equalTo(@12);
+//    }];
+//    self.starLabel = [[UILabel alloc]init];
+//    [self.rightView addSubview:self.starLabel];
+//    self.starLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+//    self.starLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
+//    self.starLabel.textAlignment = NSTextAlignmentLeft;
+//    self.starLabel.numberOfLines = 1;
+//    self.starLabel.text = @"20#电池内阻";
+//    [self.starLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.starImage.mas_right).offset(6);
+//        make.right.equalTo(self.rightView.mas_right).offset(-20);
+//        make.centerY.equalTo(self.starImage.mas_centerY);
+//        make.height.equalTo(@14);
+//    }];
     self.timeImage = [[UIImageView alloc]init];
     [self.rightView addSubview:self.timeImage];
     self.timeImage.image = [UIImage imageNamed:@"calendar_icon"];
@@ -158,7 +158,7 @@
     self.timeLabel.numberOfLines = 1;
     self.timeLabel.text = @"2020.01.12 09:00";
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.starImage.mas_right).offset(6);
+        make.left.equalTo(self.timeImage.mas_right).offset(6);
         make.right.equalTo(self.rightView.mas_right).offset(-20);
         make.centerY.equalTo(self.timeImage.mas_centerY);
         make.height.equalTo(@14);
@@ -186,7 +186,7 @@
     [self.taskButton addTarget:self action:@selector(taskButtonMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.taskButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightView.mas_right).offset(-16);
-        make.centerY.equalTo(self.rightView.mas_centerY);
+        make.centerY.equalTo(self.timeImage.mas_centerY);
         make.width.equalTo(@70);
         make.height.equalTo(@24);
     }];
@@ -214,12 +214,15 @@
         
         [self.taskButton setTitle:@"领取任务" forState:UIControlStateNormal];
         self.taskButton.hidden = NO;
+        self.personLabel.hidden = YES;
     }else if([safeString(dataDic[@"status"]) isEqualToString:@"6"]){
         
         [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
         self.taskButton.hidden = NO;
+        self.personLabel.hidden = YES;
     }else {
         self.taskButton.hidden = YES;
+        self.personLabel.hidden = NO;
     }
 //    NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
 //    if (biaoqianArr.count) {
@@ -261,37 +264,32 @@
         
        
         witdth = fontRect.size.width ;
-        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 1.5, 9, 9)];
-        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 0, 12, 12)];
+        if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"0"])  {
             detailImage.image = [UIImage imageNamed:@"gray_qizi"];
-        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
-            detailImage.image = [UIImage imageNamed:@"red_qizi"];
-        }else {
+        }else if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"1"])  {
             detailImage.image = [UIImage imageNamed:@"lv_qizi"];
+        }else {
+            detailImage.image = [UIImage imageNamed:@"red_qizi"];
         }
         [self.statusView addSubview:detailImage];
         
-       
+        
         UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(12 +orX, 0,witdth, 12)];
         detailLabel.text = safeString(array[i][@"engineRoomName"]);
         [self.statusView addSubview:detailLabel];
-        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"3"])  {
+        if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"0"])  {
             detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
-        }else if ([safeString(self.dataDic[@"status"]) isEqualToString:@"4"])  {
-            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
-        }else {
+        }else if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"1"])  {
             detailLabel.textColor = [UIColor colorWithHexString:@"#03C3B6"];
+        }else {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
         }
-       
+        
         detailLabel.font = [UIFont systemFontOfSize:12];
         detailLabel.numberOfLines = 1;
         orX += fontRect.size.width+12 ;
     }
-    
-   
-   
-    
- 
    
 }
 

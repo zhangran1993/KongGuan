@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDictionary *dataDic;
 
 @property (nonatomic, strong) NSArray *alarmArray;
+
+@property (nonatomic ,copy) void (^gotoDetail)();
+@property (nonatomic ,copy) NSString *machineName;
 @end
 
 NS_ASSUME_NONNULL_END

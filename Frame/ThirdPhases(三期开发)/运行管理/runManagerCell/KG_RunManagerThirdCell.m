@@ -77,6 +77,9 @@
 
 
 - (void)setUpRunReportView {
+    
+    [self.runReprtView removeFromSuperview];
+    self.runReprtView = nil;
     self.runReprtView =  [[UIView alloc]init];
     
     [self addSubview:self.runReprtView];

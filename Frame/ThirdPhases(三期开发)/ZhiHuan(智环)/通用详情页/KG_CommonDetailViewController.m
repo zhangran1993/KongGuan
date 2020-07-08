@@ -13,6 +13,8 @@
 #import "StationMachineDetailMoreController.h"
 #import "KG_NiControlViewController.h"
 #import "KG_KongTiaoControlView.h"
+#import "KG_AccessCardView.h"
+#import "KG_AccessCardLogViewController.h"
 @interface KG_CommonDetailViewController ()<UIScrollViewDelegate>
 //topview
 @property (nonatomic, strong) UIView         *topView;
@@ -51,7 +53,7 @@
     [self createTopView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlLog:) name:@"controlLog" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreCanshu:) name:@"moreCanshu" object:nil];
-   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlAccessLog:) name:@"controlAccessLog" object:nil];
     
 }
 -(void)dealloc
@@ -63,6 +65,16 @@
 
 }
 
+
+- (void)controlAccessLog:(NSNotification *)notification {
+    NSDictionary *dic = notification.object;
+    KG_AccessCardLogViewController *vc = [[KG_AccessCardLogViewController alloc]init];
+    if (dic.count) {
+        vc.dic = dic;
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
 - (void)controlLog:(NSNotification *)notification {
     KG_NiControlViewController *vc = [[KG_NiControlViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -120,7 +132,7 @@
     UIBarButtonItem *rightfixedButton = [[UIBarButtonItem alloc]initWithCustomView:rightButon];
     self.navigationItem.rightBarButtonItem = rightfixedButton;
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    self.title = [NSString stringWithFormat:@"%@-%@",_station_name,_machine_name];
+    self.title = [NSString stringWithFormat:@"%@",_machine_name];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
     
     [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
@@ -310,7 +322,15 @@
     }
     NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
     self.topLeftImage.image =  [UIImage imageNamed:[NSString stringWithFormat:@"%@2",[CommonExtension getDeviceIcon:safeString(dataDic[@"category"])]]];
-      
+    if([safeString(dataDic[@"category"]) isEqualToString:@"navigation"]){
+        if ([safeString(dataDic[@"type"]) isEqualToString:@"dme"]) {
+            self.topLeftImage.image =  [UIImage imageNamed:@"导航DME2"];
+        }else if ([safeString(dataDic[@"type"]) isEqualToString:@"dvor"]) {
+            self.topLeftImage.image =  [UIImage imageNamed:@"导航DVOR2"];
+        }
+    }
+    
+    
     self.topTitleLabel.text = safeString(dataDic[@"alias"]);
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
@@ -342,11 +362,11 @@
     [self.view addSubview:scrollView];
     _scrollView = scrollView;
     
-    if ([self.machine_name isEqualToString:@"空调"]) {
+    if ([self.machine_name isEqualToString:@"门禁"]) {
         NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
            for (int i = 0; i < self.dataArray.count; i++) {
                
-               KG_KongTiaoControlView *viewcon= [[KG_KongTiaoControlView alloc] initWithFrame:CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH-32, self.scrollView.frame.size.height)];
+               KG_AccessCardView *viewcon= [[KG_AccessCardView alloc] initWithFrame:CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH-32, self.scrollView.frame.size.height)];
                
                equipmentDetailsModel *detailModel = self.dataArray[i];
                
@@ -387,21 +407,73 @@
                
            }
            
-    }else {
+    }else if ([self.machine_name isEqualToString:@"空调"]) {
+        NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
+                  for (int i = 0; i < self.dataArray.count; i++) {
+                      
+                      KG_KongTiaoControlView *viewcon= [[KG_KongTiaoControlView alloc] initWithFrame:CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH-32, self.scrollView.frame.size.height)];
+                      
+                      equipmentDetailsModel *detailModel = self.dataArray[i];
+                      
+                      NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
+                      viewcon.alarmArray = detailModel.equipmentAlarmInfo;
+                                                     
+                      viewcon.dataDic = dataDic;
+                      viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
+                      NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
+                      
+                      NSDictionary * Detail = @{@"station_name":_station_name,
+                                                @"machine_name":_machine_name,
+                                                @"name":equipmentDetails[i][@"equipment"][@"alias"],
+                                                @"alias":equipmentDetails[i][@"equipment"][@"alias"],
+                                                @"code":equipmentDetails[i][@"equipment"][@"code"],
+                                                @"roomName":equipmentDetails[i][@"equipment"][@"roomName"],
+                                                @"picture":equipmentDetails[i][@"equipment"][@"picture"],
+                                                @"status":equipmentDetails[i][@"status"],
+                                                @"level":equipmentDetails[i][@"level"]?equipmentDetails[i][@"level"]:@"",
+                                                @"num":equipmentDetails[i][@"num"]?equipmentDetails[i][@"num"]:@"",
+                                                @"category":equipmentDetails[i][@"equipment"][@"category"],
+                                                @"tagList":equipmentDetails[i][@"equipment"][@"measureTagList"],
+                                                
+                                                
+                                                @"description":equipmentDetails[i][@"equipment"][@"description"]
+                      };
+                      viewcon.moreAction = ^{
+                          StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
+                          vc.machineDetail = Detail;
+                          
+                          [self.navigationController pushViewController:vc animated:YES];
+                      };
+                      
+                      
+                      
+                      NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
+                      [_scrollView addSubview:viewcon];
+                      
+                  }
         
- 
-    
+    }else {
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+        for (int i = 0; i < self.dataArray.count; i++) {
+            equipmentDetailsModel *detailModel = self.dataArray[i];
+            if ([safeString(detailModel.equipment[@"category"]) isEqualToString:safeString(self.category)]) {
+                [arr addObject:detailModel];
+            }
+        }
+        
     
     NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
-    for (int i = 0; i < self.dataArray.count; i++) {
+     for (int i = 0; i < arr.count; i++) {
         
         KG_CommonDetailView *viewcon= [[KG_CommonDetailView alloc] init];
-        
+         viewcon.gotoDetail = ^{
+             self.tabBarController.selectedIndex = 3;
+         };
         equipmentDetailsModel *detailModel = self.dataArray[i];
         
         NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
         viewcon.alarmArray = detailModel.equipmentAlarmInfo;
-                                       
+        viewcon.machineName = self.machine_name;
         viewcon.dataDic = dataDic;
         viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
         NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
@@ -476,7 +548,8 @@
         NSDictionary *di = [self.dataArray[self.currIndex] mj_keyValues];
         _station_code = safeString(di[@"equipment"][@"stationCode"]);
         _station_name = safeString(di[@"equipment"][@"stationName"]);
-        self.title = [NSString stringWithFormat:@"%@-%@",safeString(di[@"equipment"][@"stationName"]),safeString(di[@"equipment"][@"name"])];
+        self.machine_name = safeString(di[@"equipment"][@"alias"]);
+        self.title = [NSString stringWithFormat:@"%@",safeString(self.machine_name)];
         [self refreshData];
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
@@ -499,9 +572,15 @@
     NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
   
     self.topLeftImage.image =  [UIImage imageNamed:[NSString stringWithFormat:@"%@2",[CommonExtension getDeviceIcon:safeString(dataDic[@"category"])]]];
+    if([safeString(dataDic[@"category"]) isEqualToString:@"navigation"]){
+        if ([safeString(dataDic[@"type"]) isEqualToString:@"dme"]) {
+            self.topLeftImage.image =  [UIImage imageNamed:@"导航DME2"];
+        }else if ([safeString(dataDic[@"type"]) isEqualToString:@"dvor"]) {
+            self.topLeftImage.image =  [UIImage imageNamed:@"导航DVOR2"];
+        }
+    }
     
-    
-    self.topTitleLabel.text = safeString(dataDic[@"alias"]);
+    self.topTitleLabel.text = safeString(self.machine_name);
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];

@@ -10,6 +10,7 @@
 #import "KG_XunShiSegmentView.h"
 #import "KG_LiXingWeiHuCell.h"
 #import "KG_XunShiLogCell.h"
+#import "KG_GetLogCell.h"
 @interface KG_XunShiLogView ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic ,strong) UITableView *tableView;
@@ -19,6 +20,9 @@
 
 @property (nonatomic, strong) UIView *bottomView;
 
+@property (nonatomic, strong) UIView *bottomLogView;
+@property (nonatomic ,strong) NSMutableArray *logArray;
+@property (nonatomic ,strong) UITableView *logTableView;
 @end
 
 @implementation KG_XunShiLogView
@@ -27,12 +31,14 @@
     self = [super init];
     if (self) {
         [self createView];
+       
     }
     return self;
 }
 - (void)createView {
     self.segment = [[KG_XunShiSegmentView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 45) withDataArray:[NSArray arrayWithObjects:@"回复",@"日志", nil] withFont:14];
     self.segment.delegate = self;
+    [self.segment selectIndex:2];
     [self addSubview:self.segment];
     [self addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -74,6 +80,19 @@
     }];
     textField.layer.cornerRadius = 4;
     textField.layer.masksToBounds = YES;
+    
+    self.bottomView.hidden = YES;
+    self.tableView.hidden = YES;
+    [self addSubview:self.logTableView];
+    [self.logTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.segment.mas_bottom);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.bottom.equalTo(self.mas_bottom);
+    }];
+   
+       
+    
 }
 
 - (void)addBtnMethod :(UIButton *)btn{
@@ -94,6 +113,30 @@
     }
     return _tableView;
 }
+
+- (UITableView *)logTableView {
+    if (!_logTableView) {
+        _logTableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _logTableView.delegate = self;
+        _logTableView.dataSource = self;
+        _logTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        _logTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _logTableView.scrollEnabled = YES;
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 6)];
+        _logTableView.tableHeaderView = headView;
+        headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    }
+    return _logTableView;
+}
+
+- (NSMutableArray *)logArray
+{
+    if (!_logArray) {
+        _logArray = [[NSMutableArray alloc] init];
+    }
+    return _logArray;
+}
+
 - (NSMutableArray *)dataArray
 {
     if (!_dataArray) {
@@ -104,14 +147,32 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.receiveArr.count;
     
-  
+    if ([self.logTableView isEqual:tableView]) {
+        return self.logArr.count;
+    }
+    return self.receiveArr.count;
 }
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    if ([self.logTableView isEqual:tableView]) {
+        
+        KG_GetLogCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_GetLogCell"];
+           if (cell == nil) {
+               cell = [[KG_GetLogCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_GetLogCell"];
+               cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+           }
+           cell.selectionStyle = UITableViewCellSelectionStyleNone;
+           NSDictionary *dic = self.logArr[indexPath.row];
+           cell.dic =dic;
+           
+           return cell;
+        
+    }
+    
     KG_XunShiLogCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_XunShiLogCell"];
     if (cell == nil) {
         cell = [[KG_XunShiLogCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_XunShiLogCell"];
@@ -130,7 +191,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if ([tableView isEqual:self.logTableView]) {
+        return 44;
+    }
     
     return  80;
 }
@@ -139,5 +202,10 @@
     _receiveArr = receiveArr;
     [self.tableView reloadData];
 }
+- (void)setLogArr:(NSArray *)logArr {
+    _logArr = logArr;
+    [self.logTableView reloadData];
+}
+
 
 @end

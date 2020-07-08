@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_HistoryTaskCell : UITableViewCell
-
+//状态image
+@property (nonatomic,strong) UIImageView *statusImage;
 @property (nonatomic, strong) UIView *rightView;
 @property (nonatomic, strong) UIImageView *statusCconImage;
 @property (nonatomic, strong) UIImageView *iconImage;

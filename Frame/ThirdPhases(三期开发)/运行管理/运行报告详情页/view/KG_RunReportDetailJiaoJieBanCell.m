@@ -44,7 +44,7 @@
     
     self.rightTitle.text = safeString(dic[@"successorName"]);
     
-    self.leftTime.text = [self timestampToTimeStr:safeString(dic[@"createTime"])];
+    self.leftTime.text = [self timestampToTimeStr:safeString(dic[@"handoverTime"])];
     
     self.rightTime.text = [self timestampToTimeStr:safeString(dic[@"acceptTime"])];
     

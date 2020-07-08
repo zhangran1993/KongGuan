@@ -104,8 +104,8 @@
     self.powLabel = [[UILabel alloc]init];
     [self addSubview:self.powLabel];
     self.powLabel.text = @"电池组2#";
-    self.powLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    self.powLabel.font = [UIFont systemFontOfSize:12];
+    self.powLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    self.powLabel.font = [UIFont systemFontOfSize:14];
     [self.powLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(14);
         make.top.equalTo(lineView.mas_bottom).offset(11);
@@ -127,13 +127,13 @@
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
     self.detailLabel.text = @"电池组2#";
-    self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    self.detailLabel.font = [UIFont systemFontOfSize:12];
+    self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    self.detailLabel.font = [UIFont systemFontOfSize:14];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.gaojingImage.mas_right).offset(14);
         make.top.equalTo(self.powLabel.mas_bottom).offset(8);
         make.height.equalTo(@24);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.mas_right).offset(-80);
     }];
     
     
@@ -144,7 +144,15 @@
     _model = model;
     
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(model.stationName),safeString(model.engineRoomName)];
-    self.iconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(model.equipmentCategory)]];
+    self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-蓝",[CommonExtension getDeviceIcon:safeString(model.equipmentCategory)]]];
+    
+    if([safeString(model.category) isEqualToString:@"navigation"]){
+        if ([safeString(model.type) isEqualToString:@"dme"]) {
+            self.iconImage.image =  [UIImage imageNamed:@"导航DME"];
+        }else if ([safeString(model.type) isEqualToString:@"dvor"]) {
+            self.iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
+        }
+     }
     
     self.timeLabel.text = [self timestampToTimeStr:safeString(model.happenTime)];
     

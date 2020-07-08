@@ -176,6 +176,8 @@
             
             return ;
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
+        [FrameBaseRequest showMessage:@"领取成功"];
        
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -254,12 +256,12 @@
         
         NSArray *biaoqianArr = dataDic[@"atcPatrolRoomList"];
         if (biaoqianArr.count &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
-            return 124;
+            return 134;
         }else {
-            return 98;
+            return 108;
         }
     }
-    return  98;
+    return  108;
     
 }
 

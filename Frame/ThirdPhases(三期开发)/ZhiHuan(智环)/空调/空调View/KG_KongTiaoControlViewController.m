@@ -604,6 +604,14 @@
     NSString *code = safeString(_dataDic[@"category"]);
     NSString *name = safeString(_dataDic[@"name"]);
     self.leftIcon.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(_dataDic[@"category"])]];
+    
+    if([safeString(_dataDic[@"category"]) isEqualToString:@"navigation"]){
+        if ([safeString(_dataDic[@"type"]) isEqualToString:@"dme"]) {
+            self.leftIcon.image =  [UIImage imageNamed:@"导航DME"];
+        }else if ([safeString(_dataDic[@"type"]) isEqualToString:@"dvor"]) {
+            self.leftIcon.image =  [UIImage imageNamed:@"导航DVOR"];
+        }
+    }
     if (safeString(dataDic[@"reverseControl"])) {
         [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
         self.confirmBtn.userInteractionEnabled = YES;

@@ -256,7 +256,11 @@
 
 - (void)getStationData {
 //    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c";
-     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/%@",self.dataModel.station[@"id"]]];
+    NSString *ss =self.idStr;
+    if (ss.length == 0) {
+        ss=self.dataModel.station[@"id"] ;
+    }
+     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/%@",ss]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -332,10 +336,13 @@
 //如: /intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod
 - (void)getStationHealthData {
     
-    
+    NSString *ss =self.codeStr;
+    if (ss.length == 0) {
+        ss = self.dataModel.station[@"code"] ;
+    }
     
 //    NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod";
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/%@/comprehensiveScoringMethod",self.dataModel.station[@"code"]]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/%@/comprehensiveScoringMethod",ss]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -436,6 +443,9 @@
 }
 
 - (void)refreshStationData {
+    if (!isSafeDictionary(self.stationDic)) {
+        return;
+    }
     self.stationName.text = safeString(self.stationDic[@"alias"]) ;
     self.locTitle.text = safeString(self.stationDic[@"address"]);
     
@@ -448,12 +458,26 @@
     self.bottomCenterTitle.text = [NSString stringWithFormat:@"%@",safeString(self.stationDic[@"name"])];
     NSString *timeStr = [self timestampToTimeStr:self.stationDic[@"lastUpdateTime"]];
     self.bottomLeftTitle.text = [NSString stringWithFormat:@"%@年投产",timeStr];
+    if([safeString(self.stationDic[@"clearanceRequirement"]) isEqualToString:@"navigation"]){
+         self.fangcangTitle.text = [NSString stringWithFormat:@"%@",@"导航"];
+    }else if([safeString(self.stationDic[@"clearanceRequirement"]) isEqualToString:@"radar"]){
+        self.fangcangTitle.text = [NSString stringWithFormat:@"%@",@"雷达"];
+    }else if([safeString(self.stationDic[@"clearanceRequirement"]) isEqualToString:@"local"]){
+        self.fangcangTitle.text = [NSString stringWithFormat:@"%@",@"本场"];
+    }else if([safeString(self.stationDic[@"clearanceRequirement"]) isEqualToString:@"shelter"]){
+        self.fangcangTitle.text = [NSString stringWithFormat:@"%@",@"方舱"];
+    }
+
+   
+    if (self.stationDic[@"nearField"]) {
+        self.yuanchangTitle.text = [NSString stringWithFormat:@"%@",@"近场"];
+    }else {
+        self.yuanchangTitle.text = [NSString stringWithFormat:@"%@",@"远场"];
+    }
+    
     
 
-    self.fangcangTitle.text = [NSString stringWithFormat:@"%@",safeString(self.stationDic[@"clearanceRequirement"])];
-    self.yuanchangTitle.text = [NSString stringWithFormat:@"%@",safeString(self.stationDic[@"environmentInformation"])];
-
-    [self.centerBgImag sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebHost,self.stationDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"Second_StationImage"] ];
+    [self.centerBgImag sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,self.stationDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"Second_StationImage"] ];
 }
 
 //将时间戳转换为时间字符串

@@ -8,6 +8,8 @@
 
 #import "KG_XunShiReportDetailViewController.h"
 #import "KG_XunShiReportDetailModel.h"
+#import "KG_XunShiReportDataModel.h"
+#import "KG_XunShiReportDataModel.h"
 #import "KG_XunShiTopView.h"
 #import "KG_XunShiHandleView.h"
 #import "KG_XunShiResultView.h"
@@ -26,6 +28,7 @@
 @property (nonatomic, strong)   UIView       *navigationView;
 @property (strong, nonatomic)   UIImageView  *topImage1;
 @property (strong, nonatomic)   KG_XunShiReportDetailModel *dataModel;
+@property (strong, nonatomic)   KG_XunShiReportDataModel *listModel;
 @property (strong, nonatomic)   KG_XunShiTopView *xunshiTopView;
 @property (strong, nonatomic)   KG_XunShiHandleView *xunShiHandelView;
 
@@ -44,7 +47,7 @@
 
 @property (strong, nonatomic)   NSArray *receiveArr;
 
-
+@property (strong, nonatomic)   NSArray *logArr;
 @property (nonatomic, strong)   UIView       *tableHeadView;
 
 @end
@@ -55,6 +58,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
+    self.listModel = [[KG_XunShiReportDataModel alloc]init];
     self.radarModel = [[taskDetail alloc]init];
     self.powerModel = [[taskDetail alloc]init];
     self.upsModel = [[taskDetail alloc]init];
@@ -63,7 +67,7 @@
     [self queryReportDetailData];
     [self getTemplateData];
    
-    self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
     
 }
@@ -156,7 +160,7 @@
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = self.view.backgroundColor;
+        _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
         
@@ -264,6 +268,9 @@
         if (self.receiveArr.count) {
             cell.receiveArr = self.receiveArr;
         }
+        if (self.logArr.count) {
+            cell.logArr = self.logArr;
+        }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
@@ -353,7 +360,13 @@
 - (void)moreAction {
     if (_xunShiHandelView== nil) {
         [JSHmainWindow addSubview:self.xunShiHandelView];
-        
+        self.xunShiHandelView.didsel = ^(NSString * _Nonnull dataStr) {
+            if ([dataStr isEqualToString:@"提交任务"]) {
+                NSLog(@"提交任务");
+            }else {
+                NSLog(@"修改任务");
+            }
+        };
         [self.xunShiHandelView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.view.mas_left);
             make.right.equalTo(self.view.mas_right);
@@ -372,13 +385,18 @@
 - (void)queryReportDetailData {
     NSString *rId = self.dataDic[@"id"];
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getTourInfoById/%@",rId]];
+    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
         [self.dataModel mj_setKeyValues:result[@"value"]];
+        [self.listModel mj_setKeyValues:result[@"value"]];
+    
         for (taskDetail *detailModel in self.dataModel.task) {
             if ([detailModel.engineRoomName isEqualToString:@"雷达机房"]) {
                 self.radarModel = detailModel;
@@ -391,12 +409,13 @@
         
         [self getTaskFaBuTiJiaoData];
         [self getReceviceData];
+        [self getLogData];
         [self refreshData];
         
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-       
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -451,8 +470,8 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        self.xunshiTopView.dataDic = result[@"value"];
-        
+         self.xunshiTopView.dic = result[@"value"];
+               
         
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
@@ -474,6 +493,7 @@
 
 - (void)refreshData {
     self.xunshiTopView.model = self.dataModel;
+    self.xunshiTopView.dataDic =self.dataDic;
 //    self.radarView.detailModel = self.radarModel;
 //    self.powerView.detailModel = self.powerModel;
 //    self.upsView.detailModel = self.upsModel;
@@ -551,7 +571,7 @@
         ss = @"daizhixing_icon";
     }else if ([status isEqualToString:@"1"]) {
         ss = @"jinxingzhong_icon";
-    }else if ([status isEqualToString:@"0"]) {
+    }else if ([status isEqualToString:@"2"]) {
         ss = @"yiwancheng_icon";
     }else if ([status isEqualToString:@"3"]) {
         ss = @"yuqiweiwancheng_icon";
@@ -577,7 +597,7 @@
     
 //    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
     NSString *rId = self.dataDic[@"id"];
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolDialog/%@",@"67900de54fe34afda50bde26e2b40b0a"]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolDialog/%@",rId]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -597,4 +617,38 @@
         
     }];
 }
+
+
+//获得日志
+- (void)getLogData {
+    
+//    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
+    NSString *rId = self.dataDic[@"id"];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getAtcPatrolLog/%@/%@/%@",rId,@"1",@"100"]];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+       
+        if (isSafeDictionary(result[@"value"])) {
+            if (isSafeArray(result[@"value"][@"records"])) {
+                self.logArr = result[@"value"][@"records"];
+            }
+           
+        }
+        [self.tableView reloadData];
+        
+        
+        NSLog(@"1");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+}
+
 @end

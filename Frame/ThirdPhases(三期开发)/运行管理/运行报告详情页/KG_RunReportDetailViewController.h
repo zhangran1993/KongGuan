@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString * pushType;
 
-
+@property (nonatomic, strong) NSArray *jiaojiebanArray;
 @property (nonatomic, copy) NSString * endTime;
 @end
 

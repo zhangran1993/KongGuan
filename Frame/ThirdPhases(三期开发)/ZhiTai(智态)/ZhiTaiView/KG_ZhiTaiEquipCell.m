@@ -123,6 +123,9 @@
         make.width.equalTo(@10);
         make.height.equalTo(@10);
     }];
+    self.rightLabel.hidden = YES;
+    self.rightImage.hidden = YES;
+    self.rightNumLabel.hidden = YES;
 }
 
 
@@ -142,6 +145,16 @@
 }
 - (void)setDetailDic:(NSDictionary *)detailDic{
     _detailDic = detailDic;
+    if (detailDic.count) {
+        self.rightLabel.hidden = NO;
+        self.rightImage.hidden = NO;
+        self.rightNumLabel.hidden = NO;
+        
+    }else {
+        self.rightLabel.hidden = YES;
+        self.rightImage.hidden = YES;
+        self.rightNumLabel.hidden = YES;
+    }
     self.rightLabel.text = safeString(detailDic[@"name"]);
     self.rightImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",detailDic[@"alarmLevel"]]]];
     self.rightNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",detailDic[@"alarmLevel"]]];

@@ -27,6 +27,8 @@
 @property (nonatomic, strong)  UIView    *navigationView;
 @property (nonatomic, strong)  UIButton  *rightButton;
 @property (nonatomic, strong)  KG_RunReportDeatilModel *dataModel;
+
+@property (nonatomic, copy)  NSString *descriptionStr;
 @end
 
 @implementation KG_RunReportDetailViewController
@@ -140,53 +142,51 @@
         return 105;
     }else if (indexPath.section == 1) {
         int height = 0;
-        for (NSDictionary *dic in self.dataModel.autoAlarm) {
-            NSString *str = [NSString stringWithFormat:@"%d.%@%@",(int)indexPath.row +1,safeString(dic[@"name"]),safeString(dic[@"description"])];
-            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-            NSLog(@"%f",fontRect.size.height);
-            height += fontRect.size.height;
-        }
+        
+        NSString *str = safeString(self.dataModel.info[@"autoAlarmContent"]);
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        height += fontRect.size.height;
+        
         int height1 = 0;
-        for (NSDictionary *dic in self.dataModel.manualAlarm) {
-            CGRect fontRect = [safeString(dic[@"recordDescription"]) boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-            NSLog(@"%f",fontRect.size.height);
-            height1 += fontRect.size.height;
-        }
-        if(self.dataModel.manualAlarm.count == 0 &&self.dataModel.autoAlarm.count ==0){
+        NSString *str1 = safeString(self.dataModel.info[@"manualAlarmContent"]);
+        CGRect fontRect1 = [str1 boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        height1 += fontRect1.size.height;
+        
+        if(safeString(self.dataModel.info[@"manualAlarmContent"]).length == 0 &&safeString(self.dataModel.info[@"autoAlarmContent"]).length ==0){
             
             return 88;
         }
         
-        return height +height1 +88+60 + self.dataModel.manualAlarm.count *24 + self.dataModel.autoAlarm.count *24;
+        return height +height1 +88+60 +24;
     }else if (indexPath.section == 2) {
         int height = 0;
-        for (NSDictionary *dic in self.dataModel.changeManagement) {
-            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"implementationCase"])];
-            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-            NSLog(@"%f",fontRect.size.height);
-            height += fontRect.size.height;
-        }
         
-        return height +self.dataModel.changeManagement.count *24 +60;
+        NSString *str = safeString(self.dataModel.info[@"changeContent"]);
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        height += fontRect.size.height;
+        
+        
+        return height +60 +24;
     }else if (indexPath.section == 3) {
         
         int height = 0;
-        for (NSDictionary *dic in self.dataModel.otherAlarm) {
-            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"recordDescription"])];
+        NSString *str = safeString(self.dataModel.info[@"otherAlarmContent"]);
+          
             CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
             NSLog(@"%f",fontRect.size.height);
             height += fontRect.size.height;
-        }
-        return height +self.dataModel.otherAlarm.count *24 +60;
+       
+        return height +24 +60;
     }else if (indexPath.section == 4) {
-        int height = 0;
-        for (NSDictionary *dic in self.dataModel.runPrompt) {
-            NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"content"])];
-            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-            NSLog(@"%f",fontRect.size.height);
-            height += fontRect.size.height;
-        }
-        return height +self.dataModel.runPrompt.count *24 +60;
+        
+        NSString *str = safeString(self.dataModel.info[@"promptContent"]);
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        
+        return fontRect.size.height+24 +60;
     }else if (indexPath.section == 5) {
         
         int height = 0;
@@ -280,6 +280,10 @@
             cell = [[KG_RunReportDetailSeventhCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailSeventhCell"];
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+        cell.textString = ^(NSString * _Nonnull textStr) {
+            self.descriptionStr = safeString(textStr);
+        };
+        cell.pushType = self.pushType;
 //        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 7) {
@@ -296,10 +300,52 @@
             cell = [[KG_RunReportDetailNinethCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailNinethCell"];
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if ([self.pushType isEqualToString:@"jieban"]) {
             [cell.centerBtn setTitle:@"接班" forState:UIControlStateNormal];
+            NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+            if ([userdefaults objectForKey:@"name"]) {
+                NSString *userName = [userdefaults objectForKey:@"name"];
+                
+                int num = 0;
+                for (NSDictionary *dic in self.dataModel.changeShifts) {
+                    if ([safeString(dic[@"successorName"]) isEqualToString:safeString(userName)] &&safeString(dic[@"successorName"]).length >0 &&safeString(userName).length >0) {
+                        num ++;
+                    }
+                }
+                if (num >0) {
+                    [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"EBF4FF"]];
+                    cell.centerBtn.enabled = NO;
+                }else {
+                    [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+                    cell.centerBtn.enabled = YES;
+                }
+            }
+            
+            
+            
+            
         }else if ([self.pushType isEqualToString:@"jiaoban"]) {
             [cell.centerBtn setTitle:@"交班" forState:UIControlStateNormal];
+            NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+            if ([userdefaults objectForKey:@"name"]) {
+                NSString *userName = [userdefaults objectForKey:@"name"];
+            
+                int num = 0;
+                for (NSDictionary *dic in self.dataModel.changeShifts) {
+                    if ([safeString(dic[@"handoverName"]) isEqualToString:safeString(userName)] &&safeString(dic[@"handoverName"]).length >0 &&safeString(userName).length >0) {
+                        num ++;
+                    }
+                }
+                if (num >0) {
+                    [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"EBF4FF"]];
+                    cell.centerBtn.enabled = NO;
+                }else {
+                    [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+                    cell.centerBtn.enabled = YES;
+                }
+            }
+           
         }else {
             [cell.centerBtn setTitle:@"生成运行报告" forState:UIControlStateNormal];
         }
@@ -346,6 +392,10 @@
     if (rId.length == 0) {
         rId = self.dataDic[@"id"];
     }
+    if(rId.length == 0) {
+        
+        [FrameBaseRequest showMessage:@"请交班人生成运行报告"];
+    }
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/succession/%@/%@",safeString(self.dataDic[@"post"]),rId]];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -371,6 +421,21 @@
 }
 //交班
 - (void)jiaobanMethod{
+    
+    
+    int num  =0;
+    
+    for (NSDictionary *dd in self.dataModel.changeShifts) {
+        if (safeString(dd[@"successorName"]).length>0) {
+            num ++;
+        }
+        
+    }
+    if (num == 0) {
+        [FrameBaseRequest showMessage:@"请先接班再交班"];
+        return;
+    }
+    
     NSString *rId = safeString(self.dataDic[@"atcRunReportId"]);
     if (rId.length == 0) {
         rId = self.dataDic[@"id"];
@@ -403,15 +468,22 @@
 - (void)createReportMethod{
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunReport"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (safeString(self.dataDic[@"time"]).length >10 && self.endTime.length >10) {
+        NSString *startTimeStr = [safeString(self.dataDic[@"time"]) substringToIndex:10];
+        NSString *endTimeStr = [self.endTime substringToIndex:10];
+        
+        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(self.dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
+        params[@"title"] = title;
+    }
     
-    NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(self.dataDic[@"post"])],safeString(self.dataDic[@"time"]),safeString(self.endTime),@"运行报告"];
-    params[@"title"] = title;
-    params[@"reportRange"] =safeString(self.dataDic[@"stationName"]);
+   
+    params[@"reportRange"] =safeString(self.dataDic[@"stationCode"]);
     params[@"startTime"] =[self CurTimeMilSec:safeString(self.dataDic[@"time"])] ;
     params[@"endTime"] = [self CurTimeMilSec:safeString(self.endTime)];
     params[@"post"] = safeString(self.dataDic[@"post"]);
-    params[@"submitter"] = safeString(self.dataModel.info[@"submitter"]);
+    params[@"submitter"] = safeString(self.dataModel.info[@"operatorId"]);
     params[@"id"] = safeString(self.dataDic[@"id"]);
+   
     if (self.dataModel.info.count >0) {
         NSString *json1=safeString(self.dataModel.info[@"fileUrl"]) ;
         if (json1.length >0) {
@@ -419,23 +491,57 @@
         }
         
     }
-    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+    if (self.description.length > 0) {
+        params[@"description"] = safeString(self.descriptionStr);            //其他补充内容
+    }else {
+        params[@"description"] = safeString(self.dataModel.info[@"description"]);            //其他补充内容
+    }
+    
+    
+    params[@"promptContent"] = safeString(self.dataModel.info[@"promptContent"]); //下日运行提示
+    if (safeString(self.dataModel.info[@"autoAlarmContent"]).length) {
+        params[@"autoAlarmContent"] = safeString(self.dataModel.info[@"autoAlarmContent"]); //设备发生问题及处理情况中的设备实时监控
+    }else {
+        params[@"autoAlarmContent"] = @"";
+    }
+    
+    if (safeString(self.dataModel.info[@"otherAlarmContent"]).length) {
+        params[@"otherAlarmContent"] = safeString(self.dataModel.info[@"otherAlarmContent"]); //其他相关工作
+    }else {
+        params[@"otherAlarmContent"] = @"";
+    }
+    
+    if (safeString(self.dataModel.info[@"changeContent"]).length) {
+        params[@"changeContent"] = safeString(self.dataModel.info[@"changeContent"]); //设备调试调整
+    }else {
+        params[@"changeContent"] = @"";
+    }
+    
+    
+    if (safeString(self.dataModel.info[@"manualAlarmContent"]).length) {
+        params[@"manualAlarmContent"] = safeString(self.dataModel.info[@"manualAlarmContent"]); //设备发生问题及处理情况中的运行事件
+    }else {
+        params[@"manualAlarmContent"] = @"";
+    }
+    
+    [FrameBaseRequest putWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
-        if(code != 0){
-            
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-      [FrameBaseRequest showMessage:@"生成报告成功"];
-      [self.navigationController popViewControllerAnimated:YES];
+      
+        [FrameBaseRequest showMessage:@"生成报告成功"];
+        [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
-               
         
-    }  failure:^(NSError *error) {
-        NSLog(@"请求失败 原因：%@",error);
+             
+        
+    } failure:^(NSError *error)  {
         
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
-    } ];
+    }];
     
 
 }
@@ -545,5 +651,7 @@
     }
     return _titleLabel;
 }
-
+- (void)setJiaojiebanArray:(NSArray *)jiaojiebanArray {
+    _jiaojiebanArray = jiaojiebanArray;
+}
 @end

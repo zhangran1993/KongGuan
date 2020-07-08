@@ -23,6 +23,7 @@
 #import "StationVideoListController.h"
 #import "KG_CommonDetailViewController.h"
 #import "UIViewController+YQSlideMenu.h"
+#import "KG_SecondFloorViewController.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -65,6 +66,9 @@
 @property (nonatomic, strong) KG_DMEView *demView;
 @property (nonatomic, strong) NSDictionary *dvorDic;
 @property (nonatomic, strong) KG_ZhiTaiView *dvorView;
+
+@property (nonatomic, strong)  UIImageView *topImageView;
+@property (strong, nonatomic) UIImageView *leftIconImage;
 @end
 
 @implementation KG_ZhiTaiViewController
@@ -105,24 +109,37 @@
     if(@available(iOS 11.0, *)) {
         self.bgScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
        }
-    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
-      [self.bgScrollView addSubview:topImage1];
-      topImage1.contentMode = UIViewContentModeScaleToFill;
-      topImage1.image  =[UIImage imageNamed:@"machine_rs"];
-      
-      UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 215)];
-      [self.bgScrollView addSubview:topImage];
-      topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
+    self.topImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100+31+NAVIGATIONBAR_HEIGHT)];
+    [self.bgScrollView addSubview:self.topImageView];
+   
+//    self.topImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.topImageView.image  =[UIImage imageNamed:@"machine_rs"];
+    
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100+31+NAVIGATIONBAR_HEIGHT)];
+    [self.bgScrollView addSubview:topImage];
+    topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
+    topImage.contentMode = UIViewContentModeScaleAspectFill;
+    if(IS_IPHONE_X_SERIES) {
+        topImage.image  =[UIImage imageNamed:@"zhihuan_bgfullimage"];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     [self.navigationController setNavigationBarHidden:YES];
     [self getData];
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
+    }
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
     }
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -158,14 +175,14 @@
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"head_icon");
-    [backBtn addSubview:leftImage];
-    leftImage.contentMode = UIViewContentModeScaleAspectFill;
-    leftImage.layer.cornerRadius = 17.f;
-    leftImage.layer.masksToBounds = YES;
-    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@34);
+    self.leftIconImage = [[UIImageView alloc] init];
+    self.leftIconImage.image = IMAGE(@"head_icon");
+    [backBtn addSubview:self.leftIconImage];
+//    self.leftIconImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.leftIconImage.layer.cornerRadius = 13.f;
+    self.leftIconImage.layer.masksToBounds = YES;
+    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@26);
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
@@ -173,7 +190,10 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [leftImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+    }else {
+        
+        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
     }
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightButton.titleLabel.font = FontSize(12);
@@ -221,21 +241,23 @@
 }
 
 - (void)createTopView{
+    
+    
+    if(safeString(self.dataModel.stationInfo.thumbnail).length >0 ){
+         [self.topImageView sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,safeString(self.dataModel.stationInfo.thumbnail)]] placeholderImage:[UIImage imageNamed:@"machine_rs"] ];
+    }else {
+         [self.topImageView sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,safeString(self.dataModel.stationInfo.picture)]] placeholderImage:[UIImage imageNamed:@"machine_rs"] ];
+    }
+   
+  
     [self.runView removeFromSuperview];
     self.runView = nil;
-    NSArray *roomDetail = self.dataModel.roomDetails;
-    //机房
-    if (roomDetail.count == 0) {
-        return;
-    }
-    NSDictionary *roomInfo =self.dataModel.roomDetails[self.currIndex][@"roomInfo"];
-    
     int runHeight = 88;
     if (self.dataModel.mainEquipmentDetails.count >2) {
         runHeight = 112;
     }
     
-    self.runView= [[UIView alloc]initWithFrame:CGRectMake(16, NAVIGATIONBAR_HEIGHT +24, SCREEN_WIDTH -32, runHeight +233)];
+    self.runView= [[UIView alloc]initWithFrame:CGRectMake(16, NAVIGATIONBAR_HEIGHT +24+6, SCREEN_WIDTH -32, runHeight +233)];
     [self.bgScrollView addSubview:self.runView];
     self.runView.backgroundColor = [UIColor whiteColor];
     self.runView.layer.cornerRadius = 9;
@@ -325,7 +347,16 @@
         make.height.equalTo(@49);
         make.right.equalTo(self.runView.mas_right).offset(-16);
     }];
+    NSArray *roomDetail = self.dataModel.roomDetails;
+    //机房
+    if (roomDetail.count == 0) {
+//        [self.bottomBgView removeFromSuperview];
+        return;
+    }
     
+    NSDictionary *roomInfo =self.dataModel.roomDetails[self.currIndex][@"roomInfo"];
+       
+      
     self.roomView = [[KG_RoomInfoView alloc]initWithFrame:CGRectMake(16, 0, SCREEN_WIDTH -32, 50)];
     [jifangView addSubview:self.roomView];
     
@@ -411,10 +442,40 @@
 //监听滚动事件判断当前拖动到哪一个了
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
+    NSLog(@"contentOffset====%f",self.bgScrollView.contentOffset.y);
+    if (self.bgScrollView.contentOffset.y > 0) {
+        float orY= self.bgScrollView.contentOffset.y/167;
+        
+        self.navigationView.backgroundColor = [UIColor colorWithRed:10.f/255.f green:51.f/255.f blue:167/255.f alpha:orY];
+    }else {
+        self.navigationView.backgroundColor = [UIColor clearColor];
+    }
+    
     NSInteger index = scrollView.contentOffset.x / SCREEN_WIDTH;
     [self selectButton:index];
     
     
+ 
+    if (scrollView.contentOffset.y <-120) {
+        NSLog(@"11111111%f",scrollView.contentOffset.y);
+        KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
+        vc.idStr = self.dataModel.stationInfo.id;
+        vc.codeStr = self.dataModel.stationInfo.code;
+        CATransition* transition = [CATransition animation];
+        
+        transition.duration =0.4f;
+        
+        transition.type = kCATransitionMoveIn;
+        
+        transition.subtype = kCATransitionFromBottom;
+        
+        [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+        
+        
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+
+
 }
 
 - (UIColor *)getTextColor:(NSString *)level {
@@ -481,8 +542,17 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-       
-        [FrameBaseRequest showMessage:@"网络链接失败"];
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else {
+            [FrameBaseRequest showMessage:@"网络链接失败"];
+        }
+        
         return ;
         
     }];

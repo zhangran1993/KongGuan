@@ -137,8 +137,7 @@
 - (void)setDic:(NSDictionary *)dic {
     _dic = dic;
     self.titleLabel.text = safeString(dic[@"postName"]);
-    self.leftLabel.text = [NSString stringWithFormat:@"%@ %@",[self timestampToTimeStr:safeString(dic[@"createTime"])],safeString(dic[@"handoverName"])];
-    
+    self.leftLabel.text = [NSString stringWithFormat:@"%@ %@",[self timestampToTimeStr:safeString(dic[@"handoverTime"])],safeString(dic[@"handoverName"])];
     
     self.rightLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dic[@"successorName"]),[self timestampToTimeStr:safeString(dic[@"acceptTime"])]];
      

@@ -53,39 +53,40 @@
     }];
     
     self.titleLabel = [[UILabel alloc]init];
-     [self addSubview:self.titleLabel];
-     self.titleLabel.text = @"应急处理 张三";
-     self.titleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
-     self.titleLabel.font = [UIFont systemFontOfSize:14];
-     self.titleLabel.numberOfLines = 1;
-     self.titleLabel.textAlignment = NSTextAlignmentRight;
-     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-         make.top.equalTo(self.mas_top);
-         make.right.equalTo(self.circleImage.mas_left).offset(-9);
-         make.height.equalTo(@20);
-         make.width.equalTo(@150);
-     }];
-        
-     [self addSubview:self.titleLabel];
+    [self addSubview:self.titleLabel];
+    self.titleLabel.text = @"应急处理 张三";
+    self.titleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
+    self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.numberOfLines = 2;
+    [self.titleLabel sizeToFit];
+    self.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_top);
+        make.right.equalTo(self.circleImage.mas_left).offset(-9);
+        make.height.mas_greaterThanOrEqualTo(@20);
+        make.width.equalTo(@150);
+    }];
+    
+    [self addSubview:self.titleLabel];
     
     
-     self.timeLabel = [[UILabel alloc]init];
-     [self addSubview:self.timeLabel];
-     self.timeLabel.text = @"2020.02.03 19:00:56";
-     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-     self.timeLabel.font = [UIFont systemFontOfSize:12];
-     self.timeLabel.numberOfLines = 1;
-     self.timeLabel.textAlignment = NSTextAlignmentRight;
-     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-         make.top.equalTo(self.titleLabel.mas_bottom).offset(2);
-         make.right.equalTo(self.titleLabel.mas_right);
-         make.height.equalTo(@20);
-         make.width.equalTo(@150);
-     }];
-     
-     [self addSubview:self.timeLabel];
-
-     
+    self.timeLabel = [[UILabel alloc]init];
+    [self addSubview:self.timeLabel];
+    self.timeLabel.text = @"2020.02.03 19:00:56";
+    self.timeLabel.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
+    self.timeLabel.font = [UIFont systemFontOfSize:12];
+    self.timeLabel.numberOfLines = 1;
+    self.timeLabel.textAlignment = NSTextAlignmentRight;
+    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(2);
+        make.right.equalTo(self.titleLabel.mas_right);
+        make.height.equalTo(@20);
+        make.width.equalTo(@150);
+    }];
+    
+    [self addSubview:self.timeLabel];
+    
+    
     
 }
 

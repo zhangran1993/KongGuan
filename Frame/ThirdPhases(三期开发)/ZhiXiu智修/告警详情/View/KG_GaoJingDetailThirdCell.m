@@ -231,7 +231,7 @@
 - (void)setModel:(KG_GaoJingDetailModel *)model {
     _model = model;
     NSString *recordStatus = safeString(model.info[@"recordStatus"]);
-   
+    recordStatus = @"completed";
     if ([recordStatus isEqualToString:@"unconfirmed"]) {
         //
         self.line1.backgroundColor = [UIColor colorWithHexString:@"#F2F3F5"];

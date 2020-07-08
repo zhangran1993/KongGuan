@@ -103,16 +103,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.model.changeManagement.count;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSDictionary *dic = self.model.changeManagement[indexPath.row];
-    NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"implementationCase"])];
+    NSString *str = safeString(self.model.info[@"changeContent"]);
+    
     CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
     NSLog(@"%f",fontRect.size.height);
-    
+    if(str.length == 0) {
+        return 0;
+    }
     return fontRect.size.height +24;
 }
 
@@ -122,8 +124,7 @@
     if (cell == nil) {
         cell = [[KG_RunReportDetailCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailCommonCell"];
     }
-    NSDictionary *dic = self.model.changeManagement[indexPath.row];
-    NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"implementationCase"])];
+    NSString *str = self.model.info[@"changeContent"];
     cell.string = str;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     

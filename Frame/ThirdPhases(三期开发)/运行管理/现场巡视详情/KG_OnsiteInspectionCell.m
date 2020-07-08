@@ -125,9 +125,12 @@
 - (void)setDic:(NSDictionary *)dic {
     _dic = dic;
     self.titleLabel.text =safeString(dic[@"engineRoomName"]);
-    self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dic[@"status"])]]];
+    self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dic[@"fingerPrintStatus"])]]];
 
-    self.timeLabel.text = [NSString stringWithFormat:@"打卡时间:%@", [self timestampToTimeStr:safeString(dic[@"createTime"])]];
+    self.timeLabel.text = [NSString stringWithFormat:@"打卡时间:%@", [self timestampToTimeStr:safeString(dic[@"punchTime"])]];
+    if (safeString(dic[@"punchTime"]).length == 0) {
+        self.timeLabel.text = [NSString stringWithFormat:@"打卡时间:-"];
+    }
 }
 
 
@@ -136,17 +139,11 @@
     if ([status isEqualToString:@"0"]) {
         ss = @"待执行";
     }else if ([status isEqualToString:@"1"]) {
-        ss = @"进行中";
-    }else if ([status isEqualToString:@"2"]) {
         ss = @"已完成";
-    }else if ([status isEqualToString:@"3"]) {
+    }else if ([status isEqualToString:@"2"]) {
         ss = @"逾期未完成";
-    }else if ([status isEqualToString:@"4"]) {
+    }else if ([status isEqualToString:@"3"]) {
         ss = @"逾期完成";
-    }else if ([status isEqualToString:@"5"]) {
-        ss = @"待领取";
-    }else if ([status isEqualToString:@"6"]) {
-        ss = @"待指派";
     }
     return ss;
     

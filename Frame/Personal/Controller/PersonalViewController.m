@@ -321,6 +321,9 @@
         if([userDefaults objectForKey:@"icon"]){
 //            NSString *iconString = [userDefaults objectForKey:@"icon"];
             [userIconImageV sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        }else {
+            
+            userIconImageV.image = [UIImage imageNamed:@"head_icon"];
         }
         [userIconImageV setUserInteractionEnabled:YES];
         [userIconImageV addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gotoInfo)]];

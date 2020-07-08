@@ -31,6 +31,14 @@ interfaceSingle(UserManager)
 
 @property (nonatomic, copy) NSString *userID;
 
+@property(nonatomic, strong) NSArray *leaderNameArray;
+
+@property (nonatomic, assign) BOOL isDeletePicture;
+@property (nonatomic, assign) BOOL isDeleteVideo;
+//智维当前点击的segment的是第几个
+
+@property(nonatomic, assign) NSInteger  zhiweiSegmentCurIndex;
+
 - (void)saveStationData:(NSDictionary *)dataD ;
     
 

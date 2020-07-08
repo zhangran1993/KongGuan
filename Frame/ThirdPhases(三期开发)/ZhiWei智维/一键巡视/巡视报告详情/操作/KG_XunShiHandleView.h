@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_XunShiHandleView : UIView
 
-@property (nonatomic ,copy) void(^didsel)(NSDictionary *selDic);
+@property (nonatomic ,copy) void(^didsel)(NSString *dataStr);
 
 @property (nonatomic ,strong) NSArray *dataArray;
 

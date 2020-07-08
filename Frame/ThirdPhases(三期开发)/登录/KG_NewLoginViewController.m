@@ -246,7 +246,12 @@
         [userDefaults setObject:safeString(userDic[@"companyId"]) forKey:@"companyId"];
         [userDefaults setObject:safeString(userDic[@"hang"]) forKey:@"hang"];
         [userDefaults setObject:safeString(userDic[@"specificStationCode"]) forKey:@"specificStationCode"];
-        [userDefaults setObject:[CommonExtension returnWithString:userDic[@"icon"]]  forKey:@"icon"];
+        [userDefaults removeObjectForKey:@"icon"];
+        if (safeString(userDic[@"icon"]).length >0) {
+            [userDefaults setObject:[CommonExtension returnWithString:userDic[@"icon"]]  forKey:@"icon"];
+        }
+        
+       
         [userDefaults setObject:[CommonExtension returnWithString:userDic[@"id"]]  forKey:@"id"];
         [userDefaults setObject:[CommonExtension returnWithString:userDic[@"name"]]  forKey:@"name"];
       

@@ -218,8 +218,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy)   NSString * patrolName;
 
 
-
-
 @property (nonatomic ,strong) NSArray  <task *> *task;
 
 @end

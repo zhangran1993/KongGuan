@@ -103,13 +103,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return   self.model.runPrompt.count;
+    return   1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSDictionary *dic = self.model.runPrompt[indexPath.row];
-    NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"content"])];
+ 
+    NSString *str = safeString(self.model.info[@"promptContent"]);
     CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
     NSLog(@"%f",fontRect.size.height);
     
@@ -122,8 +121,8 @@
     if (cell == nil) {
         cell = [[KG_RunReportDetailCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailCommonCell"];
     }
-    NSDictionary *dic = self.model.runPrompt[indexPath.row];
-    NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"content"])];
+   
+    NSString *str = safeString(self.model.info[@"promptContent"]);
     cell.string = str;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     

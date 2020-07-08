@@ -15,10 +15,12 @@
 
 @property (nonatomic ,strong) NSArray *dataArray;
 
-
-@property (nonatomic ,strong) NSDictionary *dic;
 @property (nonatomic ,assign) BOOL shouqi;
+@property (nonatomic ,strong) NSDictionary *shouqiDic;
 
+@property (nonatomic ,copy) NSString *leadStr;
+
+@property (nonatomic ,copy) NSString *personStr;
 @end
 
 @implementation KG_XunShiTopView
@@ -43,11 +45,7 @@
 //创建视图
 -(void)setupDataSubviews
 {
-    
-    
     [self addSubview:self.tableView];
-   
-   
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left);
@@ -107,19 +105,26 @@
     if (cell == nil) {
         cell = [[KG_XunShiTopCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_XunShiTopCell"];
     }
-     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self.shouqi) {
         if (indexPath.row == 0) {
             cell.titleLabel.text = safeString(self.model.taskRange);
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_locIcon"];
         }else if (indexPath.row == 1){
             cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskLastUpdateTime)];
+            if(isSafeDictionary(self.dataDic)) {
+                if(self.dataDic.count >0){
+                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                }
+            }
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_personIcon"];
-            if(isSafeDictionary(self.dic) && self.dic.count >0){
-                cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@ |%@",safeString(self.dic[@"createPerson"]),[self timestampToTimeStr:safeString(self.dic[@"createTime"])]];
+            if(isSafeDictionary(self.shouqiDic)) {
+                if(self.shouqiDic.count >0){
+                    cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@ |%@",safeString(self.shouqiDic[@"createPerson"]),[self timestampToTimeStr:safeString(self.shouqiDic[@"createTime"])]];
+                }
             }
         }
     }else {
@@ -128,28 +133,41 @@
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_locIcon"];
         }else if (indexPath.row == 1){
             cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskLastUpdateTime)];
+            
+            if(isSafeDictionary(self.dataDic)) {
+                if(self.dataDic.count >0){
+                    
+                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                }
+            }
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_personIcon"];
-            if(isSafeDictionary(self.dic) && self.dic.count >0){
-                
-                cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@ |%@",safeString(self.dic[@"createPerson"]),[self timestampToTimeStr:safeString(self.dic[@"createTime"])]];
+            if(isSafeDictionary(self.shouqiDic)) {
+                if(self.shouqiDic.count >0){
+                    cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@ |%@",safeString(self.shouqiDic[@"createPerson"]),[self timestampToTimeStr:safeString(self.shouqiDic[@"createTime"])]];
+                }
             }
         }else if (indexPath.row == 3) {
-            cell.titleLabel.text = [NSString stringWithFormat:@"执行负责人：%@",@""];
+            cell.titleLabel.text = [NSString stringWithFormat:@"执行负责人：%@",safeString(self.leadStr)];
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_personIcon"];
         }else if (indexPath.row == 4) {
-            cell.titleLabel.text = [NSString stringWithFormat:@"执行人：%@",@""];
+            
+            cell.titleLabel.text = [NSString stringWithFormat:@"执行人：%@",safeString(self.personStr)];
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_personIcon"];
         }else if (indexPath.row == 5) {
             cell.titleLabel.text = [NSString stringWithFormat:@"提交人：%@",@""];
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_personIcon"];
-            if(isSafeDictionary(self.dic)&& self.dic.count >0){
-                if (self.dic[@"submitTime"] !=nil) {
-                    cell.titleLabel.text = [NSString stringWithFormat:@"提交人：%@ |%@",safeString(self.dic[@"submitPerson"]),[self timestampToTimeStr:safeString(self.dic[@"submitTime"])]];
+            if(isSafeDictionary(self.shouqiDic)) {
+                if(self.shouqiDic.count >0){
+                    if (self.shouqiDic[@"submitTime"] !=nil) {
+                        cell.titleLabel.text = [NSString stringWithFormat:@"提交人：%@ |%@",safeString(self.shouqiDic[@"submitPerson"]),[self timestampToTimeStr:safeString(self.shouqiDic[@"submitTime"])]];
+                        if(safeString(self.shouqiDic[@"submitTime"]).length == 0) {
+                            cell.titleLabel.text = [NSString stringWithFormat:@"提交人："];
+                        }
+                    }
                 }
-                
             }
         }
         
@@ -168,7 +186,7 @@
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
     headView.backgroundColor = [UIColor whiteColor];
     
-    UILabel *headTitle = [[UILabel alloc]initWithFrame:CGRectMake(22.5, 0, 200, 44)];
+    UILabel *headTitle = [[UILabel alloc]initWithFrame:CGRectMake(22.5, 0, SCREEN_WIDTH -22.5-70, 44)];
     [headView addSubview:headTitle];
     if (safeString(self.model.taskName).length) {
         headTitle.text = safeString(self.model.taskName);
@@ -185,7 +203,7 @@
     [headView addSubview:stastusImage];
     [stastusImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(headView.mas_right);
-        make.centerY.equalTo(headView.mas_centerY);
+        make.centerY.equalTo(headTitle.mas_centerY);
         make.height.equalTo(@26);
 
     }];
@@ -308,7 +326,27 @@
 
 - (void)setModel:(KG_XunShiReportDetailModel *)model {
     _model = model;
+    NSString *patrolName = safeString(model.patrolName);
+    NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
     
+    for (NSDictionary *dic in leadArr) {
+        if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
+            self.leadStr = safeString(dic[@"name"]);
+            break;
+        }
+    }
+    NSMutableString *ss = [NSMutableString stringWithCapacity:0];
+    for (NSDictionary *personDic in model.workPersonName) {
+        NSString *personId = safeString(personDic[@"id"]);
+        for (NSDictionary *dic in leadArr) {
+            if ([safeString(dic[@"id"]) isEqualToString:personId]) {
+               [ss appendString:[NSString stringWithFormat:@"%@ ",safeString(dic[@"name"])]];
+                break;
+            }
+        }
+        
+    }
+    self.personStr = ss;
     [self.tableView reloadData];
 }
 
@@ -318,7 +356,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日HH时mm分"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日 HH:mm"] stringFromDate:date];
 //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
 
@@ -339,7 +377,7 @@
         ss = @"daizhixing_icon";
     }else if ([status isEqualToString:@"1"]) {
         ss = @"jinxingzhong_icon";
-    }else if ([status isEqualToString:@"0"]) {
+    }else if ([status isEqualToString:@"2"]) {
         ss = @"yiwancheng_icon";
     }else if ([status isEqualToString:@"3"]) {
         ss = @"yuqiweiwancheng_icon";
@@ -356,6 +394,13 @@
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
     [self.tableView reloadData];
-    self.dic = dataDic;
+   
+}
+
+- (void)setDic:(NSDictionary *)dic {
+    _dic =dic;
+    self.shouqiDic = dic;
+    [self.tableView reloadData];
+    
 }
 @end
