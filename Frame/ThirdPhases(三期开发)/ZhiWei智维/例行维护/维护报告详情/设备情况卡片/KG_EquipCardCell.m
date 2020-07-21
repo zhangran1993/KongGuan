@@ -95,7 +95,8 @@
         KG_EquipCardView *viewcon = [[KG_EquipCardView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*i, 0, SCREEN_WIDTH, self.scrollView.frameHeight)];
         NSDictionary *dic = self.dataArray[i];
         if (isSafeDictionary(dic)) {
-            
+            viewcon.cardTotalNum = (int)self.dataArray.count;
+            viewcon.cardCurrNum = 1;
             viewcon.dataDic = dic;
             viewcon.taskStatus = self.dataModel.taskStatus;
             NSLog(@"_scrollView.frameHeight %f",self.scrollView.frameHeight);
@@ -109,7 +110,21 @@
 
     }
 }
-//
+- (void)selectButton:(NSInteger)index
+{
+    
+ 
+}
+
+//监听滚动事件判断当前拖动到哪一个了
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    NSInteger index = scrollView.contentOffset.x / (SCREEN_WIDTH- 32);
+    [self selectButton:index];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"cardScrollIndex" object:[NSString stringWithFormat:@"%ld",(long)index+1]];
+    
+}
 - (void)createSliderView {
     
 }

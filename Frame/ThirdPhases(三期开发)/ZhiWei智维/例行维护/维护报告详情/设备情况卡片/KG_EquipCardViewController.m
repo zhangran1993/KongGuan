@@ -10,7 +10,7 @@
 #import "KG_EquipCardCell.h"
 #import "KG_WeiHuCardAlertView.h"
 #import "KG_OperationGuideViewController.h"
-@interface KG_EquipCardViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface KG_EquipCardViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 
 
 @property (nonatomic, strong)  UILabel   *titleLabel;
@@ -32,6 +32,10 @@
 
 @property (nonatomic, strong)  NSDictionary * curSelDic;
 @property (nonatomic, strong)  NSDictionary * curSelDetailDic;
+
+@property (nonatomic, strong) UIView         *sliderBgView;
+@property (nonatomic, strong) UIView         *sliderView;
+
 @end
 
 @implementation KG_EquipCardViewController
@@ -99,8 +103,123 @@
 
 - (void)backButtonClick:(UIButton *)button {
    
-     [self.navigationController popViewControllerAnimated:YES];
+    if ([UserManager shareUserManager].isChangeTask) {
+        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定要保存吗" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+             [self.navigationController popViewControllerAnimated:YES];
+            return ;
+        }]];
+        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            [self changeTask];
+            return ;
+        }]];
+        [self presentViewController:alertContor animated:NO completion:nil];
+    }else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     
+    
+     
+    
+    
+}
+- (void)changeTask {
+    NSString *leadStr = @"";
+    NSString *patrolName = safeString(self.dataModel.patrolName);
+    NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
+    
+    for (NSDictionary *dic in leadArr) {
+        if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
+            leadStr = safeString(dic[@"name"]);
+            break;
+        }
+    }
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    if ([userdefaults objectForKey:@"name"]) {
+        NSString *userName = [userdefaults objectForKey:@"name"];
+        if (![leadStr isEqualToString:userName]) {
+            [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
+            return;
+        }
+    }
+    
+    
+    
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    
+    
+    paramDic[@"id"] = safeString(self.dataDic[@"id"]);
+    NSDictionary *resultDic = [UserManager shareUserManager].resultDic;
+    paramDic[@"result"] = [self convertToJsonData:resultDic];
+    paramDic[@"status"] = @"1";
+    paramDic[@"description"] = @"";
+    NSDictionary *remarkDic = [NSDictionary dictionary];
+    if (isSafeDictionary(self.dataDic[@"remark"])) {
+        if ([self.dataDic[@"remark"] count]) {
+            paramDic[@"remark"] = [self convertToJsonData:self.dataDic[@"remark"]];
+        }else {
+            paramDic[@"remark"] =[self convertToJsonData:remarkDic] ;
+        }
+    }else {
+        paramDic[@"remark"] = [self convertToJsonData:remarkDic];
+    }
+    
+    
+    paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
+    //
+    NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
+    //    NSMutableDictionary *labelDic = [NSMutableDictionary dictionary];
+    //    [labelDic setValue:@"DVOR" forKey:@"name"];
+    //    [labelList addObject:labelDic];
+    if (isSafeArray(self.dataDic[@"atcPatrolLabelList"])) {
+        if ([self.dataDic[@"atcPatrolLabelList"] count]) {
+            paramDic[@"atcPatrolLabelList"] = self.dataDic[@"atcPatrolLabelList"];
+        }else {
+            paramDic[@"atcPatrolLabelList"] = labelList;
+        }
+        
+    }else {
+        paramDic[@"atcPatrolLabelList"] = labelList;
+        
+    }
+    
+    
+    NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
+    //    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
+    //    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
+    //    [workList addObject:workDic];
+    if (isSafeArray(self.dataDic[@"atcPatrolWorkList"])) {
+        if ([self.dataDic[@"atcPatrolWorkList"] count]) {
+            paramDic[@"atcPatrolWorkList"] = self.dataDic[@"atcPatrolWorkList"];
+        }else {
+            paramDic[@"atcPatrolWorkList"] = workList;
+        }
+    }else {
+        paramDic[@"atcPatrolWorkList"] = workList;
+    }
+    
+    
+    
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [FrameBaseRequest showMessage:@"保存任务成功"];
+        [UserManager shareUserManager].resultDic = nil;
+        [self.navigationController popViewControllerAnimated:YES];
+        
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
     
 }
 /** 标题栏 **/
@@ -125,7 +244,7 @@
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:NO];
-    
+   
 }
 
 - (void)createView {
@@ -347,6 +466,73 @@
         
     }
     return _alertView;
+}
+//sliderview
+- (void)createSliderView {
+    
+    self.sliderBgView = [[UIView alloc]initWithFrame:CGRectMake(0,SCREEN_HEIGHT-200, SCREEN_WIDTH, 26)];
+    [self.view addSubview:self.sliderBgView];
+    self.sliderBgView.backgroundColor = self.view.backgroundColor;
+    
+    float sliderV_X = SCREEN_WIDTH/2;
+    float sliderVX =  sliderV_X;
+    UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderVX, 10, 6, 6)];
+    
+    sliderV.layer.cornerRadius = 3;
+    sliderV.backgroundColor = [UIColor colorWithHexString:@"#005DC4"];
+    [self.sliderBgView insertSubview:sliderV atIndex:1];
+    _sliderView=sliderV;
+    for (int i = 0; i <self.dataArray.count; i++) {
+        //滑块
+        float sliderV_X =SCREEN_WIDTH /2+ i*10;
+        //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
+        
+        float sliderX = sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);
+        UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderX,  10, 6, 6)];
+        sliderV.layer.cornerRadius = 3;
+        sliderV.alpha= 0.19;
+        sliderV.backgroundColor = [UIColor colorWithHexString:@"#005DC4"];
+        [self.sliderBgView insertSubview:sliderV atIndex:0];
+        
+    }
+    
+}
+#pragma mark ----  字典转Json字符串
+-(NSString *)convertToJsonData:(NSDictionary *)dict
+
+{
+    NSError *error;
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+
+    NSString *jsonString;
+
+    if (!jsonData) {
+
+
+
+    }else{
+
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    }
+
+    NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
+
+    NSRange range = {0,jsonString.length};
+
+    //去掉字符串中的空格
+
+    [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
+
+    NSRange range2 = {0,mutStr.length};
+
+    //去掉字符串中的换行符
+
+    [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+
+    return mutStr;
+
 }
 
 @end

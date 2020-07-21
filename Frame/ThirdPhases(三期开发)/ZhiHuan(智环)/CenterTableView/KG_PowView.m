@@ -126,7 +126,7 @@
     titleLabel.text = @"动力监测";
     
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:titleLabel];
     

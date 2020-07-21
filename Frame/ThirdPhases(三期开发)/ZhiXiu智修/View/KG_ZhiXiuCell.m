@@ -40,7 +40,7 @@
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top).offset(13);
         make.height.equalTo(@24);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.mas_right).offset(-67);
     }];
     
     self.timeLabel = [[UILabel alloc]init];

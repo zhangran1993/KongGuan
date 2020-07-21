@@ -121,7 +121,11 @@
         self.detailLabel.hidden = NO;
         self.detailLabel.text = safeString(self.dic[@"measureValueAlias"]);
     }else if([safeString(fifDic[@"type"]) isEqualToString:@"radio"] ||[safeString(fifDic[@"type"])  isEqualToString:@"select"]) {
-        
+        if ([UserManager shareUserManager].isChangeTask) {
+            self.segmentedControl.userInteractionEnabled = YES;
+        }else {
+            self.segmentedControl.userInteractionEnabled = NO;
+        }
         self.segmentedControl.hidden = NO;
         if ([dic[@"childrens"] count] >0) {
             NSDictionary *dd = [dic[@"childrens"] firstObject];
@@ -147,15 +151,23 @@
                         self.segmentedControl.selectedSegmentIndex = 2;
                     }
                 }
+            }else {
+                
+                NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
+                if (array.count == 2) {
+                    [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
+                    [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
+                    
+                }
             }
-            
-            
-        }
-        self.detailLabel.hidden = YES;
+       
+        
     }
-    
-    
-    
+    self.detailLabel.hidden = YES;
+}
+
+
+
 }
 
 - (NSString *)getTaskStatus :(NSString *)status {
@@ -181,20 +193,21 @@
 
 - (void)createSegment {
    
-    NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
-   
+     NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
+    
     [self.segmentedControl removeFromSuperview];
     
     self.segmentedControl = [[UISegmentedControl alloc]initWithItems:array];
     self.segmentedControl.frame = CGRectMake(SCREEN_WIDTH - 32 -84, 8,84,24);
     
     
+    
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
     
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:10.0f]}forState:UIControlStateNormal];
     [self addSubview:self.segmentedControl];
-    self.segmentedControl.selectedSegmentIndex = 0;
-    self.segmentedControl.tintColor = [UIColor whiteColor];
+    
+    self.segmentedControl.tintColor = [UIColor colorWithHexString:@"#2F5ED1"];
     self.segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
     self.segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
     [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]]
@@ -235,6 +248,38 @@
             break;
         default:
             break;
+    }
+    
+    NSMutableDictionary *toDic = [NSMutableDictionary dictionary];
+    
+    NSDictionary *resultDic  = [UserManager shareUserManager].resultDic;
+    [toDic addEntriesFromDictionary:resultDic];
+    NSDictionary *dd = [self.dic[@"childrens"] firstObject];
+    
+    NSString *infoId = safeString(dd[@"parentId"]);
+    NSString *value = safeString(dd[@"value"]) ;
+    
+    if (value.length >0) {
+        
+        NSArray *array = [value componentsSeparatedByString:@"@&@"];
+        
+        if (array.count == 2) {
+            
+            NSString *valueNum = safeString(array[sender.selectedSegmentIndex]);
+//            for (NSString *str in [resultDic allKeys]) {
+//                NSLog(@"%@",str);
+//                NSLog(@"%@",infoId);
+//                if ([str isEqualToString:infoId]) {
+                    NSMutableDictionary *aDic = [NSMutableDictionary dictionary];
+                    [aDic setValue:safeString(valueNum) forKey:safeString(infoId)];
+                    [toDic addEntriesFromDictionary:aDic];
+//                }
+//            }
+            
+            [UserManager shareUserManager].resultDic = toDic;
+            
+        }
+        
     }
 }
 - (UIImage*)createImageWithColor: (UIColor*) color{

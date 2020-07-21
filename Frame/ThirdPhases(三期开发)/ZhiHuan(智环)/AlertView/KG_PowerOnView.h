@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic,copy) void(^hideKeyBoard)();
+
+
+@property (nonatomic,copy) void(^confirmBlockMethod)();
 @end
 
 NS_ASSUME_NONNULL_END

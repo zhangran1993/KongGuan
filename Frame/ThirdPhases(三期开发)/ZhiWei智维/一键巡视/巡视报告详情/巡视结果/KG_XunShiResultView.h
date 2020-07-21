@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KG_XunShiResultView : UIView
 
 @property (nonatomic, strong) NSString *taskDescription;
+
+@property (nonatomic, strong) void (^textStringChangeBlock)( NSString *taskDescription);
 @end
 
 NS_ASSUME_NONNULL_END

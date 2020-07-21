@@ -18,7 +18,9 @@
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
-                                                        
+@property (nonatomic, assign) int pangluAlarmStatus;
+
+@property (nonatomic, assign) int workAlarmStatus;
 @end
 @implementation KG_DMEMonitorFirstView
 
@@ -100,20 +102,22 @@
     
     if (indexPath.section == 0) {
         cell.titleLabel.text = safeString(titleString);
-        if ([safeString(titleString) containsString:@"开"]) {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        if (self.pangluAlarmStatus == 1) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];//红色
         }else {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];//绿色
            
         }
+     
     }
     
     if (indexPath.section == 1) {
         cell.titleLabel.text = safeString(titleString);
-        if ([safeString(titleString) containsString:@"工作"]) {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        if (self.workAlarmStatus == 1) {
+           cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+            
         }else {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+           cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }
     }
 
@@ -162,7 +166,7 @@
 
 - (void)setPangluDic:(NSDictionary *)pangluDic{
     _pangluDic = pangluDic;
-    
+    self.pangluAlarmStatus = [safeString(pangluDic[@"alarmStatus"]) intValue];
     NSString *pangluString = @"旁路：关";
     //监视器A
     if([safeString(pangluDic[@"valueAlias"]) isEqualToString:@"旁路都打开"]){
@@ -178,12 +182,17 @@
         pangluString = @"旁路：关";
         
     }
+    
+    if([safeString(pangluDic[@"valueAlias"]) containsString:@"告警"]) {
+        pangluString = @"告警";
+        
+    }
     [_dataArray replaceObjectAtIndex:0 withObject:pangluString];
     [self.tableView reloadData];
 }
 - (void)setCheckDic:(NSDictionary *)checkDic{
     _checkDic = checkDic;
-    
+     self.workAlarmStatus = [safeString(checkDic[@"alarmStatus"]) intValue];
     NSString *checkString = @"工作";
     //监视器A
     if([safeString(checkDic[@"valueAlias"]) isEqualToString:@"监测1/2均告警"]){

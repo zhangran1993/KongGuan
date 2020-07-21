@@ -33,12 +33,22 @@ interfaceSingle(UserManager)
 
 @property(nonatomic, strong) NSArray *leaderNameArray;
 
+//是否是在删除图片或者是上传图片  智修界面用到
 @property (nonatomic, assign) BOOL isDeletePicture;
-@property (nonatomic, assign) BOOL isDeleteVideo;
 //智维当前点击的segment的是第几个
-
 @property(nonatomic, assign) NSInteger  zhiweiSegmentCurIndex;
 
+
+@property(nonatomic, assign) BOOL isChangeTask;
+
+
+//智维获取详情  的 remarkDic
+@property(nonatomic, strong) NSDictionary *remarkDic;
+
+//智维获取详情  的 resultDic
+@property(nonatomic, strong) NSDictionary *resultDic;
+//门禁当前点击的segment的是第几个
+@property(nonatomic, assign) NSInteger  accessSegmentCurIndex;
 - (void)saveStationData:(NSDictionary *)dataD ;
     
 

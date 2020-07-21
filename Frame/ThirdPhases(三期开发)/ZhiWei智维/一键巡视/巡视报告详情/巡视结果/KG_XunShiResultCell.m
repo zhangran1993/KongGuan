@@ -43,11 +43,16 @@
 
 - (void)createUI{
     [self addSubview:self.resultView];
+    self.resultView.textStringChangeBlock = ^(NSString * _Nonnull taskDescription) {
+        if (self.textStringChangeBlock) {
+            self.textStringChangeBlock(taskDescription);
+        }
+    };
     [self.resultView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
         make.top.equalTo(self.mas_top);
-        make.height.equalTo(@102);
+        make.height.equalTo(@124);
     }];
 }
 - (KG_XunShiResultView *)resultView {

@@ -41,7 +41,9 @@
 @property (nonatomic, strong) KG_ReViewPhotoView *rePhotoView;
 @property (nonatomic, strong)  UILabel   *titleLabel;
 @property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, assign)   BOOL fixStatus;
 
+@property (nonatomic, assign)   AVPlayerViewController *playerViewController;
 @end
 
 @implementation KG_GaoJingDetailViewController
@@ -55,7 +57,45 @@
     [self createTableView];
     [self getData];
 }
-
+- (void)refreshGetData {
+    NSString *idCode = safeString(self.model.id);
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/getAlarmInfo/%@",idCode]];
+   
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.dataModel = nil;
+        self.dataModel = [[KG_GaoJingDetailModel alloc]init];
+        [self.imageArray removeAllObjects];
+        [self.videoArray removeAllObjects];
+        [self.dataModel mj_setKeyValues:result[@"value"]];
+        self.recordDescription = safeString(self.dataModel.info[@"recordDescription"]);
+        for (NSDictionary *dic in self.dataModel.image) {
+            NSString *urlString = [NSString stringWithFormat:@"%@",dic[@"url"]];
+            
+            [self.imageArray addObject:urlString];
+        }
+        for (NSDictionary *dic1 in self.dataModel.videos) {
+            NSString *urlString = [NSString stringWithFormat:@"%@",dic1[@"url"]];
+            
+            [self.videoArray addObject:urlString];
+        }
+        
+        [self.tableView reloadData];
+        
+        
+        NSLog(@"");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        
+    }];
+}
 //获取某个告警详情信息：
 //请求地址：/intelligent/keepInRepair/getAlarmInfo/{id}
 //请求方式：GET
@@ -172,6 +212,7 @@
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:YES];
+    
     
 }
 
@@ -339,6 +380,7 @@
         cell.fixMethod = ^{
             KG_ResultPromptViewController *vc = [[KG_ResultPromptViewController alloc]init];
             vc.textString = ^(NSString * _Nonnull textStr) {
+                self.fixStatus = YES;
                 self.recordDescription = textStr;
                 
                 [self updateDetailInfo];
@@ -370,10 +412,10 @@
 - (void)playVideo:(NSString *)dic {
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", dic]];
-    AVPlayerViewController *ctrl = [[AVPlayerViewController alloc] init];
-    ctrl.player= [[AVPlayer alloc]initWithURL:url];
-    [ctrl.player play];
-    [self presentViewController:ctrl animated:YES completion:nil];
+    self.playerViewController = [[AVPlayerViewController alloc] init];
+    self.playerViewController.player= [[AVPlayer alloc]initWithURL:url];
+    [self.playerViewController.player play];
+    [self presentViewController:self.playerViewController animated:YES completion:nil];
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -483,7 +525,7 @@
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         NSLog(@"%@",photos);
         
-        
+         [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
         [self.tableView reloadData];
         [self upDateHeadIcon:[photos firstObject]];
         
@@ -565,7 +607,7 @@
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/meetRecodeMedia/setAtcAlarmManager",WebNewHost];
     //photo.压缩
     NSData * datapng = UIImageJPEGRepresentation(photo, 0.3);
-    [MBProgressHUD showMessage:@""];
+   
     //请求设置
     AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
     manager.requestSerializer.HTTPShouldHandleCookies = YES;
@@ -638,7 +680,7 @@
     paramDic[@"videosList"] = self.videoArray;
     paramDic[@"imageList"] = self.imageArray;
     paramDic[@"recordStatus"] =safeString(self.dataModel.info[@"recordStatus"]) ;
-    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+   
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -647,11 +689,18 @@
             
             return ;
         }
-        if([UserManager shareUserManager].isDeletePicture) {
-            [FrameBaseRequest showMessage:@"删除成功"];
+        if (self.fixStatus) {
+            
+            [FrameBaseRequest showMessage:@"修改成功"];
+            self.fixStatus = NO;
         }else {
-            [FrameBaseRequest showMessage:@"上传成功"];
+            if([UserManager shareUserManager].isDeletePicture) {
+                [FrameBaseRequest showMessage:@"删除成功"];
+            }else {
+                [FrameBaseRequest showMessage:@"上传成功"];
+            }
         }
+        [self refreshGetData];
         
         [self.tableView reloadData];
         
@@ -725,7 +774,7 @@
 // 如果用户选择了一个视频且allowPickingMultipleVideo是NO，下面的代理方法会被执行
 // 如果allowPickingMultipleVideo是YES，将会调用imagePickerController:didFinishPickingPhotos:sourceAssets:isSelectOriginalPhoto:
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingVideo:(UIImage *)coverImage sourceAssets:(PHAsset *)asset{
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     if (asset.mediaType == PHAssetMediaTypeVideo) {
         PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
         options.version = PHImageRequestOptionsVersionCurrent;
@@ -755,7 +804,15 @@
 - (void)imagePickerController:(TZImagePickerController *)picker{
     
 }
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
+}
 //确认
 - (void)confirmData {
     if ([safeString(self.dataModel.info[@"status"]) isEqualToString:@"removed"]) {
@@ -911,7 +968,9 @@
 }
 
 - (void)zhankaiImage:(NSString *)str {
-    
+    if(str.length == 0){
+        return;
+    }
     UIImageView *imageView = [[UIImageView alloc]init];
     [imageView sd_setImageWithURL:[NSURL URLWithString:str]];
     UIImage *image = imageView.image;

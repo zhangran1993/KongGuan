@@ -272,8 +272,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "391"
             endingLineNumber = "391"
-            landmarkName = "-applicationWillTerminate:"
-            landmarkType = "7">
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -320,8 +320,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "362"
             endingLineNumber = "362"
-            landmarkName = "-application:didReceiveRemoteNotification:"
-            landmarkType = "7">
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -889,10 +889,10 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/ScondFloor/KG_SecondFloorViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
-            landmarkName = "-getData"
-            landmarkType = "7">
+            startingLineNumber = "430"
+            endingLineNumber = "430"
+            landmarkName = "KG_SecondFloorViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -937,8 +937,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1147"
-            endingLineNumber = "1147"
+            startingLineNumber = "1152"
+            endingLineNumber = "1152"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1065,8 +1065,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/Controller/KG_ZhiTaiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "746"
-            endingLineNumber = "746"
+            startingLineNumber = "778"
+            endingLineNumber = "778"
             landmarkName = "-bottomDic"
             landmarkType = "7">
          </BreakpointContent>
@@ -1353,8 +1353,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x5de1;&#x89c6;&#x5185;&#x5bb9;-&#x96f7;&#x8fbe;&#x673a;&#x623f;/KG_XunShiRadarView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
             landmarkName = "-setDetailModel:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1385,8 +1385,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1401,8 +1401,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1417,9 +1417,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "588"
-            endingLineNumber = "588"
-            landmarkName = "-xunShiHandelView"
+            startingLineNumber = "940"
+            endingLineNumber = "940"
+            landmarkName = "-dateFormatWith:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1481,8 +1481,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2651"
-            endingLineNumber = "2651"
+            startingLineNumber = "2656"
+            endingLineNumber = "2656"
             landmarkName = "-dataArray"
             landmarkType = "7">
          </BreakpointContent>
@@ -1641,8 +1641,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2338"
-            endingLineNumber = "2338"
+            startingLineNumber = "2343"
+            endingLineNumber = "2343"
             landmarkName = "-deviceTestingClick"
             landmarkType = "7">
          </BreakpointContent>
@@ -1657,8 +1657,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2407"
-            endingLineNumber = "2407"
+            startingLineNumber = "2412"
+            endingLineNumber = "2412"
             landmarkName = "-machineTapevent:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1673,8 +1673,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "822"
-            endingLineNumber = "822"
+            startingLineNumber = "827"
+            endingLineNumber = "827"
             landmarkName = "-setupTable"
             landmarkType = "7">
          </BreakpointContent>
@@ -1689,8 +1689,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "859"
-            endingLineNumber = "859"
+            startingLineNumber = "864"
+            endingLineNumber = "864"
             landmarkName = "-setupTable"
             landmarkType = "7">
          </BreakpointContent>
@@ -1705,8 +1705,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "852"
-            endingLineNumber = "852"
+            startingLineNumber = "857"
+            endingLineNumber = "857"
             landmarkName = "-setupTable"
             landmarkType = "7">
          </BreakpointContent>
@@ -1721,8 +1721,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1262"
-            endingLineNumber = "1262"
+            startingLineNumber = "1267"
+            endingLineNumber = "1267"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1737,8 +1737,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1260"
-            endingLineNumber = "1260"
+            startingLineNumber = "1265"
+            endingLineNumber = "1265"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1753,8 +1753,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
             landmarkName = "-createTopView"
             landmarkType = "7">
          </BreakpointContent>
@@ -1801,8 +1801,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
+            startingLineNumber = "439"
+            endingLineNumber = "439"
             landmarkName = "-initWithController"
             landmarkType = "7">
          </BreakpointContent>
@@ -1890,54 +1890,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2BDB3EBA-6C0E-4DF0-BA7A-77204153DD69"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/NiControlLog/KG_NiControlViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "371"
-            endingLineNumber = "371"
-            landmarkName = "-datePickerViewSaveBtnClickDelegate:"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "2BDB3EBA-6C0E-4DF0-BA7A-77204153DD69 - ed9845cc4ab961"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[KG_NiControlViewController datePickerViewCancelBtnClickDelegate]"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/NiControlLog/KG_NiControlViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "354"
-                  endingLineNumber = "354"
-                  offsetFromSymbolStart = "68">
-               </Location>
-               <Location
-                  uuid = "2BDB3EBA-6C0E-4DF0-BA7A-77204153DD69 - 9add721b6cfd2195"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__66-[KG_NiControlViewController datePickerViewCancelBtnClickDelegate]_block_invoke"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/NiControlLog/KG_NiControlViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "355"
-                  endingLineNumber = "355"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "D507E8FB-5B87-4D7F-B9ED-03D81FD58883"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -1945,8 +1897,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2635"
-            endingLineNumber = "2635"
+            startingLineNumber = "2640"
+            endingLineNumber = "2640"
             landmarkName = "-titleLabel"
             landmarkType = "7">
          </BreakpointContent>
@@ -1961,8 +1913,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
+            startingLineNumber = "317"
+            endingLineNumber = "317"
             landmarkName = "-setDataDic:"
             landmarkType = "7">
          </BreakpointContent>
@@ -1977,8 +1929,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
+            startingLineNumber = "541"
+            endingLineNumber = "541"
             landmarkName = "KG_GaoJingDetailViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -1993,8 +1945,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "701"
-            endingLineNumber = "701"
+            startingLineNumber = "739"
+            endingLineNumber = "739"
             landmarkName = "-submitVideo:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2018,22 +1970,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F035BC9E-77FD-4B26-8DC4-7893951A8CFA"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "837"
-            endingLineNumber = "837"
-            landmarkName = "-removeData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "9778FB2E-9A89-4849-AD8E-9302B8126B2A"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -2041,25 +1977,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "749"
-            endingLineNumber = "749"
+            startingLineNumber = "787"
+            endingLineNumber = "787"
             landmarkName = "-imagePickerController:didFinishPickingVideo:sourceAssets:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "BC34D18E-3B3A-48F4-89C5-490EE10AADAC"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "839"
-            endingLineNumber = "839"
-            landmarkName = "-removeData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2137,8 +2057,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1166"
-            endingLineNumber = "1166"
+            startingLineNumber = "1197"
+            endingLineNumber = "1197"
             landmarkName = "-getRunPromptData:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2169,8 +2089,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
             landmarkName = "-login"
             landmarkType = "7">
          </BreakpointContent>
@@ -2185,8 +2105,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1339"
-            endingLineNumber = "1339"
+            startingLineNumber = "1370"
+            endingLineNumber = "1370"
             landmarkName = "-queryJiaoJieBaneListData"
             landmarkType = "7">
          </BreakpointContent>
@@ -2217,8 +2137,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1445"
-            endingLineNumber = "1445"
+            startingLineNumber = "1450"
+            endingLineNumber = "1450"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2233,8 +2153,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2324"
-            endingLineNumber = "2324"
+            startingLineNumber = "2329"
+            endingLineNumber = "2329"
             landmarkName = "StationDetailController"
             landmarkType = "3">
          </BreakpointContent>
@@ -2249,8 +2169,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2401"
-            endingLineNumber = "2401"
+            startingLineNumber = "2406"
+            endingLineNumber = "2406"
             landmarkName = "-machineTapevent:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2265,105 +2185,9 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2433"
-            endingLineNumber = "2433"
+            startingLineNumber = "2438"
+            endingLineNumber = "2438"
             landmarkName = "-machineTapeventTag:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "10C6C23A-4CF3-4833-999C-D3B35B3F8DCA"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x7a7a;&#x8c03;/&#x7a7a;&#x8c03;View/KG_KongTiaoControlViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "506"
-            endingLineNumber = "506"
-            landmarkName = "-confirmMethod"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "13B341F7-EA33-4601-A25C-8C3BAFAC416F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x7a7a;&#x8c03;/&#x7a7a;&#x8c03;View/KG_KongTiaoControlViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
-            landmarkName = "-confirmMethod"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "97113C43-9741-4CCB-82C5-EA6823EA3F95"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x7a7a;&#x8c03;/&#x7a7a;&#x8c03;View/KG_KongTiaoControlViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "499"
-            endingLineNumber = "499"
-            landmarkName = "-confirmMethod"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "97113C43-9741-4CCB-82C5-EA6823EA3F95 - 901a771dbbe8b20f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[KG_KongTiaoControlViewController confirmMethod]"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E7%A9%BA%E8%B0%83/%E7%A9%BA%E8%B0%83View/KG_KongTiaoControlViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "500"
-                  endingLineNumber = "500"
-                  offsetFromSymbolStart = "1120">
-               </Location>
-               <Location
-                  uuid = "97113C43-9741-4CCB-82C5-EA6823EA3F95 - 3340d86e0b84e8f2"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__49-[KG_KongTiaoControlViewController confirmMethod]_block_invoke"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E7%A9%BA%E8%B0%83/%E7%A9%BA%E8%B0%83View/KG_KongTiaoControlViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "501"
-                  endingLineNumber = "501"
-                  offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EE52E637-B679-4981-918C-10768AADB03A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/AlertView/KG_NiControlView.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "-cancelMethod:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2381,38 +2205,6 @@
             endingLineNumber = "206"
             landmarkName = "-guideData"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "06C44B19-693D-48ED-BC6C-A995D65FD76C - e737c8093695faac"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[AppDelegate guideData]"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/Classes/other/AppDelegate.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "206"
-                  endingLineNumber = "206"
-                  offsetFromSymbolStart = "112">
-               </Location>
-               <Location
-                  uuid = "06C44B19-693D-48ED-BC6C-A995D65FD76C - 571f0222bb779626"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__24-[AppDelegate guideData]_block_invoke"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/Classes/other/AppDelegate.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "207"
-                  endingLineNumber = "207"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2457,10 +2249,42 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x5217;&#x8868;/KG_RunListViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
             landmarkName = "-getRunReportDetailData"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "635F11C5-6DE3-42D4-9C6F-02BC06F1C93E - cc1ac7449a995ef8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__50-[KG_RunListViewController getRunReportDetailData]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E8%BF%90%E8%A1%8C%E5%88%97%E8%A1%A8/KG_RunListViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "274"
+                  endingLineNumber = "274"
+                  offsetFromSymbolStart = "416">
+               </Location>
+               <Location
+                  uuid = "635F11C5-6DE3-42D4-9C6F-02BC06F1C93E - 17d289d35e0ae8c5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__50-[KG_RunListViewController getRunReportDetailData]_block_invoke.261"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E8%BF%90%E8%A1%8C%E5%88%97%E8%A1%A8/KG_RunListViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2537,8 +2361,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "475"
-            endingLineNumber = "475"
+            startingLineNumber = "503"
+            endingLineNumber = "503"
             landmarkName = "-jiebanMethod"
             landmarkType = "7">
             <Locations>
@@ -2585,8 +2409,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441"
+            startingLineNumber = "445"
+            endingLineNumber = "445"
             landmarkName = "-jiaobanMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -2601,8 +2425,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "443"
-            endingLineNumber = "443"
+            startingLineNumber = "447"
+            endingLineNumber = "447"
             landmarkName = "-jiaobanMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -2617,8 +2441,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "455"
-            endingLineNumber = "455"
+            startingLineNumber = "459"
+            endingLineNumber = "459"
             landmarkName = "-jiaobanMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -2697,8 +2521,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "465"
-            endingLineNumber = "465"
+            startingLineNumber = "493"
+            endingLineNumber = "493"
             landmarkName = "-jiebanMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -2713,8 +2537,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "411"
-            endingLineNumber = "411"
+            startingLineNumber = "415"
+            endingLineNumber = "415"
             landmarkName = "-jiebanMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -2793,8 +2617,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "-createTopView"
             landmarkType = "7">
          </BreakpointContent>
@@ -2809,8 +2633,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/KG_ZhiXiuViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "750"
-            endingLineNumber = "750"
+            startingLineNumber = "755"
+            endingLineNumber = "755"
             landmarkName = "-selectedIndex:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2825,8 +2649,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/KG_ZhiXiuViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "761"
-            endingLineNumber = "761"
+            startingLineNumber = "766"
+            endingLineNumber = "766"
             landmarkName = "-selectedIndex:"
             landmarkType = "7">
             <Locations>
@@ -2937,9 +2761,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/ScondFloor/KG_SecondFloorViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "475"
-            endingLineNumber = "475"
-            landmarkName = "-refreshStationData"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
+            landmarkName = "-getData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2955,7 +2779,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "202"
             endingLineNumber = "202"
-            landmarkName = "-setRebeiDic:"
+            landmarkName = "-dataArray"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2969,8 +2793,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/DME/KG_DMEView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "599"
-            endingLineNumber = "599"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
             landmarkName = "-setDataDic:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2987,7 +2811,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "149"
             endingLineNumber = "149"
-            landmarkName = "-setWorkDic:"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3065,8 +2889,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x5de1;&#x89c6;&#x5185;&#x5bb9;-&#x96f7;&#x8fbe;&#x673a;&#x623f;/KG_XunShiRadarView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "-setDetailModel:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3097,8 +2921,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "940"
-            endingLineNumber = "940"
+            startingLineNumber = "971"
+            endingLineNumber = "971"
             landmarkName = "-gotoDetailPage:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3113,8 +2937,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1173"
-            endingLineNumber = "1173"
+            startingLineNumber = "1204"
+            endingLineNumber = "1204"
             landmarkName = "-getRunPromptData:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3129,8 +2953,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1247"
-            endingLineNumber = "1247"
+            startingLineNumber = "1278"
+            endingLineNumber = "1278"
             landmarkName = "-getRunReportDetailData"
             landmarkType = "7">
          </BreakpointContent>
@@ -3257,8 +3081,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/Controller/KG_ZhiTaiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
+            startingLineNumber = "498"
+            endingLineNumber = "498"
             landmarkName = "-getTextColor:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3353,8 +3177,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/Controller/KG_ZhiWeiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "565"
-            endingLineNumber = "565"
+            startingLineNumber = "570"
+            endingLineNumber = "570"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3385,8 +3209,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1179"
-            endingLineNumber = "1179"
+            startingLineNumber = "1210"
+            endingLineNumber = "1210"
             landmarkName = "-getRunPromptData:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3449,8 +3273,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/Controller/KG_ZhiTaiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
+            startingLineNumber = "530"
+            endingLineNumber = "530"
             landmarkName = "-getData"
             landmarkType = "7">
          </BreakpointContent>
@@ -3465,8 +3289,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "-change:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3481,8 +3305,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
+            startingLineNumber = "336"
+            endingLineNumber = "336"
             landmarkName = "-change:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3497,10 +3321,10 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "525"
-            endingLineNumber = "525"
-            landmarkName = "-getMachineDetailList"
-            landmarkType = "7">
+            startingLineNumber = "562"
+            endingLineNumber = "562"
+            landmarkName = "KG_CommonDetailViewController"
+            landmarkType = "3">
             <Locations>
                <Location
                   uuid = "C4F0FDF3-6989-41F1-8358-D44950CCCB5E - ae9a45e42058dfc"
@@ -3545,8 +3369,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/Controller/KG_ZhiWeiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "554"
-            endingLineNumber = "554"
+            startingLineNumber = "559"
+            endingLineNumber = "559"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3561,8 +3385,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/Controller/KG_ZhiWeiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "580"
-            endingLineNumber = "580"
+            startingLineNumber = "585"
+            endingLineNumber = "585"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -3586,86 +3410,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "483038F2-D7C3-4DCA-B18F-65BF25FCB485"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardControlViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
-            landmarkName = "-openData"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "483038F2-D7C3-4DCA-B18F-65BF25FCB485 - 995ffaba73d85acf"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[KG_AccessCardControlViewController openData]"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%97%A8%E7%A6%81/KG_AccessCardControlViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "374"
-                  endingLineNumber = "374"
-                  offsetFromSymbolStart = "320">
-               </Location>
-               <Location
-                  uuid = "483038F2-D7C3-4DCA-B18F-65BF25FCB485 - 1732ebceb2fd1139"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__46-[KG_AccessCardControlViewController openData]_block_invoke"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%97%A8%E7%A6%81/KG_AccessCardControlViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "376"
-                  endingLineNumber = "376"
-                  offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E2F5D9AE-780B-4A43-A0E7-E26095D16CEE"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardControlViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "377"
-            endingLineNumber = "377"
-            landmarkName = "-openData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5279045F-9950-4BC2-8349-6EA84BBB0B0F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardControlViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "386"
-            endingLineNumber = "386"
-            landmarkName = "-openData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "2A6907AB-BD5C-436F-A04E-4CEECABEC884"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -3673,8 +3417,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardControlViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "397"
-            endingLineNumber = "397"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
             landmarkName = "-closeData"
             landmarkType = "7">
          </BreakpointContent>
@@ -3689,8 +3433,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardControlViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
             landmarkName = "-closeData"
             landmarkType = "7">
          </BreakpointContent>
@@ -3762,38 +3506,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4C4335C0-C160-4C3E-8A63-79D90B4D298E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "-controlAccessLog:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F11E73B6-D058-4625-910D-FADC3C547025"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "-moreCanshu:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "C94DAD14-253C-4E16-9678-1304B15EC8B3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -3801,8 +3513,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "431"
+            endingLineNumber = "431"
             landmarkName = "-initWithController"
             landmarkType = "7">
          </BreakpointContent>
@@ -3817,40 +3529,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "445"
-            endingLineNumber = "445"
-            landmarkName = "-initWithController"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3423FA52-645A-4E5B-B945-64B2CB41E1BD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "-controlLog:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6DA1947E-6227-442D-A876-E866319F4610"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "410"
-            endingLineNumber = "410"
+            startingLineNumber = "476"
+            endingLineNumber = "476"
             landmarkName = "-initWithController"
             landmarkType = "7">
          </BreakpointContent>
@@ -3865,8 +3545,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "466"
-            endingLineNumber = "466"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
             landmarkName = "-initWithController"
             landmarkType = "7">
          </BreakpointContent>
@@ -3881,25 +3561,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/Controller/KG_ZhiTaiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
+            startingLineNumber = "510"
+            endingLineNumber = "510"
             landmarkName = "-rightButtonClicked:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5879D6EB-4186-4D8B-8DC3-1E73C57B5D91"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/Controller/KG_ZhiTaiViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "610"
-            endingLineNumber = "610"
-            landmarkName = "-initWithController"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3913,8 +3577,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/Controller/KG_ZhiTaiViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "662"
-            endingLineNumber = "662"
+            startingLineNumber = "694"
+            endingLineNumber = "694"
             landmarkName = "-initOtherController"
             landmarkType = "7">
          </BreakpointContent>
@@ -3929,8 +3593,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "722"
-            endingLineNumber = "722"
+            startingLineNumber = "753"
+            endingLineNumber = "753"
             landmarkName = "-getLoginNameInfo"
             landmarkType = "7">
          </BreakpointContent>
@@ -3945,8 +3609,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
             landmarkName = "-jiebanMethod"
             landmarkType = "7">
             <Locations>
@@ -3961,8 +3625,8 @@
                   urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E8%BF%90%E8%A1%8C%E6%8A%A5%E5%91%8A%E8%AF%A6%E6%83%85%E9%A1%B5/KG_RunReportDetailViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "400"
-                  endingLineNumber = "400"
+                  startingLineNumber = "404"
+                  endingLineNumber = "404"
                   offsetFromSymbolStart = "436">
                </Location>
                <Location
@@ -3976,57 +3640,9 @@
                   urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E8%BF%90%E8%A1%8C%E6%8A%A5%E5%91%8A%E8%AF%A6%E6%83%85%E9%A1%B5/KG_RunReportDetailViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "401"
-                  endingLineNumber = "401"
+                  startingLineNumber = "405"
+                  endingLineNumber = "405"
                   offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F9212052-E177-4178-B6E1-6DDA1A07A108"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "418"
-            endingLineNumber = "418"
-            landmarkName = "-jiaobanMethod"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "F9212052-E177-4178-B6E1-6DDA1A07A108 - f423eb469a29d791"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[KG_RunManagerViewController jiaobanMethod]"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "418"
-                  endingLineNumber = "418"
-                  offsetFromSymbolStart = "476">
-               </Location>
-               <Location
-                  uuid = "F9212052-E177-4178-B6E1-6DDA1A07A108 - c90cc39198f72505"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__44-[KG_RunManagerViewController jiaobanMethod]_block_invoke"
-                  moduleName = "Frame"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "418"
-                  endingLineNumber = "418"
-                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -4050,22 +3666,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F16A8297-A67F-412A-B7EF-429F4C994975"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4f8b;&#x884c;&#x7ef4;&#x62a4;/&#x7ef4;&#x62a4;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_WeihuDailyReportDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "752DE9FF-20A1-4380-B19D-5938E2C7B285"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -4075,7 +3675,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "283"
             endingLineNumber = "283"
-            landmarkName = "-setDataDic:"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4105,9 +3705,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4f8b;&#x884c;&#x7ef4;&#x62a4;/&#x7ef4;&#x62a4;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x8bbe;&#x5907;&#x60c5;&#x51b5;&#x5361;&#x7247;/KG_EquipCardViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
-            landmarkName = "-showAlertView"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
+            landmarkName = "-createView"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4137,9 +3737,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "635"
-            endingLineNumber = "635"
-            landmarkName = "-getLogData"
+            startingLineNumber = "987"
+            endingLineNumber = "987"
+            landmarkName = "-getReceviceData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4153,8 +3753,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
+            startingLineNumber = "438"
+            endingLineNumber = "438"
             landmarkName = "-jiaobanMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -4185,8 +3785,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "527"
-            endingLineNumber = "527"
+            startingLineNumber = "531"
+            endingLineNumber = "531"
             landmarkName = "-createReportMethod"
             landmarkType = "7">
             <Locations>
@@ -4201,8 +3801,8 @@
                   urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E8%BF%90%E8%A1%8C%E6%8A%A5%E5%91%8A%E8%AF%A6%E6%83%85%E9%A1%B5/KG_RunReportDetailViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "527"
-                  endingLineNumber = "527"
+                  startingLineNumber = "531"
+                  endingLineNumber = "531"
                   offsetFromSymbolStart = "3056">
                </Location>
                <Location
@@ -4216,8 +3816,8 @@
                   urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E8%BF%90%E8%A1%8C%E6%8A%A5%E5%91%8A%E8%AF%A6%E6%83%85%E9%A1%B5/KG_RunReportDetailViewController.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "528"
-                  endingLineNumber = "528"
+                  startingLineNumber = "532"
+                  endingLineNumber = "532"
                   offsetFromSymbolStart = "40">
                </Location>
             </Locations>
@@ -4233,8 +3833,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "529"
-            endingLineNumber = "529"
+            startingLineNumber = "533"
+            endingLineNumber = "533"
             landmarkName = "-createReportMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -4249,24 +3849,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
-            landmarkName = "-createReportMethod"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "04FF5646-F0B0-489F-A965-A1FC64AA51A4"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
+            startingLineNumber = "546"
+            endingLineNumber = "546"
             landmarkName = "-createReportMethod"
             landmarkType = "7">
          </BreakpointContent>
@@ -4281,8 +3865,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
@@ -4306,22 +3890,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "30619F9D-3EA0-4755-8DB5-898696716A81"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
-            landmarkName = "-CreateReportMethod"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "D141663B-4076-477C-8EF7-187562E60E82"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -4338,54 +3906,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "887E7D16-7A92-46B9-8358-6BBD1417A538"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/View/KG_GaoJingDetailFirstCell.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
-            landmarkName = "-liftMethod:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5C126F0D-867B-44FB-9824-42F117FDFDC9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DC11042A-6C8E-4BAE-A2BE-516EF4E71CAD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "860"
-            endingLineNumber = "860"
-            landmarkName = "-hangupData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "EABA60AF-1B3D-43A2-A7DB-9B985C38B77E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -4393,9 +3913,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "729"
-            endingLineNumber = "729"
-            landmarkName = "-imagePickerController:didFinishPickingVideo:sourceAssets:"
+            startingLineNumber = "767"
+            endingLineNumber = "767"
+            landmarkName = "-submitVideo:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4409,9 +3929,9 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "730"
-            endingLineNumber = "730"
-            landmarkName = "-imagePickerController:didFinishPickingVideo:sourceAssets:"
+            startingLineNumber = "768"
+            endingLineNumber = "768"
+            landmarkName = "-submitVideo:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -4425,10 +3945,42 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "537"
-            endingLineNumber = "537"
+            startingLineNumber = "575"
+            endingLineNumber = "575"
             landmarkName = "-pushTZVideoPickerController"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "90ADEC2A-DF69-4B9D-AEB9-867572286F06 - 9f5eaf5beec20e3e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_GaoJingDetailViewController pushTZVideoPickerController]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiXiu%E6%99%BA%E4%BF%AE/%E5%91%8A%E8%AD%A6%E8%AF%A6%E6%83%85/KG_GaoJingDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "575"
+                  endingLineNumber = "575"
+                  offsetFromSymbolStart = "316">
+               </Location>
+               <Location
+                  uuid = "90ADEC2A-DF69-4B9D-AEB9-867572286F06 - 5a6af78d2d8731a3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__61-[KG_GaoJingDetailViewController pushTZVideoPickerController]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiXiu%E6%99%BA%E4%BF%AE/%E5%91%8A%E8%AD%A6%E8%AF%A6%E6%83%85/KG_GaoJingDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "575"
+                  endingLineNumber = "575"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -4441,9 +3993,1336 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "551"
-            endingLineNumber = "551"
-            landmarkName = "-imagePickerController:didFinishPickingPhotos:sourceAssets:isSelectOriginalPhoto:"
+            startingLineNumber = "589"
+            endingLineNumber = "589"
+            landmarkName = "KG_GaoJingDetailViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "24D75955-25AB-4D99-8BA3-6A039D5B3C13"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "700"
+            endingLineNumber = "700"
+            landmarkName = "-checkCanChangeTask:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F7BF80CF-C149-4C25-8F7E-69DC8D220550"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "650"
+            endingLineNumber = "650"
+            landmarkName = "-uploadTask"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A6B7534F-8CCC-4DD2-9A33-9558B3C131BF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "563"
+            endingLineNumber = "563"
+            landmarkName = "-changeTask"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ED6712F2-2279-4603-84A9-9D58CC7842D2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "659"
+            endingLineNumber = "659"
+            landmarkName = "-uploadTask"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B8613DB9-B249-4CF2-A717-6FE0D0DF7513"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
+            landmarkName = "-uploadTask"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3CEA4E22-B836-40F0-9304-751E701E141B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x5de1;&#x89c6;&#x7ed3;&#x679c;/KG_XunShiResultView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "518A79C6-76E9-4A52-A967-68B6F659C8A8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x5de1;&#x89c6;&#x7ed3;&#x679c;/KG_XunShiResultView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "-textViewShouldBeginEditing:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6ED4A81F-4A50-406D-B331-4514F882898C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x5217;&#x8868;/KG_RunListViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9DBF0751-431B-4FA6-9F44-15C8B4687210"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
+            landmarkName = "-jiaobanMethod"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "808E386A-2919-4F66-9BE2-E1E285A412B6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "487"
+            endingLineNumber = "487"
+            landmarkName = "-jiebanMethod"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0DDCB5B7-F1F9-4ED8-9DEB-71AB022995B3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "496"
+            endingLineNumber = "496"
+            landmarkName = "-jiebanMethod"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EF854A2B-1C6E-4A2C-83CD-559D61D1A477"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "585"
+            endingLineNumber = "585"
+            landmarkName = "-getReportIdData:withEndTime:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "20F371F8-5CF7-41AD-A86E-8C2D2B7C9E9D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "974"
+            endingLineNumber = "974"
+            landmarkName = "-gotoDetailPage:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "81E6ED3B-D611-417F-B374-48E63E6AACF7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1321"
+            endingLineNumber = "1321"
+            landmarkName = "-getJiaoJieBanStatus"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DD310E59-F493-438A-933D-404811C1C18B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x53f0;&#x7ad9;&#x4efb;&#x52a1;&#x63d0;&#x9192;/KG_StationReportAlarmViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "-getTask:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9F76419C-1161-489B-B21E-DA0FA020FF6C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x53f0;&#x7ad9;&#x4efb;&#x52a1;&#x63d0;&#x9192;/KG_StationReportAlarmViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "328"
+            endingLineNumber = "328"
+            landmarkName = "-getStationReportAlarmInfo"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9F76419C-1161-489B-B21E-DA0FA020FF6C - 189d5a5c7fe418f7"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_StationReportAlarmViewController getStationReportAlarmInfo]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E5%8F%B0%E7%AB%99%E4%BB%BB%E5%8A%A1%E6%8F%90%E9%86%92/KG_StationReportAlarmViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "328"
+                  endingLineNumber = "328"
+                  offsetFromSymbolStart = "252">
+               </Location>
+               <Location
+                  uuid = "9F76419C-1161-489B-B21E-DA0FA020FF6C - ba36d352a7ee81bc"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__64-[KG_StationReportAlarmViewController getStationReportAlarmInfo]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/%E5%8F%B0%E7%AB%99%E4%BB%BB%E5%8A%A1%E6%8F%90%E9%86%92/KG_StationReportAlarmViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "329"
+                  endingLineNumber = "329"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F60A087C-C74F-4308-A0A5-FDA416B7E1AA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x53f0;&#x7ad9;&#x4efb;&#x52a1;&#x63d0;&#x9192;/KG_StationReportAlarmViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "-getStationReportAlarmInfo"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A1B82CDA-6035-45D8-A11C-DDD09A6E57F6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x53f0;&#x7ad9;&#x4efb;&#x52a1;&#x63d0;&#x9192;/KG_StationReportAlarmViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "-getStationReportAlarmInfo"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B8AB5CC9-0D34-4362-8B1E-CE659DAEDD94"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "513"
+            endingLineNumber = "513"
+            landmarkName = "-CreateReportMethod"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6FF68D7F-F610-42C2-B9B5-E6C9592EE05E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x5217;&#x8868;/KG_RunListViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
+            landmarkName = "-getRunReportDetailMoreData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BE622F96-AE44-4608-B527-9C18927621C6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
+            landmarkName = "-login"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "041EFBB6-4B02-4778-8BB8-6F44BF9063D0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "588"
+            endingLineNumber = "588"
+            landmarkName = "-getReportIdData:withEndTime:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "041EFBB6-4B02-4778-8BB8-6F44BF9063D0 - d2e3149778905dbc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__59-[KG_RunManagerViewController getReportIdData:withEndTime:]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "588"
+                  endingLineNumber = "588"
+                  offsetFromSymbolStart = "708">
+               </Location>
+               <Location
+                  uuid = "041EFBB6-4B02-4778-8BB8-6F44BF9063D0 - b45e930899abfb61"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__59-[KG_RunManagerViewController getReportIdData:withEndTime:]_block_invoke.405"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "589"
+                  endingLineNumber = "589"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C3244464-E73F-404E-822F-064E74878232"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "764"
+            endingLineNumber = "764"
+            landmarkName = "-getLoginNameInfo"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AA13DE93-8882-4AAD-8E97-19D27FC21B7B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "845"
+            endingLineNumber = "845"
+            landmarkName = "-getTodayReportInfo"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AA13DE93-8882-4AAD-8E97-19D27FC21B7B - e2eae1f6a52fc4e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__49-[KG_RunManagerViewController getTodayReportInfo]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "845"
+                  endingLineNumber = "845"
+                  offsetFromSymbolStart = "256">
+               </Location>
+               <Location
+                  uuid = "AA13DE93-8882-4AAD-8E97-19D27FC21B7B - 9259ca1ee89629e4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__49-[KG_RunManagerViewController getTodayReportInfo]_block_invoke_2"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "846"
+                  endingLineNumber = "846"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "63DD1482-9F44-4F1D-8B74-4D30562C9A84"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1214"
+            endingLineNumber = "1214"
+            landmarkName = "-getRunPromptData:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "63DD1482-9F44-4F1D-8B74-4D30562C9A84 - 55960c96631280a7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__48-[KG_RunManagerViewController getRunPromptData:]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1214"
+                  endingLineNumber = "1214"
+                  offsetFromSymbolStart = "420">
+               </Location>
+               <Location
+                  uuid = "63DD1482-9F44-4F1D-8B74-4D30562C9A84 - 5f68957c0526722c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__48-[KG_RunManagerViewController getRunPromptData:]_block_invoke_2"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1214"
+                  endingLineNumber = "1214"
+                  offsetFromSymbolStart = "312">
+               </Location>
+               <Location
+                  uuid = "63DD1482-9F44-4F1D-8B74-4D30562C9A84 - e92d753ef65f9ac"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__48-[KG_RunManagerViewController getRunPromptData:]_block_invoke.630"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/%E8%BF%90%E8%A1%8C%E7%AE%A1%E7%90%86/KG_RunManagerViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1214"
+                  endingLineNumber = "1214"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "458B04EF-7460-483D-A94E-046A3CD76EA4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1244"
+            endingLineNumber = "1244"
+            landmarkName = "-getRunPromptDetailData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "649FFC9E-AB30-485D-AF5F-0570DB74E9CC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/KG_RunManagerViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1289"
+            endingLineNumber = "1289"
+            landmarkName = "-getRunReportDetailData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D1057A4D-6829-4F80-B21B-D9F0E12C79F8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x5217;&#x8868;/KG_RunListViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
+            landmarkName = "-getRunReportDetailMoreData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3CC0C7B8-62FC-4246-8873-49525A8A3D1A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/Station/Controller/StationMachineDetailController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "386"
+            endingLineNumber = "386"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5856272D-87E9-4AF2-9619-D82552D29D44"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/Station/Controller/StationMachineDetailController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5EC479DD-D272-476D-A113-444C29799C0F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "410"
+            endingLineNumber = "410"
+            landmarkName = "-initWithController"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EB5D142D-8C17-452D-986A-2AA2AED1C6B0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiTai(&#x667a;&#x6001;)/DME/KG_DMEView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "651"
+            endingLineNumber = "651"
+            landmarkName = "-setDataDic:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4018315B-8490-4988-A583-4BF344A3BF2A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x7a7a;&#x8c03;/&#x7a7a;&#x8c03;View/KG_KongTiaoControlViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "461"
+            endingLineNumber = "461"
+            landmarkName = "-viewDidAppear:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "282F548C-E013-4FEE-83D4-0A7664A98A1F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/&#x95e8;&#x7981;&#x65e5;&#x5fd7;/KG_AccessCardLogViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "473"
+            endingLineNumber = "473"
+            landmarkName = "-datePickerViewSaveBtnClickDelegate:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9DEB9D8D-C48A-4299-841C-408128FB41BF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/&#x95e8;&#x7981;&#x65e5;&#x5fd7;/KG_AccessCardLogViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
+            landmarkName = "-datePickerViewSaveBtnClickDelegate:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A67FDEF2-6C25-4A8E-BA35-FF9A78944AA7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/&#x95e8;&#x7981;&#x65e5;&#x5fd7;/KG_AccessCardLogViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
+            landmarkName = "-datePickerViewSaveBtnClickDelegate:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A67FDEF2-6C25-4A8E-BA35-FF9A78944AA7 - 4393efe3f19a19c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_AccessCardLogViewController datePickerViewSaveBtnClickDelegate:]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%97%A8%E7%A6%81/%E9%97%A8%E7%A6%81%E6%97%A5%E5%BF%97/KG_AccessCardLogViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "488"
+                  endingLineNumber = "488"
+                  offsetFromSymbolStart = "840">
+               </Location>
+               <Location
+                  uuid = "A67FDEF2-6C25-4A8E-BA35-FF9A78944AA7 - a223206b290f9ecb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__69-[KG_AccessCardLogViewController datePickerViewSaveBtnClickDelegate:]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%97%A8%E7%A6%81/%E9%97%A8%E7%A6%81%E6%97%A5%E5%BF%97/KG_AccessCardLogViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "489"
+                  endingLineNumber = "489"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4DCD3B06-4FAB-4FB5-81EB-DDB319C6EEC8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/&#x95e8;&#x7981;&#x65e5;&#x5fd7;/KG_AccessCardLogViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "494"
+            endingLineNumber = "494"
+            landmarkName = "-datePickerViewCancelBtnClickDelegate"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4DCD3B06-4FAB-4FB5-81EB-DDB319C6EEC8 - 472b2c2ebf3eb460"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_AccessCardLogViewController datePickerViewCancelBtnClickDelegate]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%97%A8%E7%A6%81/%E9%97%A8%E7%A6%81%E6%97%A5%E5%BF%97/KG_AccessCardLogViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "494"
+                  endingLineNumber = "494"
+                  offsetFromSymbolStart = "68">
+               </Location>
+               <Location
+                  uuid = "4DCD3B06-4FAB-4FB5-81EB-DDB319C6EEC8 - d77966ebbef651bd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__70-[KG_AccessCardLogViewController datePickerViewCancelBtnClickDelegate]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%97%A8%E7%A6%81/%E9%97%A8%E7%A6%81%E6%97%A5%E5%BF%97/KG_AccessCardLogViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "495"
+                  endingLineNumber = "495"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9C35C617-3C02-4135-B873-C333BB9F6F2F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x7a7a;&#x8c03;/&#x7a7a;&#x8c03;View/KG_KongTiaoControlView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "375"
+            endingLineNumber = "375"
+            landmarkName = "-selectedIndex:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DA733FB6-9E2F-4A8B-B3E1-825AF195F30B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x7a7a;&#x8c03;/&#x7a7a;&#x8c03;View/KG_KongTiaoControlView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "-refreshControlLogSegment"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9C570B73-60CB-4569-AA89-A90C8B211CD6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x5de1;&#x89c6;&#x5185;&#x5bb9;-&#x96f7;&#x8fbe;&#x673a;&#x623f;/KG_RadarEquipCell.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
+            landmarkName = "-setDataDic:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7F5CCC22-01A7-4AC7-8FDB-68A95A39EEF5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x8be6;&#x60c5;&#x9875;/KG_CommonDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "564"
+            endingLineNumber = "564"
+            landmarkName = "KG_CommonDetailViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "7F5CCC22-01A7-4AC7-8FDB-68A95A39EEF5 - ae9a45e42058dfc"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_CommonDetailViewController getMachineDetailList]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%80%9A%E7%94%A8%E8%AF%A6%E6%83%85%E9%A1%B5/KG_CommonDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "564"
+                  endingLineNumber = "564"
+                  offsetFromSymbolStart = "320">
+               </Location>
+               <Location
+                  uuid = "7F5CCC22-01A7-4AC7-8FDB-68A95A39EEF5 - 5bff80f97d4161e0"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__53-[KG_CommonDetailViewController getMachineDetailList]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiHuan(%E6%99%BA%E7%8E%AF)/%E9%80%9A%E7%94%A8%E8%AF%A6%E6%83%85%E9%A1%B5/KG_CommonDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "565"
+                  endingLineNumber = "565"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "142ADC2C-7429-48C0-9319-7E3E436DB83B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "310"
+            endingLineNumber = "310"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "30CFC8B2-D8A5-40DF-8A70-BA8C2D925578"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4f8b;&#x884c;&#x7ef4;&#x62a4;/&#x7ef4;&#x62a4;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x8bbe;&#x5907;&#x60c5;&#x51b5;&#x5361;&#x7247;/KG_EquipCardViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "-createView"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "570997C1-D14B-423D-A574-B72110942DB8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4f8b;&#x884c;&#x7ef4;&#x62a4;/&#x7ef4;&#x62a4;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x8bbe;&#x5907;&#x60c5;&#x51b5;&#x5361;&#x7247;/&#x5361;&#x7247;cell/KG_EquipCardFirstCell.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "-setDic:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7F6690A2-7D31-4636-8DDF-6EF129CD23C1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "535"
+            endingLineNumber = "535"
+            landmarkName = "-changeTask"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7F6690A2-7D31-4636-8DDF-6EF129CD23C1 - 4bb22e381965463"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_XunShiReportDetailViewController changeTask]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiWei%E6%99%BA%E7%BB%B4/%E4%B8%80%E9%94%AE%E5%B7%A1%E8%A7%86/%E5%B7%A1%E8%A7%86%E6%8A%A5%E5%91%8A%E8%AF%A6%E6%83%85/KG_XunShiReportDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "535"
+                  endingLineNumber = "535"
+                  offsetFromSymbolStart = "2568">
+               </Location>
+               <Location
+                  uuid = "7F6690A2-7D31-4636-8DDF-6EF129CD23C1 - c58470f18ea0f378"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__49-[KG_XunShiReportDetailViewController changeTask]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiWei%E6%99%BA%E7%BB%B4/%E4%B8%80%E9%94%AE%E5%B7%A1%E8%A7%86/%E5%B7%A1%E8%A7%86%E6%8A%A5%E5%91%8A%E8%AF%A6%E6%83%85/KG_XunShiReportDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "536"
+                  endingLineNumber = "536"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A2D81D6-EE3C-4FFB-89C9-31327315C237"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/KG_XunShiReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "479"
+            endingLineNumber = "479"
+            landmarkName = "-changeTask"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "400CC82C-6820-4413-8154-E189DD8E7911"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4f8b;&#x884c;&#x7ef4;&#x62a4;/&#x7ef4;&#x62a4;&#x5185;&#x5bb9;cell/&#x7ef4;&#x62a4;&#x62a5;&#x544a;view/KG_WeihuContentThirdCell.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
+            landmarkName = "-change:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "821E0C1B-A10E-423F-9F4D-C1BDD64D2BA2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x7a7a;&#x8c03;/&#x7a7a;&#x8c03;View/KG_KongTiaoControlView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
+            landmarkName = "-change:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F0C1AF31-6C99-4D8A-AC4F-27E8947B1433"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x5de1;&#x89c6;&#x5185;&#x5bb9;-&#x96f7;&#x8fbe;&#x673a;&#x623f;/KG_RadarEquipCell.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
+            landmarkName = "-change:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3C30CA1C-3C16-4717-885C-D9C6A4D4D6F1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4e00;&#x952e;&#x5de1;&#x89c6;/&#x5de1;&#x89c6;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x5de1;&#x89c6;&#x5185;&#x5bb9;-&#x96f7;&#x8fbe;&#x673a;&#x623f;/KG_RadarEquipCell.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
+            landmarkName = "-change:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5F648797-D4BC-41AA-8A97-9C7A686F4C2D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiWei&#x667a;&#x7ef4;/&#x4f8b;&#x884c;&#x7ef4;&#x62a4;/&#x7ef4;&#x62a4;&#x62a5;&#x544a;&#x8be6;&#x60c5;/&#x8bbe;&#x5907;&#x60c5;&#x51b5;&#x5361;&#x7247;/&#x5361;&#x7247;cell/KG_EquipCardFirstCell.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
+            landmarkName = "-change:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D75BD034-07ED-4163-ACAA-ECB597594B1A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x667a;&#x6167;&#x4e91;/KG_RunZhiHuiYunViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "-collectionView:didSelectItemAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5512BCA4-58DF-43D4-AF7C-27AA4F661439"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardControlViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "383"
+            endingLineNumber = "383"
+            landmarkName = "-openData"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C7D5B248-94F9-4374-98E5-3404BFA9A909"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x95e8;&#x7981;/KG_AccessCardView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
+            landmarkName = "-setDataDic:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A5ECB93E-0484-467D-99BF-14522C01BDF7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "-refreshGetData"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A5ECB93E-0484-467D-99BF-14522C01BDF7 - fed6b2cc9c962f95"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_GaoJingDetailViewController refreshGetData]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiXiu%E6%99%BA%E4%BF%AE/%E5%91%8A%E8%AD%A6%E8%AF%A6%E6%83%85/KG_GaoJingDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "204">
+               </Location>
+               <Location
+                  uuid = "A5ECB93E-0484-467D-99BF-14522C01BDF7 - fdf8a12cacc5ff25"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__48-[KG_GaoJingDetailViewController refreshGetData]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiXiu%E6%99%BA%E4%BF%AE/%E5%91%8A%E8%AD%A6%E8%AF%A6%E6%83%85/KG_GaoJingDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7DE7B8B3-B5A0-45D3-8126-B1641826962A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x544a;&#x8b66;&#x8be6;&#x60c5;/KG_GaoJingDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "-getData"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7DE7B8B3-B5A0-45D3-8126-B1641826962A - f39f2affbd04d37f"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[KG_GaoJingDetailViewController getData]"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiXiu%E6%99%BA%E4%BF%AE/%E5%91%8A%E8%AD%A6%E8%AF%A6%E6%83%85/KG_GaoJingDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "312">
+               </Location>
+               <Location
+                  uuid = "7DE7B8B3-B5A0-45D3-8126-B1641826962A - 30d6195166b5bfe6"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__41-[KG_GaoJingDetailViewController getData]_block_invoke"
+                  moduleName = "Frame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ran/Desktop/KongGuan/Frame/ThirdPhases(%E4%B8%89%E6%9C%9F%E5%BC%80%E5%8F%91)/ZhiXiu%E6%99%BA%E4%BF%AE/%E5%91%8A%E8%AD%A6%E8%AF%A6%E6%83%85/KG_GaoJingDetailViewController.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "112"
+                  endingLineNumber = "112"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "10CDBEC8-9210-406D-919E-88CE6FE1BC17"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x63a7;&#x5236;&#x544a;&#x8b66;&#x5f39;&#x7a97;/KG_ControlGaoJingAlertView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
+            landmarkName = "-confirmMethod:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0BBBC30E-FFE7-4A22-8ED0-D3C7B39F4EE9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x63a7;&#x5236;&#x544a;&#x8b66;&#x5f39;&#x7a97;/KG_ControlGaoJingAlertView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
+            landmarkName = "-confirmMethod:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0BEB6889-24DB-456A-BA05-F2F912300C23"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x5217;&#x8868;/KG_RunListViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "-backButtonClick:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A76FFEF3-97E4-4532-BCBE-3A052E732748"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x5217;&#x8868;/KG_RunListViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E92A462F-8510-4E33-8928-CACA3CED51C9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "76547F19-9D88-4169-8B62-0788ABFEE4CA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/&#x8fd0;&#x884c;&#x7ba1;&#x7406;/&#x8fd0;&#x884c;&#x62a5;&#x544a;&#x8be6;&#x60c5;&#x9875;/KG_RunReportDetailViewController.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "642"
+            endingLineNumber = "642"
+            landmarkName = "-backButtonClick:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

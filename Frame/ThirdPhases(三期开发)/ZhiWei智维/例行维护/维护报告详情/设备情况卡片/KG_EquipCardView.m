@@ -11,6 +11,7 @@
 #import "KG_EquipCardSecondCell.h"
 #import "KG_EquipCardThirdCell.h"
 #import "KG_OperationGuideViewController.h"
+#import "KG_EquipCardFourthCell.h"
 @interface KG_EquipCardView ()<UITableViewDataSource,UITableViewDelegate>{
     
 }
@@ -71,7 +72,7 @@
     
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return  3;
+    return  4;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -146,7 +147,7 @@
             make.height.equalTo(@1);
             make.bottom.equalTo(headView.mas_bottom);
         }];
-    }else {
+    }else if (section == 2) {
       
         UIImageView *iconImage = [[UIImageView alloc]init];
         [headView addSubview:iconImage];
@@ -198,6 +199,8 @@
             make.height.equalTo(@1);
             make.bottom.equalTo(headView.mas_bottom);
         }];
+        
+    }else {
         
     }
     
@@ -268,6 +271,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
+    }else {
+        KG_EquipCardFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EquipCardFourthCell"];
+        if (cell == nil) {
+            cell = [[KG_EquipCardFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipCardFourthCell"];
+        }
+        cell.dataArray = self.dataArray;
+        cell.totalNum = self.cardTotalNum;
+        cell.selIndex = self.cardCurrNum;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
+        
     }
     return nil;
 }
@@ -285,6 +300,17 @@
 
 - (void)setTaskStatus:(NSString *)taskStatus {
     _taskStatus = taskStatus;
+    
+}
+
+- (void)setCardCurrNum:(int)cardCurrNum {
+    _cardCurrNum = cardCurrNum;
+     [self.tableView reloadData];
+}
+
+- (void)setCardTotalNum:(int)cardTotalNum {
+    _cardTotalNum = cardTotalNum;
+    [self.tableView reloadData];
     
 }
 @end

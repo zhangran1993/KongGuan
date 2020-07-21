@@ -17,7 +17,7 @@
 
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
-
+@property (nonatomic, assign) int  alarmStatus;
                                                         
 @end
 @implementation KG_DMETransSecondView
@@ -99,6 +99,14 @@
     
     cell.titleLabel.text = safeString(titleString);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (indexPath.section == 0) {
+        
+        if (self.alarmStatus == 1) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }
+    }
     if (indexPath.section == 2) {
         if ([titleString isEqualToString:@"发射机2"]) {
                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#0032AF"];
@@ -168,7 +176,7 @@
 }
 - (void)setFasheDic:(NSDictionary *)fasheDic{
     _fasheDic = fasheDic;
-    
+    self.alarmStatus = [safeString(fasheDic[@"alarmStatus"]) intValue];
     NSString *fasheString = @"正常";
     //监视器A
     if([safeString(fasheDic[@"valueAlias"]) isEqualToString:@"无告警"]){

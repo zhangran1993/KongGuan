@@ -277,50 +277,50 @@
 
 + (void)getWithUrl:(NSString *)url param:(id)param resultClass:(Class)resultClass success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    
-    // 设定动画选项
-    animation.duration = 100; // 持续时间
-    animation.repeatCount = 0; // 重复次数
-    // 设定旋转角度
-    animation.fromValue = [NSNumber numberWithFloat:0.0]; // 起始角度
-    animation.toValue = [NSNumber numberWithFloat:100 * M_PI]; // 终止角度
-    UIWindow* window = [UIApplication sharedApplication].keyWindow;
-    
-    UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN)];
-    
-    
-    [window addSubview:bgView];
-    
-    UIView *showview = [[UIView alloc] initWithFrame:CGRectMake((WIDTH_SCREEN-100)/2,(HEIGHT_SCREEN-100)/2,100,100)] ;
-    showview.backgroundColor= [UIColor blackColor];
-    showview.alpha=0.5f;
-    
-    showview.layer.cornerRadius=5.0f;
-    
-    showview.layer.masksToBounds=YES;
-    
-    [bgView addSubview:showview];
-    
-    UIImageView *leading = [[UIImageView alloc]initWithFrame:CGRectMake(30,10,40,40)] ;
-    leading.image = [UIImage imageNamed:@"leading"];
-    [showview addSubview:leading];
-    // 添加动画
-    [leading.layer addAnimation:animation forKey:@"rotate-layer"];
-    
-    
-    UILabel *leadLabel =  [[UILabel alloc]initWithFrame:CGRectMake(0,50,100,40)] ;
-    leadLabel.text = @"加载中…";
-    leadLabel.font = FontSize(10);
-    leadLabel.textColor = [UIColor whiteColor];
-    leadLabel.textAlignment = NSTextAlignmentCenter;
-    [showview addSubview:leadLabel];
-    
+//
+//    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+//
+//    // 设定动画选项
+//    animation.duration = 100; // 持续时间
+//    animation.repeatCount = 0; // 重复次数
+//    // 设定旋转角度
+//    animation.fromValue = [NSNumber numberWithFloat:0.0]; // 起始角度
+//    animation.toValue = [NSNumber numberWithFloat:100 * M_PI]; // 终止角度
+//    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+//
+//    UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN)];
+//
+//
+//    [window addSubview:bgView];
+//
+//    UIView *showview = [[UIView alloc] initWithFrame:CGRectMake((WIDTH_SCREEN-100)/2,(HEIGHT_SCREEN-100)/2,100,100)] ;
+//    showview.backgroundColor= [UIColor blackColor];
+//    showview.alpha=0.5f;
+//
+//    showview.layer.cornerRadius=5.0f;
+//
+//    showview.layer.masksToBounds=YES;
+//
+//    [bgView addSubview:showview];
+//
+//    UIImageView *leading = [[UIImageView alloc]initWithFrame:CGRectMake(30,10,40,40)] ;
+//    leading.image = [UIImage imageNamed:@"leading"];
+//    [showview addSubview:leading];
+//    // 添加动画
+//    [leading.layer addAnimation:animation forKey:@"rotate-layer"];
+//
+//
+//    UILabel *leadLabel =  [[UILabel alloc]initWithFrame:CGRectMake(0,50,100,40)] ;
+//    leadLabel.text = @"加载中…";
+//    leadLabel.font = FontSize(10);
+//    leadLabel.textColor = [UIColor whiteColor];
+//    leadLabel.textAlignment = NSTextAlignmentCenter;
+//    [showview addSubview:leadLabel];
+//
     
     //NSDictionary *params = [param mj_keyValues];
     [FrameHttpRequest get:url params:param success:^(id responseObj) {
-        [bgView removeFromSuperview];
+//        [bgView removeFromSuperview];
         if (success) {
             //字典转模型，使用的是mj_objectWithKeyValues:方法
             //id result = [resultClass mj_objectWithKeyValues:responseObj];
@@ -330,7 +330,7 @@
             success(result);
         }
     } failure:^(NSError *error) {
-        [bgView removeFromSuperview];
+//        [bgView removeFromSuperview];
         if (failure) {
             failure(error);
         }
@@ -425,13 +425,13 @@
 + (void)postWithUrl:(NSString *)url param:(id)param success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     //状态栏菊花
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];//背景色
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];//遮罩透明
-    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];//菊花控件
-    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];//旋转小图标的 颜色
-    [SVProgressHUD showWithStatus:@"加载中…"];
-    
+//    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+//    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];//背景色
+//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];//遮罩透明
+//    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];//菊花控件
+//    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];//旋转小图标的 颜色
+//    [SVProgressHUD showWithStatus:@"加载中…"];
+//
     
     NSDictionary *params = [param mj_keyValues];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -465,12 +465,12 @@
 {
     
     //状态栏菊花
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];//背景色
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];//遮罩透明
-    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];//菊花控件
-    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];//旋转小图标的 颜色
-    [SVProgressHUD showWithStatus:@"加载中…"];
+//    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+//    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.3]];//背景色
+//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];//遮罩透明
+//    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];//菊花控件
+//    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];//旋转小图标的 颜色
+//    [SVProgressHUD showWithStatus:@"加载中…"];
     
     NSDictionary *params = [param mj_keyValues];
     //状态栏菊花

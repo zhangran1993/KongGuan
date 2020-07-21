@@ -10,6 +10,7 @@
 #import "KG_ZhiTaiModel.h"
 #import "KG_ZhiTaiEquipView.h"
 #import "KG_DMEView.h"
+#import "KG_DMERightView.h"
 #import "KG_ZhiTaiView.h"
 #import "KG_JifangView.h"
 #import "KG_RoomInfoView.h"
@@ -24,6 +25,7 @@
 #import "KG_CommonDetailViewController.h"
 #import "UIViewController+YQSlideMenu.h"
 #import "KG_SecondFloorViewController.h"
+#import <UIButton+WebCache.h>
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -64,11 +66,12 @@
 
 @property (nonatomic, strong) NSDictionary *dmeDic;
 @property (nonatomic, strong) KG_DMEView *demView;
+@property (nonatomic, strong) KG_DMERightView *demRightView;
 @property (nonatomic, strong) NSDictionary *dvorDic;
 @property (nonatomic, strong) KG_ZhiTaiView *dvorView;
 
 @property (nonatomic, strong)  UIImageView *topImageView;
-@property (strong, nonatomic) UIImageView *leftIconImage;
+@property (strong, nonatomic) UIButton *leftIconImage;
 @end
 
 @implementation KG_ZhiTaiViewController
@@ -136,10 +139,10 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_icon"]];
     }else {
         
-        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
+        [self.leftIconImage setImage:[UIImage imageNamed:@"head_icon"] forState:UIControlStateNormal] ;
     }
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -174,27 +177,24 @@
         make.left.equalTo(self.navigationView.mas_left).offset(10);
     }];
     
-    //按钮设置点击范围扩大.实际显示区域为图片的区域
-    self.leftIconImage = [[UIImageView alloc] init];
-    self.leftIconImage.image = IMAGE(@"head_icon");
-    [backBtn addSubview:self.leftIconImage];
-//    self.leftIconImage.contentMode = UIViewContentModeScaleAspectFill;
-    self.leftIconImage.layer.cornerRadius = 13.f;
-    self.leftIconImage.layer.masksToBounds = YES;
-    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@26);
-        make.centerX.equalTo(backBtn.mas_centerX);
-        make.centerY.equalTo(backBtn.mas_centerY);
-    }];
+   //按钮设置点击范围扩大.实际显示区域为图片的区域
+    self.leftIconImage = [[UIButton alloc] init];
     
+    [self.navigationView addSubview:self.leftIconImage];
+    self.leftIconImage.layer.cornerRadius =17.f;
+    self.leftIconImage.layer.masksToBounds = YES;
+    [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
+    [self.leftIconImage addTarget:self action:@selector(leftCenterButtonClick) forControlEvents:UIControlEventTouchUpInside];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        
     }else {
         
-        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
+        [self.leftIconImage setImage: [UIImage imageNamed:@"head_icon"] forState:UIControlStateNormal];
     }
+    
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightButton.titleLabel.font = FontSize(12);
     self.rightButton.layer.borderColor = [[UIColor colorWithHexString:@"#FFFFFF"]CGColor];
@@ -218,6 +218,11 @@
         make.centerY.equalTo(backBtn.mas_centerY);
         make.height.equalTo(@22);
         make.right.equalTo(self.view.mas_right).offset(-16);
+    }];
+    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.navigationView.mas_left).offset(16);
+        make.width.height.equalTo(@34);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
     //单台站不可点击
     self.rightButton.userInteractionEnabled = NO;
@@ -576,23 +581,48 @@
     for (int i = 0; i < self.dataModel.mainEquipmentDetails.count; i++) {
         
         if (i== 0) {
-            self.demView = [[KG_DMEView alloc]init];
-            self.demView.backgroundColor = [UIColor whiteColor];
-            self.demView.layer.cornerRadius = 10;
-            self.demView.layer.masksToBounds = YES;
-            self.demView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 550);
-            self.demView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
+//            if (1) {
+//
+//
+//                self.demRightView = [[KG_DMERightView alloc]init];
+//                self.demRightView.backgroundColor = [UIColor whiteColor];
+//                self.demRightView.layer.cornerRadius = 10;
+//                self.demRightView.layer.masksToBounds = YES;
+//                self.demRightView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 550);
+//                self.demRightView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
+//
+//                    KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
+//                    StationMachine.category = safeString(dataDic[@"category"]);
+//                    StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
+//                    StationMachine.station_name = safeString(dataDic[@"stationName"]);;
+//                    StationMachine.station_code = safeString(dataDic[@"stationCode"]);
+//                    StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+//
+//                    [self.navigationController pushViewController:StationMachine animated:YES];
+//                };
+//                [_scrollView addSubview:self.demRightView];
+//
+//
+//            }else {
+                self.demView = [[KG_DMEView alloc]init];
+                self.demView.backgroundColor = [UIColor whiteColor];
+                self.demView.layer.cornerRadius = 10;
+                self.demView.layer.masksToBounds = YES;
+                self.demView.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH -32, 550);
+                self.demView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
+                    
+                    KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
+                    StationMachine.category = safeString(dataDic[@"category"]);
+                    StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
+                    StationMachine.station_name = safeString(dataDic[@"stationName"]);;
+                    StationMachine.station_code = safeString(dataDic[@"stationCode"]);
+                    StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+                    StationMachine.zhitaiDic = self.dmeDic;
+                    [self.navigationController pushViewController:StationMachine animated:YES];
+                };
+                [_scrollView addSubview:self.demView];
                 
-                KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
-                StationMachine.category = safeString(dataDic[@"category"]);
-                StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
-                StationMachine.station_name = safeString(dataDic[@"stationName"]);;
-                StationMachine.station_code = safeString(dataDic[@"stationCode"]);
-                StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
-                
-                [self.navigationController pushViewController:StationMachine animated:YES];
-            };
-            [_scrollView addSubview:self.demView];
+          
             
         }else {
             self.dvorView = [[KG_ZhiTaiView alloc]init];
@@ -607,10 +637,10 @@
                 StationMachine.station_name = safeString(dataDic[@"stationName"]);;
                 StationMachine.station_code = safeString(dataDic[@"stationCode"]);
                 StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
-               
+                StationMachine.zhitaiDic = self.dvorDic;
                 [self.navigationController pushViewController:StationMachine animated:YES];
                 
-               
+                
             };
             [_scrollView addSubview:self.dvorView];
             
@@ -876,6 +906,7 @@
         if (self.dmeDic.count) {
             self.demView.dataDic = self.dmeDic;
         }
+        
         
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {

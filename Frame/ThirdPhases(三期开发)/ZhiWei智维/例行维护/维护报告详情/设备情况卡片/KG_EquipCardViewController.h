@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,strong) NSArray *listArray;
 @property (strong, nonatomic) KG_XunShiReportDetailModel *dataModel;
+
+@property (nonatomic ,strong) NSDictionary *dataDic;
 @end
 
 NS_ASSUME_NONNULL_END

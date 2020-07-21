@@ -144,7 +144,7 @@
             make.height.equalTo(@12);
         }];
     }
-   
+    
 }
 
 - (UIImage*)createImageWithColor: (UIColor*) color{
@@ -167,6 +167,11 @@
     if ([safeString(dataDic[@"measureTagName"]) isEqualToString:@"湿度"]) {
         NSLog(@"2");
     }
+    NSDictionary *dd = nil;
+    NSArray *arr = _dataDic[@"childrens"];
+    if (arr.count >0) {
+        dd = [arr firstObject];
+    }
     
     self.titleLabel.text = safeString(dataDic[@"measureTagName"]);
     if (safeString(dataDic[@"measureTagName"]).length == 0) {
@@ -174,65 +179,124 @@
     }
     self.detailLabel.text = safeString(dataDic[@"measureValueAlias"]);
     if (safeString(dataDic[@"unit"]).length > 0) {
-       self.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dataDic[@"measureValueAlias"]),safeString(dataDic[@"unit"])];
+        self.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dataDic[@"measureValueAlias"]),safeString(dataDic[@"unit"])];
     }
-    
-     if([safeString(dataDic[@"selectType"])  isEqualToString:@"charset"]) {
+    if(safeString(dataDic[@"measureValueAlias"]).length >0){
         
-    }else if([safeString(dataDic[@"selectType"]) isEqualToString:@"textarea"]) {
+    }else {
         
-    }else if([safeString(dataDic[@"selectType"])  isEqualToString:@"select"]) {
         
-    }else if([safeString(dataDic[@"selectType"]) isEqualToString:@"input"]) {
-        
-        self.segmentedControl.hidden = NO;
-        if ([dataDic[@"childrens"] count] >0) {
-            NSDictionary *dd = [dataDic[@"childrens"] firstObject];
-            NSString *value = safeString(dd[@"value"]) ;
-            NSString *valueNum = safeString(self.dataDic[@"measureValueAlias"]) ;
-            if (value.length >0) {
-                
-                NSArray *array = [value componentsSeparatedByString:@"@&@"];
-                if (array.count == 2) {
-                    [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
-                    [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
-                    if (valueNum.length >0) {
-                        if ([valueNum isEqualToString:array[0]]) {
-                            self.segmentedControl.selectedSegmentIndex = 0;
-                        
-                        }else if ([valueNum isEqualToString:array[1]]) {
-                            self.segmentedControl.selectedSegmentIndex = 1;
-                        
+        if([safeString(dd[@"type"])  isEqualToString:@"charset"] ||
+           [safeString(dd[@"type"])  isEqualToString:@"radio"]
+           ) {
+            if ([UserManager shareUserManager].isChangeTask) {
+                self.segmentedControl.userInteractionEnabled = YES;
+            }else {
+                self.segmentedControl.userInteractionEnabled = NO;
+            }
+            self.segmentedControl.hidden = NO;
+            if ([dataDic[@"childrens"] count] >0) {
+                NSDictionary *dd = [dataDic[@"childrens"] firstObject];
+                NSString *value = safeString(dd[@"value"]) ;
+                NSString *valueNum = safeString(self.dataDic[@"measureValueAlias"]) ;
+                if (value.length >0) {
+                    
+                    NSArray *array = [value componentsSeparatedByString:@"@&@"];
+                    if (array.count == 2) {
+                        [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
+                        [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
+                        if (valueNum.length >0) {
+                            if ([valueNum isEqualToString:array[0]]) {
+                                self.segmentedControl.selectedSegmentIndex = 0;
+                                
+                            }else if ([valueNum isEqualToString:array[1]]) {
+                                self.segmentedControl.selectedSegmentIndex = 1;
+                                
+                            }else {
+                                self.segmentedControl.selectedSegmentIndex = 2;
+                            }
                         }else {
                             self.segmentedControl.selectedSegmentIndex = 2;
                         }
-                    }else {
-                       self.segmentedControl.selectedSegmentIndex = 2;
+                    }
+                }else {
+                    
+                    NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
+                    if (array.count == 2) {
+                        [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
+                        [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
+                        
                     }
                 }
+                
+                
             }
-          
-           
+            self.detailLabel.hidden = YES;
+            
+        }else if( [safeString(dd[@"type"])  isEqualToString:@"radio"]) {
+            
+            
+        }else if([safeString(dataDic[@"type"]) isEqualToString:@"textarea"]) {
+            
+            
+        }else if([safeString(dataDic[@"type"])  isEqualToString:@"select"]) {
+            
+        }else if([safeString(dataDic[@"type"]) isEqualToString:@"input"]) {
+            if ([UserManager shareUserManager].isChangeTask) {
+                self.segmentedControl.userInteractionEnabled = YES;
+            }else {
+                self.segmentedControl.userInteractionEnabled = NO;
+            }
+            self.segmentedControl.hidden = NO;
+            if ([dataDic[@"childrens"] count] >0) {
+                NSDictionary *dd = [dataDic[@"childrens"] firstObject];
+                NSString *value = safeString(dd[@"value"]) ;
+                NSString *valueNum = safeString(self.dataDic[@"measureValueAlias"]) ;
+                if (value.length >0) {
+                    
+                    NSArray *array = [value componentsSeparatedByString:@"@&@"];
+                    if (array.count == 2) {
+                        [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
+                        [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
+                        if (valueNum.length >0) {
+                            if ([valueNum isEqualToString:array[0]]) {
+                                self.segmentedControl.selectedSegmentIndex = 0;
+                                
+                            }else if ([valueNum isEqualToString:array[1]]) {
+                                self.segmentedControl.selectedSegmentIndex = 1;
+                                
+                            }else {
+                                self.segmentedControl.selectedSegmentIndex = 2;
+                            }
+                        }else {
+                            self.segmentedControl.selectedSegmentIndex = 2;
+                        }
+                    }
+                }
+                
+                
+            }
+            self.detailLabel.hidden = YES;
         }
-        self.detailLabel.hidden = YES;
     }
     
 }
 - (void)createSegment {
-   
+    
     NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
-   
+    
     [self.segmentedControl removeFromSuperview];
     
     self.segmentedControl = [[UISegmentedControl alloc]initWithItems:array];
     self.segmentedControl.frame = CGRectMake(SCREEN_WIDTH - 32 -84, 8,84,24);
-    self.segmentedControl.userInteractionEnabled = NO;
+    
+    
     
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
     
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:10.0f]}forState:UIControlStateNormal];
     [self addSubview:self.segmentedControl];
-   
+    
     self.segmentedControl.tintColor = [UIColor colorWithHexString:@"#2F5ED1"];
     self.segmentedControl.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
     self.segmentedControl.layer.borderColor = [UIColor colorWithHexString:@"#2F5ED1"].CGColor; //     边框颜色
@@ -261,6 +325,37 @@
         NSLog(@"3");
     }else if (sender.selectedSegmentIndex == 3){
         NSLog(@"4");
+    }
+    NSMutableDictionary *toDic = [NSMutableDictionary dictionary];
+    
+    NSDictionary *resultDic  = [UserManager shareUserManager].resultDic;
+    [toDic addEntriesFromDictionary:resultDic];
+    NSDictionary *dd = [self.dataDic[@"childrens"] firstObject];
+    
+    NSString *infoId = safeString(dd[@"parentId"]);
+    NSString *value = safeString(dd[@"value"]) ;
+    
+    if (value.length >0) {
+        
+        NSArray *array = [value componentsSeparatedByString:@"@&@"];
+        
+        if (array.count == 2) {
+            
+            NSString *valueNum = safeString(array[sender.selectedSegmentIndex]);
+//            for (NSString *str in [resultDic allKeys]) {
+//                NSLog(@"%@",str);
+//                NSLog(@"%@",infoId);
+//                if ([str isEqualToString:infoId]) {
+                    NSMutableDictionary *aDic = [NSMutableDictionary dictionary];
+                    [aDic setValue:safeString(valueNum) forKey:safeString(infoId)];
+                    [toDic addEntriesFromDictionary:aDic];
+//                }
+//            }
+            
+            [UserManager shareUserManager].resultDic = toDic;
+            
+        }
+        
     }
     switch (sender.selectedSegmentIndex) {
         case 0:

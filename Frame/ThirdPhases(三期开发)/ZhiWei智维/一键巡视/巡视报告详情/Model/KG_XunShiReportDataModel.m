@@ -10,22 +10,22 @@
 
 @implementation firstData
 + (NSDictionary *)mj_objectClassInArray{
-    return @{@"secondData" : [secondData class]};
+    return @{@"childrens" : [secondData class]};
 }
 @end
 @implementation secondData
 + (NSDictionary *)mj_objectClassInArray{
-    return @{@"thirdData" : [thirdData class]};
+    return @{@"childrens" : [thirdData class]};
 }
 @end
 @implementation thirdData
 + (NSDictionary *)mj_objectClassInArray{
-    return @{@"fourthData" : [fourthData class]};
+    return @{@"childrens" : [fourthData class]};
 }
 @end
 @implementation fourthData
 + (NSDictionary *)mj_objectClassInArray{
-    return @{@"fifthData" : [fifthData class]};
+    return @{@"childrens" : [fifthData class]};
 }
 @end
 @implementation fifthData
@@ -34,7 +34,7 @@
 
 @implementation task
 + (NSDictionary *)mj_objectClassInArray{
-    return @{@"firstData" : [firstData class]};
+    return @{@"childrens" : [firstData class]};
 }
 
 

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_XunShiResultCell : UITableViewCell
 
+@property (nonatomic, strong) void (^textStringChangeBlock)( NSString *taskDescription);
 @property (nonatomic, strong) NSString *taskDescription;
 @end
 

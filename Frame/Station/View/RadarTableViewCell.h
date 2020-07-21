@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) UILabel *detailLabel;
+
+@property (nonatomic, strong) UIImageView * iconImage;
 @end
+
 
 NS_ASSUME_NONNULL_END

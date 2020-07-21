@@ -180,9 +180,9 @@
     self.leftImage.image = [UIImage imageNamed:@""];
     self.leftImage.contentMode = UIViewContentModeScaleAspectFill;
     [self.leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.topView.mas_bottom).offset(-14);
-        make.height.equalTo(@16.5);
-        make.width.equalTo(@11);
+        make.bottom.equalTo(self.topView.mas_bottom).offset(-12);
+        make.height.equalTo(@21);
+        make.width.equalTo(@21);
         make.left.equalTo(self.topView.mas_left).offset(21);
     }];
     self.leftTitle = [[UILabel alloc]init];
@@ -256,7 +256,7 @@
         _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = NO;
+        _tableView.scrollEnabled = YES;
         
     }
     return _tableView;
@@ -287,12 +287,30 @@
     if (cell == nil) {
         cell = [[KG_CommonDetailCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_CommonDetailCell"];
     }
+    
+    
     NSDictionary *dic = self.dataArray[indexPath.row];
     cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     cell.titleLabel.text = safeString(dic[@"name"]);
+  
     cell.rightLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dic[@"valueAlias"]),safeString(dic[@"unit"])];
+    if (safeString(dic[@"valueAlias"]).length==0) {
+        cell.rightLabel.text = @"--";
+    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    for (NSDictionary *arDic in self.alarmArray) {
+        if ([safeString(arDic[@"name"]) containsString:safeString(dic[@"name"])]) {
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+            cell.rightLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+            cell.iconImage.backgroundColor = [UIColor colorWithHexString:@"#FB394C"];
+            break;
+        }else {
+            
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+            cell.rightLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+            cell.iconImage.backgroundColor = [UIColor colorWithHexString:@"#95A8D7"];
+        }
+    }
     return cell;
 }
 - (void)setDataDic:(NSDictionary *)dataDic {
@@ -305,11 +323,32 @@
     }
      
     self.dataArray = arr;
-    
+    self.gaojingImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",self.level]]];
+
+    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",self.level]];
+    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",self.num];
+    if([self.num intValue] == 0) {
+        self.statusNumLabel.hidden = YES;
+    }else {
+        self.statusNumLabel.hidden = NO;
+    }
     [self refreshData];
 }
 
 - (void)refreshData {
+    for (NSDictionary *dic in self.dataArray) {
+        if([safeString(dic[@"name"]) isEqualToString:@"通信状态"]) {
+            if([safeString(dic[@"valueAlias"]) isEqualToString:@"断线"]) {
+                
+                self.iconImage.backgroundColor  = [UIColor colorWithHexString:@"#FB394C"];
+                break;
+            }else {
+                self.iconImage.backgroundColor =  [UIColor colorWithHexString:@"#03C3B6"];
+            }
+        }
+    }
+    
+    
     [self.equipImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(_dataDic[@"roomName"]),safeString(_dataDic[@"name"])];
     
@@ -324,7 +363,8 @@
     }
       
    
-    self.leftTitle.text = [NSString stringWithFormat:@"%@",safeString(self.machineName)];
+    self.leftTitle.text = [NSString stringWithFormat:@"%@",safeString(_dataDic[@"name"])];
+    
     
     if([self.dataDic[@"alias"] containsString:@"空调"]){
         
@@ -400,7 +440,11 @@
       
     }
     
-    
+    if(self.dataArray.count >6) {
+        self.tableView.scrollEnabled = YES;
+    }else {
+        self.tableView.scrollEnabled = NO;
+    }
     [self.tableView reloadData];
 }
 -(void )startAnimation
@@ -482,5 +526,43 @@
 - (void)setAlarmArray:(NSArray *)alarmArray {
     _alarmArray = alarmArray;
     
+}
+- (UIColor *)getTextColor:(NSString *)level {
+    UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    
+    if ([level isEqualToString:@"0"]) {
+        textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    }else if ([level isEqualToString:@"4"]) {
+        textColor = [UIColor colorWithHexString:@"2986F1"];
+    }else if ([level isEqualToString:@"3"]) {
+        textColor = [UIColor colorWithHexString:@"FFA800"];
+    }else if ([level isEqualToString:@"2"]) {
+        textColor = [UIColor colorWithHexString:@"FC7D0E"];
+    }else if ([level isEqualToString:@"1"]) {
+        textColor = [UIColor colorWithHexString:@"F62546"];
+    }
+    
+    //紧急
+    return textColor;
+}
+
+
+- (NSString *)getLevelImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"0"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"4"]) {
+        levelString = @"level_prompt";
+    }else if ([level isEqualToString:@"3"]) {
+        levelString = @"level_ciyao";
+    }else if ([level isEqualToString:@"2"]) {
+        levelString = @"level_important";
+    }else if ([level isEqualToString:@"1"]) {
+        levelString = @"level_jinji";
+    }
+    
+    //紧急
+    return levelString;
 }
 @end

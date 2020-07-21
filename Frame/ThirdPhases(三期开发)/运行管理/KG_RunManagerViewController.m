@@ -77,6 +77,7 @@
     [super viewDidLoad];
     self.navigationController.delegate =self;
     //设置背景色，隐藏导航条
+    [[UITabBar appearance] setTranslucent:NO];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
@@ -102,6 +103,15 @@
     [self getLoginInfo];
    
     
+}
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 - (void)getLoginInfo {
     //取出保存的cookie
@@ -244,6 +254,7 @@ navigationController willShowViewController:
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
@@ -282,7 +293,17 @@ navigationController willShowViewController:
        
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            if([userDefaults objectForKey:@"station"]){
+                self.currentStationDic = [userDefaults objectForKey:@"station"];
+            }else {
+                NSArray *stationArr = [UserManager shareUserManager].stationList;
+                
+                if (stationArr.count >0) {
+                    self.currentStationDic = [stationArr firstObject][@"station"];
+                }
+            }
+            //            [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
         
@@ -291,7 +312,7 @@ navigationController willShowViewController:
         [self createData];
         
     } failure:^(NSURLSessionDataTask *error)  {
-      
+        [MBProgressHUD hideHUD];
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
@@ -310,11 +331,13 @@ navigationController willShowViewController:
 }
 
 - (void)createData {
+     
+    NSArray *stationArr = [UserManager shareUserManager].stationList;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"station"]){
         self.currentStationDic = [userDefaults objectForKey:@"station"];
     }else {
-        self.currentStationDic = [[UserManager shareUserManager].stationList firstObject][@"station"];
+        self.currentStationDic = [stationArr firstObject][@"station"];
     }
     NSString *specificStationCode = @"";
     if([userDefaults objectForKey:@"specificStationCode"]){
@@ -364,7 +387,7 @@ navigationController willShowViewController:
 
 //跳转智慧云
 - (void)goToZhiHuiYunMethod {
-    
+    //运行-智云
     KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
     vc.isPush = YES;
     [self.navigationController pushViewController:vc animated:YES];
@@ -408,9 +431,14 @@ navigationController willShowViewController:
     
     if ([self.jiaoJieBanInfo[@"handoverInfo"] count] == 1) {
         KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
-        
-        vc.dataDic = [self.jiaoJieBanInfo[@"handoverInfo"] firstObject];
+        NSDictionary *dd = [self.jiaoJieBanInfo[@"handoverInfo"] firstObject];
+        if (safeString(dd[@"atcRunReportId"]).length == 0) {
+            [FrameBaseRequest showMessage:@"请先生成运行报告"];
+            return;
+        }
+        vc.dataDic = dd;
         vc.jiaojiebanArray = self.jiaojiebanListArr;
+       
         vc.pushType = @"jiaoban";
         [self.navigationController pushViewController:vc animated:YES];
     }else {
@@ -420,7 +448,10 @@ navigationController willShowViewController:
             KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
             vc.jiaojiebanArray = self.jiaojiebanListArr;
             vc.dataDic = dataDic;
-            
+            if (safeString(dataDic[@"id"]).length == 0) {
+                [FrameBaseRequest showMessage:@"请先生成运行报告"];
+                return;
+            }
             vc.pushType = @"jiaoban";
             [self.navigationController pushViewController:vc animated:YES];
         };
@@ -477,6 +508,8 @@ navigationController willShowViewController:
 }
 //生成运行报告
 - (void)CreateReportMethod {
+    [_createReportAlertView removeFromSuperview];
+    _createReportAlertView = nil;
     self.createReportAlertView.hidden = NO;
     self.createReportAlertView.selTimeBlockMethod = ^(NSInteger tag) {
         self.currIndex = (int)tag;
@@ -487,7 +520,8 @@ navigationController willShowViewController:
     };
     self.createReportAlertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull endTime) {
         self.createReportAlertView .hidden = YES;
-        
+        [_createReportAlertView removeFromSuperview];
+        _createReportAlertView = nil;
         [self  getReportIdData:dataDic withEndTime:endTime];
        
        
@@ -553,7 +587,7 @@ navigationController willShowViewController:
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
-       
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
@@ -810,7 +844,7 @@ navigationController willShowViewController:
         NSLog(@"完成1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         NSLog(@"完成1");
     }];
     
@@ -985,12 +1019,12 @@ navigationController willShowViewController:
             
         }
         
-        if (self.jiaoJieBanInfo.count >0) {
+//        if (self.jiaoJieBanInfo.count >0) {
             cell.jiaoJieBanInfo = self.jiaoJieBanInfo;
-        }
-        if (self.stationRunReportArr.count>0) {
+//        }
+//        if (self.stationRunReportArr.count>0) {
             cell.stationRunReportArr = self.stationRunReportArr;
-        }
+//        }
         
         cell.runReportBlockMethod = ^{
             [self reportRightMethod];
@@ -1209,7 +1243,7 @@ navigationController willShowViewController:
         [self.tableView reloadData];
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
@@ -1254,7 +1288,7 @@ navigationController willShowViewController:
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
@@ -1290,7 +1324,7 @@ navigationController willShowViewController:
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         
         
     }];
@@ -1346,7 +1380,7 @@ navigationController willShowViewController:
        
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];

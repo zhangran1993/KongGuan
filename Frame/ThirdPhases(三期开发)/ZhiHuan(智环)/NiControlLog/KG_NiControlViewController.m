@@ -10,7 +10,8 @@
 #import "KG_NiControlCell.h"
 #import "KG_NiControlSearchViewController.h"
 #import "WYLDatePickerView.h"
-@interface KG_NiControlViewController ()<UITableViewDelegate,UITableViewDataSource,WYLDatePickerViewDelegate>{
+#import "KG_AccessCardLogDataPickerView.h"
+@interface KG_NiControlViewController ()<UITableViewDelegate,UITableViewDataSource,AccessDatePickerViewDelegate>{
     
 }
 @property (nonatomic, strong) UIButton *bgBtn ;
@@ -28,7 +29,10 @@
 @property (nonatomic, copy)   NSString *startStr;
 @property (nonatomic, copy)   NSString *endStr;
 
-@property (nonatomic,strong)WYLDatePickerView *dataPickerview; //选择日期
+@property (nonatomic, strong) UIButton *accessStartBtn;
+@property (nonatomic, strong) UIButton *accessEndBtn;
+@property (nonatomic, strong) UIButton *accessResetBtn;
+@property (nonatomic,strong)  KG_AccessCardLogDataPickerView *dataPickerview; //选择日期
 @end
 
 @implementation KG_NiControlViewController
@@ -61,7 +65,7 @@
     [rightButon setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     [rightButon addTarget:self action:@selector(serachMethod) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightfixedButton = [[UIBarButtonItem alloc]initWithCustomView:rightButon];
-    
+    rightButon.userInteractionEnabled = NO;
     self.navigationItem.rightBarButtonItems = @[rightfixedButton];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     self.title = [NSString stringWithFormat:@"反向操作日志"];
@@ -84,7 +88,7 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:NO];
-  
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -115,161 +119,100 @@
     NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
     paraDic[@"name"] = @"stationCode";
     paraDic[@"type"] = @"eq";
-    paraDic[@"content"] = @"HCDHT";
+    paraDic[@"content"] = safeString(currDic[@"code"]);
     [self.paraArr addObject:paraDic];
     
     
     NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
     paraDic1[@"name"] = @"engineRoomCode";
     paraDic1[@"type"] = @"eq";
-    paraDic1[@"content"] = @"";
+    paraDic1[@"content"] = safeString(self.dataDic[@"engineRoomCode"]);
     [self.paraArr addObject:paraDic1];
     
+    //
+    //    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
+    //    paraDic2[@"name"] = @"equipmentGroup";
+    //    paraDic2[@"type"] = @"eq";
+    //    paraDic2[@"content"] = @"";
+    //    [self.paraArr addObject:paraDic2];
+    //
+    //    NSMutableDictionary *paraDic3 = [NSMutableDictionary dictionary];
+    //    paraDic3[@"name"] = @"equipmentCategory";
+    //    paraDic3[@"type"] = @"eq";
+    //    paraDic3[@"content"] = @"";
+    //    [self.paraArr addObject:paraDic3];
+    //
+    //
+    //    NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
+    //    paraDic4[@"name"] = @"equipmentCode";
+    //    paraDic4[@"type"] = @"eq";
+    //    paraDic4[@"content"] = @"";
+    //    [self.paraArr addObject:paraDic4];
+    //
+    //    //可选，关键字，如：空调
+    //    //用于反向操作日志的搜索
+    //    NSMutableDictionary *paraDic5 = [NSMutableDictionary dictionary];
+    //    paraDic5[@"name"] = @"key";
+    //    paraDic5[@"type"] = @"eq";
+    //    paraDic5[@"content"] = @"";
+    //    [self.paraArr addObject:paraDic5];
+    //
+    //     //可选，操作时间，用于反向操作日志的搜索
+    //    NSMutableDictionary *paraDic6 = [NSMutableDictionary dictionary];
+    //    paraDic6[@"name"] = @"time";
+    //    paraDic6[@"type"] = @"between";
+    //    paraDic6[@"content"] = @"";
+    //    [self.paraArr addObject:paraDic6];
+    //
     
-    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
-    paraDic2[@"name"] = @"equipmentGroup";
-    paraDic2[@"type"] = @"eq";
-    paraDic2[@"content"] = @"security";
-    [self.paraArr addObject:paraDic2];
+    
+    
 }
 - (void)queryData {
     
     
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcBackward/log/%d/%d",WebNewHost,self.pageNum,self.pageSize];
-      WS(weakSelf);
-      [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
-          NSInteger code = [[result objectForKey:@"errCode"] intValue];
-          if(code  <= -1){
-              [FrameBaseRequest showMessage:result[@"errMsg"]];
-              
-              return ;
-          }
-          [self.tableView.mj_footer endRefreshing];
-       
-          [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
-          int pages = [result[@"value"][@"pages"] intValue];
-          
-          if (self.pageNum >= pages) {
-              [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
-              
-          }else {
-              if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
-                  [weakSelf.tableView.mj_footer resetNoMoreData];
-              }
-          }
-          self.totolTitle.text = [NSString stringWithFormat:@"共%lu条",(unsigned long)self.dataArray.count];
-          
-          [self.tableView reloadData];
+    WS(weakSelf);
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [self.tableView.mj_footer endRefreshing];
         
-      } failure:^(NSError *error)  {
-          FrameLog(@"请求失败，返回数据 : %@",error);
-          
-          [FrameBaseRequest showMessage:@"网络链接失败"];
-          return ;
-      }];
-}
-
-- (void)createSearchUI {
-    
-    UIView *searchView = [[UIView alloc]init];
-    [self.view addSubview:searchView];
-    searchView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.mas_top);
-        make.height.equalTo(@44);
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        self.totolTitle.text = [NSString stringWithFormat:@"共%lu条",(unsigned long)self.dataArray.count];
+        
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
     }];
-    
-    self.totolTitle= [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
-   
-    self.totolTitle.text = [NSString stringWithFormat:@"共%@条",@"0"];
-   
-    
-    self.totolTitle.textColor = [UIColor colorWithHexString:@"#BABCC4"];
-    self.totolTitle.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.totolTitle.textAlignment = NSTextAlignmentLeft;
-    [searchView addSubview:self.totolTitle];
-    [self.totolTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left).offset(16);
-        make.width.equalTo(@100);
-        make.top.equalTo(self.view.mas_top);
-        make.height.equalTo(@44);
-    }];
-    
-    
-    UIButton *startBtn = [[UIButton  alloc]init];
-    [startBtn setTitle:@"2020.03.02" forState:UIControlStateNormal];
-    [startBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
-    startBtn.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    [searchView addSubview:startBtn];
-    [startBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [startBtn addTarget:self action:@selector(startButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    startBtn.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
-    startBtn.layer.cornerRadius = 2;
-    startBtn.layer.masksToBounds = YES;
-    [startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(searchView.mas_left).offset(107);
-        make.width.equalTo(@96);
-        make.height.equalTo(@24);
-        make.top.equalTo(searchView.mas_top).offset(10);
-    }];
-    
-    UIButton *endBtn = [[UIButton  alloc]init];
-    [endBtn setTitle:@"2020.03.02" forState:UIControlStateNormal];
-    [endBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
-    endBtn.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    [searchView addSubview:endBtn];
-    [endBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [endBtn addTarget:self action:@selector(endButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [endBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(startBtn.mas_right).offset(22);
-        make.width.equalTo(@96);
-        make.height.equalTo(@24);
-        make.top.equalTo(searchView.mas_top).offset(10);
-    }];
-    endBtn.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
-    endBtn.layer.cornerRadius = 2;
-    endBtn.layer.masksToBounds = YES;
-    
-    UIButton *resetBtn  = [[UIButton alloc]init];
-    [resetBtn setTitle:@"重置" forState:UIControlStateNormal];
-    [searchView addSubview:resetBtn];
-    resetBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-    [resetBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
-    [resetBtn addTarget:self action:@selector(resetButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [resetBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-           make.right.equalTo(searchView.mas_right).offset(-16);
-           make.width.equalTo(@30);
-           make.height.equalTo(@20);
-           make.top.equalTo(searchView.mas_top).offset(12);
-       }];
 }
 
 
-- (void)startButtonClick:(UIButton *)button {
-    self.btnIndex = 0;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
-        [self.dataPickerview  show];
-    }];
-}
-- (void)endButtonClick:(UIButton *)button {
-    self.btnIndex = 1;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
-        [self.dataPickerview  show];
-    }];
-}
-- (void)resetButtonClick:(UIButton *)button {
-    
-}
+
 //创建视图
 -(void)setupDataSubviews
 {
     
     [self.view addSubview:self.tableView];
-  
+    
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.
                          view.mas_top).offset(44);
@@ -278,7 +221,7 @@
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     [self.tableView reloadData];
-
+    
 }
 
 
@@ -290,9 +233,48 @@
         _tableView.backgroundColor = self.view.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
+        // 上拉加载
+        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
         
     }
     return _tableView;
+}
+
+- (void)loadMoreData {
+    self.pageNum ++;
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcBackward/log/%d/%d",WebNewHost,self.pageNum,self.pageSize];
+    WS(weakSelf);
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [self.tableView.mj_footer endRefreshing];
+        
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        self.totolTitle.text = [NSString stringWithFormat:@"共%lu条",(unsigned long)self.dataArray.count];
+        
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+    
 }
 -(NSMutableArray *)dataArray{
     if (!_dataArray) {
@@ -321,7 +303,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-  
+    
     KG_NiControlCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_NiControlCell"];
     if (cell == nil) {
         cell = [[KG_NiControlCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_NiControlCell"];
@@ -336,15 +318,15 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-   
+    
 }
-- (WYLDatePickerView *)dataPickerview
+- (KG_AccessCardLogDataPickerView *)dataPickerview
 {
     if (!_dataPickerview) {
-        WYLDatePickerView *dateView = [[WYLDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:WYLDatePickerTypeYMDHM];
+        KG_AccessCardLogDataPickerView *dateView = [[KG_AccessCardLogDataPickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:AccessDatePickerTypeYMDHMS];
         dateView.delegate = self;
         dateView.title = @"请选择时间";
-        dateView.isSlide = YES;
+        dateView.isSlide = NO;
         dateView.toolBackColor = [UIColor colorWithHexString:@"#F7F7F7"];
         dateView.toolTitleColor = [UIColor colorWithHexString:@"#555555"];
         dateView.saveTitleColor = [UIColor colorWithHexString:@"#EA3425"];
@@ -369,9 +351,23 @@
     if (self.btnIndex == 0) {
         self.startStr = timer;
         NSLog(@"%@",self.startStr);
+        if (self.startStr.length >10) {
+            NSString *ss = [self.startStr substringToIndex:10];
+            NSString *strUrl = [ss stringByReplacingOccurrencesOfString:@"-" withString:@"."];
+            [self.accessStartBtn setTitle:safeString(strUrl) forState:UIControlStateNormal];
+        }
+        
+        
+        
     }else {
         self.endStr = timer;
         NSLog(@"%@",self.endStr);
+        if (self.endStr.length >10) {
+            NSString *ss = [self.endStr substringToIndex:10];
+            NSString *strUrl = [ss stringByReplacingOccurrencesOfString:@"-" withString:@"."];
+            [self.accessEndBtn setTitle:safeString(strUrl) forState:UIControlStateNormal];
+        }
+        
     }
     [UIView animateWithDuration:0.3 animations:^{
         self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
@@ -383,6 +379,174 @@
         self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
     }];
 }
+- (void)createSearchUI {
+    
+    UIView *searchView = [[UIView alloc]init];
+    [self.view addSubview:searchView];
+    searchView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_top);
+        make.height.equalTo(@44);
+    }];
+    
+    self.totolTitle= [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
+    
+    self.totolTitle.text = [NSString stringWithFormat:@"共%@条",@"0"];
+    
+    
+    self.totolTitle.textColor = [UIColor colorWithHexString:@"#BABCC4"];
+    self.totolTitle.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.totolTitle.textAlignment = NSTextAlignmentLeft;
+    [searchView addSubview:self.totolTitle];
+    [self.totolTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.width.equalTo(@100);
+        make.top.equalTo(self.view.mas_top);
+        make.height.equalTo(@44);
+    }];
+    
+    
+    self.accessStartBtn = [[UIButton  alloc]init];
+    [self.accessStartBtn setTitle:@"开始日期" forState:UIControlStateNormal];
+    [self.accessStartBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+    self.accessStartBtn.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    [searchView addSubview:self.accessStartBtn];
+    [self.accessStartBtn setImage:[UIImage imageNamed:@"access_startImage"] forState:UIControlStateNormal];
+    self.accessStartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+    [self.accessStartBtn addTarget:self action:@selector(startButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.accessStartBtn.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+    self.accessStartBtn.layer.cornerRadius = 2;
+    self.accessStartBtn.layer.masksToBounds = YES;
+    [self.accessStartBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(searchView.mas_left).offset(107);
+        make.width.equalTo(@96);
+        make.height.equalTo(@24);
+        make.top.equalTo(searchView.mas_top).offset(10);
+    }];
+    
+    self.accessEndBtn = [[UIButton  alloc]init];
+    [self.accessEndBtn setTitle:@"结束日期" forState:UIControlStateNormal];
+    [self.accessEndBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+    self.accessEndBtn.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    [searchView addSubview:self.accessEndBtn];
+    self.accessEndBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+    [self.accessEndBtn setImage:[UIImage imageNamed:@"access_endImage"] forState:UIControlStateNormal];
+    [self.accessEndBtn addTarget:self action:@selector(endButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.accessEndBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.accessStartBtn.mas_right).offset(22);
+        make.width.equalTo(@96);
+        make.height.equalTo(@24);
+        make.top.equalTo(searchView.mas_top).offset(10);
+    }];
+    self.accessEndBtn.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+    self.accessEndBtn.layer.cornerRadius = 2;
+    self.accessEndBtn.layer.masksToBounds = YES;
+    
+    self.accessResetBtn = [[UIButton alloc]init];
+    [self.accessResetBtn setTitle:@"筛选" forState:UIControlStateNormal];
+    [searchView addSubview:self.accessResetBtn];
+    self.accessResetBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    [self.accessResetBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+    [self.accessResetBtn addTarget:self action:@selector(resetButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.accessResetBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(searchView.mas_right).offset(-16);
+        make.width.equalTo(@30);
+        make.height.equalTo(@20);
+        make.top.equalTo(searchView.mas_top).offset(12);
+    }];
+}
 
+
+- (void)startButtonClick:(UIButton *)button {
+    self.btnIndex = 0;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
+        [self.dataPickerview  show];
+    }];
+}
+- (void)endButtonClick:(UIButton *)button {
+    self.btnIndex = 1;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
+        [self.dataPickerview  show];
+    }];
+}
+- (void)resetButtonClick:(UIButton *)button {
+    
+    if([button.titleLabel.text isEqualToString:@"筛选"]){
+        if (self.startStr.length >0 && self.endStr.length >0) {
+            [self.accessResetBtn setTitle:@"重置" forState:UIControlStateNormal];
+            [self shaixuanMethod];
+        }
+    }else {
+        [self.accessResetBtn setTitle:@"筛选" forState:UIControlStateNormal];
+        [self.accessStartBtn setTitle:@"开始日期" forState:UIControlStateNormal];
+        [self.accessEndBtn setTitle:@"结束日期" forState:UIControlStateNormal];
+        self.startStr = @"";
+        self.endStr = @"";
+        [self  resetMethod];
+    }
+    
+}
+//筛选
+- (void)shaixuanMethod {
+    
+    [self.paraArr removeAllObjects];
+    self.pageNum = 1;
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(self.dataDic[@"stationCode"]);
+    [self.paraArr addObject:paraDic];
+    
+    
+    NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+    paraDic1[@"name"] = @"engineRoomCode";
+    paraDic1[@"type"] = @"eq";
+    paraDic1[@"content"] = safeString(self.dataDic[@"engineRoomCode"]);
+    
+    [self.paraArr addObject:paraDic1];
+    
+    NSMutableArray *contentArr = [NSMutableArray arrayWithCapacity:0];
+    if (self.startStr.length >0 && self.endStr.length >0) {
+        [contentArr addObject:self.startStr];
+        [contentArr addObject:self.endStr];
+    }
+    
+    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
+    paraDic2[@"name"] = @"time";
+    paraDic2[@"type"] = @"between";
+    paraDic2[@"content"] = contentArr;
+    [self.paraArr addObject:paraDic2];
+    
+    [self.dataArray removeAllObjects];
+    [self queryData];
+    
+}
+//重置
+- (void)resetMethod {
+    [self.paraArr removeAllObjects];
+    self.pageNum = 1;
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(self.dataDic[@"stationCode"]);
+    [self.paraArr addObject:paraDic];
+    
+    
+    NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+    paraDic1[@"name"] = @"engineRoomCode";
+    paraDic1[@"type"] = @"eq";
+    paraDic1[@"content"] = safeString(self.dataDic[@"engineRoomCode"]);
+    
+    [self.paraArr addObject:paraDic1];
+    
+    [self.dataArray removeAllObjects];
+    [self queryData];
+    
+    
+}
 
 @end

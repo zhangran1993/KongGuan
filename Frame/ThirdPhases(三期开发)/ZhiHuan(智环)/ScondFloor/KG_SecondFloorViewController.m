@@ -9,6 +9,7 @@
 #import "KG_SecondFloorViewController.h"
 
 @interface KG_SecondFloorViewController ()
+@property (retain, nonatomic) IBOutlet UIImageView *totalBgImage;
 
 @property (retain, nonatomic) IBOutlet UILabel *statusNumLabel;
 //台站名
@@ -63,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+      
     self.statusNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.statusNumLabel.layer.cornerRadius = 5.f;
     self.statusNumLabel.layer.masksToBounds = YES;
@@ -70,7 +72,7 @@
     [self getStationData];
     [self getStationHealthData];
     [self getStationStatusData];
-     
+    self.statusNumLabel.adjustsFontSizeToFitWidth = YES;
     UISwipeGestureRecognizer * recognizer;
     recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionUp)];
@@ -118,29 +120,110 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+  
+
+
     self.navigationController.navigationBarHidden = YES;
     
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBarHidden = NO;
-    
+   
 }
 - (void)layout {
-    
-    [self.stationName mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.StationBgImage.mas_top).offset(54);
+    [self.totalBgImage mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_top);
+        make.bottom.equalTo(self.view.mas_bottom);
     }];
+    
     
     [self.StationBgImage mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT-64+30);
+        make.top.equalTo(self.view.mas_top).offset(40);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.height.equalTo(@442);
     }];
+    [self.stationName mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.StationBgImage.mas_top).offset(24);
+        make.width.equalTo(@200);
+        make.centerX.equalTo(self.StationBgImage.mas_centerX);
+        make.height.equalTo(@28);
+    }];
+    [self.leftLocTitle mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.StationBgImage.mas_top).offset(92);
+        make.width.equalTo(@((SCREEN_WIDTH -64*2)/2));
+        make.left.equalTo(self.view.mas_left).offset(64);
+        make.height.equalTo(@28);
+    }];
+    
+    [self.rightLocTitle mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.StationBgImage.mas_top).offset(92);
+        make.width.equalTo(@((SCREEN_WIDTH -64*2)/2));
+        make.right.equalTo(self.view.mas_right).offset(-64);
+        make.height.equalTo(@28);
+    }];
+    
+    [self.centerBgImag mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.leftLocTitle.mas_bottom).offset(14);
+        make.width.equalTo(@292);
+        make.centerX.equalTo(self.StationBgImage.mas_centerX);
+        make.height.equalTo(@198);
+    }];
+    
+    [self.stationStatusLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.centerBgImag.mas_bottom).offset(37);
+        make.left.equalTo(self.centerBgImag.mas_left).offset(35);
+        make.width.equalTo(@60);
+        make.height.equalTo(@21);
+    }];
+    
+    
+    [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.stationStatusLabel.mas_centerY);
+        make.height.equalTo(@17);
+        make.width.equalTo(@32);
+        make.left.equalTo(self.stationStatusLabel.mas_right).offset(6);
+    }];
+   
+   
+    [self.statusNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.statusImage.mas_right).offset(-5);
+        make.bottom.equalTo(self.statusImage.mas_top).offset(5);
+        make.width.equalTo(@10);
+        make.height.equalTo(@10);
+    }];
+    
+    [self.healthLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.statusImage.mas_right).offset(22);
+        make.centerY.equalTo(self.stationStatusLabel.mas_centerY);
+        make.width.equalTo(@60);
+        make.height.equalTo(@21);
+    }];
+    
+    [self.healthStarImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.healthLabel.mas_right).offset(2);
+        make.centerY.equalTo(self.stationStatusLabel.mas_centerY);
+        make.width.equalTo(@13);
+        make.height.equalTo(@13);
+    }];
+    
+    [self.healthNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.healthStarImage.mas_right).offset(3);
+        make.centerY.equalTo(self.stationStatusLabel.mas_centerY);
+        make.width.equalTo(@50);
+        make.height.equalTo(@21);
+    }];
+    
+    
     
     [self.bottomImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.StationBgImage.mas_bottom).offset(-35);
         make.width.equalTo(@321);
         make.height.equalTo(@169);
+        make.centerX.equalTo(self.StationBgImage.mas_centerX);
     }];
     
     [self.bottomLeftTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -245,6 +328,7 @@
     [_bjiTitle release];
     [_locImage release];
     [_locTitle release];
+    [_totalBgImage release];
     [super dealloc];
 }
 
@@ -303,7 +387,18 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"name"] = @"stationCode";
     params[@"type"] = @"eq";
-    params[@"content"] = @"HCDHT";
+    
+   
+    NSDictionary *currDic  = [UserManager shareUserManager].currentStationDic;
+    if (currDic.count == 0) {
+        NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+        if ([userdefaults objectForKey:@"station"]) {
+            currDic = [userdefaults objectForKey:@"station"];
+            
+        }
+    }
+    
+    params[@"content"] = safeString(currDic[@"code"]);
     [paramsArr addObject:params];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramsArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -433,12 +528,34 @@
     self.statusImage.image = [UIImage imageNamed:[self getLevelImage:self.statusDic[@"status"]]];
     
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",safeString(self.statusDic[@"alarmNum"])] ;
+    
     self.statusNumLabel.backgroundColor = [self getTextColor:self.statusDic[@"status"]];
+    if ([self.statusDic[@"alarmNum"] floatValue] == 0) {
+        self.statusNumLabel.hidden = YES;
+    }else {
+        self.statusNumLabel.hidden = NO;
+    }
 }
 
 - (void)refreshHealthData {
    
     self.healthNumLabel.text = [NSString stringWithFormat:@"%.1f分",[self.healthDic[@"value"] floatValue]];
+    
+    float grade = [self.healthDic[@"value"] floatValue];
+
+    if (grade >=90) {
+        self.healthNumLabel.textColor = [UIColor colorWithHexString:@"#08CEB2"];
+        self.healthStarImage.image = [UIImage imageNamed:@"star_green"];
+    }else if (grade >=80) {
+        self.healthNumLabel.textColor = [UIColor colorWithHexString:@"#99E14D"];
+        self.healthStarImage.image = [UIImage imageNamed:@"star_yellowgreen"];
+    }else if (grade >=70) {
+        self.healthNumLabel.textColor = [UIColor colorWithHexString:@"#FFA800"];
+        self.healthStarImage.image = [UIImage imageNamed:@"star_orange"];
+    }else {
+        self.healthNumLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+        self.healthStarImage.image = [UIImage imageNamed:@"star_red"];
+    }
     NSLog(@"grade");
 }
 

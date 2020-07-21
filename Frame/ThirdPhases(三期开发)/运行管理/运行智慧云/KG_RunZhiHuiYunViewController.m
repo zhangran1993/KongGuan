@@ -147,6 +147,12 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     NSLog(@"%ld",(long)indexPath.row);
+    if(indexPath.row == 0){
+        //零备件
+        
+        
+        
+    }
 }
 /**  数组  */
 -(NSMutableArray *)dataArray{

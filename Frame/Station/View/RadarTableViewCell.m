@@ -36,12 +36,12 @@
 
 - (void)createUI{
     
-    UIImageView *img = [[UIImageView alloc]init];
-    [self addSubview:img];
-    img.backgroundColor  = [UIColor colorWithHexString:@"#95A8D7"];
-    img.layer.cornerRadius = 3;
-    img.layer.masksToBounds = YES;
-    [img mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.iconImage = [[UIImageView alloc]init];
+    [self addSubview:self.iconImage];
+    self.iconImage.backgroundColor  = [UIColor colorWithHexString:@"#95A8D7"];
+    self.iconImage.layer.cornerRadius = 3;
+    self.iconImage.layer.masksToBounds = YES;
+    [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@6);
         make.height.equalTo(@6);
         make.left.equalTo(@23);

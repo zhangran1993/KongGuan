@@ -96,43 +96,43 @@
     }];
     
     
-    self.bottomLabel = [[UILabel alloc]init];
-    [self.view addSubview:self.bottomLabel];
-    self.bottomLabel.text = @"1#空调实时温度趋势";
-    self.bottomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.bottomLabel.font = [UIFont boldSystemFontOfSize:14];
-    self.bottomLabel.textAlignment = NSTextAlignmentLeft;
-    [self.bottomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left).offset(16);
-        make.top.equalTo(self.tableView.mas_bottom).offset(16);
-        make.height.equalTo(@20);
-        make.width.equalTo(@200);
-    }];
-    
-    self.tempTitle = [[UILabel alloc]init];
-    [self.view addSubview:self.tempTitle];
-    self.tempTitle.text = @"温度";
-    self.tempTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.tempTitle.font = [UIFont boldSystemFontOfSize:14];
-    self.tempTitle.textAlignment = NSTextAlignmentRight;
-    [self.tempTitle sizeToFit];
-    [self.tempTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view.mas_right).offset(-21);
-        make.centerY.equalTo(self.bottomLabel.mas_centerY);
-        make.height.equalTo(@17);
-       
-    }];
-    
-    self.tempImage = [[UIImageView alloc]init];
-    [self.view addSubview:self.tempImage];
-    self.tempImage.backgroundColor = [UIColor colorWithHexString:@"#FFC427"];
-    [self.tempImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.tempTitle.mas_left).offset(-2);
-        make.width.equalTo(@13);
-        make.height.equalTo(@7);
-        make.centerY.equalTo(self.tempTitle.mas_centerY);
-    }];
-    
+//    self.bottomLabel = [[UILabel alloc]init];
+//    [self.view addSubview:self.bottomLabel];
+//    self.bottomLabel.text = @"1#空调实时温度趋势";
+//    self.bottomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+//    self.bottomLabel.font = [UIFont boldSystemFontOfSize:14];
+//    self.bottomLabel.textAlignment = NSTextAlignmentLeft;
+//    [self.bottomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.view.mas_left).offset(16);
+//        make.top.equalTo(self.tableView.mas_bottom).offset(16);
+//        make.height.equalTo(@20);
+//        make.width.equalTo(@200);
+//    }];
+//    
+//    self.tempTitle = [[UILabel alloc]init];
+//    [self.view addSubview:self.tempTitle];
+//    self.tempTitle.text = @"温度";
+//    self.tempTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
+//    self.tempTitle.font = [UIFont boldSystemFontOfSize:14];
+//    self.tempTitle.textAlignment = NSTextAlignmentRight;
+//    [self.tempTitle sizeToFit];
+//    [self.tempTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.view.mas_right).offset(-21);
+//        make.centerY.equalTo(self.bottomLabel.mas_centerY);
+//        make.height.equalTo(@17);
+//       
+//    }];
+//    
+//    self.tempImage = [[UIImageView alloc]init];
+//    [self.view addSubview:self.tempImage];
+//    self.tempImage.backgroundColor = [UIColor colorWithHexString:@"#FFC427"];
+//    [self.tempImage mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.tempTitle.mas_left).offset(-2);
+//        make.width.equalTo(@13);
+//        make.height.equalTo(@7);
+//        make.centerY.equalTo(self.tempTitle.mas_centerY);
+//    }];
+//    
 }
 
 - (void)moreMethod:(UIButton *)button {

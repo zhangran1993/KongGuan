@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSDictionary * machineDetail;
 @property (copy, nonatomic) NSString * naviTitleString;
+
+@property (strong, nonatomic) NSArray *alarmArray;
 @end
+
 
 NS_ASSUME_NONNULL_END

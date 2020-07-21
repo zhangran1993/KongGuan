@@ -51,7 +51,7 @@
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
         make.top.equalTo(self.mas_top);
-        make.height.equalTo(@102);
+        make.height.equalTo(@124);
     }];
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];

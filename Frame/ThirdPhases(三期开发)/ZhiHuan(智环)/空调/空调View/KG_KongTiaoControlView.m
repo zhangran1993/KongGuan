@@ -16,9 +16,9 @@
 #import "StationMachineDetailMoreController.h"
 #define nvbH 40
 @interface KG_KongTiaoControlView ()<SegmentTapViewDelegate> {
-    UIScrollView *scrollView;
+    
 }
-
+@property (nonatomic ,strong) UIScrollView *scrollView;
 @property (nonatomic ,strong) UIImageView *topIcon ;
 
 @property (nonatomic ,strong) UIImageView *greenDot ;//绿点
@@ -83,6 +83,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshControlLogSegment) name:@"refreshControlLogSegment" object:nil];
+        
         self.frame = frame;
         [self initData];
         [self createTopView];
@@ -90,6 +92,20 @@
         
     }
     return self;
+}
+
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
+- (void)refreshControlLogSegment {
+    [self.scrollView setContentOffset:CGPointMake(SCREEN_WIDTH *self.currIndex, 0)];
 }
 //初始化数据
 - (void)initData {
@@ -275,13 +291,13 @@
 - (void)createSegmentView{
    
     //scroView
-    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,self.segmentedControl.frame.origin.y +self.segmentedControl.frame.size.height,SCREEN_WIDTH -32,self.frame.size.height )];
-    scrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    scrollView.pagingEnabled = YES;
-    scrollView.scrollEnabled = NO;
-    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 0);
-    [self addSubview:scrollView];
-    [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,self.segmentedControl.frame.origin.y +self.segmentedControl.frame.size.height,SCREEN_WIDTH,self.frame.size.height )];
+    self.scrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    self.scrollView.pagingEnabled = YES;
+    self.scrollView.scrollEnabled = NO;
+    self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH*2, 0);
+    [self addSubview:self.scrollView];
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.segmentedControl.mas_bottom);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
@@ -290,7 +306,7 @@
     //把页面添加到scroView的三个页面
     self.cedianView = [[KG_KongTiaoCeDianViewController alloc]init];
 
-    self.cedianView.view.frame = CGRectMake(0, 0,SCREEN_WIDTH -32, scrollView.frame.size.height);
+    self.cedianView.view.frame = CGRectMake(0, 0,SCREEN_WIDTH , self.scrollView.frame.size.height);
     self.cedianView.moreAction = ^(NSDictionary * _Nonnull dataDic) {
         
         NSDictionary * Detail = @{ @"tagList":dataDic[@"measureTagList"],
@@ -304,15 +320,17 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"moreCanshu" object:Detail];
 
     };
-    [scrollView addSubview:self.cedianView.view];
+    [self.scrollView addSubview:self.cedianView.view];
     self.controlView = [[KG_KongTiaoControlViewController alloc]init];
-    self.controlView .controlLog = ^{
-        [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH *self.currIndex, 0)];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"controlLog" object:nil];
+    self.controlView.controlLog = ^{
+        
+       
+        [self.scrollView setContentOffset:CGPointMake(SCREEN_WIDTH *self.currIndex, 0)];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"controlLog" object:self.dataDic];
          
     };
-    self.controlView.view.frame = CGRectMake(32 +scrollView.frame.size.width * 1, 0, SCREEN_WIDTH -32, scrollView.frame.size.height );
-    [scrollView addSubview:self.controlView.view];
+    self.controlView.view.frame = CGRectMake(self.scrollView.frame.size.width * 1, 0, SCREEN_WIDTH , self.scrollView.frame.size.height );
+    [self.scrollView addSubview:self.controlView.view];
  
 }
 - (void)change:(UISegmentedControl *)sender {
@@ -329,10 +347,12 @@
     self.currIndex = sender.selectedSegmentIndex;
     switch (sender.selectedSegmentIndex) {
         case 0:
-            [scrollView setContentOffset:CGPointMake(0, 0)];
+            [self.scrollView setContentSize:CGSizeMake(self.frame.size.width*2  , 0)];
+            [self.scrollView setContentOffset:CGPointMake(0, 0)];
             break;
         case 1:
-            [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH, 0)];
+            [self.scrollView setContentSize:CGSizeMake(self.frame.size.width*2, 0)];
+            [self.scrollView setContentOffset:CGPointMake(SCREEN_WIDTH, 0)];
             break;
         
         default:
@@ -371,6 +391,15 @@
 }
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
+    self.gaojingImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",self.level]]];
+    
+    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",self.level]];
+    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",self.num];
+    if([self.num intValue] == 0) {
+        self.statusNumLabel.hidden = YES;
+    }else {
+        self.statusNumLabel.hidden = NO;
+    }
     if (dataDic.count) {
         self.dataArray = dataDic[@"measureTagList"];
         self.cedianView.dataDic = dataDic;
@@ -383,6 +412,19 @@
 }
 
 - (void)refreshData {
+    
+    for (NSDictionary *dic in self.dataArray) {
+           if([safeString(dic[@"name"]) isEqualToString:@"通信状态"]) {
+               if([safeString(dic[@"valueAlias"]) isEqualToString:@"断线"]) {
+                   
+                   self.iconImage.backgroundColor  = [UIColor colorWithHexString:@"#FB394C"];
+                   break;
+               }else {
+                   self.iconImage.backgroundColor =  [UIColor colorWithHexString:@"#03C3B6"];
+               }
+           }
+       }
+       
     [self.equipImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(_dataDic[@"alias"]),safeString(_dataDic[@"name"])];
 //
@@ -556,4 +598,42 @@
     
 }
 
+- (UIColor *)getTextColor:(NSString *)level {
+    UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    
+    if ([level isEqualToString:@"0"]) {
+        textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    }else if ([level isEqualToString:@"4"]) {
+        textColor = [UIColor colorWithHexString:@"2986F1"];
+    }else if ([level isEqualToString:@"3"]) {
+        textColor = [UIColor colorWithHexString:@"FFA800"];
+    }else if ([level isEqualToString:@"2"]) {
+        textColor = [UIColor colorWithHexString:@"FC7D0E"];
+    }else if ([level isEqualToString:@"1"]) {
+        textColor = [UIColor colorWithHexString:@"F62546"];
+    }
+    
+    //紧急
+    return textColor;
+}
+
+
+- (NSString *)getLevelImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"0"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"4"]) {
+        levelString = @"level_prompt";
+    }else if ([level isEqualToString:@"3"]) {
+        levelString = @"level_ciyao";
+    }else if ([level isEqualToString:@"2"]) {
+        levelString = @"level_important";
+    }else if ([level isEqualToString:@"1"]) {
+        levelString = @"level_jinji";
+    }
+    
+    //紧急
+    return levelString;
+}
 @end

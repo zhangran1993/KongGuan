@@ -46,6 +46,8 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [self.navigationController setNavigationBarHidden:YES];
+    self.tabBarController.tabBar.hidden = YES;
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");

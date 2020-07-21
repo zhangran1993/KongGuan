@@ -408,7 +408,7 @@
         if ([result[@"value"] boolValue]) {
             [MBProgressHUD showSuccess:@"接班成功"];
         }
-        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
                
     }  failure:^(NSError *error) {
@@ -451,7 +451,7 @@
         if ([result[@"value"] boolValue]) {
            [FrameBaseRequest showMessage:@"交班成功"];
         }
-        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popViewControllerAnimated:YES];
          NSLog(@"请求成功");
          [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         
@@ -532,7 +532,7 @@
         }
       
         [FrameBaseRequest showMessage:@"生成报告成功"];
-        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         
              

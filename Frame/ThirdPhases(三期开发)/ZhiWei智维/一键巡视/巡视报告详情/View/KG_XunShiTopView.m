@@ -111,12 +111,12 @@
             cell.titleLabel.text = safeString(self.model.taskRange);
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_locIcon"];
         }else if (indexPath.row == 1){
-            cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskLastUpdateTime)];
-            if(isSafeDictionary(self.dataDic)) {
-                if(self.dataDic.count >0){
-                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
-                }
-            }
+            cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskTime)];
+//            if(isSafeDictionary(self.dataDic)) {
+//                if(self.dataDic.count >0){
+//                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
+//                }
+//            }
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];
@@ -132,14 +132,14 @@
             cell.titleLabel.text = safeString(self.model.taskRange);
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_locIcon"];
         }else if (indexPath.row == 1){
-            cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskLastUpdateTime)];
+            cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskTime)];
             
-            if(isSafeDictionary(self.dataDic)) {
-                if(self.dataDic.count >0){
-                    
-                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
-                }
-            }
+//            if(isSafeDictionary(self.dataDic)) {
+//                if(self.dataDic.count >0){
+//                    
+//                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
+//                }
+//            }
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];

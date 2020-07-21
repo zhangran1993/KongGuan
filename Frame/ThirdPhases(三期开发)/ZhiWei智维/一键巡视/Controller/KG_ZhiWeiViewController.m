@@ -17,6 +17,7 @@
 #import "KG_CreateXunShiContentViewController.h"
 #import "UIViewController+YQSlideMenu.h"
 #import "KG_WeihuDailyReportDetailViewController.h"
+#import <UIButton+WebCache.h>
 @interface KG_ZhiWeiViewController ()<UITableViewDelegate,UITableViewDataSource>
 /**  标题栏 */
 @property (nonatomic, strong)  UILabel   *titleLabel;
@@ -30,7 +31,7 @@
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic ,strong) RS_ConditionSearchView *searchView;
 
-@property (nonatomic, strong)  UIImageView    *leftIconImage;
+@property (nonatomic, strong)  UIButton    *leftIconImage;
 
 @end
 
@@ -119,12 +120,11 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
     }else {
         
-        self.leftIconImage.image = [UIImage imageNamed:@"head_blueIcon"];
+        [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal] ;
     }
-    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -166,25 +166,23 @@
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    self.leftIconImage = [[UIImageView alloc] init];
-    self.leftIconImage.image = IMAGE(@"head_blueIcon");
-    [backBtn addSubview:self.leftIconImage];
-    self.leftIconImage.layer.cornerRadius = 13.f;
-//    self.leftIconImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.leftIconImage = [[UIButton alloc] init];
+    
+    [self.navigationView addSubview:self.leftIconImage];
+    self.leftIconImage.layer.cornerRadius =17.f;
     self.leftIconImage.layer.masksToBounds = YES;
-    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@26);
-        make.centerX.equalTo(backBtn.mas_centerX);
-        make.centerY.equalTo(backBtn.mas_centerY);
-    }];
+    [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
+    [self.leftIconImage addTarget:self action:@selector(leftCenterButtonClick) forControlEvents:UIControlEventTouchUpInside];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
+        
     }else {
         
-        self.leftIconImage.image = [UIImage imageNamed:@"head_blueIcon"];
+        [self.leftIconImage setImage: [UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     }
+      
     UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     histroyBtn.titleLabel.font = FontSize(12);
     
@@ -226,6 +224,11 @@
         make.centerY.equalTo(backBtn.mas_centerY);
         make.height.equalTo(@22);
         make.right.equalTo(histroyBtn.mas_left).offset(-6);
+    }];
+    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.navigationView.mas_left).offset(16);
+        make.width.height.equalTo(@34);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
     //单台站不可点击
     self.rightButton.userInteractionEnabled = NO;
@@ -668,7 +671,7 @@
     
     
 }
-
+//获取执行负责人列表
 - (void)getLeaderNameData {
     
 //

@@ -210,6 +210,10 @@
     self.hidden = YES;
     [self.textField resignFirstResponder];
     [self.textView resignFirstResponder];
+    
+    if (self.confirmBlockMethod) {
+        self.confirmBlockMethod();
+    }
 }
 - (void)buttonClickMethod:(UIButton *)button {
 //    self.hidden = YES;

@@ -99,7 +99,8 @@
         make.right.equalTo(topView.mas_right);
         make.bottom.equalTo(self.mas_bottom);
     }];
-       
+   
+        
 }
 
 
@@ -185,7 +186,7 @@
     thirdHeight = thirdArr.count *30;
     for (NSDictionary *detailArr in thirdArr) {
         NSArray *fourthArr = detailArr[@"childrens"];
-        fourthHeight += fourthArr.count *30;
+        fourthHeight += fourthArr.count *40;
     }
     
     
@@ -203,7 +204,18 @@
         self.topTitle.text = safeString(dic[@"engineRoomName"]) ;
        
     }
-    
+    if ([UserManager shareUserManager].isChangeTask) {
+        UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH,50)];
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(32, 3, SCREEN_WIDTH -64, 44)];
+        [footView addSubview:button];
+        [button setTitle:@"新增内容" forState:UIControlStateNormal];
+        [button setBackgroundColor: [UIColor colorWithRed:151/255.0 green:173/255.0 blue:228/255.0 alpha:1.0]];
+        button.layer.cornerRadius = 4;
+        button.userInteractionEnabled = NO;
+        [button setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+        self.tableView.tableFooterView = footView;
+        
+    }
    
     [self.tableView reloadData];
     
@@ -247,9 +259,12 @@
     return headView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+  
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
-   
+    
     return footView;
+    
+    
 }
 
 

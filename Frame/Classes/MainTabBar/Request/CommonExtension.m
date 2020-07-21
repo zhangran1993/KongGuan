@@ -429,7 +429,7 @@
     return size.height;
 }
 
-+ (NSString *) getDeviceIcon:(NSString *)code  {
++ (NSString *)getDeviceIcon:(NSString *)code  {
     NSString *iconString = @"水浸";
     if([code isEqualToString:@"immersion"]){
         iconString =@"水浸";

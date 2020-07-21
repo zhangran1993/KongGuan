@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,copy) NSString *taskStatus;
 
+@property (nonatomic ,assign) int cardTotalNum;
+@property (nonatomic ,assign) int cardCurrNum;
 @property (nonatomic,copy) void(^moreBlockMethod)(NSDictionary *dataDic);
 @end
 

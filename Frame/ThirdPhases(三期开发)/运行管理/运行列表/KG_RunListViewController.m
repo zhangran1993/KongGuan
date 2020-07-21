@@ -221,6 +221,9 @@
      [self.navigationController popViewControllerAnimated:YES];
     
     
+    [[UITabBar appearance] setTranslucent:NO];
+    
+    self.tabBarController.tabBar.translucent = NO;
 }
 /** 标题栏 **/
 - (UILabel *)titleLabel {
@@ -250,8 +253,10 @@
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcRunReport/%d/%d",self.pageNum,self.pageSize]];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"reportRange"] = self.currentDic[@"stationCode"];
-    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"station"]){
+        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
+    }
     params[@"title"] = @"";
     params[@"time"] = @"";
     
@@ -277,12 +282,14 @@
 }
 
 - (void)getRunReportDetailMoreData{
-    
-    
+
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcRunReport/%d/%d",self.pageNum,self.pageSize]];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"reportRange"] = self.currentDic[@"stationCode"];
-    
+   
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"station"]){
+        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
+    }
     params[@"title"] = @"";
     params[@"time"] = @"";
     WS(weakSelf);

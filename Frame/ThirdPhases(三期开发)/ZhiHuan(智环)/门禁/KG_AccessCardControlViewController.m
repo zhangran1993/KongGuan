@@ -371,28 +371,35 @@
 //进行操作
 - (void)openData {
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/DoorEvent/control/%@/%@/%@/%@",safeString(self.dataDic[@"stationCode"]),safeString(self.dataDic[@"code"]),@"on",safeString(self.secondString)]];
+    [MBProgressHUD showMessage:@"" toView:self.view];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
-        
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-     
+        NSDictionary *valueDic = result[@"value"];
+        if ([safeString(valueDic[@"result"]) isEqualToString:@"Send Success"]) {
+            [FrameBaseRequest showMessage:@"操作成功"];
+        }else {
+            [FrameBaseRequest showMessage:@"操作失败"];
+        }
         NSLog(@"完成");
         
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSLog(@"完成");
-        
+         [MBProgressHUD hideHUD];
     }];
     
 }
 - (void)closeData {
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/DoorEvent/control/%@/%@/%@/%@",safeString(self.dataDic[@"stationCode"]),safeString(self.dataDic[@"code"]),@"off",@"0"]];
+     [MBProgressHUD showMessage:@"" toView:self.view];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
-        
+         [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
@@ -400,11 +407,17 @@
         }
      
         NSLog(@"完成");
-        
+        NSDictionary *valueDic = result[@"value"];
+        if ([safeString(valueDic[@"result"]) isEqualToString:@"Send Success"]) {
+            [FrameBaseRequest showMessage:@"操作成功"];
+        }else {
+            [FrameBaseRequest showMessage:@"操作失败"];
+        }
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSLog(@"完成");
+         [MBProgressHUD hideHUD];
         
     }];
     

@@ -8,7 +8,8 @@
 
 #import "KG_ControlGaoJingAlertView.h"
 #import "WYLDatePickerView.h"
-@interface  KG_ControlGaoJingAlertView()<WYLDatePickerViewDelegate>{
+#import "ZRDatePickerView.h"
+@interface  KG_ControlGaoJingAlertView()<ZRDatePickerViewDelegate>{
     
 }
 @property (nonatomic, strong) UIButton *bgBtn ;
@@ -16,7 +17,12 @@
 @property (nonatomic, strong) UIButton *startBtn ;
 @property (nonatomic, strong) UIButton *endBtn ;
 @property (nonatomic, assign) int  currIndex;
-@property (nonatomic,strong)WYLDatePickerView *dataPickerview; //选择日期
+@property (nonatomic,strong)ZRDatePickerView *dataPickerview; //选择日期
+
+
+
+@property (nonatomic, copy) NSString *startTimeStr ;
+@property (nonatomic, copy) NSString *endTimeStr ;
 @end
 @implementation KG_ControlGaoJingAlertView
 
@@ -117,8 +123,16 @@
     self.startBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [self.startBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
     self.startBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-
-
+    
+    NSDate *date=[NSDate date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    self.startTimeStr = timeStr;
+    [self.startBtn setTitle:timeStr forState:UIControlStateNormal];
+    [self.startBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+    if (self.selTime) {
+        self.selTime(timeStr,self.currIndex);
+    }
+    
     [self.startBtn addTarget:self action:@selector(startMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(startView.mas_right).offset(-11);
@@ -240,8 +254,16 @@
     
 }
 - (void)confirmMethod:(UIButton *)button {
-   
-   
+    if (self.startTimeStr.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择开始时间"];
+        return;
+    }
+    
+    if (self.endTimeStr.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择结束时间"];
+        return;
+    }
+    
     if (self.sureMethod) {
         self.sureMethod();
     }
@@ -275,9 +297,9 @@
 }
 
 
-- (WYLDatePickerView *)dataPickerview {
+- (ZRDatePickerView *)dataPickerview {
     if (!_dataPickerview) {
-        WYLDatePickerView *dateView = [[WYLDatePickerView alloc] initWithFrame:CGRectMake(0, self.height, self.width, 300) withDatePickerType:WYLDatePickerTypeYMDHM];
+        ZRDatePickerView *dateView = [[ZRDatePickerView alloc] initWithFrame:CGRectMake(0, self.height, self.width, 300) withDatePickerType:ZRDatePickerTypeYMDHMS];
         dateView.delegate = self;
         dateView.title = @"请选择时间";
         dateView.isSlide = NO;
@@ -291,14 +313,16 @@
     return _dataPickerview;
 }
 - (void)datePickerViewSaveBtnClickDelegate:(NSString *)timer {
-    NSString *newTime = [NSString stringWithFormat:@"%@:00",timer];
+    NSString *newTime = [NSString stringWithFormat:@"%@",timer];
     
     if (self.currIndex == 0) {
+        self.startTimeStr = newTime;
         //start
          [self.startBtn setTitle:newTime forState:UIControlStateNormal];
          [self.startBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
         
     }else {
+        self.endTimeStr = newTime;
         //end
          [self.endBtn setTitle:newTime forState:UIControlStateNormal];
          [self.endBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
@@ -324,4 +348,17 @@
         [self.dataPickerview  show];
     }];
 }
+
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
+}
+
+
 @end

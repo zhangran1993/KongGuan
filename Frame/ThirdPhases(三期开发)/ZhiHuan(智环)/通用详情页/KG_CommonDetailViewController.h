@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_CommonDetailViewController : UIViewController
 
-
+@property (strong, nonatomic) NSDictionary *zhitaiDic;
 
 @property (assign, nonatomic) NSString* station_code;
 @property (assign, nonatomic) NSString* station_name;

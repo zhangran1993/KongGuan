@@ -8,10 +8,12 @@
 
 #import "KG_XunShiResultView.h"
 
-@interface KG_XunShiResultView ()<UITableViewDelegate,UITableViewDataSource>{
-    
+@interface KG_XunShiResultView ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>{
+
 }
 
+@property (nonatomic ,strong) UITextView *textView ;
+    
 @property (nonatomic ,strong) UITableView      *tableView;
 @property (nonatomic ,strong) NSMutableArray   *dataArray;
 
@@ -33,7 +35,7 @@
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
-        make.height.equalTo(@102);
+        make.height.equalTo(@124);
     }];
     [self.tableView reloadData];
 }
@@ -86,6 +88,31 @@
     }else {
         cell.textLabel.text = safeString(self.taskDescription);
     }
+    if([UserManager shareUserManager].isChangeTask ) {
+        cell.textLabel.hidden = YES;
+        self.textView = [[UITextView alloc]init];
+        self.textView.backgroundColor = [UIColor colorWithHexString:@"#F8F9FA"];
+        self.textView.layer.cornerRadius = 6;
+        self.textView.returnKeyType = UIReturnKeyDone;
+        self.textView.text = @"请输入巡视结果";
+        if (safeString(self.taskDescription).length) {
+            self.textView.text = safeString(self.taskDescription);
+        }
+        self.textView.textColor = [UIColor colorWithHexString:@"#24252A"];
+        self.textView.layer.masksToBounds = YES;
+        self.textView.font = [UIFont systemFontOfSize:14];
+        self.textView.delegate = self;
+        self.textView.textContainerInset = UIEdgeInsetsMake(15, 15, 5, 15);
+        [cell addSubview:self.textView];
+        [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(cell.mas_left).offset(16);
+            make.right.equalTo(cell.mas_right).offset(-16);
+            make.top.equalTo(cell.mas_top).offset(5);
+            make.height.equalTo(@70);
+        }];
+    }else {
+        cell.textLabel.hidden = NO;
+    }
     
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     cell.textLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
@@ -93,6 +120,37 @@
     
     return cell;
 }
+//将要进入编辑模式[开始编辑]
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if([textView.text isEqualToString:@"请输入巡视结果"] ||[textView.text isEqualToString:@"请输入巡视结果"]) {
+        
+        textView.text = @"";
+    }
+    return YES;
+   
+}
+//当textView的内容发生改变的时候调用
+- (void)textViewDidChange:(UITextView *)textView {
+    
+    if (self.textStringChangeBlock) {
+        self.textStringChangeBlock(textView.text);
+    }
+    
+    
+}
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
+        //在这里做你响应return键的代码
+        [textView resignFirstResponder];
+        
+        return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
+    }
+    return YES;
+    
+}
+    
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -102,7 +160,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
-    return  58.5;
+    return  80;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

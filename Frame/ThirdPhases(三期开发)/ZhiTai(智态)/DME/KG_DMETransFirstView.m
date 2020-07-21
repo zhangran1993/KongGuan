@@ -18,7 +18,7 @@
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
-
+@property (nonatomic, assign) int  alarmStatus;
 @end
 @implementation KG_DMETransFirstView
 
@@ -98,6 +98,16 @@
     
     cell.titleLabel.text = safeString(titleString);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    if (indexPath.section == 0) {
+        
+        if (self.alarmStatus == 1) {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#F11B3D"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        }
+    }
+    
     if (indexPath.section == 2) {
         if ([titleString isEqualToString:@"发射机1"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#0032AF"];
@@ -151,15 +161,13 @@
         workString = @"工作";
         
     }else {
-        if(safeString(workDic[@"valueAlias"]).length == 0){
-            workString = @"工作";
-            
-        }else {
-           
-            if([safeString(self.rebeiDic[@"valueAlias"]) isEqualToString:@"冷备份"]){
-                workString = @"冷备";
-            }
+        
+        if([safeString(self.rebeiDic[@"valueAlias"]) isEqualToString:@"冷备份"]){
+            workString = @"冷备";
+        }else  if([safeString(self.rebeiDic[@"valueAlias"]) isEqualToString:@"热备份"]){
+            workString = @"热备";
         }
+        
     }
     [_dataArray replaceObjectAtIndex:1 withObject:workString];
     [self.tableView reloadData];
@@ -169,7 +177,7 @@
 - (void)setFasheDic:(NSDictionary *)fasheDic{
     _fasheDic = fasheDic;
     
-    
+    self.alarmStatus = [safeString(fasheDic[@"alarmStatus"]) intValue];
     
     NSString *fasheString = @"正常";
     //监视器A
@@ -178,9 +186,9 @@
         
     }else if([safeString(fasheDic[@"valueAlias"]) isEqualToString:@"A机告警"]){
         
-        fasheString = @"正常";
-    }else if([safeString(fasheDic[@"valueAlias"]) isEqualToString:@"B机告警"]){
         fasheString = @"告警";
+    }else if([safeString(fasheDic[@"valueAlias"]) isEqualToString:@"B机告警"]){
+        fasheString = @"正常";
         
     }else if([safeString(fasheDic[@"valueAlias"]) isEqualToString:@"全告警"]){
         fasheString = @"告警";

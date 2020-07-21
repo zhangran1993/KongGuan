@@ -162,10 +162,10 @@
     [headView addSubview:self.topIconImage];
     self.topIconImage.contentMode = UIViewContentModeScaleAspectFill;
     [self.topIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(headView.mas_left).offset(21);
-        make.width.equalTo(@11);
+        make.left.equalTo(headView.mas_left).offset(19);
+        make.width.equalTo(@22);
         make.top.equalTo(headView.mas_top).offset(27);
-        make.height.equalTo(@16);
+        make.height.equalTo(@22);
     }];
     
     self.topTitleLabel = [[UILabel alloc]init];
@@ -175,7 +175,7 @@
     self.topTitleLabel.numberOfLines = 1;
     self.topTitleLabel.textAlignment = NSTextAlignmentLeft;
     [self.topTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@150);
+        make.right.equalTo(headView.mas_right).offset(-20);
         make.centerY.equalTo(self.topIconImage.mas_centerY);
         make.left.equalTo(self.topIconImage.mas_right).offset(6);
         make.height.equalTo(headView.mas_height);
@@ -222,6 +222,22 @@
         cell.titleLabel.text = safeString(self.radarList[indexPath.row][@"name"]) ;
         cell.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(self.radarList[indexPath.row][@"valueAlias"]),safeString(self.radarList[indexPath.row][@"unit"])] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (safeString(self.radarList[indexPath.row][@"valueAlias"]).length == 0) {
+            cell.detailLabel.text = @"--";
+        }
+        NSArray *arr = self.machineDetail[@"equipmentAlarmInfo"];
+        for (NSDictionary *arDic in arr) {
+            if ([safeString(arDic[@"name"]) containsString:safeString(self.radarList[indexPath.row][@"name"])]) {
+                cell.titleLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                cell.detailLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                cell.iconImage.backgroundColor = [UIColor colorWithHexString:@"#FB394C"];
+                break;
+            }else {
+                cell.titleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                cell.detailLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                cell.iconImage.backgroundColor = [UIColor colorWithHexString:@"#95A8D7"];
+            }
+        }
         return cell;
     }
     return nil;

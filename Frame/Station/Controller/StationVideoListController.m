@@ -24,6 +24,8 @@
 @property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
 @property (strong, nonatomic) UIButton *rightButton;
 @property(nonatomic) UITableView *filterTabView;
+
+
 /** 请求管理者 */
 //@property (nonatomic,weak) AFHTTPSessionManager * manager;
 /** 用于加载下一页的参数(页码) */
@@ -33,6 +35,10 @@
 @property (nonatomic,assign) double iscollect;
 @property(nonatomic) UIView* bottomView;
 @property(nonatomic) UITableView *tableview;
+
+@property (nonatomic, strong)  UILabel   *titleLabel;
+@property (nonatomic, strong)  UIView    *navigationView;
+
 @end
 
 @implementation StationVideoListController
@@ -47,12 +53,14 @@
     
     //_station_code = @"all";
     [super viewDidLoad];
-    [self backBtn];
-    self.navigationItem.title = @"台站实时视频";//详情
+//    [self backBtn];
+    [self.navigationController setNavigationBarHidden:YES];
+    [self createNaviTopView];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotificationAction) name:kNetworkStatusNotification object:nil];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN- FrameWidth(100))];
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, Height_NavBar, WIDTH_SCREEN, HEIGHT_SCREEN- FrameWidth(100))];
     self.tableview.delegate =self;
     self.tableview.dataSource =self;
     self.tableview.separatorStyle = NO;
@@ -60,24 +68,14 @@
     [self.view addSubview:self.tableview];
     
     self.tableview.backgroundColor = BGColor;
+    [self setupTable];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationVideoListController  %@",_station_code);
     
     [self setupTable];
-    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
-
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.tintColor = [UIColor grayColor];
-    
-    [self.navigationController.navigationBar setTitleTextAttributes:
-     
-     @{NSFontAttributeName:[UIFont systemFontOfSize:18],
-       
-    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [self.navigationController setNavigationBarHidden:NO];
+   
 }
 
 - (void)dealloc {
@@ -557,7 +555,73 @@
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button{
     [self setupTable];
 }
+- (void)createNaviTopView {
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.image = [self createImageWithColor:[UIColor whiteColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"台站实时视频";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+    
+    
+    
+    
+    
+    
+}
 
+
+- (void)backButtonClick:(UIButton *)button {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+    
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
 @end
 
 

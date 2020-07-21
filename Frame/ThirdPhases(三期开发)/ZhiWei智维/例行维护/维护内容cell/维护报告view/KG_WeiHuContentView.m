@@ -173,11 +173,31 @@
     
     NSArray *thirdArr = arr;
     thirdHeight = thirdArr.count *30;
+    int num = 0;
     for (NSDictionary *detailArr in thirdArr) {
-        NSArray *fourthArr = detailArr[@"childrens"];
-        fourthHeight += fourthArr.count *30;
+        
+        if (![detailArr[@"cardDisplay"] boolValue]) {
+            NSArray *fourthArr = detailArr[@"childrens"];
+            fourthHeight += fourthArr.count *40;
+            
+            
+            
+            num ++;
+        }
+       
+        
     }
-    
+    if (num== 0 &&thirdArr.count >0) {
+        if(fourthHeight >=40) {
+            fourthHeight -=40;
+        }
+        if(thirdHeight >=30) {
+            thirdHeight -=30;
+        }
+        
+            
+        
+    }
     NSLog(@"第5层高度：-----------%ld",(long)thirdHeight);
     NSLog(@"第6层高度：-----------%ld",(long)fourthHeight);
     return thirdHeight +fourthHeight;
@@ -197,6 +217,18 @@
 //    if (self.dataArray.count>0) {
 //        [self.dataArray removeLastObject];
 //    }
+    if ([UserManager shareUserManager].isChangeTask) {
+        UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH,50)];
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(32, 3, SCREEN_WIDTH -64, 44)];
+        [footView addSubview:button];
+        [button setTitle:@"新增内容" forState:UIControlStateNormal];
+        [button setBackgroundColor: [UIColor colorWithRed:151/255.0 green:173/255.0 blue:228/255.0 alpha:1.0]];
+        button.layer.cornerRadius = 4;
+        button.userInteractionEnabled = NO;
+        [button setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+        self.tableView.tableFooterView = footView;
+        
+    }
     [self.tableView reloadData];
     
 }

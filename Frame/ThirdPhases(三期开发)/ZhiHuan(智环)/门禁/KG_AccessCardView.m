@@ -88,9 +88,13 @@
         [self initData];
         [self createTopView];
         [self setupDataSubviews];
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshControlLogSegment) name:@"refreshControlLogSegment" object:nil];
+               
     }
     return self;
+}
+- (void)refreshControlLogSegment {
+    [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH *self.currIndex, 0)];
 }
 //初始化数据
 - (void)initData {
@@ -373,6 +377,16 @@
 }
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
+    
+    self.gaojingImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",self.level]]];
+    
+    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",self.level]];
+    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",self.num];
+    if([self.num intValue]==0) {
+        self.statusNumLabel.hidden = YES;
+    }else {
+        self.statusNumLabel.hidden = NO;
+    }
     if (dataDic.count) {
         self.dataArray = dataDic[@"measureTagList"];
         self.cedianView.dataDic = dataDic;
@@ -527,4 +541,42 @@
     
 }
 
+- (UIColor *)getTextColor:(NSString *)level {
+    UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    
+    if ([level isEqualToString:@"0"]) {
+        textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    }else if ([level isEqualToString:@"4"]) {
+        textColor = [UIColor colorWithHexString:@"2986F1"];
+    }else if ([level isEqualToString:@"3"]) {
+        textColor = [UIColor colorWithHexString:@"FFA800"];
+    }else if ([level isEqualToString:@"2"]) {
+        textColor = [UIColor colorWithHexString:@"FC7D0E"];
+    }else if ([level isEqualToString:@"1"]) {
+        textColor = [UIColor colorWithHexString:@"F62546"];
+    }
+    
+    //紧急
+    return textColor;
+}
+
+
+- (NSString *)getLevelImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level isEqualToString:@"0"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"4"]) {
+        levelString = @"level_prompt";
+    }else if ([level isEqualToString:@"3"]) {
+        levelString = @"level_ciyao";
+    }else if ([level isEqualToString:@"2"]) {
+        levelString = @"level_important";
+    }else if ([level isEqualToString:@"1"]) {
+        levelString = @"level_jinji";
+    }
+    
+    //紧急
+    return levelString;
+}
 @end

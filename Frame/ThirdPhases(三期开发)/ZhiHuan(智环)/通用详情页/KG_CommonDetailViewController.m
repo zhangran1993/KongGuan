@@ -26,6 +26,7 @@
 
 
 //
+@property (nonatomic, strong) UIView         *sliderBgView;
 @property (nonatomic, strong) UIView         *sliderView;
 @property (nonatomic, strong) UIScrollView   *scrollView;
 
@@ -45,8 +46,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    [self getMachineDetailList];
-    [self getDetailRightData];
+    
     
     [self initData];
     
@@ -54,15 +54,40 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlLog:) name:@"controlLog" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreCanshu:) name:@"moreCanshu" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlAccessLog:) name:@"controlAccessLog" object:nil];
+    if (self.zhitaiDic.count) {
+        self.detailModel = nil;
+        [self.dataArray removeAllObjects];
+        if (self.detailModel == nil) {
+            self.detailModel = [[KG_MachineDetailModel alloc]init];
+        }
+        
+        [self.detailModel mj_setKeyValues:self.zhitaiDic];
+        for (equipmentDetailsModel *detailModel in self.detailModel.equipmentDetails) {
+            [self.dataArray addObject:detailModel];
+        }
+        if(self.dataArray.count ==0){
+            return;
+        }
+        
+        NSDictionary *di = [self.dataArray[self.currIndex] mj_keyValues];
+        _station_code = safeString(di[@"equipment"][@"stationCode"]);
+        _station_name = safeString(di[@"equipment"][@"stationName"]);
+        //        self.machine_name = safeString(di[@"equipment"][@"alias"]);
+        self.title = [NSString stringWithFormat:@"%@",safeString(self.machine_name)];
+        [self refreshData];
+    }else {
+        [self getMachineDetailList];
+    }
     
+    [self getDetailRightData];
 }
 -(void)dealloc
 {
     [super dealloc];
-   
+    
     NSLog(@"移除了所有的通知");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
+    
 }
 
 
@@ -77,6 +102,7 @@
 }
 - (void)controlLog:(NSNotification *)notification {
     KG_NiControlViewController *vc = [[KG_NiControlViewController alloc]init];
+    vc.dataDic = notification.object;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -102,6 +128,7 @@
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
       [self.navigationController setNavigationBarHidden:NO];
     [self createNaviView];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshControlLogSegment" object:self];
     
 }
 
@@ -169,14 +196,17 @@
 //sliderview
 - (void)createSliderView {
     
+    self.sliderBgView = [[UIView alloc]initWithFrame:CGRectMake(0, self.topView.frame.origin.y + self.topView.frame.size.height, SCREEN_WIDTH, 26)];
+    [self.view addSubview:self.sliderBgView];
+    self.sliderBgView.backgroundColor = self.view.backgroundColor;
     
     float sliderV_X = SCREEN_WIDTH/2;
     float sliderVX =  sliderV_X;
-    UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderVX,  self.topView.frame.origin.y + self.topView.frame.size.height +10, 6, 6)];
+    UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderVX, 10, 6, 6)];
     
     sliderV.layer.cornerRadius = 3;
     sliderV.backgroundColor = [UIColor colorWithHexString:@"#005DC4"];
-    [self.view insertSubview:sliderV atIndex:1];
+    [self.sliderBgView insertSubview:sliderV atIndex:1];
     _sliderView=sliderV;
     for (int i = 0; i <self.dataArray.count; i++) {
         //滑块
@@ -184,11 +214,11 @@
         //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
         
         float sliderX = sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);
-        UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderX,  self.topView.frame.origin.y + self.topView.frame.size.height +10, 6, 6)];
+        UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderX,  10, 6, 6)];
         sliderV.layer.cornerRadius = 3;
         sliderV.alpha= 0.19;
         sliderV.backgroundColor = [UIColor colorWithHexString:@"#005DC4"];
-        [self.view insertSubview:sliderV atIndex:0];
+        [self.sliderBgView insertSubview:sliderV atIndex:0];
         
     }
     
@@ -287,9 +317,9 @@
         //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
         
         float sliderX =  sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);
-        _sliderView.frame = CGRectMake(sliderX,self.topView.frame.origin.y + self.topView.frame.size.height +10, 6, 6);
+        _sliderView.frame = CGRectMake(sliderX,10, 6, 6);
         //NSLog(@"selectButton  %f",sliderX);
-        [self.view insertSubview:_sliderView atIndex:10];
+        [self.sliderBgView insertSubview:_sliderView atIndex:10];
         
         
     }];
@@ -316,7 +346,7 @@
     equipmentDetailsModel *detailModel = self.dataArray[self.currIndex];
     NSDictionary *dataDic = detailModel.equipment;
     NSString *equipStr = @"device_UPS";
-    self.topTitleLabel.text = safeString(dataDic[@"alias"]);
+    self.topTitleLabel.text = safeString(self.machine_name);
     if ([safeString(dataDic[@"alias"]) isEqualToString:@"水浸"]) {
         equipStr = @"device_shuijin";
     }
@@ -331,11 +361,11 @@
     }
     
     
-    self.topTitleLabel.text = safeString(dataDic[@"alias"]);
-    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
+    
+    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
-    if([totalDic[@"toltalNum"] intValue] ==0) {
+    if([totalDic[@"totalNum"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;
@@ -372,7 +402,10 @@
                
                NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
                viewcon.alarmArray = detailModel.equipmentAlarmInfo;
-                                              
+               viewcon.level = safeString(detailModel.level);
+               viewcon.num = safeString(detailModel.num);
+               viewcon.status = safeString(detailModel.status);
+               
                viewcon.dataDic = dataDic;
                viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
                NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
@@ -389,14 +422,15 @@
                                          @"num":equipmentDetails[i][@"num"]?equipmentDetails[i][@"num"]:@"",
                                          @"category":equipmentDetails[i][@"equipment"][@"category"],
                                          @"tagList":equipmentDetails[i][@"equipment"][@"measureTagList"],
-                                         
-                                         
+                                             
+                                        
                                          @"description":equipmentDetails[i][@"equipment"][@"description"]
                };
                viewcon.moreAction = ^{
                    StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
                    vc.machineDetail = Detail;
-                   
+                   vc.alarmArray  = detailModel.equipmentAlarmInfo;
+                                     
                    [self.navigationController pushViewController:vc animated:YES];
                };
                
@@ -417,7 +451,10 @@
                       
                       NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
                       viewcon.alarmArray = detailModel.equipmentAlarmInfo;
-                                                     
+                      viewcon.level = safeString(detailModel.level);
+                      viewcon.num = safeString(detailModel.num);
+                      viewcon.status = safeString(detailModel.status);
+                      
                       viewcon.dataDic = dataDic;
                       viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
                       NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
@@ -469,35 +506,41 @@
          viewcon.gotoDetail = ^{
              self.tabBarController.selectedIndex = 3;
          };
-        equipmentDetailsModel *detailModel = self.dataArray[i];
-        
-        NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
-        viewcon.alarmArray = detailModel.equipmentAlarmInfo;
-        viewcon.machineName = self.machine_name;
-        viewcon.dataDic = dataDic;
-        viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
-        NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
-        
-        NSDictionary * Detail = @{@"station_name":_station_name,
-                                  @"machine_name":_machine_name,
-                                  @"name":equipmentDetails[i][@"equipment"][@"alias"],
-                                  @"alias":equipmentDetails[i][@"equipment"][@"alias"],
-                                  @"code":equipmentDetails[i][@"equipment"][@"code"],
-                                  @"roomName":equipmentDetails[i][@"equipment"][@"roomName"],
+         equipmentDetailsModel *detailModel = self.dataArray[i];
+         
+         NSDictionary *dataDic = [detailModel.equipment mj_keyValues];
+         viewcon.alarmArray = detailModel.equipmentAlarmInfo;
+         viewcon.machineName = self.machine_name;
+         viewcon.level = safeString(detailModel.level);
+         viewcon.num = safeString(detailModel.num);
+         viewcon.status = safeString(detailModel.status);
+         
+         viewcon.dataDic = dataDic;
+      
+         viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
+         NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
+         
+         NSDictionary * Detail = @{@"station_name":_station_name,
+                                   @"machine_name":_machine_name,
+                                   @"name":equipmentDetails[i][@"equipment"][@"alias"],
+                                   @"alias":equipmentDetails[i][@"equipment"][@"alias"],
+                                   @"code":equipmentDetails[i][@"equipment"][@"code"],
+                                   @"roomName":equipmentDetails[i][@"equipment"][@"roomName"],
                                   @"picture":equipmentDetails[i][@"equipment"][@"picture"],
                                   @"status":equipmentDetails[i][@"status"],
                                   @"level":equipmentDetails[i][@"level"]?equipmentDetails[i][@"level"]:@"",
                                   @"num":equipmentDetails[i][@"num"]?equipmentDetails[i][@"num"]:@"",
                                   @"category":equipmentDetails[i][@"equipment"][@"category"],
                                   @"tagList":equipmentDetails[i][@"equipment"][@"measureTagList"],
-                                  
+                                  @"equipmentAlarmInfo":equipmentDetails[i][@"equipmentAlarmInfo"],
+                                                                          
                                   
                                   @"description":equipmentDetails[i][@"equipment"][@"description"]
         };
         viewcon.moreAction = ^{
             StationMachineDetailMoreController *vc = [[StationMachineDetailMoreController alloc]init];
             vc.machineDetail = Detail;
-            
+           
             [self.navigationController pushViewController:vc animated:YES];
         };
         
@@ -548,7 +591,7 @@
         NSDictionary *di = [self.dataArray[self.currIndex] mj_keyValues];
         _station_code = safeString(di[@"equipment"][@"stationCode"]);
         _station_name = safeString(di[@"equipment"][@"stationName"]);
-        self.machine_name = safeString(di[@"equipment"][@"alias"]);
+//        self.machine_name = safeString(di[@"equipment"][@"alias"]);
         self.title = [NSString stringWithFormat:@"%@",safeString(self.machine_name)];
         [self refreshData];
         NSLog(@"1");
@@ -567,7 +610,7 @@
     equipmentDetailsModel *detailModel = self.dataArray[self.currIndex];
     NSDictionary *dataDic = detailModel.equipment;
     NSString *equipStr = [CommonExtension getDeviceIcon:safeString(dataDic[@"category"])];
-    self.topTitleLabel.text = safeString(dataDic[@"alias"]);
+    self.topTitleLabel.text = safeString(self.machine_name);
    
     NSDictionary *totalDic = [self.detailModel.totalDetail mj_keyValues];
   
@@ -581,10 +624,10 @@
     }
     
     self.topTitleLabel.text = safeString(self.machine_name);
-    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalNum"]]]];
+    self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
-    if([totalDic[@"toltalNum"] intValue] ==0) {
+    if([totalDic[@"totalNum"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;
@@ -670,7 +713,13 @@
 //        }];
         _upsAlertView.dataArray = self.rightArray;
         _upsAlertView.didsel = ^(NSDictionary * _Nonnull selDic) {
+            [self.sliderBgView removeFromSuperview];
+            _sliderBgView = nil;
+            [self.sliderView removeFromSuperview];
+            _sliderView = nil;
+            [self createSliderView];
             _category =safeString(selDic[@"categoryCode"]);
+            self.machine_name = safeString(selDic[@"categoryName"]);
             self.currIndex = 0;
             [self getMachineDetailList];
         };

@@ -49,7 +49,8 @@
 
 @property (strong, nonatomic)   NSArray *logArr;
 @property (nonatomic, strong)   UIView       *tableHeadView;
-
+@property (nonatomic, strong)  UIButton * moreBtn;
+@property (nonatomic, copy)  NSString *descriptonStr;
 @end
 
 @implementation KG_XunShiReportDetailViewController
@@ -74,13 +75,13 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     NSLog(@"StationDetailController viewWillAppear");
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     self.navigationController.navigationBarHidden = YES;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     self.navigationController.navigationBarHidden = NO;
-    
+    [UserManager shareUserManager].isChangeTask = NO;
 }
 
 - (void)createDataView{
@@ -197,7 +198,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == self.dataModel.task.count) {
-        return 101;
+        return 124;
     }else if (indexPath.section == self.dataModel.task.count + 1) {
         return 280;
     }
@@ -220,7 +221,7 @@
         thirdHeight += thirdArr.count *30;
         for (NSDictionary *detailArr in thirdArr) {
             NSArray *fourthArr = detailArr[@"childrens"];
-            fourthHeight += fourthArr.count *30;
+            fourthHeight += fourthArr.count *40;
         }
     }
     totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
@@ -228,6 +229,9 @@
     NSLog(@"第2层高度：-----------%ld",(long)secondHeight);
     NSLog(@"第3层高度：-----------%ld",(long)thirdHeight);
     NSLog(@"第4层高度：-----------%ld",(long)fourthHeight);
+    if ([UserManager shareUserManager].isChangeTask) {
+        totalHeight +=50;
+    }
     return totalHeight;
 
 }
@@ -251,9 +255,10 @@
         if (cell == nil) {
             cell = [[KG_XunShiResultCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_XunShiResultCell"];
         }
-        if (safeString(self.dataModel.taskDescription).length) {
-            cell.taskDescription = self.dataModel.taskDescription;
-        }
+       
+//        if (safeString(self.dataModel.taskDescription).length) {
+            cell.taskDescription = safeString(self.dataModel.taskDescription);
+//        }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -319,11 +324,11 @@
     }];
     
     /** 更多按钮 **/
-    UIButton * moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
-    [moreBtn setImage:[UIImage imageNamed:@"white_more"] forState:UIControlStateNormal];
-    [self.navigationView addSubview:moreBtn];
-    [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.moreBtn setImage:[UIImage imageNamed:@"white_more"] forState:UIControlStateNormal];
+    [self.navigationView addSubview:self.moreBtn];
+    [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@44);
         make.centerY.equalTo(backBtn.mas_centerY);
         make.right.equalTo(self.navigationView.mas_right).offset(-13);
@@ -359,12 +364,55 @@
 }
 - (void)moreAction {
     if (_xunShiHandelView== nil) {
+        
+        
         [JSHmainWindow addSubview:self.xunShiHandelView];
         self.xunShiHandelView.didsel = ^(NSString * _Nonnull dataStr) {
+            NSString *leadStr = @"";
+            NSString *patrolName = safeString(self.dataModel.patrolName);
+            NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
+            
+            for (NSDictionary *dic in leadArr) {
+                if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
+                    leadStr = safeString(dic[@"name"]);
+                    break;
+                }
+            }
+            NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+            if ([userdefaults objectForKey:@"name"]) {
+                NSString *userName = [userdefaults objectForKey:@"name"];
+                if (![leadStr isEqualToString:userName]) {
+                    [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
+                    return;
+                }
+            }
+            
+            
+            
+            [self checkCanChangeTask:dataStr];
             if ([dataStr isEqualToString:@"提交任务"]) {
                 NSLog(@"提交任务");
+                [self uploadTask];
             }else {
+                [self.moreBtn removeFromSuperview];
+                self.moreBtn = nil;
+                /** 更多按钮 **/
+                self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                [self.moreBtn addTarget:self action:@selector(saveAction) forControlEvents:UIControlEventTouchUpInside];
+                self.moreBtn.titleLabel.font = FontSize(16);
+                
+                [self.moreBtn setTitle:@"保存" forState:UIControlStateNormal];
+                [self.moreBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+                [self.navigationView addSubview:self.moreBtn];
+                [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.width.height.equalTo(@44);
+                    make.centerY.equalTo(self.titleLabel.mas_centerY);
+                    make.right.equalTo(self.navigationView.mas_right).offset(-13);
+                }];
                 NSLog(@"修改任务");
+                [UserManager shareUserManager].isChangeTask = YES;
+//                [self changeTask];
+                [self.tableView reloadData];
             }
         };
         [self.xunShiHandelView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -379,6 +427,281 @@
         self.xunShiHandelView.hidden = NO;
     }
     
+    
+}
+//修改任务
+- (void)saveAction {
+    
+    [self changeTask];
+}
+//
+//请求地址：/intelligent/atcSafeguard/updateAtcPatrolRecode
+//请求方式：POST
+//请求Body：
+//{
+//    "id": "XXX",                                       //任务Id，必填
+//    "result": "{"XXX":"XXX"}",                          //存储巡查结果
+//    "status": "1",                                       //任务状态，固定为1
+//    "remark": "{"XXX":"XXX"}",                         //存储备注内容
+//    "patrolName": "XXX",                               //任务执行负责人Id
+//    "atcPatrolLabelList": ["name": "XXX"],                 //标签列表
+//     "description": "XXX",                      //巡视结果，仅巡视任务支持，默认填充为空
+//    "atcPatrolWorkList": ["workPersonName": "XXX"]        //执行人id列表
+//}
+//其中：
+//result和remark采用JSONObject的数据格式，key存储父节点的id，value存内容。
+//如上图片所示：
+//result里面有一个key-value对，key是“环境内容”所在节点的id，value是“干净”。
+//remark里面有两个key-value对，参考如下模板内容配置页面，一个key是“环境内容”所在节点的id，value是“环境内容巡查准确”；一个key是“台站环境巡视”所在节点的id，value是“台站环境巡查正确”。
+- (void)changeTask {
+    NSString *leadStr = @"";
+    NSString *patrolName = safeString(self.dataModel.patrolName);
+    NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
+    
+    for (NSDictionary *dic in leadArr) {
+        if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
+            leadStr = safeString(dic[@"name"]);
+            break;
+        }
+    }
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    if ([userdefaults objectForKey:@"name"]) {
+        NSString *userName = [userdefaults objectForKey:@"name"];
+        if (![leadStr isEqualToString:userName]) {
+            [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
+            return;
+        }
+    }
+    
+    
+    
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    
+    
+    paramDic[@"id"] = safeString(self.dataDic[@"id"]);
+    NSDictionary *resultDic = [UserManager shareUserManager].resultDic;
+    paramDic[@"result"] = [self convertToJsonData:resultDic];
+    paramDic[@"status"] = @"1";
+    paramDic[@"description"] = safeString(self.descriptonStr);
+    NSDictionary *remarkDic = [NSDictionary dictionary];
+    if (isSafeDictionary(self.dataDic[@"remark"])) {
+        if ([self.dataDic[@"remark"] count]) {
+            paramDic[@"remark"] = [self convertToJsonData:self.dataDic[@"remark"]];
+        }else {
+            paramDic[@"remark"] =[self convertToJsonData:remarkDic] ;
+        }
+    }else {
+        paramDic[@"remark"] = [self convertToJsonData:remarkDic];
+    }
+    
+    
+    paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
+    //
+    NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
+    //    NSMutableDictionary *labelDic = [NSMutableDictionary dictionary];
+    //    [labelDic setValue:@"DVOR" forKey:@"name"];
+    //    [labelList addObject:labelDic];
+    if (isSafeArray(self.dataDic[@"atcPatrolLabelList"])) {
+        if ([self.dataDic[@"atcPatrolLabelList"] count]) {
+            paramDic[@"atcPatrolLabelList"] = self.dataDic[@"atcPatrolLabelList"];
+        }else {
+            paramDic[@"atcPatrolLabelList"] = labelList;
+        }
+        
+    }else {
+        paramDic[@"atcPatrolLabelList"] = labelList;
+        
+    }
+    
+    
+    NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
+    //    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
+    //    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
+    //    [workList addObject:workDic];
+    if (isSafeArray(self.dataDic[@"atcPatrolWorkList"])) {
+        if ([self.dataDic[@"atcPatrolWorkList"] count]) {
+            paramDic[@"atcPatrolWorkList"] = self.dataDic[@"atcPatrolWorkList"];
+        }else {
+            paramDic[@"atcPatrolWorkList"] = workList;
+        }
+    }else {
+        paramDic[@"atcPatrolWorkList"] = workList;
+    }
+    
+    
+    
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [FrameBaseRequest showMessage:@"保存任务成功"];
+         [UserManager shareUserManager].resultDic = nil;
+        
+        /** 更多按钮 **/
+        [self.moreBtn removeFromSuperview];
+        self.moreBtn = nil;
+        self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.moreBtn setImage:[UIImage imageNamed:@"white_more"] forState:UIControlStateNormal];
+        [self.navigationView addSubview:self.moreBtn];
+        [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.centerY.equalTo(self.titleLabel.mas_centerY);
+            make.right.equalTo(self.navigationView.mas_right).offset(-13);
+        }];
+        
+        
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+    
+}
+//提交任务
+- (void)uploadTask{
+
+    NSString *leadStr = @"";
+    NSString *patrolName = safeString(self.dataModel.patrolName);
+    NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
+    
+    for (NSDictionary *dic in leadArr) {
+        if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
+            leadStr = safeString(dic[@"name"]);
+            break;
+        }
+    }
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    if ([userdefaults objectForKey:@"name"]) {
+        NSString *userName = [userdefaults objectForKey:@"name"];
+        if (![leadStr isEqualToString:userName]) {
+            [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
+            return;
+        }
+    }
+    
+    
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    
+    
+    paramDic[@"id"] = safeString(self.dataDic[@"id"]);
+    NSDictionary *resultDic = [UserManager shareUserManager].resultDic;
+    paramDic[@"result"] = [self convertToJsonData:resultDic];
+    paramDic[@"status"] = @"2";
+    paramDic[@"description"] = safeString(self.descriptonStr);
+    NSDictionary *remarkDic = [NSDictionary dictionary];
+    if (isSafeDictionary(self.dataDic[@"remark"])) {
+        if ([self.dataDic[@"remark"] count]) {
+            paramDic[@"remark"] = [self convertToJsonData:self.dataDic[@"remark"]];
+        }else {
+            paramDic[@"remark"] =[self convertToJsonData:remarkDic] ;
+        }
+    }else {
+        paramDic[@"remark"] = [self convertToJsonData:remarkDic];
+    }
+    
+    
+    paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
+//
+    NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
+//    NSMutableDictionary *labelDic = [NSMutableDictionary dictionary];
+//    [labelDic setValue:@"DVOR" forKey:@"name"];
+//    [labelList addObject:labelDic];
+    if (isSafeArray(self.dataDic[@"atcPatrolLabelList"])) {
+        if ([self.dataDic[@"atcPatrolLabelList"] count]) {
+            paramDic[@"atcPatrolLabelList"] = self.dataDic[@"atcPatrolLabelList"];
+        }else {
+            paramDic[@"atcPatrolLabelList"] = labelList;
+        }
+        
+    }else {
+        paramDic[@"atcPatrolLabelList"] = labelList;
+      
+    }
+    
+    
+    NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
+//    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
+//    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
+//    [workList addObject:workDic];
+    if (isSafeArray(self.dataDic[@"atcPatrolWorkList"])) {
+        if ([self.dataDic[@"atcPatrolWorkList"] count]) {
+            paramDic[@"atcPatrolWorkList"] = self.dataDic[@"atcPatrolWorkList"];
+        }else {
+            paramDic[@"atcPatrolWorkList"] = workList;
+        }
+    }else {
+        paramDic[@"atcPatrolWorkList"] = workList;
+    }
+    
+    
+    
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [FrameBaseRequest showMessage:@"提交任务成功"];
+        
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+    
+}
+//请求地址：/intelligent/atcSafeguard/checkUpdate/{patrolId}/{oldUpdateTime}
+//其中，patrolId是任务的id；
+//oldUpdateTime是任务详情接口返回的taskLastUpdateTime字段，精确到ms的时间戳
+- (void)checkCanChangeTask:(NSString *)taskString {
+    NSString *rId = self.dataDic[@"id"];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/checkUpdate/%@/%@",rId,safeString(self.dataDic[@"lastUpdateTime"])]];
+    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        NSDictionary *dic = result[@"value"];
+        if ([dic[@"isUpdateEnable"] boolValue]) {
+            
+        }else {
+            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
+            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+               
+            }]];
+            
+            [self presentViewController:alertContor animated:NO completion:nil];
+            
+            
+            
+        }
+        
+        NSLog(@"1");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
     
 }
 
@@ -396,7 +719,65 @@
         }
         [self.dataModel mj_setKeyValues:result[@"value"]];
         [self.listModel mj_setKeyValues:result[@"value"]];
-    
+        NSMutableDictionary *remarkDic = [NSMutableDictionary dictionary];
+        NSMutableDictionary *resultDic = [NSMutableDictionary dictionary];
+        for (task *model in self.listModel.task) {
+            for (firstData *firstData in model.childrens) {
+                for (secondData *secondData in firstData.childrens) {
+                    for (thirdData *thirdData in secondData.childrens) {
+                        NSString *valueStr = safeString(thirdData.measureValueAlias);
+                        for (fourthData *fourthData in thirdData.childrens) {
+                            if ([fourthData.levelMax intValue] == 4) {
+                                if (valueStr.length ) {
+                                    NSLog(@"11");
+                                }
+                                NSString *keyStr = safeString(fourthData.parentId);
+                                if (keyStr.length ) {
+                                    NSMutableDictionary *dd = [NSMutableDictionary dictionary];
+                                    [dd setValue:[NSString stringWithFormat:@"%@",@""] forKey:keyStr];
+                                    [remarkDic addEntriesFromDictionary:dd];
+                                }
+                                
+                                NSString *resultvalueStr = safeString(fourthData.measureValueAlias);
+                                NSString *resultkeyStr = safeString(fourthData.parentId);
+                                if (resultkeyStr.length ) {
+                                    NSMutableDictionary *dd1 = [NSMutableDictionary dictionary];
+                                    [dd1 setValue:[NSString stringWithFormat:@"%@",resultvalueStr] forKey:resultkeyStr];
+                                    [resultDic addEntriesFromDictionary:dd1];
+                                }
+                                
+                            }else {
+                                for (fifthData *fifthData in fourthData.childrens) {
+                                    NSDictionary *fifDic =[fifthData mj_keyValues];
+                                    NSString *keyStr = safeString(fifDic[@"parentId"]);
+                                    if (keyStr.length ) {
+                                        NSMutableDictionary *dd = [NSMutableDictionary dictionary];
+                                        [dd setValue:[NSString stringWithFormat:@"%@",@""] forKey:keyStr];
+                                        [remarkDic addEntriesFromDictionary:dd];
+                                    }
+                                    
+                                    NSString *resultvalueStr = safeString(fifDic[@"measureValueAlias"]);
+                                    NSString *resultkeyStr = safeString(fifDic[@"parentId"]);
+                                    if (resultkeyStr.length ) {
+                                        NSMutableDictionary *dd1 = [NSMutableDictionary dictionary];
+                                        [dd1 setValue:[NSString stringWithFormat:@"%@",resultvalueStr] forKey:resultkeyStr];
+                                        [resultDic addEntriesFromDictionary:dd1];
+                                    }
+                                    
+                                    
+                                }
+                               
+                            }
+                            
+                            NSLog(@"1");
+                        }
+                    }
+                }
+            }
+        }
+        
+        [UserManager shareUserManager].remarkDic = remarkDic;
+        [UserManager shareUserManager].resultDic = nil;
         for (taskDetail *detailModel in self.dataModel.task) {
             if ([detailModel.engineRoomName isEqualToString:@"雷达机房"]) {
                 self.radarModel = detailModel;
@@ -649,6 +1030,44 @@
         return ;
         
     }];
+}
+
+#pragma mark ----  字典转Json字符串
+-(NSString *)convertToJsonData:(NSDictionary *)dict
+
+{
+    NSError *error;
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+
+    NSString *jsonString;
+
+    if (!jsonData) {
+
+
+
+    }else{
+
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    }
+
+    NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
+
+    NSRange range = {0,jsonString.length};
+
+    //去掉字符串中的空格
+
+    [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
+
+    NSRange range2 = {0,mutStr.length};
+
+    //去掉字符串中的换行符
+
+    [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+
+    return mutStr;
+
 }
 
 @end

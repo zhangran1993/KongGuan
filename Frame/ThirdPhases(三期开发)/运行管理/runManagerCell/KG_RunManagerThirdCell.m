@@ -81,7 +81,8 @@
     [self.runReprtView removeFromSuperview];
     self.runReprtView = nil;
     self.runReprtView =  [[UIView alloc]init];
-    
+    [_runReportTableView removeFromSuperview];
+    _runReportTableView = nil;
     [self addSubview:self.runReprtView];
     NSInteger tableHeight = 80 *self.stationRunReportArr.count;
     [self.runReprtView mas_makeConstraints:^(MASConstraintMaker *make) {

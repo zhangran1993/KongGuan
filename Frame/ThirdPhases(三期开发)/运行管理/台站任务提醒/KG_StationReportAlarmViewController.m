@@ -179,8 +179,8 @@
 
 - (UIView *)noDataView {
     
-    if (_noDataView) {
-        _noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    if (_noDataView == nil) {
+        _noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, NAVIGATIONBAR_HEIGHT, self.view.frame.size.width, self.view.frame.size.height)];
         UIImageView *iconImage = [[UIImageView alloc]init];
         iconImage.image = [UIImage imageNamed:@"station_ReportNoData@2x"];
         [_noDataView addSubview:iconImage];

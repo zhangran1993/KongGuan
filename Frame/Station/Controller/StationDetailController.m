@@ -31,6 +31,7 @@
 #import "KG_ZhiTaiStationModel.h"
 #import "LoginViewController.h"
 #import "UIViewController+YQSlideMenu.h"
+#import <UIButton+WebCache.h>
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
@@ -95,7 +96,7 @@
 @property(strong,nonatomic)   UITableView *stationTabView;
 
 @property (nonatomic, strong)  UIView *tableHeadView;
-@property (strong, nonatomic) UIImageView *leftIconImage;
+@property (strong, nonatomic) UIButton *leftIconImage;
 @end
 
 @implementation StationDetailController
@@ -241,24 +242,21 @@
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    self.leftIconImage = [[UIImageView alloc] init];
-    self.leftIconImage.image = IMAGE(@"head_icon");
-    self.leftIconImage.layer.cornerRadius = 13.f;
-//    self.leftIconImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.leftIconImage = [[UIButton alloc] init];
+    
+    [self.navigationView addSubview:self.leftIconImage];
+    self.leftIconImage.layer.cornerRadius =17.f;
     self.leftIconImage.layer.masksToBounds = YES;
-    [backBtn addSubview:self.leftIconImage];
-    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@26);
-        make.centerX.equalTo(backBtn.mas_centerX);
-        make.centerY.equalTo(backBtn.mas_centerY);
-    }];
+    [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
+    [self.leftIconImage addTarget:self action:@selector(leftCenterButtonClick) forControlEvents:UIControlEventTouchUpInside];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        
     }else {
         
-        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
+        [self.leftIconImage setImage: [UIImage imageNamed:@"head_icon"] forState:UIControlStateNormal];
     }
     
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -285,6 +283,11 @@
         make.centerY.equalTo(backBtn.mas_centerY);
         make.height.equalTo(@22);
         make.right.equalTo(self.navigationView.mas_right).offset(-16);
+    }];
+    [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.navigationView.mas_left).offset(16);
+        make.width.height.equalTo(@34);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
     //单台站不可点击
     self.rightButton.userInteractionEnabled = NO;
@@ -475,7 +478,7 @@
     [self.runView addSubview:powerLalbel];
     powerLalbel.text = @"动力监测";
     powerLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-    powerLalbel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    powerLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     powerLalbel.numberOfLines = 1;
     powerLalbel.textAlignment = NSTextAlignmentLeft;
     
@@ -552,10 +555,10 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
         
-        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_icon"]];
     }else {
         
-        self.leftIconImage.image = [UIImage imageNamed:@"head_icon"];
+        [self.leftIconImage setImage:[UIImage imageNamed:@"head_icon"] forState:UIControlStateNormal] ;
     }
 }
 
@@ -2671,6 +2674,15 @@
 }
 
 - (void)pushNextStep:(NSString *)string withDataDic:(NSDictionary *)dic {
+    
+    if([safeString(dic[@"name"]) isEqualToString:@"视频"]){
+        
+        StationVideoListController  *StationVideo = [[StationVideoListController alloc] init];
+        StationVideo.station_code = _station_code;
+        StationVideo.station_name = _station_name;
+        [self.navigationController pushViewController:StationVideo animated:YES];
+        return;
+    }
     NSMutableArray *listArr = [NSMutableArray array];
     [listArr removeAllObjects];
     if ([string isEqualToString:@"sec"]) {
