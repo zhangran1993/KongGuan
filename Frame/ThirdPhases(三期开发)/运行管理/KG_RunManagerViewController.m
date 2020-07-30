@@ -78,7 +78,11 @@
     self.navigationController.delegate =self;
     //设置背景色，隐藏导航条
     [[UITabBar appearance] setTranslucent:NO];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
@@ -160,7 +164,11 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     NSLog(@"StationDetailController viewWillAppear");
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"station"]){

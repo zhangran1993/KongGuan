@@ -42,7 +42,11 @@
     self.pageSize = 10;
     self.currentDic = [UserManager shareUserManager].currentStationDic;
     [self getRunReportDetailData];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
  
     [self createNaviTopView];

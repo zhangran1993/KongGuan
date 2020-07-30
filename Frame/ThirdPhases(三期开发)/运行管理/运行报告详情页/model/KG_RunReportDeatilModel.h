@@ -12,20 +12,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_RunReportDeatilModel : NSObject
 
+@property (nonatomic ,strong) NSDictionary    *info;
 
-@property (nonatomic ,strong) NSDictionary *info;
+@property (nonatomic ,strong) NSArray         *changeShifts;
 
-@property (nonatomic ,strong) NSArray *changeShifts;
+@property (nonatomic ,strong) NSArray         *runPrompt;
 
-@property (nonatomic ,strong) NSArray *runPrompt;
+@property (nonatomic ,strong) NSArray         *autoAlarm;
 
-@property (nonatomic ,strong) NSArray *autoAlarm;
+@property (nonatomic ,strong) NSArray         *manualAlarm;
 
-@property (nonatomic ,strong) NSArray *manualAlarm;
+@property (nonatomic ,strong) NSArray         *changeManagement;
 
-@property (nonatomic ,strong) NSArray *changeManagement;
-
-@property (nonatomic ,strong) NSArray *otherAlarm;
+@property (nonatomic ,strong) NSArray         *otherAlarm;
 
 @end
 

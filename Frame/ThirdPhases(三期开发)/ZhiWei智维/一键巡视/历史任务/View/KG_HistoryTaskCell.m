@@ -75,11 +75,12 @@
     self.roomLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
-    self.roomLabel.numberOfLines = 1;
+    self.roomLabel.numberOfLines = 2;
+    [self.roomLabel sizeToFit];
     self.roomLabel.text = @"雷达机房";
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(8);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.rightView.mas_right).offset(-100);
         make.centerY.equalTo(self.iconImage.mas_centerY);
     }];
     
@@ -101,7 +102,7 @@
     self.statusImage.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:self.statusImage];
     [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.rightView.mas_right).offset(-16);
+        make.right.equalTo(self.rightView.mas_right).offset(0);
         make.width.lessThanOrEqualTo(@100);
         make.centerY.equalTo(self.iconImage.mas_centerY);
     }];

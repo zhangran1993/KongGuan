@@ -41,7 +41,11 @@
     [self createNaviTopView];
     
     
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
     
     self.title = @"修改密码";

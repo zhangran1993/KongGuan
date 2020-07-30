@@ -12,15 +12,16 @@
     
 }
 
-@property (nonatomic,strong) UILabel *titleLabel ;
+@property (nonatomic,strong)    UILabel       *titleLabel ;
 
-@property (nonatomic,strong) UILabel *detailLabel ;
+@property (nonatomic,strong)    UILabel       *detailLabel ;
 
-@property (nonatomic,strong) UIImageView *iconImage;
+@property (nonatomic,strong)    UIImageView   *iconImage;
 
-@property (nonatomic,strong) UILabel *statusLabel;
+@property (nonatomic,strong)    UILabel       *statusLabel;
 
-@property (nonatomic,strong) UILabel *timeLabel;
+@property (nonatomic,strong)    UILabel       *timeLabel;
+
 @end
 @implementation KG_OnsiteInspectionCell
 
@@ -49,7 +50,6 @@
     bgView.layer.cornerRadius = 6;
     bgView.layer.masksToBounds = YES;
     bgView.backgroundColor = [UIColor colorWithHexString:@"#F5F6F8"];
-    
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.right.equalTo(self.mas_right).offset(-15);
@@ -59,18 +59,13 @@
     
     self.iconImage = [[UIImageView alloc]init];
     [self addSubview:self.iconImage];
-   
-    
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(bgView.mas_right);
         make.top.equalTo(bgView.mas_top).offset(2);
         
         make.height.equalTo(@26);
     }];
-    
-    
-    
-    
+
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -83,8 +78,6 @@
         make.top.equalTo(self.mas_top).offset(7);
         make.height.equalTo(@20);
     }];
-    
-    
    
     self.timeLabel = [[UILabel alloc]init];
     [self addSubview:self.timeLabel];
@@ -126,13 +119,11 @@
     _dic = dic;
     self.titleLabel.text =safeString(dic[@"engineRoomName"]);
     self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dic[@"fingerPrintStatus"])]]];
-
     self.timeLabel.text = [NSString stringWithFormat:@"打卡时间:%@", [self timestampToTimeStr:safeString(dic[@"punchTime"])]];
     if (safeString(dic[@"punchTime"]).length == 0) {
         self.timeLabel.text = [NSString stringWithFormat:@"打卡时间:-"];
     }
 }
-
 
 - (NSString *)getTaskStatus :(NSString *)status {
     NSString *ss = @"已完成";

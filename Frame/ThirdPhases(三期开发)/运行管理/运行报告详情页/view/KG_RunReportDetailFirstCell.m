@@ -10,15 +10,16 @@
 
 @interface KG_RunReportDetailFirstCell ()
 
-@property (nonatomic,strong) UILabel *titleLabel ;
+@property (nonatomic,strong) UILabel      *titleLabel ;
 
-@property (nonatomic,strong) UILabel *detailLabel ;
+@property (nonatomic,strong) UILabel      *detailLabel ;
 
-@property (nonatomic,strong) UIImageView *iconImage;
+@property (nonatomic,strong) UIImageView  *iconImage;
 
-@property (nonatomic,strong) UILabel *statusLabel;
+@property (nonatomic,strong) UILabel      *statusLabel;
 
-@property (nonatomic,strong) UILabel *timeLabel;
+@property (nonatomic,strong) UILabel      *timeLabel;
+
 @end
 
 @implementation KG_RunReportDetailFirstCell
@@ -56,6 +57,7 @@
         make.top.equalTo(self.mas_top).offset(13);
         make.height.equalTo(@48);
     }];
+    
     self.iconImage = [[UIImageView alloc]init];
     [self addSubview:self.iconImage];
     self.iconImage.layer.cornerRadius =11.f;
@@ -66,7 +68,6 @@
         make.top.equalTo(self.titleLabel.mas_bottom).offset(9);
         make.height.width.equalTo(@22);
     }];
-    
     
     self.statusLabel = [[UILabel alloc]init];
     [self addSubview:self.statusLabel];
@@ -97,7 +98,9 @@
 
 - (void)setModel:(KG_RunReportDeatilModel *)model {
     _model = model;
+    
     NSDictionary *dic = model.info;
+    
     self.titleLabel.text = safeString(dic[@"title"]);
     
     self.statusLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dic[@"submitterName"]),safeString(dic[@"postName"])];

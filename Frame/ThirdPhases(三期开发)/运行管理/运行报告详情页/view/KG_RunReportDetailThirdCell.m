@@ -11,13 +11,9 @@
 @interface  KG_RunReportDetailThirdCell()<UITableViewDelegate,UITableViewDataSource>{
     
 }
-
-
 @property (nonatomic, strong) UITableView *tableView;
 
-
 @property (nonatomic, strong) NSMutableArray *dataArray;
-
 
 @end
 @implementation KG_RunReportDetailThirdCell
@@ -58,10 +54,10 @@
     [tableHeadView addSubview:iconImage];
     iconImage.image = [UIImage imageNamed:@"runReport_deviceTryIcon"];
     [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-           make.left.equalTo(tableHeadView.mas_left).offset(16);
-           make.top.equalTo(tableHeadView.mas_top).offset(21);
-           make.width.height.equalTo(@16);
-       }];
+        make.left.equalTo(tableHeadView.mas_left).offset(16);
+        make.top.equalTo(tableHeadView.mas_top).offset(21);
+        make.width.height.equalTo(@16);
+    }];
     
     UILabel * titleLabel = [[UILabel alloc]init];
     titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -76,7 +72,6 @@
         make.width.equalTo(@250);
         make.height.equalTo(@24);
     }];
-   
 }
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -86,7 +81,6 @@
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = NO;
-        
     }
     return _tableView;
 }
@@ -96,10 +90,6 @@
     }
     return _dataArray;
 }
-
-
-
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -139,7 +129,7 @@
 - (void)setModel:(KG_RunReportDeatilModel *)model {
     _model = model;
     
-     [self.tableView reloadData];
+    [self.tableView reloadData];
 }
 
 

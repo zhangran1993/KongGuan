@@ -19,24 +19,33 @@
 #import "KG_RunReportDetailNinethCell.h"
 @interface KG_RunReportDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) NSMutableArray *dataArray;
+@property (nonatomic,strong)    UITableView             *tableView;
 
+@property (nonatomic,strong)    NSMutableArray          *dataArray;
 
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
-@property (nonatomic, strong)  UIButton  *rightButton;
-@property (nonatomic, strong)  KG_RunReportDeatilModel *dataModel;
-@property (nonatomic, assign) BOOL isFinishStatus;
-@property (nonatomic, copy)  NSString *descriptionStr;
+@property (nonatomic, strong)   UILabel                 *titleLabel;
+
+@property (nonatomic, strong)   UIView                  *navigationView;
+
+@property (nonatomic, strong)   UIButton                *rightButton;
+
+@property (nonatomic, strong)   KG_RunReportDeatilModel *dataModel;
+
+@property (nonatomic, assign)   BOOL                    isFinishStatus;
+
+@property (nonatomic, copy)     NSString                *descriptionStr;
+
 @end
 
 @implementation KG_RunReportDetailViewController
 
-
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
     
 }
@@ -96,7 +105,6 @@
     return _dataArray;
 }
 
-
 - (UIImage*)createImageWithColor: (UIColor*) color{
     CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
@@ -112,9 +120,9 @@
     [self.navigationController popViewControllerAnimated:YES];
     self.isFinishStatus = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
-                  
     //是为了验证，保存成功将按钮置灰
 }
+
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -123,11 +131,9 @@
         _tableView.backgroundColor = self.view.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-        
     }
     return _tableView;
 }
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if ([self.pushType isEqualToString:@"jieban"] ||[self.pushType isEqualToString:@"jiaoban"] || [self.pushType isEqualToString:@"create"]) {
@@ -138,7 +144,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-   
     return 1;
 }
 
@@ -147,7 +152,6 @@
         return 105;
     }else if (indexPath.section == 1) {
         int height = 0;
-        
         NSString *str = safeString(self.dataModel.info[@"autoAlarmContent"]);
         CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
@@ -163,7 +167,6 @@
             
             return 88;
         }
-        
         return height +height1 +88+60 +24;
     }else if (indexPath.section == 2) {
         int height = 0;
@@ -175,19 +178,18 @@
         if(str.length == 0) {
             return 50;
         }
-        
         return height +60 +24;
     }else if (indexPath.section == 3) {
         
         int height = 0;
         NSString *str = safeString(self.dataModel.info[@"otherAlarmContent"]);
-          
-            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-            NSLog(@"%f",fontRect.size.height);
-            height += fontRect.size.height;
-       if(str.length == 0) {
-           return 50;
-       }
+        
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        height += fontRect.size.height;
+        if(str.length == 0) {
+            return 50;
+        }
         return height +24 +60;
     }else if (indexPath.section == 4) {
         
@@ -204,42 +206,34 @@
         if (self.dataModel.info.count >0) {
             NSString *json1=safeString(self.dataModel.info[@"fileUrl"]) ;
             if (json1.length >0) {
-                 NSData *jsonData = [json1 dataUsingEncoding:NSUTF8StringEncoding];
-                           NSError *err;
-                           NSArray *arr = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                          options:NSJSONReadingMutableContainers
-                                                                            error:&err];
-                           
-                           for (NSDictionary *dic in arr) {
-                               NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"name"])];
-                               CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-                               NSLog(@"%f",fontRect.size.height);
-                               height += fontRect.size.height;
-                           }
-                            return height +arr.count *24 +60;
+                NSData *jsonData = [json1 dataUsingEncoding:NSUTF8StringEncoding];
+                NSError *err;
+                NSArray *arr = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&err];
+                
+                for (NSDictionary *dic in arr) {
+                    NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"name"])];
+                    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+                    NSLog(@"%f",fontRect.size.height);
+                    height += fontRect.size.height;
+                }
+                return height +arr.count *24 +60;
             }
-           
         }
-       
-      
-       
         return 60;
     }else if (indexPath.section == 6) {
-        
-        
         NSString *str = safeString(self.dataModel.info[@"changeContent"]);
         
         if(str.length == 0) {
             return 0;
         }
-        
-        
         return 95;
     }else if (indexPath.section == 7) {
-       
+        
         return self.dataModel.changeShifts.count *80 +60;
     }else if (indexPath.section == 8) {
-       
+        
         return 86;
     }
     return 81;
@@ -254,7 +248,7 @@
         }
         cell.model = self.dataModel;
         return cell;
-  
+        
     }else if (indexPath.section == 1) {
         KG_RunReportDetailSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailSecondCell"];
         if (cell == nil) {
@@ -277,7 +271,7 @@
             cell = [[KG_RunReportDetailFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailFourthCell"];
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
-         cell.model = self.dataModel;
+        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 4) {
         KG_RunReportDetailFifthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailFifthCell"];
@@ -285,7 +279,7 @@
             cell = [[KG_RunReportDetailFifthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportDetailFifthCell"];
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         }
-         cell.model = self.dataModel;
+        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 5) {
         KG_RunReportDetailSixthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailSixthCell"];
@@ -305,7 +299,7 @@
             self.descriptionStr = safeString(textStr);
         };
         cell.pushType = self.pushType;
-//        cell.model = self.dataModel;
+        //        cell.model = self.dataModel;
         return cell;
     }else if (indexPath.section == 7) {
         KG_RunReportDetailEighthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportDetailEighthCell"];
@@ -342,16 +336,12 @@
                     cell.centerBtn.enabled = YES;
                 }
             }
-            
-            
-            
-            
         }else if ([self.pushType isEqualToString:@"jiaoban"]) {
             [cell.centerBtn setTitle:@"交班" forState:UIControlStateNormal];
             NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
             if ([userdefaults objectForKey:@"name"]) {
                 NSString *userName = [userdefaults objectForKey:@"name"];
-            
+                
                 int num = 0;
                 for (NSDictionary *dic in self.dataModel.changeShifts) {
                     if ([safeString(dic[@"handoverName"]) isEqualToString:safeString(userName)] &&safeString(dic[@"handoverName"]).length >0 &&safeString(userName).length >0) {
@@ -366,7 +356,7 @@
                     cell.centerBtn.enabled = YES;
                 }
             }
-           
+            
         }else {
             [cell.centerBtn setTitle:@"生成运行报告" forState:UIControlStateNormal];
         }
@@ -430,35 +420,29 @@
             
             return ;
         }
-        
+
         NSLog(@"请求成功");
         if ([result[@"value"] boolValue]) {
             [MBProgressHUD showSuccess:@"接班成功"];
             self.isFinishStatus = YES;
             [self queryData];
         }
-//        [self.navigationController popViewControllerAnimated:YES];
+        //        [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
-               
+        
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
-        
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
-          
 }
 //交班
 - (void)jiaobanMethod{
-    
-    
     int num  =0;
-    
     for (NSDictionary *dd in self.dataModel.changeShifts) {
         if (safeString(dd[@"successorName"]).length>0) {
             num ++;
         }
-        
     }
     if (num == 0) {
         [FrameBaseRequest showMessage:@"请先接班再交班"];
@@ -470,29 +454,28 @@
         rId = self.dataDic[@"id"];
     }
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/shiftHandover/%@/%@",safeString(self.dataDic[@"post"]),rId]];
-   
+    
     [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
-           NSInteger code = [[result objectForKey:@"errCode"] intValue];
-           if(code != 0){
-               
-               return ;
-           }
-        if ([result[@"value"] boolValue]) {
-           [FrameBaseRequest showMessage:@"交班成功"];
-            self.isFinishStatus = YES;
-           [self queryData];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
         }
-//        [self.navigationController popViewControllerAnimated:YES];
-         NSLog(@"请求成功");
-         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        if ([result[@"value"] boolValue]) {
+            [FrameBaseRequest showMessage:@"交班成功"];
+            self.isFinishStatus = YES;
+            [self queryData];
+        }
+        //        [self.navigationController popViewControllerAnimated:YES];
+        NSLog(@"请求成功");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         
-       }  failure:^(NSError *error) {
-           NSLog(@"请求失败 原因：%@",error);
-           
-           [FrameBaseRequest showMessage:@"网络链接失败"];
-           return ;
-       } ];
-       
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
     
 }
 //生成运行报告
@@ -507,18 +490,17 @@
         params[@"title"] = title;
     }
     
-   
     params[@"reportRange"] =safeString(self.dataDic[@"stationCode"]);
     params[@"startTime"] =[self CurTimeMilSec:safeString(self.dataDic[@"time"])] ;
     params[@"endTime"] = [self CurTimeMilSec:safeString(self.endTime)];
     params[@"post"] = safeString(self.dataDic[@"post"]);
     params[@"submitter"] = safeString(self.dataModel.info[@"operatorId"]);
     params[@"id"] = safeString(self.dataDic[@"id"]);
-   
+    
     if (self.dataModel.info.count >0) {
         NSString *json1=safeString(self.dataModel.info[@"fileUrl"]) ;
         if (json1.length >0) {
-             params[@"fileUrl"] = safeString(self.dataModel.info[@"fileUrl"]);
+            params[@"fileUrl"] = safeString(self.dataModel.info[@"fileUrl"]);
         }
         
     }
@@ -527,7 +509,6 @@
     }else {
         params[@"description"] = safeString(self.dataModel.info[@"description"]);            //其他补充内容
     }
-    
     
     params[@"promptContent"] = safeString(self.dataModel.info[@"promptContent"]); //下日运行提示
     if (safeString(self.dataModel.info[@"autoAlarmContent"]).length) {
@@ -548,7 +529,6 @@
         params[@"changeContent"] = @"";
     }
     
-    
     if (safeString(self.dataModel.info[@"manualAlarmContent"]).length) {
         params[@"manualAlarmContent"] = safeString(self.dataModel.info[@"manualAlarmContent"]); //设备发生问题及处理情况中的运行事件
     }else {
@@ -561,14 +541,11 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-      
         [FrameBaseRequest showMessage:@"生成报告成功"];
         self.isFinishStatus = YES;
-//        [self.navigationController popViewControllerAnimated:YES];
+        //        [self.navigationController popViewControllerAnimated:YES];
         [self queryData];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
-        
-             
         
     } failure:^(NSError *error)  {
         
@@ -576,7 +553,7 @@
         return ;
     }];
     
-
+    
 }
 -(NSString *) CurTimeMilSec:(NSString*)pstrTime
 {
@@ -587,7 +564,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
- 
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -656,21 +633,12 @@
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
-   
-    
-   
-    
-  
-    
     
 }
 
-
 - (void)backButtonClick:(UIButton *)button {
-   
-     [self.navigationController popViewControllerAnimated:YES];
     
-    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /** 标题栏 **/
 - (UILabel *)titleLabel {

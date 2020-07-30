@@ -11,15 +11,12 @@
 @interface  KG_RunReportDetailSecondCell()<UITableViewDelegate,UITableViewDataSource>{
     
 }
-
-
 @property (nonatomic, strong) UITableView *tableView;
-
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
-
 @end
+
 @implementation KG_RunReportDetailSecondCell
 
 - (void)awakeFromNib {
@@ -43,7 +40,6 @@
 - (void)createSubviewsView {
     
     [self addSubview:self.tableView];
-    
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left);
@@ -75,7 +71,6 @@
         make.width.equalTo(@250);
         make.height.equalTo(@24);
     }];
- 
     [self.tableView reloadData];
 }
 - (UITableView *)tableView {
@@ -86,7 +81,6 @@
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = NO;
-        
     }
     return _tableView;
 }
@@ -97,16 +91,14 @@
     return _dataArray;
 }
 
-
-
 #pragma mark - TableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
     return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0 ){
-        
         return 1;
     }else {
         return 1;
@@ -123,8 +115,6 @@
         }
         CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
-        
-        
         return fontRect.size.height +24;
         
     }else {
@@ -136,8 +126,6 @@
         }
         return fontRect.size.height+24;
     }
-//    CGRect fontRect = [dic[@"content"] boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-//    NSLog(@"%f",fontRect.size.height);
     return 100;
 }
 
@@ -165,7 +153,6 @@
     
     return 44.f;
 }
-
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     

@@ -58,7 +58,11 @@
     [self createNaviTopView];
        
     [super viewDidLoad];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
     self.navigationItem.title = @"值班信息";
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
@@ -302,7 +306,11 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.translucent = NO;
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
 }
 

@@ -182,7 +182,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
       [self.navigationController setNavigationBarHidden:NO];
     [self createNaviView];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshControlLogSegment" object:self];

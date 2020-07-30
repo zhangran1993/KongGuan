@@ -11,20 +11,24 @@
     
  
 }
-@property (nonatomic, strong) UIButton *zhibanBtn;
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic, strong)  UIButton          *zhibanBtn;
 
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong)  NSMutableArray    *dataArray;
+
+@property (nonatomic, strong)  NSDictionary      *dataDic;
+
+@property (nonatomic, strong)  UITableView       *tableView;
    
-@property (nonatomic, strong) UIButton *bgBtn ;
+@property (nonatomic, strong)  UIButton          *bgBtn ;
 
-@property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong)  UITextField       *textField;
 
-@property (nonatomic, strong) UIView *centerView;
+@property (nonatomic, strong)  UITextView        *textView;
 
-@property (nonatomic, strong) UIView *stationListView;
+@property (nonatomic, strong)  UIView            *centerView;
+
+@property (nonatomic, strong)  UIView            *stationListView;
+
 @end
 @implementation KG_ChooseJiaoJieBanAlertView
 
@@ -36,7 +40,6 @@
         [self.dataArray addObjectsFromArray:condition[@"successInfo"]];
         [self initData];
         [self setupDataSubviews];
-        
     }
     return self;
 }
@@ -150,9 +153,7 @@
         make.centerY.equalTo(zhibanView.mas_centerY);
     }];
     [self.zhibanBtn addTarget:self action:@selector(showStationList) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
+
     UIView *lineView = [[UIView alloc]init];
     lineView.backgroundColor = [UIColor colorWithHexString:@"#E6E8ED"];
     [self.centerView addSubview:lineView];
@@ -176,7 +177,6 @@
         make.width.equalTo(@135);
         make.height.equalTo(@43);
     }];
-    
     
     UIButton *confirmBtn = [[UIButton alloc]init];
     [self.centerView addSubview:confirmBtn];
@@ -228,15 +228,12 @@
 - (void)showStationList {
     self.stationListView = [[UIView alloc]init];
     self.stationListView.backgroundColor = [UIColor whiteColor];
-   
     [self.centerView addSubview:self.stationListView];
-    
     [self.stationListView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(2*30));
         make.top.equalTo(self.centerView.mas_top).offset(90);
         make.left.equalTo(self.centerView.mas_left).offset(16);
         make.right.equalTo(self.centerView.mas_right).offset(-16);
-        
     }];
     [self.centerView mas_updateConstraints:^(MASConstraintMaker *make) {
        make.height.equalTo(@(148 + 2*30));
@@ -251,8 +248,6 @@
         make.right.equalTo(self.stationListView.mas_right);
         make.bottom.equalTo(self.stationListView.mas_bottom);
     }];
-    
-    
 }
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -262,7 +257,6 @@
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = NO;
-        
     }
     return _tableView;
 }
@@ -273,11 +267,9 @@
     return _dataArray;
 }
 
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return   self.dataArray.count;
+    return self.dataArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -286,12 +278,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     }
-   
     NSDictionary *dic = self.dataArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [CommonExtension getWorkType:safeString(dic[@"post"])];
@@ -302,13 +292,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     self.dataDic = self.dataArray[indexPath.row];
-       [self refreshData];
+    [self refreshData];
 }
+
 - (void)refreshData {
     if (self.dataDic.count) {
-        
         [self.zhibanBtn setTitle:[CommonExtension getWorkType:self.dataDic[@"post"]] forState:UIControlStateNormal];
-        
     }
 }
 

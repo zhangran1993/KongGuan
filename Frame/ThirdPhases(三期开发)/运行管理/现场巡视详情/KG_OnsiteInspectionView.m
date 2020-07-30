@@ -10,19 +10,20 @@
 #import "KG_OnsiteInspectionCell.h"
 @interface KG_OnsiteInspectionView()<UITableViewDelegate,UITableViewDataSource>{
     
-  }
-@property (nonatomic, strong) UITableView *tableView;
+}
+@property (nonatomic, strong)  UITableView        *tableView;
 
-@property (nonatomic, strong) NSArray *dataArray;
-   
-@property (nonatomic, strong) UIButton *bgBtn ;
+@property (nonatomic, strong)  NSArray            *dataArray;
 
-@property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong)  UIButton           *bgBtn ;
 
-@property (nonatomic, strong) UIView *centerView;
+@property (nonatomic, strong)  UITextField        *textField;
 
-@property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic, strong)  UITextView         *textView;
+
+@property (nonatomic, strong)  UIView             *centerView;
+
+@property (nonatomic, strong)  NSDictionary       *dataDic;
 
 @end
 @implementation KG_OnsiteInspectionView
@@ -34,7 +35,6 @@
         self.dataDic = condition;
         [self initData];
         [self setupDataSubviews];
-        
     }
     return self;
 }
@@ -70,13 +70,12 @@
         height = 356;
     }
     [self.centerView mas_makeConstraints:^(MASConstraintMaker *make) {
-       
+        
         make.top.equalTo(self.mas_top).offset((SCREEN_HEIGHT -326)/2);
         make.left.equalTo(self.mas_left).offset(20);
         make.right.equalTo(self.mas_right).offset(-20);
         make.height.equalTo(@(height));
     }];
-    
     
     UILabel *titleLabel = [[UILabel alloc]init];
     [self.centerView addSubview:titleLabel];
@@ -117,7 +116,6 @@
         make.height.equalTo(@20);
     }];
     
-    
     UILabel *timeTextLabel = [[UILabel alloc]init];
     [self.centerView addSubview:timeTextLabel];
     timeTextLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"patrolIntervalTime"])];
@@ -132,10 +130,6 @@
         
         make.height.equalTo(@20);
     }];
-      
-    
-    
-    
     
     UIImageView *shuImage1 = [[UIImageView alloc]init];
     [self.centerView addSubview:shuImage1];
@@ -162,7 +156,6 @@
         make.height.equalTo(@20);
     }];
     
-    
     UILabel *nameTextLabel = [[UILabel alloc]init];
     [self.centerView addSubview:nameTextLabel];
     nameTextLabel.text = safeString(self.dataDic[@"taskName"]);
@@ -177,9 +170,6 @@
         
         make.height.equalTo(@20);
     }];
-    
-    
-    
     
     UIImageView *shuImage2 = [[UIImageView alloc]init];
     [self.centerView addSubview:shuImage2];
@@ -206,7 +196,6 @@
         make.height.equalTo(@20);
     }];
     
-    
     UILabel *peopleTextLabel = [[UILabel alloc]init];
     [self.centerView addSubview:peopleTextLabel];
     peopleTextLabel.text = safeString(self.dataDic[@"leaderName"]);
@@ -221,9 +210,7 @@
         
         make.height.equalTo(@20);
     }];
-    
-    
-    
+
     UIImageView *shuImage3 = [[UIImageView alloc]init];
     [self.centerView addSubview:shuImage3];
     shuImage3.image = [UIImage imageNamed:@"xunshi_shuImage"];
@@ -262,9 +249,6 @@
         
         make.height.equalTo(@20);
     }];
-    
-    
-    
     [self.centerView addSubview:self.tableView];
     NSInteger tableHeight = self.dataArray.count *70;
     if(self.dataArray.count >2) {
@@ -276,13 +260,8 @@
         make.right.equalTo(self.centerView.mas_right);
         make.height.equalTo(@(tableHeight));
     }];
-   
-    
     [self.tableView reloadData];
-    
- 
 }
-
 
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -297,21 +276,17 @@
     return _tableView;
 }
 
-
-
 #pragma mark - TableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return self.dataArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-   
+    
     return   1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-  
     return 60;
 }
 
@@ -324,18 +299,15 @@
     NSDictionary *dic = self.dataArray[indexPath.section];
     cell.dic = dic;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     return cell;
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
 }
 
-
 - (void)buttonClickMethod:(UIButton *)btn {
-     self.hidden = YES;
+    self.hidden = YES;
 }
 
 //将时间戳转换为时间字符串
@@ -368,12 +340,10 @@
     return headView;
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
     return 0.001;
 }
-
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     

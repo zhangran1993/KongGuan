@@ -12,12 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_RunReportDetailViewController : UIViewController
 
-@property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic, strong)     NSDictionary    *dataDic;
 
-@property (nonatomic, copy) NSString * pushType;
+@property (nonatomic, copy)       NSString        *pushType;
 
-@property (nonatomic, strong) NSArray *jiaojiebanArray;
-@property (nonatomic, copy) NSString * endTime;
+@property (nonatomic, strong)     NSArray         *jiaojiebanArray;
+
+@property (nonatomic, copy)       NSString        *endTime;
 @end
 
 NS_ASSUME_NONNULL_END

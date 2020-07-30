@@ -11,10 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_ChooseJiaoJieBanAlertView : UIView
-@property (nonatomic,copy) void(^textString)(NSString *textStr);
-@property (nonatomic,copy) void(^textFieldString)(NSString *textFieldStr);
+
+@property (nonatomic,copy)    void(^textString)(NSString *textStr);
+
+@property (nonatomic,copy)    void(^textFieldString)(NSString *textFieldStr);
 
 @property (nonatomic ,strong) void(^confirmBlockMethod)(NSDictionary *dataDic);
+
 - (instancetype)initWithCondition:(NSDictionary *)condition;
 @end
 

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_OnsiteInspectionCell : UITableViewCell
 
-@property (nonatomic,strong) NSDictionary *dic;
+@property (nonatomic,strong)    NSDictionary      *dic;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -12,22 +12,22 @@
 #import "KG_NewLoginViewController.h"
 @interface KG_LoginSelStationViewController ()<UITableViewDelegate,UITableViewDataSource>
 
+@property (nonatomic,strong)  UILabel         *stationLabel;
 
-@property (nonatomic,strong) UILabel *stationLabel;
+@property (nonatomic,strong)  UILabel         *stationDetailLabel;
 
-@property (nonatomic,strong) UILabel *stationDetailLabel;
+@property (nonatomic,strong)  UILabel         *selLabel;
 
-@property (nonatomic,strong) UILabel *selLabel;
+@property (nonatomic, strong) UIView          *navigationView;
 
-@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic,strong)  UITableView     *tableView;
 
-@property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong)  NSMutableArray  *dataArray;
 
-@property (nonatomic,strong) NSMutableArray *dataArray;
-
-@property (nonatomic,strong) UIButton *selBtn;
+@property (nonatomic,strong)  UIButton        *selBtn;
 
 @property (nonatomic,strong) KG_LoginSelStaionModel *model;
+
 @end
 @implementation KG_LoginSelStationViewController
 
@@ -44,7 +44,11 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     [self.navigationController setNavigationBarHidden:YES];
     self.tabBarController.tabBar.hidden = YES;
     
@@ -56,7 +60,7 @@
 }
 //查询台站数据
 - (void)queryStationData {
-
+    
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/app/stationSelect"]];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         
@@ -65,15 +69,13 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-
         self.dataArray = [KG_LoginSelStaionModel mj_objectArrayWithKeyValuesArray:result[@"value"]];
-        
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([userDefaults objectForKey:@"selStationCode"]) {
-            NSString *sCode = [userDefaults objectForKey:@"selStationCode"];
+        if ([userDefaults objectForKey:@"hasSelStationCode"]) {
+            NSString *sCode = [userDefaults objectForKey:@"hasSelStationCode"];
             for (KG_LoginSelStaionModel *model in self.dataArray) {
                 for (stationListModel *detailModel1 in model.stationList) {
-                    if ([sCode isEqual:detailModel1.stationCode]) {
+                    if ([sCode isEqualToString:detailModel1.stationCode]) {
                         detailModel1.isSelected = YES;
                         self.selLabel.text = [NSString stringWithFormat:@"已选:%@", safeString(detailModel1.stationName)];
                     }else {
@@ -82,13 +84,10 @@
                 }
             }
         }
- 
         [self.tableView reloadData];
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
-        
     }];
 }
 //初始化数据
@@ -99,30 +98,30 @@
 //创建视图
 -(void)setupDataSubviews
 {
-     /** 导航栏 **/
-      self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
-      self.navigationView.backgroundColor = [UIColor clearColor];
-      [self.view addSubview:self.navigationView];
-      
-      /** 返回按钮 **/
-      UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
-      [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-      [self.navigationView addSubview:backBtn];
-      [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-          make.width.height.equalTo(@44);
-          make.bottom.equalTo(self.navigationView.mas_bottom);
-          make.left.equalTo(self.navigationView.mas_left);
-      }];
-      
-      //按钮设置点击范围扩大.实际显示区域为图片的区域
-      UIImageView *leftImage = [[UIImageView alloc] init];
-      leftImage.image = IMAGE(@"back_black");
-      [backBtn addSubview:leftImage];
-      [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
-          make.centerX.equalTo(backBtn.mas_centerX);
-          make.centerY.equalTo(backBtn.mas_centerY);
-      }];
-     
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.bottom.equalTo(self.navigationView.mas_bottom);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+    
     
     self.stationLabel = [[UILabel alloc]init];
     [self.view addSubview:self.stationLabel];
@@ -173,7 +172,7 @@
     lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
     
     [self.view addSubview:self.tableView];
-   
+    
     [self.selBtn = [UIButton alloc]init];
     [self.selBtn setTitle:@"选好了" forState:UIControlStateNormal];
     self.selBtn.titleLabel.font = [UIFont systemFontOfSize:18];
@@ -199,8 +198,6 @@
         make.bottom.equalTo(self.selBtn.mas_top).offset(-35);
     }];
     [self.tableView reloadData];
-       
-       
 }
 //选好了
 - (void)hasSelMethod:(UIButton *)button {
@@ -211,14 +208,12 @@
                 KG_NewLoginViewController *VC= [[KG_NewLoginViewController alloc]init];
                 VC.detailModel = detailModel;
                 [self.navigationController pushViewController:VC animated:YES];
-                
             }
         }
     }
     if (num == 0) {
         [MBProgressHUD show:@"请选择台站" toView:self.view];
     }
-    
 }
 - (void)backButtonClick:(UIButton *)button {
     [self.navigationController popViewControllerAnimated:YES];
@@ -233,11 +228,9 @@
         _tableView.backgroundColor = self.view.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-        
     }
     return _tableView;
 }
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -245,7 +238,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
     KG_LoginSelStaionModel *model = self.dataArray[section];
     if (model.isShouQi) {
         return 0;
@@ -275,20 +267,24 @@
     cell.selectedMethod = ^(stationListModel * _Nonnull detailModel) {
         for (KG_LoginSelStaionModel *model in self.dataArray) {
             for (stationListModel *detailModel1 in model.stationList) {
-                if ([detailModel1 isEqual:detailModel]) {
+                if ([detailModel1.stationCode isEqualToString:detailModel.stationCode]) {
                     detailModel1.isSelected = !detailModel.isSelected;
+                    if (detailModel1.isSelected) {
+                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                        [userDefaults setObject:safeString(detailModel.stationName) forKey:@"hasSelStationName"];
+                        [userDefaults setObject:safeString(detailModel.stationCode) forKey:@"hasSelStationCode"];
+                        [userDefaults synchronize];
+                    }
                 }else {
                     detailModel1.isSelected = NO;
                 }
             }
         }
         if (detailModel.isSelected) {
-             self.selLabel.text = [NSString stringWithFormat:@"已选:%@", safeString(detailModel.stationName)];
+            self.selLabel.text = [NSString stringWithFormat:@"已选:%@", safeString(detailModel.stationName)];
         }else {
             self.selLabel.text = [NSString stringWithFormat:@"已选:"];
         }
-       
-        
         [self.tableView reloadData];
     };
     if (model.stationList.count) {
@@ -298,24 +294,20 @@
             cell.lineView.hidden = NO;
         }
     }
-    
     return cell;
 }
-
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     KG_LoginSelStaionModel *model = self.dataArray[indexPath.section];
-   
     stationListModel *detailModel = model.stationList[indexPath.row];
     for (KG_LoginSelStaionModel *model in self.dataArray) {
         for (stationListModel *detailModel1 in model.stationList) {
-            if ([detailModel1 isEqual:detailModel]) {
+            if ([detailModel1.stationCode isEqualToString:detailModel.stationCode]) {
                 detailModel1.isSelected = !detailModel.isSelected;
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setObject:safeString(detailModel.stationName) forKey:@"selStationName"];
-                [userDefaults setObject:safeString(detailModel.stationCode) forKey:@"selStationCode"];
+                [userDefaults setObject:safeString(detailModel.stationName) forKey:@"hasSelStationName"];
+                [userDefaults setObject:safeString(detailModel.stationCode) forKey:@"hasSelStationCode"];
                 [userDefaults synchronize];
             }else {
                 detailModel1.isSelected = NO;
@@ -327,16 +319,12 @@
     }else {
         self.selLabel.text = [NSString stringWithFormat:@"已选:"];
     }
-    
-   
     [self.tableView reloadData];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
-    
-    
     UILabel *titleLabel = [[UILabel alloc]init];
     [headView addSubview:titleLabel];
     titleLabel.text = @"导航台站";
@@ -363,7 +351,6 @@
         make.top.equalTo(headView.mas_top);
         make.right.equalTo(headView.mas_right);
     }];
-    
     
     UIImageView * statusImageView = [[UIImageView alloc]init];
     [headView addSubview:statusImageView];

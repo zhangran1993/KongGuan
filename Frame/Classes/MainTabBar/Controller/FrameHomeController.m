@@ -155,7 +155,11 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
     self.navigationController.navigationBarHidden = YES;
     [_clusterCaches removeAllObjects];
     for (NSInteger i = 3; i <= 21; i++) {
@@ -435,7 +439,11 @@
     }else if (recognizer.direction == UISwipeGestureRecognizerDirectionDown ) {
         NSLog(@"下滑了");
         
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+        if (@available(iOS 13.0, *)){
+            [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+        }else {
+            [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+        }
         
         
         
@@ -2896,8 +2904,11 @@
         };
         _scrollListView.sliderDown = ^(BOOL isSliderDown) {
             if (isSliderDown) {
-                [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-                
+                if (@available(iOS 13.0, *)){
+                    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+                }else {
+                    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+                }
                 self.bottomAlertView.hidden = NO;
                 [self.scrollListView setHidden:YES];
                 [self.topBgView setHidden:YES];
