@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
 @property (nonatomic, strong) NSDictionary *dataDic;
+
+@property (nonatomic, strong) UIButton *selectBtn;
+@property (nonatomic, strong) UITextView *textView;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -373,7 +373,7 @@
     SimpleDemoView.port = self.videoList[indexPath.row].port;
     SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
     
-    
+    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
     
     [self.navigationController pushViewController:SimpleDemoView animated:YES];
     

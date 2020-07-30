@@ -51,7 +51,7 @@
         make.left.equalTo(self.mas_left).offset(15);
         make.top.equalTo(self.mas_top).offset(11);
         make.height.equalTo(@27);
-        make.width.equalTo(@200);
+        make.width.equalTo(@300);
     }];
     
     
@@ -122,7 +122,7 @@
         make.left.equalTo(self.iconImage.mas_right).offset(14);
         make.top.equalTo(lineImage.mas_bottom).offset(11);
         make.height.equalTo(@21);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.mas_right).offset(-60);
     }];
     self.gaojingImage.image = [UIImage imageNamed:@"gaojing_red"];
     self.gaojingImage = [[UIImageView alloc]init];
@@ -145,7 +145,7 @@
         make.left.equalTo(self.gaojingImage.mas_right).offset(14);
         make.top.equalTo(self.powLabel.mas_bottom).offset(8);
         make.height.equalTo(@24);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.mas_right).offset(-60);
     }];
     
     self.timeLabel = [[UILabel alloc]init];
@@ -220,10 +220,13 @@
 - (void)setModel:(KG_GaoJingDetailModel *)model {
     _model = model;
     NSDictionary *dic = model.info;
+    if(dic.count == 0) {
+        return;
+    }
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(dic[@"stationName"]),safeString(dic[@"engineRoomName"])];
    self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"happenTime"])];
    self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(dic[@"level"])]];
- 
+   self.gaojingImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(dic[@"level"])]];
     NSString *sta = @"未确认";
     if ([safeString(dic[@"status"]) isEqualToString:@"unconfirmed"]) {
         sta = @"未确认";
@@ -241,13 +244,13 @@
     self.powLabel.text = safeString(dic[@"equipmentName"]);
     
     self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-蓝",[CommonExtension getDeviceIcon:safeString(dic[@"equipmentCategory"])]]];
-    if([safeString(dic[@"category"]) isEqualToString:@"navigation"]){
-        if ([safeString(dic[@"type"]) isEqualToString:@"dme"]) {
-            self.iconImage.image =  [UIImage imageNamed:@"导航DME"];
-        }else if ([safeString(dic[@"type"]) isEqualToString:@"dvor"]) {
-            self.iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
-        }
+    
+    if ([safeString(dic[@"equipmentName"]) isEqualToString:@"导航-DME"]) {
+        self.iconImage.image =  [UIImage imageNamed:@"导航DME"];
+    }else if ([safeString(dic[@"equipmentName"]) isEqualToString:@"导航-DVOR"]) {
+        self.iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
     }
+    
     
     
     if(safeString(dic[@"equipmentCategory"]).length == 0){
@@ -340,6 +343,23 @@
         self.confirmMethod();
     }
     
+}
+- (NSString *)getGaoJingImage:(NSString *)level {
+    NSString *levelString = @"0";
+    
+    if ([level isEqualToString:@"0"]) {
+        levelString = @"level_normal";
+    }else if ([level isEqualToString:@"4"]) {
+        levelString = @"gaojing_prompt";
+    }else if ([level isEqualToString:@"3"]) {
+        levelString = @"gaojing_ciyao";
+    }else if ([level isEqualToString:@"2"]) {
+        levelString = @"gaojing_important";
+    }else if ([level isEqualToString:@"1"]) {
+        levelString = @"gaojing_red";
+    }
+    //紧急
+    return levelString;
 }
 
 @end

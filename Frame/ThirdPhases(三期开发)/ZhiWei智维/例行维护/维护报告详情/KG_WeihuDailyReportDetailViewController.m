@@ -58,6 +58,8 @@
 @property (strong, nonatomic)   NSDictionary *xunshiTopDic;
 
 @property (nonatomic, strong)  UIButton * moreBtn;
+
+@property (nonatomic, assign)  BOOL canUpdateOrSubmit;
 @end
 
 @implementation KG_WeihuDailyReportDetailViewController
@@ -67,15 +69,14 @@
     // Do any additional setup after loading the view.
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
     self.listModel = [[KG_XunShiReportDataModel alloc]init];
-    
+    self.canUpdateOrSubmit = YES;
     
     self.radarModel = [[taskDetail alloc]init];
     self.powerModel = [[taskDetail alloc]init];
     self.upsModel = [[taskDetail alloc]init];
     [self createNaviTopView];
     [self createDataView];
-    [self queryReportDetailData];
-    [self getTemplateData];
+    
    
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
@@ -86,6 +87,8 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     self.navigationController.navigationBarHidden = YES;
+    [self queryReportDetailData];
+    [self getTemplateData];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
@@ -225,23 +228,30 @@
     //第三层
     NSInteger thirdHeight = 0;
     NSInteger fourthHeight = 0;
-   
+    
     for (NSDictionary *dic in secondArr) {
         NSArray *thirdArr = dic[@"childrens"];
-        thirdHeight += thirdArr.count *30;
+        
         int num = 0;
         for (NSDictionary *detailArr in thirdArr) {
             if (![detailArr[@"cardDisplay"] boolValue]) {
                NSArray *fourthArr = detailArr[@"childrens"];
-                fourthHeight += fourthArr.count *40;
+                thirdHeight += 40;
+                if (fourthArr.count) {
+                    fourthHeight += [fourthArr count] *40;
+                }
+                
                 num ++;
+                
             }
             
         }
-        if (num== 0 &&thirdArr.count >0) {
-            thirdHeight -=30;
-        }
+//        if (num>0 &&thirdArr.count >0) {
+//            thirdHeight += 30;
+//        }
+      
     }
+    
     totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
     NSLog(@"第一层高度：-----------%ld",(long)firstHeight);
     NSLog(@"第2层高度：-----------%ld",(long)secondHeight);
@@ -279,6 +289,19 @@
 //        }
         cell.moreAction = ^{
             KG_EquipCardViewController *vc = [[KG_EquipCardViewController alloc]init];
+            vc.saveSuccessBlock = ^{
+//                [self.moreBtn removeFromSuperview];
+//                self.moreBtn = nil;
+//                self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//                [self.moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+//                [self.moreBtn setImage:[UIImage imageNamed:@"white_more"] forState:UIControlStateNormal];
+//                [self.navigationView addSubview:self.moreBtn];
+//                [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//                    make.width.height.equalTo(@44);
+//                    make.centerY.equalTo(self.titleLabel.mas_centerY);
+//                    make.right.equalTo(self.navigationView.mas_right).offset(-13);
+//                }];
+            };
             vc.dataDic = self.dataDic;
             vc.listArray = self.equipArr;
             vc.dataModel = self.dataModel;
@@ -400,6 +423,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)moreAction {
+    if(!self.canUpdateOrSubmit) {
+//        [FrameBaseRequest showMessage:@"任务已完成，不能执行此操作"];
+//        return;
+    }
+    [_xunShiHandelView removeFromSuperview];
+    _xunShiHandelView= nil;
     if (_xunShiHandelView== nil) {
         [JSHmainWindow addSubview:self.xunShiHandelView];
         self.xunShiHandelView.didsel = ^(NSString * _Nonnull dataStr) {
@@ -417,7 +446,7 @@
             NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
             if ([userdefaults objectForKey:@"name"]) {
                 NSString *userName = [userdefaults objectForKey:@"name"];
-                if (![leadStr isEqualToString:userName]) {
+                if (![safeString(self.dataDic[@"leaderName"]) isEqualToString:userName]) {
                     [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
                     return;
                 }
@@ -485,7 +514,7 @@
     NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
     if ([userdefaults objectForKey:@"name"]) {
         NSString *userName = [userdefaults objectForKey:@"name"];
-        if (![leadStr isEqualToString:userName]) {
+        if (![safeString(self.dataDic[@"leaderName"]) isEqualToString:userName]) {
             [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
             return;
         }
@@ -558,8 +587,11 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"保存任务成功"];
-         [UserManager shareUserManager].resultDic = nil;
-        
+        [UserManager shareUserManager].resultDic = nil;
+        [UserManager shareUserManager].isChangeTask = NO;
+        [self getLogData];
+        [self queryReportDetailData];
+        [self.tableView reloadData];
         /** 更多按钮 **/
         [self.moreBtn removeFromSuperview];
         self.moreBtn = nil;
@@ -599,7 +631,7 @@
     NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
     if ([userdefaults objectForKey:@"name"]) {
         NSString *userName = [userdefaults objectForKey:@"name"];
-        if (![leadStr isEqualToString:userName]) {
+        if (![safeString(self.dataDic[@"leaderName"]) isEqualToString:userName]) {
             [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
             return;
         }
@@ -671,7 +703,10 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"提交任务成功"];
-        
+        [UserManager shareUserManager].isChangeTask = NO;
+        [self.tableView reloadData];
+        [self getLogData];
+        [self queryReportDetailData];
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -700,15 +735,15 @@
         if ([dic[@"isUpdateEnable"] boolValue]) {
             
         }else {
-            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
-            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-               
-            }]];
-            
-            [self presentViewController:alertContor animated:NO completion:nil];
-            
-            
+//            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
+//            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+//            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+//
+//            }]];
+//
+//            [self presentViewController:alertContor animated:NO completion:nil];
+//
+//
             
         }
         
@@ -772,7 +807,7 @@
         }
         
         [UserManager shareUserManager].remarkDic = remarkDic;
-        [UserManager shareUserManager].resultDic = resultDic;
+        [UserManager shareUserManager].resultDic = nil;
         for (taskDetail *detailModel in self.dataModel.task) {
             if ([detailModel.engineRoomName isEqualToString:@"雷达机房"]) {
                 self.radarModel = detailModel;
@@ -1026,6 +1061,12 @@
             }
            
         }
+        for (NSDictionary *logDic in self.logArr) {
+            if ([safeString(logDic[@"content"]) isEqualToString:@"提交"]) {
+                self.canUpdateOrSubmit = NO;
+                break;
+            }
+        }
         [self.tableView reloadData];
         
         
@@ -1043,6 +1084,9 @@
 -(NSString *)convertToJsonData:(NSDictionary *)dict
 
 {
+    if (dict.count ==0) {
+        return @"";
+    }
     NSError *error;
 
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];

@@ -51,6 +51,8 @@
 @property (nonatomic, strong)   UIView       *tableHeadView;
 @property (nonatomic, strong)  UIButton * moreBtn;
 @property (nonatomic, copy)  NSString *descriptonStr;
+
+@property (nonatomic, assign)  BOOL canUpdateOrSubmit;
 @end
 
 @implementation KG_XunShiReportDetailViewController
@@ -63,6 +65,7 @@
     self.radarModel = [[taskDetail alloc]init];
     self.powerModel = [[taskDetail alloc]init];
     self.upsModel = [[taskDetail alloc]init];
+    self.canUpdateOrSubmit = YES;
     [self createNaviTopView];
     [self createDataView];
     [self queryReportDetailData];
@@ -257,9 +260,14 @@
         }
        
 //        if (safeString(self.dataModel.taskDescription).length) {
-            cell.taskDescription = safeString(self.dataModel.taskDescription);
-//        }
-        
+        cell.taskDescription = safeString(self.dataModel.taskDescription);
+        if (self.descriptonStr.length) {
+            cell.taskDescription = self.descriptonStr;
+        }
+        //        }
+        cell.textStringChangeBlock = ^(NSString * _Nonnull taskDescription) {
+            self.descriptonStr = taskDescription;
+        };
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
@@ -360,12 +368,19 @@
 }
 - (void)back
 {
+   
     [self.navigationController popViewControllerAnimated:YES];
+    
+
 }
 - (void)moreAction {
+    
+    if(!self.canUpdateOrSubmit) {
+//        [FrameBaseRequest showMessage:@"任务已完成，不能执行此操作"];
+//        return;
+    }
     if (_xunShiHandelView== nil) {
-        
-        
+    
         [JSHmainWindow addSubview:self.xunShiHandelView];
         self.xunShiHandelView.didsel = ^(NSString * _Nonnull dataStr) {
             NSString *leadStr = @"";
@@ -381,7 +396,7 @@
             NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
             if ([userdefaults objectForKey:@"name"]) {
                 NSString *userName = [userdefaults objectForKey:@"name"];
-                if (![leadStr isEqualToString:userName]) {
+                if (![safeString(self.dataDic[@"leaderName"]) isEqualToString:userName]) {
                     [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
                     return;
                 }
@@ -467,7 +482,7 @@
     NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
     if ([userdefaults objectForKey:@"name"]) {
         NSString *userName = [userdefaults objectForKey:@"name"];
-        if (![leadStr isEqualToString:userName]) {
+        if (![safeString(self.dataDic[@"leaderName"]) isEqualToString:userName]) {
             [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
             return;
         }
@@ -540,7 +555,10 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"保存任务成功"];
-         [UserManager shareUserManager].resultDic = nil;
+        [UserManager shareUserManager].isChangeTask = NO;
+        [self getLogData];
+        [self queryReportDetailData];
+        [UserManager shareUserManager].resultDic = nil;
         
         /** 更多按钮 **/
         [self.moreBtn removeFromSuperview];
@@ -581,7 +599,7 @@
     NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
     if ([userdefaults objectForKey:@"name"]) {
         NSString *userName = [userdefaults objectForKey:@"name"];
-        if (![leadStr isEqualToString:userName]) {
+        if (![safeString(self.dataDic[@"leaderName"]) isEqualToString:userName]) {
             [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
             return;
         }
@@ -653,8 +671,11 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"提交任务成功"];
-        
-        
+        [UserManager shareUserManager].isChangeTask = NO;
+        [UserManager shareUserManager].resultDic = nil;
+        [self.tableView reloadData];
+        [self getLogData];
+        [self queryReportDetailData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         
@@ -682,15 +703,15 @@
         if ([dic[@"isUpdateEnable"] boolValue]) {
             
         }else {
-            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
-            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-               
-            }]];
-            
-            [self presentViewController:alertContor animated:NO completion:nil];
-            
-            
+//            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
+//            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+//            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+//
+//            }]];
+//
+//            [self presentViewController:alertContor animated:NO completion:nil];
+//
+//
             
         }
         
@@ -875,6 +896,7 @@
 - (void)refreshData {
     self.xunshiTopView.model = self.dataModel;
     self.xunshiTopView.dataDic =self.dataDic;
+    self.xunshiTopView.leaderString = safeString(self.dataDic[@"leaderName"]);
 //    self.radarView.detailModel = self.radarModel;
 //    self.powerView.detailModel = self.powerModel;
 //    self.upsView.detailModel = self.upsModel;
@@ -1019,6 +1041,13 @@
             }
            
         }
+        
+        for (NSDictionary *logDic in self.logArr) {
+            if ([safeString(logDic[@"content"]) isEqualToString:@"提交"]) {
+                self.canUpdateOrSubmit = NO;
+                break;
+            }
+        }
         [self.tableView reloadData];
         
         
@@ -1036,6 +1065,10 @@
 -(NSString *)convertToJsonData:(NSDictionary *)dict
 
 {
+    
+    if (dict.count ==0) {
+        return @"";
+    }
     NSError *error;
 
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];

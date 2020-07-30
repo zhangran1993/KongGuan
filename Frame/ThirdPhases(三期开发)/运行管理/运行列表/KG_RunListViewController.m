@@ -116,7 +116,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.section];
     NSString *str = [NSString stringWithFormat:@"%@",safeString(dataDic[@"title"])];
-    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 32-32, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 32-32, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
     if(fontRect.size.height >17) {
       return 81 +20;
     }
@@ -253,10 +253,10 @@
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcRunReport/%d/%d",self.pageNum,self.pageSize]];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if([userDefaults objectForKey:@"station"]){
-        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
-    }
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    if([userDefaults objectForKey:@"station"]){
+//        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
+//    }
     params[@"title"] = @"";
     params[@"time"] = @"";
     
@@ -288,13 +288,14 @@
    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"station"]){
-        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
+//        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
     }
     params[@"title"] = @"";
     params[@"time"] = @"";
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [weakSelf.tableView.mj_footer endRefreshing];
         if(code != 0){
             
             return ;

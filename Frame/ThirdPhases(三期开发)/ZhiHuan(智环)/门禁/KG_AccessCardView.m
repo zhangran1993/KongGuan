@@ -164,7 +164,7 @@
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(6);
         make.top.equalTo(self.topView.mas_top).offset(24);
-        make.width.equalTo(@120);
+        make.right.equalTo(self.topView.mas_right).offset(0);
         make.height.equalTo(@21);
     }];
     
@@ -382,7 +382,7 @@
     
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",self.level]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",self.num];
-    if([self.num intValue]==0) {
+    if([self.level intValue]==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;
@@ -462,7 +462,7 @@
             self.gaojingView.powArray = self.dataArray;
         }
     }
-    if(![safeString(self.dataDic[@"alarmStatus"])  isEqualToString:@"0"] && safeString(self.dataDic[@"alarmStatus"]).length >0){
+    if([safeString(self.dataDic[@"alarmStatus"])  isEqualToString:@"1"] && safeString(self.dataDic[@"alarmStatus"]).length >0){
         [self.topView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@261);
         }];
@@ -473,7 +473,13 @@
             make.height.equalTo(@80);
             make.top.equalTo(self.bgImage.mas_bottom).offset(10);
         }];
-      
+        //         self.segmentedControl.frame = CGRectMake(17,142+5 +261-202, SCREEN_WIDTH - 34,30);
+        [self.segmentedControl mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo (self.mas_left).offset(17);
+            make.right.equalTo(self.mas_right).offset(-17);
+            make.height.equalTo(@30);
+            make.top.equalTo(self.bgImage.mas_bottom).offset(16+80);
+        }];
     }
   
 }
@@ -504,7 +510,6 @@
     [self startAnimation];
     
 }
-
 - (UIView *)centerView {
     if (!_centerView) {
         _centerView = [[UIView alloc]initWithFrame:CGRectMake(16, 0, SCREEN_WIDTH -32, 80)];
@@ -516,10 +521,10 @@
         [_centerView addSubview:self.centerImageView];
         self.centerImageView.image = [UIImage imageNamed:@"alert_urgent"];
         [self.centerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.equalTo(@36);
-            make.height.equalTo(@40);
+            make.width.equalTo(@44);
+            make.height.equalTo(@44);
             make.left.equalTo(_centerView.mas_left).offset(10);
-            make.top.equalTo(_centerView.mas_top).offset(22);
+            make.centerY.equalTo(_centerView.mas_centerY);
         }];
         self.centerGaoJingView = [[KG_CommonGaojingView alloc]init];
         self.centerGaoJingView.dataArray = self.alarmArray;
@@ -530,12 +535,28 @@
             make.top.equalTo(_centerView.mas_top);
             make.right.equalTo(_centerView.mas_right);
         }];
+        UIButton *btn = [[UIButton alloc]init];
+        [_centerView addSubview:btn];
+        [btn addTarget:self action:@selector(buttonGotoDetail) forControlEvents:UIControlEventTouchUpInside];
+        [btn setBackgroundColor:[UIColor clearColor]];
+        [btn setTitle:@"" forState:UIControlStateNormal];
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@80);
+            make.height.equalTo(_centerView.mas_height);
+            make.top.equalTo(_centerView.mas_top);
+            make.right.equalTo(_centerView.mas_right);
+        }];
        
         
     }
     return _centerView;
 }
 
+- (void)buttonGotoDetail {
+    if (self.gotoDetail) {
+        self.gotoDetail();
+    }
+}
 - (void)setAlarmArray:(NSArray *)alarmArray {
     _alarmArray = alarmArray;
     

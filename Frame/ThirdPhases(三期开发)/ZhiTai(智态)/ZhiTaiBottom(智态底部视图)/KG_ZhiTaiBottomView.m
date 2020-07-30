@@ -49,7 +49,8 @@
                                @"stationCode":safeString(self.currDic[@"stationCode"]),
                                @"code":safeString(self.currDic[@"code"]),
                                @"engineRoomCode":safeString(self.currDic[@"engineRoomCode"]),
-                               @"category":safeString(self.currDic[@"category"])
+                               @"category":safeString(self.currDic[@"category"]),
+                               @"isSystemEquipment":[NSNumber numberWithBool:[self.currDic[@"isSystemEquipment"]boolValue]]
                                };
     if (self.clickToDetail) {
         self.clickToDetail(Detail);
@@ -147,6 +148,14 @@
     }];
     if(self.currDic.count) {
         iconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(self.currDic[@"category"])]];
+        if([safeString(self.currDic[@"category"]) isEqualToString:@"navigation"]){
+            if ([safeString(self.currDic[@"name"]) containsString:@"DME"] ||[safeString(self.currDic[@"type"]) containsString:@"dme"]) {
+                iconImage.image =  [UIImage imageNamed:@"导航DME"];
+            }else if ([safeString(self.currDic[@"name"]) containsString:@"DVOR"]
+                      ||[safeString(self.currDic[@"type"]) containsString:@"dvor"]) {
+                iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
+            }
+        }
     }
     
     UILabel *titleLabel = [[UILabel alloc]init];
@@ -199,6 +208,7 @@
     if(self.currDic.count) {
         self.headStatusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(self.currDic[@"alarmLevel"])]];
     }
+   
     self.headNumLabel = [[UILabel alloc]init];
     [tableHeadView addSubview:self.headNumLabel];
     self.headNumLabel.layer.cornerRadius = 5.f;
@@ -206,6 +216,11 @@
     self.headNumLabel.text = @"1";
     if(self.currDic.count) {
            self.headNumLabel.text = safeString(self.currDic[@"alarmNum"]);
+       }
+    if([self.currDic[@"alarmNum"] intValue] ==0) {
+           self.headNumLabel.hidden = YES;
+       }else {
+           self.headNumLabel.hidden = NO;
        }
     self.headNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.headNumLabel.font = [UIFont systemFontOfSize:10];

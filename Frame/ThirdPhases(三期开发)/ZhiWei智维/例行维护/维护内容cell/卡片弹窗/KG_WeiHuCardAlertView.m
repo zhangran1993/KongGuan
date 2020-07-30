@@ -59,7 +59,7 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.showsVerticalScrollIndicator = NO;
-    self.collectionView.scrollEnabled = NO;
+    self.collectionView.scrollEnabled = YES;
     self.collectionView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
    
@@ -96,6 +96,8 @@
         KG_WeiHuCardAlertCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"KG_WeiHuCardAlertCell" forIndexPath:indexPath];
         
         cell.button.tag = indexPath.section;
+        //添加按钮点击事件
+        [cell.button addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
         if (self.curSelDic.count >0) {
             cell.selDic = self.curSelDic;
         }
@@ -110,7 +112,7 @@
         }else {
 
             if (self.dataArray.count ) {
-
+                 
                 if (self.curSelDic.count) {
                     NSArray *arr = self.curSelDic[@"equipmentList"];
                     cell.detailDic = arr[indexPath.row];
@@ -119,10 +121,8 @@
             }
             
         }
-        //添加按钮点击事件
-        [cell.button addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
-
        
+        
 //        cell.buttonBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSDictionary * _Nonnull detailDic, NSInteger tag) {
 //
 //
@@ -186,7 +186,7 @@
 #pragma mark  定义每个UICollectionViewCell的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    return  CGSizeMake(120,24);
+    return  CGSizeMake(120,32);
     
 }
 
@@ -224,7 +224,7 @@
         make.centerX.equalTo(self.mas_centerX);
         make.centerY.equalTo(self.mas_centerY);
         make.width.equalTo(@270);
-        make.height.equalTo(@224);
+        make.height.equalTo(@300);
     }];
 
     
@@ -260,7 +260,7 @@
     }else {
         
     }
-   
+    
     self.listArray = dataArray;
     [self.collectionView reloadData];
 }

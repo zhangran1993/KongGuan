@@ -613,7 +613,7 @@
     self.topStatusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
-    if([totalDic[@"totalNum"] intValue] ==0) {
+    if([totalDic[@"totalLevel"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;

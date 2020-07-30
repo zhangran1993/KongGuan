@@ -467,6 +467,12 @@
         iconString =@"监控";
     }else if([code isEqualToString:@"vhf"]){
         iconString =@"VHF地空通信设备";
+    }else if([code isEqualToString:@"radar"]){
+        iconString =@"场监雷达";
+    }else if([code isEqualToString:@"dme"]){
+        iconString =@"导航DME";
+    }else if([code isEqualToString:@"dvor"]){
+        iconString =@"导航DVOR";
     }
     return iconString;
 }

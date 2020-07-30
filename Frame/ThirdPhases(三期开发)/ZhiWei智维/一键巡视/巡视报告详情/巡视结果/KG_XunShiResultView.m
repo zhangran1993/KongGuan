@@ -111,6 +111,8 @@
             make.height.equalTo(@70);
         }];
     }else {
+        [self.textView removeFromSuperview];
+        self.textView = nil;
         cell.textLabel.hidden = NO;
     }
     

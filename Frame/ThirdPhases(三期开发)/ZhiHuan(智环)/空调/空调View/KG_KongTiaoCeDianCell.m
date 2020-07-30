@@ -102,6 +102,19 @@
     
     self.valueLabel.text = [NSString stringWithFormat:@"%@",safeString(dataDic[@"valueAlias"])];
     
-    
+    for (NSDictionary *arDic in self.alarmArray) {
+        if ([safeString(arDic[@"name"]) containsString:safeString(dataDic[@"name"])]
+            &&[safeString(arDic[@"name"]) containsString:safeString(dataDic[@"valueAlias"])]) {
+            self.titleLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+            self.valueLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+            self.iconImage.backgroundColor = [UIColor colorWithHexString:@"#FB394C"];
+            break;
+        }else {
+            
+            self.titleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+            self.valueLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+            self.iconImage.backgroundColor = [UIColor colorWithHexString:@"#95A8D7"];
+        }
+    }
 }
 @end

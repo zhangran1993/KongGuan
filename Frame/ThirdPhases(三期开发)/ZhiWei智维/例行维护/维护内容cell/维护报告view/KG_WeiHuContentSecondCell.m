@@ -150,7 +150,7 @@
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:self.titleLabel];
-    NSDictionary *dic = self.listArray[section];
+    NSDictionary *dic = self.dataArray[section];
     self.titleLabel.text = safeString(dic[@"equipmentName"]);
     if (safeString(dic[@"equipmentName"]).length == 0) {
         self.titleLabel.text = safeString(dic[@"title"]);
@@ -160,7 +160,7 @@
         make.centerY.equalTo(headView.mas_centerY);
         make.left.equalTo(iconImage.mas_right).offset(8);
         make.height.equalTo(headView.mas_height);
-        make.width.equalTo(@150);
+        make.right.equalTo(headView.mas_right).offset(-20);
     }];
     
     
@@ -179,7 +179,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
-    return 30.f;
+    return 40.f;
 }
 - (void)setSecondString:(NSString *)secondString {
     _secondString = secondString;

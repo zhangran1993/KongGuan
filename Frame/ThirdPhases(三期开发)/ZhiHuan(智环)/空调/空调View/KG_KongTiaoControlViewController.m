@@ -73,7 +73,7 @@
     self.currIndex = 0;
     self.modelString = @"hot";
     self.temValue = 16;
-    self.switchStatus = @"off";
+    self.switchStatus = @"on";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self createScrollView];
     [self createView];
@@ -337,7 +337,18 @@
             [FrameBaseRequest showMessage:@"密码错误"];
         }else if ([str isEqualToString:@"Success Send"]) {
             NSLog(@"设置成功");
-            [FrameBaseRequest showMessage:@"设置成功"];
+            if ([self.modelString isEqualToString:@"switch"]) {
+                if ([self.switchStatus isEqualToString:@"off"]) {
+                    [FrameBaseRequest showMessage:@"关机成功"];
+                }else {
+                    [FrameBaseRequest showMessage:@"开机成功"];
+                    
+                }
+                
+            }else {
+               [FrameBaseRequest showMessage:@"设置成功"];
+            }
+            
         }
         if ([self.switchStatus isEqualToString:@"off"]) {
             self.switchStatus = @"on";
@@ -398,6 +409,7 @@
     if (!_powOnView) {
         _powOnView = [[KG_PowerOnView alloc]init];
         [JSHmainWindow addSubview:self.powOnView];
+        _powOnView.switchStatus = self.switchStatus;
         [self.powOnView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
             make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
@@ -441,13 +453,13 @@
     NSString *name = safeString(_dataDic[@"name"]);
     self.leftIcon.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(_dataDic[@"category"])]];
     
-    if([safeString(_dataDic[@"category"]) isEqualToString:@"navigation"]){
-        if ([safeString(_dataDic[@"type"]) isEqualToString:@"dme"]) {
-            self.leftIcon.image =  [UIImage imageNamed:@"导航DME"];
-        }else if ([safeString(_dataDic[@"type"]) isEqualToString:@"dvor"]) {
-            self.leftIcon.image =  [UIImage imageNamed:@"导航DVOR"];
-        }
-    }
+//    if([safeString(_dataDic[@"category"]) isEqualToString:@"navigation"]){
+//        if ([safeString(_dataDic[@"type"]) isEqualToString:@"dme"]) {
+//            self.leftIcon.image =  [UIImage imageNamed:@"导航DME"];
+//        }else if ([safeString(_dataDic[@"type"]) isEqualToString:@"dvor"]) {
+//            self.leftIcon.image =  [UIImage imageNamed:@"导航DVOR"];
+//        }
+//    }
     if (safeString(dataDic[@"reverseControl"])) {
         [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
         self.confirmBtn.userInteractionEnabled = YES;
@@ -530,7 +542,7 @@
     
     self.powBtn = [[UIButton alloc]init];
     [cell addSubview:self.powBtn];
-    [self.powBtn setImage:[UIImage imageNamed:@"kongtiao_powOff"] forState:UIControlStateNormal];
+    [self.powBtn setImage:[UIImage imageNamed:@"kongtiao_powOn"] forState:UIControlStateNormal];
     [self.powBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@60);
         make.top.equalTo(lineView.mas_bottom).offset(7);
@@ -563,7 +575,7 @@
     
     self.weatherImage  = [[UIImageView alloc]init];
     [cell addSubview:self.weatherImage];
-    self.weatherImage.image = [UIImage imageNamed:@"制热icon"];
+    self.weatherImage.image = [UIImage imageNamed:@"制热 icon"];
     [self.weatherImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@12);
         make.top.equalTo(bgImage.mas_top).offset(60);
@@ -580,7 +592,7 @@
     [self.tempTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@42);
         
-        make.top.equalTo(self.weatherImage.mas_bottom).offset(-10);
+        make.top.equalTo(self.weatherImage.mas_bottom).offset(0);
         make.centerX.equalTo(bgImage.mas_centerX);
     }];
     
@@ -594,7 +606,7 @@
     [tempUnitTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@42);
         make.width.equalTo(@100);
-        make.top.equalTo(self.weatherImage.mas_bottom).offset(-10);
+        make.top.equalTo(self.weatherImage.mas_bottom).offset(0);
         make.left.equalTo(self.tempTitle.mas_right);
     }];
     
@@ -610,7 +622,7 @@
     [self.tempTextTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@14);
         make.width.equalTo(@100);
-        make.top.equalTo(self.tempTitle.mas_bottom).offset(-10);
+        make.top.equalTo(self.tempTitle.mas_bottom).offset(0);
         make.centerX.equalTo(bgImage.mas_centerX);
     }];
     
@@ -692,7 +704,7 @@
     [self.confirmBtn setTitle:@"确认操作" forState:UIControlStateNormal];
     [self.confirmBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F9"]];
     self.confirmBtn.titleLabel.font =[UIFont systemFontOfSize:14];
-    [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#C2CDDE"] forState:UIControlStateNormal];
+    [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#2F5ED1"] forState:UIControlStateNormal];
     [self.confirmBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.mas_left).offset(20);
         make.right.equalTo(cell.mas_right).offset(-21);

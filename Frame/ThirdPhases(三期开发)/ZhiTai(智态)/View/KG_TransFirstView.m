@@ -128,10 +128,10 @@
         
     }
     if(indexPath.section == 1) {
-        if ([safeString(titleString) containsString:@"工作"]) {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-        }else {
+        if ([safeString(titleString) containsString:@"正常关闭"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }
     }
     if (indexPath.section == 2) {
@@ -205,6 +205,9 @@
         
         pangluString = @"告警关闭";
     }else if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"发射机1未关"]){
+        
+        pangluString = @"正常工作";
+    }else if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"未关闭"]){
         
         pangluString = @"正常工作";
     }

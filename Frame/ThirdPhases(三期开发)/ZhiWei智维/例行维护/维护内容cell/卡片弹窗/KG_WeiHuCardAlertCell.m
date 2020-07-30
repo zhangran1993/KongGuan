@@ -35,6 +35,7 @@
     [self.button mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.bottom.equalTo(self);
     }];
+    self.button.titleLabel.numberOfLines = 2;
     self.button.layer.cornerRadius = 6.f;
     self.button.layer.masksToBounds = YES;
     [self.button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -65,7 +66,7 @@
     _detailDic = detailDic;
     [self.button setTitle:safeString(detailDic[@"equipmentName"]) forState:UIControlStateNormal];
     
-    if ([safeString(self.selDetailDic[@"equipmentCode"]) isEqualToString:detailDic[@"equipmentCode"]]) {
+    if ([safeString(self.selDetailDic[@"equipmentName"]) isEqualToString:detailDic[@"equipmentName"]]) {
         [self.button setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
         [self.button setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     }else {

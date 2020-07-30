@@ -121,7 +121,6 @@
     switch ([UserManager shareUserManager].zhiweiSegmentCurIndex) {
         case 0:
             [scrollView setContentOffset:CGPointMake(0, 0)];
-            
             break;
         case 1:
             [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH, 0)];
@@ -149,12 +148,15 @@
     switch (sender.selectedSegmentIndex) {
         case 0:
             [scrollView setContentOffset:CGPointMake(0, 0)];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiFirstData" object:self];
             break;
         case 1:
             [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH, 0)];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiSecondData" object:self];
             break;
         case 2:
             [scrollView setContentOffset:CGPointMake(SCREEN_WIDTH*2, 0)];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiThirdData" object:self];
             break;
         default:
             break;

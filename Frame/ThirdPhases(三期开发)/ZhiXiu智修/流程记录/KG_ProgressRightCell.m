@@ -57,14 +57,17 @@
      self.titleLabel.text = @"应急处理 张三";
      self.titleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
      self.titleLabel.font = [UIFont systemFontOfSize:14];
-     self.titleLabel.numberOfLines = 1;
+     self.titleLabel.numberOfLines = 2;
+     [self.titleLabel sizeToFit];
      self.titleLabel.textAlignment = NSTextAlignmentLeft;
      [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
          make.top.equalTo(self.mas_top);
          make.left.equalTo(self.circleImage.mas_right).offset(6);
-         make.height.equalTo(@20);
+         make.height.mas_greaterThanOrEqualTo(@20);
          make.width.equalTo(@150);
      }];
+    
+  
         
      [self addSubview:self.titleLabel];
     

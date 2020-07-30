@@ -38,6 +38,9 @@
 @property (nonatomic, strong)  UILabel   *titleLabel;
 @property (nonatomic, strong)  UIView    *navigationView;
 @property (nonatomic, strong)  UIButton  *rightButton;
+
+@property (nonatomic, strong)  UIButton *deleteButon;
+@property (nonatomic, strong)  UIButton *yiduButon;
 @end
 
 @implementation PersonalMsgListController
@@ -166,6 +169,7 @@
         [self.tableview.mj_header endRefreshing];
         //[self.tableview.mj_footer endRefreshing];
         //self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
+        
         return ;
     }
     NSString * pageNow = [NSString stringWithFormat:@"/intelligent/api/%@/%ld/%ld",self.type,(long)self.pageNum,(long)self.pageSize];
@@ -212,6 +216,9 @@
         }
         
         
+        
+        
+        
         self.tableview.emptyDataSetDelegate = self;
         [self.tableview reloadData];
         
@@ -223,6 +230,54 @@
             //self.tableview.mj_footer.state = MJRefreshStateNoData;//MJRefreshStateNoMoreData;
         }
         
+        if (self.deleteButon == nil) {
+            
+            self.deleteButon = [UIButton buttonWithType:UIButtonTypeCustom];
+            if(self.msgList.count > 0){
+                self.deleteButon.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
+                [self.deleteButon setImage:[UIImage imageNamed:@"msg_delete"] forState:UIControlStateNormal];
+                [self.deleteButon addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
+            }
+            [self.navigationView addSubview:self.deleteButon];
+            
+        }
+        
+        BOOL isRead = false;
+        for (int i = 0; i< self.msgList.count; i++) {
+            if(self.msgList[i].status != 1){
+                isRead = true;
+            }
+        }
+        if (self.yiduButon == nil) {
+            self.yiduButon  = [UIButton buttonWithType:UIButtonTypeCustom];
+            if( isRead){
+                self.yiduButon.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
+                [self.yiduButon setImage:[UIImage imageNamed:@"msg_read"] forState:UIControlStateNormal];
+                [self.yiduButon addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
+            }
+            [self.navigationView addSubview:self.yiduButon];
+        }
+        [self.deleteButon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.centerY.equalTo(self.titleLabel.mas_centerY);
+            make.right.equalTo(self.navigationView.mas_right).offset(-20);
+        }];
+        [self.yiduButon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.centerY.equalTo(self.titleLabel.mas_centerY);
+            make.right.equalTo(self.deleteButon.mas_right).offset(-40);
+        }];
+        
+        if (!self.hasMore) {
+            [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (self.tableview.mj_footer.state == MJRefreshStateNoMoreData) {
+                [self.tableview.mj_footer resetNoMoreData];
+            }
+        }
+        
+        
         
     } failure:^(NSURLSessionDataTask *error)  {
         self.tableview.emptyDataSetDelegate = self;
@@ -231,10 +286,10 @@
         [self.tableview.mj_footer endRefreshing];
         //self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //            UIViewController *viewCtl = self.navigationController.viewControllers[0];
 //            [self.navigationController popToViewController:viewCtl animated:YES];
 //            return;
 //        }else if(responses.statusCode == 502){
@@ -671,6 +726,10 @@
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
+    
+    
+   
+    
    
 }
 

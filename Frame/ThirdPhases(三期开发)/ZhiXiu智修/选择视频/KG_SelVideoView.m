@@ -65,9 +65,9 @@
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
         flowLayout.minimumLineSpacing = 10;
         flowLayout.minimumInteritemSpacing = 0;
-        
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 31, SCREEN_WIDTH, 80) collectionViewLayout:flowLayout];
-        _collectionView.alwaysBounceVertical = YES;
+        _collectionView.alwaysBounceVertical = NO;
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.contentInset = UIEdgeInsetsMake(0,0,0,0);
         _collectionView.dataSource = self;
@@ -77,7 +77,7 @@
         [_collectionView registerClass:[KG_SelVideoAddCell class] forCellWithReuseIdentifier:@"KG_SelVideoAddCell"];
 
         _collectionView.showsVerticalScrollIndicator = NO;
-        _collectionView.scrollEnabled = NO;
+        _collectionView.scrollEnabled = YES;
         _collectionView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         
     }
@@ -97,6 +97,14 @@
             KG_SelVideoAddCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"KG_SelVideoAddCell" forIndexPath:indexPath];
             WS(weakSelf)
             cell.addVideoMethod = ^{
+                if(self.videoArray != nil) {
+                    if (self.videoArray.count >0) {
+                        if (self.videoArray.count >=3) {
+                            [FrameBaseRequest showMessage:@"最多选择3段视频"];
+                            return ;
+                        }
+                    }
+                }
                 if (self.addVideoMethod) {
                     self.addVideoMethod();
                 }

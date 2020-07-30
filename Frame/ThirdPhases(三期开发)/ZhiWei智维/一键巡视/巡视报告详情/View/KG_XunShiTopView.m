@@ -111,12 +111,16 @@
             cell.titleLabel.text = safeString(self.model.taskRange);
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_locIcon"];
         }else if (indexPath.row == 1){
-            cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskTime)];
-//            if(isSafeDictionary(self.dataDic)) {
-//                if(self.dataDic.count >0){
-//                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
-//                }
-//            }
+            if(isSafeDictionary(self.dataDic)) {
+                if(self.dataDic.count >0){
+                    
+                    cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                }
+            }
+            if(safeString(self.model.taskTime).length) {
+                cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.model.taskTime)];
+                
+            }
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];
@@ -132,14 +136,18 @@
             cell.titleLabel.text = safeString(self.model.taskRange);
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_locIcon"];
         }else if (indexPath.row == 1){
-            cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskTime)];
+            if(isSafeDictionary(self.dataDic)) {
+                if(self.dataDic.count >0){
+                    
+                    cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                }
+            }
+            if(safeString(self.model.taskTime).length) {
+                cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.model.taskTime)];
+                
+            }
             
-//            if(isSafeDictionary(self.dataDic)) {
-//                if(self.dataDic.count >0){
-//                    
-//                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
-//                }
-//            }
+
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];
@@ -151,6 +159,9 @@
             }
         }else if (indexPath.row == 3) {
             cell.titleLabel.text = [NSString stringWithFormat:@"执行负责人：%@",safeString(self.leadStr)];
+            if (self.leaderString.length >0) {
+               cell.titleLabel.text = [NSString stringWithFormat:@"执行负责人：%@",safeString(self.leaderString)];
+            }
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_personIcon"];
         }else if (indexPath.row == 4) {
             
@@ -328,26 +339,47 @@
     _model = model;
     NSString *patrolName = safeString(model.patrolName);
     NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
-    
-    for (NSDictionary *dic in leadArr) {
-        if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
-            self.leadStr = safeString(dic[@"name"]);
-            break;
-        }
+//    if (patrolName.length == 0) {
+//        NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+//        if ([userdefaults objectForKey:@"name"]) {
+//            patrolName = [userdefaults objectForKey:@"name"];
+//            
+//        }
+//        
+//    }
+   
+    [self getLeaderNameData];
+//
+//    for (NSDictionary *dic in leadArr) {
+//        if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
+//            self.leadStr = safeString(dic[@"name"]);
+//            break;
+//        }
+//    }
+//    NSMutableString *ss = [NSMutableString stringWithCapacity:0];
+//    for (NSDictionary *personDic in model.workPersonName) {
+//        NSString *personId = safeString(personDic[@"id"]);
+//        for (NSDictionary *dic in leadArr) {
+//            if ([safeString(dic[@"id"]) isEqualToString:personId]) {
+//               [ss appendString:[NSString stringWithFormat:@"%@ ",safeString(dic[@"name"])]];
+//                break;
+//            }
+//        }
+//
+//    }
+//    self.personStr = ss;
+//    [self.tableView reloadData];
+}
+//将时间戳转换为时间字符串
+- (NSString *)timestampToDayTimeStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
     }
-    NSMutableString *ss = [NSMutableString stringWithCapacity:0];
-    for (NSDictionary *personDic in model.workPersonName) {
-        NSString *personId = safeString(personDic[@"id"]);
-        for (NSDictionary *dic in leadArr) {
-            if ([safeString(dic[@"id"]) isEqualToString:personId]) {
-               [ss appendString:[NSString stringWithFormat:@"%@ ",safeString(dic[@"name"])]];
-                break;
-            }
-        }
-        
-    }
-    self.personStr = ss;
-    [self.tableView reloadData];
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日"] stringFromDate:date];
+//    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+
 }
 
 //将时间戳转换为时间字符串
@@ -402,5 +434,63 @@
     self.shouqiDic = dic;
     [self.tableView reloadData];
     
+}
+//获取执行负责人列表
+- (void)getLeaderNameData {
+    
+//
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/userList"]];
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        [UserManager shareUserManager].leaderNameArray = result[@"value"];
+        NSString *patrolName = safeString(self.model.patrolName);
+//        if (patrolName.length == 0) {
+//            NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+//            if ([userdefaults objectForKey:@"name"]) {
+//                patrolName = [userdefaults objectForKey:@"name"];
+//
+//            }
+//
+//        }
+        NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
+        NSLog(@"完成");
+        for (NSDictionary *dic in leadArr) {
+            if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
+                self.leadStr = safeString(dic[@"name"]);
+                break;
+            }
+        }
+        NSMutableString *ss = [NSMutableString stringWithCapacity:0];
+        for (NSDictionary *personDic in self.model.workPersonName) {
+            NSString *personId = safeString(personDic[@"id"]);
+            for (NSDictionary *dic in leadArr) {
+                if ([safeString(dic[@"id"]) isEqualToString:personId]) {
+                   [ss appendString:[NSString stringWithFormat:@"%@ ",safeString(dic[@"name"])]];
+                    break;
+                }
+            }
+            
+        }
+        self.personStr = ss;
+        [self.tableView reloadData];
+       
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSLog(@"完成");
+        
+    }];
+
+}
+
+- (void)setLeaderString:(NSString *)leaderString {
+    _leaderString = leaderString;
+    
+    [self.tableView reloadData];
 }
 @end

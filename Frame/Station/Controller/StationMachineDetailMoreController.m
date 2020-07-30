@@ -102,10 +102,15 @@
     NSString *code = safeString(_machineDetail[@"name"]);
     
     self.topIconImage.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(_machineDetail[@"category"])]];
-    if([safeString(_machineDetail[@"category"]) isEqualToString:@"navigation"]){
-        if ([safeString(_machineDetail[@"machine_name"]) isEqualToString:@"导航-DME"]) {
+    if([safeString(_machineDetail[@"category"]) isEqualToString:@"navigation"]
+       ){
+        if ([safeString(_machineDetail[@"name"]) containsString:@"DME"]||
+            [safeString(_machineDetail[@"alias"]) containsString:@"导航-DME"] ||
+            [safeString(_machineDetail[@"machine_name"]) containsString:@"导航DME"] ) {
             self.topIconImage.image =  [UIImage imageNamed:@"导航DME"];
-        }else if ([safeString(_machineDetail[@"machine_name"]) isEqualToString:@"导航-DVOR"]) {
+        }else if ([safeString(_machineDetail[@"name"]) containsString:@"DVOR"]||
+                  [safeString(_machineDetail[@"alias"]) containsString:@"导航-DVOR"] ||
+                  [safeString(_machineDetail[@"machine_name"]) containsString:@"导航DVOR"]) {
             self.topIconImage.image =  [UIImage imageNamed:@"导航DVOR"];
         }
     }
@@ -221,13 +226,20 @@
         }
         cell.titleLabel.text = safeString(self.radarList[indexPath.row][@"name"]) ;
         cell.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(self.radarList[indexPath.row][@"valueAlias"]),safeString(self.radarList[indexPath.row][@"unit"])] ;
+        if ([safeString(self.radarList[indexPath.row][@"valueAlias"]) containsString:safeString(self.radarList[indexPath.row][@"unit"])]) {
+            cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(self.radarList[indexPath.row][@"valueAlias"])] ;
+        }
+        if (safeString(self.radarList[indexPath.row][@"unit"]).length == 0) {
+            cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(self.radarList[indexPath.row][@"valueAlias"])] ;
+        }
+        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (safeString(self.radarList[indexPath.row][@"valueAlias"]).length == 0) {
             cell.detailLabel.text = @"--";
         }
         NSArray *arr = self.machineDetail[@"equipmentAlarmInfo"];
         for (NSDictionary *arDic in arr) {
-            if ([safeString(arDic[@"name"]) containsString:safeString(self.radarList[indexPath.row][@"name"])]) {
+            if ([safeString(arDic[@"name"] ) containsString:safeString(self.radarList[indexPath.row][@"name"])] &&[safeString(arDic[@"name"]) containsString:safeString(self.radarList[indexPath.row][@"valueAlias"])]) {
                 cell.titleLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
                 cell.detailLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
                 cell.iconImage.backgroundColor = [UIColor colorWithHexString:@"#FB394C"];

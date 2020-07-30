@@ -84,6 +84,7 @@
     [userDefaults removeObjectForKey:@"userAccount"];
     [userDefaults removeObjectForKey:@"password"];
     [userDefaults removeObjectForKey:@"warningId"];
+    [userDefaults removeObjectForKey:@"zhihuanImage"];
     [UserManager shareUserManager].loginSuccess = NO;
 }
 + (void)showviewLoadView{

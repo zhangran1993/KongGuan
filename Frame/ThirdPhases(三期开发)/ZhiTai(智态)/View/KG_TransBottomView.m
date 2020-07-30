@@ -116,7 +116,7 @@
         }
     }
     if (indexPath.section == 1){
-        
+        cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
         cell.titleLabel.text = [self timestampToTimeStr];
      
     }

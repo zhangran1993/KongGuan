@@ -50,7 +50,31 @@
         make.right.equalTo(self.mas_right);
         make.bottom.equalTo(self.mas_bottom);
     }];
+    UIView *tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 50)];
+    self.tableView.tableHeaderView = tableHeadView;
     
+    UIImageView *iconImage = [[UIImageView alloc]init];
+    [tableHeadView addSubview:iconImage];
+    iconImage.image = [UIImage imageNamed:@"runReport_happenResultIcon"];
+    [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(tableHeadView.mas_left).offset(16);
+        make.top.equalTo(tableHeadView.mas_top).offset(21);
+        make.width.height.equalTo(@16);
+    }];
+    
+    UILabel * titleLabel = [[UILabel alloc]init];
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleLabel.numberOfLines = 0;
+    titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.text = @"设备发生问题及处理情况";
+    [tableHeadView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(iconImage.mas_right).offset(4);
+        make.top.equalTo(tableHeadView.mas_top).offset(16);
+        make.width.equalTo(@250);
+        make.height.equalTo(@24);
+    }];
  
     [self.tableView reloadData];
 }
@@ -94,17 +118,18 @@
     
     if (indexPath.section == 0) {
         NSString *str = self.model.info[@"autoAlarmContent"];
-        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
-        NSLog(@"%f",fontRect.size.height);
-        
         if (safeString(self.model.info[@"autoAlarmContent"]).length== 0) {
             return 0;
         }
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        NSLog(@"%f",fontRect.size.height);
+        
+        
         return fontRect.size.height +24;
         
     }else {
         NSString *str = self.model.info[@"manualAlarmContent"];
-        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         if (safeString(self.model.info[@"manualAlarmContent"]).length== 0) {
             return 0;

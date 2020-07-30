@@ -7,13 +7,15 @@
 //
 
 #import "KG_PowerOnView.h"
-@interface  KG_PowerOnView(){
+@interface  KG_PowerOnView()<UITextViewDelegate>{
     
 }
 @property (nonatomic, strong) UIButton *bgBtn ;
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UITextView *textView;
+
+@property (nonatomic, strong) UILabel *titleLabel;
 @end
 @implementation KG_PowerOnView
 
@@ -71,14 +73,14 @@
         make.bottom.equalTo(centerView.mas_bottom);
     }];
     //
-    UILabel *titleLabel = [[UILabel alloc]init];
-    [centerView addSubview:titleLabel];
-    titleLabel.text = @"开机操作";
-    titleLabel.font = [UIFont systemFontOfSize:14];
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.numberOfLines = 1;
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.titleLabel = [[UILabel alloc]init];
+    [centerView addSubview:self.titleLabel];
+    self.titleLabel.text = @"开机操作";
+    self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    self.titleLabel.numberOfLines = 1;
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(centerView.mas_centerX);
         make.top.equalTo(centerView.mas_top).offset(18);
         make.width.equalTo(@200);
@@ -148,8 +150,9 @@
     [remarkView addSubview:self.textView];
     self.textView.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.height.width.equalTo(remarkView);
+        make.left.right.top.bottom.equalTo(remarkView);
     }];
+    self.textView.delegate = self;
     self.textView.text = @"请输入备注";
     self.textView.backgroundColor =  [UIColor colorWithRed:248/255.0 green:249/255.0 blue:250/255.0 alpha:1.0];
     
@@ -327,6 +330,15 @@
         if (self.textFieldString) {
             self.textFieldString(textField.text);
         }
+    }
+}
+
+- (void)setSwitchStatus:(NSString *)switchStatus {
+    _switchStatus = switchStatus;
+    if ([switchStatus isEqualToString:@"off"]) {
+        self.titleLabel.text = safeString(@"关机操作");
+    }else {
+        self.titleLabel.text = safeString(@"开机操作");
     }
 }
 

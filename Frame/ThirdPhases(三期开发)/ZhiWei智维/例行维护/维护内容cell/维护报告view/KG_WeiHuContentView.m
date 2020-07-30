@@ -172,14 +172,17 @@
     NSInteger fourthHeight = 0;
     
     NSArray *thirdArr = arr;
-    thirdHeight = thirdArr.count *30;
+    
     int num = 0;
     for (NSDictionary *detailArr in thirdArr) {
         
         if (![detailArr[@"cardDisplay"] boolValue]) {
             NSArray *fourthArr = detailArr[@"childrens"];
-            fourthHeight += fourthArr.count *40;
-            
+//            fourthHeight += fourthArr.count *40;
+            thirdHeight += 40;
+            if (fourthArr.count) {
+                fourthHeight += [fourthArr count] *40;
+            }
             
             
             num ++;
@@ -187,17 +190,12 @@
        
         
     }
-    if (num== 0 &&thirdArr.count >0) {
-        if(fourthHeight >=40) {
-            fourthHeight -=40;
-        }
-        if(thirdHeight >=30) {
-            thirdHeight -=30;
-        }
-        
-            
-        
-    }
+//    if (num> 0 &&thirdArr.count >0) {
+//
+//        thirdHeight +=30;
+//
+//
+//    }
     NSLog(@"第5层高度：-----------%ld",(long)thirdHeight);
     NSLog(@"第6层高度：-----------%ld",(long)fourthHeight);
     return thirdHeight +fourthHeight;
@@ -209,7 +207,7 @@
     NSDictionary *dic = [detailModel.childrens firstObject];
     self.topTitle.text = safeString(dic[@"stationName"]) ;
     if (safeString(dic[@"stationName"]).length == 0) {
-        self.topTitle.text = safeString(dic[@"engineRoomName"]) ;
+        self.topTitle.text = [NSString stringWithFormat:@"巡视内容:%@",safeString(dic[@"engineRoomName"])] ;
        
     }
     [self.dataArray removeAllObjects];
@@ -258,13 +256,20 @@
     NSDictionary *dataDic = arr[section];
   
     self.titleLabel.text = safeString(dataDic[@"title"]);
+    if (safeString(dataDic[@"title"]).length == 0) {
+        self.titleLabel.text = safeString(dataDic[@"stationName"]);
+        if (safeString(dataDic[@"stationName"]).length == 0) {
+            self.titleLabel.text = safeString(dataDic[@"engineRoomName"]);
+        }
+    }
+    
     
     
     [self.titleLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(headView.mas_centerY);
         make.left.equalTo(iconImage.mas_right).offset(8);
         make.height.equalTo(headView.mas_height);
-        make.width.equalTo(@150);
+        make.right.equalTo(headView.mas_right).offset(-20);
     }];
     
     

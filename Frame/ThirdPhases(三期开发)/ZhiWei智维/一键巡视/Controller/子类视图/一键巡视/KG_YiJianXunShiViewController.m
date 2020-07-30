@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshZhiWeiFirstData) name:@"refreshZhiWeiFirstData" object:nil];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -59,6 +60,18 @@
     }
 }
 
+- (void)refreshZhiWeiFirstData {
+    [self queryYiJianXunShiData];
+}
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
 
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -155,10 +168,11 @@
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
      paramDic[@"id"] = safeString(dataDic[@"id"]);
         paramDic[@"patrolName"] = safeString(userID);
-       
+       [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -173,7 +187,7 @@
        
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -226,7 +240,9 @@
         return ;
     }
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/oneTouchAxis/%@",safeString(currDic[@"code"]) ]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
@@ -239,7 +255,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-       
+        [MBProgressHUD hideHUD]; 
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         

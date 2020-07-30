@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_EquipCardSecondCell : UITableViewCell
 
+@property (nonatomic,strong) NSString *str;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -66,19 +66,20 @@
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
         flowLayout.minimumLineSpacing = 10;
         flowLayout.minimumInteritemSpacing = 0;
-        
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 31, SCREEN_WIDTH, 80) collectionViewLayout:flowLayout];
-        _collectionView.alwaysBounceVertical = YES;
+        _collectionView.alwaysBounceVertical = NO;
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.contentInset = UIEdgeInsetsMake(0,0,0,0);
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
+        [_collectionView setContentSize: CGSizeMake(SCREEN_WIDTH, 0)];
         _collectionView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_collectionView registerClass:[KG_SelPhotoCollectionViewCell class] forCellWithReuseIdentifier:@"KG_SelPhotoCollectionViewCell"];
         [_collectionView registerClass:[KG_SelPhotoAddCell class] forCellWithReuseIdentifier:@"KG_SelPhotoAddCell"];
 
-        _collectionView.showsVerticalScrollIndicator = NO;
-        _collectionView.scrollEnabled = NO;
+        _collectionView.showsVerticalScrollIndicator = YES;
+        _collectionView.scrollEnabled = YES;
         _collectionView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         
     }
@@ -98,6 +99,15 @@
             KG_SelPhotoAddCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"KG_SelPhotoAddCell" forIndexPath:indexPath];
             WS(weakSelf)
             cell.addMethod = ^{
+                if(self.dataArray != nil) {
+                    if (self.dataArray.count >0) {
+                        if (self.dataArray.count >=5) {
+                            [FrameBaseRequest showMessage:@"最多选择5张照片"];
+                            return ;
+                        }
+                    }
+                }
+               
                 if (self.addMethod) {
                     self.addMethod();
                 }

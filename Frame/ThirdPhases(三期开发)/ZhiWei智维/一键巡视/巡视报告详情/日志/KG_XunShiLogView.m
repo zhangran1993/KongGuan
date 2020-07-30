@@ -119,7 +119,7 @@
         _logTableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _logTableView.delegate = self;
         _logTableView.dataSource = self;
-        _logTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        _logTableView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _logTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _logTableView.scrollEnabled = YES;
         UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 6)];

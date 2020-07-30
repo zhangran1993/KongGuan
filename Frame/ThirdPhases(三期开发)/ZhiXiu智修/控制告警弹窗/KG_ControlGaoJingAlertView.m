@@ -264,6 +264,19 @@
         return;
     }
     
+    
+    BOOL result1 = [self.startTimeStr compare:self.endTimeStr]==NSOrderedDescending;
+    NSLog(@"result1:%d",result1);
+    if (result1==1) {
+       
+        [FrameBaseRequest showMessage:@"结束时间不能早于开始时间"];
+       
+        return;
+    }
+    
+  
+    
+    
     if (self.sureMethod) {
         self.sureMethod();
     }

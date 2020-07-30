@@ -12,7 +12,7 @@
     
     
 }
-@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @end
@@ -64,27 +64,58 @@
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
     for(taskDetail *model in self.dataModel.task){
         for(NSDictionary *dic in model.childrens){
-            if (isSafeDictionary(dic) && [[dic allKeys] containsObject:@"childrens"]) {
+//            if (isSafeDictionary(dic) && [[dic allKeys] containsObject:@"childrens"]) {
                 for (NSDictionary *dataDic in dic[@"childrens"]) {
                     if([safeString(dataDic[@"levelCode"]) isEqualToString:@"2"] &&
                        [safeString(dataDic[@"cardDisplay"]) boolValue]){
                         [arr addObject:dataDic];
                     }
                 }
-            }
+//            }
             
         }
     }
     if (arr.count>0) {
+        [self.dataArray removeAllObjects];
         if (self.curSelDic.count) {
-            for (NSDictionary *dic in arr) {
-                if ([safeString(dic[@"equipmentCode"]) isEqualToString:safeString(self.curSelDetialDic[@"equipmentCode"])]) {
-                    self.dataArray = dic[@"childrens"];
+            
+            NSArray *idArr = self.curSelDetialDic[@"patrolInfoIdList"];
+            for (NSString *ss in idArr) {
+                for (NSDictionary *dic in arr) {
+                    if ([safeString(dic[@"infoId"]) isEqualToString:ss]
+                        ) {
+                        [self.dataArray addObjectsFromArray: dic[@"childrens"]];
+                    }
                 }
             }
+           
         }else {
-             self.dataArray = [arr firstObject][@"childrens"];
+            if (self.listArray.count) {
+                NSArray *detailListarr = [self.listArray firstObject][@"equipmentList"];
+                if (detailListarr.count) {
+                    NSDictionary *detailDic = [detailListarr firstObject];
+                    if (detailDic.count) {
+                        NSArray *idArr = detailDic[@"patrolInfoIdList"];
+                        for (NSString *ss in idArr) {
+                            for (NSDictionary *dic in arr) {
+                                
+                                
+                                if ([safeString(dic[@"infoId"]) isEqualToString:safeString(ss)]) {
+                                    [self.dataArray addObjectsFromArray: dic[@"childrens"]];
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                    
+                }
+            }
+            
+            
         }
+//             self.dataArray = [arr firstObject][@"childrens"];
+       
        
     }
     
@@ -128,4 +159,11 @@
 - (void)createSliderView {
     
 }
+-(NSMutableArray *)dataArray{
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray alloc]init];
+    }
+    return _dataArray;
+}
+
 @end

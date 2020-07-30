@@ -26,6 +26,7 @@
 #import "UIViewController+YQSlideMenu.h"
 #import "KG_SecondFloorViewController.h"
 #import <UIButton+WebCache.h>
+#import "KG_NiTaiTuNoDataView.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -48,6 +49,7 @@
 @property (nonatomic, strong)  KG_ZhiTaiModel *dataModel;
 @property (nonatomic, strong)  KG_ZhiTaiEquipView *equipView;
 
+@property (nonatomic, strong)  KG_NiTaiTuNoDataView *niTaiTuNoDataView;
 @property (nonatomic, strong)  UIScrollView *bgScrollView;
 
 @property (nonatomic, strong) KG_JifangView *jifangView;
@@ -72,6 +74,8 @@
 
 @property (nonatomic, strong)  UIImageView *topImageView;
 @property (strong, nonatomic) UIButton *leftIconImage;
+
+@property (nonatomic, assign) int  scrollHei;
 @end
 
 @implementation KG_ZhiTaiViewController
@@ -105,7 +109,11 @@
     self.bgScrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
     self.bgScrollView.scrollEnabled = YES;
+   
     self.bgScrollView.contentSize = CGSizeMake(0, 600 + 183 +112 + 50 +100 +100);
+    
+    
+    
     [self.view addSubview:self.bgScrollView];
     self.bgScrollView.showsVerticalScrollIndicator = YES;
     self.bgScrollView.showsHorizontalScrollIndicator = YES;
@@ -147,7 +155,7 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-    
+    self.jifangString = @"";
 }
 - (void)createNaviTopView {
     
@@ -305,9 +313,9 @@
     self.equipView = [[KG_ZhiTaiEquipView alloc]init];
     [self.runView addSubview:self.equipView];
     
-    int equipHegiht = 30;
+    int equipHegiht = 40;
     if (self.dataModel.mainEquipmentDetails.count >2) {
-        equipHegiht = 60;
+        equipHegiht = 80;
     }
     [self.equipView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(zhihuanRunLabel.mas_bottom).offset(5);
@@ -356,6 +364,8 @@
     //机房
     if (roomDetail.count == 0) {
 //        [self.bottomBgView removeFromSuperview];
+        self.bgScrollView.contentSize = CGSizeMake(0,0);
+           
         return;
     }
     
@@ -434,6 +444,26 @@
         _sliderView.frame = CGRectMake(sliderX, 22, 6, 6);
         //NSLog(@"selectButton  %f",sliderX);
         [self.sliderBgView insertSubview:_sliderView atIndex:10];
+        NSArray *listArr =self.bottomDic[self.jifangString] ;
+        
+        int he  = (int)[listArr[index][@"subEquipmentList"] count] *40 +40+20;
+        
+        
+        if (he>600) {
+            self.bgScrollView.contentSize = CGSizeMake(0, he + 183 +112 + 50 +100 +100);
+        }else {
+            if ([self.dataModel.stationInfo.code isEqualToString:@"HCDHT"] ) {
+                self.bgScrollView.contentSize = CGSizeMake(0, 600 + 183 +112 + 50 +100 +100);
+            }else {
+                if (he + 183 +112 + 50 +100 +100 <SCREEN_HEIGHT) {
+                    self.bgScrollView.contentSize = CGSizeMake(0,SCREEN_HEIGHT);
+                }else {
+                    self.bgScrollView.contentSize = CGSizeMake(0, he + 183 +112 + 50 +100 +100);
+                }
+                
+            }
+        }
+        
         
     }];
     /*
@@ -456,11 +486,7 @@
         self.navigationView.backgroundColor = [UIColor clearColor];
     }
     
-    NSInteger index = scrollView.contentOffset.x / SCREEN_WIDTH;
-    [self selectButton:index];
-    
-    
- 
+   
     if (scrollView.contentOffset.y <-120) {
         NSLog(@"11111111%f",scrollView.contentOffset.y);
         KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
@@ -479,7 +505,14 @@
         
         [self.navigationController pushViewController:vc animated:NO];
     }
-
+   
+    if(scrollView.contentOffset.y == 0) {
+        NSInteger index = scrollView.contentOffset.x / SCREEN_WIDTH;
+        [self selectButton:index];
+    }
+    
+    
+    
 
 }
 
@@ -655,10 +688,22 @@
 
 - (void)initOtherController {
     NSArray *listArr =self.bottomDic[self.jifangString] ;
+    if(listArr.count == 0) {
+        [self.bottomBgView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        return;
+    }
+    self.scrollHei =0;
+    for (int i = 0; i <listArr.count; i++) {
+        
+        int he  = (int)[listArr[i][@"subEquipmentList"] count] *40 +40+20;
+        if (he >self.scrollHei) {
+            self.scrollHei = he;
+        }
+    }
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     NSLog(@"SCREEN_HEIGHT %f",SCREEN_HEIGHT);
     NSLog(@"HEIGHT_SCREEN %f",HEIGHT_SCREEN);
-    scrollView.frame = CGRectMake(0, 51, SCREEN_WIDTH,600);
+    scrollView.frame = CGRectMake(0, 51, SCREEN_WIDTH,self.scrollHei +60);
     scrollView.delegate = self;
     scrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     scrollView.pagingEnabled = YES;
@@ -672,8 +717,12 @@
     for (int i = 0; i <listArr.count; i++) {
         KG_ZhiTaiBottomView *viewcon = [[KG_ZhiTaiBottomView alloc] init];
         viewcon.secArray = listArr[i][@"subEquipmentList"];
-        viewcon.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH-32, 600);
+        int hh = (int)[listArr[i][@"subEquipmentList"] count] *40 +40+20;
+       
+        viewcon.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH-32, hh+60);
         viewcon.titleString =safeString(listArr[i][@"name"]) ;
+        NSArray *listArr =self.bottomDic[self.jifangString] ;
+        
         NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
         viewcon.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         viewcon.currDic = listArr[i];
@@ -688,8 +737,9 @@
             StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
             StationMachine.station_name = safeString(dataDic[@"stationName"]);;
             StationMachine.station_code = safeString(currDic[@"code"]);
-            StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
-            
+            StationMachine.engine_room_code = safeString(dataDic[@"code"]);
+            StationMachine.isSystemEquipment = [dataDic[@"isSystemEquipment"] boolValue];
+            StationMachine.isFromZhiTai = YES;
             [self.navigationController pushViewController:StationMachine animated:YES];
         };
         
@@ -781,7 +831,10 @@
 - (void)getBottomArrayData {
     [self.bottomDic removeAllObjects];
     if (self.dataModel.roomDetails.count == 0) {
+        
+        [self.bottomBgView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         return;
+        
     }
     NSArray *array = self.dataModel.roomDetails[self.currIndex][@"equipmentInfo"];
     
@@ -806,8 +859,46 @@
     
     self.jifangView.dataDic = self.bottomDic;
     if (self.jifangString.length == 0 &&self.bottomDic.count) {
-        self.jifangString = [[self.bottomDic allKeys] firstObject];
+        NSArray *jifangArr = [self.bottomDic allKeys];
+        int num = 0;
+        if (jifangArr.count) {
+            for (NSString *ss in jifangArr) {
+                if ([ss isEqualToString:self.jifangString]) {
+                    num ++;
+                }
+            }
+        }
+        if (num == 0) {
+            self.jifangString = [[self.bottomDic allKeys] firstObject];
+        }
+        
     }
+    NSArray *listArr =self.bottomDic[self.jifangString] ;
+    if(listArr.count) {
+        int he  = (int)[[listArr firstObject][@"subEquipmentList"] count] *40 +40+20;
+        
+        
+        if (he>600) {
+            self.bgScrollView.contentSize = CGSizeMake(0, he + 183 +112 + 50 +100 +100);
+        }else {
+            if ([self.dataModel.stationInfo.code isEqualToString:@"HCDHT"] ) {
+                self.bgScrollView.contentSize = CGSizeMake(0, 600 + 183 +112 + 50 +100 +100);
+            }else {
+                if (he + 183 +112 + 50 +100 +100 <SCREEN_HEIGHT) {
+                    self.bgScrollView.contentSize = CGSizeMake(0,SCREEN_HEIGHT);
+                }else {
+                    self.bgScrollView.contentSize = CGSizeMake(0, he + 183 +112 + 50 +100 +100);
+                }
+            }
+           
+        }
+    }
+    
+    
+    
+           
+    
+    
     self.jifangView.didsel = ^(NSString *str) {
         
         
@@ -828,7 +919,18 @@
     [_sliderView removeFromSuperview];
     self.sliderBgView = [[UIView alloc]init];
     if (_bottomBgView == nil) {
-        _bottomBgView = [[UIView alloc]initWithFrame:CGRectMake(0, self.runView.frame.origin.y +self.runView.frame.size.height, SCREEN_WIDTH, 600)];
+        if (self.scrollHei >600) {
+            _bottomBgView = [[UIView alloc]initWithFrame:CGRectMake(0, self.runView.frame.origin.y +self.runView.frame.size.height, SCREEN_WIDTH,self.scrollHei)];
+        }else {
+            if ([self.dataModel.stationInfo.code isEqualToString:@"HCDHT"] ) {
+                            _bottomBgView = [[UIView alloc]initWithFrame:CGRectMake(0, self.runView.frame.origin.y +self.runView.frame.size.height, SCREEN_WIDTH, 600)];
+                       }else {
+
+                           _bottomBgView = [[UIView alloc]initWithFrame:CGRectMake(0, self.runView.frame.origin.y +self.runView.frame.size.height, SCREEN_WIDTH, self.scrollHei +60)];
+                       }
+           
+        }
+        
         _bottomBgView.backgroundColor = [UIColor clearColor];
         [self.bgScrollView addSubview:self.bottomBgView];
         
@@ -851,6 +953,46 @@
     [self.bottomBgView addSubview:self.sliderBgView];
     [self.sliderBgView setFrame:CGRectMake(SCREEN_WIDTH - 100, 0, 100, 51)];
     self.sliderBgView.backgroundColor = [UIColor clearColor];
+    
+   if([self.dataModel.stationInfo.code isEqualToString:@"DDDHT"]){
+       //        [self.bottomBgView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+       [self.bottomBgView addSubview:self.niTaiTuNoDataView];
+       self.niTaiTuNoDataView.didsel = ^(NSInteger index) {
+           NSDictionary *dd = nil;
+          
+           KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
+           if (index == 0) {
+               dd = self.dvorDic ;
+           }else {
+               dd = self.dmeDic ;
+           }
+           NSArray *arr =dd[@"equipmentDetails"];
+           if (arr.count) {
+               NSDictionary *dataDic = [arr firstObject][@"equipment"];
+               
+               StationMachine.category = safeString(dataDic[@"category"]);
+               StationMachine.machine_name = safeString(dataDic[@"roomName"]);
+               StationMachine.station_name = safeString(dataDic[@"stationName"]);;
+               StationMachine.station_code = safeString(dataDic[@"stationCode"]);
+               StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+               
+           }
+           
+        
+           StationMachine.zhitaiDic = dd;
+           
+           [self.navigationController pushViewController:StationMachine animated:YES];
+       };
+       [self queryDMEData];
+       [self queryDVORData];
+       return;
+   }else {
+       [_niTaiTuNoDataView removeFromSuperview];
+       _niTaiTuNoDataView = nil;
+   }
+    
+    
+    
     NSArray *sliderArray = self.bottomDic[self.jifangString] ;
     float sliderV_X = 6;
     float sliderVX =  sliderV_X;
@@ -875,7 +1017,7 @@
         
     }
     
-    if ([self.dataModel.stationInfo.code isEqualToString:@"HCDHT"]) {
+    if ([self.dataModel.stationInfo.code isEqualToString:@"HCDHT"] ) {
         
         [self initWithController];
         [self queryDMEData];
@@ -891,8 +1033,14 @@
     NSString *code = @"";
     int isSystem = 0;
     if(self.dataModel.mainEquipmentDetails.count == 2) {
-        code = self.dataModel.mainEquipmentDetails[0][@"code"];
-        isSystem = [self.dataModel.mainEquipmentDetails[0][@"isSystemEquipment"] intValue];
+        for (NSDictionary *dic in self.dataModel.mainEquipmentDetails) {
+            if ([safeString(dic[@"name"]) containsString:@"DME"]) {
+                code = dic[@"code"];
+                isSystem = [dic[@"isSystemEquipment"] intValue];
+                break;
+            }
+        }
+       
     }
 //    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem]];
@@ -903,9 +1051,18 @@
             return ;
         }
         self.dmeDic = result[@"value"];
-        if (self.dmeDic.count) {
-            self.demView.dataDic = self.dmeDic;
+        if ([self.dataModel.stationInfo.code isEqualToString:@"DDDHT"]) {
+          
+            if (self.dmeDic.count) {
+                self.niTaiTuNoDataView.dmeDic = self.dmeDic;
+            }
+            
+        }else {
+            if (self.dmeDic.count) {
+                self.demView.dataDic = self.dmeDic;
+            }
         }
+      
         
         
         NSLog(@"1");
@@ -923,8 +1080,14 @@
     NSString *code = @"";
     int isSystem = 0;
     if(self.dataModel.mainEquipmentDetails.count == 2) {
-        code = self.dataModel.mainEquipmentDetails[1][@"code"];
-        isSystem = [self.dataModel.mainEquipmentDetails[1][@"isSystemEquipment"] intValue];
+        for (NSDictionary *dic in self.dataModel.mainEquipmentDetails) {
+            if ([safeString(dic[@"name"]) containsString:@"DVOR"]) {
+                code = dic[@"code"];
+                isSystem = [dic[@"isSystemEquipment"] intValue];
+                break;
+            }
+        }
+        
     }
 //    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem]];
@@ -935,10 +1098,17 @@
             return ;
         }
         self.dvorDic = result[@"value"];
-        if (self.dvorDic.count) {
-            self.dvorView.dataDic = self.dvorDic;
+        if ([self.dataModel.stationInfo.code isEqualToString:@"DDDHT"]) {
+            
+            if (self.dvorDic.count) {
+                self.niTaiTuNoDataView.dvorDic = self.dvorDic;
+            }
+            
+        }else {
+            if (self.dvorDic.count) {
+                self.dvorView.dataDic = self.dvorDic;
+            }
         }
-        
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -1114,5 +1284,18 @@
     }];
     
 }
-
+- (KG_NiTaiTuNoDataView *)niTaiTuNoDataView {
+    if (!_niTaiTuNoDataView) {
+        _niTaiTuNoDataView = [[KG_NiTaiTuNoDataView alloc]init];
+        [_niTaiTuNoDataView setFrame:CGRectMake(16, 51, SCREEN_WIDTH -32, 154)];
+        
+       _niTaiTuNoDataView.layer.cornerRadius = 10;
+       _niTaiTuNoDataView.layer.shadowColor = [UIColor colorWithRed:235/255.0 green:236/255.0 blue:243/255.0 alpha:1.0].CGColor;
+       _niTaiTuNoDataView.layer.shadowOffset = CGSizeMake(0,2);
+       _niTaiTuNoDataView.layer.shadowOpacity = 1;
+       _niTaiTuNoDataView.layer.shadowRadius = 2;
+    }
+    
+    return _niTaiTuNoDataView;
+}
 @end

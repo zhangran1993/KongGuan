@@ -19,7 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) NSString* machine_name;
 @property (assign, nonatomic) NSString* category;
 @property (assign, nonatomic) NSString* engine_room_code;
+@property (assign, nonatomic) BOOL isSystemEquipment;
 
+@property (assign, nonatomic) BOOL isFromZhiTai;
 //动态数组对象，存储图片
 @property (retain, nonatomic) NSMutableArray *mList;
 @end

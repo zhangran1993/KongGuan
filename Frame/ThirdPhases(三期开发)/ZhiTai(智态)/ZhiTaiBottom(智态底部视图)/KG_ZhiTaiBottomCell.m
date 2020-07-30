@@ -102,7 +102,7 @@
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",dataDic[@"alarmLevel"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",dataDic[@"alarmLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",dataDic[@"alarmNum"]];
-    if([dataDic[@"alarmNum"] intValue] ==0) {
+    if([dataDic[@"alarmLevel"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;

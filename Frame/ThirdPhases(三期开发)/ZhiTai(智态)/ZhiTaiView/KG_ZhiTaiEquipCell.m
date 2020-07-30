@@ -42,13 +42,14 @@
     self.leftLabel.text = @"Thales雷达";
     self.leftLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.leftLabel.font = [UIFont systemFontOfSize:14];
-    self.leftLabel.numberOfLines = 1;
+    self.leftLabel.numberOfLines = 2;
+    [self.leftLabel sizeToFit];
     self.leftLabel.textAlignment = NSTextAlignmentLeft;
     [self.leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.centerY.equalTo(self.mas_centerY);
         make.width.lessThanOrEqualTo(@110);
-        make.height.equalTo(@18);
+       
     }];
     
     
@@ -87,13 +88,14 @@
     self.rightLabel.text = @"Thales雷达";
     self.rightLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.rightLabel.font = [UIFont systemFontOfSize:14];
-    self.rightLabel.numberOfLines = 1;
+    self.rightLabel.numberOfLines = 2;
+    [self.rightLabel sizeToFit];
     self.rightLabel.textAlignment = NSTextAlignmentLeft;
     [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.leftImage.mas_right).offset(30);
         make.centerY.equalTo(self.mas_centerY);
         make.width.lessThanOrEqualTo(@110);
-        make.height.equalTo(@18);
+       
     }];
     
     

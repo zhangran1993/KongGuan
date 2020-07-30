@@ -57,7 +57,7 @@
     
     self.topImage = [[UIImageView alloc]init];
     [self addSubview:self.topImage];
-    self.topImage.image = [UIImage imageNamed:@"dvor_icon"];
+    self.topImage.image = [UIImage imageNamed:@"导航DVOR"];
     [self.topImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.height.width.equalTo(@20);

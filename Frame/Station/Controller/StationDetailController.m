@@ -46,7 +46,7 @@
 @property (copy,nonatomic) NSMutableDictionary * weather;
 @property NSUInteger newHeight1;
 @property long imageHeight;
-@property  (assign,nonatomic) NSMutableArray *roomList;
+@property  (strong,nonatomic) NSMutableArray *roomList;
 @property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
 @property NSMutableArray *objects1;
 @property NSMutableArray *objects10;
@@ -56,6 +56,8 @@
 @property (nonatomic, strong) NSMutableArray *statusArray;
 @property BOOL isRefresh;
 @property int a;
+
+@property  (assign,nonatomic) int roomHeight;
 /** 请求管理者 */
 //@property (nonatomic,weak) AFHTTPSessionManager * manager;
 /** 用于加载下一页的参数(页码) */
@@ -706,7 +708,27 @@
         [self.dataModel mj_setKeyValues:result[@"value"]];
         [self refreshData];
         [self queryWeatherData:self.dataModel.station[@"latitude"] withLon:self.dataModel.station[@"longitude"]];
-       
+        if (_objects0.count >0) {
+           
+            NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+            if ([userdefaults objectForKey:@"zhihuanImage"]) {
+                
+                NSString *ss = [userdefaults objectForKey:@"zhihuanImage"];
+                for (NSDictionary *dd in _objects0) {
+                    if ([safeString(dd[@"code"]) isEqualToString:ss]) {
+                        [self getTemHuiData:safeString(dd[@"stationCode"]) withCode:safeString(dd[@"code"])];
+                    }
+                }
+            }else {
+                 [self getTemHuiData:[_objects0 firstObject][@"stationCode"] withCode:[_objects0 firstObject][@"code"]];
+            }
+            
+            
+            
+            
+           
+        }
+        
         NSLog(@"1");
         
     } failure:^(NSURLSessionDataTask *error)  {
@@ -1083,8 +1105,27 @@
         NSLog(@"_stationDetail == nil ");
         return thiscell;
     }
+    int roH = 0;
+    for (int i=0; i<self.dataModel.roomList.count; i++) {
+        
+        if(safeString(self.dataModel.roomList[i][@"alias"]).length >5) {
+          
+            roH += 50;
+        }else {
+            
+           
+            roH +=30;
+        }
+    }
+        if (roH +51 >241) {
+            self.roomHeight =  51 + roH+ 20;
+        }else {
+            self.roomHeight = 241;
+        }
+
     UIView *bgView = [[UIView alloc] init];
-    bgView.frame = CGRectMake(16,10,SCREEN_WIDTH -32,241);
+    
+    bgView.frame = CGRectMake(16,10,SCREEN_WIDTH -32,self.roomHeight);
     
     bgView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
     bgView.layer.cornerRadius = 9;
@@ -1217,11 +1258,21 @@
         }
         
     }
-    
+    float btnHeight = 0;
     for (int i=0; i<self.dataModel.roomList.count; i++) {
-        UIButton *btn  =[[UIButton alloc]init];
+        UIButton *btn  =[UIButton buttonWithType:UIButtonTypeCustom];
+        btn.titleLabel.numberOfLines = 2;
+        if(safeString(self.dataModel.roomList[i][@"alias"]).length >5) {
+            
+            [btn setFrame:CGRectMake(16+7, 51 + bgView.frame.origin.y + (btnHeight +10) ,83, 50)];
+            btnHeight += 50;
+        }else {
+            
+            [btn setFrame:CGRectMake(16+7, 51 + bgView.frame.origin.y + btnHeight+10 ,83, 30)];
+            btnHeight +=30;
+        }
         btn.tag = i+1;
-        [btn setFrame:CGRectMake(16+16, 51 + bgView.frame.origin.y + i*40 ,73, 30)];
+        
         [thiscell addSubview:btn];
         [btn addTarget:self action:@selector(jfbtapevent:) forControlEvents:UIControlEventTouchUpInside];
         if([stationString isEqualToString:self.dataModel.roomList[i][@"code"]]) {
@@ -1291,13 +1342,13 @@
     tempNumLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     tempNumLabel.textAlignment = NSTextAlignmentLeft;
     [tempNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(tempView.mas_left).offset(32);
+        make.left.equalTo(tempView.mas_left).offset(30);
         make.top.equalTo(tempLabel.mas_bottom).offset(9);
-        make.width.equalTo(@38);
+        make.width.equalTo(@42);
         make.height.equalTo(@25);
     }];
     
-    tempNumLabel.text = safeString(self.dataModel.station[@"temperature"]);
+    tempNumLabel.text = [NSString stringWithFormat:@"%.2f", [safeString(self.dataModel.station[@"temperature"]) floatValue]];
     if ([safeString(self.dataModel.station[@"temperature"]) doubleValue] == 0) {
         tempNumLabel.text = @"__";
     }
@@ -1323,14 +1374,22 @@
         make.width.equalTo(@32);
         make.height.equalTo(@17);
     }];
+   
     if (self.temArray.count == 2) {
-        KG_MachineStationModel *temDic = self.temArray[1];
-        tempNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
-        if ([safeString(temDic.valueAlias) doubleValue] == 0) {
-            tempNumLabel.text = @"__";
+        for (KG_MachineStationModel *temDic  in self.temArray) {
+            if ([safeString(temDic.name) isEqualToString:@"温度"]) {
+                tempNumLabel.text = safeString([NSString stringWithFormat:@"%.2f",[safeString(temDic.valueAlias) floatValue]]);
+                      if ([safeString(temDic.valueAlias) doubleValue] == 0) {
+                          tempNumLabel.text = @"__";
+                      }
+                      tempBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+                break;
+            }
         }
-        tempBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
     }
+    
+    
+    
     
     UIImageView *tempStatusImage = [[UIImageView alloc]init];
     [tempView addSubview:tempStatusImage];
@@ -1394,12 +1453,13 @@
     humidityNumLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     humidityNumLabel.textAlignment = NSTextAlignmentLeft;
     [humidityNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(humidityView.mas_left).offset(32);
+        make.left.equalTo(humidityView.mas_left).offset(30);
         make.top.equalTo(humidityLabel.mas_bottom).offset(9);
-        make.width.equalTo(@38);
+        make.width.equalTo(@42);
         make.height.equalTo(@25);
     }];
-    humidityNumLabel.text = safeString(self.dataModel.station[@"humidity"]);
+    humidityNumLabel.text = [NSString stringWithFormat:@"%.2f", [safeString(self.dataModel.station[@"humidity"]) floatValue]];
+   
     if ([safeString(self.dataModel.station[@"humidity"]) doubleValue] == 0) {
         humidityNumLabel.text = @"__";
     }
@@ -1427,12 +1487,16 @@
         make.height.equalTo(@17);
     }];
     if (self.temArray.count == 2) {
-        KG_MachineStationModel *temDic = self.temArray[0];
-        humidityNumLabel.text = safeString([NSString stringWithFormat:@"%@",temDic.valueAlias]);
-        if ([safeString(temDic.valueAlias) doubleValue] == 0) {
-            humidityNumLabel.text = @"__";
+        for (KG_MachineStationModel *temDic  in self.temArray) {
+            if ([safeString(temDic.name) isEqualToString:@"湿度"]) {
+                humidityNumLabel.text = safeString([NSString stringWithFormat:@"%.2f",[safeString(temDic.valueAlias) floatValue]]);
+                      if ([safeString(temDic.valueAlias) doubleValue] == 0) {
+                          humidityNumLabel.text = @"__";
+                      }
+                      humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+                break;
+            }
         }
-        humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
     }
     UIImageView *humidityStatusImage = [[UIImageView alloc]init];
     [humidityView addSubview:humidityStatusImage];
@@ -1450,7 +1514,7 @@
     
     [thiscell addSubview:self.envView];
     
-    NSInteger count = 1;
+    NSInteger count = 0;
     if(self.dataModel.enviromentDetails.count){
         self.envView.envArray = self.dataModel.enviromentDetails;
         
@@ -1486,7 +1550,7 @@
     
     [thiscell addSubview:self.powerView];
     
-    NSInteger powCount  = 1;
+    NSInteger powCount  = 0;
     if(self.dataModel.powerDetails.count){
         self.powerView.powArray = self.dataModel.powerDetails;
         powCount = self.dataModel.powerDetails.count;
@@ -1508,7 +1572,7 @@
     self.secView.layer.masksToBounds = YES;
     [thiscell addSubview:self.secView];
     
-    NSInteger secCount = 1;
+    NSInteger secCount = 0;
     if(self.dataModel.securityDetails.count){
         self.secView.secArray = self.dataModel.securityDetails;
         secCount = self.dataModel.securityDetails.count;
@@ -2149,7 +2213,7 @@
         make.height.equalTo(@18);
         make.width.equalTo(@80);
     }];
-    allHeight = self.dataModel.enviromentDetails.count *50 + self.dataModel.powerDetails.count *50 + self.dataModel.securityDetails.count *50 + 92 +60 + 150 +10 +241 + 149 + 200 +50;
+    allHeight =  10 +10 +self.roomHeight +10+10 + 92 + self.dataModel.enviromentDetails.count *50 +50 + self.dataModel.powerDetails.count*50 + 50 +10+10  + self.dataModel.securityDetails.count *50 +50 +10 + 149 +50 + NAVIGATIONBAR_HEIGHT -64 ;
     return thiscell;
     
     

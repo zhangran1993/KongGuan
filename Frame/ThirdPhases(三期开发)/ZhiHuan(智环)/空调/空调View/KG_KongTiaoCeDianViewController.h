@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_KongTiaoCeDianViewController : UIViewController
-
+@property (nonatomic ,strong)NSArray *alarmArray;
 @property (nonatomic ,strong)NSArray *dataArray;
 @property (nonatomic ,copy) void (^moreAction)(NSDictionary *dataDic);
 

@@ -126,13 +126,14 @@
     self.roomLabel = [[UILabel alloc]init];
     self.roomLabel.font = [UIFont systemFontOfSize:14];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.roomLabel.numberOfLines = 1;
+    self.roomLabel.numberOfLines = 2;
+    [self.roomLabel sizeToFit];
     [self.topView addSubview:self.roomLabel];
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(6);
         make.top.equalTo(self.topView.mas_top).offset(24);
-        make.right.equalTo(self.topView.mas_right).offset(-20);
-        make.height.equalTo(@21);
+        make.right.equalTo(self.topView.mas_right).offset(0);
+        make.height.mas_greaterThanOrEqualTo(@21);
     }];
     
     self.gaojingLabel = [[UILabel alloc]init];
@@ -294,12 +295,22 @@
     cell.titleLabel.text = safeString(dic[@"name"]);
   
     cell.rightLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dic[@"valueAlias"]),safeString(dic[@"unit"])];
+    
+    if ([safeString(dic[@"valueAlias"]) containsString:safeString(dic[@"unit"])]) {
+        cell.rightLabel.text = [NSString stringWithFormat:@"%@",safeString(dic[@"valueAlias"])] ;
+    }
+    if (safeString(dic[@"unit"]).length == 0) {
+        cell.rightLabel.text = [NSString stringWithFormat:@"%@",safeString(dic[@"valueAlias"])] ;
+    }
+    
+    
     if (safeString(dic[@"valueAlias"]).length==0) {
         cell.rightLabel.text = @"--";
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     for (NSDictionary *arDic in self.alarmArray) {
-        if ([safeString(arDic[@"name"]) containsString:safeString(dic[@"name"])]) {
+        if ([safeString(arDic[@"name"]) containsString:safeString(dic[@"name"])]
+            &&[safeString(arDic[@"name"]) containsString:safeString(dic[@"valueAlias"])]) {
             cell.titleLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
             cell.rightLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
             cell.iconImage.backgroundColor = [UIColor colorWithHexString:@"#FB394C"];
@@ -327,7 +338,7 @@
 
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",self.level]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",self.num];
-    if([self.num intValue] == 0) {
+    if([self.level intValue] == 0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;
@@ -426,7 +437,7 @@
             self.gaojingView.powArray = self.dataArray;
         }
     }
-    if(![safeString(self.dataDic[@"alarmStatus"])  isEqualToString:@"0"] && safeString(self.dataDic[@"alarmStatus"]).length >0){
+    if([safeString(self.dataDic[@"alarmStatus"])  isEqualToString:@"1"] && safeString(self.dataDic[@"alarmStatus"]).length >0){
         [self.topView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@261);
         }];
@@ -506,7 +517,7 @@
         [btn setBackgroundColor:[UIColor clearColor]];
         [btn setTitle:@"" forState:UIControlStateNormal];
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_centerView.mas_left);
+            make.width.equalTo(@80);
             make.height.equalTo(_centerView.mas_height);
             make.top.equalTo(_centerView.mas_top);
             make.right.equalTo(_centerView.mas_right);

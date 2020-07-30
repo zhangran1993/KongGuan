@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) NSDictionary *dic;
 @property (nonatomic,copy) void (^shouqiMethod)();
 @property (nonatomic,copy) void (^zhankaiMethod)();
+
+@property (nonatomic,copy) NSString *leaderString;
 @end
 
 NS_ASSUME_NONNULL_END

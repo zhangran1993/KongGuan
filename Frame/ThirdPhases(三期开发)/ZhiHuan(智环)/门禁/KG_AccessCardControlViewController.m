@@ -371,7 +371,7 @@
 //进行操作
 - (void)openData {
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/DoorEvent/control/%@/%@/%@/%@",safeString(self.dataDic[@"stationCode"]),safeString(self.dataDic[@"code"]),@"on",safeString(self.secondString)]];
-    [MBProgressHUD showMessage:@"" toView:self.view];
+//    [MBProgressHUD showMessage:@"" toView:self.view];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -397,7 +397,7 @@
 }
 - (void)closeData {
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/DoorEvent/control/%@/%@/%@/%@",safeString(self.dataDic[@"stationCode"]),safeString(self.dataDic[@"code"]),@"off",@"0"]];
-     [MBProgressHUD showMessage:@"" toView:self.view];
+//     [MBProgressHUD showMessage:@"" toView:self.view];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
          [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];

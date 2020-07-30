@@ -49,4 +49,10 @@
     }];
  
 }
+
+-  (void)setStr:(NSString *)str {
+    _str = str;
+  
+    self.titleLabel.text = safeString(str);
+}
 @end

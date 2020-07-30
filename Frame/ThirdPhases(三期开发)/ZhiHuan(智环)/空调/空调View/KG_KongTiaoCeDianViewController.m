@@ -205,6 +205,7 @@
 
     }
     NSDictionary *dataDic = self.dataArray[indexPath.row];
+    cell.alarmArray = self.alarmArray;
     cell.dataDic = dataDic;
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -241,5 +242,9 @@
     if ([code isEqualToString:@"airConditioner"]) {
         self.leftIcon.image = [UIImage imageNamed:@"空调"];
     }
+}
+
+- (void)setAlarmArray:(NSArray *)alarmArray {
+    _alarmArray = alarmArray;
 }
 @end

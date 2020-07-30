@@ -67,6 +67,7 @@
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
+    
 }
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -140,6 +141,7 @@
     }else {
         KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
         vc.dataDic = self.alertInfo;
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
    
@@ -254,6 +256,7 @@
 
 
 - (void)backButtonClick:(UIButton *)button {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
    
      [self.navigationController popViewControllerAnimated:YES];
     
@@ -297,9 +300,10 @@
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
     paramDic[@"id"] = safeString(dataDic[@"id"]);
     paramDic[@"patrolName"] = safeString(userID);
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -309,7 +313,7 @@
         [self getStationReportAlarmInfo];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

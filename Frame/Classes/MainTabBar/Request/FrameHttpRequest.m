@@ -142,8 +142,15 @@
 
         [userDefaults setObject: cookiesData forKey:@"cookie"];
 
-
-
+//        if ([UserManager shareUserManager].cookieArray.count == 0) {
+//            [UserManager shareUserManager].cookieArray = cookies1;
+//        }else {
+//            
+//            if (![[UserManager shareUserManager].cookieArray isEqualToArray:cookies1]) {
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeCookies" object:self];
+//            }
+//        }
+        
         
         
         //NSMutableArray<NSDictionary *> *propertiesList = [[NSMutableArray alloc] init];

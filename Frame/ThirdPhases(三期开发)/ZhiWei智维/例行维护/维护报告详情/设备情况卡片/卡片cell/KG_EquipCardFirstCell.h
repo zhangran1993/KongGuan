@@ -14,7 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic ,strong)NSDictionary *dic;
+@property (nonatomic, strong) UIButton *selectBtn;
 
+@property (nonatomic, strong) UITextView *textView;
 @end
 
 NS_ASSUME_NONNULL_END

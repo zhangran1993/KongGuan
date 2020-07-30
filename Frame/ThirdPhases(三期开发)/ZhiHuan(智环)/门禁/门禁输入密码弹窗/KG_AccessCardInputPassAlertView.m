@@ -69,7 +69,7 @@
     [centerView addSubview:centerBtn];
     [centerBtn setBackgroundColor:[UIColor clearColor]];
     [centerBtn setTitle:@"" forState:UIControlStateNormal];
-    [centerBtn addTarget:self action:@selector(buttonClickMethod:) forControlEvents:UIControlEventTouchUpInside];
+//    [centerBtn addTarget:self action:@selector(buttonClickMethod:) forControlEvents:UIControlEventTouchUpInside];
     [centerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(centerView.mas_top);
         make.left.equalTo(centerView.mas_left);

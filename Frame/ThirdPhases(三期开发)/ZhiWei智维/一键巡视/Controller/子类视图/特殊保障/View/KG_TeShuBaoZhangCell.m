@@ -342,7 +342,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     

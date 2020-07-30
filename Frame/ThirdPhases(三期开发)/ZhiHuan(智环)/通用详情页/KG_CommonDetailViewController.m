@@ -54,7 +54,56 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlLog:) name:@"controlLog" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreCanshu:) name:@"moreCanshu" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlAccessLog:) name:@"controlAccessLog" object:nil];
-    if (self.zhitaiDic.count) {
+    if (self.isFromZhiTai) {
+         [self queryDMEData];
+    }else {
+        if (self.zhitaiDic.count) {
+            self.detailModel = nil;
+            [self.dataArray removeAllObjects];
+            if (self.detailModel == nil) {
+                self.detailModel = [[KG_MachineDetailModel alloc]init];
+            }
+            
+            [self.detailModel mj_setKeyValues:self.zhitaiDic];
+            for (equipmentDetailsModel *detailModel in self.detailModel.equipmentDetails) {
+                [self.dataArray addObject:detailModel];
+            }
+            if(self.dataArray.count ==0){
+                return;
+            }
+            
+            NSDictionary *di = [self.dataArray[self.currIndex] mj_keyValues];
+            _station_code = safeString(di[@"equipment"][@"stationCode"]);
+            _station_name = safeString(di[@"equipment"][@"stationName"]);
+            //        self.machine_name = safeString(di[@"equipment"][@"alias"]);
+            self.title = [NSString stringWithFormat:@"%@",safeString(self.machine_name)];
+            [self refreshData];
+        }else {
+            //
+            [self getMachineDetailList];
+            
+        }
+        
+    }
+    
+    
+    
+    [self getDetailRightData];
+}
+
+- (void)queryDMEData {
+    NSString *code = @"";
+    int isSystem = 0;
+   
+//    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceInfo/%@/%d",self.engine_room_code,self.isSystemEquipment]];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.zhitaiDic = result[@"value"];
         self.detailModel = nil;
         [self.dataArray removeAllObjects];
         if (self.detailModel == nil) {
@@ -75,12 +124,20 @@
         //        self.machine_name = safeString(di[@"equipment"][@"alias"]);
         self.title = [NSString stringWithFormat:@"%@",safeString(self.machine_name)];
         [self refreshData];
-    }else {
-        [self getMachineDetailList];
-    }
+        
+        
+        NSLog(@"1");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
     
-    [self getDetailRightData];
 }
+
 -(void)dealloc
 {
     [super dealloc];
@@ -342,7 +399,9 @@
     NSLog(@"111111%f",scrollView.contentOffset.x);
     NSInteger index = scrollView.contentOffset.x / (SCREEN_WIDTH- 32);
     self.currIndex = (int)index;
-    
+    if (index >=self.currIndex) {
+        return;
+    }
     equipmentDetailsModel *detailModel = self.dataArray[self.currIndex];
     NSDictionary *dataDic = detailModel.equipment;
     NSString *equipStr = @"device_UPS";
@@ -365,7 +424,7 @@
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
-    if([totalDic[@"totalNum"] intValue] ==0) {
+    if([totalDic[@"totalLevel"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;
@@ -405,7 +464,9 @@
                viewcon.level = safeString(detailModel.level);
                viewcon.num = safeString(detailModel.num);
                viewcon.status = safeString(detailModel.status);
-               
+               viewcon.gotoDetail = ^{
+                   self.tabBarController.selectedIndex = 3;
+               };
                viewcon.dataDic = dataDic;
                viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
                NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
@@ -454,7 +515,9 @@
                       viewcon.level = safeString(detailModel.level);
                       viewcon.num = safeString(detailModel.num);
                       viewcon.status = safeString(detailModel.status);
-                      
+                      viewcon.gotoDetail = ^{
+                          self.tabBarController.selectedIndex = 3;
+                      };
                       viewcon.dataDic = dataDic;
                       viewcon.frame = CGRectMake(16 +SCREEN_WIDTH*i, 0, SCREEN_WIDTH -32,self.scrollView.frame.size.height);
                       NSArray *equipmentDetails = [KG_MachineDetailModel mj_keyValuesArrayWithObjectArray:self.dataArray];
@@ -627,7 +690,7 @@
     self.statusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
-    if([totalDic[@"totalNum"] intValue] ==0) {
+    if([totalDic[@"totalLevel"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;

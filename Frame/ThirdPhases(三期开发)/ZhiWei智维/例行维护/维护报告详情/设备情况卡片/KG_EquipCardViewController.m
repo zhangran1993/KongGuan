@@ -36,6 +36,7 @@
 @property (nonatomic, strong) UIView         *sliderBgView;
 @property (nonatomic, strong) UIView         *sliderView;
 
+
 @end
 
 @implementation KG_EquipCardViewController
@@ -46,9 +47,11 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.selIndex = 0;
+    [UserManager shareUserManager].resultCardDic = nil;
     self.selDetailIndex = 0;
     [self createScrollView];
     [self createView];
+    
 }
 
 - (void)createScrollView {
@@ -103,14 +106,18 @@
 
 - (void)backButtonClick:(UIButton *)button {
    
-    if ([UserManager shareUserManager].isChangeTask) {
+    if ([UserManager shareUserManager].isChangeTask && [UserManager shareUserManager].changeEquipStatus ) {
+        
         UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定要保存吗" message:@"" preferredStyle:UIAlertControllerStyleAlert];
         [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
              [self.navigationController popViewControllerAnimated:YES];
+            [UserManager shareUserManager].changeEquipStatus = NO;
+            [UserManager shareUserManager].resultCardDic = nil;
             return ;
         }]];
         [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
             [self changeTask];
+            [UserManager shareUserManager].changeEquipStatus = NO;
             return ;
         }]];
         [self presentViewController:alertContor animated:NO completion:nil];
@@ -137,7 +144,7 @@
     NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
     if ([userdefaults objectForKey:@"name"]) {
         NSString *userName = [userdefaults objectForKey:@"name"];
-        if (![leadStr isEqualToString:userName]) {
+        if (![safeString(self.dataDic[@"leaderName"]) isEqualToString:userName]) {
             [FrameBaseRequest showMessage:@"您没有修改任务的权限"];
             return;
         }
@@ -150,7 +157,7 @@
     
     
     paramDic[@"id"] = safeString(self.dataDic[@"id"]);
-    NSDictionary *resultDic = [UserManager shareUserManager].resultDic;
+    NSDictionary *resultDic = [UserManager shareUserManager].resultCardDic;
     paramDic[@"result"] = [self convertToJsonData:resultDic];
     paramDic[@"status"] = @"1";
     paramDic[@"description"] = @"";
@@ -210,7 +217,11 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"保存任务成功"];
-        [UserManager shareUserManager].resultDic = nil;
+        if(self.saveSuccessBlock) {
+            self.saveSuccessBlock();
+        }
+        
+        [UserManager shareUserManager].resultCardDic = nil;
         [self.navigationController popViewControllerAnimated:YES];
         
         
@@ -286,6 +297,7 @@
         make.left.equalTo(iconImage.mas_right).offset(4);
         make.centerY.equalTo(iconImage.mas_centerY);
         make.height.equalTo(@24);
+        make.width.equalTo(@100);
     }];
     
     UIView *lineView = [[UIView alloc]init];
@@ -305,13 +317,16 @@
     self.leftBtn = [[UIButton alloc]init];
     [self.headView addSubview:self.leftBtn];
     [self.leftBtn setBackgroundImage:[UIImage imageNamed:@"equip_buttonBgImage"] forState:UIControlStateNormal];
+    self.leftBtn.contentMode = UIViewContentModeScaleAspectFill;
     [self.leftBtn setTitleColor:[UIColor colorWithHexString:@"#626470"] forState:UIControlStateNormal];
     self.leftBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     [self.leftBtn sizeToFit];
     [self.leftBtn addTarget:self action:@selector(showAlertView) forControlEvents:UIControlEventTouchUpInside];
+    [self.leftBtn.titleLabel setNumberOfLines:2];
     [self.leftBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleLabel.mas_right).offset(6);
-        make.height.equalTo(@30);
+        
+        make.width.equalTo(@100);
         make.centerY.equalTo(titleLabel.mas_centerY);
     }];
     
@@ -319,14 +334,16 @@
     self.rightBtn = [[UIButton alloc]init];
     [self.headView addSubview:self.rightBtn];
     [self.rightBtn setBackgroundImage:[UIImage imageNamed:@"equip_buttonBgImage"] forState:UIControlStateNormal];
+    self.rightBtn.contentMode = UIViewContentModeScaleAspectFill;
     [self.rightBtn setTitleColor:[UIColor colorWithHexString:@"#626470"] forState:UIControlStateNormal];
     self.rightBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     [self.rightBtn sizeToFit];
     [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.leftBtn.mas_right).offset(5);
-        make.height.equalTo(@30);
+        make.right.equalTo(self.headView.mas_right).offset(-5);
         make.centerY.equalTo(titleLabel.mas_centerY);
     }];
+     [self.rightBtn.titleLabel setNumberOfLines:2];
     [self.rightBtn addTarget:self action:@selector(showAlertView) forControlEvents:UIControlEventTouchUpInside];
     if(self.listArray.count == 0){
         self.leftBtn.hidden = YES;
@@ -448,7 +465,7 @@
     if (self.curSelDetailDic.count) {
         cell.curSelDetialDic = self.curSelDetailDic;
     }
-    
+    cell.listArray = self.listArray;
     cell.dataModel = self.dataModel;
     return cell;
 }
@@ -501,6 +518,9 @@
 -(NSString *)convertToJsonData:(NSDictionary *)dict
 
 {
+    if (dict.count ==0) {
+        return @"";
+    }
     NSError *error;
 
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];

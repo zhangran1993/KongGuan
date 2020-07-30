@@ -113,6 +113,16 @@
     UILabel *detaillabel = [[UILabel alloc]init];
     
     detaillabel.text = [NSString stringWithFormat:@"%@%@",safeString(dataDic[@"valueAlias"]),safeString(dataDic[@"unit"])];
+    
+    if ([safeString(dataDic[@"valueAlias"]) containsString:safeString(dataDic[@"unit"])]) {
+        detaillabel.text = [NSString stringWithFormat:@"%@",safeString(dataDic[@"valueAlias"])] ;
+    }
+    if (safeString(dataDic[@"unit"]).length == 0) {
+        detaillabel.text = [NSString stringWithFormat:@"%@",safeString(dataDic[@"valueAlias"])] ;
+    }
+    
+    
+    
     detaillabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     detaillabel.textAlignment = NSTextAlignmentRight;
     detaillabel.font = [UIFont systemFontOfSize:14];

@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy) NSString *level;
 @property (nonatomic ,copy) NSString *num;
 @property (nonatomic ,copy) NSString *status;
+
+@property (nonatomic ,copy) void (^gotoDetail)();
 @end
 
 NS_ASSUME_NONNULL_END

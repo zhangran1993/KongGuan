@@ -15,7 +15,7 @@
 @interface KG_EquipCardView ()<UITableViewDataSource,UITableViewDelegate>{
     
 }
-
+@property (nonatomic,strong) UITableView *sliderTableView;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) UIImageView * statusImage;
 @property (nonatomic,strong) UIButton * moreBtn;
@@ -40,12 +40,25 @@
     self.tableView.layer.borderWidth = 0.5;
     self.tableView.layer.borderColor = [UIColor colorWithRed:239/255.0 green:240/255.0 blue:247/255.0 alpha:1.0].CGColor;
     self.tableView.layer.cornerRadius = 10;
+    self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left).offset(22);
         make.right.equalTo(self.mas_right).offset(-22);
-        make.bottom.equalTo(self.mas_bottom);
+        make.bottom.equalTo(self.mas_bottom).offset(-80);
     }];
+    
+    [self addSubview:self.sliderTableView];
+    
+    [self.sliderTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tableView.mas_bottom);
+        make.left.equalTo(self.mas_left).offset(22);
+        make.right.equalTo(self.mas_right).offset(-22);
+        make.height.equalTo(@44);
+    }];
+    
+    
+    
     
 }
 - (UITableView *)tableView {
@@ -55,15 +68,29 @@
         _tableView.dataSource = self;
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = NO;
+        _tableView.scrollEnabled = YES;
         
     }
     return _tableView;
 }
-
+- (UITableView *)sliderTableView {
+    if (!_sliderTableView) {
+        _sliderTableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _sliderTableView.delegate = self;
+        _sliderTableView.dataSource = self;
+        _sliderTableView.backgroundColor = self.backgroundColor;
+        _sliderTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _sliderTableView.scrollEnabled = NO;
+        
+    }
+    return _sliderTableView;
+}
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if ([tableView isEqual:self.sliderTableView]) {
+        return 1;
+    }
     if(section == 0){
         return self.dataArray.count;
     }else {
@@ -72,7 +99,7 @@
     
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return  4;
+    return  3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -80,15 +107,35 @@
     
     if (indexPath.section == 2) {
         NSString *str =  safeString(self.dataDic[@"operationalGuidelines"]);
-        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         return  fontRect.size.height +24;
+    }else if (indexPath.section == 1) {
+        NSString *str =  safeString(self.dataDic[@"remark"]);
+        if (str.length == 0) {
+            return 0;
+        }
+        return 40;
     }
      return 40;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section  {
+    
+    if ([tableView isEqual:self.sliderTableView]) {
+        UIView  *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+        return headView;
+    }
+    
     UIView  *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
     
+    NSString *str =  safeString(self.dataDic[@"remark"]);
+    if (str.length == 0 && section == 1) {
+        UIView  *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH,0.001)];
+        return headView;
+    }
+    
+   
+           
     if (section == 0) {
         
         UILabel *titleLabel = [[UILabel alloc]init];
@@ -126,6 +173,8 @@
         }];
         
     }else if (section == 1) {
+        
+       
         UILabel *titleLabel = [[UILabel alloc]init];
         titleLabel.numberOfLines = 1;
         titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -208,6 +257,16 @@
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if ([tableView isEqual:self.sliderTableView]) {
+        return 0.001;
+    }
+    if (section == 1) {
+        NSString *str =  safeString(self.dataDic[@"remark"]);
+        if (str.length == 0) {
+            return 0.001;
+        }
+        return 44;
+    }
     return 44;
 }
 - (void)moreMethod:(UIButton *)button {
@@ -238,7 +297,17 @@
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if ([tableView isEqual:self.sliderTableView]) {
+        KG_EquipCardFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EquipCardFourthCell"];
+        if (cell == nil) {
+            cell = [[KG_EquipCardFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipCardFourthCell"];
+        }
+        cell.dataArray = self.dataArray;
+        cell.totalNum = self.cardTotalNum;
+        cell.selIndex = self.cardCurrNum;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
     if(indexPath.section == 0) {
         
         KG_EquipCardFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EquipCardFirstCell"];
@@ -255,8 +324,8 @@
         if (cell == nil) {
             cell = [[KG_EquipCardSecondCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipCardSecondCell"];
         }
-//        NSDictionary *dic = self.dataArray[indexPath.section];
-//
+         NSString *str = safeString(self.dataDic[@"remark"]);
+        cell.str = str;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
@@ -271,18 +340,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
-    }else {
-        KG_EquipCardFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EquipCardFourthCell"];
-        if (cell == nil) {
-            cell = [[KG_EquipCardFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipCardFourthCell"];
-        }
-        cell.dataArray = self.dataArray;
-        cell.totalNum = self.cardTotalNum;
-        cell.selIndex = self.cardCurrNum;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        return cell;
-        
     }
     return nil;
 }

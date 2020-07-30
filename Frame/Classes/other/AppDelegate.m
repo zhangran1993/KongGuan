@@ -45,7 +45,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     
-
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
     BOOL ret = [_mapManager start:@"vZK7X3GEuWKvP6aZhiPRgi7B1NQE6i1j"  generalDelegate:nil];
@@ -107,7 +106,7 @@
     sideMenuController.scaleContent = NO;
     self.window.rootViewController = sideMenuController;
     [self.window makeKeyAndVisible];
-    
+
     if ([CommonExtension isFirstLauch] == 1) {
         // [self guideData];
     }

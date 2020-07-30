@@ -62,32 +62,23 @@
     self.pageNum = 1;
     self.pageSize = 10;
     self.currIndex = 0;
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     //初始化为日
-    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
-    
-    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
-    paraDic[@"name"] = @"stationCode";
-    paraDic[@"type"] = @"eq";
-    paraDic[@"content"] = safeString(currDic[@"code"]);
-    [self.paraArr addObject:paraDic];
-   
-    
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    NSLog(@"StationDetailController viewWillAppear");
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    [self.navigationController setNavigationBarHidden:YES];
     [self.paraArr removeAllObjects];
-    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
-    
     NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
     paraDic[@"name"] = @"stationCode";
     paraDic[@"type"] = @"eq";
     paraDic[@"content"] = safeString(currDic[@"code"]);
     [self.paraArr addObject:paraDic];
     [self queryGaoJingData];
-    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    [self.navigationController setNavigationBarHidden:YES];
+   
+     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
     }
@@ -99,6 +90,21 @@
         
         [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal] ;
     }
+    for (NSDictionary *dd in self.paraArr) {
+        if (![safeString(dd[@"code"]) isEqualToString:safeString(currDic[@"code"])]) {
+            [self.paraArr removeAllObjects];
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            [self queryGaoJingData];
+            [self.segment selectIndex:1];
+            break;
+        }
+    }
+    
+   
    
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -376,10 +382,10 @@
     self.rightButton.layer.cornerRadius = 12.5f;
     self.rightButton.layer.masksToBounds = YES;
     
-    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#D0CFCF"] forState:UIControlStateNormal];
+    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     [self.rightButton setTitle:@"黄城导航台" forState:UIControlStateNormal];
     self.rightButton.frame = CGRectMake(0,0,81,22);
-    [self.rightButton setImage:[UIImage imageNamed:@"arrow_right"] forState:UIControlStateNormal];
+    [self.rightButton setImage:[UIImage imageNamed:@"ZhiWei_rightIcon"] forState:UIControlStateNormal];
     [self.rightButton setImageEdgeInsets:UIEdgeInsetsMake(0, 70, 0,0 )];
     [self.rightButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0,0 )];
     [self.view addSubview:self.rightButton];

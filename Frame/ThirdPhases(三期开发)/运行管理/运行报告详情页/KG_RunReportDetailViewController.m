@@ -27,7 +27,7 @@
 @property (nonatomic, strong)  UIView    *navigationView;
 @property (nonatomic, strong)  UIButton  *rightButton;
 @property (nonatomic, strong)  KG_RunReportDeatilModel *dataModel;
-
+@property (nonatomic, assign) BOOL isFinishStatus;
 @property (nonatomic, copy)  NSString *descriptionStr;
 @end
 
@@ -59,6 +59,7 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
+    self.isFinishStatus = NO;
     [self.tableView reloadData];
     [self queryData];
 }
@@ -109,6 +110,10 @@
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
+    self.isFinishStatus = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+                  
+    //是为了验证，保存成功将按钮置灰
 }
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -144,13 +149,13 @@
         int height = 0;
         
         NSString *str = safeString(self.dataModel.info[@"autoAlarmContent"]);
-        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         height += fontRect.size.height;
         
         int height1 = 0;
         NSString *str1 = safeString(self.dataModel.info[@"manualAlarmContent"]);
-        CGRect fontRect1 = [str1 boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        CGRect fontRect1 = [str1 boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         height1 += fontRect1.size.height;
         
@@ -164,10 +169,12 @@
         int height = 0;
         
         NSString *str = safeString(self.dataModel.info[@"changeContent"]);
-        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         height += fontRect.size.height;
-        
+        if(str.length == 0) {
+            return 50;
+        }
         
         return height +60 +24;
     }else if (indexPath.section == 3) {
@@ -175,17 +182,21 @@
         int height = 0;
         NSString *str = safeString(self.dataModel.info[@"otherAlarmContent"]);
           
-            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
             NSLog(@"%f",fontRect.size.height);
             height += fontRect.size.height;
-       
+       if(str.length == 0) {
+           return 50;
+       }
         return height +24 +60;
     }else if (indexPath.section == 4) {
         
         NSString *str = safeString(self.dataModel.info[@"promptContent"]);
-        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
-        
+        if(str.length == 0) {
+            return 50;
+        }
         return fontRect.size.height+24 +60;
     }else if (indexPath.section == 5) {
         
@@ -201,7 +212,7 @@
                            
                            for (NSDictionary *dic in arr) {
                                NSString *str = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row +1,safeString(dic[@"name"])];
-                               CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, 200) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+                               CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
                                NSLog(@"%f",fontRect.size.height);
                                height += fontRect.size.height;
                            }
@@ -209,10 +220,20 @@
             }
            
         }
+       
       
        
         return 60;
     }else if (indexPath.section == 6) {
+        
+        
+        NSString *str = safeString(self.dataModel.info[@"changeContent"]);
+        
+        if(str.length == 0) {
+            return 0;
+        }
+        
+        
         return 95;
     }else if (indexPath.section == 7) {
        
@@ -350,6 +371,12 @@
             [cell.centerBtn setTitle:@"生成运行报告" forState:UIControlStateNormal];
         }
         [cell.centerBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        if(self.isFinishStatus) {
+            cell.centerBtn.enabled = NO;
+        }else {
+            cell.centerBtn.enabled = YES;
+            
+        }
         return cell;
     }
     return nil;
@@ -407,6 +434,8 @@
         NSLog(@"请求成功");
         if ([result[@"value"] boolValue]) {
             [MBProgressHUD showSuccess:@"接班成功"];
+            self.isFinishStatus = YES;
+            [self queryData];
         }
 //        [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
@@ -450,6 +479,8 @@
            }
         if ([result[@"value"] boolValue]) {
            [FrameBaseRequest showMessage:@"交班成功"];
+            self.isFinishStatus = YES;
+           [self queryData];
         }
 //        [self.navigationController popViewControllerAnimated:YES];
          NSLog(@"请求成功");
@@ -532,7 +563,9 @@
         }
       
         [FrameBaseRequest showMessage:@"生成报告成功"];
+        self.isFinishStatus = YES;
 //        [self.navigationController popViewControllerAnimated:YES];
+        [self queryData];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         
              

@@ -93,7 +93,8 @@
         else{
             subButton.selected = YES;
             [UIView animateWithDuration:0.2 animations:^{
-                self.lineImageView.frame = CGRectMake(subButton.frame.origin.x, self.frame.size.height-1, subButton.frame.size.width, 1);
+//                self.lineImageView.frame = CGRectMake(subButton.frame.origin.x, self.frame.size.height-1, subButton.frame.size.width, 1);
+                self.lineImageView.frame = CGRectMake(subButton.frame.origin.x +(subButton.frame.size.width -18)/2, self.frame.size.height-3, 18, 3);
             }];
         }
     }

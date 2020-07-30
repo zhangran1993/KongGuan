@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 
-
+@property (nonatomic, copy) NSString *beijiString;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
                                                         
@@ -115,20 +115,25 @@
             if ([safeString(titleString) containsString:@"主机"]) {
                 cell.titleLabel.text = @"工作";
                 cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-            }else if ([safeString(titleString) containsString:@"冷备"]) {
+            }else if ([safeString(titleString) containsString:@"备机"]) {
                 cell.titleLabel.text = @"备机";
-                cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+               
+                if([self.beijiString isEqualToString:@"冷备"]){
+                    cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+                }else {
+                    cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+                }
             }
         }
         
     }
     if(indexPath.section == 1) {
-        if ([safeString(titleString) containsString:@"工作"]) {
-            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-        }else {
+        if ([safeString(titleString) containsString:@"正常关闭"]) {
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#B8BFCC"];
+        }else {
+            cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
         }
-        cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        
         if ([safeString(titleString) containsString:@"主机"]) {
             cell.titleLabel.text = @"主机";
             cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
@@ -189,11 +194,11 @@
         pangluString = @"主机";
     }else if([safeString(workDic[@"valueAlias"]) isEqualToString:@"A机"]){
         pangluString = @"备机";
-        if([safeString(self.hotDic[@"valueAlias"]) isEqualToString:@"热备份"]){
-            pangluString = @"热备";
+        if([safeString(self.hotDic[@"valueAlias"]) isEqualToString:@"冷备份"]){
+            self.beijiString = @"冷备";
             
         }else {
-            pangluString = @"冷备";
+            self.beijiString = @"热备";
         }
     }
     [_dataArray replaceObjectAtIndex:0 withObject:pangluString];
@@ -219,6 +224,9 @@
     }else if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"未关闭"]){
         
         pangluString = @"正常工作";
+    }else if([safeString(statusDic[@"valueAlias"]) isEqualToString:@"正常关闭"]){
+        
+        pangluString = @"正常关闭";
     }
     [_dataArray replaceObjectAtIndex:1 withObject:pangluString];
     [self.tableView reloadData];

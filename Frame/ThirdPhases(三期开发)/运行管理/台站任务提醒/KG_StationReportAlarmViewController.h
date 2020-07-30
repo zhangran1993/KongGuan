@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KG_StationReportAlarmViewController : UIViewController
 
 @property (nonatomic,strong) NSArray *listArray;
+
 @end
 
 NS_ASSUME_NONNULL_END

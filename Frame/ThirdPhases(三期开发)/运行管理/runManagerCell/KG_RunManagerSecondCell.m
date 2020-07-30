@@ -134,7 +134,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    
+    
      if ([tableView isEqual:self.weihuTableView]) {
+         if(self.reportListArr.count == 1) {
+             return 64;
+         }
         return 32;
     }
     return 50;

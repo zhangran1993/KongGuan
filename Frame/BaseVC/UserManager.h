@@ -37,19 +37,23 @@ interfaceSingle(UserManager)
 @property (nonatomic, assign) BOOL isDeletePicture;
 //智维当前点击的segment的是第几个
 @property(nonatomic, assign) NSInteger  zhiweiSegmentCurIndex;
-
+//智维 z维护当前点击的segment的是第几个
+@property(nonatomic, assign) NSInteger  zhiweiWeihuIndex;
 
 @property(nonatomic, assign) BOOL isChangeTask;
 
-
+@property(nonatomic, strong) NSArray *cookieArray;
 //智维获取详情  的 remarkDic
 @property(nonatomic, strong) NSDictionary *remarkDic;
 
 //智维获取详情  的 resultDic
 @property(nonatomic, strong) NSDictionary *resultDic;
+
+@property(nonatomic, strong) NSDictionary *resultCardDic;
 //门禁当前点击的segment的是第几个
 @property(nonatomic, assign) NSInteger  accessSegmentCurIndex;
 - (void)saveStationData:(NSDictionary *)dataD ;
     
-
+//设备情况 是否进行了操作
+@property(nonatomic, assign) BOOL changeEquipStatus;
 @end

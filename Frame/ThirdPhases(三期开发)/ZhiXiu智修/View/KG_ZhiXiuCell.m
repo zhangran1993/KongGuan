@@ -146,10 +146,10 @@
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(model.stationName),safeString(model.engineRoomName)];
     self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-蓝",[CommonExtension getDeviceIcon:safeString(model.equipmentCategory)]]];
     
-    if([safeString(model.category) isEqualToString:@"navigation"]){
-        if ([safeString(model.type) isEqualToString:@"dme"]) {
+    if([safeString(model.equipmentCategory) isEqualToString:@"navigation"]){
+        if ([safeString(model.equipmentName) isEqualToString:@"导航DME"]) {
             self.iconImage.image =  [UIImage imageNamed:@"导航DME"];
-        }else if ([safeString(model.type) isEqualToString:@"dvor"]) {
+        }else if ([safeString(model.equipmentName) isEqualToString:@"导航DVOR"]) {
             self.iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
         }
      }
@@ -174,7 +174,7 @@
     NSString *levelString = @"level_normal";
     
     if ([level isEqualToString:@"正常"]) {
-        levelString = @"level_normal";
+        levelString = @"gaojing_red";
     }else if ([level isEqualToString:@"提示"]) {
         levelString = @"gaojing_prompt";
     }else if ([level isEqualToString:@"次要"]) {

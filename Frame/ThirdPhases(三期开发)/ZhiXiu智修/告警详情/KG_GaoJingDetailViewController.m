@@ -442,9 +442,10 @@
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
      paramDic[@"id"] = safeString(dataDic[@"id"]);
      paramDic[@"patrolName"] = safeString(userID);
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -453,7 +454,7 @@
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -949,19 +950,26 @@
 - (void)queryData {
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/handleAlarmStatus",WebNewHost];
     
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
             return ;
         }
+        NSString *status = safeString(self.paramDic[@"status"]);
+        if ([status isEqualToString:@"removed"]) {
+            [FrameBaseRequest showMessage:@"解除成功"];
+        }else {
+            [FrameBaseRequest showMessage:@"操作成功"];
+        }
         [self getData];
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

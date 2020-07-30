@@ -166,6 +166,7 @@
 
 - (void)selectedIndex:(NSInteger)index{
     NSLog(@"测试");
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [self.dataArray removeAllObjects];
     self.pageNum = 1;
     self.currIndex = (int)index;
@@ -251,10 +252,11 @@
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
      paramDic[@"id"] = safeString(dataDic[@"id"]);
         paramDic[@"patrolName"] = safeString(userID);
-       
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];  [FrameBaseRequest showMessage:@"领取失败"];
             return ;
@@ -264,7 +266,7 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [FrameBaseRequest showMessage:@"领取失败"];
-       
+       [MBProgressHUD hideHUD];
         return ;
     }];
     
@@ -293,6 +295,7 @@
 - (void)loadMoreData {
     
     self.pageNum ++;
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     //全部
     if (self.currIndex == 0) {
         [self loadAllMoreData];
@@ -326,6 +329,7 @@
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -351,7 +355,7 @@
         }
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -381,6 +385,8 @@
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcPatrolRecode/app/oneTouchTour/%d/%d",WebNewHost,self.pageNum,self.pageSize];
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        [MBProgressHUD hideHUD];
+        
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
@@ -407,7 +413,7 @@
         }
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -420,6 +426,7 @@
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -445,7 +452,7 @@
         }
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -458,6 +465,7 @@
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -483,7 +491,7 @@
         }
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -494,6 +502,7 @@
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcPatrolRecode/app/all/%d/%d",WebNewHost,self.pageNum,self.pageSize];
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
@@ -517,7 +526,7 @@
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -528,6 +537,7 @@
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -550,7 +560,7 @@
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -561,6 +571,7 @@
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -584,7 +595,7 @@
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -596,6 +607,7 @@
     WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -618,7 +630,7 @@
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

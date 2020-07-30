@@ -106,5 +106,10 @@
 - (void)setDataArray:(NSArray *)dataArray {
     _dataArray = dataArray;
     [self.tableView reloadData];
+    if (dataArray.count >2) {
+        self.tableView.scrollEnabled = YES;
+    }else {
+        self.tableView.scrollEnabled = NO;
+    }
 }
 @end

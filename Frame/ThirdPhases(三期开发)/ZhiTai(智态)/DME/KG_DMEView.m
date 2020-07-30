@@ -64,7 +64,7 @@
     
     self.topImage = [[UIImageView alloc]init];
     [self addSubview:self.topImage];
-    self.topImage.image = [UIImage imageNamed:@"dvor_icon"];
+    self.topImage.image = [UIImage imageNamed:@"导航DME"];
     [self.topImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.height.width.equalTo(@20);
@@ -624,7 +624,7 @@
     self.topStatusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]]];
     self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
     self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
-    if([totalDic[@"totalNum"] intValue] ==0) {
+    if([totalDic[@"totalLevel"] intValue] ==0) {
         self.statusNumLabel.hidden = YES;
     }else {
         self.statusNumLabel.hidden = NO;

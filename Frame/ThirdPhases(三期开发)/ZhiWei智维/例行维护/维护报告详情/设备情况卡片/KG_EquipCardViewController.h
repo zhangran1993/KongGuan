@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) KG_XunShiReportDetailModel *dataModel;
 
 @property (nonatomic ,strong) NSDictionary *dataDic;
+
+@property (nonatomic ,strong) void (^saveSuccessBlock)();
 @end
 
 NS_ASSUME_NONNULL_END
