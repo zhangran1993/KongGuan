@@ -227,7 +227,10 @@
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -292,7 +295,7 @@
     UILabel *titleLabel = [[UILabel alloc]init];
     [self.headView addSubview:titleLabel];
     titleLabel.text = @"系统和设备情况";
-    titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont systemFontOfSize:14];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.numberOfLines = 1;
@@ -323,7 +326,7 @@
     [self.leftBtn setBackgroundImage:[UIImage imageNamed:@"equip_buttonBgImage"] forState:UIControlStateNormal];
     self.leftBtn.contentMode = UIViewContentModeScaleAspectFill;
     [self.leftBtn setTitleColor:[UIColor colorWithHexString:@"#626470"] forState:UIControlStateNormal];
-    self.leftBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.leftBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.leftBtn sizeToFit];
     [self.leftBtn addTarget:self action:@selector(showAlertView) forControlEvents:UIControlEventTouchUpInside];
     [self.leftBtn.titleLabel setNumberOfLines:2];
@@ -340,7 +343,7 @@
     [self.rightBtn setBackgroundImage:[UIImage imageNamed:@"equip_buttonBgImage"] forState:UIControlStateNormal];
     self.rightBtn.contentMode = UIViewContentModeScaleAspectFill;
     [self.rightBtn setTitleColor:[UIColor colorWithHexString:@"#626470"] forState:UIControlStateNormal];
-    self.rightBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.rightBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.rightBtn sizeToFit];
     [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.leftBtn.mas_right).offset(5);

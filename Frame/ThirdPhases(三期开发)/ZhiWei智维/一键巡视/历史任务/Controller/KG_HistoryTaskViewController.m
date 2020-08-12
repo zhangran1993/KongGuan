@@ -242,8 +242,9 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     NSDictionary *dataDic = self.dataArray[indexPath.row];
-    cell.currIndex = self.currIndex;
     cell.dataDic = dataDic;
+    cell.currIndex = self.currIndex;
+   
     cell.taskMethod = ^(NSDictionary * _Nonnull dic) {
         [self getTask:dic];
     };
@@ -267,10 +268,35 @@
         }
        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
        [FrameBaseRequest showMessage:@"领取成功"];
+        
+        
+        [self.dataArray removeAllObjects];
+        self.pageNum = 1;
+      
+        if (self.currIndex == 0) {
+            NSLog(@"1");
+            [self loadData];
+        }else if (self.currIndex == 1){
+            NSLog(@"2");
+            [self getXunShiHistoryData];
+        }else if (self.currIndex == 2){
+            NSLog(@"3");
+            [self getWeiHuHistoryData];
+        }else if (self.currIndex == 3){
+            NSLog(@"4");
+            [self getBaoZhangHistoryData];
+        }
+         
+        
+        
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [FrameBaseRequest showMessage:@"领取失败"];
        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         return ;
     }];
     
@@ -361,6 +387,10 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         return ;
     }];
 }
@@ -419,6 +449,10 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         return ;
     }];
 }
@@ -458,6 +492,10 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         return ;
     }];
 }
@@ -496,6 +534,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -531,6 +573,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -565,6 +611,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -600,6 +650,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -635,6 +689,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

@@ -11,16 +11,18 @@
 
 @interface KG_XunShiTopView ()<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic ,strong) UITableView *tableView;
+@property (nonatomic ,strong)     UITableView *tableView;
 
-@property (nonatomic ,strong) NSArray *dataArray;
+@property (nonatomic ,strong)     NSArray *dataArray;
 
-@property (nonatomic ,assign) BOOL shouqi;
-@property (nonatomic ,strong) NSDictionary *shouqiDic;
+@property (nonatomic ,assign)     BOOL shouqi;
 
-@property (nonatomic ,copy) NSString *leadStr;
+@property (nonatomic ,strong)     NSDictionary *shouqiDic;
 
-@property (nonatomic ,copy) NSString *personStr;
+@property (nonatomic ,copy)       NSString *leadStr;
+
+@property (nonatomic ,copy)       NSString *personStr;
+
 @end
 
 @implementation KG_XunShiTopView
@@ -52,6 +54,7 @@
         make.right.equalTo(self.mas_right);
         make.bottom.equalTo(self.mas_bottom);
     }];
+    
     [self.tableView reloadData];
 
 }
@@ -188,7 +191,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
-    return 54;
+    return 44;
 }
 
 
@@ -247,6 +250,14 @@
     UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 44,SCREEN_WIDTH, 10)];
     [footView addSubview:bgView];
     bgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(footView.mas_bottom);
+        make.height.equalTo(@10);
+        make.left.equalTo(footView.mas_left);
+        make.right.equalTo(footView.mas_right);
+        
+    }];
     return footView;
 }
 - (UIImage *)image:(UIImage *)image rotation:(UIImageOrientation)orientation
@@ -332,7 +343,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
-    return 44;
+    return 54;
 }
 
 - (void)setModel:(KG_XunShiReportDetailModel *)model {

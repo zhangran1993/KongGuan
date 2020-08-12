@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,strong)NSArray *dataArray;
 @property (nonatomic ,strong) NSDictionary *dataDic;
+@property (nonatomic ,strong) NSString *leftStr;
+
+@property (nonatomic ,strong) NSString *leftIconStr;
 @end
 
 NS_ASSUME_NONNULL_END

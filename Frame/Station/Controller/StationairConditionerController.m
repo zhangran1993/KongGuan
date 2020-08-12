@@ -460,6 +460,13 @@
 //            [self.navigationController popToViewController:viewCtl animated:YES];
 //            return;
 //        }
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         

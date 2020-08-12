@@ -90,6 +90,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshYunxingData) name:@"refreshYunxingData" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCookies) name:@"changeCookies" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginOutMethod) name:@"loginOutMethod" object:nil];
     
     //获取当前的台站信息
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -111,13 +112,20 @@
 }
 
 - (void)changeCookies {
-    [FrameBaseRequest showMessage:@"登录已过期，请重新登录"];
-    //跳转登陆页
+    [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+    [FrameBaseRequest logout];
     LoginViewController *login = [[LoginViewController alloc] init];
-    
-    login.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:login animated:YES];
+    [self.slideMenuController showViewController:login];
 }
+//登录已过期方法
+- (void)loginOutMethod {
+    [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+    [FrameBaseRequest logout];
+    LoginViewController *login = [[LoginViewController alloc] init];
+    [self.slideMenuController showViewController:login];
+    
+}
+
 -(void)dealloc
 {
     [super dealloc];
@@ -816,7 +824,7 @@ navigationController willShowViewController:
             
         }else if(responses.statusCode == 502){
             
-               }
+        }
     }];
     
 }
@@ -1256,6 +1264,13 @@ navigationController willShowViewController:
         }  failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
             dispatch_group_leave(group);
+            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+                [FrameBaseRequest logout];
+                LoginViewController *login = [[LoginViewController alloc] init];
+                [self.slideMenuController showViewController:login];
+                return;
+            }
 //            [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];

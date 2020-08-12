@@ -188,6 +188,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -224,6 +228,11 @@
         if (biaoqianArr.count  &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
             return 134;
         }else {
+            NSArray *specArr = dataDic[@"atcSpecialTagList"];
+            if (specArr.count ) {
+                return 134;
+            }
+            
             return  108;
         }
     }
@@ -248,6 +257,7 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
+        [self.dataArray removeAllObjects];
         [self.dataArray addObjectsFromArray:result[@"value"]];
         
         [self.tableView reloadData];
@@ -255,7 +265,14 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        [MBProgressHUD hideHUD]; 
+        [MBProgressHUD hideHUD];
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         

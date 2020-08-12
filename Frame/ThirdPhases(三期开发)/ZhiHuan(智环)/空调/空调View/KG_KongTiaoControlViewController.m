@@ -62,7 +62,16 @@
 @property (nonatomic, copy) NSString *textFieldString;
 
 @property (nonatomic, strong) UIButton *confirmBtn ;
+//初始化选择；
+@property (nonatomic, assign) BOOL containZhiRe;
 
+@property (nonatomic, assign) BOOL containZhiLeng;
+
+@property (nonatomic, assign) BOOL containChuShi;
+
+@property (nonatomic, assign) BOOL containSongfeng;
+
+@property (nonatomic, copy) NSString *startStr;
 @end
 
 @implementation KG_KongTiaoControlViewController
@@ -74,10 +83,16 @@
     self.modelString = @"hot";
     self.temValue = 16;
     self.switchStatus = @"on";
+    self.containZhiRe = YES;
+    self.containZhiLeng = YES;
+    self.containChuShi = YES;
+    self.containSongfeng = YES;
+    
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self createScrollView];
     [self createView];
     [self createSliderView];
+    
 }
 
 - (void)createScrollView {
@@ -91,7 +106,7 @@
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     
-
+    
 }
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -106,33 +121,33 @@
     return _tableView;
 }
 - ( void)createSliderView{
-//    self.minAge = 16;
-//    self.maxAge = 24;
-//    self.curMinAge = 16;
-//    self.curMaxAge = 24;
-//
-//    self.view.backgroundColor = [UIColor whiteColor];
-//
-//
-//
-//    [self.view addSubview:self.ageLabel];
-//    [self.view addSubview:self.ageTipsLabel];
-//    [self.view addSubview:self.doubleSliderView];
-////    [self.doubleSliderView mas_makeConstraints:^(MASConstraintMaker *make) {
-////        make.left.equalTo(self.tempSelLabel.mas_right).offset(5);
-////        make.height.equalTo(@55);
-////        make.centerY.equalTo(self.tempSelLabel.mas_centerY);
-////        make.right.equalTo(self.view.mas_right).offset(-31);
-////    }];
-//
-//    self.ageLabel.centerY = 156+120+45;
-//    self.ageLabel.x = 80;
-//
-//    self.ageTipsLabel.centerY = self.ageLabel.centerY;
-//    self.ageTipsLabel.x = self.ageLabel.right + 7;
-//
-//    self.doubleSliderView.x = 80;
-//    self.doubleSliderView.y = 185 - 10+120+45;
+    //    self.minAge = 16;
+    //    self.maxAge = 24;
+    //    self.curMinAge = 16;
+    //    self.curMaxAge = 24;
+    //
+    //    self.view.backgroundColor = [UIColor whiteColor];
+    //
+    //
+    //
+    //    [self.view addSubview:self.ageLabel];
+    //    [self.view addSubview:self.ageTipsLabel];
+    //    [self.view addSubview:self.doubleSliderView];
+    ////    [self.doubleSliderView mas_makeConstraints:^(MASConstraintMaker *make) {
+    ////        make.left.equalTo(self.tempSelLabel.mas_right).offset(5);
+    ////        make.height.equalTo(@55);
+    ////        make.centerY.equalTo(self.tempSelLabel.mas_centerY);
+    ////        make.right.equalTo(self.view.mas_right).offset(-31);
+    ////    }];
+    //
+    //    self.ageLabel.centerY = 156+120+45;
+    //    self.ageLabel.x = 80;
+    //
+    //    self.ageTipsLabel.centerY = self.ageLabel.centerY;
+    //    self.ageTipsLabel.x = self.ageLabel.right + 7;
+    //
+    //    self.doubleSliderView.x = 80;
+    //    self.doubleSliderView.y = 185 - 10+120+45;
     
     
 }
@@ -218,7 +233,7 @@
 }
 
 - (void)createView {
-   
+    
     
     
 }
@@ -231,6 +246,24 @@
     [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
     [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
     [self.btn4 setImage:[UIImage imageNamed:@"送风可选未选中"] forState:UIControlStateNormal];
+    if (!self.containZhiRe) {
+        [self.btn1 setImage:[UIImage imageNamed:@"制热不可选"] forState:UIControlStateNormal];
+        self.btn1.userInteractionEnabled = NO;
+    }
+    if (!self.containZhiLeng) {
+        self.btn2.userInteractionEnabled = NO;
+        [self.btn2 setImage:[UIImage imageNamed:@"制冷不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containChuShi) {
+        self.btn3.userInteractionEnabled = NO;
+        [self.btn3 setImage:[UIImage imageNamed:@"除湿不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containSongfeng) {
+        self.btn4.userInteractionEnabled = NO;
+        [self.btn4 setImage:[UIImage imageNamed:@"送风不可选"] forState:UIControlStateNormal];
+    }
+    
+    
 }
 - (void)btn2Method {
     self.modelString = @"temperature";//制冷
@@ -240,6 +273,22 @@
     [self.btn2 setImage:[UIImage imageNamed:@"制冷可选选中"] forState:UIControlStateNormal];
     [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
     [self.btn4 setImage:[UIImage imageNamed:@"送风可选未选中"] forState:UIControlStateNormal];
+    if (!self.containZhiRe) {
+        [self.btn1 setImage:[UIImage imageNamed:@"制热不可选"] forState:UIControlStateNormal];
+        self.btn1.userInteractionEnabled = NO;
+    }
+    if (!self.containZhiLeng) {
+        self.btn2.userInteractionEnabled = NO;
+        [self.btn2 setImage:[UIImage imageNamed:@"制冷不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containChuShi) {
+        self.btn3.userInteractionEnabled = NO;
+        [self.btn3 setImage:[UIImage imageNamed:@"除湿不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containSongfeng) {
+        self.btn4.userInteractionEnabled = NO;
+        [self.btn4 setImage:[UIImage imageNamed:@"送风不可选"] forState:UIControlStateNormal];
+    }
     
 }
 - (void)btn3Method {
@@ -250,7 +299,50 @@
     [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
     [self.btn3 setImage:[UIImage imageNamed:@"除湿可选选中"] forState:UIControlStateNormal];
     [self.btn4 setImage:[UIImage imageNamed:@"送风可选未选中"] forState:UIControlStateNormal];
+    if (!self.containZhiRe) {
+        [self.btn1 setImage:[UIImage imageNamed:@"制热不可选"] forState:UIControlStateNormal];
+        self.btn1.userInteractionEnabled = NO;
+    }
+    if (!self.containZhiLeng) {
+        self.btn2.userInteractionEnabled = NO;
+        [self.btn2 setImage:[UIImage imageNamed:@"制冷不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containChuShi) {
+        self.btn3.userInteractionEnabled = NO;
+        [self.btn3 setImage:[UIImage imageNamed:@"除湿不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containSongfeng) {
+        self.btn4.userInteractionEnabled = NO;
+        [self.btn4 setImage:[UIImage imageNamed:@"送风不可选"] forState:UIControlStateNormal];
+    }
     
+    
+}
+
+- (void)btn5Method {
+    self.modelString = @"";//送风
+    self.weatherImage.image = [UIImage imageNamed:@""];
+    self.tempTextTitle.text = [NSString stringWithFormat:@""];
+    [self.btn1 setImage:[UIImage imageNamed:@"制热可选未选中"] forState:UIControlStateNormal];
+    [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
+    [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
+    [self.btn4 setImage:[UIImage imageNamed:@"送风可选选中"] forState:UIControlStateNormal];
+    if (!self.containZhiRe) {
+        [self.btn1 setImage:[UIImage imageNamed:@"制热不可选"] forState:UIControlStateNormal];
+        self.btn1.userInteractionEnabled = NO;
+    }
+    if (!self.containZhiLeng) {
+        self.btn2.userInteractionEnabled = NO;
+        [self.btn2 setImage:[UIImage imageNamed:@"制冷不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containChuShi) {
+        self.btn3.userInteractionEnabled = NO;
+        [self.btn3 setImage:[UIImage imageNamed:@"除湿不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containSongfeng) {
+        self.btn4.userInteractionEnabled = NO;
+        [self.btn4 setImage:[UIImage imageNamed:@"送风不可选"] forState:UIControlStateNormal];
+    }
 }
 - (void)btn4Method {
     self.modelString = @"wind ";//送风
@@ -260,6 +352,23 @@
     [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
     [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
     [self.btn4 setImage:[UIImage imageNamed:@"送风可选选中"] forState:UIControlStateNormal];
+    if (!self.containZhiRe) {
+        [self.btn1 setImage:[UIImage imageNamed:@"制热不可选"] forState:UIControlStateNormal];
+        self.btn1.userInteractionEnabled = NO;
+    }
+    if (!self.containZhiLeng) {
+        self.btn2.userInteractionEnabled = NO;
+        [self.btn2 setImage:[UIImage imageNamed:@"制冷不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containChuShi) {
+        self.btn3.userInteractionEnabled = NO;
+        [self.btn3 setImage:[UIImage imageNamed:@"除湿不可选"] forState:UIControlStateNormal];
+    }
+    if (!self.containSongfeng) {
+        self.btn4.userInteractionEnabled = NO;
+        [self.btn4 setImage:[UIImage imageNamed:@"送风不可选"] forState:UIControlStateNormal];
+    }
+    
     
 }
 - (UIImage*)createImageWithColor: (UIColor*) color{
@@ -346,7 +455,7 @@
                 }
                 
             }else {
-               [FrameBaseRequest showMessage:@"设置成功"];
+                [FrameBaseRequest showMessage:@"设置成功"];
             }
             
         }
@@ -361,7 +470,10 @@
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -369,7 +481,7 @@
 
 - (void)powMethod:(UIButton *)button {
     self.modelString = @"switch";
-  
+    
     [self.powOnView removeFromSuperview];
     _powOnView = nil;
     self.powOnView.hidden = NO;
@@ -383,8 +495,8 @@
     self.powOnView.textFieldString = ^(NSString * _Nonnull textFieldStr) {
         self.textFieldString = textFieldStr;
     };
-   
-   
+    
+    
 }
 
 
@@ -443,31 +555,106 @@
 - (void)setDataArray:(NSArray *)dataArray{
     _dataArray = dataArray;
     
-  
+    
     
 }
 
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
-    NSString *code = safeString(_dataDic[@"category"]);
-    NSString *name = safeString(_dataDic[@"name"]);
     self.leftIcon.image = [UIImage imageNamed:[CommonExtension getDeviceIcon:safeString(_dataDic[@"category"])]];
     
-//    if([safeString(_dataDic[@"category"]) isEqualToString:@"navigation"]){
-//        if ([safeString(_dataDic[@"type"]) isEqualToString:@"dme"]) {
-//            self.leftIcon.image =  [UIImage imageNamed:@"导航DME"];
-//        }else if ([safeString(_dataDic[@"type"]) isEqualToString:@"dvor"]) {
-//            self.leftIcon.image =  [UIImage imageNamed:@"导航DVOR"];
-//        }
-//    }
     if (safeString(dataDic[@"reverseControl"])) {
         [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
         self.confirmBtn.userInteractionEnabled = YES;
     }else {
-         [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#C2CDDE"] forState:UIControlStateNormal];
+        [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#C2CDDE"] forState:UIControlStateNormal];
         self.confirmBtn.userInteractionEnabled = NO;
     }
-
+    
+    NSArray *functionArr = self.dataDic[@"controlConfigList"];
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+    for (NSDictionary *funDic in functionArr) {
+        NSString *funStr = safeString(funDic[@"modeName"]);
+        [arr addObject:funStr];
+    }
+    
+    NSString *str = @"制热模式";
+    NSString *str1 = @"制冷模式";
+    NSString *str2 = @"除湿模式";
+    NSString *str3 = @"送风模式";
+    NSString *str4 = @"开关模式";
+    
+    if(![arr containsObject:str]){
+        self.containZhiRe = NO;
+        
+    }
+    if(![arr containsObject:str1]){
+        self.containZhiLeng = NO;
+        
+    }
+    if(![arr containsObject:str2]){
+        self.containChuShi = NO;
+        
+    }
+    if(![arr containsObject:str3]){
+        self.containSongfeng =  NO;
+       
+    }
+    self.startStr = @"1";
+    int num = 0;
+    if (functionArr.count >0) {
+        for (NSDictionary *ssDic in functionArr) {
+            NSString *funStr = safeString(ssDic[@"modeName"]);
+            if ([funStr isEqualToString:str]) {
+                self.startStr = @"1";
+                num ++;
+            }
+        }
+        if (num == 0) {
+            for (NSDictionary *ssDic in functionArr) {
+                NSString *funStr = safeString(ssDic[@"modeName"]);
+                if ([funStr isEqualToString:str1]) {
+                    self.startStr = @"2";
+                    num ++;
+                }
+            }
+        }
+        
+        if (num == 0) {
+            for (NSDictionary *ssDic in functionArr) {
+                NSString *funStr = safeString(ssDic[@"modeName"]);
+                if ([funStr isEqualToString:str2]) {
+                    self.startStr = @"3";
+                    num ++;
+                }
+            }
+        }
+        
+        if (num == 0) {
+            for (NSDictionary *ssDic in functionArr) {
+                NSString *funStr = safeString(ssDic[@"modeName"]);
+                if ([funStr isEqualToString:str3]) {
+                    self.startStr = @"4";
+                    num ++;
+                }
+            }
+        }
+        
+        if (num == 0) {
+            
+            self.startStr = @"5";
+            
+        }
+        
+        
+        
+    }
+    
+    [self.tableView reloadData];
+    
+    
+    
+    
 }
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -493,7 +680,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
     self.leftIcon = [[UIImageView alloc]init];
     [cell addSubview:self.leftIcon];
-    
+    self.leftIcon.image = [UIImage imageNamed:@"空调"];
     [self.leftIcon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.mas_left).offset(18);
         make.width.equalTo(@15);
@@ -503,7 +690,7 @@
     
     self.leftTitle = [[UILabel alloc]init];
     [cell addSubview:self.leftTitle];
-    self.leftTitle.text = @"空调";
+    self.leftTitle.text = safeString(self.leftStr);
     self.leftTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.leftTitle.font = [UIFont boldSystemFontOfSize:14];
     self.leftTitle.textAlignment = NSTextAlignmentLeft;
@@ -511,7 +698,7 @@
         make.left.equalTo(self.leftIcon.mas_right).offset(5);
         make.centerY.equalTo(self.leftIcon.mas_centerY);
         make.height.equalTo(@21);
-        make.width.equalTo(@100);
+        make.width.equalTo(@250);
     }];
     
     self.moreBtn = [[UIButton alloc]init];
@@ -643,9 +830,33 @@
         make.left.equalTo(cell.mas_left).offset(16);
     }];
     
+    NSArray *functionArr = self.dataDic[@"controlConfigList"];
+    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+    for (NSDictionary *funDic in functionArr) {
+        NSString *funStr = safeString(funDic[@"modeName"]);
+        [arr addObject:funStr];
+    }
+    
+    NSString *str = @"制热模式";
+    NSString *str1 = @"制冷模式";
+    NSString *str2 = @"除湿模式";
+    NSString *str3 = @"送风模式";
+    NSString *str4 = @"开关模式";
+    
+    
+    
+    
+    
+    
     self.btn1 = [[UIButton alloc]init];
     [self.btn1 setImage:[UIImage imageNamed:@"制热可选选中"] forState:UIControlStateNormal];
-//    self.btn1.enabled = NO;
+    //    self.btn1.enabled = NO;
+    if(![arr containsObject:str]){
+        [self.btn1 setImage:[UIImage imageNamed:@"制热不可选"] forState:UIControlStateNormal];
+        self.btn1.userInteractionEnabled = NO;
+    }else {
+        self.btn1.userInteractionEnabled = YES;
+    }
     [self.btn1 addTarget:self action:@selector(btn1Method) forControlEvents:UIControlEventTouchUpInside];
     [cell addSubview:self.btn1];
     [self.btn1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -658,6 +869,10 @@
     [cell addSubview:self.btn2];
     [self.btn2 addTarget:self action:@selector(btn2Method) forControlEvents:UIControlEventTouchUpInside];
     [self.btn2 setImage:[UIImage imageNamed:@"制冷可选未选中"] forState:UIControlStateNormal];
+    if(![arr containsObject:str1]){
+        [self.btn2 setImage:[UIImage imageNamed:@"制冷不可选"] forState:UIControlStateNormal];
+        self.btn2.userInteractionEnabled = NO;
+    }
     [self.btn2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@40);
         make.left.equalTo(self.btn1.mas_right).offset(22);
@@ -668,6 +883,10 @@
     [cell addSubview:self.btn3];
     [self.btn3 addTarget:self action:@selector(btn3Method) forControlEvents:UIControlEventTouchUpInside];
     [self.btn3 setImage:[UIImage imageNamed:@"除湿可选未选中"] forState:UIControlStateNormal];
+    if(![arr containsObject:str2]){
+        [self.btn3 setImage:[UIImage imageNamed:@"除湿不可选"] forState:UIControlStateNormal];
+        self.btn3.userInteractionEnabled = NO;
+    }
     [self.btn3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@40);
         make.left.equalTo(self.btn2.mas_right).offset(22);
@@ -678,6 +897,10 @@
     [cell addSubview:self.btn4];
     [self.btn4 addTarget:self action:@selector(btn4Method) forControlEvents:UIControlEventTouchUpInside];
     [self.btn4 setImage:[UIImage imageNamed:@"送风可选未选中"] forState:UIControlStateNormal];
+    if(![arr containsObject:str3]){
+        [self.btn4 setImage:[UIImage imageNamed:@"送风不可选"] forState:UIControlStateNormal];
+        self.btn4.userInteractionEnabled = NO;
+    }
     [self.btn4 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@40);
         make.left.equalTo(self.btn3.mas_right).offset(22);
@@ -731,8 +954,36 @@
         make.centerY.equalTo(self.tempSelLabel.mas_centerY);
         make.right.equalTo(cell.mas_right).offset(-31);
     }];
+    if(self.dataDic.count) {
+        if ([self.startStr isEqualToString:@"1"]) {
+               [self btn1Method];
+           }else if ([self.startStr isEqualToString:@"2"]) {
+               [self btn2Method];
+           }else if ([self.startStr isEqualToString:@"3"]) {
+               [self btn3Method];
+           }else if ([self.startStr isEqualToString:@"4"]) {
+               [self btn4Method];
+           }else if ([self.startStr isEqualToString:@"5"]) {
+               [self btn5Method];
+           }
+    }
+   
+    
     return cell;
 }
+
+- (void)setLeftStr:(NSString *)leftStr {
+    _leftStr = leftStr;
+    self.leftTitle.text = leftStr;
+    
+}
+
+- (void)setLeftIconStr:(NSString *)leftIconStr {
+    _leftIconStr = leftIconStr;
+    self.leftIcon.image = [UIImage imageNamed:@"空调"];
+    
+}
+
 
 
 @end

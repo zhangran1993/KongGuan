@@ -178,7 +178,7 @@
         UILabel *titleLabel = [[UILabel alloc]init];
         titleLabel.numberOfLines = 1;
         titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-        titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+        titleLabel.font = [UIFont systemFontOfSize:14];
         [headView addSubview:titleLabel];
         [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(headView.mas_left).offset(16);
@@ -213,7 +213,7 @@
         UILabel *titleLabel = [[UILabel alloc]init];
         [headView addSubview:titleLabel];
         titleLabel.text = @"操作指引";
-        titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+        titleLabel.font = [UIFont systemFontOfSize:14];
         titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
         titleLabel.numberOfLines = 1;

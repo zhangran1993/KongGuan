@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic ,strong) NSDictionary *dataDic;
+
+@property (nonatomic, strong) UIImageView *iconImage;
+
+@property (nonatomic, strong) UILabel *titlelLabel;
 @end
 
 NS_ASSUME_NONNULL_END

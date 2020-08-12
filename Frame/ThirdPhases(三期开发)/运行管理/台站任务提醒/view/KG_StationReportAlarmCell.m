@@ -188,7 +188,7 @@
 ////                    特殊保障分为特殊维护specialSafeguard和特殊巡视specialTour
 - (void)setDic:(NSDictionary *)dic {
     _dic = dic;
-    
+    self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"planStartTime"])];
     if([safeString(dic[@"typeCode"]) isEqualToString:@"oneTouchTour"]){
         
         if ([safeString(dic[@"taskName"]) containsString:@"现场巡视"]) {
@@ -196,19 +196,23 @@
         }else {
             self.typeImage.image = [UIImage imageNamed:@"类型标签-一键巡视"];
         }
+        self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"patrolIntervalTime"])];
     }else if([safeString(dic[@"typeCode"]) isEqualToString:@"routineMaintenance"]){
         
         self.typeImage.image = [UIImage imageNamed:@"类型标签-例行维护"];
+        self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"planStartTime"])];
     }else if([safeString(dic[@"typeCode"]) isEqualToString:@"specialSafeguard"]){
         
         self.typeImage.image = [UIImage imageNamed:@"类型标签-特殊保障"];
+        self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"planStartTime"])];
     }else if([safeString(dic[@"typeCode"]) isEqualToString:@"specialTour"]){
         
         self.typeImage.image = [UIImage imageNamed:@"类型标签-特殊巡视"];
+        self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"planStartTime"])];
     }
     
     self.titleLabel.text = safeString(dic[@"taskName"]);
-    self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"patrolIntervalTime"])];
+    
     
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dic[@"leaderName"])];
     

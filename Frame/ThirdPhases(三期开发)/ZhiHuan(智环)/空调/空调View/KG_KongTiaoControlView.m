@@ -172,13 +172,13 @@
     self.roomLabel = [[UILabel alloc]init];
     self.roomLabel.font = [UIFont systemFontOfSize:14];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.roomLabel.numberOfLines = 1;
+    self.roomLabel.numberOfLines = 2;
+    [self.roomLabel sizeToFit];
     [self.topView addSubview:self.roomLabel];
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(6);
         make.top.equalTo(self.topView.mas_top).offset(24);
         make.right.equalTo(self.topView.mas_right).offset(0);
-        make.height.equalTo(@21);
     }];
     
     self.gaojingLabel = [[UILabel alloc]init];
@@ -429,8 +429,11 @@
        }
        
     [self.equipImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]] placeholderImage:[UIImage imageNamed:@"station_indexbg"] ];
-    self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(_dataDic[@"alias"]),safeString(_dataDic[@"name"])];
-    
+    self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(_dataDic[@"roomName"]),safeString(_dataDic[@"name"])];
+    self.cedianView.leftStr = safeString(_dataDic[@"name"]);
+    self.cedianView.leftIconStr = safeString(_dataDic[@"name"]);
+    self.controlView.leftStr = safeString(_dataDic[@"name"]);
+    self.controlView.leftIconStr = safeString(_dataDic[@"name"]);
     
 //
 //    NSString *code = safeString(_dataDic[@"name"]);
@@ -523,14 +526,17 @@
                         
                    
                         if ([value isEqualToString:@"关闭"]) {
-                            [self endAnimation];
+//                            [self endAnimation];
                         }else if ([value isEqualToString:@"运行"]) {
                             [self startAnimation];
+                            
                         }
                         
                         self.runStatusDetailLabel.hidden = YES;
                         self.fengshanImage.hidden = NO;
                     }
+                    
+                    break;
                 }
             }
         }

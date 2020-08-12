@@ -248,7 +248,7 @@
     self.titleLabel = [[UILabel alloc]init];
  
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:self.titleLabel];
@@ -262,9 +262,6 @@
             self.titleLabel.text = safeString(dataDic[@"engineRoomName"]);
         }
     }
-    
-    
-    
     [self.titleLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(headView.mas_centerY);
         make.left.equalTo(iconImage.mas_right).offset(8);
@@ -276,15 +273,15 @@
     return headView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
-   
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 2)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return footView;
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
-    return 0.001;
+    return 2;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     

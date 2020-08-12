@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *timeLabel;
 
 @property (nonatomic, strong) UILabel *personLabel;
-
+@property (nonatomic, strong) UIImageView *typeImage;
 
 @property (nonatomic, strong) UIButton *taskButton;
 

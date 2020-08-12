@@ -355,11 +355,11 @@
         [self refreshStationData];
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-       
+               NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
+            
         }else if(responses.statusCode == 502){
             
         }
@@ -411,7 +411,10 @@
         NSLog(@"请求成功");
     } failure:^(NSError *error) {
         //        [FrameBaseRequest showMessage:@"网络链接失败"];
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         return ;
     }];
     /** 离开当前任务组 **/
@@ -450,7 +453,14 @@
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-       
+       NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+       if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+           return;
+           
+       }else if(responses.statusCode == 502){
+           
+       }
         return ;
         
     }];
@@ -496,12 +506,14 @@
             
         } failure:^(NSURLSessionDataTask *error)  {
             FrameLog(@"请求失败，返回数据 : %@",error);
-            NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+          
               /** 离开当前任务组 **/
             dispatch_group_leave(group);
+                 NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
             if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
                 return;
+                
             }else if(responses.statusCode == 502){
                 
             }

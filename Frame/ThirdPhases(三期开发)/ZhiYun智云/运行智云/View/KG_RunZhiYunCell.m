@@ -11,9 +11,7 @@
 @interface KG_RunZhiYunCell (){
     
 }
-@property (nonatomic, strong) UIImageView *iconImage;
 
-@property (nonatomic, strong) UILabel *titlelLabel;
 
 @end
 
@@ -59,6 +57,17 @@
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
     self.titlelLabel.text = safeString(dataDic[@"title"]);
+    
+    if([safeString(dataDic[@"title"]) isEqualToString:@"零备件"] ||
+       [safeString(dataDic[@"title"]) isEqualToString:@"技术资料"] ||
+       [safeString(dataDic[@"title"]) isEqualToString:@"巡视维护记录"]) {
+       self.titlelLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+        
+    }else {
+        self.titlelLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+      
+    }
+    
 //    [ sd_setImageWithURL:[NSURL URLWithString:safeString(dataDic[@"icon"])]];
     self.iconImage.image = [UIImage imageNamed:safeString(dataDic[@"icon"])];
     

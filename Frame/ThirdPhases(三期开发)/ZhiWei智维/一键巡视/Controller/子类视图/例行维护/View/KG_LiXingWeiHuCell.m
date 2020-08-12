@@ -67,7 +67,7 @@
     
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
-    self.roomLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.roomLabel.font = [UIFont systemFontOfSize:12];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
     self.roomLabel.numberOfLines = 2;
@@ -110,12 +110,13 @@
     self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
-    self.detailLabel.numberOfLines = 1;
+    self.detailLabel.numberOfLines = 2;
+    [self.detailLabel sizeToFit];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_left);
         make.right.equalTo(self.rightView.mas_right).offset(-20);
-        make.top.equalTo(self.iconImage.mas_bottom).offset(12);
-        make.height.equalTo(@14);
+        make.top.equalTo(self.roomLabel.mas_bottom).offset(12);
+        
     }];
     
 //    self.starImage = [[UIImageView alloc]init];
@@ -160,7 +161,7 @@
     }];
     self.timeLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.timeLabel];
-    self.timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.timeLabel.textAlignment = NSTextAlignmentLeft;
     self.timeLabel.numberOfLines = 1;
@@ -173,7 +174,7 @@
     }];
     self.personLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.personLabel];
-    self.personLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.personLabel.font = [UIFont systemFontOfSize:12];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.personLabel.textAlignment = NSTextAlignmentRight;
     self.personLabel.numberOfLines = 1;
@@ -219,7 +220,18 @@
     self.statusLabel.textColor = [self getTaskColor:safeString(dataDic[@"status"])];
     self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dataDic[@"status"])]]];
     self.detailLabel.text = safeString(dataDic[@"taskName"]);
-    self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"createTime"])];
+    
+    if ([safeString(dataDic[@"patrolCode"]) isEqualToString:@"weekSafeguard"]
+        ||[safeString(dataDic[@"patrolCode"]) isEqualToString:@"daySafeguard"]
+        ||[safeString(dataDic[@"patrolCode"]) isEqualToString:@"monthSafeguard"]) {
+        self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"planStartTime"])];
+    }else if ([safeString(dataDic[@"patrolCode"]) isEqualToString:@"yearSafeguard"]){
+        
+        self.timeLabel.text = [NSString stringWithFormat:@"%@-%@",[self timestampToTimeStr:safeString(dataDic[@"planStartTime"])],[self timestampToTimeStr:safeString(dataDic[@"planFinishTime"])]];
+    }else {
+        self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"planStartTime"])];
+    }
+    
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dataDic[@"leaderName"])];
     if([safeString(dataDic[@"status"]) isEqualToString:@"5"]){
         

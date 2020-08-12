@@ -175,7 +175,10 @@
         
       } failure:^(NSError *error)  {
           FrameLog(@"请求失败，返回数据 : %@",error);
-          
+          if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+              [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+              return;
+          }
           [FrameBaseRequest showMessage:@"网络链接失败"];
           return ;
       }];
@@ -530,7 +533,10 @@
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

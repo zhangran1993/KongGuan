@@ -10,6 +10,11 @@
 #import "KG_RunZhiYunCell.h"
 #import "KG_ZhiTaiStationModel.h"
 #import "UIViewController+CBPopup.h"
+#import "KG_RunZhiYunViewController.h"
+#import "KG_RunZhiHuiYunViewController.h"
+#import "KG_JiShuZiLiaoViewController.h"
+#import "KG_ZhiXiuBeiJianListViewController.h"
+#import "KG_ZhiXiuXunshiRecordViewController.h"
 @interface KG_RunZhiYunViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource>
 //品牌
 @property (nonatomic,strong)UICollectionView *collectionView;
@@ -33,8 +38,73 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self createNaviTopView];
+    [self createTopView];
     [self initViewData];
     
+}
+
+- (void)createTopView {
+    UIView *topView = [[UIView alloc]init];
+    [self.view addSubview:topView];
+    topView.backgroundColor = [UIColor colorWithHexString:@"#F7F9FB"];
+    topView.layer.cornerRadius = 10.f;
+    topView.layer.masksToBounds = YES;
+    [topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+        make.height.equalTo(@120);
+    }];
+    
+    UIImageView *speakIcon = [[UIImageView alloc]init];
+    [topView addSubview:speakIcon];
+    speakIcon.image = [UIImage imageNamed:@"speaker_icon"];
+    [speakIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(topView.mas_left).offset(16);
+        make.width.equalTo(@22);
+        make.height.equalTo(@18);
+        make.top.equalTo(topView.mas_top).offset(20);
+    }];
+    
+    
+    UILabel *titleLabel = [[UILabel alloc]init];
+    [topView addSubview:titleLabel];
+    titleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    titleLabel.font = [UIFont systemFontOfSize:12];
+    titleLabel.text = @"这里仅展示与该告警事件有关的信息，您可切换到该台站智云查看更多信息。";
+    titleLabel.numberOfLines = 2;
+    [titleLabel sizeToFit];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(speakIcon.mas_centerY);
+        make.left.equalTo(speakIcon.mas_right).offset(8);
+        make.right.equalTo(topView.mas_right).offset(-15);
+        
+    }];
+
+    UIButton *botBtn = [[UIButton alloc]init];
+    [topView addSubview:botBtn];
+    [botBtn setBackgroundColor:[UIColor colorWithRed:50.f/255.f green:97.f/255.f blue:206.f/255.f alpha:1]];
+    [botBtn setTitle:@"台站级智云" forState:UIControlStateNormal];
+    botBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    [botBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    [botBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(topView.mas_right).offset(-20);
+        make.top.equalTo(topView.mas_top).offset(56);
+        make.height.equalTo(@28);
+        make.width.equalTo(@80);
+    }];
+    [botBtn addTarget:self action:@selector(botMethod:) forControlEvents:UIControlEventTouchUpInside];
+    botBtn.layer.cornerRadius = 4.f;
+    botBtn.layer.masksToBounds = YES;
+    
+}
+
+
+- (void)botMethod:(UIButton *)btn {
+    
+    KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
+    vc.isPush = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)initViewData {
     NSMutableDictionary *dic1 = [NSMutableDictionary dictionary];
@@ -106,7 +176,7 @@
     self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 0, 0) collectionViewLayout:flowLayout];
     [self.view addSubview:self.collectionView];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navigationView.mas_bottom);
+        make.top.equalTo(self.navigationView.mas_bottom).offset(111);
         make.left.equalTo(self.view.mas_left);
         make.width.equalTo(@(SCREEN_WIDTH));
         make.right.equalTo(self.view.mas_right);
@@ -152,6 +222,26 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     NSLog(@"%ld",(long)indexPath.row);
+    
+    
+    if(indexPath.row == 0){
+        //零备件
+        KG_ZhiXiuBeiJianListViewController *vc = [[KG_ZhiXiuBeiJianListViewController alloc]init];
+        vc.model = self.model;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }else if(indexPath.row == 1){
+        //技术资料
+        KG_JiShuZiLiaoViewController *vc = [[KG_JiShuZiLiaoViewController alloc]init];
+        vc.model = self.model;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }else if(indexPath.row == 2){
+        KG_ZhiXiuXunshiRecordViewController *vc = [[KG_ZhiXiuXunshiRecordViewController alloc]init];
+        vc.model = self.model;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 }
 /**  数组  */
 -(NSMutableArray *)dataArray{

@@ -276,6 +276,13 @@
 
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
@@ -371,10 +378,14 @@
     } failure:^(NSURLSessionDataTask *error)  {
         [MBProgressHUD hideHUDForView:JSHmainWindow];
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+              NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
             return;
+            
         }else if(responses.statusCode == 502){
             
         }
@@ -516,7 +527,13 @@
         }
         NSLog(@"请求成功");
     } failure:^(NSError *error) {
-        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+       if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
         return ;
     }];
 }

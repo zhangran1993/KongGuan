@@ -4,11 +4,15 @@
 //
 //  Created by zhangran on 2020/5/29.
 //  Copyright © 2020 hibaysoft. All rights reserved.
-//
+//运行智云
 #import "KG_RunZhiHuiYunViewController.h"
 #import "KG_RunZhiYunCell.h"
 #import "KG_ZhiTaiStationModel.h"
 #import "UIViewController+CBPopup.h"
+#import "KG_RunLingBeiJianViewController.h"
+#import "KG_TecInforViewController.h"
+#import "KG_InspectionRecordsViewController.h"
+
 @interface KG_RunZhiHuiYunViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource>
 //品牌
 @property (nonatomic,strong)UICollectionView *collectionView;
@@ -153,9 +157,17 @@
     NSLog(@"%ld",(long)indexPath.row);
     if(indexPath.row == 0){
         //零备件
+        KG_RunLingBeiJianViewController *vc = [[KG_RunLingBeiJianViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
         
+    }else if(indexPath.row == 1){
+        //技术资料
+        KG_TecInforViewController *vc = [[KG_TecInforViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
         
-        
+    }else if(indexPath.row == 2){
+        KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 /**  数组  */

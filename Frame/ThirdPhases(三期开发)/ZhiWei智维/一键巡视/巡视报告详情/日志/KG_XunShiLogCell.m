@@ -82,7 +82,7 @@
     [self addSubview:self.timeLabel];
     self.timeLabel.text = @"注意重拉相关进程后的各项";
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
-    self.timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.numberOfLines = 1;
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     [self.timeLabel  mas_makeConstraints:^(MASConstraintMaker *make) {

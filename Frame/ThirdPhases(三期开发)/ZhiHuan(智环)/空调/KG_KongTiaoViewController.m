@@ -231,8 +231,14 @@
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-       
+               NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -256,8 +262,14 @@
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-      
+               NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -340,8 +352,14 @@
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-       
+                NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -361,13 +379,11 @@
 
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+               NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
+            
         }else if(responses.statusCode == 502){
             
         }

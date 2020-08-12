@@ -97,6 +97,7 @@
     for (NSDictionary *dd in self.paraArr) {
         if (![safeString(dd[@"code"]) isEqualToString:safeString(currDic[@"code"])]) {
             [self.paraArr removeAllObjects];
+            self.pageNum = 1;
             NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
             paraDic[@"name"] = @"stationCode";
             paraDic[@"type"] = @"eq";
@@ -228,7 +229,13 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
        
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
         return ;
     }];
 }
@@ -265,7 +272,13 @@
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -623,7 +636,7 @@
     
 }
 
-//筛选方法
+//筛选方法2
 - (void)screenMethod {
     NSArray *array = @[@{@"sectionName": @"内容",
                          @"sectionType": @(RS_ConditionSearchSectionTypeNormal),
@@ -818,7 +831,13 @@
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -856,7 +875,13 @@
            [self.tableView reloadData];
        } failure:^(NSError *error)  {
            FrameLog(@"请求失败，返回数据 : %@",error);
-           
+           if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+               [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+               [FrameBaseRequest logout];
+               LoginViewController *login = [[LoginViewController alloc] init];
+               [self.slideMenuController showViewController:login];
+               return;
+           }
            [FrameBaseRequest showMessage:@"网络链接失败"];
            return ;
        }];

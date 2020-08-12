@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KG_GaoJingModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_RunZhiYunViewController : UIViewController
 
 @property (nonatomic ,assign) BOOL isPush;
+
+@property (nonatomic ,strong) KG_GaoJingModel *model;
 @end
 
 NS_ASSUME_NONNULL_END

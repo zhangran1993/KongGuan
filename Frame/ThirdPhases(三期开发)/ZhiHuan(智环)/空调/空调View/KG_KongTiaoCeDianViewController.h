@@ -16,6 +16,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy) void (^moreAction)(NSDictionary *dataDic);
 
 @property (nonatomic ,strong) NSDictionary *dataDic;
+
+@property (nonatomic ,strong) UIImageView *leftIcon;
+
+@property (nonatomic ,strong) UILabel *leftTitle;
+
+@property (nonatomic ,strong) NSString *leftStr;
+
+@property (nonatomic ,strong) NSString *leftIconStr;
 @end
 
 NS_ASSUME_NONNULL_END

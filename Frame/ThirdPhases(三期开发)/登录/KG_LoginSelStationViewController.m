@@ -205,6 +205,7 @@
     for (KG_LoginSelStaionModel *model in self.dataArray) {
         for (stationListModel *detailModel in model.stationList) {
             if (detailModel.isSelected) {
+                num ++;
                 KG_NewLoginViewController *VC= [[KG_NewLoginViewController alloc]init];
                 VC.detailModel = detailModel;
                 [self.navigationController pushViewController:VC animated:YES];

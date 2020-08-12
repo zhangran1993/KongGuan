@@ -71,7 +71,7 @@
     [self addSubview:self.timeLabel];
     self.timeLabel.text = @"2019.07.10 09:00";
     [self.timeLabel sizeToFit];
-    self.timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.timeLabel.numberOfLines = 1;

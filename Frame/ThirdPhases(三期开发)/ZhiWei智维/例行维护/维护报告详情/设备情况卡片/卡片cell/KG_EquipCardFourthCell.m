@@ -75,7 +75,7 @@
     self.totalNumLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
     self.totalNumLabel.numberOfLines = 1;
     self.totalNumLabel.textAlignment = NSTextAlignmentLeft;
-    self.totalNumLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.totalNumLabel.font = [UIFont systemFontOfSize:14];
     [self.totalNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-5);
         make.width.equalTo(@20);
@@ -88,7 +88,7 @@
     self.numLabel.textColor = [UIColor colorWithHexString:@"#3860B8"];
     self.numLabel.numberOfLines = 1;
     self.numLabel.textAlignment = NSTextAlignmentRight;
-    self.totalNumLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.totalNumLabel.font = [UIFont systemFontOfSize:16];
     [self.numLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.totalNumLabel.mas_left);
         make.width.equalTo(@40);

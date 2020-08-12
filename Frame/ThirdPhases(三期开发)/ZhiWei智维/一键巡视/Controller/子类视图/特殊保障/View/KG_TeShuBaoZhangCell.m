@@ -62,7 +62,7 @@
     
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
-    self.roomLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.roomLabel.font = [UIFont systemFontOfSize:12];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
     self.roomLabel.numberOfLines = 1;
@@ -152,7 +152,7 @@
     }];
     self.timeLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.timeLabel];
-    self.timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.timeLabel.textAlignment = NSTextAlignmentLeft;
     self.timeLabel.numberOfLines = 1;

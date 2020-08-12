@@ -33,6 +33,8 @@
 #import "TZImageManager.h"
 #import <Photos/Photos.h>
 #import "FrameNavigationController.h"
+#import "LoginViewController.h"
+#import "UIViewController+YQSlideMenu.h"
 #define XZShare [UtilsJSH standarInstance]
 //MARK:判断手机机型
 #define JSHmainWindow [UIApplication sharedApplication].keyWindow

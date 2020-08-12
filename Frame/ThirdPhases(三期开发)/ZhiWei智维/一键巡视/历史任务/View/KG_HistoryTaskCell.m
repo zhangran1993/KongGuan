@@ -33,7 +33,6 @@
 }
 
 
-
 - (void)createUI{
     self.rightView = [[UIView alloc]init];
     self.rightView.layer.cornerRadius = 10;
@@ -46,7 +45,16 @@
         make.right.equalTo(self.mas_right).offset(-16);
         make.bottom.equalTo(self.mas_bottom).offset(-5);
     }];
-    
+    self.typeImage  = [[UIImageView alloc]init];
+    self.typeImage.image = [UIImage imageNamed:@"类型标签-一键巡视"];
+    [self addSubview:self.typeImage];
+    [self.typeImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.rightView.mas_left).offset(15);
+        make.top.equalTo(self.rightView.mas_top).offset(8);
+        make.width.equalTo(@63);
+        make.height.equalTo(@18);
+    }];
+      
     
     self.statusCconImage = [[UIImageView alloc]init];
     [self.rightView addSubview:self.statusCconImage];
@@ -72,7 +80,7 @@
     
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
-    self.roomLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.roomLabel.font = [UIFont systemFontOfSize:12];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
     self.roomLabel.numberOfLines = 2;
@@ -93,7 +101,7 @@
 //    self.statusLabel.textAlignment = NSTextAlignmentLeft;
 //    self.statusLabel.numberOfLines = 1;
 //    [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//       
+//
 //    }];
 
     
@@ -153,7 +161,7 @@
     }];
     self.timeLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.timeLabel];
-    self.timeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.timeLabel.textAlignment = NSTextAlignmentLeft;
     self.timeLabel.numberOfLines = 1;
@@ -166,7 +174,7 @@
     }];
     self.personLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.personLabel];
-    self.personLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.personLabel.font = [UIFont systemFontOfSize:12];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.personLabel.textAlignment = NSTextAlignmentRight;
     self.personLabel.numberOfLines = 1;
@@ -207,10 +215,36 @@
 
 - (void)setDataDic:(NSDictionary *)dataDic{
     _dataDic = dataDic;
+    
+    
+    if([safeString(dataDic[@"typeCode"]) isEqualToString:@"oneTouchTour"]){
+        
+        if ([safeString(dataDic[@"taskName"]) containsString:@"现场巡视"]) {
+            self.typeImage.image = [UIImage imageNamed:@"类型标签-现场巡视"];
+        }else {
+            self.typeImage.image = [UIImage imageNamed:@"类型标签-一键巡视"];
+        }
+        self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"patrolIntervalTime"])];
+    }else if([safeString(dataDic[@"typeCode"]) isEqualToString:@"routineMaintenance"]){
+        
+        self.typeImage.image = [UIImage imageNamed:@"类型标签-例行维护"];
+        self.timeLabel.text = [self timestampToDayStr:safeString(dataDic[@"planStartTime"])];
+    }else if([safeString(dataDic[@"typeCode"]) isEqualToString:@"specialSafeguard"]){
+        
+        self.typeImage.image = [UIImage imageNamed:@"类型标签-特殊保障"];
+        self.timeLabel.text = [self timestampToDayStr:safeString(dataDic[@"planStartTime"])];
+    }else if([safeString(dataDic[@"typeCode"]) isEqualToString:@"specialTour"]){
+        self.timeLabel.text = [self timestampToDayStr:safeString(dataDic[@"planStartTime"])];
+        self.typeImage.image = [UIImage imageNamed:@"类型标签-特殊巡视"];
+    }
+    
+    
+    
+    
     self.roomLabel.text = safeString(dataDic[@"engineRoomName"]);
     self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dataDic[@"status"])]]];
     self.detailLabel.text = safeString(dataDic[@"taskName"]);
-    self.timeLabel.text = [self timestampToTimeStr:safeString(dataDic[@"createTime"])];
+    
     self.personLabel.text = [NSString stringWithFormat:@"执行负责人:%@",safeString(dataDic[@"leaderName"])];
     if([safeString(dataDic[@"status"]) isEqualToString:@"5"]){
         
@@ -312,7 +346,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     
@@ -330,6 +364,37 @@
 
 - (void)setCurrIndex:(int)currIndex {
     _currIndex = currIndex;
+    
+    if(currIndex == 0){
+        
+        self.typeImage.hidden = NO;
+        self.roomLabel.hidden = YES;
+        self.iconImage.hidden = YES;
+        self.statusCconImage.hidden = YES;
+       
+    }else {
+        self.typeImage.hidden = YES;
+        self.roomLabel.hidden = NO;
+        self.iconImage.hidden = NO;
+        self.statusCconImage.hidden = YES;
+      
+    }
+    
+    
+    //normalInspection一键巡视
+    //fieldInspection 现场巡视
+    // routineMaintenance 例行维护
+    //specialTour 特殊巡视
 }
-
+//将时间戳转换为时间字符串
+- (NSString *)timestampToDayStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
+    }
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
+    
+}
 @end

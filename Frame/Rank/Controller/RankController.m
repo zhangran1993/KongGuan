@@ -152,8 +152,14 @@ static NSString * const FrameCellID = @"PatrolHistory";
         self.stationTabView.emptyDataSetDelegate = self;
         [self.stationTabView reloadData];
         //self.stationTabView.mj_footer.state = MJRefreshStateNoMoreData;
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-      
+               NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -193,8 +199,14 @@ static NSString * const FrameCellID = @"PatrolHistory";
         self.stationTabView.emptyDataSetDelegate = self;
         [self.stationTabView reloadData];
         //self.stationTabView.mj_footer.state = MJRefreshStateNoMoreData;
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-       
+               NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

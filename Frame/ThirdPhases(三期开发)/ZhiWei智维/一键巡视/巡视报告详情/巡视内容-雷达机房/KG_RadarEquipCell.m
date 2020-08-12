@@ -49,7 +49,7 @@
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
-    self.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont systemFontOfSize:14];
     
     [self.titleLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
@@ -61,7 +61,7 @@
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
     self.detailLabel.textColor =[UIColor colorWithHexString:@"#626470"];
-    self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.detailLabel.font = [UIFont systemFontOfSize:14];
     self.detailLabel.textAlignment = NSTextAlignmentRight;
     [self.detailLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
@@ -130,7 +130,7 @@
         [self.detailView addSubview:self.detailTitleLabel];
         self.detailTitleLabel.text = @"A相输入电压特殊参数标记";
         self.detailTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-        self.detailTitleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+        self.detailTitleLabel.font = [UIFont systemFontOfSize:12];
         self.detailTitleLabel.numberOfLines = 1;
         self.detailTitleLabel.textAlignment = NSTextAlignmentLeft;
         [self.detailTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -144,7 +144,7 @@
         [self.detailView addSubview:self.detailTextTitleLabel];
         self.detailTextTitleLabel.text = @"电压过高";
         self.detailTextTitleLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
-        self.detailTextTitleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+        self.detailTextTitleLabel.font = [UIFont systemFontOfSize:12];
         self.detailTextTitleLabel.numberOfLines = 1;
         self.detailTextTitleLabel.textAlignment = NSTextAlignmentLeft;
         [self.detailTextTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

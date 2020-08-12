@@ -12,7 +12,11 @@
     
 }
 
-@property (nonatomic,strong) UIView *statusView;
+@property (nonatomic,strong) UIView     *statusView;
+
+@property (nonatomic,strong) UIView     *specialView;
+
+@property (nonatomic,strong) UILabel    *specialLabel;
 @end
 @implementation KG_YiJianXunShiCell
 
@@ -153,7 +157,7 @@
     
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
-    self.roomLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.roomLabel.font = [UIFont systemFontOfSize:12];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
     self.roomLabel.numberOfLines = 2;
@@ -185,12 +189,13 @@
     self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
-    self.detailLabel.numberOfLines = 1;
+    self.detailLabel.numberOfLines = 2;
+    [self.detailLabel sizeToFit];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_left);
         make.right.equalTo(self.rightView.mas_right).offset(-20);
-        make.top.equalTo(self.iconImage.mas_bottom).offset(12);
-        make.height.equalTo(@14);
+        make.top.equalTo(self.roomLabel.mas_bottom).offset(12);
+        
     }];
     
     
@@ -203,13 +208,49 @@
         make.height.equalTo(@12);
     }];
     
+    
+    self.specialView = [[UIView alloc]init];
+    [self addSubview:self.specialView];
+    self.specialView.hidden = YES;
+    [self.specialView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.rightView.mas_left).offset(15);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(11);
+        make.right.equalTo(self.rightView.mas_right).offset(-15);
+        make.height.equalTo(@12);
+    }];
+    
+//    UIImageView *specialImage = [[UIImageView alloc]init];
+//    [self.specialView addSubview:specialImage];
+//    specialImage.image = [UIImage imageNamed:@"yellow_staricon"];
+//    [specialImage mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.specialView.mas_left).offset(16);
+//        make.centerY.equalTo(self.specialView.mas_centerY);
+//        make.width.equalTo(@12);
+//        make.height.equalTo(@12);
+//    }];
+//
+//
+//    self.specialLabel = [[UILabel alloc]init];
+//    [self.specialView addSubview:self.specialLabel];
+//    self.specialLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
+//    self.specialLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+//    self.specialLabel.numberOfLines = 1;
+//    [self.specialLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(specialImage.mas_right).offset(6.5);
+//        make.centerY.equalTo(self.specialView.mas_centerY);
+//        make.width.equalTo(@200);
+//        make.height.equalTo(self.specialView.mas_height);
+//    }];
+    
+    
+    
  
     self.timeImage = [[UIImageView alloc]init];
     self.timeImage.image = [UIImage imageNamed:@"station_timeIcon"];
     [self addSubview:self.timeImage];
     [self.timeImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.rightView.mas_left).offset(15);
-        make.bottom.equalTo(self.mas_bottom).offset(-14);
+        make.bottom.equalTo(self.mas_bottom).offset(-16);
         make.width.equalTo(@12);
         make.height.equalTo(@12);
     }];
@@ -293,13 +334,20 @@
  
     
     NSArray *biaoqianArr = self.dataDic[@"atcPatrolRoomList"];
-       if (biaoqianArr.count &&[safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
-           self.statusView.hidden = NO;
-           
-           [self createSignView:biaoqianArr];
-       }else {
-           //        self.statusView.hidden = YES;
-       }
+    if (biaoqianArr.count &&[safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+        self.statusView.hidden = NO;
+        
+        [self createSignView:biaoqianArr];
+    }else {
+        self.specialView.hidden = NO;
+        NSArray *specArr = self.dataDic[@"atcSpecialTagList"];
+        if (specArr.count ) {
+            
+            [self createSpecialView:specArr];
+        }
+            
+        
+    }
 }
 
 - (NSString *)getTaskStatus :(NSString *)status {
@@ -398,6 +446,36 @@
             detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
         }
        
+        detailLabel.font = [UIFont systemFontOfSize:12];
+        detailLabel.numberOfLines = 1;
+        orX += fontRect.size.width+12 ;
+    }
+    
+   
+   
+}
+
+- (void)createSpecialView :(NSArray *)array{
+    [self.specialView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    CGFloat witdth = 0;
+    CGFloat orX = 0;
+    for (int i =0; i<array.count; i++) {
+        CGRect fontRect = [safeString(array[i][@"specialTagName"]) boundingRectWithSize:CGSizeMake(MAXFLOAT,12) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        
+       
+        witdth = fontRect.size.width ;
+        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 0, 12, 12)];
+      
+        detailImage.image = [UIImage imageNamed:@"yellow_staricon"];
+      
+        [self.specialView addSubview:detailImage];
+        
+       
+        UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(12 +orX, 0,witdth, 12)];
+        detailLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
+        detailLabel.text = safeString(array[i][@"specialTagName"]);
+        [self.specialView addSubview:detailLabel];
+
         detailLabel.font = [UIFont systemFontOfSize:12];
         detailLabel.numberOfLines = 1;
         orX += fontRect.size.width+12 ;

@@ -315,6 +315,7 @@
         cell.clickToYun = ^{
             KG_RunZhiYunViewController  *yunVC = [[KG_RunZhiYunViewController alloc] init];
             yunVC.isPush = YES;
+            yunVC.model = self.model;
             [self.navigationController pushViewController:yunVC animated:YES];
         };
         cell.clickToGuZhang = ^{
@@ -459,6 +460,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -712,6 +717,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -974,6 +983,10 @@
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

@@ -60,7 +60,17 @@
             return ;
         }
     } failure:^(NSURLSessionDataTask *error)  {
-       
+       NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+       if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+           [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+           [FrameBaseRequest logout];
+           LoginViewController *login = [[LoginViewController alloc] init];
+           [self.slideMenuController showViewController:login];
+           return;
+           
+       }else if(responses.statusCode == 502){
+           
+       }
         FrameLog(@"请求失败，返回数据 : %@",error);
         return ;
     }];

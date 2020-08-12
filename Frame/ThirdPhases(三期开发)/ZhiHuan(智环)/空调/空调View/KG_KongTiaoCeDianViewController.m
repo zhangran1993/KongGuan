@@ -12,11 +12,6 @@
 
 @property (nonatomic ,strong) UIButton *moreBtn ;
 
-@property (nonatomic ,strong) UIImageView *leftIcon;
-
-@property (nonatomic ,strong) UILabel *leftTitle;
-
-
 @property (nonatomic,strong) UITableView *tableView;
 
 @property (nonatomic ,strong) UILabel *bottomLabel;
@@ -58,7 +53,7 @@
         make.left.equalTo(self.leftIcon.mas_right).offset(5);
         make.centerY.equalTo(self.leftIcon.mas_centerY);
         make.height.equalTo(@21);
-        make.width.equalTo(@100);
+        make.width.equalTo(@250);
     }];
     
     self.moreBtn = [[UIButton alloc]init];
@@ -247,4 +242,18 @@
 - (void)setAlarmArray:(NSArray *)alarmArray {
     _alarmArray = alarmArray;
 }
+
+- (void)setLeftStr:(NSString *)leftStr {
+    _leftStr = leftStr;
+    self.leftTitle.text = leftStr;
+    
+}
+
+- (void)setLeftIconStr:(NSString *)leftIconStr {
+    _leftIconStr = leftIconStr;
+     self.leftIcon.image = [UIImage imageNamed:@"空调"];
+    
+}
+
 @end
+

@@ -147,7 +147,7 @@
         make.left.equalTo(self.tableHeadView.mas_left);
         make.right.equalTo(self.tableHeadView.mas_right);
         make.top.equalTo(self.tableHeadView.mas_top);
-        make.height.equalTo(@256);
+        make.height.equalTo(@266);
     }];
    
     
@@ -214,7 +214,7 @@
     //第一层 model.childrens 44
     //第二层 model.childrens firstobject  44
     NSArray *secondArr = model.childrens;
-    NSInteger secondHeight = [secondArr count] *44;
+    NSInteger secondHeight = [secondArr count] *(44+2);
     //第三层
     NSInteger thirdHeight = 0;
     NSInteger fourthHeight = 0;
@@ -577,7 +577,10 @@
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -678,7 +681,10 @@
         [self queryReportDetailData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -719,6 +725,14 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -818,6 +832,14 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -849,7 +871,14 @@
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-      
+      NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+      if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+          [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+          return;
+          
+      }else if(responses.statusCode == 502){
+          
+      }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -878,7 +907,14 @@
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-      
+      NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+      if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+          [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+          return;
+          
+      }else if(responses.statusCode == 502){
+          
+      }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -1014,7 +1050,14 @@
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -1054,7 +1097,14 @@
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         

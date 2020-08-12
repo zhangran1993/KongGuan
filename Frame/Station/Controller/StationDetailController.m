@@ -316,10 +316,7 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-            [self.navigationController popToViewController:viewCtl animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
         }else if(responses.statusCode == 502){
             
@@ -735,10 +732,7 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
-            [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
         }else if(responses.statusCode == 502){
             
@@ -864,17 +858,15 @@
         }else{
             _longitude = @"0";
         }
+       
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.navigationController pushViewController:login animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
+            
         }else if(responses.statusCode == 502){
             
         }
@@ -904,17 +896,14 @@
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-        //            [FrameBaseRequest logout];
-        //
-        //            LoginViewController *login = [[LoginViewController alloc] init];
-        //            [self.navigationController pushViewController:login animated:YES];
-        //            return;
-        //        }else if(responses.statusCode == 502){
-        //
-        //        }
+         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -1374,6 +1363,9 @@
         make.width.equalTo(@32);
         make.height.equalTo(@17);
     }];
+  
+    
+    
    
     if (self.temArray.count == 2) {
         for (KG_MachineStationModel *temDic  in self.temArray) {
@@ -1382,7 +1374,7 @@
                       if ([safeString(temDic.valueAlias) doubleValue] == 0) {
                           tempNumLabel.text = @"__";
                       }
-                      tempBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+                tempBgImage.image = [UIImage imageNamed:[self getLevelImage:safeString(temDic.alarmLevel)]];
                 break;
             }
         }
@@ -1486,6 +1478,7 @@
         make.width.equalTo(@32);
         make.height.equalTo(@17);
     }];
+//    humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:safeString(self.dataModel.station[@"alarmStatus"])]];
     if (self.temArray.count == 2) {
         for (KG_MachineStationModel *temDic  in self.temArray) {
             if ([safeString(temDic.name) isEqualToString:@"湿度"]) {
@@ -1493,7 +1486,7 @@
                       if ([safeString(temDic.valueAlias) doubleValue] == 0) {
                           humidityNumLabel.text = @"__";
                       }
-                      humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+                    humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
                 break;
             }
         }
@@ -2244,14 +2237,11 @@
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+           NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.navigationController pushViewController:login animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
+            
         }else if(responses.statusCode == 502){
             
         }

@@ -31,6 +31,22 @@
 @property (nonatomic, strong) KG_TransBottomView *transBottomView;
 
 @property (nonatomic, strong) NSDictionary *detailDic;
+
+
+@property (nonatomic, strong) UIImageView *centerBottomGreenLine;
+@property (nonatomic, strong) UIImageView *centerBottomGreenXieLine;
+
+
+@property (nonatomic, strong) UIImageView *bottomGreen1;
+@property (nonatomic, strong) UIImageView *bottomGreen2;
+@property (nonatomic, strong) UIImageView *bottomGreen3;
+@property (nonatomic, strong) UIImageView *beijiImage;
+
+@property (nonatomic, strong) UIImageView *centerTopGreenShuLine;
+@property (nonatomic, strong) UIImageView *centerTopGreenLine;
+
+
+
 @end
 @implementation KG_ZhiTaiView
 
@@ -40,7 +56,7 @@
     self = [super init];
     if (self) {
         
-       [self setupDataSubviews];
+        [self setupDataSubviews];
         
     }
     return self;
@@ -65,7 +81,7 @@
     }];
     UIButton *rightBtn  = [[UIButton alloc]init];
     [self addSubview:rightBtn];
-   
+    
     [rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right);
         make.width.height.equalTo(@100);
@@ -249,47 +265,47 @@
     centerTopShuLineGrayDot.layer.cornerRadius = 2.5f;
     centerTopShuLineGrayDot.layer.masksToBounds = YES;
     //顶部右边绿色横线
-    UIImageView *centerTopGreenLine = [[UIImageView alloc]init];
-    [self addSubview:centerTopGreenLine];
-    centerTopGreenLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-    [centerTopGreenLine mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.centerTopGreenLine= [[UIImageView alloc]init];
+    [self addSubview:self.centerTopGreenLine];
+    self.centerTopGreenLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    [self.centerTopGreenLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(grayView.mas_right);
         make.centerY.equalTo(grayView.mas_centerY);
         make.height.equalTo(@1);
         make.right.equalTo(centerTopShuLine.mas_left).offset(-10);
     }];
     //顶部右边绿色竖线
-    UIImageView *centerTopGreenShuLine = [[UIImageView alloc]init];
-    [self addSubview:centerTopGreenShuLine];
-    centerTopGreenShuLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-    [centerTopGreenShuLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(centerTopGreenLine.mas_right).offset(-1);
-        make.top.equalTo(centerTopGreenLine.mas_bottom);
+    self.centerTopGreenShuLine = [[UIImageView alloc]init];
+    [self addSubview:self.centerTopGreenShuLine];
+    self.centerTopGreenShuLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    [self.centerTopGreenShuLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.centerTopGreenLine.mas_right).offset(-1);
+        make.top.equalTo(self.centerTopGreenLine.mas_bottom);
         make.height.equalTo(@233);
         make.width.equalTo(@1);
     }];
     
     //底部右边绿色竖线
-    UIImageView *centerBottomGreenLine = [[UIImageView alloc]init];
-    [self addSubview:centerBottomGreenLine];
-    centerBottomGreenLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-    [centerBottomGreenLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(centerTopGreenLine.mas_left).offset(-14);
-        make.top.equalTo(centerTopGreenLine.mas_bottom).offset(238);
+    self.centerBottomGreenLine = [[UIImageView alloc]init];
+    [self addSubview:self.centerBottomGreenLine];
+    self.centerBottomGreenLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    [self.centerBottomGreenLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.centerTopGreenLine.mas_left).offset(-14);
+        make.top.equalTo(self.centerTopGreenLine.mas_bottom).offset(238);
         make.height.equalTo(@1);
-        make.right.equalTo(centerTopGreenShuLine.mas_left).offset(-6);
+        make.right.equalTo(self.centerTopGreenShuLine.mas_left).offset(-6);
     }];
     //底部右边绿色竖线
-    UIImageView *centerBottomGreenXieLine = [[UIImageView alloc]init];
-    [self addSubview:centerBottomGreenXieLine];
-    centerBottomGreenXieLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-    [centerBottomGreenXieLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(centerTopGreenShuLine.mas_left).offset(2);
-        make.bottom.equalTo(centerTopGreenShuLine.mas_bottom).offset(3);
+    self.centerBottomGreenXieLine = [[UIImageView alloc]init];
+    [self addSubview:self.centerBottomGreenXieLine];
+    self.centerBottomGreenXieLine.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    [self.centerBottomGreenXieLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.centerTopGreenShuLine.mas_left).offset(2);
+        make.bottom.equalTo(self.centerTopGreenShuLine.mas_bottom).offset(3);
         make.height.equalTo(@1);
         make.width.equalTo(@10);
     }];
-    centerBottomGreenXieLine.transform=CGAffineTransformMakeRotation(3*M_PI_4);
+    self.centerBottomGreenXieLine.transform=CGAffineTransformMakeRotation(3*M_PI_4);
     
     
     
@@ -301,7 +317,7 @@
     self.transFirstView.backgroundColor = [UIColor whiteColor];
     self.transSecondView = [[KG_TransSecondView alloc]init];
     self.transSecondView.backgroundColor = [UIColor whiteColor];
-
+    
     [self addSubview:self.monitorFirstView];
     [self addSubview:self.monitorSecondView];
     [self addSubview:self.transFirstView];
@@ -312,7 +328,7 @@
         make.width.equalTo(@98);
         make.height.equalTo(@134);
     }];
-
+    
     [self.monitorSecondView  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-34);
         make.top.equalTo(grayView.mas_bottom).offset(14);
@@ -325,16 +341,16 @@
         make.width.equalTo(@98);
         make.height.equalTo(@80);
     }];
-
+    
     [self.transSecondView  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-34);
         make.top.equalTo(self.monitorFirstView.mas_bottom).offset(29);
         make.width.equalTo(@98);
         make.height.equalTo(@80);
     }];
-
-
-
+    
+    
+    
     //中间灰色横线
     UIImageView *centerGrayLine1 = [[UIImageView alloc]init];
     [self addSubview:centerGrayLine1];
@@ -345,7 +361,7 @@
         make.height.equalTo(@1);
         make.width.equalTo(@15);
     }];
-
+    
     UIImageView *centerArrow1 = [[UIImageView alloc]init];
     [self addSubview:centerArrow1];
     centerArrow1.image = [UIImage imageNamed:@"arrow_left"];
@@ -365,7 +381,7 @@
         make.height.equalTo(@1);
         make.right.equalTo(centerTopShuLine.mas_right).offset(21);
     }];
-
+    
     UIImageView *centerArrow2 = [[UIImageView alloc]init];
     [self addSubview:centerArrow2];
     centerArrow2.image = [UIImage imageNamed:@"arrow_right"];
@@ -375,7 +391,7 @@
         make.height.equalTo(@9);
         make.width.equalTo(@6);
     }];
-
+    
     //中间灰色横线
     UIImageView *centerGrayLine3 = [[UIImageView alloc]init];
     [self addSubview:centerGrayLine3];
@@ -386,7 +402,7 @@
         make.height.equalTo(@1);
         make.right.equalTo(self.monitorSecondView.mas_left);
     }];
-
+    
     //底部蓝色左横线
     UIImageView *bottomBlueLeftLine = [[UIImageView alloc]init];
     [self addSubview:bottomBlueLeftLine];
@@ -397,7 +413,7 @@
         make.height.equalTo(@1);
         make.width.equalTo(@14);
     }];
-
+    
     //底部蓝色左竖线
     UIImageView *bottomBlueShuLeftLine = [[UIImageView alloc]init];
     [self addSubview:bottomBlueShuLeftLine];
@@ -408,7 +424,7 @@
         make.height.equalTo(@240);
         make.width.equalTo(@1);
     }];
-
+    
     //底部蓝色右横线
     UIImageView *bottomBlueRightLine = [[UIImageView alloc]init];
     [self addSubview:bottomBlueRightLine];
@@ -419,7 +435,7 @@
         make.height.equalTo(@1);
         make.width.equalTo(@15);
     }];
-
+    
     //底部蓝色右竖线
     UIImageView *bottomBlueShuRightLine = [[UIImageView alloc]init];
     [self addSubview:bottomBlueShuRightLine];
@@ -430,8 +446,8 @@
         make.height.equalTo(@240);
         make.width.equalTo(@1);
     }];
-
-
+    
+    
     //左边
     UIImageView *bottomLeftLine1 = [[UIImageView alloc]init];
     [self addSubview:bottomLeftLine1];
@@ -462,7 +478,7 @@
         make.height.equalTo(@1);
         make.right.equalTo(self.transBottomView.mas_left);
     }];
-
+    
     UIImageView *bottomLeftLine3 = [[UIImageView alloc]init];
     [self addSubview:bottomLeftLine3];
     bottomLeftLine3.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
@@ -500,49 +516,49 @@
         make.height.equalTo(@1);
         make.left.equalTo(self.transBottomView.mas_right);
     }];
-
-    UIImageView *bottomGreen1 = [[UIImageView alloc]init];
-    [self addSubview:bottomGreen1];
-    bottomGreen1.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-    [bottomGreen1 mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    self.bottomGreen1 = [[UIImageView alloc]init];
+    [self addSubview:self.bottomGreen1];
+    self.bottomGreen1.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    [self.bottomGreen1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.transSecondView.mas_left);
         make.top.equalTo(self.transSecondView.mas_bottom).offset(-26);
         make.height.equalTo(@1);
         make.width.equalTo(@13);
     }];
-
-    UIImageView *bottomGreen2 = [[UIImageView alloc]init];
-    [self addSubview:bottomGreen2];
-    bottomGreen2.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-    [bottomGreen2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(bottomGreen1.mas_left);
-        make.top.equalTo(bottomGreen1.mas_top);
+    
+    self.bottomGreen2 = [[UIImageView alloc]init];
+    [self addSubview:self.bottomGreen2];
+    self.bottomGreen2.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    [self.bottomGreen2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomGreen1.mas_left);
+        make.top.equalTo(self.bottomGreen1.mas_top);
         make.height.equalTo(@16);
         make.width.equalTo(@1);
     }];
-
-    UIImageView *bottomGreen3 = [[UIImageView alloc]init];
-    [self addSubview:bottomGreen3];
-    bottomGreen3.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
-    [bottomGreen3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(bottomGreen2.mas_left);
-        make.bottom.equalTo(bottomGreen2.mas_bottom);
+    
+    self.bottomGreen3 = [[UIImageView alloc]init];
+    [self addSubview:self.bottomGreen3];
+    self.bottomGreen3.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+    [self.bottomGreen3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomGreen2.mas_left);
+        make.bottom.equalTo(self.bottomGreen2.mas_bottom);
         make.height.equalTo(@1);
         make.width.equalTo(@13);
     }];
-
-    UIImageView *beijiImage = [[UIImageView alloc]init];
-    [self addSubview:beijiImage];
-    beijiImage.image = [UIImage imageNamed:@"beiji_icon"];
-    [beijiImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(bottomGreen3.mas_left);
-        make.centerY.equalTo(bottomGreen3.mas_centerY);
+    
+    self.beijiImage = [[UIImageView alloc]init];
+    [self addSubview:self.beijiImage];
+    self.beijiImage.image = [UIImage imageNamed:@"beiji_icon"];
+    [self.beijiImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.bottomGreen3.mas_left);
+        make.centerY.equalTo(self.bottomGreen3.mas_centerY);
         make.height.equalTo(@11);
         make.width.equalTo(@29);
     }];
-
-
-
+    
+    
+    
     UIImageView *bottomBlue1= [[UIImageView alloc]init];
     [self addSubview:bottomBlue1];
     bottomBlue1.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
@@ -552,7 +568,7 @@
         make.height.equalTo(@1);
         make.width.equalTo(@14);
     }];
-
+    
     UIImageView *bottomBlue2= [[UIImageView alloc]init];
     [self addSubview:bottomBlue2];
     bottomBlue2.backgroundColor = [UIColor colorWithHexString:@"#7693DB"];
@@ -581,9 +597,9 @@
         make.height.equalTo(@1);
         make.width.equalTo(@55);
     }];
-
-
-
+    
+    
+    
 }
 - (UIColor *)getTextColor:(NSString *)level {
     UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
@@ -628,19 +644,19 @@
     _dataDic = dataDic;
     NSArray *array = dataDic[@"equipmentDetails"];
     NSArray *list = [array firstObject][@"equipment"][@"measureTagList"];
-   if (array.count == 1) {
-       NSDictionary *dd =[array firstObject][@"equipment"];
-       NSDictionary * Detail = @{ @"tagList":dd[@"measureTagList"],
-                                  @"stationName":safeString(dd[@"stationName"]) ,
-                                  @"machine_name":safeString(dd[@"name"]),
-                                  @"name":safeString(dd[@"name"]),
-                                  @"code":safeString(dd[@"code"]),
-                                  @"engineRoomCode":safeString(dd[@"engineRoomCode"]),
-                                  @"category":safeString(dd[@"category"]),
-                                  @"stationCode":safeString(dd[@"stationCode"])
-       };
-       self.detailDic = Detail;
-   }
+    if (array.count == 1) {
+        NSDictionary *dd =[array firstObject][@"equipment"];
+        NSDictionary * Detail = @{ @"tagList":dd[@"measureTagList"],
+                                   @"stationName":safeString(dd[@"stationName"]) ,
+                                   @"machine_name":safeString(dd[@"name"]),
+                                   @"name":safeString(dd[@"name"]),
+                                   @"code":safeString(dd[@"code"]),
+                                   @"engineRoomCode":safeString(dd[@"engineRoomCode"]),
+                                   @"category":safeString(dd[@"category"]),
+                                   @"stationCode":safeString(dd[@"stationCode"])
+        };
+        self.detailDic = Detail;
+    }
     
     
     //工作机
@@ -684,6 +700,75 @@
         }
         
     }
+    
+    
+    NSDictionary *beiDic = nil;
+    NSDictionary *workDic = nil;
+    for (NSDictionary *dic in list) {
+        if ([dic[@"name"] isEqualToString:@"工作机"]) {
+            for (NSDictionary *dataDic in list) {
+                if ([dataDic[@"name"] containsString:@"备机状态"]) {
+                    beiDic = dataDic;
+                }
+            }
+            workDic = dic;
+        }
+    }
+    
+    //监视器A
+    if([safeString(workDic[@"valueAlias"]) isEqualToString:@"B机"]){
+       
         
+        [self.centerBottomGreenLine mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.transSecondView.mas_left);
+            make.top.equalTo(self.centerTopGreenLine.mas_bottom).offset(238);
+            make.height.equalTo(@1);
+            make.left.equalTo(self.centerTopGreenLine.mas_right).offset(6);
+        }];
+        
+        [self.centerBottomGreenXieLine mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.centerTopGreenShuLine.mas_right).offset(-2);
+            make.bottom.equalTo(self.centerTopGreenShuLine.mas_bottom).offset(3.5);
+            make.height.equalTo(@1);
+            make.width.equalTo(@9);
+        }];
+        self.centerBottomGreenXieLine.transform=CGAffineTransformMakeRotation(M_PI_4);
+        
+        [self.bottomGreen1 mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.transFirstView.mas_right);
+            make.top.equalTo(self.transSecondView.mas_bottom).offset(-26);
+            make.height.equalTo(@1);
+            make.width.equalTo(@13);
+        }];
+        
+        [self.bottomGreen2 mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.bottomGreen1.mas_right);
+            make.top.equalTo(self.bottomGreen1.mas_top);
+            make.height.equalTo(@16);
+            make.width.equalTo(@1);
+        }];
+        
+        self.bottomGreen3.backgroundColor = [UIColor colorWithHexString:@"#36C6A5"];
+        [self.bottomGreen3 mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.bottomGreen2.mas_right);
+            make.bottom.equalTo(self.bottomGreen2.mas_bottom);
+            make.height.equalTo(@1);
+            make.width.equalTo(@13);
+        }];
+        
+        self.beijiImage.image = [UIImage imageNamed:@"kg_beiji_right"];
+        [self.beijiImage mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.bottomGreen3.mas_right);
+            make.centerY.equalTo(self.bottomGreen3.mas_centerY);
+            make.height.equalTo(@11);
+            make.width.equalTo(@29);
+        }];
+        
+        
+        
+        
+        
+    }
+    
 }
 @end

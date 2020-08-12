@@ -8,11 +8,19 @@
 
 #import "KG_TecInforViewController.h"
 #import "KG_TechInfoCell.h"
-@interface KG_TecInforViewController ()<UITableViewDelegate,UITableViewDataSource>
+#import "KG_StandardSpecificationViewController.h"
+@interface KG_TecInforViewController ()<UITableViewDelegate,UITableViewDataSource>{
+
+}
+
+@property (nonatomic, strong) NSMutableArray            *dataArray;
+@property (nonatomic, strong) NSArray                   *listArray;
+@property (nonatomic, strong) UITableView               *tableView;
 
 
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong)   UILabel                 *titleLabel;
+
+@property (nonatomic, strong)   UIView                  *navigationView;
 
 @end
 
@@ -21,8 +29,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self initViewData];
     [self createNaviTopView];
+    [self initViewData];
+    [self queryData];
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
+    [self.navigationController setNavigationBarHidden:YES];
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    
+    
 }
 - (void)initViewData {
     NSMutableDictionary *dic1 = [NSMutableDictionary dictionary];
@@ -74,35 +101,74 @@
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.mas_top);
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     [self.tableView reloadData];
 }
 
 
-//创建导航栏视图
--  (void)createNaviTopView {
-    UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
-    [leftButon setImage:[UIImage imageNamed:@"back_black"] forState:UIControlStateNormal];
-    [leftButon setContentEdgeInsets:UIEdgeInsetsMake(0, - FrameWidth(20), 0, FrameWidth(20))];
-    //button.alignmentRectInsetsOverride = UIEdgeInsetsMake(0, offset, 0, -(offset));
-    [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
-    self.navigationItem.leftBarButtonItem = fixedButton;
+- (void)createNaviTopView {
     
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.image = [self createImageWithColor:[UIColor whiteColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
     
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    self.title = [NSString stringWithFormat:@"技术资料"];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
     
-    [self.navigationController.navigationBar setBackgroundImage:[self createImageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"技术资料";
     
-    self.navigationController.navigationBar.translucent = NO;
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
     
-    //去掉透明后导航栏下边的黑边
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+    
+   
+    
+}
+
+- (void)backButtonClick:(UIButton *)button {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
 }
 
 - (UIImage*)createImageWithColor: (UIColor*) color{
@@ -115,6 +181,7 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
+
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
@@ -175,9 +242,48 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if (self.dataArray.count != self.listArray.count) {
+        return;
+    }
+    NSDictionary *dataDic = self.listArray[indexPath.row];
+    KG_StandardSpecificationViewController *vc = [[KG_StandardSpecificationViewController alloc]init];
+    vc.dataDic = dataDic;
+    [self.navigationController pushViewController:vc animated:YES];
+    
     
     //    NSString *str = self.dataArray[indexPath.row];
     
 }
+//请求地址：/intelligent/atcDictionary?type_code=technicalInfomationType
+//请求方式：GET
+//请求返回：
 
+- (void)queryData {
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=technicalInfomationType"]];
+    
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+           
+            return ;
+        }
+        
+        self.listArray = result[@"value"];
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
+        return ;
+    }];
+}
 @end

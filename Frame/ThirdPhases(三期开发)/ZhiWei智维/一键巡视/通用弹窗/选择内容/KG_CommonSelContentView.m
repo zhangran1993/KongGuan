@@ -171,7 +171,8 @@
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-        
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+       
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         

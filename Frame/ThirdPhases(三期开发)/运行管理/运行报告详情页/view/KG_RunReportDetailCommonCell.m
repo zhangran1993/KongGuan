@@ -61,7 +61,7 @@
         make.top.equalTo(bgView.mas_top);
         make.bottom.equalTo(bgView.mas_bottom);
     }];
-        self.textView.userInteractionEnabled = NO;
+    self.textView.userInteractionEnabled = NO;
     UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
     [topView setBarStyle:UIBarStyleBlack];
     
