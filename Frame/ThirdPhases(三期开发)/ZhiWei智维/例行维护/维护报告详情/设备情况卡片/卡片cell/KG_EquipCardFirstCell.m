@@ -165,7 +165,7 @@
                 }
             }
             NSString *parentId = safeString(fifDic[@"parentId"]) ;
-            NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+            NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
                 NSArray *arr = [dic allKeys];
                 if (arr.count) {
@@ -247,7 +247,7 @@
             
             NSArray *array = [value componentsSeparatedByString:@"@&@"];
             NSString *parentId = safeString(fifDic[@"parentId"]) ;
-            NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+            NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
                 NSArray *arr = [dic allKeys];
                 if (arr.count) {
@@ -274,7 +274,7 @@
             
             NSArray *array = [value componentsSeparatedByString:@"@&@"];
             NSString *parentId = safeString(fifDic[@"parentId"]) ;
-            NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+            NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
                 NSArray *arr = [dic allKeys];
                 if (arr.count) {
@@ -335,7 +335,7 @@
             }
             
             NSString *parentId = safeString(fifDic[@"parentId"]) ;
-            NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+            NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
                 NSArray *arr = [dic allKeys];
                 if (arr.count) {
@@ -380,7 +380,7 @@
             
             
             NSString *parentId = safeString(fifDic[@"parentId"]) ;
-            NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+            NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
                 NSArray *arr = [dic allKeys];
                 if (arr.count) {
@@ -428,7 +428,7 @@
             
            
             NSString *parentId = safeString(fifDic[@"parentId"]) ;
-            NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+            NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
                 NSArray *arr = [dic allKeys];
                 if (arr.count) {
@@ -822,7 +822,7 @@
     [UserManager shareUserManager].changeEquipStatus = YES;
     NSMutableDictionary *toDic = [NSMutableDictionary dictionary];
     
-    NSDictionary *resultDic  = [UserManager shareUserManager].resultCardDic;
+    NSDictionary *resultDic  = [UserManager shareUserManager].resultDic;
     [toDic addEntriesFromDictionary:resultDic];
     NSDictionary *dd = [self.dic[@"childrens"] firstObject];
     
@@ -846,7 +846,7 @@
             //                }
             //            }
             
-            [UserManager shareUserManager].resultCardDic = toDic;
+            [UserManager shareUserManager].resultDic = toDic;
             
         }
         
@@ -857,7 +857,7 @@
             NSMutableDictionary *aDic = [NSMutableDictionary dictionary];
             [aDic setValue:safeString(valueNum) forKey:safeString(infoId)];
             [toDic addEntriesFromDictionary:aDic];
-            [UserManager shareUserManager].resultCardDic = toDic;
+            [UserManager shareUserManager].resultDic = toDic;
         }
     }
 }
@@ -899,11 +899,11 @@
             if (str.count) {
                 [UserManager shareUserManager].changeEquipStatus = YES;
                 NSMutableDictionary *toDic = [NSMutableDictionary dictionary];
-                NSDictionary *resultDic  = [UserManager shareUserManager].resultCardDic;
+                NSDictionary *resultDic  = [UserManager shareUserManager].resultDic;
                 [toDic addEntriesFromDictionary:resultDic];
                 [toDic addEntriesFromDictionary:str];
                 
-                [UserManager shareUserManager].resultCardDic = toDic;
+                [UserManager shareUserManager].resultDic = toDic;
                 
                 NSString *ss = safeString([[str allValues] firstObject]);
                 [self.selectBtn setTitle:ss forState:UIControlStateNormal];
@@ -983,14 +983,14 @@
      NSString *infoId = safeString(dd[@"parentId"]);
     [UserManager shareUserManager].changeEquipStatus = YES;
     NSMutableDictionary *toDic = [NSMutableDictionary dictionary];
-    NSDictionary *resultDic  = [UserManager shareUserManager].resultCardDic;
+    NSDictionary *resultDic  = [UserManager shareUserManager].resultDic;
     [toDic addEntriesFromDictionary:resultDic];
     
     NSMutableDictionary *aDic = [NSMutableDictionary dictionary];
     [aDic setValue:safeString(textView.text) forKey:safeString(infoId)];
     [toDic addEntriesFromDictionary:aDic];
     
-    [UserManager shareUserManager].resultCardDic = toDic;
+    [UserManager shareUserManager].resultDic = toDic;
     
     NSString *ss = safeString(textView.text);
     self.textView.text = ss;

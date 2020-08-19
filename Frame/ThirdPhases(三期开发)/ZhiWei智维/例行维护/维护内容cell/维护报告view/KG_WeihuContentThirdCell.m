@@ -810,7 +810,7 @@
                      
                     
                      NSString *parentId = safeString(dd[@"parentId"]) ;
-                     NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+                     NSDictionary *dic =  [UserManager shareUserManager].resultDic;
                      if ([dic count]) {
                          NSArray *arr = [dic allKeys];
                          if (arr.count) {

@@ -618,7 +618,7 @@
             
             NSArray *array = [value componentsSeparatedByString:@"@&@"];
             NSString *parentId = safeString(dd[@"parentId"]) ;
-            NSDictionary *dic =  [UserManager shareUserManager].resultCardDic;
+            NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
                 NSArray *arr = [dic allKeys];
                 if (arr.count) {
@@ -840,14 +840,14 @@
      NSString *infoId = safeString(dd[@"parentId"]);
     [UserManager shareUserManager].changeEquipStatus = YES;
     NSMutableDictionary *toDic = [NSMutableDictionary dictionary];
-    NSDictionary *resultDic  = [UserManager shareUserManager].resultCardDic;
+    NSDictionary *resultDic  = [UserManager shareUserManager].resultDic;
     [toDic addEntriesFromDictionary:resultDic];
     
     NSMutableDictionary *aDic = [NSMutableDictionary dictionary];
     [aDic setValue:safeString(textView.text) forKey:safeString(infoId)];
     [toDic addEntriesFromDictionary:aDic];
     
-    [UserManager shareUserManager].resultCardDic = toDic;
+    [UserManager shareUserManager].resultDic = toDic;
     
     NSString *ss = safeString(textView.text);
     self.textView.text = ss;
@@ -863,10 +863,5 @@
     return YES;
     
 }
-
-
-
-
-
 
 @end

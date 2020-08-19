@@ -9,6 +9,15 @@
 #import "KG_ZhiXiuCell.h"
 #import "KG_LeftScrollPromptView.h"
 
+@interface KG_ZhiXiuCell (){
+    
+    
+}
+
+@property (nonatomic,strong) KG_LeftScrollPromptView  *promptView;
+
+@end
+
 @implementation KG_ZhiXiuCell
 
 - (void)awakeFromNib {
@@ -136,7 +145,15 @@
         make.right.equalTo(self.mas_right).offset(-80);
     }];
     
-    
+    self.promptView = [[KG_LeftScrollPromptView alloc]init];
+    [self addSubview:self.promptView];
+    self.promptView.hidden = YES;
+    [self.promptView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.top.equalTo(self.mas_top);
+        make.bottom.equalTo(self.mas_bottom);
+    }];
 }
 
 
@@ -231,14 +248,9 @@
 
 - (void)setShowLeftSrcollView:(NSString *)showLeftSrcollView {
     if ([showLeftSrcollView isEqualToString:@"1"]) {
-        KG_LeftScrollPromptView *view=  [[KG_LeftScrollPromptView alloc]init];
-        [self addSubview:view];
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.mas_left);
-            make.right.equalTo(self.mas_right);
-            make.top.equalTo(self.mas_top);
-            make.bottom.equalTo(self.mas_bottom);
-        }];
+        self.promptView.hidden = NO;
+    }else {
+        self.promptView.hidden = YES;
     }
     
 }

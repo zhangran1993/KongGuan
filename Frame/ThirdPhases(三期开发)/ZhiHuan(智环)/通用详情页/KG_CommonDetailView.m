@@ -322,6 +322,7 @@
             cell.iconImage.backgroundColor = [UIColor colorWithHexString:@"#95A8D7"];
         }
     }
+    
     return cell;
 }
 - (void)setDataDic:(NSDictionary *)dataDic {

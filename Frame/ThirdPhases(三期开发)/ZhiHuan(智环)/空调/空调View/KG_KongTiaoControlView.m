@@ -18,58 +18,60 @@
 @interface KG_KongTiaoControlView ()<SegmentTapViewDelegate> {
     
 }
-@property (nonatomic ,strong) UIScrollView *scrollView;
-@property (nonatomic ,strong) UIImageView *topIcon ;
+@property (nonatomic ,strong) UIScrollView     *scrollView;
 
-@property (nonatomic ,strong) UIImageView *greenDot ;//绿点
+@property (nonatomic ,strong) UIImageView      *topIcon ;
 
-@property (nonatomic ,strong) UILabel *titleLabel; //空调
+@property (nonatomic ,strong) UIImageView      *greenDot ;//绿点
 
-@property (nonatomic ,strong) UILabel *gaojingStatusLabel; //告警状态
+@property (nonatomic ,strong) UILabel          *titleLabel; //空调
 
-@property (nonatomic ,strong) UILabel *runStatusLabel; //运行状态
+@property (nonatomic ,strong) UILabel          *gaojingStatusLabel; //告警状态
 
-@property (nonatomic ,strong) UILabel *runStatusDetailLabel; //运行状态
+@property (nonatomic ,strong) UILabel          *runStatusLabel; //运行状态
 
-@property (nonatomic ,strong) UILabel *tempLabel; //温度
+@property (nonatomic ,strong) UILabel          *runStatusDetailLabel; //运行状态
 
-@property (nonatomic ,strong) UIImageView *statusImage;
+@property (nonatomic ,strong) UILabel          *tempLabel; //温度
 
-@property (nonatomic ,strong) UIImageView *fengshanImage;
+@property (nonatomic ,strong) UIImageView      *statusImage;
 
+@property (nonatomic ,strong) UIImageView      *fengshanImage;
 
-@property (nonatomic ,strong) UILabel *tempNumLabel;
+@property (nonatomic ,strong) UILabel          *tempNumLabel;
 
-@property (nonatomic ,strong) SegmentTapView *segment;
+@property (nonatomic ,strong) SegmentTapView   *segment;
 
-@property(nonatomic,assign)  CGFloat angle;
+@property(nonatomic,assign)   CGFloat          angle;
 
-@property(nonatomic,assign) NSInteger currIndex;
+@property(nonatomic,assign)   NSInteger        currIndex;
 
+@property (nonatomic, strong) UIView           *centerView;
 
-
-@property (nonatomic, strong) UIView         *centerView;
 @property (nonatomic, strong) KG_CommonGaojingView *centerGaoJingView;
-@property (nonatomic, strong) UIImageView *centerImageView;
 
+@property (nonatomic, strong) UIImageView      *centerImageView;
 
-@property (nonatomic, strong) UIView         *topView;
+@property (nonatomic, strong) UIView           *topView;
 
-@property (nonatomic, strong) UIImageView    *bgImage;
+@property (nonatomic, strong) UIImageView      *bgImage;
 
-@property (nonatomic, strong) UIImageView    *equipImage;
+@property (nonatomic, strong) UIImageView      *equipImage;
 
-@property (nonatomic, strong) UIImageView    *iconImage;
-@property (nonatomic, strong) UILabel        *roomLabel;
+@property (nonatomic, strong) UIImageView      *iconImage;
+@property (nonatomic, strong) UILabel          *roomLabel;
 
-@property (nonatomic, strong) UILabel        *gaojingLabel;
-@property (nonatomic, strong) UIImageView    *gaojingImage;
-@property (nonatomic, strong) UILabel        *statusNumLabel;
-@property (nonatomic, strong) KG_GaojingView *gaojingView;
+@property (nonatomic, strong) UILabel          *gaojingLabel;
 
+@property (nonatomic, strong) UIImageView      *gaojingImage;
 
-@property (nonatomic, strong) UIImageView    *leftImage;
-@property (nonatomic, strong) UILabel        *leftTitle;
+@property (nonatomic, strong) UILabel          *statusNumLabel;
+
+@property (nonatomic, strong) KG_GaojingView   *gaojingView;
+
+@property (nonatomic, strong) UIImageView      *leftImage;
+
+@property (nonatomic, strong) UILabel          *leftTitle;
 
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
@@ -86,7 +88,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshControlLogSegment) name:@"refreshControlLogSegment" object:nil];
-        
         self.frame = frame;
         [self initData];
         [self createTopView];

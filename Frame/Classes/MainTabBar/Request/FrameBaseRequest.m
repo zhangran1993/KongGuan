@@ -363,8 +363,12 @@
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isNetwork"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         [SVProgressHUD dismiss];
+       
         if (success) {
             success(responseObj);
+        }
+        if([safeString(responseObj[@"msg"]) containsString:@"身份已过期"]){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
         }
     } failure:^(NSURLSessionDataTask *error) {
         [SVProgressHUD dismiss];
@@ -373,6 +377,7 @@
         if (failure) {
             failure(error);
         }
+       
     }];
 }
 

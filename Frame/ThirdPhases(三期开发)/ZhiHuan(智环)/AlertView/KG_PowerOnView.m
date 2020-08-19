@@ -58,7 +58,7 @@
     [centerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
         make.centerY.equalTo(self.mas_centerY);
-        make.height.equalTo(@270);
+        make.width.equalTo(@270);
         make.height.equalTo(@242);
     }];
     UIButton *centerBtn = [[UIButton alloc]init];

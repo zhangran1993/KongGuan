@@ -6,11 +6,11 @@
 //  Copyright © 2020 hibaysoft. All rights reserved.
 //
 
-#import "KG_EquipCardViewController.h"
+#import "KG_EquipStatusCardView.h"
 #import "KG_EquipCardCell.h"
 #import "KG_WeiHuCardAlertView.h"
 #import "KG_OperationGuideViewController.h"
-@interface KG_EquipCardViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+@interface KG_EquipStatusCardView ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 
 
 @property (nonatomic, strong)  UILabel   *titleLabel;
@@ -39,21 +39,29 @@
 
 @end
 
-@implementation KG_EquipCardViewController
+@implementation KG_EquipStatusCardView
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self createNaviTopView];
-    // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    self.selIndex = 0;
-    [UserManager shareUserManager].resultDic = nil;
-    self.selDetailIndex = 0;
-    [self createScrollView];
-    [self createView];
-    
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
+        [self createUI];
+//        [self createNaviTopView];
+        // Do any additional setup after loading the view.
+        self.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        self.selIndex = 0;
+        [UserManager shareUserManager].resultDic = nil;
+        self.selDetailIndex = 0;
+        [self createScrollView];
+        
+    }
+    return self;
 }
 
+- (void)createUI {
+    
+    
+}
 - (void)createScrollView {
     
     
@@ -62,16 +70,16 @@
 - (void)createNaviTopView {
     
     UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
-    [self.view addSubview:topImage1];
+    [self addSubview:topImage1];
     topImage1.backgroundColor  =[UIColor whiteColor];
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
-    [self.view addSubview:topImage];
+    [self addSubview:topImage];
     topImage.backgroundColor  =[UIColor whiteColor];
     topImage.image = [UIImage imageNamed:@"zhiyun_bgImage"];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
     self.navigationView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:self.navigationView];
+    [self addSubview:self.navigationView];
     
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
@@ -106,25 +114,25 @@
 
 - (void)backButtonClick:(UIButton *)button {
    
-    if ([UserManager shareUserManager].isChangeTask && [UserManager shareUserManager].changeEquipStatus ) {
-        
-        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定要保存吗" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-             [self.navigationController popViewControllerAnimated:YES];
-            [UserManager shareUserManager].changeEquipStatus = NO;
-            [UserManager shareUserManager].resultDic = nil;
-            return ;
-        }]];
-        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-            [self changeTask];
-            [UserManager shareUserManager].changeEquipStatus = NO;
-            return ;
-        }]];
-        [self presentViewController:alertContor animated:NO completion:nil];
-    }else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    
+//    if ([UserManager shareUserManager].isChangeTask && [UserManager shareUserManager].changeEquipStatus ) {
+//
+//        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定要保存吗" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+//        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+////             [self.navigationController popViewControllerAnimated:YES];
+////            [UserManager shareUserManager].changeEquipStatus = NO;
+////            [UserManager shareUserManager].resultCardDic = nil;
+////            return ;
+//        }]];
+//        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+//            [self changeTask];
+//            [UserManager shareUserManager].changeEquipStatus = NO;
+//            return ;
+//        }]];
+//        [self presentViewController:alertContor animated:NO completion:nil];
+//    }else {
+////        [self.navigationController popViewControllerAnimated:YES];
+//    }
+
     
      
     
@@ -222,7 +230,7 @@
         }
         
         [UserManager shareUserManager].resultDic = nil;
-        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popViewControllerAnimated:YES];
         
         
     } failure:^(NSError *error)  {
@@ -249,29 +257,14 @@
     return _titleLabel;
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    NSLog(@"StationDetailController viewWillAppear");
-    if (@available(iOS 13.0, *)){
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
-    }else {
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    }
-    [self.navigationController setNavigationBarHidden:YES];
-    
-}
--(void)viewWillDisappear:(BOOL)animated{
-    NSLog(@"StationDetailController viewWillDisappear");
-    [self.navigationController setNavigationBarHidden:NO];
-   
-}
 
 - (void)createView {
-    [self.view addSubview:self.tableView];
+    [self addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navigationView.mas_bottom);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
-        make.bottom.equalTo(self.view.mas_bottom);
+        make.top.equalTo(self.mas_top).offset(44);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.bottom.equalTo(self.mas_bottom);
     }];
     self.tableView.layer.cornerRadius = 6;
     self.tableView.layer.masksToBounds = YES;
@@ -385,7 +378,7 @@
     [_alertView removeFromSuperview];
     _alertView = nil;
     if (_alertView == nil) {
-        [self.view addSubview:self.alertView];
+        [JSHmainWindow addSubview:self.alertView];
         
         if (self.curSelDic.count) {
             self.alertView.curSelDic = self.curSelDic;
@@ -410,24 +403,24 @@
             
         };
         [self.alertView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top);
-            make.left.equalTo(self.view.mas_left);
-            make.right.equalTo(self.view.mas_right);
-            make.bottom.equalTo(self.view.mas_bottom);
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
         }];
     }else {
         self.alertView.hidden = NO;
     }
-   
+    
 }
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = self.view.backgroundColor;
+        _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = YES;
+        _tableView.scrollEnabled = NO;
       
     }
     return _tableView;
@@ -458,10 +451,10 @@
     if (cell == nil) {
         cell = [[KG_EquipCardCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipCardCell"];
         cell.moreBlockMethod = ^(NSDictionary * _Nonnull dataDic) {
-            
-            KG_OperationGuideViewController *vc  = [[KG_OperationGuideViewController alloc]init];
-            vc.dataDic = dataDic;
-            [self.navigationController pushViewController:vc animated:YES];
+            if (self.moreBlockMethod) {
+                self.moreBlockMethod(dataDic);
+            }
+           
         };
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
@@ -495,8 +488,8 @@
 - (void)createSliderView {
     
     self.sliderBgView = [[UIView alloc]initWithFrame:CGRectMake(0,SCREEN_HEIGHT-200, SCREEN_WIDTH, 26)];
-    [self.view addSubview:self.sliderBgView];
-    self.sliderBgView.backgroundColor = self.view.backgroundColor;
+    [self addSubview:self.sliderBgView];
+    self.sliderBgView.backgroundColor = self.backgroundColor;
     
     float sliderV_X = SCREEN_WIDTH/2;
     float sliderVX =  sliderV_X;
@@ -561,5 +554,21 @@
     return mutStr;
 
 }
+- (void)setDataDic:(NSDictionary *)dataDic{
+    _dataDic =dataDic;
+    
+}
 
+- (void)setDataModel:(KG_XunShiReportDetailModel *)dataModel {
+    _dataModel = dataModel;
+   
+    [self createView];
+}
+
+- (void)setListArray:(NSArray *)listArray {
+    _listArray = listArray;
+    
+   
+    
+}
 @end

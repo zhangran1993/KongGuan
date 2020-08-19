@@ -22,6 +22,7 @@
 #import "KG_WeiHuDetailReportDataModel.h"
 #import "KG_XunShiReportDataModel.h"
 #import "KG_WeiHuContentCell.h"
+#import "KG_OperationGuideViewController.h"
 @interface KG_WeihuDailyReportDetailViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
 
 
@@ -211,7 +212,11 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == self.dataArray.count) {
-        return 124;
+        if(self.equipArr.count == 0 ){
+            
+            return 100;
+        }
+        return SCREEN_HEIGHT - NAVIGATIONBAR_HEIGHT;
     }else if (indexPath.section == self.dataArray.count + 1) {
         return 280;
     }
@@ -283,6 +288,15 @@
         if (cell == nil) {
             cell = [[KG_EquipResultCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipResultCell"];
         }
+        cell.moreBlockMethod = ^(NSDictionary * _Nonnull dataDic) {
+            KG_OperationGuideViewController *vc  = [[KG_OperationGuideViewController alloc]init];
+            vc.dataDic = dataDic;
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        
+        cell.dataDic = self.dataDic;
+        cell.listArray = self.equipArr;
+        cell.dataModel = self.dataModel;
        
 //        if (safeString(self.dataModel.taskDescription).length) {
 //            cell.taskDescription = self.dataModel.taskDescription;

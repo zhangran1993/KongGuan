@@ -19,44 +19,59 @@
 #import "UIViewController+YQSlideMenu.h"
 #import "LoginViewController.h"
 #import <UIButton+WebCache.h>
+#import "KG_ControlGaoJingAlertView.h"
+#import "KG_NewScreenViewController.h"
 @interface KG_ZhiXiuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSMutableArray     *dataArray;
 
-@property (nonatomic, strong) SegmentTapView *segment;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) SegmentTapView     *segment;
+
+@property (nonatomic, strong) UITableView        *tableView;
+
+@property (nonatomic ,assign) int                pageNum;
+@property (nonatomic ,assign) int                pageSize;
+@property (nonatomic ,assign) int                currIndex;
+@property (nonatomic ,assign) BOOL               isOpenSwh;
+
+@property (nonatomic, strong) UIButton           *rightButton;
+@property (nonatomic, strong) UIButton           *swh;
 
 
-@property (nonatomic ,assign) int pageNum;
-@property (nonatomic ,assign) int pageSize;
-@property (nonatomic ,assign) int currIndex;
-@property (nonatomic ,assign) BOOL isOpenSwh;
 
-@property (nonatomic, strong) UIButton *rightButton;
-@property (nonatomic, strong) UIButton *swh;
+@property (nonatomic, strong) UILabel            *titleLabel;
+@property (nonatomic, strong) UIView             *navigationView;
+
+@property (nonatomic ,strong) NSMutableArray     *paraArr;
+
+@property(strong,nonatomic)   NSArray            *stationArray;
+@property(strong,nonatomic)   UITableView        *stationTabView;
+
+@property (nonatomic, strong)  UIButton          *leftIconImage;
+
+@property (nonatomic, copy) NSString             *removeStartTime;
+@property (nonatomic, copy) NSString             *removeEndTime;
 
 
+@property (nonatomic, copy) NSString             *roomStr;
+@property (nonatomic, copy) NSString             *equipTypeStr;
+@property (nonatomic, copy) NSString             *alarmLevelStr;
+@property (nonatomic, copy) NSString             *alarmStatusStr;
+@property (nonatomic, copy) NSString             *startTime;
+@property (nonatomic, copy) NSString             *endTime;
 
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
-
-@property (nonatomic ,strong) NSMutableArray *paraArr;
-
-@property(strong,nonatomic)   NSArray *stationArray;
-@property(strong,nonatomic)   UITableView *stationTabView;
-
-@property (nonatomic, strong)  UIButton    *leftIconImage;
-
+@property(strong,nonatomic)   NSArray            *roomArray;
+@property (nonatomic, assign) BOOL             isBlock;
 @end
 
 @implementation KG_ZhiXiuViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES];
     // Do any additional setup after loading the view
     self.isOpenSwh = NO;
-    
+    self.isBlock = NO;
     [self createNaviTopView];
     [self createSegmentView];
     self.pageNum = 1;
@@ -81,8 +96,8 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
     [self.navigationController setNavigationBarHidden:YES];
-   
-     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     if (currDic.count) {
         [self.rightButton setTitle:safeString(currDic[@"alias"]) forState:UIControlStateNormal];
     }
@@ -94,27 +109,51 @@
         
         [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal] ;
     }
+    if (self.isBlock) {
+        self.isBlock = NO;
+        return;
+    }
     for (NSDictionary *dd in self.paraArr) {
-        if (![safeString(dd[@"code"]) isEqualToString:safeString(currDic[@"code"])]) {
+        if (![safeString(dd[@"content"]) isEqualToString:safeString(currDic[@"code"])]) {
             [self.paraArr removeAllObjects];
             self.pageNum = 1;
-            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
-            paraDic[@"name"] = @"stationCode";
-            paraDic[@"type"] = @"eq";
-            paraDic[@"content"] = safeString(currDic[@"code"]);
-            [self.paraArr addObject:paraDic];
-            [self queryGaoJingData];
-            [self.segment selectIndex:1];
+            if(self.isOpenSwh) {
+                
+                NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+                paraDic[@"name"] = @"stationCode";
+                paraDic[@"type"] = @"eq";
+                paraDic[@"content"] = safeString(currDic[@"code"]);
+                [self.paraArr addObject:paraDic];
+                
+                NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+                paraDic1[@"name"] = @"equipmentGroup";
+                paraDic1[@"type"] = @"eq";
+                paraDic1[@"content"] = @"equipment";
+                [self.paraArr addObject:paraDic1];
+                [self queryGaoJingData];
+                [self.segment selectIndex:1];
+                
+                
+            }else {
+                
+                NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+                paraDic[@"name"] = @"stationCode";
+                paraDic[@"type"] = @"eq";
+                paraDic[@"content"] = safeString(currDic[@"code"]);
+                [self.paraArr addObject:paraDic];
+                [self queryGaoJingData];
+                [self.segment selectIndex:1];
+            }
+            
+            
             break;
         }
     }
     
-   
-   
 }
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-//     [self.navigationController setNavigationBarHidden:NO];
+    //     [self.navigationController setNavigationBarHidden:NO];
     
 }
 - (void)createSegmentView{
@@ -163,17 +202,17 @@
     if(self.isOpenSwh){
         [self.swh setImage:[UIImage imageNamed:@"open_swh"] forState:UIControlStateNormal];
     }else {
-         [self.swh setImage:[UIImage imageNamed:@"close_swh"] forState:UIControlStateNormal];
+        [self.swh setImage:[UIImage imageNamed:@"close_swh"] forState:UIControlStateNormal];
     }
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.segment.mas_bottom);
+        make.top.equalTo(self.segment.mas_bottom).offset(50);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-    swhView.hidden = YES;
+    //    swhView.hidden = YES;
     
     
 }
@@ -190,7 +229,102 @@
         [self.swh setImage:[UIImage imageNamed:@"close_swh"] forState:UIControlStateNormal];
     }
     
+    [self queryOpenSwhData];
+    
 }
+
+//查询在打开空管专用设备下，打开开关的网络请求
+- (void)queryOpenSwhData {
+    [self.dataArray removeAllObjects];
+    [self.paraArr removeAllObjects];
+    self.pageNum = 1;
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    //如果是关闭
+    if (self.isOpenSwh == NO) {
+        if (self.currIndex == 0) {
+            NSLog(@"1");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            [self queryGaoJingData];
+        }else if (self.currIndex == 1){
+            NSLog(@"2");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"alarmStatus";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"unconfirmed";
+            [self.paraArr addObject:paraDic1];
+            [self queryGaoJingData];
+        }else if (self.currIndex == 2){
+            NSLog(@"3");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            [self queryConfirmData];
+            
+        }
+        
+    }else {
+        if (self.currIndex == 0) {
+            NSLog(@"1");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"equipmentGroup";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"equipment";
+            [self.paraArr addObject:paraDic1];
+            [self queryGaoJingData];
+        }else if (self.currIndex == 1){
+            NSLog(@"2");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"alarmStatus";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"unconfirmed";
+            [self.paraArr addObject:paraDic1];
+            [self queryGaoJingData];
+        }else if (self.currIndex == 2){
+            NSLog(@"3");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"equipmentGroup";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"equipment";
+            [self.paraArr addObject:paraDic1];
+            [self queryConfirmData];
+            
+        }
+        
+        
+    }
+    
+}
+
 //获取某个台站下全部自动告警事件：
 //请求地址：/{pageNum}/{pageSize}
 //       其中，pageNum是页码，pageSize是每页的数据量
@@ -199,8 +333,10 @@
 - (void)queryGaoJingData {
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/searchAlarmInfo/%d/%d",WebNewHost,self.pageNum,self.pageSize];
     WS(weakSelf);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             
@@ -220,20 +356,12 @@
                 [weakSelf.tableView.mj_footer resetNoMoreData];
             }
         }
-        
-        
-//        if(self.dataArray.count) {
-//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-//        }
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-       
+        [MBProgressHUD hideHUD];
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-            [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
         }
         return ;
@@ -266,9 +394,9 @@
         }
         
         
-//        if(self.dataArray.count) {
-//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-//        }
+        //        if(self.dataArray.count) {
+        //            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        //        }
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -305,7 +433,7 @@
         
         [self getStationList];
         
-      
+        
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -348,7 +476,7 @@
     
     /** 返回按钮 **/
     UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
-  
+    
     [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationView addSubview:backBtn];
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -374,14 +502,14 @@
         
         [self.leftIconImage setImage: [UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     }
-   
+    
     
     UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     histroyBtn.titleLabel.font = FontSize(12);
     
     
     [histroyBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-    [histroyBtn setImage:[UIImage imageNamed:@"screen_more"] forState:UIControlStateNormal];
+    [histroyBtn setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
     histroyBtn.frame = CGRectMake(0,0,81,22);
     [self.view addSubview:histroyBtn];
     [histroyBtn addTarget:self action:@selector(screenAction) forControlEvents:UIControlEventTouchUpInside];
@@ -422,8 +550,8 @@
         make.width.height.equalTo(@34);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
-  //单台站不可点击
-  self.rightButton.userInteractionEnabled = NO;
+    //单台站不可点击
+    self.rightButton.userInteractionEnabled = NO;
     
     
 }
@@ -432,16 +560,139 @@
 
 - (void)screenAction{
     
+    KG_NewScreenViewController *vc = [[KG_NewScreenViewController alloc]init];
+    vc.roomStr = self.roomStr;
+    vc.alarmLevelStr = self.alarmLevelStr;
+    vc.alarmStatusStr = self.alarmStatusStr;
+    vc.startTime = self.startTime;
+    vc.endTime = self.endTime;
+    vc.equipTypeStr = self.equipTypeStr;
+    
+    vc.confirmBlockMethod = ^(NSString * _Nonnull roomStr, NSString * _Nonnull equipTypeStr, NSString * _Nonnull alarmLevelStr, NSString * _Nonnull alarmStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray) {
+        
+        self.roomStr = roomStr;
+        self.equipTypeStr =equipTypeStr;
+        self.alarmLevelStr = alarmLevelStr;
+        self.alarmStatusStr = alarmStausStr;
+        self.startTime = startTimeStr;
+        self.endTime = endTimeStr;
+        self.roomArray = roomArray;
+        self.isBlock = YES;
+        [self screenMethodData];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+//获取某个台站下筛选自动告警事件：
+//请求地址：/intelligent/keepInRepair/searchAlarmInfo/{pageNum}/{pageSize}
+//       其中，pageNum是页码，pageSize是每页的数据量
+//请求方式：POST
+//筛选数据方法
+- (void)screenMethodData {
+    [self.segment selectIndex:1];
+    [self.dataArray removeAllObjects];
+    [self.paraArr removeAllObjects];
+    self.pageNum = 1;
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(currDic[@"code"]);
+    [self.paraArr addObject:paraDic];
+    NSString *roomString = @"";
+    for (NSDictionary *dataDic in self.roomArray) {
+        if ([safeString(dataDic[@"alias"]) isEqualToString:self.roomStr]) {
+            roomString = safeString(dataDic[@"code"]);
+            break;
+        }
+    }
+    NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+    paraDic1[@"name"] = @"engineRoomCode";
+    paraDic1[@"type"] = @"eq";
+    paraDic1[@"content"] = safeString(roomString);
+    [self.paraArr addObject:paraDic1];
+    
+    NSString *alarmStatusCode = @"";
+    if ([self.alarmStatusStr isEqualToString:@"未确认"]) {
+        alarmStatusCode = @"unconfirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已确认"]) {
+        alarmStatusCode = @"confirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解决"]) {
+        alarmStatusCode = @"completed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解除"]) {
+        alarmStatusCode = @"removed";
+    }
+    
+    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
+    paraDic2[@"name"] = @"alarmStatus";
+    paraDic2[@"type"] = @"eq";
+    paraDic2[@"content"] = safeString(alarmStatusCode);
+    [self.paraArr addObject:paraDic2];
+    
+    NSString *equipCode = @"";
+    if ([self.equipTypeStr isEqualToString:@"安防"]) {
+        equipCode = @"security";
+    }else if ([self.equipTypeStr isEqualToString:@"环境"]) {
+        equipCode = @"environmental";
+    }else if ([self.equipTypeStr isEqualToString:@"动力"]) {
+        equipCode = @"power";
+    }else if ([self.equipTypeStr isEqualToString:@"设备"]) {
+        equipCode = @"equipment";
+    }
+    NSMutableDictionary *paraDic3 = [NSMutableDictionary dictionary];
+    paraDic3[@"name"] = @"equipmentGroup";
+    paraDic3[@"type"] = @"eq";
+    paraDic3[@"content"] = safeString(equipCode);
+    [self.paraArr addObject:paraDic3];
+    
+    NSString *alarmLevelCode = @"1";
+    if ([self.alarmLevelStr isEqualToString:@"紧急"]) {
+        alarmLevelCode = @"1";
+    }else if ([self.alarmLevelStr isEqualToString:@"重要"]) {
+        alarmLevelCode = @"2";
+    }else if ([self.alarmLevelStr isEqualToString:@"次要"]) {
+        alarmLevelCode = @"3";
+    }else if ([self.alarmLevelStr isEqualToString:@"提示"]) {
+        alarmLevelCode = @"4";
+    }else if ([self.alarmLevelStr isEqualToString:@"正常"]) {
+        alarmLevelCode = @"5";
+    }
+    
+    
+    
+    NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
+    paraDic4[@"name"] = @"alarmLevel";
+    paraDic4[@"type"] = @"eq";
+    paraDic4[@"content"] = safeString(alarmLevelCode);
+    [self.paraArr addObject:paraDic4];
+    
+    
+    
+    NSMutableDictionary *paraDic5 = [NSMutableDictionary dictionary];
+    paraDic5[@"name"] = @"startTime";
+    paraDic5[@"type"] = @"eq";
+    paraDic5[@"content"] = safeString(self.startTime);
+    [self.paraArr addObject:paraDic5];
+    
+    NSMutableDictionary *paraDic6 = [NSMutableDictionary dictionary];
+    paraDic6[@"name"] = @"endTime";
+    paraDic6[@"type"] = @"eq";
+    paraDic6[@"content"] = safeString(self.endTime);
+    [self.paraArr addObject:paraDic6];
+    
+    [self queryGaoJingData];
+    
+    
 }
 - (void)rightAction {
-    
     [self stationAction];
 }
 
 
 - (void)backButtonClick:(UIButton *)button {
     [self leftCenterButtonClick];
-//    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
+    //    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     
 }
 /**
@@ -473,7 +724,6 @@
     }
     self.stationArray = [KG_ZhiTaiStationModel mj_objectArrayWithKeyValuesArray:list];
     [self getStationList];
-    
 }
 
 
@@ -547,11 +797,11 @@
     }else {
         
         
-       KG_GaoJingModel *model = self.dataArray[indexPath.section];
-       
+        //        KG_GaoJingModel *model = self.dataArray[indexPath.section];
+        
         return  141;
     }
-        
+    
     return FrameWidth(210);
 }
 
@@ -596,20 +846,24 @@
         cell.model = model;
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if(self.dataArray.count >1 &&indexPath.section == 1) {
-             
-//            if (![userDefaults objectForKey:@"firstZhiXiu"]) {
-//                [userDefaults setObject:@"1" forKey:@"firstZhiXiu"];
-//                [userDefaults synchronize];
-//                cell.showLeftSrcollView = @"1";
-//
-//
-//            }
+            
+            if (![userDefaults objectForKey:@"firstZhiXiu"]) {
+                [userDefaults setObject:@"1" forKey:@"firstZhiXiu"];
+                [userDefaults synchronize];
+                cell.showLeftSrcollView = @"1";
+                
+            }else {
+                cell.showLeftSrcollView = @"0";
+            }
+        }else {
+            
+            cell.showLeftSrcollView = @"0";
         }
         
         return cell;
-
+        
     }
-
+    
     
     
     return nil;
@@ -679,11 +933,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
-
-
-
-
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -692,7 +941,7 @@
         _tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-     
+        _tableView.bounces = NO;
         // 上拉加载
         _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     }
@@ -713,10 +962,6 @@
         [self loadMoreConfirmData];
     }
 }
-
-
-
-
 
 - (NSMutableArray *)dataArray {
     
@@ -753,7 +998,6 @@
     return 0.001;
 }
 
-
 - (void)selectedIndex:(NSInteger)index{
     NSLog(@"测试");
     [self.dataArray removeAllObjects];
@@ -761,44 +1005,95 @@
     self.pageNum = 1;
     self.currIndex = (int)index;
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
-       
-    if (index == 0) {
-        NSLog(@"1");
+    //如果是关闭
+    if (self.isOpenSwh == NO) {
+        if (index == 0) {
+            NSLog(@"1");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            [self queryGaoJingData];
+        }else if (index == 1){
+            NSLog(@"2");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"alarmStatus";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"unconfirmed";
+            [self.paraArr addObject:paraDic1];
+            [self queryGaoJingData];
+        }else if (index == 2){
+            NSLog(@"3");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            [self queryConfirmData];
+            
+        }
         
-        NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
-        paraDic[@"name"] = @"stationCode";
-        paraDic[@"type"] = @"eq";
-        paraDic[@"content"] = safeString(currDic[@"code"]);
-        [self.paraArr addObject:paraDic];
-        [self queryGaoJingData];
-    }else if (index == 1){
-        NSLog(@"2");
-        NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
-        paraDic[@"name"] = @"stationCode";
-        paraDic[@"type"] = @"eq";
-        paraDic[@"content"] = safeString(currDic[@"code"]);
-        [self.paraArr addObject:paraDic];
+    }else {
+        if (index == 0) {
+            NSLog(@"1");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"equipmentGroup";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"equipment";
+            [self.paraArr addObject:paraDic1];
+            [self queryGaoJingData];
+        }else if (index == 1){
+            NSLog(@"2");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"alarmStatus";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"unconfirmed";
+            [self.paraArr addObject:paraDic1];
+            [self queryGaoJingData];
+        }else if (index == 2){
+            NSLog(@"3");
+            NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+            paraDic[@"name"] = @"stationCode";
+            paraDic[@"type"] = @"eq";
+            paraDic[@"content"] = safeString(currDic[@"code"]);
+            [self.paraArr addObject:paraDic];
+            
+            NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+            paraDic1[@"name"] = @"equipmentGroup";
+            paraDic1[@"type"] = @"eq";
+            paraDic1[@"content"] = @"equipment";
+            [self.paraArr addObject:paraDic1];
+            [self queryConfirmData];
+            
+        }
         
-        NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
-        paraDic1[@"name"] = @"alarmStatus";
-        paraDic1[@"type"] = @"eq";
-        paraDic1[@"content"] = @"unconfirmed";
-        [self.paraArr addObject:paraDic1];
-        [self queryGaoJingData];
-    }else if (index == 2){
-        NSLog(@"3");
-        NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
-        paraDic[@"name"] = @"stationCode";
-        paraDic[@"type"] = @"eq";
-        paraDic[@"content"] = safeString(currDic[@"code"]);
-        [self.paraArr addObject:paraDic];
-        [self queryConfirmData];
         
-      
     }
     
-  
+    
 }
+
+
+
 
 - (void)queryConfirmData {
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/notUnconfirmed/%d/%d",WebNewHost,self.pageNum,self.pageSize];
@@ -846,57 +1141,57 @@
 
 - (void)loadMoreConfirmData {
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/notUnconfirmed/%d/%d",WebNewHost,self.pageNum,self.pageSize];
-       WS(weakSelf);
-       [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
-           NSInteger code = [[result objectForKey:@"errCode"] intValue];
-           if(code  <= -1){
-               [FrameBaseRequest showMessage:result[@"errMsg"]];
-               
-               return ;
-           }
-           [self.tableView.mj_footer endRefreshing];
-           NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
-           [self.dataArray addObjectsFromArray:arr] ;
-           int pages = [result[@"value"][@"pages"] intValue];
-           
-           if (self.pageNum >= pages) {
-               [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
-               
-           }else {
-               if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
-                   [weakSelf.tableView.mj_footer resetNoMoreData];
-               }
-           }
-           
-           
-           //        if(self.dataArray.count) {
-           //            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-           //        }
-           [self.tableView reloadData];
-       } failure:^(NSError *error)  {
-           FrameLog(@"请求失败，返回数据 : %@",error);
-           if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-               [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-               [FrameBaseRequest logout];
-               LoginViewController *login = [[LoginViewController alloc] init];
-               [self.slideMenuController showViewController:login];
-               return;
-           }
-           [FrameBaseRequest showMessage:@"网络链接失败"];
-           return ;
-       }];
+    WS(weakSelf);
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [self.tableView.mj_footer endRefreshing];
+        NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
+        [self.dataArray addObjectsFromArray:arr] ;
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        
+        
+        //        if(self.dataArray.count) {
+        //            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        //        }
+        [self.tableView reloadData];
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
     
 }
 //MARK: 设置左滑按钮的样式
 - (void)setupSlideBtnWithEditingIndexPath:(NSIndexPath *)editingIndexPath {
-
+    
     // 判断系统是否是 iOS13 及以上版本
     if (@available(iOS 13.0, *)) {
         for (UIView *subView in self.tableView.subviews) {
             if ([subView isKindOfClass:NSClassFromString(@"_UITableViewCellSwipeContainerView")] && [subView.subviews count] >= 1) {
                 // 修改图片
                 UIView *remarkContentView = subView.subviews.firstObject;
-                [self setupRowActionView:remarkContentView];
+                [self setupRowActionView:remarkContentView withIndex:editingIndexPath];
             }
         }
         return;
@@ -908,7 +1203,7 @@
             if ([subView isKindOfClass:NSClassFromString(@"UISwipeActionPullView")] && [subView.subviews count] >= 1) {
                 // 修改图片
                 UIView *remarkContentView = subView;
-                [self setupRowActionView:remarkContentView];
+                [self setupRowActionView:remarkContentView withIndex:editingIndexPath];
             }
         }
         return;
@@ -920,62 +1215,347 @@
         if ([subView isKindOfClass:NSClassFromString(@"UITableViewCellDeleteConfirmationView")] && [subView.subviews count] >= 1) {
             // 修改图片
             UIView *remarkContentView = subView;
-            [self setupRowActionView:remarkContentView];
+            [self setupRowActionView:remarkContentView withIndex:editingIndexPath];
         }
     }
 }
 
-- (void)setupRowActionView:(UIView *)rowActionView {
+- (void)setupRowActionView:(UIView *)rowActionView withIndex:(NSIndexPath *)editingIndexPath {
+    
     // 切割圆角
-//    [rowActionView cl_setCornerAllRadiusWithRadiu:20];
+    //    [rowActionView cl_setCornerAllRadiusWithRadiu:20];
     // 改变父 View 的frame，这句话是因为我在 contentView 里加了另一个 View，为了使划出的按钮能与其达到同一高度
     CGRect frame = rowActionView.frame;
-//    frame.origin.y += (7);
-    frame.size.height = (36);
-    frame.size.width = (36);
+    //    frame.origin.y += (7);
+    frame.size.height = (141);
+    //    frame.size.width = (180);
     rowActionView.frame = frame;
     // 拿到按钮,设置
     UIButton *hang = rowActionView.subviews.firstObject;
-    [hang setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-    [hang setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-    [hang setTitle:@"挂起" forState:UIControlStateNormal];
+    hang.tag = editingIndexPath.section;
+    [hang setBackgroundColor:[UIColor colorWithHexString:@"#F6F7F9"]];
+    
+    
+    
+    UIView *hangBgView = [[UIView alloc]init];
+    hangBgView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+    [hang addSubview:hangBgView];
+    hangBgView.layer.cornerRadius = 18.f;
+    hangBgView.layer.masksToBounds = YES;
+    
+    [hang addTarget:self action:@selector(hangMethod:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    [hangBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(hang.mas_left).offset(14);
+        make.centerY.equalTo(hang.mas_centerY);
+        make.width.equalTo(@36);
+        make.height.equalTo(@36);
+    }];
+    
+    
+    
+    
+    UILabel *hangLabel = [[UILabel alloc]init];
+    [hangBgView addSubview:hangLabel];
+    hangLabel.text = @"确认";
+    hangLabel.textAlignment = NSTextAlignmentCenter;
+    hangLabel.font = [UIFont systemFontOfSize:12];
+    hangLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [hangLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(hangBgView.mas_centerX);
+        make.centerY.equalTo(hangBgView.mas_centerY);
+        make.width.equalTo(@36);
+        make.height.equalTo(@36);
+    }];
+    
     
     UIButton *lift = rowActionView.subviews[1];
-    [lift setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-    [lift setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-    [lift setTitle:@"解除" forState:UIControlStateNormal];
+    lift.tag = editingIndexPath.section;
+    [lift addTarget:self action:@selector(liftMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [lift setBackgroundColor:[UIColor colorWithHexString:@"#F6F7F9"]];
+    
+    UIView *liftBgView = [[UIView alloc]init];
+    liftBgView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+    [lift addSubview:liftBgView];
+    liftBgView.layer.cornerRadius = 18.f;
+    liftBgView.layer.masksToBounds = YES;
+    [liftBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(lift.mas_left).offset(14);
+        make.centerY.equalTo(lift.mas_centerY);
+        make.width.equalTo(@36);
+        make.height.equalTo(@36);
+    }];
+    UILabel *liftLabel = [[UILabel alloc]init];
+    [liftBgView addSubview:liftLabel];
+    liftLabel.text = @"解除";
+    liftLabel.textAlignment = NSTextAlignmentCenter;
+    liftLabel.font = [UIFont systemFontOfSize:12];
+    liftLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [liftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(liftBgView.mas_centerX);
+        make.centerY.equalTo(liftBgView.mas_centerY);
+        make.width.equalTo(@36);
+        make.height.equalTo(@36);
+    }];
+    
     
     UIButton *confirm = rowActionView.subviews[2];
-    [confirm setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-    [confirm setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-    [confirm setTitle:@"确认" forState:UIControlStateNormal];
+    confirm.tag = editingIndexPath.section;
+    [confirm addTarget:self action:@selector(confirmMethod:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [confirm setBackgroundColor:[UIColor colorWithHexString:@"#F6F7F9"]];
+    UIView *confirmBgView = [[UIView alloc]init];
+    confirmBgView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+    [confirm addSubview:confirmBgView];
+    confirmBgView.layer.cornerRadius = 18.f;
+    confirmBgView.layer.masksToBounds = YES;
+    [confirmBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(confirm.mas_left).offset(14);
+        make.centerY.equalTo(confirm.mas_centerY);
+        make.width.equalTo(@36);
+        make.height.equalTo(@36);
+    }];
+    UILabel *confirmLabel = [[UILabel alloc]init];
+    [confirmBgView addSubview:confirmLabel];
+    confirmLabel.text = @"挂起";
+    confirmLabel.textAlignment = NSTextAlignmentCenter;
+    confirmLabel.font = [UIFont systemFontOfSize:12];
+    confirmLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [confirmLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(confirmBgView.mas_centerX);
+        make.centerY.equalTo(confirmBgView.mas_centerY);
+        make.width.equalTo(@36);
+        make.height.equalTo(@36);
+    }];
+    
+}
+
+//确认
+- (void)hangMethod:(UIButton *)button {
+    
+    KG_GaoJingModel *model = self.dataArray[button.tag];
+    if ([safeString(model.status) isEqualToString:@"已解除"]) {
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能挂起"];
+        return;
+    }
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(model.id);
+    paramDic[@"status"] = @"confirmed";
+    
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/handleAlarmStatus",WebNewHost];
+    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        [FrameBaseRequest showMessage:@"确认操作成功"];
+        [self queryNoHudGaoJingData];
+        
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
+        return ;
+    }];
+    
+    
+    
+}
+//解除
+- (void)liftMethod:(UIButton *)button {
+    
+    KG_GaoJingModel *model = self.dataArray[button.tag];
+    
+    
+    
+    if ([safeString(model.status) isEqualToString:@"已解除"]) {
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能挂起"];
+        return;
+    }
+    KG_ControlGaoJingAlertView *view = [[KG_ControlGaoJingAlertView alloc]init];
+    [JSHmainWindow addSubview:view];
+    view.selTime = ^(NSString * _Nonnull timeStr, int index) {
+        
+        if (index == 0) {
+            self.removeStartTime = timeStr;
+        }else {
+            self.removeEndTime = timeStr;
+        }
+    };
+    view.sureMethod = ^{
+        
+        NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+        paramDic[@"id"] = safeString(model.id);
+        paramDic[@"status"] = @"removed";
+        paramDic[@"suppressStartTime"] = safeString(self.removeStartTime);
+        paramDic[@"suppressEndTime"] = safeString(self.removeEndTime);
+        
+        //JAVA中Date数据类型格式
+        NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/handleAlarmStatus",WebNewHost];
+        [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+        
+        [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            [MBProgressHUD hideHUD];
+            if(code  <= -1){
+                [FrameBaseRequest showMessage:result[@"errMsg"]];
+                
+                return ;
+            }
+            [FrameBaseRequest showMessage:@"解除成功"];
+            [self queryNoHudGaoJingData];
+            
+        } failure:^(NSError *error)  {
+            FrameLog(@"请求失败，返回数据 : %@",error);
+            [MBProgressHUD hideHUD];
+            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+                [FrameBaseRequest logout];
+                LoginViewController *login = [[LoginViewController alloc] init];
+                [self.slideMenuController showViewController:login];
+                return;
+            }
+            return ;
+        }];
+    };
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+        make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+        make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+    }];
+    
+    
+    
+    
+    
+    
+    
+}
+//挂起
+- (void)confirmMethod:(UIButton *)button {
+    
+    KG_GaoJingModel *model = self.dataArray[button.tag];
+    if ([safeString(model.status) isEqualToString:@"已解除"]) {
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能挂起"];
+        return;
+    }
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(model.id);
+    paramDic[@"status"] = @"";
+    paramDic[@"hangUp"] = @"true";
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/handleAlarmStatus",WebNewHost];
+    
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        [FrameBaseRequest showMessage:@"挂起操作成功"];
+        [self queryNoHudGaoJingData];
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
+        return ;
+    }];
 }
 
 
-//
-//- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath{
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//          [self setupSlideBtnWithEditingIndexPath:indexPath];
-//      });
-//}
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setupSlideBtnWithEditingIndexPath:indexPath];
+    });
+}
 
 
-//
-//- (NSArray*)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-//    //title不设为nil 而是空字符串 理由为啥 ？   自己实践 跑到ios11以下的机器上就知道为啥了
-//    UITableViewRowAction *hang = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"        " handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-//        
-//        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
-//    }];
-//    UITableViewRowAction *lift = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"        " handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-//        
-//        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
-//    }];
-//    UITableViewRowAction *confirm = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"        " handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-//        
-//        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
-//    }];
-//    return @[hang,lift,confirm];
-//}
 
+- (NSArray*)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    //title不设为nil 而是空字符串 理由为啥 ？   自己实践 跑到ios11以下的机器上就知道为啥了
+    UITableViewRowAction *hang = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"        " handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        
+        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
+    }];
+    UITableViewRowAction *lift = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"        " handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        
+        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
+    }];
+    UITableViewRowAction *confirm = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"        " handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        
+        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
+    }];
+    return @[hang,lift,confirm];
+}
+
+
+
+//获取某个台站下全部自动告警事件：
+//请求地址：/{pageNum}/{pageSize}
+//       其中，pageNum是页码，pageSize是每页的数据量
+//请求方式：POST
+
+- (void)queryNoHudGaoJingData {
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/searchAlarmInfo/%d/%d",WebNewHost,self.pageNum,self.pageSize];
+    WS(weakSelf);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [self.dataArray removeAllObjects];
+        [self.tableView.mj_footer endRefreshing];
+        NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
+        [self.dataArray addObjectsFromArray:arr] ;
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        [self.tableView reloadData];
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+        }
+        return ;
+    }];
+}
 @end

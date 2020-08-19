@@ -68,7 +68,7 @@
         _tableView.dataSource = self;
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = YES;
+        _tableView.scrollEnabled = NO;
         
     }
     return _tableView;

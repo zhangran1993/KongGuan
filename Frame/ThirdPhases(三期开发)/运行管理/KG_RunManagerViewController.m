@@ -328,20 +328,20 @@ navigationController willShowViewController:
        
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            if([userDefaults objectForKey:@"station"]){
-                self.currentStationDic = [userDefaults objectForKey:@"station"];
-            }else {
-                NSArray *stationArr = [UserManager shareUserManager].stationList;
-                
-                if (stationArr.count >0) {
-                    self.currentStationDic = [stationArr firstObject][@"station"];
-                }
-            }
+           
             //            [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"station"]){
+            self.currentStationDic = [userDefaults objectForKey:@"station"];
+        }else {
+            NSArray *stationArr = [UserManager shareUserManager].stationList;
+            
+            if (stationArr.count >0) {
+                self.currentStationDic = [stationArr firstObject][@"station"];
+            }
+        }
         [UserManager shareUserManager].stationList = result[@"value"];
         
         [self createData];

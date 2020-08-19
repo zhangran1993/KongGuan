@@ -32,6 +32,7 @@
 #import "LoginViewController.h"
 #import "UIViewController+YQSlideMenu.h"
 #import <UIButton+WebCache.h>
+#import "KG_CommonWebAlertView.h"
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
@@ -65,10 +66,10 @@
 @property(nonatomic) UITableView *filterTabView;
 @property(nonatomic) UIButton *rightButton;
 @property  (assign,nonatomic) UIFont* btnFont;
-@property (nonatomic, strong)  UIView *runView;
+@property (nonatomic, strong) UIView *runView;
 /**  标题栏 */
 @property (nonatomic, strong) UILabel * titleLabel;
-@property (nonatomic, strong)  UIView *navigationView;
+@property (nonatomic, strong) UIView *navigationView;
 //安防
 @property (strong, nonatomic) KG_SecView *secView;
 //环境
@@ -97,8 +98,11 @@
 @property(strong,nonatomic)   NSArray *stationArray;
 @property(strong,nonatomic)   UITableView *stationTabView;
 
-@property (nonatomic, strong)  UIView *tableHeadView;
+@property (nonatomic, strong) UIView *tableHeadView;
 @property (strong, nonatomic) UIButton *leftIconImage;
+
+@property (strong, nonatomic) KG_CommonWebAlertView *webAlertView;
+
 @end
 
 @implementation StationDetailController
@@ -1375,23 +1379,42 @@
                           tempNumLabel.text = @"__";
                       }
                 tempBgImage.image = [UIImage imageNamed:[self getLevelImage:safeString(temDic.alarmLevel)]];
+                if(![safeString(temDic.alarmLevel) isEqualToString:@"0"]) {
+                    tempLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                    tempNumLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                    tempTitleLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                }else {
+                    tempLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                    tempNumLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                    tempTitleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                }
                 break;
             }
         }
     }
+    UIButton *tempStatusBtn1 = [[UIButton alloc]init];
+    [tempView addSubview:tempStatusBtn1];
+    [tempStatusBtn1 setTitle:@"" forState:UIControlStateNormal];
+    [tempStatusBtn1 addTarget:self action:@selector(tempStatusMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [tempStatusBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(tempView.mas_right);
+        make.top.equalTo(tempView.mas_top);
+        make.width.equalTo(@40);
+        make.height.equalTo(tempView.mas_height);
+    }];
     
     
-    
-    
-    UIImageView *tempStatusImage = [[UIImageView alloc]init];
-    [tempView addSubview:tempStatusImage];
-    tempStatusImage.image = [UIImage imageNamed:@"temp_status"];
-    [tempStatusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIButton *tempStatusBtn = [[UIButton alloc]init];
+    [tempView addSubview:tempStatusBtn];
+    [tempStatusBtn setImage:[UIImage imageNamed:@"temp_status"] forState:UIControlStateNormal];
+    [tempStatusBtn addTarget:self action:@selector(tempStatusMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [tempStatusBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(tempView.mas_right).offset(-21);
         make.top.equalTo(tempBgImage.mas_bottom).offset(14);
         make.width.equalTo(@25);
         make.height.equalTo(@20);
     }];
+    
     
     
     
@@ -1483,23 +1506,60 @@
         for (KG_MachineStationModel *temDic  in self.temArray) {
             if ([safeString(temDic.name) isEqualToString:@"湿度"]) {
                 humidityNumLabel.text = safeString([NSString stringWithFormat:@"%.2f",[safeString(temDic.valueAlias) floatValue]]);
-                      if ([safeString(temDic.valueAlias) doubleValue] == 0) {
-                          humidityNumLabel.text = @"__";
-                      }
-                    humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+                if ([safeString(temDic.valueAlias) doubleValue] == 0) {
+                    humidityNumLabel.text = @"__";
+                }
+                humidityBgImage.image = [UIImage imageNamed:[self getLevelImage:temDic.alarmLevel]];
+                if(![safeString(temDic.alarmLevel) isEqualToString:@"0"]) {
+                    humidityLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                    humidityNumLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                    humidityTitleLabel.textColor = [UIColor colorWithHexString:@"#FB394C"];
+                }else {
+                    humidityLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                    humidityNumLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                    humidityTitleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
+                }
                 break;
             }
         }
     }
-    UIImageView *humidityStatusImage = [[UIImageView alloc]init];
-    [humidityView addSubview:humidityStatusImage];
-    humidityStatusImage.image = [UIImage imageNamed:@"temp_status"];
-    [humidityStatusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+//    UIImageView *humidityStatusImage = [[UIImageView alloc]init];
+//    [humidityView addSubview:humidityStatusImage];
+//    humidityStatusImage.image = [UIImage imageNamed:@"temp_status"];
+//    [humidityStatusImage mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(humidityView.mas_right).offset(-21);
+//        make.top.equalTo(humidityBgImage.mas_bottom).offset(14);
+//        make.width.equalTo(@25);
+//        make.height.equalTo(@20);
+//    }];
+    
+    UIButton *humidityStatusBtn1 = [[UIButton alloc]init];
+    [humidityView addSubview:humidityStatusBtn1];
+    [humidityStatusBtn1 setTitle:@"" forState:UIControlStateNormal];
+    [humidityStatusBtn1 addTarget:self action:@selector(humityStatusMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [humidityStatusBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(humidityView.mas_right);
+        make.top.equalTo(humidityView.mas_top);
+        make.width.equalTo(@40);
+        make.height.equalTo(humidityView.mas_height);
+    }];
+    
+    UIButton *humidityStatusBtn = [[UIButton alloc]init];
+    [humidityView addSubview:humidityStatusBtn];
+    [humidityStatusBtn setImage:[UIImage imageNamed:@"temp_status"] forState:UIControlStateNormal];
+    [humidityStatusBtn addTarget:self action:@selector(humityStatusMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [humidityStatusBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(humidityView.mas_right).offset(-21);
         make.top.equalTo(humidityBgImage.mas_bottom).offset(14);
         make.width.equalTo(@25);
         make.height.equalTo(@20);
     }];
+    
+    
+    
+    
+    
+    
     //环境
     self.envView = [[KG_EnvView alloc]init];
     self.envView.layer.cornerRadius = 10.f;
@@ -2871,5 +2931,144 @@
     
 }
 
+
+//获取某个测点当前时间到前12个小时的历史数据接口：
+//请求地址：/intelligent/atcSafeguard/getMeasureTag/{measureTag}
+//     其中，measureTag是测点编码
+//请求方式：GET
+//请求返回：
+//   如：http://10.33.33.147:8089/intelligent/atcSafeguard/getMeasureTag/HCPDS-WSD01
+
+
+- (void)tempStatusMethod:(UIButton *)button {
+    if(self.temArray.count == 2) {
+        KG_MachineStationModel *tempDic = [self.temArray firstObject];
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getMeasureTag/%@",safeString(tempDic.code)]];
+        
+        [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+            
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            NSArray *chartX = result[@"value"][@"EChartsX"];
+            NSArray *chartY = result[@"value"][@"EChartsY"];
+            if(code  <= -1){
+                
+            }
+            _webAlertView = nil;
+            [_webAlertView removeFromSuperview];
+            self.webAlertView.hidden = NO;
+            NSString *sX = @"";
+            NSString *sY = @"";
+            if (chartX.count) {
+                sX = [self arrayToJSONString:chartX];
+            }
+            if (chartY.count) {
+                sY = [self arrayToJSONString:chartY];
+            }
+            NSString *url = [NSString stringWithFormat:@"EChartsX=%@&EChartsY=%@",safeString(sX),safeString(sY)];
+          
+
+            self.webAlertView.tempUrlStr =url ;
+//          http://222.173.103.125:8099
+     
+         
+         } failure:^(NSURLSessionDataTask *error)  {
+            [MBProgressHUD hideHUD];
+            FrameLog(@"请求失败，返回数据 : %@",error);
+            NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+                [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+                [FrameBaseRequest logout];
+                LoginViewController *login = [[LoginViewController alloc] init];
+                [self.slideMenuController showViewController:login];
+                return;
+                
+            }else if(responses.statusCode == 502){
+                
+            }
+            //        [FrameBaseRequest showMessage:@"网络链接失败"];
+            return ;
+        }];
+    }else {
+        [FrameBaseRequest showMessage:@"该温度测点不存在"];
+        return;
+    }
+   
+}
+
+- (void)humityStatusMethod:(UIButton *)button {
+    if(self.temArray.count == 2) {
+        KG_MachineStationModel *humityDic = [self.temArray lastObject];
+        
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getMeasureTag/%@",safeString(humityDic.code)]];
+               
+               [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+                   
+                   NSInteger code = [[result objectForKey:@"errCode"] intValue];
+                   if(code  <= -1){
+                       
+                   }
+                   NSArray *chartX = result[@"value"][@"EChartsX"];
+                   NSArray *chartY = result[@"value"][@"EChartsY"];
+                   _webAlertView = nil;
+                   [_webAlertView removeFromSuperview];
+                   self.webAlertView.hidden = NO;
+                   NSString *sX = @"";
+                   NSString *sY = @"";
+                   if (chartX.count) {
+                       sX = [self arrayToJSONString:chartX];
+                   }
+                   if (chartY.count) {
+                       sY = [self arrayToJSONString:chartY];
+                   }
+                   NSString *url = [NSString stringWithFormat:@"EChartsX=%@&EChartsY=%@",safeString(sX),safeString(sY)];
+                   
+                   self.webAlertView.humityUrlStr =url ;
+                   
+               } failure:^(NSURLSessionDataTask *error)  {
+                   [MBProgressHUD hideHUD];
+                   FrameLog(@"请求失败，返回数据 : %@",error);
+                   NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+                   if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+                       [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+                       [FrameBaseRequest logout];
+                       LoginViewController *login = [[LoginViewController alloc] init];
+                       [self.slideMenuController showViewController:login];
+                       return;
+                       
+                   }else if(responses.statusCode == 502){
+                       
+                   }
+                   return ;
+               }];
+    }else {
+        [FrameBaseRequest showMessage:@"该湿度测点不存在"];
+        return;
+    }
+}
+
+- (KG_CommonWebAlertView *)webAlertView {
+    if (!_webAlertView) {
+        _webAlertView = [[KG_CommonWebAlertView alloc]init];
+        [JSHmainWindow addSubview:_webAlertView];
+        [_webAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+    }
+    return _webAlertView;
+}
+
+//数组转为json字符串
+- (NSString *)arrayToJSONString:(NSArray *)array {
+    
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString *jsonTemp = [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    //    NSString *jsonResult = [jsonTemp stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return jsonTemp;
+}
 @end
 

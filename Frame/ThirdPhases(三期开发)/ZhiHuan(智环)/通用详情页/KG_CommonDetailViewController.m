@@ -320,7 +320,7 @@
     [self.topTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.topLeftImage.mas_right).offset(10);
         make.top.equalTo(self.topView.mas_top);
-        make.width.equalTo(@150);
+        make.width.equalTo(@250);
         make.height.equalTo(self.topView.mas_height);
     }];
     
