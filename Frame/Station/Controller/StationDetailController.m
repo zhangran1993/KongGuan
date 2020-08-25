@@ -102,7 +102,8 @@
 @property (strong, nonatomic) UIButton *leftIconImage;
 
 @property (strong, nonatomic) KG_CommonWebAlertView *webAlertView;
-
+@property (nonatomic, copy) NSString *hxStr;
+@property (nonatomic, copy) NSString *txStr;
 @end
 
 @implementation StationDetailController
@@ -1555,11 +1556,6 @@
         make.height.equalTo(@20);
     }];
     
-    
-    
-    
-    
-    
     //环境
     self.envView = [[KG_EnvView alloc]init];
     self.envView.layer.cornerRadius = 10.f;
@@ -2948,8 +2944,15 @@
         [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
             
             NSInteger code = [[result objectForKey:@"errCode"] intValue];
-            NSArray *chartX = result[@"value"][@"EChartsX"];
+            NSArray *oldchartX = result[@"value"][@"EChartsX"];
             NSArray *chartY = result[@"value"][@"EChartsY"];
+            NSMutableArray *chartX = [NSMutableArray arrayWithCapacity:0];
+            for (NSString *cX in oldchartX) {
+                if (safeString(cX).length >13) {
+                    NSString *newcX = [safeString(cX) substringToIndex:13];
+                    [chartX addObject:newcX];
+                }
+            }
             if(code  <= -1){
                 
             }
@@ -2998,17 +3001,24 @@
 - (void)humityStatusMethod:(UIButton *)button {
     if(self.temArray.count == 2) {
         KG_MachineStationModel *humityDic = [self.temArray lastObject];
-        
+
         NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getMeasureTag/%@",safeString(humityDic.code)]];
-               
+
                [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-                   
+
                    NSInteger code = [[result objectForKey:@"errCode"] intValue];
                    if(code  <= -1){
-                       
+
                    }
-                   NSArray *chartX = result[@"value"][@"EChartsX"];
+                   NSArray *oldchartX = result[@"value"][@"EChartsX"];
                    NSArray *chartY = result[@"value"][@"EChartsY"];
+                   NSMutableArray *chartX = [NSMutableArray arrayWithCapacity:0];
+                   for (NSString *cX in oldchartX) {
+                       if (safeString(cX).length >13) {
+                           NSString *newcX = [safeString(cX) substringToIndex:13];
+                           [chartX addObject:newcX];
+                       }
+                   }
                    _webAlertView = nil;
                    [_webAlertView removeFromSuperview];
                    self.webAlertView.hidden = NO;
@@ -3021,9 +3031,9 @@
                        sY = [self arrayToJSONString:chartY];
                    }
                    NSString *url = [NSString stringWithFormat:@"EChartsX=%@&EChartsY=%@",safeString(sX),safeString(sY)];
-                   
+
                    self.webAlertView.humityUrlStr =url ;
-                   
+
                } failure:^(NSURLSessionDataTask *error)  {
                    [MBProgressHUD hideHUD];
                    FrameLog(@"请求失败，返回数据 : %@",error);
@@ -3034,9 +3044,9 @@
                        LoginViewController *login = [[LoginViewController alloc] init];
                        [self.slideMenuController showViewController:login];
                        return;
-                       
+
                    }else if(responses.statusCode == 502){
-                       
+
                    }
                    return ;
                }];
@@ -3069,6 +3079,196 @@
     NSString *jsonTemp = [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     //    NSString *jsonResult = [jsonTemp stringByReplacingOccurrencesOfString:@" " withString:@""];
     return jsonTemp;
+}
+//
+//- (void)humityStatusMethod:(UIButton *)button {
+//
+//
+//
+//    /** 创建新的队列组 **/
+//    dispatch_group_t group = dispatch_group_create();
+//
+//    dispatch_group_enter(group);
+//    dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//
+//
+//         if(self.temArray.count == 2) {
+//                KG_MachineStationModel *tempDic = [self.temArray firstObject];
+//                NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getMeasureTag/%@",safeString(tempDic.code)]];
+//
+//                [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+//
+//                    NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//                    NSArray *oldchartX = result[@"value"][@"EChartsX"];
+//                    NSArray *chartY = result[@"value"][@"EChartsY"];
+//                    NSMutableArray *chartX = [NSMutableArray arrayWithCapacity:0];
+//                    for (NSString *cX in oldchartX) {
+//                        if (safeString(cX).length >13) {
+//                            NSString *newcX = [safeString(cX) substringToIndex:13];
+//                            [chartX addObject:newcX];
+//                        }
+//                    }
+//                    if(code  <= -1){
+//
+//                    }
+//
+//                    NSString *sX = @"";
+//                    NSString *sY = @"";
+//                    if (chartX.count) {
+//                        sX = [self arrayToJSONString:chartX];
+//                    }
+//                    if (chartY.count) {
+//                        sY = [self arrayToJSONString:chartY];
+//                    }
+//                    NSString *url = [NSString stringWithFormat:@"EChartsHY=%@",safeString(sY)];
+//
+//
+//                    self.hxStr = url;
+//                    dispatch_group_leave(group);
+//
+//                } failure:^(NSURLSessionDataTask *error)  {
+//                    dispatch_group_leave(group);
+//                    [MBProgressHUD hideHUD];
+//                    FrameLog(@"请求失败，返回数据 : %@",error);
+//                    NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+//                    if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//                        [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+//                        [FrameBaseRequest logout];
+//                        LoginViewController *login = [[LoginViewController alloc] init];
+//                        [self.slideMenuController showViewController:login];
+//                        return;
+//
+//                    }else if(responses.statusCode == 502){
+//
+//                    }
+//                    //        [FrameBaseRequest showMessage:@"网络链接失败"];
+//                    return ;
+//                }];
+//            }else {
+//                [FrameBaseRequest showMessage:@"该温度测点不存在"];
+//                return;
+//            }
+//
+//
+//    });
+//
+//
+//    dispatch_group_enter(group);
+//    dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//
+//        if(self.temArray.count == 2) {
+//              KG_MachineStationModel *humityDic = [self.temArray lastObject];
+//
+//              NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getMeasureTag/%@",safeString(humityDic.code)]];
+//
+//                     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+//
+//                         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//                         if(code  <= -1){
+//
+//                         }
+//                         NSArray *oldchartX = result[@"value"][@"EChartsX"];
+//                         NSArray *chartY = result[@"value"][@"EChartsY"];
+//                         NSMutableArray *chartX = [NSMutableArray arrayWithCapacity:0];
+//                         for (NSString *cX in oldchartX) {
+//                             if (safeString(cX).length >13) {
+//                                 NSString *newcX = [safeString(cX) substringToIndex:13];
+//                                 [chartX addObject:newcX];
+//                             }
+//                         }
+//
+//                         NSString *sX = @"";
+//                         NSString *sY = @"";
+//                         if (chartX.count) {
+//                             sX = [self arrayToJSONString:chartX];
+//                         }
+//                         if (chartY.count) {
+//                             sY = [self arrayToJSONString:chartY];
+//                         }
+//                         NSString *url = [NSString stringWithFormat:@"EChartsTX=%@&EChartsTY=%@",safeString(sX),safeString(sY)];
+//
+//                         self.txStr = url;
+//                         dispatch_group_leave(group);
+//                     } failure:^(NSURLSessionDataTask *error)  {
+//                         dispatch_group_leave(group);
+//                         [MBProgressHUD hideHUD];
+//                         FrameLog(@"请求失败，返回数据 : %@",error);
+//                         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+//                         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//                             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+//                             [FrameBaseRequest logout];
+//                             LoginViewController *login = [[LoginViewController alloc] init];
+//                             [self.slideMenuController showViewController:login];
+//                             return;
+//
+//                         }else if(responses.statusCode == 502){
+//
+//                         }
+//                         return ;
+//                     }];
+//          }else {
+//              [FrameBaseRequest showMessage:@"该湿度测点不存在"];
+//              return;
+//          }
+//
+//
+//    });
+//
+//
+//
+//    dispatch_group_enter(group);
+//    dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//
+//        //        NSString *  FrameRequestURL = @"http://10.33.33.147:8089/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c";
+//        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStation/355b1f15d75e49c7863eb5f422851e3c"]];
+//        [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+//            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//            if(code  <= -1){
+//                [FrameBaseRequest showMessage:result[@"errMsg"]];
+//                return ;
+//            }
+//            dispatch_group_leave(group);
+//
+//        } failure:^(NSURLSessionDataTask *error)  {
+//            FrameLog(@"请求失败，返回数据 : %@",error);
+//
+//            /** 离开当前任务组 **/
+//            dispatch_group_leave(group);
+//            NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+//            if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+//                return;
+//
+//            }else if(responses.statusCode == 502){
+//
+//            }
+//            [FrameBaseRequest showMessage:@"网络链接失败"];
+//            return ;
+//
+//        }];
+//
+//
+//    });
+//
+//
+//
+//
+//    /** 队列组所有任务都结束以后，通知队列组在主线程进行其他操作 **/
+//    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+//        //界面刷新
+//        NSLog(@"请求完成");
+//        [self refreshView];
+//    });
+//
+//
+//}
+
+- (void)refreshView {
+    
+    _webAlertView = nil;
+    [_webAlertView removeFromSuperview];
+    self.webAlertView.hidden = NO;
+    self.webAlertView.totalUrlStr = [NSString stringWithFormat:@"%@&%@&title=%@",self.txStr,self.hxStr,@"1温湿度趋势"];
 }
 @end
 

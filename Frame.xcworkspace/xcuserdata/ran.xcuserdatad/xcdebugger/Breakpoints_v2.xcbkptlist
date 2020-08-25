@@ -441,8 +441,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2977"
-            endingLineNumber = "2977"
+            startingLineNumber = "2980"
+            endingLineNumber = "2980"
             landmarkName = "-tempStatusMethod:"
             landmarkType = "7">
          </BreakpointContent>
@@ -457,8 +457,8 @@
             filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x5f39;&#x51fa;webview/KG_CommonWebAlertView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "-loadExamplePage:"
             landmarkType = "7">
          </BreakpointContent>
@@ -562,22 +562,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BFF240C0-AF10-4152-9DDD-54401BC8AAA4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiXiu&#x667a;&#x4fee;/&#x7b5b;&#x9009;/KG_NewScreenViewController.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "-collectionView:cellForItemAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "70C51B2C-64A3-4E99-AF0B-A9173EC0E3C2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -633,8 +617,8 @@
             filePath = "Frame/Station/Controller/StationDetailController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "737"
-            endingLineNumber = "737"
+            startingLineNumber = "738"
+            endingLineNumber = "738"
             landmarkName = "-queryStationDetailData"
             landmarkType = "7">
          </BreakpointContent>
@@ -642,16 +626,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "685A366D-298A-419F-84DD-4C78E6E0EEB9"
-            shouldBeEnabled = "Yes"
+            uuid = "6F94C46D-C26E-454E-B37C-B1A166684009"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Frame/Classes/MainTabBar/Request/FrameBaseRequest.m"
+            filePath = "Frame/ThirdPhases(&#x4e09;&#x671f;&#x5f00;&#x53d1;)/ZhiHuan(&#x667a;&#x73af;)/&#x901a;&#x7528;&#x5f39;&#x51fa;webview/KG_CommonWebAlertView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "376"
-            endingLineNumber = "376"
-            landmarkName = "+getWithUrl:param:success:failure:"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "-setTotalUrlStr:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

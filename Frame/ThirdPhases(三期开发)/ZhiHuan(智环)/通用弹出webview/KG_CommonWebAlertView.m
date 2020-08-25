@@ -124,8 +124,6 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"webViewDidFinishLoad");
-   
-
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error{
@@ -139,8 +137,6 @@
         [FrameBaseRequest showMessage:@"网络连接异常,请检查网络"];
     });
    
-
-    
 }
 
 - (void)createData{
@@ -174,8 +170,6 @@
 }
 - (void)setUrlStr:(NSString *)urlStr {
     _urlStr = urlStr;
-   
-   
 }
 
 - (void)setTempUrlStr:(NSString *)tempUrlStr {
@@ -184,7 +178,6 @@
     
     NSString* encodedString = [self.tempUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",ss,encodedString]];
-    
     
     NSString * encodedString1 = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)self.urlStr,NULL,NULL,kCFStringEncodingUTF8);
     
@@ -209,4 +202,23 @@
     [_webView loadRequest:request];
     
 }
+
+- (void)setTotalUrlStr:(NSString *)totalUrlStr {
+    _totalUrlStr = totalUrlStr;
+//    [self createData];
+    NSString *ss= @"http://222.173.103.125:8083/monitorApp/#/tempHumDetail?";
+    
+    NSString* encodedString = [self.totalUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",ss,encodedString]];
+    
+    
+    NSString * encodedString1 = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)self.urlStr,NULL,NULL,kCFStringEncodingUTF8);
+    
+    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    [_webView loadRequest:request];
+    
+}
+
+
 @end

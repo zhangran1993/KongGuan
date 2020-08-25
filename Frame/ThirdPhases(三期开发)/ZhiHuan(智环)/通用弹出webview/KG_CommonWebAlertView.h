@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) NSString *tempUrlStr;
 @property (nonatomic,strong) NSString *humityUrlStr;
+
+@property (nonatomic,strong) NSString *totalUrlStr;
 @end
 
 NS_ASSUME_NONNULL_END
