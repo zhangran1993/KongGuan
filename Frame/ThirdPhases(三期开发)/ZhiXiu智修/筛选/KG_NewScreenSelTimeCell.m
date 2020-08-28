@@ -20,7 +20,6 @@
 
 - (void)initView {
     
-    
     self.titleLabel = [[UILabel alloc]init];
     self.titleLabel.text = @"开始时间";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -43,8 +42,6 @@
         make.width.equalTo(@100);
     }];
    
-    
-    
     self.rightImage = [[UIImageView alloc]init];
     [self addSubview:self.rightImage];
     self.rightImage.image = [UIImage imageNamed:@"common_right"];
@@ -67,8 +64,5 @@
         make.centerY.equalTo(self.mas_centerY);
     }];
     
-    
 }
-
-
 @end

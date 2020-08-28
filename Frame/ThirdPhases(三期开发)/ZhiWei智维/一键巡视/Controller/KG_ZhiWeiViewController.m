@@ -20,18 +20,18 @@
 #import <UIButton+WebCache.h>
 @interface KG_ZhiWeiViewController ()<UITableViewDelegate,UITableViewDataSource>
 /**  标题栏 */
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
-@property (nonatomic, strong)  UIButton  *rightButton;
-@property (nonatomic, strong)  KG_ZhiWeiNaviTopView *naviTopView;
+@property (nonatomic, strong)  UILabel                 *titleLabel;
+@property (nonatomic, strong)  UIView                  *navigationView;
+@property (nonatomic, strong)  UIButton                *rightButton;
+@property (nonatomic, strong)  KG_ZhiWeiNaviTopView    *naviTopView;
 
-@property(strong,nonatomic)   NSArray *stationArray;
-@property(strong,nonatomic)   UITableView *stationTabView;
+@property(strong,nonatomic)    NSArray                 *stationArray;
+@property(strong,nonatomic)    UITableView             *stationTabView;
 
-@property (nonatomic, strong) NSArray *dataArray;
-@property (nonatomic ,strong) RS_ConditionSearchView *searchView;
+@property (nonatomic, strong)  NSArray                 *dataArray;
+@property (nonatomic ,strong)  RS_ConditionSearchView  *searchView;
 
-@property (nonatomic, strong)  UIButton    *leftIconImage;
+@property (nonatomic, strong)  UIButton                *leftIconImage;
 
 @end
 
@@ -43,7 +43,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshZhiWeiData) name:@"refreshZhiWeiData" object:nil];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}] ;
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
     [self createNaviTopView];
     [self loadData];
     [self getLeaderNameData];
@@ -64,6 +64,7 @@
     [self.naviTopView removeFromSuperview];
     [self createSegmentView];
 }
+
 -(void)dealloc
 {
     [super dealloc];
@@ -71,7 +72,6 @@
     //移除当前所有通知
     NSLog(@"移除了所有的通知");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
 }
 
 - (void)loadData {
@@ -99,8 +99,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){
@@ -110,8 +109,6 @@
         return ;
         
     }];
-    
-    
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -136,7 +133,7 @@
         [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
     }else {
         
-        [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal] ;
+        [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     }
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -352,8 +349,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){
@@ -388,8 +384,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){
@@ -425,8 +420,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){
@@ -460,8 +454,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){
@@ -492,8 +485,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){
@@ -524,8 +516,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){
@@ -733,8 +724,7 @@
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
             [FrameBaseRequest logout];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            [self.slideMenuController showViewController:login];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
             
         }else if(responses.statusCode == 502){

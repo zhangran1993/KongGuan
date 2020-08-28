@@ -666,6 +666,7 @@
 		25C4B76024878C3900BA84F4 /* KG_RunReportDetailJiaoJieBanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B75F24878C3900BA84F4 /* KG_RunReportDetailJiaoJieBanCell.m */; };
 		25C4B7632487AB2E00BA84F4 /* KG_RunReportFuJianCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7622487AB2E00BA84F4 /* KG_RunReportFuJianCell.m */; };
 		25C4B7662487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7652487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.m */; };
+		25CF3ED324F8E54600AD3ACA /* KG_CreateXunShiContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3ED224F8E54600AD3ACA /* KG_CreateXunShiContentModel.m */; };
 		25D1F04E24245A15007E5870 /* KG_MapShowStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F04D24245A15007E5870 /* KG_MapShowStyleViewController.m */; };
 		25D1F05224249005007E5870 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05024249005007E5870 /* DataManager.m */; };
 		25D1F05724249072007E5870 /* JSHHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05424249072007E5870 /* JSHHTTPSessionManager.m */; };
@@ -1917,6 +1918,8 @@
 		25C4B7622487AB2E00BA84F4 /* KG_RunReportFuJianCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportFuJianCell.m; sourceTree = "<group>"; };
 		25C4B7642487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunReportDetailNinethCell.h; sourceTree = "<group>"; };
 		25C4B7652487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailNinethCell.m; sourceTree = "<group>"; };
+		25CF3ED124F8E54600AD3ACA /* KG_CreateXunShiContentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateXunShiContentModel.h; sourceTree = "<group>"; };
+		25CF3ED224F8E54600AD3ACA /* KG_CreateXunShiContentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateXunShiContentModel.m; sourceTree = "<group>"; };
 		25D1F04C24245A15007E5870 /* KG_MapShowStyleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_MapShowStyleViewController.h; sourceTree = "<group>"; };
 		25D1F04D24245A15007E5870 /* KG_MapShowStyleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_MapShowStyleViewController.m; sourceTree = "<group>"; };
 		25D1F05024249005007E5870 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
@@ -4122,6 +4125,8 @@
 		258D2902246A6C9A004E8B5A /* 新建巡视内容 */ = {
 			isa = PBXGroup;
 			children = (
+				25CF3ED024F8E43F00AD3ACA /* view */,
+				25CF3ECF24F8E43500AD3ACA /* model */,
 				258D2903246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.h */,
 				258D2905246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m */,
 				258D2906246A6C9A004E8B5A /* KG_XunShiRoomCell.h */,
@@ -4701,6 +4706,22 @@
 				25C4B75C2487744C00BA84F4 /* KG_RunReportDeatilModel.m */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3ECF24F8E43500AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3ED024F8E43F00AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3ED124F8E54600AD3ACA /* KG_CreateXunShiContentModel.h */,
+				25CF3ED224F8E54600AD3ACA /* KG_CreateXunShiContentModel.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		25D1F04B24245796007E5870 /* ThirdPhases(三期开发) */ = {
@@ -6504,6 +6525,7 @@
 				25EEB39C24404A3000B9F803 /* KG_DMETransSecondView.m in Sources */,
 				2587B22324A86681000289C7 /* KG_AccessCardLogDataPickerView.m in Sources */,
 				2587B1EB2499AA55000289C7 /* KG_ChooseSystemView.m in Sources */,
+				25CF3ED324F8E54600AD3ACA /* KG_CreateXunShiContentModel.m in Sources */,
 				258D2962246BFB44004E8B5A /* RS_JSONModel.m in Sources */,
 				258624DA249228330066C0A4 /* KG_XunShiReportDataModel.m in Sources */,
 				258D2945246A6C9A004E8B5A /* KG_ZhiWeiModel.m in Sources */,

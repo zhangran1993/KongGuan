@@ -14,8 +14,9 @@
 @property (nonatomic, strong) UIView         *sliderBgView;
 @property (nonatomic, strong) UIView         *sliderView;
 @property (nonatomic, strong) UIScrollView   *scrollView;
-@property (nonatomic, strong) UILabel   *numLabel;
-@property (nonatomic, strong) UILabel   *totalNumLabel;
+@property (nonatomic, strong) UILabel        *numLabel;
+@property (nonatomic, strong) UILabel        *totalNumLabel;
+
 @end
 
 @implementation KG_EquipCardFourthCell
@@ -32,6 +33,7 @@
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.backgroundColor =[UIColor colorWithHexString:@"#F6F7F9"];
         [self createSubviewsView];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cardScrollIndex:) name:@"cardScrollIndex" object:nil];
        
@@ -43,7 +45,7 @@
     
     self.sliderBgView = [[UIView alloc]initWithFrame:CGRectMake(0, 7, SCREEN_WIDTH, 26)];
     [self addSubview:self.sliderBgView];
-    self.sliderBgView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    self.sliderBgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
     float sliderV_X = SCREEN_WIDTH/2-60;
     float sliderVX =  sliderV_X;
@@ -142,7 +144,7 @@
     NSLog(@"接收 不带参数的消息");
     NSString *str = notification.object;
     
-     self.numLabel.text = [NSString stringWithFormat:@"%@",str];
+    self.numLabel.text = [NSString stringWithFormat:@"%@",str];
     
     [UIView animateWithDuration:0.3 animations:^{
         if ([str floatValue] >0) {

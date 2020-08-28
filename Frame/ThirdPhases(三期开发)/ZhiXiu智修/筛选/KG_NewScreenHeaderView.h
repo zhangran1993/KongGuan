@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_NewScreenHeaderView : UICollectionReusableView
 
-
 @property  (nonatomic ,strong) UIButton *rightBtn;
 
 @property  (nonatomic ,strong) UILabel *titleLabel;
@@ -20,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property  (nonatomic ,strong) UILabel *promptLabel;
 
 @property  (nonatomic ,strong) UIImageView *rightImage;
+
 @end
 
 NS_ASSUME_NONNULL_END

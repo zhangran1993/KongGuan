@@ -611,7 +611,10 @@
     paraDic1[@"name"] = @"engineRoomCode";
     paraDic1[@"type"] = @"eq";
     paraDic1[@"content"] = safeString(roomString);
-    [self.paraArr addObject:paraDic1];
+    if (roomString.length) {
+        [self.paraArr addObject:paraDic1];
+    }
+    
     
     NSString *alarmStatusCode = @"";
     if ([self.alarmStatusStr isEqualToString:@"未确认"]) {
@@ -628,7 +631,11 @@
     paraDic2[@"name"] = @"alarmStatus";
     paraDic2[@"type"] = @"eq";
     paraDic2[@"content"] = safeString(alarmStatusCode);
-    [self.paraArr addObject:paraDic2];
+    
+    if (alarmStatusCode.length) {
+        [self.paraArr addObject:paraDic2];
+    }
+    
     
     NSString *equipCode = @"";
     if ([self.equipTypeStr isEqualToString:@"安防"]) {
@@ -644,9 +651,13 @@
     paraDic3[@"name"] = @"equipmentGroup";
     paraDic3[@"type"] = @"eq";
     paraDic3[@"content"] = safeString(equipCode);
-    [self.paraArr addObject:paraDic3];
+    if (equipCode.length) {
+        [self.paraArr addObject:paraDic3];
+    }
+       
     
-    NSString *alarmLevelCode = @"1";
+    
+    NSString *alarmLevelCode = @"";
     if ([self.alarmLevelStr isEqualToString:@"紧急"]) {
         alarmLevelCode = @"1";
     }else if ([self.alarmLevelStr isEqualToString:@"重要"]) {
@@ -659,28 +670,31 @@
         alarmLevelCode = @"5";
     }
     
-    
-    
     NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
     paraDic4[@"name"] = @"alarmLevel";
     paraDic4[@"type"] = @"eq";
     paraDic4[@"content"] = safeString(alarmLevelCode);
-    [self.paraArr addObject:paraDic4];
-    
+    if (alarmLevelCode.length) {
+        [self.paraArr addObject:paraDic4];
+    }
     
     
     NSMutableDictionary *paraDic5 = [NSMutableDictionary dictionary];
     paraDic5[@"name"] = @"startTime";
     paraDic5[@"type"] = @"eq";
     paraDic5[@"content"] = safeString(self.startTime);
-    [self.paraArr addObject:paraDic5];
+    if (safeString(self.startTime).length) {
+        [self.paraArr addObject:paraDic5];
+    }
     
     NSMutableDictionary *paraDic6 = [NSMutableDictionary dictionary];
     paraDic6[@"name"] = @"endTime";
     paraDic6[@"type"] = @"eq";
     paraDic6[@"content"] = safeString(self.endTime);
-    [self.paraArr addObject:paraDic6];
     
+    if (safeString(self.endTime).length) {
+        [self.paraArr addObject:paraDic6];
+    }
     [self queryGaoJingData];
     
     
@@ -979,12 +993,17 @@
     return _paraArr;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
+    if (section == 0) {
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+        return headView;
+    }
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     return headView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
+    if (section == 0) {
+        return 0.001;
+    }
     return 10;
 }
 
@@ -1014,6 +1033,7 @@
             paraDic[@"type"] = @"eq";
             paraDic[@"content"] = safeString(currDic[@"code"]);
             [self.paraArr addObject:paraDic];
+            [self addScreenDic];
             [self queryGaoJingData];
         }else if (index == 1){
             NSLog(@"2");
@@ -1028,6 +1048,7 @@
             paraDic1[@"type"] = @"eq";
             paraDic1[@"content"] = @"unconfirmed";
             [self.paraArr addObject:paraDic1];
+            [self addScreenDic];
             [self queryGaoJingData];
         }else if (index == 2){
             NSLog(@"3");
@@ -1036,8 +1057,8 @@
             paraDic[@"type"] = @"eq";
             paraDic[@"content"] = safeString(currDic[@"code"]);
             [self.paraArr addObject:paraDic];
+            [self addScreenDic];
             [self queryConfirmData];
-            
         }
         
     }else {
@@ -1054,6 +1075,7 @@
             paraDic1[@"type"] = @"eq";
             paraDic1[@"content"] = @"equipment";
             [self.paraArr addObject:paraDic1];
+            [self addScreenDic];
             [self queryGaoJingData];
         }else if (index == 1){
             NSLog(@"2");
@@ -1068,6 +1090,7 @@
             paraDic1[@"type"] = @"eq";
             paraDic1[@"content"] = @"unconfirmed";
             [self.paraArr addObject:paraDic1];
+            [self addScreenDic];
             [self queryGaoJingData];
         }else if (index == 2){
             NSLog(@"3");
@@ -1082,18 +1105,12 @@
             paraDic1[@"type"] = @"eq";
             paraDic1[@"content"] = @"equipment";
             [self.paraArr addObject:paraDic1];
+            [self addScreenDic];
             [self queryConfirmData];
-            
+       
         }
-        
-        
     }
-    
-    
 }
-
-
-
 
 - (void)queryConfirmData {
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/notUnconfirmed/%d/%d",WebNewHost,self.pageNum,self.pageSize];
@@ -1138,7 +1155,6 @@
     }];
 }
 //
-
 - (void)loadMoreConfirmData {
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/notUnconfirmed/%d/%d",WebNewHost,self.pageNum,self.pageSize];
     WS(weakSelf);
@@ -1234,27 +1250,31 @@
     UIButton *hang = rowActionView.subviews.firstObject;
     hang.tag = editingIndexPath.section;
     [hang setBackgroundColor:[UIColor colorWithHexString:@"#F6F7F9"]];
+    [hang setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateHighlighted];
+    [hang setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateSelected];
+    [hang setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateNormal];
+    [hang setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateDisabled];
+    [hang setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateFocused];
+    [hang setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateReserved];
+    [hang setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateApplication];
+    
     
     
     
     UIView *hangBgView = [[UIView alloc]init];
     hangBgView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
     [hang addSubview:hangBgView];
-    hangBgView.layer.cornerRadius = 18.f;
+    hangBgView.layer.cornerRadius = 20.f;
     hangBgView.layer.masksToBounds = YES;
     
     [hang addTarget:self action:@selector(hangMethod:) forControlEvents:UIControlEventTouchUpInside];
     
-    
-    
     [hangBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(hang.mas_left).offset(14);
         make.centerY.equalTo(hang.mas_centerY);
-        make.width.equalTo(@36);
-        make.height.equalTo(@36);
+        make.width.equalTo(@40);
+        make.height.equalTo(@40);
     }];
-    
-    
     
     
     UILabel *hangLabel = [[UILabel alloc]init];
@@ -1266,26 +1286,42 @@
     [hangLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(hangBgView.mas_centerX);
         make.centerY.equalTo(hangBgView.mas_centerY);
-        make.width.equalTo(@36);
-        make.height.equalTo(@36);
+        make.width.equalTo(@40);
+        make.height.equalTo(@40);
     }];
+    
+   
+    
     
     
     UIButton *lift = rowActionView.subviews[1];
     lift.tag = editingIndexPath.section;
     [lift addTarget:self action:@selector(liftMethod:) forControlEvents:UIControlEventTouchUpInside];
     [lift setBackgroundColor:[UIColor colorWithHexString:@"#F6F7F9"]];
+    [lift setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateHighlighted];
+    [lift setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateSelected];
+    [lift setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateNormal];
+    [lift setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateDisabled];
+    [lift setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateFocused];
+    [lift setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateReserved];
+    [lift setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateApplication];
+    
+    
+    
+    
+    
+    
     
     UIView *liftBgView = [[UIView alloc]init];
     liftBgView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
     [lift addSubview:liftBgView];
-    liftBgView.layer.cornerRadius = 18.f;
+    liftBgView.layer.cornerRadius = 20.f;
     liftBgView.layer.masksToBounds = YES;
     [liftBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(lift.mas_left).offset(14);
         make.centerY.equalTo(lift.mas_centerY);
-        make.width.equalTo(@36);
-        make.height.equalTo(@36);
+        make.width.equalTo(@40);
+        make.height.equalTo(@40);
     }];
     UILabel *liftLabel = [[UILabel alloc]init];
     [liftBgView addSubview:liftLabel];
@@ -1296,8 +1332,8 @@
     [liftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(liftBgView.mas_centerX);
         make.centerY.equalTo(liftBgView.mas_centerY);
-        make.width.equalTo(@36);
-        make.height.equalTo(@36);
+        make.width.equalTo(@40);
+        make.height.equalTo(@40);
     }];
     
     
@@ -1306,16 +1342,25 @@
     [confirm addTarget:self action:@selector(confirmMethod:) forControlEvents:UIControlEventTouchUpInside];
     
     [confirm setBackgroundColor:[UIColor colorWithHexString:@"#F6F7F9"]];
+    [confirm setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateHighlighted];
+    [confirm setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateSelected];
+    [confirm setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateNormal];
+    [confirm setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateDisabled];
+    [confirm setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateFocused];
+    [confirm setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateReserved];
+    [confirm setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#F6F7F9"]] forState:UIControlStateApplication];
+    
+    
     UIView *confirmBgView = [[UIView alloc]init];
     confirmBgView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
     [confirm addSubview:confirmBgView];
-    confirmBgView.layer.cornerRadius = 18.f;
+    confirmBgView.layer.cornerRadius = 20.f;
     confirmBgView.layer.masksToBounds = YES;
     [confirmBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(confirm.mas_left).offset(14);
         make.centerY.equalTo(confirm.mas_centerY);
-        make.width.equalTo(@36);
-        make.height.equalTo(@36);
+        make.width.equalTo(@40);
+        make.height.equalTo(@40);
     }];
     UILabel *confirmLabel = [[UILabel alloc]init];
     [confirmBgView addSubview:confirmLabel];
@@ -1326,8 +1371,8 @@
     [confirmLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(confirmBgView.mas_centerX);
         make.centerY.equalTo(confirmBgView.mas_centerY);
-        make.width.equalTo(@36);
-        make.height.equalTo(@36);
+        make.width.equalTo(@40);
+        make.height.equalTo(@40);
     }];
     
 }
@@ -1370,7 +1415,6 @@
         }
         return ;
     }];
-    
     
     
 }
@@ -1557,5 +1601,105 @@
         }
         return ;
     }];
+}
+
+- (void)addScreenDic {
+    
+    
+    NSString *roomString = @"";
+    for (NSDictionary *dataDic in self.roomArray) {
+        if ([safeString(dataDic[@"alias"]) isEqualToString:self.roomStr]) {
+            roomString = safeString(dataDic[@"code"]);
+            break;
+        }
+    }
+    NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+    paraDic1[@"name"] = @"engineRoomCode";
+    paraDic1[@"type"] = @"eq";
+    paraDic1[@"content"] = safeString(roomString);
+    if (safeString(roomString).length) {
+        [self.paraArr addObject:paraDic1];
+    }
+    
+    
+    NSString *alarmStatusCode = @"";
+    if ([self.alarmStatusStr isEqualToString:@"未确认"]) {
+        alarmStatusCode = @"unconfirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已确认"]) {
+        alarmStatusCode = @"confirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解决"]) {
+        alarmStatusCode = @"completed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解除"]) {
+        alarmStatusCode = @"removed";
+    }
+    
+    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
+    paraDic2[@"name"] = @"alarmStatus";
+    paraDic2[@"type"] = @"eq";
+    paraDic2[@"content"] = safeString(alarmStatusCode);
+    if (safeString(alarmStatusCode).length) {
+        [self.paraArr addObject:paraDic2];
+    }
+    
+    
+    NSString *equipCode = @"";
+    if ([self.equipTypeStr isEqualToString:@"安防"]) {
+        equipCode = @"security";
+    }else if ([self.equipTypeStr isEqualToString:@"环境"]) {
+        equipCode = @"environmental";
+    }else if ([self.equipTypeStr isEqualToString:@"动力"]) {
+        equipCode = @"power";
+    }else if ([self.equipTypeStr isEqualToString:@"设备"]) {
+        equipCode = @"equipment";
+    }
+    NSMutableDictionary *paraDic3 = [NSMutableDictionary dictionary];
+    paraDic3[@"name"] = @"equipmentGroup";
+    paraDic3[@"type"] = @"eq";
+    paraDic3[@"content"] = safeString(equipCode);
+    if (safeString(equipCode).length) {
+        [self.paraArr addObject:paraDic3];
+    }
+    
+    
+    NSString *alarmLevelCode = @"";
+    if ([self.alarmLevelStr isEqualToString:@"紧急"]) {
+        alarmLevelCode = @"1";
+    }else if ([self.alarmLevelStr isEqualToString:@"重要"]) {
+        alarmLevelCode = @"2";
+    }else if ([self.alarmLevelStr isEqualToString:@"次要"]) {
+        alarmLevelCode = @"3";
+    }else if ([self.alarmLevelStr isEqualToString:@"提示"]) {
+        alarmLevelCode = @"4";
+    }else if ([self.alarmLevelStr isEqualToString:@"正常"]) {
+        alarmLevelCode = @"5";
+    }
+    
+    NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
+    paraDic4[@"name"] = @"alarmLevel";
+    paraDic4[@"type"] = @"eq";
+    paraDic4[@"content"] = safeString(alarmLevelCode);
+    if (safeString(alarmLevelCode).length) {
+        [self.paraArr addObject:paraDic4];
+    }
+    
+    
+    NSMutableDictionary *paraDic5 = [NSMutableDictionary dictionary];
+    paraDic5[@"name"] = @"startTime";
+    paraDic5[@"type"] = @"eq";
+    paraDic5[@"content"] = safeString(self.startTime);
+    if (safeString(self.startTime).length) {
+        [self.paraArr addObject:paraDic5];
+    }
+    
+    
+    NSMutableDictionary *paraDic6 = [NSMutableDictionary dictionary];
+    paraDic6[@"name"] = @"endTime";
+    paraDic6[@"type"] = @"eq";
+    paraDic6[@"content"] = safeString(self.endTime);
+    if (safeString(self.endTime).length) {
+        [self.paraArr addObject:paraDic6];
+    }
+   
+    
 }
 @end

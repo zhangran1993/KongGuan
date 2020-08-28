@@ -96,8 +96,15 @@
     self.titleLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dic[@"content"]),safeString(dic[@"userName"])];
     
     self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"createTime"])];
+    if (safeString(dic[@"createTime"]).length ==0) {
+        self.timeLabel.text = @"";
+    }
     if([safeString(dic[@"status"]) isEqualToString:@"removed"]) {
         self.timeLabel.text = [NSString stringWithFormat:@"%@-\n%@",[self timestampToTimeStr:safeString(dic[@"suppressStartTime"])],[self timestampToTimeStr:safeString(dic[@"suppressEndTime"])]];
+    }
+    if (safeString(dic[@"suppressStartTime"]).length == 0 &&
+        safeString(dic[@"suppressEndTime"]).length == 0) {
+        self.timeLabel.text = @"";
     }
     
     

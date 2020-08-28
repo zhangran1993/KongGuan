@@ -10,7 +10,6 @@
 
 @interface KG_NewScreenHeaderView (){
     
-    
 }
 
 @end
@@ -53,7 +52,6 @@
         make.width.equalTo(@100);
     }];
    
-    
     
     self.rightImage = [[UIImageView alloc]init];
     [self addSubview:self.rightImage];

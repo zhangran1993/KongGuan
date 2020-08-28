@@ -274,6 +274,21 @@
     self.headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 56)];
     self.tableView.tableHeaderView = self.headView;
     
+    
+    UIView *bgView = [[UIView alloc] init];
+   
+    bgView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+    bgView.layer.borderWidth = 0.5;
+    bgView.layer.borderColor = [UIColor colorWithRed:239/255.0 green:240/255.0 blue:247/255.0 alpha:1.0].CGColor;
+    bgView.layer.cornerRadius = 6;
+    [self.headView addSubview:bgView];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.headView.mas_centerY);
+        make.left.equalTo(self.headView.mas_left).offset(16);
+        make.right.equalTo(self.headView.mas_right).offset(-16);
+        make.height.equalTo(self.headView.mas_height);
+    }];
+    
     UIImageView *iconImage = [[UIImageView alloc]init];
     [self.headView addSubview:iconImage];
     iconImage.backgroundColor = [UIColor colorWithHexString:@"#BABCC4"];
@@ -300,16 +315,7 @@
         make.width.equalTo(@100);
     }];
     
-    UIView *lineView = [[UIView alloc]init];
-    [self.headView addSubview:lineView];
-    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
-    
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.headView.mas_left);
-        make.right.equalTo(self.headView.mas_right);
-        make.bottom.equalTo(self.headView.mas_bottom);
-        make.height.equalTo(@1);
-    }];
+   
     for (NSDictionary *dic in self.listArray) {
         
     }
@@ -340,7 +346,7 @@
     [self.rightBtn sizeToFit];
     [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.leftBtn.mas_right).offset(5);
-        make.right.equalTo(self.headView.mas_right).offset(-5);
+        make.right.equalTo(self.headView.mas_right).offset(-24);
         make.centerY.equalTo(titleLabel.mas_centerY);
     }];
      [self.rightBtn.titleLabel setNumberOfLines:2];

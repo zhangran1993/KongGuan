@@ -8,13 +8,15 @@
 
 #import "KG_WatchPdfViewController.h"
 #import <WebKit/WebKit.h>
-@interface KG_WatchPdfViewController ()<WKNavigationDelegate>
+@interface KG_WatchPdfViewController ()<WKNavigationDelegate,UIDocumentInteractionControllerDelegate>
 @property (nonatomic,strong) WKWebView* webView;
 @property (strong, nonatomic) UIProgressView *progressView;
 
 @property (nonatomic, strong)   UILabel                 *titleLabel;
 
 @property (nonatomic, strong)   UIView                  *navigationView;
+
+@property (nonatomic, strong)   UIButton                *rightButton;
 @end
 
 @implementation KG_WatchPdfViewController
@@ -95,6 +97,7 @@
 }
 
 - (void)dealloc {
+    [super dealloc];
     [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
     // if you have set either WKWebView delegate also set these to nil here
     [_webView setNavigationDelegate:nil];
@@ -155,7 +158,21 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-   
+    self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
+    [self.rightButton setImage:[UIImage imageNamed:@"icon_yunMore"] forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:@selector(shareFile) forControlEvents:UIControlEventTouchUpInside];
+ 
+    [self.navigationView addSubview:self.rightButton];
+    
+    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.right.equalTo(self.navigationView.mas_right).offset(-20);
+    }];
+    
+    
     
 }
 
@@ -196,6 +213,18 @@
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)shareFile {
+    
+//    UIDocumentInteractionController*  documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://vip.ow365.cn/?i=21701&furl=%@%@",WebNewHost,safeString(self.dataDic[@"url"])]]];
+//    
+//    documentController.delegate = self;
+//    
+//    documentController.UTI = @"com.microsoft.word.doc";
+//    
+//    [documentController presentOpenInMenuFromRect:CGRectMake(760, 20, 100, 100) inView:self.view animated:YES];
+
 }
 
 @end

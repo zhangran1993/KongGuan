@@ -221,12 +221,7 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-    
-    
 }
-
-
-
 - (void)backButtonClick:(UIButton *)button {
     
     [self.navigationController popViewControllerAnimated:YES];

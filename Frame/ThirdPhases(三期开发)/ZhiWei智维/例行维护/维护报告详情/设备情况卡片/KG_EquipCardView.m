@@ -32,6 +32,17 @@
 }
 
 - (void)createUI {
+    UIView *bgView = [[UIView alloc]init];
+    [self addSubview:bgView];
+    bgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(16);
+        make.right.equalTo(self.mas_right).offset(-16);
+        make.top.equalTo(self.mas_top);
+        make.bottom.equalTo(self.mas_bottom);
+    }];
+    
+    
     [self addSubview:self.tableView];
     self.tableView.layer.shadowOffset = CGSizeMake(0,1);
     self.tableView.layer.shadowOpacity = 1;
@@ -42,7 +53,7 @@
     self.tableView.layer.cornerRadius = 10;
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top);
+        make.top.equalTo(self.mas_top).offset(6);
         make.left.equalTo(self.mas_left).offset(22);
         make.right.equalTo(self.mas_right).offset(-22);
         make.bottom.equalTo(self.mas_bottom).offset(-80);
@@ -119,10 +130,25 @@
     }
      return 40;
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    
+    
+    UIView  *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+    footView.backgroundColor =[UIColor colorWithHexString:@"#F6F7F9"];
+    
+    return footView;
+    
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.001;
+}
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section  {
     
     if ([tableView isEqual:self.sliderTableView]) {
         UIView  *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+        headView.backgroundColor =[UIColor colorWithHexString:@"#F6F7F9"];
+        
         return headView;
     }
     
@@ -134,8 +160,6 @@
         return headView;
     }
     
-   
-           
     if (section == 0) {
         
         UILabel *titleLabel = [[UILabel alloc]init];
