@@ -48,7 +48,7 @@
         make.right.equalTo(self.view.mas_right).offset(-12.5);
         make.width.height.equalTo(@56);
     }];
-   self.addBtn.enabled = NO;
+    self.addBtn.enabled = NO;
     [self.view bringSubviewToFront:self.addBtn];
     
 }
