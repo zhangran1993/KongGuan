@@ -724,13 +724,8 @@
             }else {
                  [self getTemHuiData:[_objects0 firstObject][@"stationCode"] withCode:[_objects0 firstObject][@"code"]];
             }
-            
-            
-            
-            
            
         }
-        
         NSLog(@"1");
         
     } failure:^(NSURLSessionDataTask *error)  {

@@ -18,6 +18,8 @@
 #import "KG_XunShiResultView.h"
 #import "KG_XunShiResultCell.h"
 #import "KG_XunShiDetailLogCell.h"
+#import "KG_RemoveTaskView.h"
+#import "KG_AddressbookViewController.h"
 @interface KG_XunShiReportDetailViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
 
 
@@ -53,6 +55,8 @@
 @property (nonatomic, copy)  NSString *descriptonStr;
 
 @property (nonatomic, assign)  BOOL canUpdateOrSubmit;
+
+@property (nonatomic, strong)  KG_RemoveTaskView *alertView;
 @end
 
 @implementation KG_XunShiReportDetailViewController
@@ -60,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushRemoveToAddressBook) name:@"pushRemoveToAddressBook" object:nil];
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
     self.listModel = [[KG_XunShiReportDataModel alloc]init];
     self.radarModel = [[taskDetail alloc]init];
@@ -70,9 +75,30 @@
     [self createDataView];
     [self queryReportDetailData];
     [self getTemplateData];
-   
+    
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
+    
+}
+- (void)pushRemoveToAddressBook {
+    
+    self.alertView.hidden = YES;
+    KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
+    vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
+        self.alertView.hidden = NO;
+        self.alertView.name = nameStr;
+        self.alertView.nameID =nameID;
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -97,19 +123,19 @@
     self.xunshiTopView.layer.masksToBounds = YES;
     self.xunshiTopView.shouqiMethod = ^{
         UIView *tableHeaderView =self.tableView.tableHeaderView;
-
+        
         CGRect frame = tableHeaderView.frame;
-
+        
         [tableHeaderView removeFromSuperview];
-
+        
         self.tableView.tableHeaderView =nil;
-
+        
         frame.size.height =128.0+54;// 新高度
-
+        
         tableHeaderView.frame = frame;
-
+        
         self.tableView.tableHeaderView = tableHeaderView;
-
+        
         [self.xunshiTopView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.tableHeadView.mas_left);
             make.right.equalTo(self.tableHeadView.mas_right);
@@ -149,12 +175,13 @@
         make.top.equalTo(self.tableHeadView.mas_top);
         make.height.equalTo(@266);
     }];
-   
+    
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navigationView.mas_bottom);
         make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);        make.bottom.equalTo(self.view.mas_bottom);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom);
     }];
     
 }
@@ -187,6 +214,7 @@
     return footView;
     
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 10.f;
 }
@@ -195,6 +223,7 @@
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
     return headView;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
     return 0.001;
@@ -207,7 +236,7 @@
     }
     
     NSInteger totalHeight = 0;
-  
+    
     taskDetail *model = self.dataModel.task[indexPath.section];
     
     NSInteger firstHeight = 44 ;
@@ -218,7 +247,7 @@
     //第三层
     NSInteger thirdHeight = 0;
     NSInteger fourthHeight = 0;
-   
+    
     for (NSDictionary *dic in secondArr) {
         NSArray *thirdArr = dic[@"childrens"];
         thirdHeight += thirdArr.count *30;
@@ -236,7 +265,7 @@
         totalHeight +=50;
     }
     return totalHeight;
-
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -258,8 +287,8 @@
         if (cell == nil) {
             cell = [[KG_XunShiResultCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_XunShiResultCell"];
         }
-       
-//        if (safeString(self.dataModel.taskDescription).length) {
+        
+        //        if (safeString(self.dataModel.taskDescription).length) {
         cell.taskDescription = safeString(self.dataModel.taskDescription);
         if (self.descriptonStr.length) {
             cell.taskDescription = self.descriptonStr;
@@ -278,6 +307,9 @@
         if (cell == nil) {
             cell = [[KG_XunShiDetailLogCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_XunShiDetailLogCell"];
         }
+        cell.uploadReceive = ^(NSString * _Nonnull textStr) {
+            [self uploadReceiveData:textStr];
+        };
         if (self.receiveArr.count) {
             cell.receiveArr = self.receiveArr;
         }
@@ -289,14 +321,13 @@
     }
     return nil;
 }
- 
+
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-   
-   
-
+    
+    
 }
 
 
@@ -368,19 +399,19 @@
 }
 - (void)back
 {
-   
+    
     [self.navigationController popViewControllerAnimated:YES];
     
-
+    
 }
 - (void)moreAction {
     
     if(!self.canUpdateOrSubmit) {
-//        [FrameBaseRequest showMessage:@"任务已完成，不能执行此操作"];
-//        return;
+        //        [FrameBaseRequest showMessage:@"任务已完成，不能执行此操作"];
+        //        return;
     }
     if (_xunShiHandelView== nil) {
-    
+        
         [JSHmainWindow addSubview:self.xunShiHandelView];
         self.xunShiHandelView.didsel = ^(NSString * _Nonnull dataStr) {
             NSString *leadStr = @"";
@@ -408,6 +439,12 @@
             if ([dataStr isEqualToString:@"提交任务"]) {
                 NSLog(@"提交任务");
                 [self uploadTask];
+            }else if ([dataStr isEqualToString:@"移交任务"]) {
+                NSLog(@"移交任务");
+                [self removeTask];
+            }else if ([dataStr isEqualToString:@"删除任务"]) {
+                NSLog(@"删除任务");
+                [self deleteTask];
             }else {
                 [self.moreBtn removeFromSuperview];
                 self.moreBtn = nil;
@@ -426,7 +463,7 @@
                 }];
                 NSLog(@"修改任务");
                 [UserManager shareUserManager].isChangeTask = YES;
-//                [self changeTask];
+                //                [self changeTask];
                 [self.tableView reloadData];
             }
         };
@@ -444,6 +481,119 @@
     
     
 }
+//任务删除接口：
+//请求地址：/intelligent/atcSafeguard/remove/{id}
+//   其中，id是任务的id
+//请求方式：DELETE
+//删除任务
+- (void)deleteTask {
+    
+    UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定删除吗？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertContor addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil]];
+    [alertContor addAction:[UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        
+        
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/remove/%@",safeString(self.dataDic[@"id"])]];
+        [FrameBaseRequest deleteWithUrl:FrameRequestURL param:nil success:^(id result) {
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            if(code != 0){
+                
+                return ;
+            }
+            
+            NSLog(@"请求成功");
+            [FrameBaseRequest showMessage:@"删除成功"];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }  failure:^(NSError *error) {
+            NSLog(@"请求失败 原因：%@",error);
+            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+                return;
+            }
+            [FrameBaseRequest showMessage:@"网络链接失败"];
+            return ;
+        } ];
+        
+        
+    }]];
+    
+    [self presentViewController:alertContor animated:NO completion:nil];
+  
+}
+
+//移交任务
+- (void)removeTask {
+    
+    [self showAssignView];
+    
+}
+//显示弹窗
+- (void)showAssignView {
+    NSDictionary *dDic = self.dataDic;
+    
+    self.alertView = [[KG_RemoveTaskView alloc]init];
+    [JSHmainWindow addSubview:self.alertView];
+    self.alertView.dataDic = dDic;
+    self.alertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
+        
+        [self assignData:dataDic name:name withNameID:nameID];
+        
+    };
+    [self.alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+        make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+        make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+    }];
+}
+//任务移交接口：
+//请求地址：/intelligent/atcSafeguard/updateAtcPatrolRecode
+//请求方式：POST
+//请求Body：
+//{
+//    "id": "XXX",                 //任务Id，必填
+//    "patrolName": "XXX"         //任务执行负责人Id，必填
+////任务移交时修改这个字段为新的任务执行负责人Id即可
+//}
+- (void)assignData:(NSDictionary *)dataDic name:(NSString *)name withNameID:(NSString *)nameID{
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/updateAtcPatrolRecode"]];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(dataDic[@"id"]);
+    paramDic[@"patrolName"] = safeString(nameID);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"请求成功");
+        if ([result[@"value"] boolValue]) {
+            [FrameBaseRequest showMessage:@"指派成功"];
+            self.alertView.hidden = YES;
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+}
+
+
 //修改任务
 - (void)saveAction {
     
@@ -588,7 +738,7 @@
 }
 //提交任务
 - (void)uploadTask{
-
+    
     NSString *leadStr = @"";
     NSString *patrolName = safeString(self.dataModel.patrolName);
     NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
@@ -631,11 +781,11 @@
     
     
     paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
-//
+    //
     NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
-//    NSMutableDictionary *labelDic = [NSMutableDictionary dictionary];
-//    [labelDic setValue:@"DVOR" forKey:@"name"];
-//    [labelList addObject:labelDic];
+    //    NSMutableDictionary *labelDic = [NSMutableDictionary dictionary];
+    //    [labelDic setValue:@"DVOR" forKey:@"name"];
+    //    [labelList addObject:labelDic];
     if (isSafeArray(self.dataDic[@"atcPatrolLabelList"])) {
         if ([self.dataDic[@"atcPatrolLabelList"] count]) {
             paramDic[@"atcPatrolLabelList"] = self.dataDic[@"atcPatrolLabelList"];
@@ -645,14 +795,14 @@
         
     }else {
         paramDic[@"atcPatrolLabelList"] = labelList;
-      
+        
     }
     
     
     NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
-//    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
-//    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
-//    [workList addObject:workDic];
+    //    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
+    //    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
+    //    [workList addObject:workDic];
     if (isSafeArray(self.dataDic[@"atcPatrolWorkList"])) {
         if ([self.dataDic[@"atcPatrolWorkList"] count]) {
             paramDic[@"atcPatrolWorkList"] = self.dataDic[@"atcPatrolWorkList"];
@@ -709,15 +859,15 @@
         if ([dic[@"isUpdateEnable"] boolValue]) {
             
         }else {
-//            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
-//            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-//            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-//
-//            }]];
-//
-//            [self presentViewController:alertContor animated:NO completion:nil];
-//
-//
+            //            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
+            //            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+            //            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            //
+            //            }]];
+            //
+            //            [self presentViewController:alertContor animated:NO completion:nil];
+            //
+            //
             
         }
         
@@ -801,7 +951,7 @@
                                     
                                     
                                 }
-                               
+                                
                             }
                             
                             NSLog(@"1");
@@ -867,18 +1017,18 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-       
+        
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-      NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-      if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-          [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
-          return;
-          
-      }else if(responses.statusCode == 502){
-          
-      }
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -901,20 +1051,20 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-         self.xunshiTopView.dic = result[@"value"];
-               
+        self.xunshiTopView.dic = result[@"value"];
+        
         
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-      NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-      if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-          [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
-          return;
-          
-      }else if(responses.statusCode == 502){
-          
-      }
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -933,37 +1083,37 @@
     self.xunshiTopView.model = self.dataModel;
     self.xunshiTopView.dataDic =self.dataDic;
     self.xunshiTopView.leaderString = safeString(self.dataDic[@"leaderName"]);
-//    self.radarView.detailModel = self.radarModel;
-//    self.powerView.detailModel = self.powerModel;
-//    self.upsView.detailModel = self.upsModel;
+    //    self.radarView.detailModel = self.radarModel;
+    //    self.powerView.detailModel = self.powerModel;
+    //    self.upsView.detailModel = self.upsModel;
     //44 +
-//    NSInteger scrollHeight = 0;
-//    NSInteger totalHeight = 0;
-//
-//    for(taskDetail *model in self.dataModel.task){
-//
-//        NSInteger firstHeight = model.childrens.count * 44 ;
-//        //第一层 model.childrens 44
-//        //第二层 model.childrens firstobject  44
-//        NSArray *secondArr = [model.childrens firstObject][@"childrens"];
-//        NSInteger secondHeight = [secondArr count] *44;
-//        //第三层
-//        NSInteger thirdHeight = 0;
-//        NSInteger fourthHeight = 0;
-//        for (NSDictionary *dic in secondArr) {
-//            NSArray *thirdArr = dic[@"childrens"];
-//            thirdHeight += thirdArr.count *30;
-//            for (NSDictionary *detailArr in thirdArr) {
-//                NSArray *fourthArr = detailArr[@"childrens"];
-//                fourthHeight += fourthArr.count *30;
-//            }
-//        }
-//        totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
-//
-//        scrollHeight += totalHeight;
-//    }
-   [self.tableView reloadData];
-   
+    //    NSInteger scrollHeight = 0;
+    //    NSInteger totalHeight = 0;
+    //
+    //    for(taskDetail *model in self.dataModel.task){
+    //
+    //        NSInteger firstHeight = model.childrens.count * 44 ;
+    //        //第一层 model.childrens 44
+    //        //第二层 model.childrens firstobject  44
+    //        NSArray *secondArr = [model.childrens firstObject][@"childrens"];
+    //        NSInteger secondHeight = [secondArr count] *44;
+    //        //第三层
+    //        NSInteger thirdHeight = 0;
+    //        NSInteger fourthHeight = 0;
+    //        for (NSDictionary *dic in secondArr) {
+    //            NSArray *thirdArr = dic[@"childrens"];
+    //            thirdHeight += thirdArr.count *30;
+    //            for (NSDictionary *detailArr in thirdArr) {
+    //                NSArray *fourthArr = detailArr[@"childrens"];
+    //                fourthHeight += fourthArr.count *30;
+    //            }
+    //        }
+    //        totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
+    //
+    //        scrollHeight += totalHeight;
+    //    }
+    [self.tableView reloadData];
+    
 }
 
 -(NSArray *)dataArray{
@@ -977,7 +1127,7 @@
 //展开
 - (void)zhankaiMethod:(UIButton *)button {
     
-   
+    
 }
 
 
@@ -990,9 +1140,9 @@
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
     NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日HH时mm分"] stringFromDate:date];
-//    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
-
+    
 }
 - (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -1027,14 +1177,14 @@
 - (KG_XunShiHandleView *)xunShiHandelView {
     if (!_xunShiHandelView) {
         _xunShiHandelView = [[KG_XunShiHandleView alloc]init];
-      
+        
     }
     return _xunShiHandelView;
 }
 //获得回复
 - (void)getReceviceData {
     
-//    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
+    //    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
     NSString *rId = self.dataDic[@"id"];
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolDialog/%@",rId]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -1068,7 +1218,7 @@
 //获得日志
 - (void)getLogData {
     
-//    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
+    //    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
     NSString *rId = self.dataDic[@"id"];
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getAtcPatrolLog/%@/%@/%@",rId,@"1",@"100"]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -1077,12 +1227,12 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-       
+        
         if (isSafeDictionary(result[@"value"])) {
             if (isSafeArray(result[@"value"][@"records"])) {
                 self.logArr = result[@"value"][@"records"];
             }
-           
+            
         }
         
         for (NSDictionary *logDic in self.logArr) {
@@ -1120,37 +1270,81 @@
         return @"";
     }
     NSError *error;
-
+    
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
-
+    
     NSString *jsonString;
-
+    
     if (!jsonData) {
-
-
-
+        
+        
+        
     }else{
-
+        
         jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
-
+        
     }
-
+    
     NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
-
+    
     NSRange range = {0,jsonString.length};
-
+    
     //去掉字符串中的空格
-
+    
     [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
-
+    
     NSRange range2 = {0,mutStr.length};
-
+    
     //去掉字符串中的换行符
-
     [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
-
+    
     return mutStr;
-
+    
 }
+//提交回复
+//任务的回复提交接口：
+//请求地址：/intelligent/atcPatrolDialog
+//请求方式：POST
+- (void)uploadReceiveData:(NSString *)textStr {
+    
+    NSString *idStr = @"";
+    NSString *nameStr = @"";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"id"]){
+        idStr = [userDefaults objectForKey:@"id"];
+    }
+    
+    if([userDefaults objectForKey:@"name"]){
+        nameStr = [userDefaults objectForKey:@"name"];
+    }
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    params[@"content"] =safeString(textStr);
+    params[@"operatorId"] =safeString(idStr);
+    params[@"operatorName"] =safeString(nameStr);
+    params[@"patrolRecordId"] =safeString(self.dataDic[@"id"]);
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolDialog"]];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        [self getReceviceData];
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+}
+
+
 
 @end

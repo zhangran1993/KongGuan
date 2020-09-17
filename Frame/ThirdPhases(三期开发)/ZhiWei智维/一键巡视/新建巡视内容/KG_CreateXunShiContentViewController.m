@@ -8,13 +8,14 @@
 
 #import "KG_CreateXunShiContentViewController.h"
 #import "KG_XunShiRoomCell.h"
-#import "ZRDatePickerView.h"
+#import "KG_AddressbookViewController.h"
 #import "KG_CreateXunShiContentModel.h"
-@interface KG_CreateXunShiContentViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ZRDatePickerViewDelegate>{
+#import "KG_XunShiSelTimeView.h"
+@interface KG_CreateXunShiContentViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>{
     
 }
 
-@property (nonatomic, strong) NSMutableArray            *dataArray;
+@property (nonatomic, strong) NSArray            *dataArray;
 
 @property (nonatomic, strong) UITableView               *tableView;
 
@@ -38,8 +39,6 @@
 
 @property (nonatomic, strong)   UIButton                *rightButton;
 
-@property (nonatomic, strong) ZRDatePickerView          *dataPickerview;
-
 @property (nonatomic, copy)   NSString                  *taskTitle;
 
 @property (nonatomic,copy)    NSString                  *startTime;
@@ -50,6 +49,10 @@
 
 @property (nonatomic, strong)   KG_CreateXunShiContentModel *dataModel;
 
+@property (nonatomic, strong)   NSDictionary          *dataDic;
+
+@property (nonatomic, strong)   KG_XunShiSelTimeView *selTimeView;
+
 @end
 
 @implementation KG_CreateXunShiContentViewController
@@ -59,7 +62,9 @@
     // Do any additional setup after loading the view.
     self.title = @"新建巡视任务";
     self.dataModel = [[KG_CreateXunShiContentModel alloc]init];
+    self.dataModel.taskType = @"normalInspection";//默认一键巡视
     self.view.backgroundColor = [UIColor whiteColor];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:@"addressBookSelPerson" object:nil];
     [self createNaviTopView];
     [self createTableView];
     [self quertFrameData];
@@ -76,10 +81,23 @@
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     
-      [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES];
     
+}
+-(void)dealloc
+{
+    [super dealloc];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)refreshData:(NSNotification *)notification {
     
-    
+    NSDictionary *dataDic = notification.userInfo;
+    if (dataDic.count) {
+        self.dataModel.realPersonID = safeString(dataDic[@"nameID"]);
+        self.dataModel.realPersonName = safeString(dataDic[@"nameStr"]);
+    }
+    [self.tableView reloadData];
 }
 
 - (void)createTableView {
@@ -98,7 +116,7 @@
     [self.view addSubview:reportBtn];
     [reportBtn setTitle:@"提交" forState:UIControlStateNormal];
     [reportBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-    reportBtn.alpha = 0.3;
+   
     [reportBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     reportBtn.layer.cornerRadius = 6;
     reportBtn.layer.masksToBounds = YES;
@@ -111,8 +129,139 @@
     }];
     
 }
+//
+//新增一键巡视任务的提交接口：
+//请求地址：/intelligent/atcSafeguard/insertTourOrMaintain
+//请求方式：POST
+//请求Body：
+//{
+//    "stationCodeList":["XXX"],       //台站编码，必填，目前仅支持单个台站
+//    "engineRoomCodeList":["XXX"],  //机房编码列表，必填，从上一接口的roomInfo获取
+//    "planStartTime":"XXX",          //任务时间，必填，java中Date类型
+////从上一接口的intervalTimeList获取
+//    "planFinishTime":null,            //该字段为空即可
+//    "patrolName":"XXX",      //执行负责人Id，从获取任务执行负责人/执行人列表接口获取
+//    "typeCode":"oneTouchTour",       //固定，必填
+//    "patrolCode":"normalInspection",   //固定，必填
+//    "patrolId":"XXX",               //任务模板Id，必填，从上一接口的id获取
+//    "taskName":"XXX"              //任务名称，必填
+
 //提交
 - (void)reportMethod:(UIButton *)button {
+    if (safeString(self.dataModel.taskTitle).length == 0) {
+        [FrameBaseRequest showMessage:@"请输入任务名称"];
+        return;
+    }
+    
+    if (self.dataArray.count == 0) {
+        [FrameBaseRequest showMessage:@"该台站下暂无此类型模版"];
+        return;
+    }
+    
+    if (self.dataModel.xunshiRoom.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择巡视机房"];
+        return;
+    }
+    
+    if (self.dataModel.selTime.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择时间"];
+        return;
+    }
+    
+    if (self.dataModel.realPersonName.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择执行负责人"];
+        return;
+    }
+    NSString *stationCode = @"";
+    NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+    if (currentDic.count == 0) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"station"]){
+            currentDic = [userDefaults objectForKey:@"station"];
+        }else {
+            NSArray *stationArr = [UserManager shareUserManager].stationList;
+            
+            if (stationArr.count >0) {
+                currentDic = [stationArr firstObject][@"station"];
+            }
+        }
+        
+    }
+    if (currentDic.count) {
+        stationCode = safeString(currentDic[@"code"]);
+    }
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    NSMutableArray *stationArr = [NSMutableArray arrayWithCapacity:0];
+    [stationArr addObject:stationCode];
+    params[@"stationCodeList"] = stationArr;
+    
+    
+    NSMutableArray *engineArr = [NSMutableArray arrayWithCapacity:0];
+    
+    if (safeString(self.dataModel.xunshiRoomCode).length >0) {
+        NSArray *arr = [safeString(self.dataModel.xunshiRoomCode) componentsSeparatedByString:@","];
+        for (NSString *ss in arr) {
+            [engineArr addObject:safeString(ss)];
+        }
+    }
+       
+       
+       params[@"engineRoomCodeList"] = engineArr ;
+       
+    
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";//使用带有子字符串'T'的日期格式
+    NSDate *date = [dateFormatter dateFromString:safeString(self.dataModel.selTime)];
+    
+    NSString *ss = @"";
+    
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: date];
+   
+    NSDate *sdate = [[NSDate alloc] initWithTimeInterval:-(interval) sinceDate:date];
+    NSString *timeStr = [dateFormatter stringFromDate:sdate];
+    if (safeString(self.dataModel.selTime).length >10) {
+        
+        NSString *fitSS = [safeString(timeStr) substringToIndex:10];
+        NSString *secSS = [safeString(timeStr) substringFromIndex:11];
+        ss = [NSString stringWithFormat:@"%@T%@Z",fitSS,secSS];
+    }
+    
+    params[@"planStartTime"] = safeString(ss);
+    
+    
+    params[@"planFinishTime"] = @"";
+    params[@"patrolName"] = safeString(self.dataModel.realPersonID);
+    params[@"typeCode"] = @"oneTouchTour";
+    params[@"patrolCode"] = @"normalInspection";
+    params[@"patrolId"] = safeString(self.dataModel.xunshiRoomID);
+    params[@"taskName"] = safeString(self.dataModel.taskTitle);
+    
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/insertTourOrMaintain"]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+          return ;
+        }
+        [FrameBaseRequest showMessage:@"提交成功"];
+        [self.navigationController popViewControllerAnimated:YES];
+      
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
     
     
 }
@@ -135,17 +284,29 @@
 
 #pragma mark - TableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 6;
+    if(self.dataArray.count >0) {
+         return 6;
+    }
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    return self.dataArray.count;
+    if (self.dataArray.count >0) {
+        if (section == 3) {
+            return self.dataArray.count;
+        }
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return 40;
+    if (self.dataArray.count >0) {
+        if (indexPath.section == 3) {
+            return 50 ;
+        }
+        return 0;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -153,10 +314,16 @@
     KG_XunShiRoomCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_XunShiRoomCell "];
     if (cell == nil) {
         cell = [[KG_XunShiRoomCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_XunShiRoomCell"];
-        
     }
+    cell.backgroundColor = [UIColor colorWithHexString:@"#FAFBFB"];
+    if (self.dataArray.count >0) {
+        if (indexPath.section == 3) {
+            cell.titleLabel.text = safeString(self.dataArray[indexPath.row][@"roomNameList"]);
+        }
+    }
+    cell.selRoomStr = self.dataModel.xunshiRoom;
     
-    
+    cell.roomStr = safeString(self.dataArray[indexPath.row][@"roomNameList"]);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -166,225 +333,496 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
+    NSString *roomStr = self.dataArray[indexPath.row][@"roomNameList"];
+    self.dataModel.xunshiRoom = safeString(roomStr);
+    self.dataModel.xunshiRoomCode = safeString(self.dataArray[indexPath.row][@"roomInfo"]);
+    self.dataModel.xunshiRoomID = safeString(self.dataArray[indexPath.row][@"id"]);
+    self.dataModel.xunshiSelIndex = indexPath.row;
+    [self.tableView reloadData];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 55)];
-    headView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    
-    UIImageView *iconImage = [[UIImageView alloc]init];
-    [headView addSubview:iconImage];
-    iconImage.image = [UIImage imageNamed:@"must_starIcon"];
-    [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@7);
-        make.left.equalTo(headView.mas_left).offset(16);
-        make.top.equalTo(headView.mas_top).offset(24);
-    }];
-    
-    UILabel *titleLabel = [[UILabel alloc]init];
-    titleLabel.font = [UIFont systemFontOfSize:14];
-    titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    titleLabel.numberOfLines = 1;
-    [headView addSubview:titleLabel];
-    
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(iconImage.mas_right).offset(10);
-        make.top.equalTo(headView.mas_top);
-        make.bottom.equalTo(headView.mas_bottom);
-        make.width.lessThanOrEqualTo(@150);
-    }];
-    
-    UIView *lineView = [[UIView alloc]init];
-    [headView addSubview:lineView];
-    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(headView.mas_left);
-        make.right.equalTo(headView.mas_right);
-        make.height.equalTo(@0.5);
-        make.bottom.equalTo(headView.mas_bottom);
-    }];
-    
-    
-    if (section == 0) {
-        titleLabel.text = safeString(@"任务名称");
-        UITextField *textField = [[UITextField alloc]init];
-        textField.placeholder = @"请输入任务名称";
-        [headView addSubview:textField];
-        textField.textAlignment = NSTextAlignmentRight;
-        textField.textColor = [UIColor colorWithHexString:@"#24252A"];
-        textField.font = [UIFont systemFontOfSize:14];
-        textField.delegate = self;
-        textField.returnKeyType = UIReturnKeyDone;
-        [textField addTarget:self action:@selector(textEdit:) forControlEvents:UIControlEventEditingChanged];
-        [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(headView.mas_right).offset(-16);
-            make.width.equalTo(@150);
-            make.height.equalTo(@55);
+    if (self.dataArray.count == 0) {
+        
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 55)];
+        headView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        
+        UIImageView *iconImage = [[UIImageView alloc]init];
+        [headView addSubview:iconImage];
+        iconImage.image = [UIImage imageNamed:@"must_starIcon"];
+        [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@7);
+            make.left.equalTo(headView.mas_left).offset(16);
+            make.top.equalTo(headView.mas_top).offset(24);
+        }];
+        
+        UILabel *titleLabel = [[UILabel alloc]init];
+        titleLabel.font = [UIFont systemFontOfSize:14];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        titleLabel.textAlignment = NSTextAlignmentLeft;
+        titleLabel.numberOfLines = 1;
+        [headView addSubview:titleLabel];
+        
+        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(iconImage.mas_right).offset(10);
             make.top.equalTo(headView.mas_top);
+            make.bottom.equalTo(headView.mas_bottom);
+            make.width.lessThanOrEqualTo(@150);
         }];
-    }else if (section == 1) {
-        titleLabel.text = safeString(@"任务类型");
         
-        self.normalBtn = [[UIButton alloc]init];
-        [headView addSubview:self.normalBtn];
-        self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
-        self.normalBtn.layer.borderWidth = 1.f;
-        self.normalBtn.layer.cornerRadius = 4.f;
-        self.normalBtn.layer.masksToBounds = YES;
-
-        [self.normalBtn setTitle:@"现场巡视" forState:UIControlStateNormal];
-        self.normalBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [self.normalBtn addTarget:self action:@selector(selectStation:) forControlEvents:UIControlEventTouchUpInside];
-        [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
-        [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
-        [self.normalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(headView.mas_centerY);
-            make.right.equalTo(headView.mas_right).offset(-16);
-            make.height.equalTo(@30);
-            make.width.equalTo(@80);
+        UIView *lineView = [[UIView alloc]init];
+        [headView addSubview:lineView];
+        lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(headView.mas_left);
+            make.right.equalTo(headView.mas_right);
+            make.height.equalTo(@0.5);
+            make.bottom.equalTo(headView.mas_bottom);
         }];
         
         
-        self.yijianBtn = [[UIButton alloc]init];
-        [headView addSubview:self.yijianBtn];
-        self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
-        self.yijianBtn.layer.borderWidth = 1.f;
-        self.yijianBtn.layer.cornerRadius = 4.f;
-        self.yijianBtn.layer.masksToBounds = YES;
-        
-        [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-        [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-        [self.yijianBtn setTitle:@"一键巡视" forState:UIControlStateNormal];
-        self.yijianBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [self.yijianBtn addTarget:self action:@selector(selectStation:) forControlEvents:UIControlEventTouchUpInside];
-        [self.yijianBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(headView.mas_centerY);
-            make.right.equalTo(self.normalBtn.mas_left).offset(-16);
-            make.height.equalTo(@30);
-            make.width.equalTo(@80);
-        }];
-        
-        
-     
-    }else if (section == 2) {
-        titleLabel.text = safeString(@"巡视台站");
-        self.stationBtn = [[UIButton alloc]init];
-        [headView addSubview:self.stationBtn];
-       
-        self.stationBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [self.stationBtn setTitle:@"请选择台站" forState:UIControlStateNormal];
-        
-        NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
-        if (currentDic.count == 0) {
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            if([userDefaults objectForKey:@"station"]){
-                currentDic = [userDefaults objectForKey:@"station"];
-            }else {
-                NSArray *stationArr = [UserManager shareUserManager].stationList;
+        if (section == 0) {
+            titleLabel.text = safeString(@"任务名称");
+            self.textField = [[UITextField alloc]init];
+            self.textField.placeholder = @"请输入任务名称";
+            if (self.dataModel.taskTitle.length) {
+                self.textField.text = safeString(self.dataModel.taskTitle);
+            }
+            [headView addSubview:self.textField];
+            self.textField.textAlignment = NSTextAlignmentRight;
+            self.textField.textColor = [UIColor colorWithHexString:@"#24252A"];
+            self.textField.font = [UIFont systemFontOfSize:14];
+            self.textField.delegate = self;
+            self.textField.returnKeyType = UIReturnKeyDone;
+            [self.textField addTarget:self action:@selector(textEdit:) forControlEvents:UIControlEventEditingChanged];
+            [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(headView.mas_right).offset(-16);
+                make.width.equalTo(@250);
+                make.height.equalTo(@55);
+                make.top.equalTo(headView.mas_top);
+            }];
+        }else if (section == 1) {
+            titleLabel.text = safeString(@"任务类型");
+            
+            self.normalBtn = [[UIButton alloc]init];
+            [headView addSubview:self.normalBtn];
+            self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+            self.normalBtn.layer.borderWidth = 1.f;
+            self.normalBtn.layer.cornerRadius = 4.f;
+            self.normalBtn.layer.masksToBounds = YES;
+            self.normalBtn.tag = 2;
+            [self.normalBtn setTitle:@"现场巡视" forState:UIControlStateNormal];
+            self.normalBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.normalBtn addTarget:self action:@selector(setTaskType:) forControlEvents:UIControlEventTouchUpInside];
+            [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+            [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+            [self.normalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(headView.mas_right).offset(-16);
+                make.height.equalTo(@30);
+                make.width.equalTo(@80);
+            }];
+            
+            self.yijianBtn = [[UIButton alloc]init];
+            [headView addSubview:self.yijianBtn];
+            self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+            self.yijianBtn.layer.borderWidth = 1.f;
+            self.yijianBtn.layer.cornerRadius = 4.f;
+            self.yijianBtn.layer.masksToBounds = YES;
+            self.yijianBtn.tag = 1;
+            [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+            [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+            [self.yijianBtn setTitle:@"一键巡视" forState:UIControlStateNormal];
+            self.yijianBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.yijianBtn addTarget:self action:@selector(setTaskType:) forControlEvents:UIControlEventTouchUpInside];
+            [self.yijianBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(self.normalBtn.mas_left).offset(-16);
+                make.height.equalTo(@30);
+                make.width.equalTo(@80);
+            }];
+            
+            if ([self.dataModel.taskType isEqualToString:@"normalInspection"]) {
                 
-                if (stationArr.count >0) {
-                    currentDic = [stationArr firstObject][@"station"];
-                }
+                self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.normalBtn.layer.borderWidth = 1.f;
+                self.normalBtn.layer.cornerRadius = 4.f;
+                self.normalBtn.layer.masksToBounds = YES;
+                [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+                [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+                
+                self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.yijianBtn.layer.borderWidth = 1.f;
+                self.yijianBtn.layer.cornerRadius = 4.f;
+                self.yijianBtn.layer.masksToBounds = YES;
+                [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+                [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+                
+            }else {
+                self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.yijianBtn.layer.borderWidth = 1.f;
+                self.yijianBtn.layer.cornerRadius = 4.f;
+                self.yijianBtn.layer.masksToBounds = YES;
+                [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+                [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+                
+                self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.normalBtn.layer.borderWidth = 1.f;
+                self.normalBtn.layer.cornerRadius = 4.f;
+                self.normalBtn.layer.masksToBounds = YES;
+                [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+                [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
             }
             
+        }else if (section == 2) {
+            titleLabel.text = safeString(@"巡视台站");
+            self.stationBtn = [[UIButton alloc]init];
+            [headView addSubview:self.stationBtn];
+            
+            self.stationBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            [self.stationBtn setTitle:@"请选择台站" forState:UIControlStateNormal];
+            
+            NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+            if (currentDic.count == 0) {
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                if([userDefaults objectForKey:@"station"]){
+                    currentDic = [userDefaults objectForKey:@"station"];
+                }else {
+                    NSArray *stationArr = [UserManager shareUserManager].stationList;
+                    
+                    if (stationArr.count >0) {
+                        currentDic = [stationArr firstObject][@"station"];
+                    }
+                }
+                
+            }
+            if (currentDic.count) {
+                [self.stationBtn setTitle:safeString(currentDic[@"name"]) forState:UIControlStateNormal];
+                
+                [self.stationBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+            }else {
+                [self.stationBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+            }
+            
+            
+            
+            self.stationBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.stationBtn addTarget:self action:@selector(selectStation:) forControlEvents:UIControlEventTouchUpInside];
+            [self.stationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(headView.mas_right).offset(-16);
+                make.height.equalTo(headView.mas_height);
+                make.width.equalTo(@150);
+            }];
+            
         }
-        if (currentDic.count) {
-            [self.stationBtn setTitle:safeString(currentDic[@"name"]) forState:UIControlStateNormal];
-           
-             [self.stationBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
-        }else {
-           [self.stationBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+        return headView;
+        
+    }else {
+        
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 55)];
+        headView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        
+        UIImageView *iconImage = [[UIImageView alloc]init];
+        [headView addSubview:iconImage];
+        iconImage.image = [UIImage imageNamed:@"must_starIcon"];
+        [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@7);
+            make.left.equalTo(headView.mas_left).offset(16);
+            make.top.equalTo(headView.mas_top).offset(24);
+        }];
+        
+        UILabel *titleLabel = [[UILabel alloc]init];
+        titleLabel.font = [UIFont systemFontOfSize:14];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        titleLabel.textAlignment = NSTextAlignmentLeft;
+        titleLabel.numberOfLines = 1;
+        [headView addSubview:titleLabel];
+        
+        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(iconImage.mas_right).offset(10);
+            make.top.equalTo(headView.mas_top);
+            make.bottom.equalTo(headView.mas_bottom);
+            make.width.lessThanOrEqualTo(@150);
+        }];
+        
+        UIView *lineView = [[UIView alloc]init];
+        [headView addSubview:lineView];
+        lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(headView.mas_left);
+            make.right.equalTo(headView.mas_right);
+            make.height.equalTo(@0.5);
+            make.bottom.equalTo(headView.mas_bottom);
+        }];
+        
+        
+        if (section == 0) {
+            titleLabel.text = safeString(@"任务名称");
+            UITextField *textField = [[UITextField alloc]init];
+            textField.placeholder = @"请输入任务名称";
+            if (self.dataModel.taskTitle.length) {
+                textField.text = safeString(self.dataModel.taskTitle);
+            }
+            [headView addSubview:textField];
+            textField.textAlignment = NSTextAlignmentRight;
+            textField.textColor = [UIColor colorWithHexString:@"#24252A"];
+            textField.font = [UIFont systemFontOfSize:14];
+            textField.delegate = self;
+            textField.returnKeyType = UIReturnKeyDone;
+            [textField addTarget:self action:@selector(textEdit:) forControlEvents:UIControlEventEditingChanged];
+            [textField mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(headView.mas_right).offset(-16);
+                make.width.equalTo(@150);
+                make.height.equalTo(@55);
+                make.top.equalTo(headView.mas_top);
+            }];
+        }else if (section == 1) {
+            titleLabel.text = safeString(@"任务类型");
+            
+            self.normalBtn = [[UIButton alloc]init];
+            [headView addSubview:self.normalBtn];
+            self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+            self.normalBtn.layer.borderWidth = 1.f;
+            self.normalBtn.layer.cornerRadius = 4.f;
+            self.normalBtn.layer.masksToBounds = YES;
+            self.normalBtn.tag = 2;
+            [self.normalBtn setTitle:@"现场巡视" forState:UIControlStateNormal];
+            self.normalBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.normalBtn addTarget:self action:@selector(setTaskType:) forControlEvents:UIControlEventTouchUpInside];
+            [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+            [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+            [self.normalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(headView.mas_right).offset(-16);
+                make.height.equalTo(@30);
+                make.width.equalTo(@80);
+            }];
+            
+            self.yijianBtn = [[UIButton alloc]init];
+            [headView addSubview:self.yijianBtn];
+            self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+            self.yijianBtn.layer.borderWidth = 1.f;
+            self.yijianBtn.layer.cornerRadius = 4.f;
+            self.yijianBtn.layer.masksToBounds = YES;
+            self.yijianBtn.tag = 1;
+            [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+            [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+            [self.yijianBtn setTitle:@"一键巡视" forState:UIControlStateNormal];
+            self.yijianBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.yijianBtn addTarget:self action:@selector(setTaskType:) forControlEvents:UIControlEventTouchUpInside];
+            [self.yijianBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(self.normalBtn.mas_left).offset(-16);
+                make.height.equalTo(@30);
+                make.width.equalTo(@80);
+            }];
+            
+            if ([self.dataModel.taskType isEqualToString:@"normalInspection"]) {
+                
+                self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.normalBtn.layer.borderWidth = 1.f;
+                self.normalBtn.layer.cornerRadius = 4.f;
+                self.normalBtn.layer.masksToBounds = YES;
+                [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+                [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+                
+                self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.yijianBtn.layer.borderWidth = 1.f;
+                self.yijianBtn.layer.cornerRadius = 4.f;
+                self.yijianBtn.layer.masksToBounds = YES;
+                [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+                [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+                
+            }else {
+                self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.yijianBtn.layer.borderWidth = 1.f;
+                self.yijianBtn.layer.cornerRadius = 4.f;
+                self.yijianBtn.layer.masksToBounds = YES;
+                [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+                [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+                
+                self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+                self.normalBtn.layer.borderWidth = 1.f;
+                self.normalBtn.layer.cornerRadius = 4.f;
+                self.normalBtn.layer.masksToBounds = YES;
+                [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+                [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+            }
+            
+        }else if (section == 2) {
+            titleLabel.text = safeString(@"巡视台站");
+            self.stationBtn = [[UIButton alloc]init];
+            [headView addSubview:self.stationBtn];
+            
+            self.stationBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            [self.stationBtn setTitle:@"请选择台站" forState:UIControlStateNormal];
+            
+            NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+            if (currentDic.count == 0) {
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                if([userDefaults objectForKey:@"station"]){
+                    currentDic = [userDefaults objectForKey:@"station"];
+                }else {
+                    NSArray *stationArr = [UserManager shareUserManager].stationList;
+                    
+                    if (stationArr.count >0) {
+                        currentDic = [stationArr firstObject][@"station"];
+                    }
+                }
+                
+            }
+            if (currentDic.count) {
+                [self.stationBtn setTitle:safeString(currentDic[@"name"]) forState:UIControlStateNormal];
+                
+                [self.stationBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+            }else {
+                [self.stationBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+            }
+            
+            
+            
+            self.stationBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.stationBtn addTarget:self action:@selector(selectStation:) forControlEvents:UIControlEventTouchUpInside];
+            [self.stationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(headView.mas_right).offset(-16);
+                make.height.equalTo(headView.mas_height);
+                make.width.equalTo(@150);
+            }];
+            
+        }else if (section == 3) {
+            titleLabel.text = safeString(@"巡视机房");
+            self.roomBtn = [[UIButton alloc]init];
+            [headView addSubview:self.roomBtn];
+            
+            self.roomBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            [self.roomBtn setTitle:@"请选择巡视机房" forState:UIControlStateNormal];
+            [self.roomBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+            if(self.dataModel.xunshiRoom.length) {
+                [self.roomBtn setTitle:safeString(self.dataModel.xunshiRoom) forState:UIControlStateNormal];
+                [self.roomBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+            }
+            
+            
+            self.roomBtn.titleLabel.numberOfLines =2;
+            self.roomBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.roomBtn addTarget:self action:@selector(selectRoom:) forControlEvents:UIControlEventTouchUpInside];
+            [self.roomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(headView.mas_right).offset(-16);
+                make.height.equalTo(headView.mas_height);
+                make.width.equalTo(@250);
+            }];
+        }else if (section == 4) {
+            titleLabel.text = safeString(@"时间选择");
+            UIImageView *rightImage = [[UIImageView alloc]init];
+            [headView addSubview:rightImage];
+            rightImage.image = [UIImage imageNamed:@"content_right"];
+            [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(headView.mas_right).offset(-12);
+                make.width.height.equalTo(@15);
+                make.centerY.equalTo(headView.mas_centerY);
+            }];
+            
+            
+            self.timeBtn = [[UIButton alloc]init];
+            [headView addSubview:self.timeBtn];
+            
+            self.timeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            [self.timeBtn setTitle:@"请选择时间" forState:UIControlStateNormal];
+            [self.timeBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+            if(self.dataModel.selTime.length) {
+                [self.timeBtn setTitle:safeString(self.dataModel.selTime) forState:UIControlStateNormal];
+                [self.timeBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+            }
+            
+            self.timeBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.timeBtn addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
+            [self.timeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(rightImage.mas_left).offset(-1);
+                make.height.equalTo(headView.mas_height);
+                make.width.equalTo(@150);
+            }];
+        }else if (section == 5) {
+            titleLabel.text = safeString(@"执行负责人");
+            UIImageView *rightImage = [[UIImageView alloc]init];
+            [headView addSubview:rightImage];
+            rightImage.image = [UIImage imageNamed:@"content_right"];
+            [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(headView.mas_right).offset(-12);
+                make.width.height.equalTo(@15);
+                make.centerY.equalTo(headView.mas_centerY);
+            }];
+            
+            
+            self.personBtn = [[UIButton alloc]init];
+            [headView addSubview:self.personBtn];
+            
+            self.personBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            [self.personBtn setTitle:@"请选择执行负责人" forState:UIControlStateNormal];
+            [self.personBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+            if(self.dataModel.realPersonName.length >0) {
+                [self.personBtn setTitle:safeString(self.dataModel.realPersonName) forState:UIControlStateNormal];
+                [self.personBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+            }
+            
+            self.personBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [self.personBtn addTarget:self action:@selector(selectPerson:) forControlEvents:UIControlEventTouchUpInside];
+            [self.personBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(headView.mas_centerY);
+                make.right.equalTo(rightImage.mas_left).offset(-1);
+                make.height.equalTo(headView.mas_height);
+                make.width.equalTo(@150);
+            }];
         }
-        
-        
-        
-        self.stationBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [self.stationBtn addTarget:self action:@selector(selectStation:) forControlEvents:UIControlEventTouchUpInside];
-        [self.stationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(headView.mas_centerY);
-            make.right.equalTo(headView.mas_right).offset(-16);
-            make.height.equalTo(headView.mas_height);
-            make.width.equalTo(@150);
-        }];
-        
-    }else if (section == 3) {
-        titleLabel.text = safeString(@"巡视机房");
-        self.roomBtn = [[UIButton alloc]init];
-        [headView addSubview:self.roomBtn];
-       
-        self.roomBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [self.roomBtn setTitle:@"请选择巡视机房" forState:UIControlStateNormal];
-        [self.roomBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
-        self.roomBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [self.roomBtn addTarget:self action:@selector(selectRoom:) forControlEvents:UIControlEventTouchUpInside];
-        [self.roomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(headView.mas_centerY);
-            make.right.equalTo(headView.mas_right).offset(-16);
-            make.height.equalTo(headView.mas_height);
-            make.width.equalTo(@150);
-        }];
-    }else if (section == 4) {
-        titleLabel.text = safeString(@"时间选择");
-        UIImageView *rightImage = [[UIImageView alloc]init];
-        [headView addSubview:rightImage];
-        rightImage.image = [UIImage imageNamed:@"content_right"];
-        [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(headView.mas_right).offset(-12);
-            make.width.height.equalTo(@15);
-            make.centerY.equalTo(headView.mas_centerY);
-        }];
-        
-        
-        self.timeBtn = [[UIButton alloc]init];
-        [headView addSubview:self.timeBtn];
-       
-        self.timeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [self.timeBtn setTitle:@"请选择时间" forState:UIControlStateNormal];
-        [self.timeBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
-        self.timeBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [self.timeBtn addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
-        [self.timeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(headView.mas_centerY);
-            make.right.equalTo(rightImage.mas_left).offset(-1);
-            make.height.equalTo(headView.mas_height);
-            make.width.equalTo(@150);
-        }];
-    }else if (section == 5) {
-        titleLabel.text = safeString(@"执行负责人");
-        UIImageView *rightImage = [[UIImageView alloc]init];
-        [headView addSubview:rightImage];
-        rightImage.image = [UIImage imageNamed:@"content_right"];
-        [rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(headView.mas_right).offset(-12);
-            make.width.height.equalTo(@15);
-            make.centerY.equalTo(headView.mas_centerY);
-        }];
-        
-        
-        self.personBtn = [[UIButton alloc]init];
-        [headView addSubview:self.personBtn];
-        
-        self.personBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [self.personBtn setTitle:@"请选择执行负责人" forState:UIControlStateNormal];
-        [self.personBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
-        self.personBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [self.personBtn addTarget:self action:@selector(selectPerson:) forControlEvents:UIControlEventTouchUpInside];
-        [self.personBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(headView.mas_centerY);
-            make.right.equalTo(rightImage.mas_left).offset(-1);
-            make.height.equalTo(headView.mas_height);
-            make.width.equalTo(@150);
-        }];
+        return headView;
     }
-    return headView;
+    return nil;
     
 }
 //选择台站
 - (void)selectStation:(UIButton *)button {
     
+}
+
+- (void)setTaskType:(UIButton *)button {
+    int i = (int)button.tag;
+    if (i == 1) {
+        self.dataModel.taskType = @"normalInspection";//默认一键巡视
+        self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+        self.normalBtn.layer.borderWidth = 1.f;
+        self.normalBtn.layer.cornerRadius = 4.f;
+        self.normalBtn.layer.masksToBounds = YES;
+        [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+        [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+        
+        self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+        self.yijianBtn.layer.borderWidth = 1.f;
+        self.yijianBtn.layer.cornerRadius = 4.f;
+        self.yijianBtn.layer.masksToBounds = YES;
+        [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+        [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+        
+    }else {
+        self.dataModel.taskType = @"fieldInspection";//现场巡视
+        
+        self.yijianBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+        self.yijianBtn.layer.borderWidth = 1.f;
+        self.yijianBtn.layer.cornerRadius = 4.f;
+        self.yijianBtn.layer.masksToBounds = YES;
+        [self.yijianBtn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
+        [self.yijianBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+        
+        self.normalBtn.layer.borderColor = [[UIColor colorWithHexString:@"#F1F1F1"] CGColor];
+        self.normalBtn.layer.borderWidth = 1.f;
+        self.normalBtn.layer.cornerRadius = 4.f;
+        self.normalBtn.layer.masksToBounds = YES;
+        [self.normalBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+        [self.normalBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    }
+    [self quertFrameData];
     
 }
 //选择机房
@@ -395,6 +833,16 @@
 //选择负责人
 - (void)selectPerson:(UIButton *)button {
     
+    KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
+    if (self.dataModel.realPersonID.length >0) {
+        vc.selPersonId = safeString(self.dataModel.realPersonID);
+    }
+    vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
+        self.dataModel.realPersonID = nameID;
+        self.dataModel.realPersonName = nameStr;
+        [self.tableView reloadData];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 //选择时间
@@ -409,13 +857,7 @@
 }
 
 
-- (NSMutableArray *)dataArray
-{
-    if (!_dataArray) {
-        _dataArray = [[NSMutableArray alloc] init];
-    }
-    return _dataArray;
-}
+
 //
 //NSString *bigStr = @"";
 // NSString *smallStr = @"";
@@ -525,7 +967,7 @@
 
 //取消方法
 - (void)cancelMethod {
-    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -578,6 +1020,8 @@
 
 - (void)textEdit:(UITextField *)textField {
     self.taskTitle = textField.text;
+    self.dataModel.taskTitle = textField.text;
+    
 }
 
 //获取某个台站某种任务类型下的模板列表：
@@ -610,14 +1054,26 @@
         stationCode = safeString(currentDic[@"code"]);
     }
     
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/templateList/%@/%@/%@",safeString(stationCode),@"oneTouchTour",@"normalInspection"]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/templateList/%@/%@/%@",safeString(stationCode),@"oneTouchTour",safeString(self.dataModel.taskType)]];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             return ;
         }
+     
+        self.dataArray = result[@"value"];
+//        NSString *roomStr = safeString(self.dataDic[@"roomNameList"]);
+//
+//        if (roomStr.length) {
+//            NSArray *arr = [roomStr componentsSeparatedByString:@","];
+//            [self.dataArray addObjectsFromArray:arr];
+//        }
         
+        [self.tableView reloadData];
+        if (self.dataArray.count == 0) {
+            [FrameBaseRequest showMessage:@"该台站下暂无此类型模版"];
+        }
         
     } failure:^(NSURLSessionDataTask *error)  {
         [MBProgressHUD hideHUD];
@@ -633,7 +1089,7 @@
         }else if(responses.statusCode == 502){
             
         }
-
+        
         return ;
     }];
 }
@@ -660,59 +1116,68 @@
     return formatter;
 }
 
-- (ZRDatePickerView *)dataPickerview
-{
-    if (!_dataPickerview) {
-        _dataPickerview = [[ZRDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:ZRDatePickerTypeYMDHMS];
-        _dataPickerview.delegate = self;
-        _dataPickerview.title = @"请选择时间";
-        _dataPickerview.isSlide = NO;
-        _dataPickerview.toolBackColor = [UIColor colorWithHexString:@"#F7F7F7"];
-        _dataPickerview.toolTitleColor = [UIColor colorWithHexString:@"#555555"];
-        _dataPickerview.saveTitleColor = [UIColor colorWithHexString:@"#EA3425"];
-        _dataPickerview.cancleTitleColor = [UIColor colorWithHexString:@"#EA3425"];
-        
-        [self.view addSubview:_dataPickerview];
-        
+
+- (KG_XunShiSelTimeView *)selTimeView {
+    if (!_selTimeView) {
+        _selTimeView = [[KG_XunShiSelTimeView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300)];
+        _selTimeView.cancelBlockMethod = ^{
+            [self cancelBtnClick];
+        };
+        _selTimeView.saveBlockMethod = ^(NSString * _Nonnull timeStr) {
+            
+            [self saveBtnClick:timeStr];
+        };
+        [self.view addSubview:_selTimeView];
     }
-    return _dataPickerview;
+    return _selTimeView;
 }
-- (void)datePickerViewSaveBtnClickDelegate:(NSString *)timer {
-    
+
+- (void)saveBtnClick:(NSString *)timer {
     
     self.startTime = timer;
     self.dataModel.selTime = timer;
     [self.timeBtn setTitle:safeString(self.startTime) forState:UIControlStateNormal];
     [UIView animateWithDuration:0.3 animations:^{
-        self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
-        
-        [self.dataPickerview  show];
+        self.selTimeView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
     }];
-    
+    [self.tableView reloadData];
 }
 /**
  取消按钮代理方法
  */
-- (void)datePickerViewCancelBtnClickDelegate {
+- (void)cancelBtnClick{
     
     [UIView animateWithDuration:0.3 animations:^{
-        self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
-        [self.dataPickerview  show];
+        self.selTimeView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
+       
     }];
 }
 
 - (void)selEndTimeMethod:(UIButton *)btn{
     self.currIndex = 1;
     [UIView animateWithDuration:0.3 animations:^{
-        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
-        [self.dataPickerview  show];
+        self.selTimeView.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
+       
     }];
 }
 - (void)selectTime:(UIButton *)btn{
+    if (self.dataModel.xunshiRoom.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择巡视机房"];
+        return;
+    }
+    if (self.dataArray.count) {
+        NSInteger index = self.dataModel.xunshiSelIndex;
+        self.selTimeView.dataArray = self.dataArray[index][@"intervalTimeList"];
+    }
+    
     self.currIndex = 0;
     [UIView animateWithDuration:0.3 animations:^{
-        self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
-        [self.dataPickerview  show];
+        self.selTimeView.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
+       
     }];
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+  [self.textField resignFirstResponder];
 }
 @end

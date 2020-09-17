@@ -43,6 +43,13 @@
 
 - (void)createUI{
     [self addSubview:self.logView];
+    self.logView.uploadReceive = ^(NSString * _Nonnull textStr) {
+        
+
+        if (self.uploadReceive) {
+            self.uploadReceive(textStr);
+        }
+    };
     [self.logView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);

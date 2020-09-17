@@ -135,13 +135,13 @@
     if (indexPath.row == 0) {
         cell.iconImage.image = [UIImage imageNamed:@"change_task"];
     }else if (indexPath.row == 1) {
-        cell.iconImage.image = [UIImage imageNamed:@"move_task_gray"];
-        cell.titleLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+        cell.iconImage.image = [UIImage imageNamed:@"move_task"];
+       
     }else if (indexPath.row == 2) {
         cell.iconImage.image = [UIImage imageNamed:@"report_task"];
     }else if (indexPath.row == 3) {
-        cell.iconImage.image = [UIImage imageNamed:@"delete_task_gray"];
-        cell.titleLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+        cell.iconImage.image = [UIImage imageNamed:@"delete_task"];
+       
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -151,9 +151,7 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 1 ||indexPath.row == 3) {
-        return;
-    }
+  
     NSString *dataStr = self.dataArray[indexPath.row];
       
     if (indexPath.row == 2) {
@@ -166,8 +164,6 @@
     }
     self.hidden = YES;
 }
-
-
 
 - (void)jiaoyanTijiao {
    

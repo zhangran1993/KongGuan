@@ -551,11 +551,9 @@
 		258E025C24D791E400CDF8BA /* KG_BeiJianDetailThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E025B24D791E400CDF8BA /* KG_BeiJianDetailThirdCell.m */; };
 		258E025F24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E025E24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.m */; };
 		258E026B24D7B24C00CDF8BA /* 备件标签-损坏@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */; };
-		258E026C24D7B24C00CDF8BA /* 备件标签-维修@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026224D7B24B00CDF8BA /* 备件标签-维修@2x.png */; };
 		258E026D24D7B24C00CDF8BA /* 备件标签-备品@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */; };
 		258E026E24D7B24C00CDF8BA /* 备件标签-备品@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */; };
 		258E026F24D7B24C00CDF8BA /* 备件标签-使用中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026524D7B24B00CDF8BA /* 备件标签-使用中@3x.png */; };
-		258E027024D7B24C00CDF8BA /* 备件标签-维修@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026624D7B24B00CDF8BA /* 备件标签-维修@3x.png */; };
 		258E027124D7B24C00CDF8BA /* 备件标签-报废@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */; };
 		258E027224D7B24C00CDF8BA /* 备件标签-报废@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */; };
 		258E027324D7B24C00CDF8BA /* 备件标签-损坏@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */; };
@@ -592,6 +590,12 @@
 		25950A90245973B200BCCA8B /* KG_CommonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25950A8F245973B100BCCA8B /* KG_CommonDetailViewController.m */; };
 		25950A9324597AD500BCCA8B /* KG_CommonDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25950A9224597AD500BCCA8B /* KG_CommonDetailView.m */; };
 		25950A9624598C0F00BCCA8B /* KG_CommonDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25950A9524598C0F00BCCA8B /* KG_CommonDetailCell.m */; };
+		25B0D08E25104D14009B13E2 /* KG_HistorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D08A25104D13009B13E2 /* KG_HistorySearchViewController.m */; };
+		25B0D08F25104D14009B13E2 /* KG_HistorySearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D08C25104D14009B13E2 /* KG_HistorySearchCell.m */; };
+		25B0D09925104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D09225104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m */; };
+		25B0D09A25104E8C009B13E2 /* KG_HistoryScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D09425104E8C009B13E2 /* KG_HistoryScreenCell.m */; };
+		25B0D09B25104E8C009B13E2 /* KG_HistoryScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D09525104E8C009B13E2 /* KG_HistoryScreenViewController.m */; };
+		25B0D09C25104E8C009B13E2 /* KG_HistoryScreenHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D09725104E8C009B13E2 /* KG_HistoryScreenHeaderView.m */; };
 		25B7953A2428C2D700F8C0FC /* KG_OverAlertCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B795392428C2D700F8C0FC /* KG_OverAlertCenterView.m */; };
 		25B795402428F1BB00F8C0FC /* KG_OverAlertCenterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B7953F2428F1BB00F8C0FC /* KG_OverAlertCenterCell.m */; };
 		25C4B6A52480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B6A42480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m */; };
@@ -667,6 +671,41 @@
 		25C4B7632487AB2E00BA84F4 /* KG_RunReportFuJianCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7622487AB2E00BA84F4 /* KG_RunReportFuJianCell.m */; };
 		25C4B7662487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C4B7652487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.m */; };
 		25CF3ED324F8E54600AD3ACA /* KG_CreateXunShiContentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3ED224F8E54600AD3ACA /* KG_CreateXunShiContentModel.m */; };
+		25CF3ED824FC80C800AD3ACA /* KG_AddressbookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3ED724FC80C800AD3ACA /* KG_AddressbookViewController.m */; };
+		25CF3EDF24FC815400AD3ACA /* ContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EDC24FC815400AD3ACA /* ContactModel.m */; };
+		25CF3EE024FC815400AD3ACA /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EDD24FC815400AD3ACA /* ContactTableViewCell.m */; };
+		25CF3EE524FC81B800AD3ACA /* ContactDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EE124FC81B800AD3ACA /* ContactDataHelper.m */; };
+		25CF3EE624FC81B800AD3ACA /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EE424FC81B800AD3ACA /* NSString+Utils.m */; };
+		25CF3EE924FC943500AD3ACA /* KG_ContactTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EE824FC943500AD3ACA /* KG_ContactTopView.m */; };
+		25CF3EEC24FC951D00AD3ACA /* KG_ContactTopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EEB24FC951D00AD3ACA /* KG_ContactTopCell.m */; };
+		25CF3EF024FCCBCA00AD3ACA /* KG_AddressbookSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EEF24FCCBCA00AD3ACA /* KG_AddressbookSecondViewController.m */; };
+		25CF3EF524FCCE0600AD3ACA /* KG_ContactTopSecondView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EF424FCCE0600AD3ACA /* KG_ContactTopSecondView.m */; };
+		25CF3EF924FCE29E00AD3ACA /* KG_AddressbookThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EF824FCE29E00AD3ACA /* KG_AddressbookThirdViewController.m */; };
+		25CF3EFE24FDD49B00AD3ACA /* KG_ContactTopThirdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3EFD24FDD49B00AD3ACA /* KG_ContactTopThirdView.m */; };
+		25CF3F0124FE1FD500AD3ACA /* KG_XunShiSelTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F0024FE1FD500AD3ACA /* KG_XunShiSelTimeView.m */; };
+		25CF3F0424FE20BB00AD3ACA /* KG_XunShiSelTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F0324FE20BB00AD3ACA /* KG_XunShiSelTimeCell.m */; };
+		25CF3F0724FF270B00AD3ACA /* KG_AddressbookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F0624FF270B00AD3ACA /* KG_AddressbookModel.m */; };
+		25CF3F0A24FF681900AD3ACA /* KG_AddressbookSecondModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F0924FF681900AD3ACA /* KG_AddressbookSecondModel.m */; };
+		25CF3F0E24FF72B500AD3ACA /* KG_AddressbookSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F0D24FF72B500AD3ACA /* KG_AddressbookSearchViewController.m */; };
+		25CF3F1124FF778100AD3ACA /* KG_AddressbookSearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F1024FF778100AD3ACA /* KG_AddressbookSearchCell.m */; };
+		25CF3F1A2500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F192500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m */; };
+		25CF3F1F2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F1E2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.m */; };
+		25CF3F222500D70200AD3ACA /* KG_CreateDayWeiHuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F212500D70200AD3ACA /* KG_CreateDayWeiHuModel.m */; };
+		25CF3F252500D73C00AD3ACA /* KG_CreateDayWeiHuSelTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F242500D73C00AD3ACA /* KG_CreateDayWeiHuSelTimeView.m */; };
+		25CF3F282500D78100AD3ACA /* KG_CreateDayWeiHuSelTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F272500D78100AD3ACA /* KG_CreateDayWeiHuSelTimeCell.m */; };
+		25CF3F2B2501D8D500AD3ACA /* KG_CreateMonthWeiHuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F2A2501D8D500AD3ACA /* KG_CreateMonthWeiHuViewController.m */; };
+		25CF3F2E2501D92400AD3ACA /* KG_CreateMonthWeiHuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F2D2501D92400AD3ACA /* KG_CreateMonthWeiHuCell.m */; };
+		25CF3F332501D94B00AD3ACA /* KG_CreateMonthWeiHuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F322501D94B00AD3ACA /* KG_CreateMonthWeiHuModel.m */; };
+		25CF3F362501DE9300AD3ACA /* KG_CreateYearWeiHuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F352501DE9300AD3ACA /* KG_CreateYearWeiHuViewController.m */; };
+		25CF3F3B2501DFC400AD3ACA /* KG_CreateYearWeiHuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F3A2501DFC400AD3ACA /* KG_CreateYearWeiHuCell.m */; };
+		25CF3F3E2501E06D00AD3ACA /* KG_CreateYearWeiHuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F3D2501E06D00AD3ACA /* KG_CreateYearWeiHuModel.m */; };
+		25CF3F422502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F412502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.m */; };
+		25CF3F452502176B00AD3ACA /* KG_CreateTeShuBaoZhangCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F442502176B00AD3ACA /* KG_CreateTeShuBaoZhangCell.m */; };
+		25CF3F492502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F482502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.m */; };
+		25CF3F4D25021CFC00AD3ACA /* KG_SelTaskTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F4C25021CFC00AD3ACA /* KG_SelTaskTypeView.m */; };
+		25CF3F502502317E00AD3ACA /* KG_AddressbookThirdModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F4F2502317E00AD3ACA /* KG_AddressbookThirdModel.m */; };
+		25CF3F5425070FB400AD3ACA /* KG_AssignView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F5325070FB400AD3ACA /* KG_AssignView.m */; };
+		25CF3F582508E46A00AD3ACA /* KG_RemoveTaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25CF3F572508E46A00AD3ACA /* KG_RemoveTaskView.m */; };
 		25D1F04E24245A15007E5870 /* KG_MapShowStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F04D24245A15007E5870 /* KG_MapShowStyleViewController.m */; };
 		25D1F05224249005007E5870 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05024249005007E5870 /* DataManager.m */; };
 		25D1F05724249072007E5870 /* JSHHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05424249072007E5870 /* JSHHTTPSessionManager.m */; };
@@ -1748,11 +1787,9 @@
 		258E025D24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_BeiJianDetaiFourthCell.h; sourceTree = "<group>"; };
 		258E025E24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_BeiJianDetaiFourthCell.m; sourceTree = "<group>"; };
 		258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@3x.png"; sourceTree = "<group>"; };
-		258E026224D7B24B00CDF8BA /* 备件标签-维修@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修@2x.png"; sourceTree = "<group>"; };
 		258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@3x.png"; sourceTree = "<group>"; };
 		258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@2x.png"; sourceTree = "<group>"; };
 		258E026524D7B24B00CDF8BA /* 备件标签-使用中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@3x.png"; sourceTree = "<group>"; };
-		258E026624D7B24B00CDF8BA /* 备件标签-维修@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修@3x.png"; sourceTree = "<group>"; };
 		258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@2x.png"; sourceTree = "<group>"; };
 		258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@3x.png"; sourceTree = "<group>"; };
 		258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@2x.png"; sourceTree = "<group>"; };
@@ -1816,6 +1853,18 @@
 		25950A9224597AD500BCCA8B /* KG_CommonDetailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonDetailView.m; sourceTree = "<group>"; };
 		25950A9424598C0F00BCCA8B /* KG_CommonDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CommonDetailCell.h; sourceTree = "<group>"; };
 		25950A9524598C0F00BCCA8B /* KG_CommonDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonDetailCell.m; sourceTree = "<group>"; };
+		25B0D08A25104D13009B13E2 /* KG_HistorySearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistorySearchViewController.m; sourceTree = "<group>"; };
+		25B0D08B25104D13009B13E2 /* KG_HistorySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistorySearchViewController.h; sourceTree = "<group>"; };
+		25B0D08C25104D14009B13E2 /* KG_HistorySearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistorySearchCell.m; sourceTree = "<group>"; };
+		25B0D08D25104D14009B13E2 /* KG_HistorySearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistorySearchCell.h; sourceTree = "<group>"; };
+		25B0D09125104E8C009B13E2 /* KG_HistoryScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistoryScreenViewController.h; sourceTree = "<group>"; };
+		25B0D09225104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistoryScreenSelTimeCell.m; sourceTree = "<group>"; };
+		25B0D09325104E8C009B13E2 /* KG_HistoryScreenHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistoryScreenHeaderView.h; sourceTree = "<group>"; };
+		25B0D09425104E8C009B13E2 /* KG_HistoryScreenCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistoryScreenCell.m; sourceTree = "<group>"; };
+		25B0D09525104E8C009B13E2 /* KG_HistoryScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistoryScreenViewController.m; sourceTree = "<group>"; };
+		25B0D09625104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistoryScreenSelTimeCell.h; sourceTree = "<group>"; };
+		25B0D09725104E8C009B13E2 /* KG_HistoryScreenHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistoryScreenHeaderView.m; sourceTree = "<group>"; };
+		25B0D09825104E8C009B13E2 /* KG_HistoryScreenCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistoryScreenCell.h; sourceTree = "<group>"; };
 		25B795382428C2D700F8C0FC /* KG_OverAlertCenterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_OverAlertCenterView.h; sourceTree = "<group>"; };
 		25B795392428C2D700F8C0FC /* KG_OverAlertCenterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_OverAlertCenterView.m; sourceTree = "<group>"; };
 		25B7953E2428F1BB00F8C0FC /* KG_OverAlertCenterCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_OverAlertCenterCell.h; sourceTree = "<group>"; };
@@ -1920,6 +1969,76 @@
 		25C4B7652487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunReportDetailNinethCell.m; sourceTree = "<group>"; };
 		25CF3ED124F8E54600AD3ACA /* KG_CreateXunShiContentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateXunShiContentModel.h; sourceTree = "<group>"; };
 		25CF3ED224F8E54600AD3ACA /* KG_CreateXunShiContentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateXunShiContentModel.m; sourceTree = "<group>"; };
+		25CF3ED624FC80C800AD3ACA /* KG_AddressbookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookViewController.h; sourceTree = "<group>"; };
+		25CF3ED724FC80C800AD3ACA /* KG_AddressbookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookViewController.m; sourceTree = "<group>"; };
+		25CF3EDB24FC815400AD3ACA /* ContactModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactModel.h; sourceTree = "<group>"; };
+		25CF3EDC24FC815400AD3ACA /* ContactModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactModel.m; sourceTree = "<group>"; };
+		25CF3EDD24FC815400AD3ACA /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
+		25CF3EDE24FC815400AD3ACA /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
+		25CF3EE124FC81B800AD3ACA /* ContactDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDataHelper.m; sourceTree = "<group>"; };
+		25CF3EE224FC81B800AD3ACA /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
+		25CF3EE324FC81B800AD3ACA /* ContactDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDataHelper.h; sourceTree = "<group>"; };
+		25CF3EE424FC81B800AD3ACA /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
+		25CF3EE724FC943500AD3ACA /* KG_ContactTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ContactTopView.h; sourceTree = "<group>"; };
+		25CF3EE824FC943500AD3ACA /* KG_ContactTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ContactTopView.m; sourceTree = "<group>"; };
+		25CF3EEA24FC951D00AD3ACA /* KG_ContactTopCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ContactTopCell.h; sourceTree = "<group>"; };
+		25CF3EEB24FC951D00AD3ACA /* KG_ContactTopCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ContactTopCell.m; sourceTree = "<group>"; };
+		25CF3EEE24FCCBCA00AD3ACA /* KG_AddressbookSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookSecondViewController.h; sourceTree = "<group>"; };
+		25CF3EEF24FCCBCA00AD3ACA /* KG_AddressbookSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookSecondViewController.m; sourceTree = "<group>"; };
+		25CF3EF324FCCE0600AD3ACA /* KG_ContactTopSecondView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ContactTopSecondView.h; sourceTree = "<group>"; };
+		25CF3EF424FCCE0600AD3ACA /* KG_ContactTopSecondView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ContactTopSecondView.m; sourceTree = "<group>"; };
+		25CF3EF724FCE29E00AD3ACA /* KG_AddressbookThirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookThirdViewController.h; sourceTree = "<group>"; };
+		25CF3EF824FCE29E00AD3ACA /* KG_AddressbookThirdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookThirdViewController.m; sourceTree = "<group>"; };
+		25CF3EFC24FDD49B00AD3ACA /* KG_ContactTopThirdView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ContactTopThirdView.h; sourceTree = "<group>"; };
+		25CF3EFD24FDD49B00AD3ACA /* KG_ContactTopThirdView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ContactTopThirdView.m; sourceTree = "<group>"; };
+		25CF3EFF24FE1FD500AD3ACA /* KG_XunShiSelTimeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiSelTimeView.h; sourceTree = "<group>"; };
+		25CF3F0024FE1FD500AD3ACA /* KG_XunShiSelTimeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiSelTimeView.m; sourceTree = "<group>"; };
+		25CF3F0224FE20BB00AD3ACA /* KG_XunShiSelTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiSelTimeCell.h; sourceTree = "<group>"; };
+		25CF3F0324FE20BB00AD3ACA /* KG_XunShiSelTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiSelTimeCell.m; sourceTree = "<group>"; };
+		25CF3F0524FF270B00AD3ACA /* KG_AddressbookModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookModel.h; sourceTree = "<group>"; };
+		25CF3F0624FF270B00AD3ACA /* KG_AddressbookModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookModel.m; sourceTree = "<group>"; };
+		25CF3F0824FF681900AD3ACA /* KG_AddressbookSecondModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookSecondModel.h; sourceTree = "<group>"; };
+		25CF3F0924FF681900AD3ACA /* KG_AddressbookSecondModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookSecondModel.m; sourceTree = "<group>"; };
+		25CF3F0C24FF72B500AD3ACA /* KG_AddressbookSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookSearchViewController.h; sourceTree = "<group>"; };
+		25CF3F0D24FF72B500AD3ACA /* KG_AddressbookSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookSearchViewController.m; sourceTree = "<group>"; };
+		25CF3F0F24FF778100AD3ACA /* KG_AddressbookSearchCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookSearchCell.h; sourceTree = "<group>"; };
+		25CF3F1024FF778100AD3ACA /* KG_AddressbookSearchCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookSearchCell.m; sourceTree = "<group>"; };
+		25CF3F182500D63400AD3ACA /* KG_CreateDayWeiHuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateDayWeiHuViewController.h; sourceTree = "<group>"; };
+		25CF3F192500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateDayWeiHuViewController.m; sourceTree = "<group>"; };
+		25CF3F1D2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateDayWeiHuCell.h; sourceTree = "<group>"; };
+		25CF3F1E2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateDayWeiHuCell.m; sourceTree = "<group>"; };
+		25CF3F202500D70200AD3ACA /* KG_CreateDayWeiHuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateDayWeiHuModel.h; sourceTree = "<group>"; };
+		25CF3F212500D70200AD3ACA /* KG_CreateDayWeiHuModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateDayWeiHuModel.m; sourceTree = "<group>"; };
+		25CF3F232500D73C00AD3ACA /* KG_CreateDayWeiHuSelTimeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateDayWeiHuSelTimeView.h; sourceTree = "<group>"; };
+		25CF3F242500D73C00AD3ACA /* KG_CreateDayWeiHuSelTimeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateDayWeiHuSelTimeView.m; sourceTree = "<group>"; };
+		25CF3F262500D78100AD3ACA /* KG_CreateDayWeiHuSelTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateDayWeiHuSelTimeCell.h; sourceTree = "<group>"; };
+		25CF3F272500D78100AD3ACA /* KG_CreateDayWeiHuSelTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateDayWeiHuSelTimeCell.m; sourceTree = "<group>"; };
+		25CF3F292501D8D500AD3ACA /* KG_CreateMonthWeiHuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateMonthWeiHuViewController.h; sourceTree = "<group>"; };
+		25CF3F2A2501D8D500AD3ACA /* KG_CreateMonthWeiHuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateMonthWeiHuViewController.m; sourceTree = "<group>"; };
+		25CF3F2C2501D92400AD3ACA /* KG_CreateMonthWeiHuCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateMonthWeiHuCell.h; sourceTree = "<group>"; };
+		25CF3F2D2501D92400AD3ACA /* KG_CreateMonthWeiHuCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateMonthWeiHuCell.m; sourceTree = "<group>"; };
+		25CF3F312501D94B00AD3ACA /* KG_CreateMonthWeiHuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateMonthWeiHuModel.h; sourceTree = "<group>"; };
+		25CF3F322501D94B00AD3ACA /* KG_CreateMonthWeiHuModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateMonthWeiHuModel.m; sourceTree = "<group>"; };
+		25CF3F342501DE9300AD3ACA /* KG_CreateYearWeiHuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateYearWeiHuViewController.h; sourceTree = "<group>"; };
+		25CF3F352501DE9300AD3ACA /* KG_CreateYearWeiHuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateYearWeiHuViewController.m; sourceTree = "<group>"; };
+		25CF3F392501DFC400AD3ACA /* KG_CreateYearWeiHuCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateYearWeiHuCell.h; sourceTree = "<group>"; };
+		25CF3F3A2501DFC400AD3ACA /* KG_CreateYearWeiHuCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateYearWeiHuCell.m; sourceTree = "<group>"; };
+		25CF3F3C2501E06D00AD3ACA /* KG_CreateYearWeiHuModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateYearWeiHuModel.h; sourceTree = "<group>"; };
+		25CF3F3D2501E06D00AD3ACA /* KG_CreateYearWeiHuModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateYearWeiHuModel.m; sourceTree = "<group>"; };
+		25CF3F402502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateTeShuBaoZhangViewController.h; sourceTree = "<group>"; };
+		25CF3F412502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateTeShuBaoZhangViewController.m; sourceTree = "<group>"; };
+		25CF3F432502176B00AD3ACA /* KG_CreateTeShuBaoZhangCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateTeShuBaoZhangCell.h; sourceTree = "<group>"; };
+		25CF3F442502176B00AD3ACA /* KG_CreateTeShuBaoZhangCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateTeShuBaoZhangCell.m; sourceTree = "<group>"; };
+		25CF3F472502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CreateTeShuBaoZhangModel.h; sourceTree = "<group>"; };
+		25CF3F482502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CreateTeShuBaoZhangModel.m; sourceTree = "<group>"; };
+		25CF3F4B25021CFC00AD3ACA /* KG_SelTaskTypeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_SelTaskTypeView.h; sourceTree = "<group>"; };
+		25CF3F4C25021CFC00AD3ACA /* KG_SelTaskTypeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_SelTaskTypeView.m; sourceTree = "<group>"; };
+		25CF3F4E2502317E00AD3ACA /* KG_AddressbookThirdModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AddressbookThirdModel.h; sourceTree = "<group>"; };
+		25CF3F4F2502317E00AD3ACA /* KG_AddressbookThirdModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AddressbookThirdModel.m; sourceTree = "<group>"; };
+		25CF3F5225070FB400AD3ACA /* KG_AssignView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_AssignView.h; sourceTree = "<group>"; };
+		25CF3F5325070FB400AD3ACA /* KG_AssignView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_AssignView.m; sourceTree = "<group>"; };
+		25CF3F562508E46A00AD3ACA /* KG_RemoveTaskView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RemoveTaskView.h; sourceTree = "<group>"; };
+		25CF3F572508E46A00AD3ACA /* KG_RemoveTaskView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RemoveTaskView.m; sourceTree = "<group>"; };
 		25D1F04C24245A15007E5870 /* KG_MapShowStyleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_MapShowStyleViewController.h; sourceTree = "<group>"; };
 		25D1F04D24245A15007E5870 /* KG_MapShowStyleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_MapShowStyleViewController.m; sourceTree = "<group>"; };
 		25D1F05024249005007E5870 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
@@ -2678,6 +2797,10 @@
 		250B883423BD835200C79136 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				25CF3EE324FC81B800AD3ACA /* ContactDataHelper.h */,
+				25CF3EE124FC81B800AD3ACA /* ContactDataHelper.m */,
+				25CF3EE224FC81B800AD3ACA /* NSString+Utils.h */,
+				25CF3EE424FC81B800AD3ACA /* NSString+Utils.m */,
 				250B883623BD835200C79136 /* LCChunhui.h */,
 				25D1F05D2424B01C007E5870 /* UtilsJSH.h */,
 				25D1F05E2424B01C007E5870 /* UtilsJSH.m */,
@@ -3023,6 +3146,7 @@
 		2581ED5E24504B39002B1D9F /* ZhiWei智维 */ = {
 			isa = PBXGroup;
 			children = (
+				25CF3ED524FC7FA400AD3ACA /* 通讯录 */,
 				258D287E246A6C99004E8B5A /* 例行维护 */,
 				258D287F246A6C9A004E8B5A /* 特殊保障 */,
 				258D2880246A6C9A004E8B5A /* 一键巡视 */,
@@ -3720,6 +3844,8 @@
 		258D287E246A6C99004E8B5A /* 例行维护 */ = {
 			isa = PBXGroup;
 			children = (
+				25CF3F3F2502172C00AD3ACA /* 新建特殊保障 */,
+				25CF3F132500D5E300AD3ACA /* 新建例行维护 */,
 				25EFF0C924EA4F65001F02E5 /* 设备情况移出二级界面 */,
 				258AB22B24AD7DA80025C637 /* 维护内容cell */,
 				2587B1CB24986AE5000289C7 /* 维护报告详情 */,
@@ -3730,6 +3856,7 @@
 		258D287F246A6C9A004E8B5A /* 特殊保障 */ = {
 			isa = PBXGroup;
 			children = (
+				25CF3F142500D5EE00AD3ACA /* 新建特殊保障 */,
 			);
 			path = "特殊保障";
 			sourceTree = "<group>";
@@ -3756,6 +3883,7 @@
 		258D2881246A6C9A004E8B5A /* 历史任务 */ = {
 			isa = PBXGroup;
 			children = (
+				25B0D09025104E8C009B13E2 /* 筛选 */,
 				258D2882246A6C9A004E8B5A /* Controller */,
 				258D2885246A6C9A004E8B5A /* Model */,
 				258D2886246A6C9A004E8B5A /* View */,
@@ -3766,6 +3894,10 @@
 		258D2882246A6C9A004E8B5A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				25B0D08B25104D13009B13E2 /* KG_HistorySearchViewController.h */,
+				25B0D08A25104D13009B13E2 /* KG_HistorySearchViewController.m */,
+				25B0D08D25104D14009B13E2 /* KG_HistorySearchCell.h */,
+				25B0D08C25104D14009B13E2 /* KG_HistorySearchCell.m */,
 				258D2884246A6C9A004E8B5A /* KG_HistoryTaskViewController.h */,
 				258D2883246A6C9A004E8B5A /* KG_HistoryTaskViewController.m */,
 			);
@@ -4309,8 +4441,6 @@
 				258E026524D7B24B00CDF8BA /* 备件标签-使用中@3x.png */,
 				258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */,
 				258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */,
-				258E026224D7B24B00CDF8BA /* 备件标签-维修@2x.png */,
-				258E026624D7B24B00CDF8BA /* 备件标签-维修@3x.png */,
 			);
 			path = "备件icon";
 			sourceTree = "<group>";
@@ -4471,6 +4601,21 @@
 				258ED6F724629D1400639B37 /* KG_CommonGaoJingCell.m */,
 			);
 			path = "通用详情页";
+			sourceTree = "<group>";
+		};
+		25B0D09025104E8C009B13E2 /* 筛选 */ = {
+			isa = PBXGroup;
+			children = (
+				25B0D09125104E8C009B13E2 /* KG_HistoryScreenViewController.h */,
+				25B0D09525104E8C009B13E2 /* KG_HistoryScreenViewController.m */,
+				25B0D09625104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.h */,
+				25B0D09225104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m */,
+				25B0D09325104E8C009B13E2 /* KG_HistoryScreenHeaderView.h */,
+				25B0D09725104E8C009B13E2 /* KG_HistoryScreenHeaderView.m */,
+				25B0D09825104E8C009B13E2 /* KG_HistoryScreenCell.h */,
+				25B0D09425104E8C009B13E2 /* KG_HistoryScreenCell.m */,
+			);
+			path = "筛选";
 			sourceTree = "<group>";
 		};
 		25B7953B2428F18900F8C0FC /* Model */ = {
@@ -4720,8 +4865,278 @@
 			children = (
 				25CF3ED124F8E54600AD3ACA /* KG_CreateXunShiContentModel.h */,
 				25CF3ED224F8E54600AD3ACA /* KG_CreateXunShiContentModel.m */,
+				25CF3EFF24FE1FD500AD3ACA /* KG_XunShiSelTimeView.h */,
+				25CF3F0024FE1FD500AD3ACA /* KG_XunShiSelTimeView.m */,
+				25CF3F0224FE20BB00AD3ACA /* KG_XunShiSelTimeCell.h */,
+				25CF3F0324FE20BB00AD3ACA /* KG_XunShiSelTimeCell.m */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3ED524FC7FA400AD3ACA /* 通讯录 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F552508E45300AD3ACA /* 移交 */,
+				25CF3F5125070F8100AD3ACA /* 指派 */,
+				25CF3F0B24FF729B00AD3ACA /* 通讯录搜索页面 */,
+				25CF3EF624FCE28300AD3ACA /* 通讯录三级页面 */,
+				25CF3EED24FCCB8F00AD3ACA /* 通讯录二级菜单 */,
+				25CF3EDA24FC80D500AD3ACA /* model */,
+				25CF3ED924FC80CE00AD3ACA /* view */,
+				25CF3ED624FC80C800AD3ACA /* KG_AddressbookViewController.h */,
+				25CF3ED724FC80C800AD3ACA /* KG_AddressbookViewController.m */,
+			);
+			path = "通讯录";
+			sourceTree = "<group>";
+		};
+		25CF3ED924FC80CE00AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3EDB24FC815400AD3ACA /* ContactModel.h */,
+				25CF3EDC24FC815400AD3ACA /* ContactModel.m */,
+				25CF3EDE24FC815400AD3ACA /* ContactTableViewCell.h */,
+				25CF3EDD24FC815400AD3ACA /* ContactTableViewCell.m */,
+				25CF3EE724FC943500AD3ACA /* KG_ContactTopView.h */,
+				25CF3EE824FC943500AD3ACA /* KG_ContactTopView.m */,
+				25CF3EEA24FC951D00AD3ACA /* KG_ContactTopCell.h */,
+				25CF3EEB24FC951D00AD3ACA /* KG_ContactTopCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3EDA24FC80D500AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F0524FF270B00AD3ACA /* KG_AddressbookModel.h */,
+				25CF3F0624FF270B00AD3ACA /* KG_AddressbookModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3EED24FCCB8F00AD3ACA /* 通讯录二级菜单 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3EF224FCCBD600AD3ACA /* view */,
+				25CF3EF124FCCBD100AD3ACA /* model */,
+				25CF3EEE24FCCBCA00AD3ACA /* KG_AddressbookSecondViewController.h */,
+				25CF3EEF24FCCBCA00AD3ACA /* KG_AddressbookSecondViewController.m */,
+			);
+			path = "通讯录二级菜单";
+			sourceTree = "<group>";
+		};
+		25CF3EF124FCCBD100AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F0824FF681900AD3ACA /* KG_AddressbookSecondModel.h */,
+				25CF3F0924FF681900AD3ACA /* KG_AddressbookSecondModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3EF224FCCBD600AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3EF324FCCE0600AD3ACA /* KG_ContactTopSecondView.h */,
+				25CF3EF424FCCE0600AD3ACA /* KG_ContactTopSecondView.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3EF624FCE28300AD3ACA /* 通讯录三级页面 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3EFB24FCE2A700AD3ACA /* view */,
+				25CF3EFA24FCE2A200AD3ACA /* model */,
+				25CF3EF724FCE29E00AD3ACA /* KG_AddressbookThirdViewController.h */,
+				25CF3EF824FCE29E00AD3ACA /* KG_AddressbookThirdViewController.m */,
+			);
+			path = "通讯录三级页面";
+			sourceTree = "<group>";
+		};
+		25CF3EFA24FCE2A200AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F4E2502317E00AD3ACA /* KG_AddressbookThirdModel.h */,
+				25CF3F4F2502317E00AD3ACA /* KG_AddressbookThirdModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3EFB24FCE2A700AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3EFC24FDD49B00AD3ACA /* KG_ContactTopThirdView.h */,
+				25CF3EFD24FDD49B00AD3ACA /* KG_ContactTopThirdView.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3F0B24FF729B00AD3ACA /* 通讯录搜索页面 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F0C24FF72B500AD3ACA /* KG_AddressbookSearchViewController.h */,
+				25CF3F0D24FF72B500AD3ACA /* KG_AddressbookSearchViewController.m */,
+				25CF3F0F24FF778100AD3ACA /* KG_AddressbookSearchCell.h */,
+				25CF3F1024FF778100AD3ACA /* KG_AddressbookSearchCell.m */,
+			);
+			path = "通讯录搜索页面";
+			sourceTree = "<group>";
+		};
+		25CF3F132500D5E300AD3ACA /* 新建例行维护 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F172500D61400AD3ACA /* 新建年维护 */,
+				25CF3F162500D60D00AD3ACA /* 新建月维护 */,
+				25CF3F152500D5FF00AD3ACA /* 新建日维护 */,
+			);
+			path = "新建例行维护";
+			sourceTree = "<group>";
+		};
+		25CF3F142500D5EE00AD3ACA /* 新建特殊保障 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "新建特殊保障";
+			sourceTree = "<group>";
+		};
+		25CF3F152500D5FF00AD3ACA /* 新建日维护 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F1C2500D66E00AD3ACA /* view */,
+				25CF3F1B2500D66A00AD3ACA /* model */,
+				25CF3F182500D63400AD3ACA /* KG_CreateDayWeiHuViewController.h */,
+				25CF3F192500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m */,
+				25CF3F1D2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.h */,
+				25CF3F1E2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.m */,
+			);
+			path = "新建日维护";
+			sourceTree = "<group>";
+		};
+		25CF3F162500D60D00AD3ACA /* 新建月维护 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F302501D92D00AD3ACA /* model */,
+				25CF3F2F2501D92900AD3ACA /* view */,
+				25CF3F292501D8D500AD3ACA /* KG_CreateMonthWeiHuViewController.h */,
+				25CF3F2A2501D8D500AD3ACA /* KG_CreateMonthWeiHuViewController.m */,
+				25CF3F2C2501D92400AD3ACA /* KG_CreateMonthWeiHuCell.h */,
+				25CF3F2D2501D92400AD3ACA /* KG_CreateMonthWeiHuCell.m */,
+			);
+			path = "新建月维护";
+			sourceTree = "<group>";
+		};
+		25CF3F172500D61400AD3ACA /* 新建年维护 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F382501DEA700AD3ACA /* model */,
+				25CF3F372501DEA100AD3ACA /* view */,
+				25CF3F342501DE9300AD3ACA /* KG_CreateYearWeiHuViewController.h */,
+				25CF3F352501DE9300AD3ACA /* KG_CreateYearWeiHuViewController.m */,
+				25CF3F392501DFC400AD3ACA /* KG_CreateYearWeiHuCell.h */,
+				25CF3F3A2501DFC400AD3ACA /* KG_CreateYearWeiHuCell.m */,
+			);
+			path = "新建年维护";
+			sourceTree = "<group>";
+		};
+		25CF3F1B2500D66A00AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F202500D70200AD3ACA /* KG_CreateDayWeiHuModel.h */,
+				25CF3F212500D70200AD3ACA /* KG_CreateDayWeiHuModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3F1C2500D66E00AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F232500D73C00AD3ACA /* KG_CreateDayWeiHuSelTimeView.h */,
+				25CF3F242500D73C00AD3ACA /* KG_CreateDayWeiHuSelTimeView.m */,
+				25CF3F262500D78100AD3ACA /* KG_CreateDayWeiHuSelTimeCell.h */,
+				25CF3F272500D78100AD3ACA /* KG_CreateDayWeiHuSelTimeCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3F2F2501D92900AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3F302501D92D00AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F312501D94B00AD3ACA /* KG_CreateMonthWeiHuModel.h */,
+				25CF3F322501D94B00AD3ACA /* KG_CreateMonthWeiHuModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3F372501DEA100AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3F382501DEA700AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F3C2501E06D00AD3ACA /* KG_CreateYearWeiHuModel.h */,
+				25CF3F3D2501E06D00AD3ACA /* KG_CreateYearWeiHuModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3F3F2502172C00AD3ACA /* 新建特殊保障 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F4A25021CD600AD3ACA /* view */,
+				25CF3F462502197900AD3ACA /* model */,
+				25CF3F402502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.h */,
+				25CF3F412502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.m */,
+				25CF3F432502176B00AD3ACA /* KG_CreateTeShuBaoZhangCell.h */,
+				25CF3F442502176B00AD3ACA /* KG_CreateTeShuBaoZhangCell.m */,
+			);
+			path = "新建特殊保障";
+			sourceTree = "<group>";
+		};
+		25CF3F462502197900AD3ACA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F472502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.h */,
+				25CF3F482502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		25CF3F4A25021CD600AD3ACA /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F4B25021CFC00AD3ACA /* KG_SelTaskTypeView.h */,
+				25CF3F4C25021CFC00AD3ACA /* KG_SelTaskTypeView.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		25CF3F5125070F8100AD3ACA /* 指派 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F5225070FB400AD3ACA /* KG_AssignView.h */,
+				25CF3F5325070FB400AD3ACA /* KG_AssignView.m */,
+			);
+			path = "指派";
+			sourceTree = "<group>";
+		};
+		25CF3F552508E45300AD3ACA /* 移交 */ = {
+			isa = PBXGroup;
+			children = (
+				25CF3F562508E46A00AD3ACA /* KG_RemoveTaskView.h */,
+				25CF3F572508E46A00AD3ACA /* KG_RemoveTaskView.m */,
+			);
+			path = "移交";
 			sourceTree = "<group>";
 		};
 		25D1F04B24245796007E5870 /* ThirdPhases(三期开发) */ = {
@@ -5849,7 +6264,6 @@
 				25EEB2E3242D86B700B9F803 /* station_zhiweisel@2x.png in Resources */,
 				25EEB301242D9AEB00B9F803 /* task_unsel@3x.png in Resources */,
 				2587BF82247775CF00BFAF52 /* 制冷可选未选中@3x.png in Resources */,
-				258E027024D7B24C00CDF8BA /* 备件标签-维修@3x.png in Resources */,
 				2584858F24765BEB00F0AB09 /* 阵雨_icon@2x.png in Resources */,
 				2584857124765BEB00F0AB09 /* 雾_icon@2x.png in Resources */,
 				2587BF8E247775CF00BFAF52 /* 制热不可选@3x.png in Resources */,
@@ -5982,7 +6396,6 @@
 				25EEB2D8242D86B700B9F803 /* station_zhiyununsel@2x.png in Resources */,
 				25EDC59D247E56670006821C /* 智态_sel@2x.png in Resources */,
 				2587BF95247775CF00BFAF52 /* 制热不可选@2x.png in Resources */,
-				258E026C24D7B24C00CDF8BA /* 备件标签-维修@2x.png in Resources */,
 				258CEE3824B44A21007FEE18 /* 水浸-蓝@3x.png in Resources */,
 				25EEB32A243481BE00B9F803 /* KG_SecondFloorViewController.xib in Resources */,
 				2580EEA92479234400E7D36B /* 蓄电池2@2x.png in Resources */,
@@ -6423,22 +6836,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25CF3F1A2500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m in Sources */,
 				258D295C246BF9DA004E8B5A /* RS_ConditionSearchModel.m in Sources */,
 				18E8DFB221F0BC9C00D5449F /* EzvizTrans.h in Sources */,
 				271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */,
+				25CF3F0724FF270B00AD3ACA /* KG_AddressbookModel.m in Sources */,
 				18E8DFB321F0BC9C00D5449F /* HikDec.h in Sources */,
 				258D2924246A6C9A004E8B5A /* KG_SelEquipClassView.m in Sources */,
 				258D293F246A6C9A004E8B5A /* KG_NewContentCell.m in Sources */,
 				258188C4247279D000AE3DF6 /* KG_LoginSelStationViewController.m in Sources */,
 				18E8DFB421F0BC9C00D5449F /* VideoItems.h in Sources */,
 				18E8DFB521F0BC9C00D5449F /* MachineItems.h in Sources */,
+				25CF3EE924FC943500AD3ACA /* KG_ContactTopView.m in Sources */,
 				258AB23524AD83EB0025C637 /* KG_WeiHuContentSecondCell.m in Sources */,
 				2581ED5A244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m in Sources */,
+				25B0D08E25104D14009B13E2 /* KG_HistorySearchViewController.m in Sources */,
 				18E8DFB621F0BC9C00D5449F /* Preview.h in Sources */,
 				18E8DFB121F0BC8600D5449F /* hcnetsdk.h in Sources */,
 				25C4B74124865FB500BA84F4 /* KG_RunReportDetailEighthCell.m in Sources */,
 				2584D61E2446FF000059A949 /* KG_KongTiaoDetailViewController.m in Sources */,
 				258D292C246A6C9A004E8B5A /* KG_YiJianXunShiViewController.m in Sources */,
+				25CF3F3E2501E06D00AD3ACA /* KG_CreateYearWeiHuModel.m in Sources */,
 				25EEB35C243EFE1700B9F803 /* KG_NiControlSearchViewController.m in Sources */,
 				18E8DFB021F0BC5D00D5449F /* IOSPlayM4.h in Sources */,
 				18E8DFAF21F0BC4100D5449F /* DeviceInfo.h in Sources */,
@@ -6467,6 +6885,7 @@
 				2587B1D124986FCF000289C7 /* KG_EquipResultCell.m in Sources */,
 				25EDC57E247E52FE0006821C /* KG_RunManagerViewController.m in Sources */,
 				25C4B71D2484F33000BA84F4 /* KG_RunListCell.m in Sources */,
+				25CF3EEC24FC951D00AD3ACA /* KG_ContactTopCell.m in Sources */,
 				258D2929246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m in Sources */,
 				25EEB34C243D5C4400B9F803 /* KG_NiControlView.m in Sources */,
 				189B6CC921C6835500434DF5 /* PatrolRemindCell.m in Sources */,
@@ -6488,7 +6907,9 @@
 				258E024924D409F600CDF8BA /* KG_BeiJianFirstView.m in Sources */,
 				FEFD280520746129004821E1 /* AlarmDetailController.m in Sources */,
 				258D296C246BFF0B004E8B5A /* RS_VillageURL.m in Sources */,
+				25CF3F0424FE20BB00AD3ACA /* KG_XunShiSelTimeCell.m in Sources */,
 				25EEB375243F095E00B9F803 /* KG_SearchCell.m in Sources */,
+				25CF3F222500D70200AD3ACA /* KG_CreateDayWeiHuModel.m in Sources */,
 				EC025D8A21C8BEDC001A3F5E /* UIView+LYExtension.m in Sources */,
 				2584D63124497B950059A949 /* KG_ZhiTaiEquipCell.m in Sources */,
 				258485952476786600F0AB09 /* KG_KongTiaoControlView.m in Sources */,
@@ -6499,6 +6920,7 @@
 				FE419F75206E2C1C00A35A2F /* MachineItems.m in Sources */,
 				ECA60FC421AFDF2400690698 /* NSString+Extension.m in Sources */,
 				EC51DECC21BF5BE100D68F47 /* CurriculumVitaeModel.m in Sources */,
+				25CF3EE524FC81B800AD3ACA /* ContactDataHelper.m in Sources */,
 				258188BD2472586500AE3DF6 /* KG_LeftScrollPromptView.m in Sources */,
 				258484172474CFF000F0AB09 /* KG_GaoJingDetailViewController.m in Sources */,
 				25906F5D2488A2160010DD89 /* KG_RunManagerFourthCell.m in Sources */,
@@ -6512,8 +6934,10 @@
 				25C4B70B2484A0D400BA84F4 /* KG_RunPromptViewController.m in Sources */,
 				25950A9624598C0F00BCCA8B /* KG_CommonDetailCell.m in Sources */,
 				FE050A92205BF5D300A4AD93 /* StationItems.m in Sources */,
+				25B0D09B25104E8C009B13E2 /* KG_HistoryScreenViewController.m in Sources */,
 				EC8795DD21B4D9A4000F3CC1 /* SearchView.m in Sources */,
 				2584842A2474D3D100F0AB09 /* KG_GaoJingDetailSixthCell.m in Sources */,
+				25CF3EF924FCE29E00AD3ACA /* KG_AddressbookThirdViewController.m in Sources */,
 				258D293C246A6C9A004E8B5A /* KG_XunShiLogView.m in Sources */,
 				FE216F40209D929700E523DE /* StationMachineInfoListController.m in Sources */,
 				25906F662488EC2C0010DD89 /* ZRDatePickerView.m in Sources */,
@@ -6544,6 +6968,7 @@
 				250B887323C578F700C79136 /* AlarmDetailInfoController.m in Sources */,
 				1F8AB55F1F0CB9EB00256218 /* FrameBaseRequest.m in Sources */,
 				258D292A246A6C9A004E8B5A /* KG_YiJianXunShiModel.m in Sources */,
+				25CF3F4D25021CFC00AD3ACA /* KG_SelTaskTypeView.m in Sources */,
 				ECA60FBE21AFD23500690698 /* UIView+LX_Frame.m in Sources */,
 				25C4B735248622BA00BA84F4 /* KG_RunReportDetailFifthCell.m in Sources */,
 				25869A5E2490CE9000A2343D /* KG_OnsiteInspectionCell.m in Sources */,
@@ -6552,11 +6977,13 @@
 				EC51DEC921BF508F00D68F47 /* SparePartListModel.m in Sources */,
 				258D295F246BF9DA004E8B5A /* RS_ConditionSearchView.m in Sources */,
 				EC025D8921C8BEDC001A3F5E /* UIView+Empty.m in Sources */,
+				25CF3F5425070FB400AD3ACA /* KG_AssignView.m in Sources */,
 				25EFF0D324EB6F53001F02E5 /* KG_NewScreenCell.m in Sources */,
 				EC5E52FF21B7D729009212D7 /* ValueModel.m in Sources */,
 				25EDC577247D05250006821C /* KG_ProgressLeftCell.m in Sources */,
 				FEE2494D206CFC0000D62197 /* StationDetailController.m in Sources */,
 				25817773246E928F00984594 /* KG_RunZhiYunCell.m in Sources */,
+				25CF3F452502176B00AD3ACA /* KG_CreateTeShuBaoZhangCell.m in Sources */,
 				FE416DBE205CB8E50044229F /* PersonalAboutUsController.m in Sources */,
 				258E029124DA7CE300CDF8BA /* KG_ZhiXiuXunshiRecordViewController.m in Sources */,
 				25906F632488DAEA0010DD89 /* CircleView.m in Sources */,
@@ -6565,6 +6992,7 @@
 				258E025624D791AB00CDF8BA /* KG_BeiJianDetailFirstCell.m in Sources */,
 				258E028424D9013A00CDF8BA /* KG_WatchPdfViewController.m in Sources */,
 				FE416DC1205CBF950044229F /* PersonalAPPIntroduceController.m in Sources */,
+				25CF3EFE24FDD49B00AD3ACA /* KG_ContactTopThirdView.m in Sources */,
 				EC5E523021B75D59009212D7 /* PopularCollectionViewCell.m in Sources */,
 				FEF66956206F18FF00F3CF2B /* PersonalMsgController.m in Sources */,
 				258D292E246A6C9A004E8B5A /* KG_TeShuBaoZhangModel.m in Sources */,
@@ -6587,11 +7015,14 @@
 				258D2930246A6C9A004E8B5A /* KG_XunShiBottomTextView.m in Sources */,
 				FE24525C20AE5F0C00CA0D98 /* StationMachinePictureController.m in Sources */,
 				2584859E247682B700F0AB09 /* KG_KongTiaoCeDianCell.m in Sources */,
+				25CF3F502502317E00AD3ACA /* KG_AddressbookThirdModel.m in Sources */,
 				2584D62A24494F4B0059A949 /* KG_ZhiTaiModel.m in Sources */,
 				FE050A8F205BF52900A4AD93 /* PersonalChooseStationController.m in Sources */,
+				25CF3EE624FC81B800AD3ACA /* NSString+Utils.m in Sources */,
 				250B882623B9D00700C79136 /* BMKClusterAlgorithm.m in Sources */,
 				258D293D246A6C9A004E8B5A /* KG_XunShiSegmentView.m in Sources */,
 				ECA60FC721AFE0DF00690698 /* UIApplication+Visible.m in Sources */,
+				25B0D09C25104E8C009B13E2 /* KG_HistoryScreenHeaderView.m in Sources */,
 				25C4B76024878C3900BA84F4 /* KG_RunReportDetailJiaoJieBanCell.m in Sources */,
 				2584859824767B4800F0AB09 /* KG_KongTiaoCeDianViewController.m in Sources */,
 				250F190824BD387F00EBD8F7 /* KG_DMERightView.m in Sources */,
@@ -6600,6 +7031,7 @@
 				25893EE4242B511900D92C0F /* KG_ScrollListDetailModel.m in Sources */,
 				2584842E2475137D00F0AB09 /* KG_ResultPromptViewController.m in Sources */,
 				EC273FA421C37C5100A34EC2 /* MSLaunchOperation.m in Sources */,
+				25CF3F2E2501D92400AD3ACA /* KG_CreateMonthWeiHuCell.m in Sources */,
 				258D2971246C0411004E8B5A /* RS_CollectionAlignmentFlowLayout.m in Sources */,
 				2587B20F24A205E4000289C7 /* KG_AccessCardAlertView.m in Sources */,
 				EC8795E321B4E2CB000F3CC1 /* EquipmentStatusModel.m in Sources */,
@@ -6647,6 +7079,7 @@
 				FEE24921206CB8ED00D62197 /* PatroLabelCell.m in Sources */,
 				25EDC55C247BCE1B0006821C /* KG_SelVideoAddCell.m in Sources */,
 				258D2949246A6C9A004E8B5A /* KG_ContactViewController.m in Sources */,
+				25CF3EF524FCCE0600AD3ACA /* KG_ContactTopSecondView.m in Sources */,
 				258E023924D3A9C300CDF8BA /* KG_BeiJianCategoryCell.m in Sources */,
 				25EEB346243C720800B9F803 /* KG_PowView.m in Sources */,
 				2584859B24767B9400F0AB09 /* KG_KongTiaoControlViewController.m in Sources */,
@@ -6666,11 +7099,13 @@
 				FEE2491E206CB89C00D62197 /* Patroltems.m in Sources */,
 				250B882C23B9D0CD00C79136 /* CluserAnnotation.m in Sources */,
 				258D2965246BFE45004E8B5A /* NSString+RSMethod.m in Sources */,
+				25CF3F2B2501D8D500AD3ACA /* KG_CreateMonthWeiHuViewController.m in Sources */,
 				250B887623C5790D00C79136 /* AlarmDetailInfoCell.m in Sources */,
 				25869A4F2490987300A2343D /* KG_OnsiteInspectionView.m in Sources */,
 				2587B1EE2499AB76000289C7 /* KG_ChooseSystemCell.m in Sources */,
 				258CEDEA24AF28B8007FEE18 /* KG_OperationGuideViewController.m in Sources */,
 				25EEB380243FF93200B9F803 /* KG_MonitorSecondView.m in Sources */,
+				25CF3F582508E46A00AD3ACA /* KG_RemoveTaskView.m in Sources */,
 				258D291F246A6C9A004E8B5A /* KG_ComminSelContentCell.m in Sources */,
 				18CAAD8321B76130003C8B39 /* RankController.m in Sources */,
 				2584D62E24497A190059A949 /* KG_ZhiTaiEquipView.m in Sources */,
@@ -6685,6 +7120,7 @@
 				258D2943246A6C9A004E8B5A /* KG_XunShiRoomCell.m in Sources */,
 				258AB24224ADB9290025C637 /* KG_WeiHuCardAlertHeaderView.m in Sources */,
 				FE050A95205BF61B00A4AD93 /* ChooseStationCell.m in Sources */,
+				25CF3EDF24FC815400AD3ACA /* ContactModel.m in Sources */,
 				FE050A89205B549F00A4AD93 /* PersonalInfoController.m in Sources */,
 				2584D6142445874D0059A949 /* KG_MachineDetailModel.m in Sources */,
 				258E025224D40A4A00CDF8BA /* KG_BeiJianFourthView.m in Sources */,
@@ -6693,19 +7129,23 @@
 				258CEE5324B46B3B007FEE18 /* KG_ReViewPhotoView.m in Sources */,
 				258D2915246A6C9A004E8B5A /* KG_HistoryTaskViewController.m in Sources */,
 				1F8AB55D1F0CB9EB00256218 /* FrameTabBarController.m in Sources */,
+				25CF3F0E24FF72B500AD3ACA /* KG_AddressbookSearchViewController.m in Sources */,
 				25C4B7632487AB2E00BA84F4 /* KG_RunReportFuJianCell.m in Sources */,
 				258E022A24D2A5DC00CDF8BA /* KG_RunLingBeiJianViewController.m in Sources */,
 				250B882F23B9D11E00C79136 /* CluseterAnnotationView.m in Sources */,
 				258E023124D2C68600CDF8BA /* KG_BeiJianListDetailCell.m in Sources */,
+				25CF3F252500D73C00AD3ACA /* KG_CreateDayWeiHuSelTimeView.m in Sources */,
 				258CDE2D24285D1500B870D6 /* FrameScrollList.m in Sources */,
 				EC5DBF1021BA49E800F00882 /* CustomTableViewCell.m in Sources */,
 				EC8795E021B4E0F2000F3CC1 /* EquipmentDetailsModel.m in Sources */,
 				FEF6695C206F21A900F3CF2B /* MsgItems.m in Sources */,
+				25CF3F3B2501DFC400AD3ACA /* KG_CreateYearWeiHuCell.m in Sources */,
 				18CB1CCE21C7433400F40413 /* MediaModel.m in Sources */,
 				25C4B738248622C700BA84F4 /* KG_RunReportDetailSixthCell.m in Sources */,
 				258188CA2472A4E800AE3DF6 /* KG_LoginSelStaionModel.m in Sources */,
 				250B885923C46D7700C79136 /* StationMachineDetailMoreController.m in Sources */,
 				258D2941246A6C9A004E8B5A /* KG_NewContentTextCell.m in Sources */,
+				25CF3F0124FE1FD500AD3ACA /* KG_XunShiSelTimeView.m in Sources */,
 				189938FE21C1F05D0026B6AB /* ValueClassModel.m in Sources */,
 				25EEB39624404A0200B9F803 /* KG_DMEMonitorFirstView.m in Sources */,
 				25D1F05824249072007E5870 /* WYLHTTPSessionManager.m in Sources */,
@@ -6720,6 +7160,7 @@
 				ECA60FC121AFDE4600690698 /* UIColor+Extension.m in Sources */,
 				25D1F05F2424B01C007E5870 /* UtilsJSH.m in Sources */,
 				25950A8C24596F3C00BCCA8B /* MBProgressHUD+XMG.m in Sources */,
+				25CF3EF024FCCBCA00AD3ACA /* KG_AddressbookSecondViewController.m in Sources */,
 				25EEB37A243F1E6B00B9F803 /* KG_ZhiTaiView.m in Sources */,
 				EC4C0C2921B65C4300E23EFA /* XDMultTableView.m in Sources */,
 				FEE24933206CC69400D62197 /* PatrolHistoryController.m in Sources */,
@@ -6729,12 +7170,15 @@
 				258484322475404800F0AB09 /* KG_TecInforViewController.m in Sources */,
 				FEE24924206CB92E00D62197 /* PatroTextFieldCell.m in Sources */,
 				258D2938246A6C9A004E8B5A /* KG_XunShiTopView.m in Sources */,
+				25CF3F422502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.m in Sources */,
 				EC61EA0521C8835400FACC83 /* UIScrollView+EmptyDataSet.m in Sources */,
+				25B0D09925104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m in Sources */,
 				25EEB329243481BE00B9F803 /* KG_SecondFloorViewController.m in Sources */,
 				2584D63A244D8E370059A949 /* KG_RoomInfoView.m in Sources */,
 				25906F602488A3070010DD89 /* KG_RunMangerFifthCell.m in Sources */,
 				25C4B7252486201300BA84F4 /* KG_RunReportDetailViewController.m in Sources */,
 				2587B1FF24A1F9C2000289C7 /* KG_AccessCardView.m in Sources */,
+				25CF3F1124FF778100AD3ACA /* KG_AddressbookSearchCell.m in Sources */,
 				25C4B6AD24848A8200BA84F4 /* KG_StationReportAlarmViewController.m in Sources */,
 				250B886C23C578A500C79136 /* BaseVC.m in Sources */,
 				258D291D246A6C9A004E8B5A /* KG_XunJianWeekCell.m in Sources */,
@@ -6753,12 +7197,15 @@
 				ECA60FB621AFC16C00690698 /* DataCenterViewController.m in Sources */,
 				25C4B7662487BD9D00BA84F4 /* KG_RunReportDetailNinethCell.m in Sources */,
 				25906F5A2488A0D40010DD89 /* KG_RunManagerThirdCell.m in Sources */,
+				25CF3F1F2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.m in Sources */,
 				18B34DE421C348330021C2E6 /* UploadCell.m in Sources */,
 				FEE2491B206CB7B400D62197 /* PatrolSetController.m in Sources */,
 				18E8DFB821F0C23100D5449F /* Preview.mm in Sources */,
 				258D295E246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m in Sources */,
 				C1F8F174205BB32B0070CFE6 /* LoginViewController.m in Sources */,
+				25CF3F492502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.m in Sources */,
 				25EDC54D247BB1C50006821C /* KG_ImagePickerView.m in Sources */,
+				25CF3F362501DE9300AD3ACA /* KG_CreateYearWeiHuViewController.m in Sources */,
 				FE77AD112069DD6400CE8866 /* PatrolSetShowController.m in Sources */,
 				FE416DC4205CC1E50044229F /* PersonalFollowUsController.m in Sources */,
 				EC4C0C1A21B62EAD00E23EFA /* TechnicalManualTableViewCell.m in Sources */,
@@ -6766,6 +7213,7 @@
 				FE419F66206DEB1C00A35A2F /* StationRoomController.m in Sources */,
 				250B882523B9D00700C79136 /* BMKClusterManager.m in Sources */,
 				25C4B70F2484A0F300BA84F4 /* KG_RunPromptCell.m in Sources */,
+				25CF3F282500D78100AD3ACA /* KG_CreateDayWeiHuSelTimeCell.m in Sources */,
 				258188C7247283D300AE3DF6 /* KG_LoginSelStationCell.m in Sources */,
 				258D2944246A6C9A004E8B5A /* KG_CreateXunShiContentViewController.m in Sources */,
 				258D2947246A6C9A004E8B5A /* SegmentTapView.m in Sources */,
@@ -6789,6 +7237,7 @@
 				25EEB340243C71E600B9F803 /* KG_SecView.m in Sources */,
 				EC4E9ADF21B122F200B69476 /* YQSlideMenuController.m in Sources */,
 				25847AC124E3C6050044E9E7 /* KG_CommonWebAlertView.m in Sources */,
+				25B0D09A25104E8C009B13E2 /* KG_HistoryScreenCell.m in Sources */,
 				258E023524D3A8EC00CDF8BA /* KG_BeiJianCategoryViewController.m in Sources */,
 				FE9C814E2065103B001136FA /* PatrolController.m in Sources */,
 				EC4E9AE021B122F200B69476 /* UIViewController+YQSlideMenu.m in Sources */,
@@ -6820,6 +7269,7 @@
 				EC51DECF21BF5D3100D68F47 /* AtcAttachmentRecordsModel.m in Sources */,
 				258D2918246A6C9A004E8B5A /* KG_XunJianReportViewController.m in Sources */,
 				FE419F69206E070A00A35A2F /* StationVideoListController.m in Sources */,
+				25CF3EE024FC815400AD3ACA /* ContactTableViewCell.m in Sources */,
 				EC5E52DE21B7A28D009212D7 /* PopularModel.m in Sources */,
 				258D2925246A6C9A004E8B5A /* KG_SelEquipClassCell.m in Sources */,
 				EC025D9521C8DC02001A3F5E /* DIYNoDataView.m in Sources */,
@@ -6834,6 +7284,7 @@
 				25EEB339243C0C8E00B9F803 /* KG_NewTarBarViewController.m in Sources */,
 				187112DF210EB326008DCA9B /* UIView+convenience.m in Sources */,
 				FE856E1020AED7BC00B42058 /* FSTextView.m in Sources */,
+				25CF3F332501D94B00AD3ACA /* KG_CreateMonthWeiHuModel.m in Sources */,
 				1F8AB44B1F0C77C100256218 /* main.m in Sources */,
 				258E028D24DA3F6200CDF8BA /* KG_JiShuZiLiaoViewController.m in Sources */,
 				25EFF0CC24EA4F87001F02E5 /* KG_EquipStatusCardView.m in Sources */,
@@ -6857,6 +7308,7 @@
 				25C4B6A52480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m in Sources */,
 				258D2926246A6C9A004E8B5A /* KG_ZhiWeiViewController.m in Sources */,
 				25C4B71A2484F29500BA84F4 /* KG_RunListViewController.m in Sources */,
+				25CF3F0A24FF681900AD3ACA /* KG_AddressbookSecondModel.m in Sources */,
 				FE678486205F90CB00D655DB /* PersonalPatrolItems.m in Sources */,
 				25950A90245973B200BCCA8B /* KG_CommonDetailViewController.m in Sources */,
 				25EEB33624372C0200B9F803 /* KG_PowerOnView.m in Sources */,
@@ -6869,7 +7321,9 @@
 				FE050A8C205BD1BC00A4AD93 /* PersonalEditMobileController.m in Sources */,
 				2587B21824A323EE000289C7 /* KG_AccessCardConfirmAlertView.m in Sources */,
 				258D2936246A6C9A004E8B5A /* KG_XunShiHandleView.m in Sources */,
+				25B0D08F25104D14009B13E2 /* KG_HistorySearchCell.m in Sources */,
 				25C4B732248622AD00BA84F4 /* KG_RunReportDetailFourthCell.m in Sources */,
+				25CF3ED824FC80C800AD3ACA /* KG_AddressbookViewController.m in Sources */,
 				EC4C0C1021B60C9600E23EFA /* ZYSpreadButton.m in Sources */,
 				258AB23F24ADB13E0025C637 /* KG_WeiHuCardAlertCell.m in Sources */,
 				258E022E24D2B73900CDF8BA /* KG_BeiJianListCell.m in Sources */,

@@ -18,6 +18,12 @@
 #import "UIViewController+YQSlideMenu.h"
 #import "KG_WeihuDailyReportDetailViewController.h"
 #import <UIButton+WebCache.h>
+#import "KG_CreateDayWeiHuViewController.h"
+#import "KG_CreateMonthWeiHuViewController.h"
+#import "KG_CreateYearWeiHuViewController.h"
+#import "KG_CreateTeShuBaoZhangViewController.h"
+#import "KG_AssignView.h"
+#import "KG_AddressbookViewController.h"
 @interface KG_ZhiWeiViewController ()<UITableViewDelegate,UITableViewDataSource>
 /**  标题栏 */
 @property (nonatomic, strong)  UILabel                 *titleLabel;
@@ -32,6 +38,7 @@
 @property (nonatomic ,strong)  RS_ConditionSearchView  *searchView;
 
 @property (nonatomic, strong)  UIButton                *leftIconImage;
+@property (nonatomic, strong)  KG_AssignView *alertView;
 
 @end
 
@@ -42,6 +49,12 @@
     // Do any additional setup after loading the view.
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshZhiWeiData) name:@"refreshZhiWeiData" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushToAddressBook) name:@"pushToAddressBook" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAssignView:) name:@"showAssignView" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addressBookSelPerson:) name:@"addressBookSelPerson" object:nil];
+    
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:FontSize(18),NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#24252A"]}];
     [self createNaviTopView];
@@ -56,6 +69,28 @@
     //    [self quertHeadListData];
     
 }
+- (void)addressBookSelPerson:(NSNotification *)notification {
+    NSDictionary *dataDic = notification.userInfo;
+    if (dataDic.count) {
+        self.alertView.hidden = NO;
+        self.alertView.name = safeString(dataDic[@"nameStr"]);
+        self.alertView.nameID = safeString(dataDic[@"nameID"]);
+    }
+}
+
+- (void)pushToAddressBook {
+    
+    [UserManager shareUserManager].isSelContact = YES;
+    self.alertView.hidden = YES;
+    
+    KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
+    vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
+        self.alertView.hidden = NO;
+        self.alertView.name = nameStr;
+        self.alertView.nameID =nameID;
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
 //刷新智维页面数据
 - (void)refreshZhiWeiData {
     
@@ -63,6 +98,69 @@
     self.naviTopView = nil;
     [self.naviTopView removeFromSuperview];
     [self createSegmentView];
+}
+
+
+- (void)showAssignView:(NSNotification *)notification {
+    NSDictionary *dDic = notification.userInfo;
+  
+    self.alertView = [[KG_AssignView alloc]init];
+    [JSHmainWindow addSubview:self.alertView];
+    self.alertView.dataDic = dDic;
+    self.alertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
+
+        [self assignData:dataDic name:name withNameID:nameID];
+        
+    };
+    [self.alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+        make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+        make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+    }];
+}
+//任务移交接口：
+//请求地址：/intelligent/atcSafeguard/updateAtcPatrolRecode
+//请求方式：POST
+//请求Body：
+//{
+//    "id": "XXX",                 //任务Id，必填
+//    "patrolName": "XXX"         //任务执行负责人Id，必填
+////任务移交时修改这个字段为新的任务执行负责人Id即可
+//}
+- (void)assignData:(NSDictionary *)dataDic name:(NSString *)name withNameID:(NSString *)nameID{
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/updateAtcPatrolRecode"]];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(dataDic[@"id"]);
+    paramDic[@"patrolName"] = safeString(nameID);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"请求成功");
+        if ([result[@"value"] boolValue]) {
+            [FrameBaseRequest showMessage:@"指派成功"];
+            self.alertView.hidden = YES;
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
 }
 
 -(void)dealloc
@@ -112,6 +210,10 @@
     
 }
 -(void)viewWillAppear:(BOOL)animated{
+    if ([UserManager shareUserManager].isSelContact) {
+        [UserManager shareUserManager].isSelContact = NO;
+        return;
+    }
     NSLog(@"StationDetailController viewWillAppear");
     if (@available(iOS 13.0, *)){
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
@@ -253,7 +355,20 @@
     self.naviTopView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.naviTopView];
     self.naviTopView.didsel = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull statusType) {
-        if([safeString(dataDic[@"status"]) isEqualToString:@"5"]){
+        BOOL islingDao = NO;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        islingDao = YES;
+                        break;
+                    }
+                }
+            }
+        }
+        if([safeString(dataDic[@"status"]) isEqualToString:@"5"] &&!islingDao){
             [FrameBaseRequest showMessage:@"请先领取任务"];
             return;
         }
@@ -272,10 +387,52 @@
        
     };
     self.naviTopView.addMethod = ^(NSString * _Nonnull statusType) {
-        KG_CreateXunShiContentViewController *vc = [[KG_CreateXunShiContentViewController alloc]init];
+        if ([statusType isEqualToString:@"yijianxunshi"]) {
+            KG_CreateXunShiContentViewController *vc = [[KG_CreateXunShiContentViewController alloc]init];
+            vc.statusType = statusType;
+            [self.navigationController pushViewController:vc animated:YES];
         
-        vc.statusType = statusType;
-        [self.navigationController pushViewController:vc animated:YES];
+        }else if ([statusType isEqualToString:@"lixingweihu"]) {
+            
+            if ([UserManager shareUserManager].zhiweiWeihuIndex == 1) {
+                //日维护
+                KG_CreateDayWeiHuViewController *vc = [[KG_CreateDayWeiHuViewController alloc]init];
+                vc.statusType = statusType;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if ([UserManager shareUserManager].zhiweiWeihuIndex == 2) {
+                //周/月维护
+                KG_CreateMonthWeiHuViewController *vc = [[KG_CreateMonthWeiHuViewController alloc]init];
+                vc.statusType = statusType;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else if ([UserManager shareUserManager].zhiweiWeihuIndex == 3) {
+                //季/年维护
+                KG_CreateYearWeiHuViewController *vc = [[KG_CreateYearWeiHuViewController alloc]init];
+                vc.statusType = statusType;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else if ([UserManager shareUserManager].zhiweiWeihuIndex == 4) {
+                //巡检
+            }else {
+                KG_CreateDayWeiHuViewController *vc = [[KG_CreateDayWeiHuViewController alloc]init];
+                vc.statusType = statusType;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+            
+            
+        }else if ([statusType isEqualToString:@"teshubaozhang"]) {
+            KG_CreateTeShuBaoZhangViewController *vc = [[KG_CreateTeShuBaoZhangViewController alloc]init];
+            vc.statusType = statusType;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+            
+            
+        }else {
+            KG_CreateXunShiContentViewController *vc = [[KG_CreateXunShiContentViewController alloc]init];
+            vc.statusType = statusType;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        
     };
     
     [self.naviTopView mas_makeConstraints:^(MASConstraintMaker *make) {

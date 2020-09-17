@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIImageView *lineImage;
 
 @property (nonatomic, strong) UIImageView *rightImage;
+
+@property (nonatomic, copy) NSString *roomStr;
+
+@property (nonatomic, copy) NSString *selRoomStr;
 @end
 
 NS_ASSUME_NONNULL_END

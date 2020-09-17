@@ -20,10 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,copy) NSString *xunshiRoom;     //巡视机房
 
+@property (nonatomic ,assign) NSInteger xunshiSelIndex;
+
+@property (nonatomic ,copy) NSString *xunshiRoomCode;     //巡视机房
+
+@property (nonatomic ,copy) NSString *xunshiRoomID;     //巡视机房ID
+
 @property (nonatomic ,copy) NSString *selTime;        //时间选择
 
-@property (nonatomic ,copy) NSString *realPerson;     //执行负责人
-
+@property (nonatomic ,copy) NSString *realPersonName;     //执行负责人
+@property (nonatomic ,copy) NSString *realPersonID;     //执行负责人
 
 
 @end

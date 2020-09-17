@@ -30,6 +30,8 @@
 -(instancetype)init {
     self = [super init];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardWillHideNotification object:nil];
         [self createView];
        
     }
@@ -38,17 +40,18 @@
 - (void)createView {
     self.segment = [[KG_XunShiSegmentView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 45) withDataArray:[NSArray arrayWithObjects:@"回复",@"日志", nil] withFont:14];
     self.segment.delegate = self;
-    [self.segment selectIndex:2];
+    [self.segment selectIndex:1];
     [self addSubview:self.segment];
     [self addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.segment.mas_bottom);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
-        make.bottom.equalTo(self.mas_bottom);
+        make.height.equalTo(@160);
     }];
     self.bottomView  = [[UIView alloc]init];
     [self addSubview:self.bottomView];
+    self.bottomView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@52);
         make.left.equalTo(self.mas_left);
@@ -75,14 +78,13 @@
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bottomView.mas_left).offset(16);
         make.centerY.equalTo(self.bottomView.mas_centerY);
-        make.height.equalTo(self.bottomView.mas_height);
+        make.height.equalTo(@39);
         make.right.equalTo(addBtn.mas_left).offset(-9.5);
     }];
     textField.layer.cornerRadius = 4;
     textField.layer.masksToBounds = YES;
-    
-    self.bottomView.hidden = YES;
-    self.tableView.hidden = YES;
+    textField.returnKeyType = UIReturnKeySend;
+   
     [self addSubview:self.logTableView];
     [self.logTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.segment.mas_bottom);
@@ -90,13 +92,21 @@
         make.right.equalTo(self.mas_right);
         make.bottom.equalTo(self.mas_bottom);
     }];
-   
+    self.logTableView.hidden = YES;
        
     
 }
 
 - (void)addBtnMethod :(UIButton *)btn{
     
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    
+    if (self.uploadReceive) {
+        self.uploadReceive(textField.text);
+    }
+    return YES;
 }
 
 - (UITableView *)tableView {
@@ -112,6 +122,20 @@
         headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     }
     return _tableView;
+}
+//判断点击的哪一个
+- (void)selectedIndex:(NSInteger)index {
+    NSLog(@"%ld",(long)index);
+    if(index == 0) {
+        self.bottomView.hidden = NO;
+        self.tableView.hidden = NO;
+        self.logTableView.hidden = YES;
+    }else if(index == 1) {
+        self.bottomView.hidden = YES;
+        self.tableView.hidden = YES;
+        self.logTableView.hidden = NO;
+    }
+    
 }
 
 - (UITableView *)logTableView {
@@ -207,5 +231,36 @@
     [self.logTableView reloadData];
 }
 
+#pragma mark --键盘弹出
+- (void)keyboardWillChangeFrame:(NSNotification *)notification{
+        //取出键盘动画的时间(根据userInfo的key----UIKeyboardAnimationDurationUserInfoKey)
+    CGFloat duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    //取得键盘最后的frame(根据userInfo的key----UIKeyboardFrameEndUserInfoKey = "NSRect: {{0, 227}, {320, 253}}";)
+    CGRect keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    //计算控制器的view需要平移的距离
+    CGFloat transformY = keyboardFrame.origin.y - self.frame.size.height;
+    
+    //执行动画
+    [UIView animateWithDuration:duration animations:^{
+        
+    }];
+}
+#pragma mark --键盘收回
+- (void)keyboardDidHide:(NSNotification *)notification{
+    CGFloat duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    CGRect frame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+      
+   
+    [UIView animateWithDuration:duration animations:^{
+          
+    }];
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+}
 
 @end

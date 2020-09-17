@@ -53,7 +53,7 @@
         else{
             button.selected = NO;
         }
-        button.userInteractionEnabled = NO;
+//        button.userInteractionEnabled = NO;
         [self.buttonsArray addObject:button];
         [self addSubview:button];
         

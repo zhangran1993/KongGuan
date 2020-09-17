@@ -146,7 +146,7 @@
     [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.rightView.mas_left).offset(15);
         make.top.equalTo(self.detailLabel.mas_bottom).offset(11);
-        make.right.equalTo(self.rightView.mas_right).offset(-15);
+        make.right.equalTo(self.rightView.mas_right).offset(-86);
         make.height.equalTo(@12);
     }];
     
@@ -168,7 +168,7 @@
     self.timeLabel.text = @"2020.01.12 09:00";
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeImage.mas_right).offset(6);
-        make.right.equalTo(self.rightView.mas_right).offset(-20);
+        make.right.equalTo(self.rightView.mas_right).offset(-86);
         make.centerY.equalTo(self.timeImage.mas_centerY);
         make.height.equalTo(@14);
     }];
@@ -185,6 +185,18 @@
         make.centerY.equalTo(self.timeImage.mas_centerY);
         make.height.equalTo(@14);
     }];
+    
+//    UIButton *taskBgBtn =[[UIButton alloc]init];
+//    [self.rightView addSubview:taskBgBtn];
+//    [taskBgBtn setTitle:@"" forState:UIControlStateNormal];
+//    [taskBgBtn addTarget:self action:@selector(taskButtonMethod:) forControlEvents:UIControlEventTouchUpInside];
+//    [taskBgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.rightView.mas_right);
+//        make.bottom.equalTo(self.rightView.mas_bottom);
+//        make.width.equalTo(@120);
+//        make.height.equalTo(@100);
+//    }];
+    
     
     self.taskButton = [[UIButton alloc]init];
     [self.rightView addSubview:self.taskButton];
@@ -203,10 +215,14 @@
 - (void)taskButtonMethod:(UIButton *)button {
     
     if ([button.titleLabel.text isEqualToString:@"指派任务"]) {
+        //领取任务
+        if(self.taskMethod){
+            self.taskMethod(self.dataDic);
+        }
         
     }else {
         //领取任务
-      //领取任务
+        //领取任务
         if(self.taskMethod){
             self.taskMethod(self.dataDic);
         }
@@ -238,6 +254,19 @@
         [self.taskButton setTitle:@"领取任务" forState:UIControlStateNormal];
         self.taskButton.hidden = NO;
         self.personLabel.hidden = YES;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
+                        NSLog(@"是个领导");
+                        break;
+                    }
+                }
+            }
+        }
     }else if([safeString(dataDic[@"status"]) isEqualToString:@"6"]){
         
         [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
@@ -272,7 +301,22 @@
     }else if ([status isEqualToString:@"4"]) {
         ss = @"逾期完成";
     }else if ([status isEqualToString:@"5"]) {
+      
         ss = @"待领取";
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        ss = @"待指派";
+                        NSLog(@"是个领导");
+                        break;
+                    }
+                }
+            }
+        }
     }else if ([status isEqualToString:@"6"]) {
         ss = @"待指派";
     }

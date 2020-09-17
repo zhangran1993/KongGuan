@@ -21,6 +21,7 @@
 #import <UIButton+WebCache.h>
 #import "KG_ControlGaoJingAlertView.h"
 #import "KG_NewScreenViewController.h"
+
 @interface KG_ZhiXiuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray     *dataArray;
@@ -37,8 +38,6 @@
 @property (nonatomic, strong) UIButton           *rightButton;
 @property (nonatomic, strong) UIButton           *swh;
 
-
-
 @property (nonatomic, strong) UILabel            *titleLabel;
 @property (nonatomic, strong) UIView             *navigationView;
 
@@ -47,21 +46,20 @@
 @property(strong,nonatomic)   NSArray            *stationArray;
 @property(strong,nonatomic)   UITableView        *stationTabView;
 
-@property (nonatomic, strong)  UIButton          *leftIconImage;
+@property (nonatomic, strong) UIButton           *leftIconImage;
 
-@property (nonatomic, copy) NSString             *removeStartTime;
-@property (nonatomic, copy) NSString             *removeEndTime;
+@property (nonatomic, copy)   NSString             *removeStartTime;
+@property (nonatomic, copy)   NSString             *removeEndTime;
 
-
-@property (nonatomic, copy) NSString             *roomStr;
-@property (nonatomic, copy) NSString             *equipTypeStr;
-@property (nonatomic, copy) NSString             *alarmLevelStr;
-@property (nonatomic, copy) NSString             *alarmStatusStr;
-@property (nonatomic, copy) NSString             *startTime;
-@property (nonatomic, copy) NSString             *endTime;
+@property (nonatomic, copy)   NSString             *roomStr;
+@property (nonatomic, copy)   NSString             *equipTypeStr;
+@property (nonatomic, copy)   NSString             *alarmLevelStr;
+@property (nonatomic, copy)   NSString             *alarmStatusStr;
+@property (nonatomic, copy)   NSString             *startTime;
+@property (nonatomic, copy)   NSString             *endTime;
 
 @property(strong,nonatomic)   NSArray            *roomArray;
-@property (nonatomic, assign) BOOL             isBlock;
+@property (nonatomic, assign) BOOL               isBlock;
 @end
 
 @implementation KG_ZhiXiuViewController
@@ -133,9 +131,7 @@
                 [self queryGaoJingData];
                 [self.segment selectIndex:1];
                 
-                
             }else {
-                
                 NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
                 paraDic[@"name"] = @"stationCode";
                 paraDic[@"type"] = @"eq";
@@ -144,26 +140,26 @@
                 [self queryGaoJingData];
                 [self.segment selectIndex:1];
             }
-            
-            
+         
             break;
         }
     }
     
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     //     [self.navigationController setNavigationBarHidden:NO];
     
 }
+
 - (void)createSegmentView{
+    
     NSArray *array = @[@"全部",@"未确认",@"已确认"];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.segment = [[SegmentTapView alloc] initWithFrame:CGRectMake(0, NAVIGATIONBAR_HEIGHT +8, SCREEN_WIDTH, 44) withDataArray:array withFont:15];
     self.segment.delegate = self;
     [self.view addSubview:self.segment];
-    
-    
     
     UIView *swhView = [[UIView alloc]init];
     [self.view addSubview:swhView];
@@ -173,7 +169,6 @@
         make.right.equalTo(self.view.mas_right);
         make.height.equalTo(@49);
         make.top.equalTo(self.segment.mas_bottom);
-        
     }];
     
     UILabel *titleLabel = [[UILabel alloc]init];
@@ -212,9 +207,7 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-    //    swhView.hidden = YES;
-    
-    
+  
 }
 - (void)buttonClick:(UIButton *)button {
     
@@ -228,7 +221,6 @@
     }else {
         [self.swh setImage:[UIImage imageNamed:@"close_swh"] forState:UIControlStateNormal];
     }
-    
     [self queryOpenSwhData];
     
 }
@@ -319,7 +311,6 @@
             [self queryConfirmData];
             
         }
-        
         
     }
     

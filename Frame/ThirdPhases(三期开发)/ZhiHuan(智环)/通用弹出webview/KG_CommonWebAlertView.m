@@ -8,6 +8,7 @@
 
 #import "KG_CommonWebAlertView.h"
 #import <WebKit/WebKit.h>
+
 @interface KG_CommonWebAlertView ()<WKNavigationDelegate> {
 
     
@@ -16,12 +17,12 @@
 @property (nonatomic,strong) WKWebView* webView;
 
 @property (strong, nonatomic) UIProgressView *progressView;
+
 @property (nonatomic, strong) UIButton *bgBtn ;
 
 @property (nonatomic, strong) NSArray *dataArray;
+
 @end
-
-
 
 @implementation KG_CommonWebAlertView
 
@@ -38,10 +39,10 @@
     if (self) {
         [self initData];
         [self setupDataSubviews];
-        
     }
     return self;
 }
+
 //初始化数据
 - (void)initData {
     self.dataArray = [NSArray arrayWithObjects:@"", nil];
@@ -136,7 +137,7 @@
 //       [MyController showAlert:@"网络连接异常,请检查网络" view:self.view];
         [FrameBaseRequest showMessage:@"网络连接异常,请检查网络"];
     });
-   
+    
 }
 
 - (void)createData{
@@ -145,17 +146,14 @@
 
 - (void)loadExamplePage:(WKWebView*)webView {
     
-    
 //   NSString *url =  [self.urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
  
     NSString *ss= @"http://222.173.103.125:8083/monitorApp/#/humidity?";
    
     NSString* encodedString = [self.urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",ss,encodedString]];
-       
     
     NSString * encodedString1 = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)self.urlStr,NULL,NULL,kCFStringEncodingUTF8);
-    
     
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     [_webView loadRequest:request];

@@ -230,6 +230,19 @@
         self.taskButton.hidden = NO;
         self.personLabel.hidden = YES;
         [self.taskButton setTitle:@"领取任务" forState:UIControlStateNormal];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
+                        NSLog(@"是个领导");
+                        break;
+                    }
+                }
+            }
+        }
     }else if ([safeString(dic[@"status"]) isEqualToString:@"6"]) {
         self.taskButton.hidden = NO;
         self.personLabel.hidden = YES;
@@ -298,6 +311,19 @@
         ss = @"逾期完成";
     }else if ([status isEqualToString:@"5"]) {
         ss = @"待领取";
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        ss = @"待领取";
+                        NSLog(@"是个领导");
+                        break;
+                    }
+                }
+            }
+        }
     }else if ([status isEqualToString:@"6"]) {
         ss = @"待指派";
     }

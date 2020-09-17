@@ -56,4 +56,6 @@ interfaceSingle(UserManager)
     
 //设备情况 是否进行了操作
 @property(nonatomic, assign) BOOL changeEquipStatus;
+
+@property(nonatomic, assign) BOOL isSelContact;
 @end

@@ -10,6 +10,8 @@
 #import "KG_StationReportAlarmCell.h"
 #import "KG_OnsiteInspectionView.h"
 #import "KG_XunShiReportDetailViewController.h"
+#import "KG_AssignView.h"
+#import "KG_AddressbookViewController.h"
 @interface KG_StationReportAlarmViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -21,6 +23,7 @@
 @property (nonatomic, strong)  UIButton  *rightButton;
 @property (nonatomic, strong)  KG_OnsiteInspectionView *alertView;
 @property (nonatomic,strong)  NSDictionary *alertInfo;
+@property (nonatomic, strong)  KG_AssignView *alertPersonView;
 @end
 
 @implementation KG_StationReportAlarmViewController
@@ -42,7 +45,7 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
     [self.navigationController setNavigationBarHidden:YES];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAssignView:) name:@"showAssignView" object:nil];
     [self getStationReportAlarmInfo];
     [self createNaviTopView];
     // Do any additional setup after loading the view.
@@ -256,6 +259,68 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
    
+}
+
+- (void)showAssignView:(NSNotification *)notification {
+    NSDictionary *dDic = notification.userInfo;
+  
+    self.alertPersonView = [[KG_AssignView alloc]init];
+    [JSHmainWindow addSubview:self.alertPersonView];
+    self.alertPersonView.dataDic = dDic;
+    self.alertPersonView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
+
+        [self assignData:dataDic name:name withNameID:nameID];
+        
+    };
+    [self.alertPersonView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+        make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+        make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+    }];
+}
+//任务移交接口：
+//请求地址：/intelligent/atcSafeguard/updateAtcPatrolRecode
+//请求方式：POST
+//请求Body：
+//{
+//    "id": "XXX",                 //任务Id，必填
+//    "patrolName": "XXX"         //任务执行负责人Id，必填
+////任务移交时修改这个字段为新的任务执行负责人Id即可
+//}
+- (void)assignData:(NSDictionary *)dataDic name:(NSString *)name withNameID:(NSString *)nameID{
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/updateAtcPatrolRecode"]];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(dataDic[@"id"]);
+    paramDic[@"patrolName"] = safeString(nameID);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"请求成功");
+        if ([result[@"value"] boolValue]) {
+            [FrameBaseRequest showMessage:@"指派成功"];
+            self.alertView.hidden = YES;
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
 }
 
 

@@ -104,6 +104,19 @@
        
     }else if ([dataDic[@"status"] isEqualToString:@"5"]) {
         self.statusLabel.text = @"待领取";
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        self.statusLabel.text = @"待领取";
+                        NSLog(@"是个领导");
+                        break;
+                    }
+                }
+            }
+        }
     }else if ([dataDic[@"status"] isEqualToString:@"6"]) {
         self.statusLabel.text = @"待指派";
     }

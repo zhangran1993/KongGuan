@@ -10,6 +10,8 @@
 #import "SegmentTapView.h"
 #import "KG_LiXingWeiHuCell.h"
 #import "KG_NewContentViewController.h"
+
+#import "KG_AddressbookViewController.h"
 @interface KG_LiXingWeiHuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic ,strong) UITableView *tableView;
@@ -24,6 +26,8 @@
 
 
 @property (nonatomic ,strong) NSMutableArray *paraArr;
+
+
 
 @end
 
@@ -45,6 +49,7 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
+     [self.view bringSubviewToFront:self.addBtn];
    
 //    //初始化为日
 //    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
@@ -168,10 +173,42 @@
     
     cell.dataDic = dataDic;
     cell.taskMethod = ^(NSDictionary * _Nonnull dic) {
-        [self getTask:dic];
+        BOOL islingDao = NO;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        islingDao = YES;
+                        break;
+                    }
+                }
+            }
+        }
+        if (islingDao) {
+            [self showSelContactAlertView:dic];
+        }else {
+            [self getTask:dic];
+        }
+        
+        
     };
     return cell;
 }
+//指派任务
+- (void)showSelContactAlertView:(NSDictionary *)dic {
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showAssignView"
+                                                        object:self
+                                                      userInfo:dic];
+}
+
+
+
+
+
 - (void)getTask:(NSDictionary *)dataDic {
     NSString *userID = [UserManager shareUserManager].userID ;
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
@@ -230,7 +267,7 @@
         make.right.equalTo(self.view.mas_right).offset(-12.5);
         make.width.height.equalTo(@56);
     }];
-    [self.view bringSubviewToFront:self.addBtn];
+   
 }
 - (void)refreshData {
     [self.paraArr removeAllObjects];

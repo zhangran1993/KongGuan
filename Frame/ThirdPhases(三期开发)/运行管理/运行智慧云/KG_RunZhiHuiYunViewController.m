@@ -12,7 +12,7 @@
 #import "KG_RunLingBeiJianViewController.h"
 #import "KG_TecInforViewController.h"
 #import "KG_InspectionRecordsViewController.h"
-
+#import "KG_AddressbookViewController.h"
 @interface KG_RunZhiHuiYunViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource>
 //品牌
 @property (nonatomic,strong)UICollectionView *collectionView;
@@ -167,6 +167,9 @@
         
     }else if(indexPath.row == 2){
         KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

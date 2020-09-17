@@ -23,28 +23,40 @@
 #import "KG_XunShiReportDataModel.h"
 #import "KG_WeiHuContentCell.h"
 #import "KG_OperationGuideViewController.h"
+#import "KG_RemoveTaskView.h"
+#import "KG_AddressbookViewController.h"
 @interface KG_WeihuDailyReportDetailViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
-
-
 
 @property (nonatomic ,strong) NSArray *dataArray;
 /**  标题栏 */
 @property (nonatomic, strong)   UILabel      *titleLabel;
+
 @property (nonatomic, strong)   UIView       *navigationView;
+
 @property (strong, nonatomic)   UIImageView  *topImage1;
+
 @property (strong, nonatomic)   KG_XunShiReportDetailModel *dataModel;
+
 @property (strong, nonatomic)   KG_XunShiTopView *xunshiTopView;
+
 @property (strong, nonatomic)   KG_XunShiHandleView *xunShiHandelView;
+
 @property (strong, nonatomic)   KG_XunShiReportDataModel *listModel;
+
 @property (strong, nonatomic)   taskDetail *radarModel;
+
 @property (strong, nonatomic)   taskDetail *powerModel;
+
 @property (strong, nonatomic)   taskDetail *upsModel;
 
 @property (strong, nonatomic)   KG_XunShiRadarView *radarView;
 
 @property (strong, nonatomic)   KG_XunShiRadarView *powerView;
+
 @property (strong, nonatomic)   KG_XunShiRadarView *upsView;
+
 @property (strong, nonatomic)   UIScrollView *scrollView;
+
 @property (strong, nonatomic)   UITableView *tableView;
 
 @property (strong, nonatomic)   KG_XunShiResultView *resultView;
@@ -52,15 +64,20 @@
 @property (strong, nonatomic)   NSArray *receiveArr;
 
 @property (strong, nonatomic)   NSArray *logArr;
+
 @property (nonatomic, strong)   UIView       *tableHeadView;
+
 @property (strong, nonatomic)   NSArray *equipArr;
+
 @property (nonatomic, strong)   KG_WeiHuDetailReportDataModel *weihuModel;
 
 @property (strong, nonatomic)   NSDictionary *xunshiTopDic;
 
-@property (nonatomic, strong)  UIButton * moreBtn;
+@property (nonatomic, strong)   UIButton * moreBtn;
 
-@property (nonatomic, assign)  BOOL canUpdateOrSubmit;
+@property (nonatomic, assign)   BOOL canUpdateOrSubmit;
+
+@property (nonatomic, strong)  KG_RemoveTaskView *alertView;
 @end
 
 @implementation KG_WeihuDailyReportDetailViewController
@@ -68,6 +85,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushRemoveToAddressBook) name:@"pushRemoveToAddressBook" object:nil];
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
     self.listModel = [[KG_XunShiReportDataModel alloc]init];
     self.canUpdateOrSubmit = YES;
@@ -91,12 +109,35 @@
     [self queryReportDetailData];
     [self getTemplateData];
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     self.navigationController.navigationBarHidden = NO;
    
 }
 
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+- (void)pushRemoveToAddressBook {
+    
+   
+    self.alertView.hidden = YES;
+    
+    KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
+    vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
+        self.alertView.hidden = NO;
+        self.alertView.name = nameStr;
+        self.alertView.nameID =nameID;
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
 - (void)createDataView{
     self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 266)];
     [self.view addSubview:self.tableView];
@@ -337,6 +378,9 @@
         if (self.receiveArr.count) {
             cell.receiveArr = self.receiveArr;
         }
+        cell.uploadReceive = ^(NSString * _Nonnull textStr) {
+            [self uploadReceiveData:textStr];
+        };
         if (self.logArr.count) {
             cell.logArr = self.logArr;
         }
@@ -346,7 +390,6 @@
     return nil;
 }
  
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -473,6 +516,12 @@
         if ([dataStr isEqualToString:@"提交任务"]) {
             NSLog(@"提交任务");
             [self uploadTask];
+        }else if ([dataStr isEqualToString:@"移交任务"]) {
+            NSLog(@"移交任务");
+            [self removeTask];
+        }else if ([dataStr isEqualToString:@"删除任务"]) {
+            NSLog(@"删除任务");
+            [self deleteTask];
         }else {
             NSLog(@"修改任务");
             [self.moreBtn removeFromSuperview];
@@ -509,6 +558,119 @@
     
     
 }
+//任务删除接口：
+//请求地址：/intelligent/atcSafeguard/remove/{id}
+//   其中，id是任务的id
+//请求方式：DELETE
+//删除任务
+- (void)deleteTask {
+    
+    UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定删除吗？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertContor addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil]];
+    [alertContor addAction:[UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/remove/%@",safeString(self.dataDic[@"id"])]];
+        [FrameBaseRequest deleteWithUrl:FrameRequestURL param:nil success:^(id result) {
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            if(code != 0){
+                
+                return ;
+            }
+            
+            NSLog(@"请求成功");
+            [FrameBaseRequest showMessage:@"删除成功"];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }  failure:^(NSError *error) {
+            NSLog(@"请求失败 原因：%@",error);
+            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+                return;
+            }
+            [FrameBaseRequest showMessage:@"网络链接失败"];
+            return ;
+        } ];
+        
+        
+    }]];
+    
+    [self presentViewController:alertContor animated:NO completion:nil];
+  
+}
+//移交任务
+- (void)removeTask {
+    
+    [self showAssignView];
+    
+}
+//显示弹窗
+- (void)showAssignView {
+    NSDictionary *dDic = self.dataDic;
+  
+    self.alertView = [[KG_RemoveTaskView alloc]init];
+    [JSHmainWindow addSubview:self.alertView];
+    self.alertView.dataDic = dDic;
+    self.alertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
+
+        [self assignData:dataDic name:name withNameID:nameID];
+        
+    };
+    [self.alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+        make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+        make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+    }];
+}
+//任务移交接口：
+//请求地址：/intelligent/atcSafeguard/updateAtcPatrolRecode
+//请求方式：POST
+//请求Body：
+//{
+//    "id": "XXX",                 //任务Id，必填
+//    "patrolName": "XXX"         //任务执行负责人Id，必填
+////任务移交时修改这个字段为新的任务执行负责人Id即可
+//}
+- (void)assignData:(NSDictionary *)dataDic name:(NSString *)name withNameID:(NSString *)nameID{
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/updateAtcPatrolRecode"]];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(dataDic[@"id"]);
+    paramDic[@"patrolName"] = safeString(nameID);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"请求成功");
+        if ([result[@"value"] boolValue]) {
+            [FrameBaseRequest showMessage:@"指派成功"];
+            self.alertView.hidden = YES;
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
+        
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+}
+
+
+
+
 //修改任务
 - (void)saveAction {
     
@@ -1185,5 +1347,53 @@
     return mutStr;
 
 }
+//提交回复
+//任务的回复提交接口：
+//请求地址：/intelligent/atcPatrolDialog
+//请求方式：POST
+//提交回复
+//任务的回复提交接口：
+//请求地址：/intelligent/atcPatrolDialog
+//请求方式：POST
+- (void)uploadReceiveData:(NSString *)textStr {
+
+    NSString *idStr = @"";
+    NSString *nameStr = @"";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"id"]){
+        idStr = [userDefaults objectForKey:@"id"];
+    }
+    
+    if([userDefaults objectForKey:@"name"]){
+        nameStr = [userDefaults objectForKey:@"name"];
+    }
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    params[@"content"] =safeString(textStr);
+    params[@"operatorId"] =safeString(idStr);
+    params[@"operatorName"] =safeString(nameStr);
+    params[@"patrolRecordId"] =safeString(self.dataDic[@"id"]);
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolDialog"]];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        [self getReceviceData];
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+}
+
 
 @end

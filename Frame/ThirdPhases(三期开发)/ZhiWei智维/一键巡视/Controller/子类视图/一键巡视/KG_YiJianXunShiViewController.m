@@ -48,7 +48,7 @@
         make.right.equalTo(self.view.mas_right).offset(-12.5);
         make.width.height.equalTo(@56);
     }];
-    self.addBtn.enabled = NO;
+    self.addBtn.enabled = YES;
     [self.view bringSubviewToFront:self.addBtn];
     
 }
@@ -157,9 +157,34 @@
         
     }
     cell.taskMethod = ^(NSDictionary * _Nonnull dic) {
-        [self getTask:dic];
+        BOOL islingDao = NO;
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"role"]){
+            NSArray *arr = [userDefaults objectForKey:@"role"];
+            if (arr.count) {
+                for (NSString *str in arr) {
+                    if ([safeString(str) isEqualToString:@"领导"]) {
+                        islingDao = YES;
+                        break;
+                    }
+                }
+            }
+        }
+        if (islingDao) {
+            [self showSelContactAlertView:dic];
+        }else {
+            [self getTask:dic];
+        }
     };
     return cell;
+}
+//指派任务
+- (void)showSelContactAlertView:(NSDictionary *)dic {
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showAssignView"
+                                                        object:self
+                                                      userInfo:dic];
 }
 
 - (void)getTask:(NSDictionary *)dataDic {
