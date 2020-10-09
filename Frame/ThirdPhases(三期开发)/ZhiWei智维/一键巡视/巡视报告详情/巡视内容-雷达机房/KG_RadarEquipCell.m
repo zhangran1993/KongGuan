@@ -9,11 +9,16 @@
 #import "KG_RadarEquipCell.h"
 #import "KG_SelectCardTypeView.h"
 #import "KG_UpdateSegmentControl.h"
+#import "KG_SpecilaCanShuSignView.h"
+#import "KG_SpecialNoneDataView.h"
+
 @interface KG_RadarEquipCell ()<UITextViewDelegate>{
     
 }
-@property (nonatomic, strong)  KG_SelectCardTypeView *alertView;
 
+@property (nonatomic, strong)  KG_SelectCardTypeView       *alertView;
+@property (nonatomic, strong)  KG_SpecilaCanShuSignView    *signView;
+@property (nonatomic, strong)  KG_SpecialNoneDataView      *promptView;
 @end
 
 @implementation KG_RadarEquipCell
@@ -30,32 +35,24 @@
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
-    
     if([super initWithStyle:style reuseIdentifier:reuseIdentifier]){
-        
-        
         [self createUI];
     }
-    
     return self;
 }
 
-
-
 - (void)createUI{
-    
-    
     
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
-    
+    [self.titleLabel sizeToFit];
     [self.titleLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
+        make.top.equalTo(self.mas_top).offset(4);
         make.left.equalTo(self.mas_left).offset(49.5);
-        make.height.equalTo(self.mas_height);
-        make.width.equalTo(@150);
+        make.height.equalTo(@32);
+        make.width.lessThanOrEqualTo(@150);
     }];
     
     self.detailLabel = [[UILabel alloc]init];
@@ -63,98 +60,79 @@
     self.detailLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
     self.detailLabel.textAlignment = NSTextAlignmentRight;
+    [self.detailLabel sizeToFit];
     [self.detailLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.right.equalTo(self.mas_right).offset(-20);
         make.height.equalTo(self.mas_height);
-        make.width.equalTo(@250);
+        make.width.lessThanOrEqualTo(@250);
+    }];
+    
+    self.specialStarBtn = [[UIButton alloc]init];
+    [self addSubview:self.specialStarBtn];
+    [self.specialStarBtn setImage:[UIImage imageNamed:@"yellow_staricon"] forState:UIControlStateNormal];
+    [self.specialStarBtn setTitle:@"" forState:UIControlStateNormal];
+    [self.specialStarBtn addTarget:self action:@selector(specialMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [self.specialStarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@30);
+        make.right.equalTo(self.detailLabel.mas_left).offset(-20);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+    }];
+    
+    self.promptBtn = [[UIButton alloc]init];
+    [self addSubview:self.promptBtn];
+    [self.promptBtn setImage:[UIImage imageNamed:@"prompt_redIcon"] forState:UIControlStateNormal];
+    [self.promptBtn setTitle:@"" forState:UIControlStateNormal];
+    [self.promptBtn addTarget:self action:@selector(promptMethod:) forControlEvents:UIControlEventTouchUpInside];
+    self.promptBtn.hidden = YES;
+    [self.promptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@12);
+        make.left.equalTo(self.titleLabel.mas_right).offset(20);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
     
     [self createSegment];
     [self createButton];
     [self createTextField];
-    //    self.tempLabel = [[UILabel alloc]init];
-    //    [self addSubview:self.tempLabel];
-    //    self.tempLabel.text = @"18℃";
-    //    self.tempLabel.textColor = [UIColor colorWithHexString:@"#626470"];
-    //    self.tempLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-    //    self.tempLabel.numberOfLines = 1;
-    //    self.tempLabel.textAlignment = NSTextAlignmentRight;
-    //
-    //    self.zhexianIcon = [[UIImageView alloc]init];
-    //    [self addSubview:self.zhexianIcon];
-    //    self.zhexianIcon.image = [UIImage imageNamed:@"zhexian_image"];
-    //
-    //
-    //    self.starIcon = [[UIImageView alloc]init];
-    //    [self addSubview:self.starIcon];
-    //    self.starIcon.image = [UIImage imageNamed:@"gray_starImage"];
-    //    [self.starIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.centerY.equalTo(self.mas_centerY);
-    //        make.right.equalTo(self.mas_right).offset(-33.5);
-    //        make.height.equalTo(@12);
-    //        make.width.equalTo(@12);
-    //    }];
-    //
-    //    [self.zhexianIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.centerY.equalTo(self.mas_centerY);
-    //        make.right.equalTo(self.starIcon.mas_right).offset(-14);
-    //        make.height.equalTo(@14);
-    //        make.width.equalTo(@14);
-    //    }];
-    //    [self.tempLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-    //        make.right.equalTo(self.zhexianIcon.mas_left).offset(-14);
-    //        make.height.equalTo(@15);
-    //        make.centerY.equalTo(self.mas_centerY);
-    //        make.width.lessThanOrEqualTo(@100);
-    //    }];
-    //
-    //
-    //    @property (nonatomic, strong) UIView *detailView;
-    //    @property (nonatomic, strong) UILabel *detailTitleLabel;
-    //    @property (nonatomic, strong) UILabel *detailTxtLabel;
-    //
-    if (0) {
-        
-        
-        self.detailView = [[UIView alloc]init];
-        [self addSubview:self.detailView];
-        self.detailView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-        [self.detailView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.mas_centerY);
-            make.left.equalTo(self.mas_left).offset(50);
-            make.right.equalTo(self.mas_right).offset(-32);
-            make.height.equalTo(@57);
-        }];
-        self.detailTitleLabel = [[UILabel alloc]init];
-        [self.detailView addSubview:self.detailTitleLabel];
-        self.detailTitleLabel.text = @"A相输入电压特殊参数标记";
-        self.detailTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
-        self.detailTitleLabel.font = [UIFont systemFontOfSize:12];
-        self.detailTitleLabel.numberOfLines = 1;
-        self.detailTitleLabel.textAlignment = NSTextAlignmentLeft;
-        [self.detailTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.detailView.mas_top).offset(10);
-            make.left.equalTo(self.detailView.mas_left).offset(9.5);
-            make.right.equalTo(self.detailView.mas_right).offset(-20);
-            make.height.equalTo(@12);
-        }];
-        
-        self.detailTextTitleLabel = [[UILabel alloc]init];
-        [self.detailView addSubview:self.detailTextTitleLabel];
-        self.detailTextTitleLabel.text = @"电压过高";
-        self.detailTextTitleLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
-        self.detailTextTitleLabel.font = [UIFont systemFontOfSize:12];
-        self.detailTextTitleLabel.numberOfLines = 1;
-        self.detailTextTitleLabel.textAlignment = NSTextAlignmentLeft;
-        [self.detailTextTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.detailTitleLabel.mas_bottom).offset(9.5);
-            make.left.equalTo(self.detailView.mas_left).offset(9.5);
-            make.right.equalTo(self.detailView.mas_right).offset(-20);
-            make.height.equalTo(@12);
-        }];
-    }
     
+    self.detailView = [[UIView alloc]init];
+    [self addSubview:self.detailView];
+    self.detailView.hidden = YES;
+    self.detailView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [self.detailView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.titleLabel.mas_bottom);
+        make.left.equalTo(self.mas_left).offset(50);
+        make.right.equalTo(self.mas_right).offset(-32);
+        make.height.equalTo(@57);
+    }];
+    
+    self.detailTitleLabel = [[UILabel alloc]init];
+    [self.detailView addSubview:self.detailTitleLabel];
+    self.detailTitleLabel.text = @"A相输入电压特殊参数标记";
+    self.detailTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    self.detailTitleLabel.font = [UIFont systemFontOfSize:12];
+    self.detailTitleLabel.numberOfLines = 1;
+    self.detailTitleLabel.textAlignment = NSTextAlignmentLeft;
+    [self.detailTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.detailView.mas_top).offset(10);
+        make.left.equalTo(self.detailView.mas_left).offset(9.5);
+        make.right.equalTo(self.detailView.mas_right).offset(-20);
+        make.height.equalTo(@12);
+    }];
+    
+    self.detailTextTitleLabel = [[UILabel alloc]init];
+    [self.detailView addSubview:self.detailTextTitleLabel];
+    self.detailTextTitleLabel.text = @"电压过高";
+    self.detailTextTitleLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
+    self.detailTextTitleLabel.font = [UIFont systemFontOfSize:12];
+    self.detailTextTitleLabel.numberOfLines = 1;
+    self.detailTextTitleLabel.textAlignment = NSTextAlignmentLeft;
+    [self.detailTextTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.detailTitleLabel.mas_bottom).offset(9.5);
+        make.left.equalTo(self.detailView.mas_left).offset(9.5);
+        make.right.equalTo(self.detailView.mas_right).offset(-20);
+        make.height.equalTo(@12);
+    }];
 }
 
 - (UIImage*)createImageWithColor: (UIColor*) color{
@@ -167,108 +145,6 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
-//- (void)setDic:(NSDictionary *)dic {
-//    _dic = dic;
-//    self.detailLabel.hidden = NO;
-//    self.segmentedControl.hidden = YES;
-//    self.titleLabel.text = safeString(dic[@"title"]);
-//    if(safeString(dic[@"title"]).length == 0) {
-//        self.titleLabel.text = safeString(dic[@"measureTagName"]);
-//    }
-//    self.statusImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"状态标签-%@",[self getTaskStatus:safeString(dic[@"status"])]]];
-//    if ([dic[@"childrens"] count] ==0) {
-//        return;
-//    }
-//    self.detailLabel.text = safeString(self.dic[@"measureValueAlias"]);
-//    if (safeString(dic[@"unit"]).length > 0) {
-//        self.detailLabel.text = [NSString stringWithFormat:@"%@%@",safeString(dic[@"measureValueAlias"]),safeString(dic[@"unit"])];
-//    }
-//    NSDictionary *fifDic = [self.dic[@"childrens"] firstObject];
-//    if([safeString(fifDic[@"type"])  isEqualToString:@"charset"]){
-//        self.detailLabel.hidden = YES;
-//        self.segmentedControl.hidden = NO;
-//        NSString *value = safeString(fifDic[@"value"]) ;
-//        NSString *valueNum = safeString(self.dic[@"measureValueAlias"]) ;
-//        if (value.length >0) {
-//
-//            NSArray *array = [value componentsSeparatedByString:@"@&@"];
-//            if (array.count == 2) {
-//                [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
-//                [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
-//                if (valueNum.length >0) {
-//                    if ([valueNum isEqualToString:array[0]]) {
-//                        self.segmentedControl.selectedSegmentIndex = 0;
-//
-//                    }else if ([valueNum isEqualToString:array[1]]) {
-//                        self.segmentedControl.selectedSegmentIndex = 1;
-//
-//                    }else {
-//                        self.segmentedControl.selectedSegmentIndex = 2;
-//                    }
-//                }else {
-//                    self.segmentedControl.selectedSegmentIndex = 2;
-//                }
-//            }
-//        }else {
-//            if (safeString(self.dic[@"measureValueAlias"]).length >0) {
-//                self.detailLabel.hidden = NO;
-//                self.segmentedControl.hidden = YES;
-//            }
-//        }
-//
-//
-//    }else if ([safeString(fifDic[@"type"])  isEqualToString:@"radio"]){
-//        self.segmentedControl.hidden = NO;
-//        self.detailLabel.hidden = YES;
-//        NSString *value = safeString(fifDic[@"value"]) ;
-//        NSString *valueNum = safeString(self.dic[@"measureValueAlias"]) ;
-//        if (value.length >0) {
-//
-//            NSArray *array = [value componentsSeparatedByString:@"@&@"];
-//            if (array.count == 2) {
-//                [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
-//                [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
-//                if (valueNum.length >0) {
-//                    if ([valueNum isEqualToString:array[0]]) {
-//                        self.segmentedControl.selectedSegmentIndex = 0;
-//
-//                    }else if ([valueNum isEqualToString:array[1]]) {
-//                        self.segmentedControl.selectedSegmentIndex = 1;
-//
-//                    }else {
-//                        self.segmentedControl.selectedSegmentIndex = 2;
-//                    }
-//                }else {
-//                    self.segmentedControl.selectedSegmentIndex = 2;
-//                }
-//            }
-//        }else {
-//            NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
-//            if (array.count == 2) {
-//                [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
-//                [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
-//                if (valueNum.length >0) {
-//                    if ([valueNum isEqualToString:array[0]]) {
-//                        self.segmentedControl.selectedSegmentIndex = 0;
-//
-//                    }else if ([valueNum isEqualToString:array[1]]) {
-//                        self.segmentedControl.selectedSegmentIndex = 1;
-//
-//                    }else {
-//                        self.segmentedControl.selectedSegmentIndex = 2;
-//                    }
-//                }else {
-//                    self.segmentedControl.selectedSegmentIndex = 2;
-//                }
-//            }
-//        }
-//
-//    }else {
-//        self.segmentedControl.hidden = YES;
-//        self.detailLabel.hidden = NO;
-//    }
-//
-//}
 
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
@@ -282,6 +158,11 @@
     if ([safeString(dataDic[@"measureTagName"]) isEqualToString:@"温度"]) {
         NSLog(@"2");
     }
+    if ([dataDic[@"special"] boolValue]) {
+        self.specialStarBtn.hidden = NO;
+    }else {
+        self.specialStarBtn.hidden = YES;
+    }
     if ([safeString(dataDic[@"measureTagName"]) containsString:@"周"]) {
         NSLog(@"2");
     }
@@ -289,6 +170,39 @@
     NSArray *arr = _dataDic[@"childrens"];
     if (arr.count >0) {
         dd = [arr firstObject];
+    }
+    if (isSafeDictionary(dd[@"atcSpecialTag"])) {
+        NSDictionary *atcDic = dd[@"atcSpecialTag"];
+        if (atcDic.count && [[atcDic allValues] count] >0) {
+            self.detailView.hidden = NO;
+            self.detailTitleLabel.text = [NSString stringWithFormat:@"%@特殊参数标记内容",safeString(atcDic[@"specialTagName"])];
+            self.detailTextTitleLabel.text = safeString(atcDic[@"description"]);
+        }else {
+            self.detailView.hidden = YES;
+        }
+    }else {
+        self.detailView.hidden = YES;
+    }
+    if([safeString(dd[@"type"]) isEqualToString:@"charset"] ||
+       [safeString(dd[@"type"]) isEqualToString:@"data"]
+       ){
+        NSDictionary *dd = [dataDic[@"childrens"] firstObject];
+        NSString *value = safeString(dd[@"value"]) ;
+        NSString *valueNum = safeString(self.dataDic[@"measureValueAlias"]) ;
+        if (valueNum.length == 0) {
+            self.promptView.hidden = NO;
+        }else {
+            self.promptView.hidden = YES;
+        }
+    }else {
+        self.promptView.hidden = YES;
+    }
+    if ([UserManager shareUserManager].isChangeTask) {
+        self.specialStarBtn.userInteractionEnabled = YES;
+        self.promptBtn.userInteractionEnabled = YES;
+    }else {
+        self.promptBtn.userInteractionEnabled = NO;
+        self.specialStarBtn.userInteractionEnabled = NO;
     }
     
     self.titleLabel.text = safeString(dataDic[@"measureTagName"]);
@@ -301,8 +215,6 @@
         if ([safeString(dataDic[@"measureValueAlias"]) containsString:safeString(dataDic[@"unit"])]) {
             self.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(dataDic[@"measureValueAlias"])];
         }
-        
-      
         if (safeString(dataDic[@"unit"]).length == 0) {
             self.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(dataDic[@"valueAlias"])] ;
         }
@@ -412,14 +324,9 @@
                         }
                     }
                 }
-                
-                
+
             }
-            
-            
         }
-        
-        
     }else if( [safeString(dd[@"type"])  isEqualToString:@"radio"]) {
         if ([UserManager shareUserManager].isChangeTask) {
             self.segmentedControl.userInteractionEnabled = YES;
@@ -669,7 +576,7 @@
     [self.segmentedControl  sizeToFit];
     [self.segmentedControl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-20);
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
        
         make.height.equalTo(@24);
     }];
@@ -742,7 +649,7 @@
     self.selectBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 90, 0, 0);
     [self.selectBtn setImage:[UIImage imageNamed:@"common_right"] forState:UIControlStateNormal];
     [self.selectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.right.equalTo(self.mas_right).offset(-20);
         make.height.equalTo(self.mas_height);
         make.width.equalTo(@120);
@@ -810,7 +717,7 @@
     [self addSubview:self.textView];
     
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.right.equalTo(self.mas_right).offset(-20);
         make.height.equalTo(@32);
         make.width.equalTo(@120);
@@ -862,6 +769,80 @@
     }
     return YES;
     
+}
+- (void)specialMethod:(UIButton *)btn {
+    
+    NSLog(@"点击了特殊参数标记");
+    _signView = nil;
+    [_signView removeFromSuperview];
+    [JSHmainWindow addSubview:self.signView];
+    self.signView.saveBlockMethod = ^(NSString * _Nonnull str) {
+        NSMutableDictionary *dataDic = [NSMutableDictionary dictionary];
+        NSDictionary *dd = nil;
+        NSArray *arr = _dataDic[@"childrens"];
+        if (arr.count >0) {
+            dd = [arr firstObject];
+        }
+        [dataDic setValue:safeString(str) forKey:@"description"];
+        [dataDic setValue:safeString(self.dataDic[@"measureTagName"]) forKey:@"specialTagName"];
+        [dataDic setValue:safeString(self.dataDic[@"measureValueAlias"]) forKey:@"specialTagValue"];
+        [dataDic setValue:safeString(dd[@"parentId"]) forKey:@"patrolRecordId"];
+//        [dataDic setValue:safeString(dd[@"infoId"]) forKey:@"patrolInfoId"];
+        
+        
+        
+//        [dataDic setValue:safeString(self.dataDic[@"equipmentCode"]) forKey:@"equipmentCode"];
+//        [dataDic setValue:safeString(self.dataDic[@"equipmentName"]) forKey:@"equipmentName"];
+        [dataDic setValue:safeString(self.dataDic[@"engineRoomCode"]) forKey:@"engineRoomCode"];
+        [dataDic setValue:safeString(self.dataDic[@"engineRoomName"]) forKey:@"engineRoomName"];
+//        [dataDic setValue:safeString(self.dataDic[@"taskTime"]) forKey:@"taskTime"];
+        
+        if (self.specialData) {
+            self.specialData(dataDic);
+        }
+        
+        
+    };
+    [self.signView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+        make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+        make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+    }];
+}
+
+- (void)promptMethod:(UIButton *)btn {
+   
+    _promptView = nil;
+    [_promptView removeFromSuperview];
+    NSLog(@"点击了提示标记");
+    if(_promptView == nil) {
+        [self addSubview:self.promptView];
+        [self.promptView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.mas_top);
+            make.left.equalTo(self.promptBtn.mas_right);
+            make.height.equalTo(@27);
+            make.width.equalTo(@115);
+        }];
+    }
+}
+
+- (KG_SpecilaCanShuSignView *)signView {
+    
+    if (!_signView) {
+        _signView = [[KG_SpecilaCanShuSignView alloc]init];
+       
+    }
+    return _signView;
+}
+
+- (KG_SpecialNoneDataView *)promptView {
+    
+    if (!_promptView) {
+        _promptView = [[KG_SpecialNoneDataView alloc]init];
+       
+    }
+    return _promptView;
 }
 
 @end

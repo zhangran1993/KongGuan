@@ -14,7 +14,8 @@
 
 @property (nonatomic ,strong) UITableView *tableView;
 @property (nonatomic ,strong) NSArray *dataArray;
-
+@property (nonatomic ,assign) NSInteger  currIndex;
+@property (nonatomic ,assign) NSInteger  currSection;
 @end
 
 @implementation KG_RadarEnvCell
@@ -236,7 +237,32 @@
         cell = [[KG_RadarEquipCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RadarEquipCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
-    
+    self.currIndex = indexPath.row;
+    self.currSection = indexPath.section;
+    cell.specialData = ^(NSDictionary * _Nonnull dataDic) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        
+        [dic setValue:safeString(dataDic[@"description"]) forKey:@"description"];
+        [dic setValue:safeString(dataDic[@"specialTagName"]) forKey:@"specialTagName"];
+        [dic setValue:safeString(dataDic[@"specialTagValue"]) forKey:@"specialTagValue"];
+        [dic setValue:safeString(dataDic[@"patrolRecordId"]) forKey:@"patrolRecordId"];
+//        [dic setValue:safeString(dataDic[@"infoId"]) forKey:@"patrolInfoId"];
+        
+        
+        
+       
+        [dic setValue:safeString(dataDic[@"engineRoomCode"]) forKey:@"engineRoomCode"];
+        [dic setValue:safeString(dataDic[@"engineRoomName"]) forKey:@"engineRoomName"];
+        //        [dataDic setValue:safeString(self.dataDic[@"taskTime"]) forKey:@"taskTime"];
+        
+        NSDictionary *currDic = self.listArray[self.currSection];
+        [dic setValue:safeString(currDic[@"equipmentCode"]) forKey:@"equipmentCode"];
+        [dic setValue:safeString(currDic[@"equipmentName"]) forKey:@"equipmentName"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"saveSpecialData"
+          object:self
+        userInfo:dic];
+    };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //    self.dataArray = self.dataDic[indexPath.section];
     NSDictionary *dic = self.listArray[indexPath.section];
@@ -254,7 +280,21 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-  
+    NSDictionary *dic = self.listArray[indexPath.section];
+    NSArray *arr = dic[@"childrens"];
+    NSDictionary *detailDic = arr[indexPath.row];
+    
+    NSDictionary *dd = nil;
+    NSArray *arr1 = detailDic[@"childrens"];
+    if (arr1.count >0) {
+        dd = [arr1 firstObject];
+    }
+    if (isSafeDictionary(dd[@"atcSpecialTag"])) {
+        NSDictionary *atcDic = dd[@"atcSpecialTag"];
+        if (atcDic.count >0) {
+            return  40 + 57;
+        }
+    }
     return  40;
 }
 
@@ -311,6 +351,8 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
+    
+   
     return 30.f;
 }
 - (void)setSecondString:(NSString *)secondString {

@@ -187,6 +187,14 @@
     for (NSDictionary *detailArr in thirdArr) {
         NSArray *fourthArr = detailArr[@"childrens"];
         fourthHeight += fourthArr.count *40;
+        for (NSDictionary *fifDic in fourthArr) {
+            if (isSafeDictionary(fifDic[@"atcSpecialTag"])) {
+                NSDictionary *specDic = fifDic[@"atcSpecialTag"];
+                if ([[specDic allValues] count] >0) {
+                    fourthHeight += 57;
+                }
+            }
+        }
     }
     
     

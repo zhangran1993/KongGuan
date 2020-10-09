@@ -13,6 +13,9 @@
 #import "KG_TecInforViewController.h"
 #import "KG_InspectionRecordsViewController.h"
 #import "KG_AddressbookViewController.h"
+#import "KG_InstrumentationViewController.h"
+#import "KG_EquipmentHistoryViewController.h"
+#import "KG_HistoryWarnEventViewController.h"
 @interface KG_RunZhiHuiYunViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource>
 //品牌
 @property (nonatomic,strong)UICollectionView *collectionView;
@@ -56,21 +59,23 @@
     [dic4 setObject:@"历史告警事件" forKey:@"title"];
     [dic4 setObject:@"historyevent_icon" forKey:@"icon"];
     
+    
     NSMutableDictionary *dic5 = [NSMutableDictionary dictionary];
-    [dic5 setObject:@"线缆图谱" forKey:@"title"];
-    [dic5 setObject:@"xianlantupu_icon" forKey:@"icon"];
+    [dic5 setObject:@"案例库" forKey:@"title"];
+    [dic5 setObject:@"anliku_icon" forKey:@"icon"];
     
     NSMutableDictionary *dic6 = [NSMutableDictionary dictionary];
-    [dic6 setObject:@"案例库" forKey:@"title"];
-    [dic6 setObject:@"anliku_icon" forKey:@"icon"];
+    [dic6 setObject:@"仪器仪表" forKey:@"title"];
+    [dic6 setObject:@"yiqiyibiao_icon" forKey:@"icon"];
     
     NSMutableDictionary *dic7 = [NSMutableDictionary dictionary];
-    [dic7 setObject:@"仪器仪表" forKey:@"title"];
-    [dic7 setObject:@"yiqiyibiao_icon" forKey:@"icon"];
+    [dic7 setObject:@"设备履历" forKey:@"title"];
+    [dic7 setObject:@"devicelvli_icon" forKey:@"icon"];
+    
     
     NSMutableDictionary *dic8 = [NSMutableDictionary dictionary];
-    [dic8 setObject:@"设备履历" forKey:@"title"];
-    [dic8 setObject:@"devicelvli_icon" forKey:@"icon"];
+    [dic8 setObject:@"线缆图谱" forKey:@"title"];
+    [dic8 setObject:@"xianlantupu_icon" forKey:@"icon"];
     
     [self.dataArray addObject:dic1];
     [self.dataArray addObject:dic2];
@@ -166,6 +171,23 @@
         [self.navigationController pushViewController:vc animated:YES];
         
     }else if(indexPath.row == 2){
+        KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(indexPath.row == 3){
+        KG_HistoryWarnEventViewController *vc = [[KG_HistoryWarnEventViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(indexPath.row == 4){
+        KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(indexPath.row == 5){
+        
+        //仪器仪表
+        KG_InstrumentationViewController *vc = [[KG_InstrumentationViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(indexPath.row == 6){
+        KG_EquipmentHistoryViewController *vc = [[KG_EquipmentHistoryViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if(indexPath.row == 7){
         KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }else {

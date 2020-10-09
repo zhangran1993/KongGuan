@@ -600,7 +600,9 @@ navigationController willShowViewController:
         NSString *startTimeStr = [safeString(dataDic[@"time"]) substringToIndex:10];
         NSString *endTimeStr = [endTime substringToIndex:10];
         
-        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
+//        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
+        
+        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",safeString(dataDic[@"stationName"]),startTimeStr,endTimeStr,@"运行报告"];
         params[@"title"] = title;
     }
    

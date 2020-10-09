@@ -86,6 +86,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushRemoveToAddressBook) name:@"pushRemoveToAddressBook" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveWeiHuSpecialData:) name:@"saveWeiHuSpecialData" object:nil];
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
     self.listModel = [[KG_XunShiReportDataModel alloc]init];
     self.canUpdateOrSubmit = YES;
@@ -285,6 +286,14 @@
                 thirdHeight += 40;
                 if (fourthArr.count) {
                     fourthHeight += [fourthArr count] *40;
+                    for (NSDictionary *fifDic in fourthArr) {
+                        if (isSafeDictionary(fifDic[@"atcSpecialTag"])) {
+                            NSDictionary *specDic = fifDic[@"atcSpecialTag"];
+                            if ([[specDic allValues] count] >0) {
+                                fourthHeight += 57;
+                            }
+                        }
+                    }
                 }
                 
                 num ++;
@@ -1393,6 +1402,56 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
+}
+- (void)saveWeiHuSpecialData:(NSNotification *)notification {
+    NSDictionary *dic = notification.userInfo;
+    if (dic.count) {
+        NSString *str = safeString(dic[@"description"]);
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/insertAtcSpecialTag"]];
+        
+        NSMutableArray *paramArr = [NSMutableArray arrayWithCapacity:0];
+       
+        
+        NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+        paramDic[@"patrolInfoId"] = safeString(dic[@"patrolRecordId"]);
+        paramDic[@"patrolRecordId"] = safeString(self.dataDic[@"id"]);
+        paramDic[@"specialTagCode"] = safeString(@"");
+        
+        paramDic[@"specialTagName"] = safeString(dic[@"specialTagName"]);
+        paramDic[@"specialTagValue"] = safeString(dic[@"specialTagValue"]);
+        
+        
+        NSString *timeStr = [self timestampToTimeStr:safeString(self.dataDic[@"createTime"])];
+        paramDic[@"taskTime"] = safeString(timeStr);
+        paramDic[@"equipmentCode"] = safeString(dic[@"equipmentCode"]);
+        paramDic[@"equipmentName"] = safeString(dic[@"equipmentName"]);
+        paramDic[@"engineRoomCode"] = safeString(dic[@"engineRoomCode"]);
+        paramDic[@"engineRoomName"] = safeString(dic[@"engineRoomName"]);
+        paramDic[@"description"] = safeString(str);
+        paramDic[@"source"] = safeString(self.dataDic[@"typeCode"]);
+        
+        [paramArr addObject:paramDic];
+   
+        [FrameBaseRequest postWithUrl:FrameRequestURL param:paramArr success:^(id result) {
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            if(code != 0){
+                
+                return ;
+            }
+            [FrameBaseRequest showMessage:@"保存特殊标记成功"];
+            NSLog(@"请求成功");
+          
+        }  failure:^(NSError *error) {
+            NSLog(@"请求失败 原因：%@",error);
+            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+                return;
+            }
+            [FrameBaseRequest showMessage:@"网络链接失败"];
+            return ;
+        } ];
+        
+    }
 }
 
 

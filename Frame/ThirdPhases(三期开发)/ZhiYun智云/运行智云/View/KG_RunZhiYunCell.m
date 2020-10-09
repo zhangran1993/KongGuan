@@ -12,12 +12,9 @@
     
 }
 
-
 @end
 
 @implementation KG_RunZhiYunCell
-
-
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -28,6 +25,7 @@
 }
 
 - (void)initView {
+    
     self.iconImage = [[UIImageView alloc]init];
     [self addSubview:self.iconImage];
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -49,26 +47,20 @@
         make.bottom.equalTo(self.mas_bottom);
     }];
     
-    
-    
-    
 }
 
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
     self.titlelLabel.text = safeString(dataDic[@"title"]);
     
-    if([safeString(dataDic[@"title"]) isEqualToString:@"零备件"] ||
-       [safeString(dataDic[@"title"]) isEqualToString:@"技术资料"] ||
-       [safeString(dataDic[@"title"]) isEqualToString:@"巡视维护记录"]) {
-       self.titlelLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+    if([safeString(dataDic[@"title"]) isEqualToString:@"线缆图谱"]) {
+       self.titlelLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
         
     }else {
-        self.titlelLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+        self.titlelLabel.textColor = [UIColor colorWithHexString:@"#626470"];
       
     }
     
-//    [ sd_setImageWithURL:[NSURL URLWithString:safeString(dataDic[@"icon"])]];
     self.iconImage.image = [UIImage imageNamed:safeString(dataDic[@"icon"])];
     
 }

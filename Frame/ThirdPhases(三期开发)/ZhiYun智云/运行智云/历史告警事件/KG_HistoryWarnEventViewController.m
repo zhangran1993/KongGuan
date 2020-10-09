@@ -1,0 +1,443 @@
+//
+//  KG_ZhiXiuViewController.m
+//  Frame
+//
+//  Created by zhangran on 2020/5/14.
+//  Copyright © 2020 hibaysoft. All rights reserved.
+//
+
+#import "KG_HistoryWarnEventViewController.h"
+#import "KG_HistoryTaskCell.h"
+#import "KG_ZhiXiuModel.h"
+#import "UIViewController+CBPopup.h"
+#import "KG_GaoJingModel.h"
+#import "KG_GaoJingDetailViewController.h"
+#import "UIViewController+YQSlideMenu.h"
+#import "LoginViewController.h"
+#import <UIButton+WebCache.h>
+#import "KG_ControlGaoJingAlertView.h"
+#import "KG_NewScreenViewController.h"
+
+#import "KG_HistoryWarnEventCell.h"
+
+@interface KG_HistoryWarnEventViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@property (nonatomic, strong) NSMutableArray     *dataArray;
+
+@property (nonatomic, strong) UITableView        *tableView;
+
+@property (nonatomic ,assign) int                pageNum;
+@property (nonatomic ,assign) int                pageSize;
+@property (nonatomic ,assign) int                currIndex;
+
+@property (nonatomic, strong) UILabel            *titleLabel;
+@property (nonatomic, strong) UIView             *navigationView;
+
+@property (nonatomic ,strong) NSMutableArray     *paraArr;
+
+@property(strong,nonatomic)   NSArray            *stationArray;
+@property(strong,nonatomic)   UITableView        *stationTabView;
+
+@property (nonatomic, strong) UIButton           *leftIconImage;
+
+@property (nonatomic, copy)   NSString             *removeStartTime;
+@property (nonatomic, copy)   NSString             *removeEndTime;
+
+@property (nonatomic, copy)   NSString             *roomStr;
+@property (nonatomic, copy)   NSString             *equipTypeStr;
+@property (nonatomic, copy)   NSString             *alarmLevelStr;
+@property (nonatomic, copy)   NSString             *alarmStatusStr;
+@property (nonatomic, copy)   NSString             *startTime;
+@property (nonatomic, copy)   NSString             *endTime;
+
+@property(strong,nonatomic)   NSArray            *roomArray;
+@end
+
+@implementation KG_HistoryWarnEventViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:YES];
+    // Do any additional setup after loading the view
+    
+    
+    [self createNaviTopView];
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.navigationView.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
+    self.pageNum = 1;
+    self.pageSize = 10;
+    self.currIndex = 0;
+    
+    [self queryData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillAppear");
+    if (@available(iOS 13.0, *)){
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
+    }else {
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    }
+    [self.navigationController setNavigationBarHidden:YES];
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    NSLog(@"StationDetailController viewWillDisappear");
+    //     [self.navigationController setNavigationBarHidden:NO];
+    
+}
+
+
+
+- (void)createNaviTopView {
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self.view addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+    [self.view addSubview:topImage];
+    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.image = [self createImageWithColor:[UIColor whiteColor]];
+    /** 导航栏 **/
+    self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    self.navigationView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.navigationView];
+    
+    /** 添加标题栏 **/
+    [self.navigationView addSubview:self.titleLabel];
+    
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.navigationView.mas_centerX);
+        make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
+    }];
+    self.titleLabel.text = @"历史告警事件";
+    
+    /** 返回按钮 **/
+    UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
+    [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationView addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.left.equalTo(self.navigationView.mas_left);
+    }];
+    
+    //按钮设置点击范围扩大.实际显示区域为图片的区域
+    UIImageView *leftImage = [[UIImageView alloc] init];
+    leftImage.image = IMAGE(@"back_black");
+    [backBtn addSubview:leftImage];
+    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(backBtn.mas_centerX);
+        make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+    
+    
+    UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    histroyBtn.titleLabel.font = FontSize(12);
+    
+    
+    [histroyBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    [histroyBtn setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
+    histroyBtn.frame = CGRectMake(0,0,81,22);
+    [self.view addSubview:histroyBtn];
+    [histroyBtn addTarget:self action:@selector(screenAction) forControlEvents:UIControlEventTouchUpInside];
+    [histroyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@24);
+        make.centerY.equalTo(backBtn.mas_centerY);
+        make.height.equalTo(@24);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+    }];
+    
+    
+    
+}
+
+
+
+- (void)screenAction{
+    
+    KG_NewScreenViewController *vc = [[KG_NewScreenViewController alloc]init];
+    vc.roomStr = self.roomStr;
+    vc.alarmLevelStr = self.alarmLevelStr;
+    vc.alarmStatusStr = self.alarmStatusStr;
+    vc.startTime = self.startTime;
+    vc.endTime = self.endTime;
+    vc.equipTypeStr = self.equipTypeStr;
+    
+    vc.confirmBlockMethod = ^(NSString * _Nonnull roomStr, NSString * _Nonnull equipTypeStr, NSString * _Nonnull alarmLevelStr, NSString * _Nonnull alarmStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray) {
+        
+        self.roomStr = roomStr;
+        self.equipTypeStr =equipTypeStr;
+        self.alarmLevelStr = alarmLevelStr;
+        self.alarmStatusStr = alarmStausStr;
+        self.startTime = startTimeStr;
+        self.endTime = endTimeStr;
+        self.roomArray = roomArray;
+        
+        
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)backButtonClick:(UIButton *)button {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+/** 标题栏 **/
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+        titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        _titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+
+
+#pragma mark - UITableviewDatasource 数据源方法
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView == self.stationTabView){
+        
+        return 40;
+    }else {
+        
+        
+        //        KG_GaoJingModel *model = self.dataArray[indexPath.section];
+        
+        return  141;
+    }
+    
+    return FrameWidth(210);
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    if(tableView == self.tableView){
+        return self.dataArray.count;
+    }
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(tableView == self.stationTabView){
+        return self.stationArray.count;
+    }
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    KG_HistoryWarnEventCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_HistoryWarnEventCell"];
+    if (cell == nil) {
+        cell = [[KG_HistoryWarnEventCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_HistoryWarnEventCell"];
+        
+    }
+    cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    NSDictionary *dic = self.dataArray[indexPath.section];
+    
+    KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
+    [model mj_setKeyValues:dic];
+    cell.model = model;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if(self.dataArray.count >1 &&indexPath.section == 1) {
+        
+        if (![userDefaults objectForKey:@"firstZhiXiu"]) {
+            [userDefaults setObject:@"1" forKey:@"firstZhiXiu"];
+            [userDefaults synchronize];
+            cell.showLeftSrcollView = @"1";
+            
+        }else {
+            cell.showLeftSrcollView = @"0";
+        }
+    }else {
+        
+        cell.showLeftSrcollView = @"0";
+    }
+    
+    return cell;
+    
+    
+    
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+}
+
+- (UIImage*)createImageWithColor: (UIColor*) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.scrollEnabled = YES;
+        
+        // 上拉加载
+        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    }
+    return _tableView;
+}
+//加载更多
+- (void)loadMoreData {
+    self.pageNum ++;
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/searchAlarmInfo/%d/%d",self.pageNum,self.pageSize]];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    //初始化为日
+    [self.paraArr removeAllObjects];
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(currDic[@"code"]);
+    [self.paraArr addObject:paraDic];
+    WS(weakSelf);
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        [weakSelf.tableView.mj_footer endRefreshing];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"resultresult %@",result);
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
+        [self.tableView reloadData];
+        
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+}
+
+
+- (NSMutableArray *)dataArray {
+    
+    if (!_dataArray) {
+        _dataArray = [[NSMutableArray alloc] init];
+    }
+    return _dataArray;
+}
+
+- (NSMutableArray *)paraArr {
+    
+    if (!_paraArr) {
+        _paraArr = [[NSMutableArray alloc] init];
+    }
+    return _paraArr;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    return headView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    return 10;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+    return headView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    
+    return 0.001;
+}
+
+//
+//历史告警事件：获取某个台站下的告警事件（我的台站-智云）
+//请求地址：/intelligent/keepInRepair/searchAlarmInfo/{pageNum}/{pageSize}
+//       其中，pageNum是页码，pageSize是每页的数据量
+//请求方式：POST
+//请求内容：
+// [{
+//     "name": "stationCode",
+//     "type": "eq",
+//     "content": "XXX"        //台站编码
+//}]
+//请求返回：
+- (void)queryData {
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/searchAlarmInfo/%d/%d",self.pageNum,self.pageSize]];
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    //初始化为日
+    [self.paraArr removeAllObjects];
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(currDic[@"code"]);
+    [self.paraArr addObject:paraDic];
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        [self.dataArray removeAllObjects];
+        NSLog(@"resultresult %@",result);
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
+        [self.tableView reloadData];
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+    
+}
+
+@end

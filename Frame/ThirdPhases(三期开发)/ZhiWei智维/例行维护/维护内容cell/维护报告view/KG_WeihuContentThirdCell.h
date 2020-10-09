@@ -29,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIButton *selectBtn;
 @property (nonatomic, strong) UITextView *textView;
+
+@property (nonatomic, strong) UIButton *specialStarBtn;
+@property (nonatomic, strong) UIButton *promptBtn;
+@property (nonatomic,strong) void(^specialData)(NSDictionary *dataDic);
 @end
 
 NS_ASSUME_NONNULL_END

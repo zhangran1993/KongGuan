@@ -14,6 +14,8 @@
 
 @property (nonatomic ,strong) UITableView *tableView;
 @property (nonatomic ,strong) NSArray *dataArray;
+@property (nonatomic ,assign) NSInteger  currIndex;
+@property (nonatomic ,assign) NSInteger  currSection;
 
 @end
 
@@ -107,11 +109,37 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //    self.dataArray = self.dataDic[indexPath.section];
+    self.currIndex = indexPath.row;
+    self.currSection = indexPath.section;
+    cell.specialData = ^(NSDictionary * _Nonnull dataDic) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        
+        [dic setValue:safeString(dataDic[@"description"]) forKey:@"description"];
+        [dic setValue:safeString(dataDic[@"specialTagName"]) forKey:@"specialTagName"];
+        [dic setValue:safeString(dataDic[@"specialTagValue"]) forKey:@"specialTagValue"];
+        [dic setValue:safeString(dataDic[@"patrolRecordId"]) forKey:@"patrolRecordId"];
+        //        [dic setValue:safeString(dataDic[@"infoId"]) forKey:@"patrolInfoId"];
+        
+        
+        
+        
+        [dic setValue:safeString(dataDic[@"engineRoomCode"]) forKey:@"engineRoomCode"];
+        [dic setValue:safeString(dataDic[@"engineRoomName"]) forKey:@"engineRoomName"];
+        //        [dataDic setValue:safeString(self.dataDic[@"taskTime"]) forKey:@"taskTime"];
+        
+        NSDictionary *currDic = self.listArray[self.currSection];
+        [dic setValue:safeString(currDic[@"equipmentCode"]) forKey:@"equipmentCode"];
+        [dic setValue:safeString(currDic[@"equipmentName"]) forKey:@"equipmentName"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"saveWeiHuSpecialData"
+                                                            object:self
+                                                          userInfo:dic];
+    };
     NSDictionary *dic = self.dataArray[indexPath.section];
     NSArray *arr = dic[@"childrens"];
     NSDictionary *detailDic = arr[indexPath.row];
     cell.dataDic = detailDic;
-   
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -121,7 +149,21 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+  
+    NSDictionary *dic = self.dataArray[indexPath.section];
+    NSArray *arr = dic[@"childrens"];
+    NSDictionary *detailDic = arr[indexPath.row];
+    NSDictionary *dd = nil;
+    NSArray *arr1 = detailDic[@"childrens"];
+    if (arr1.count >0) {
+        dd = [arr1 firstObject];
+    }
+    if (isSafeDictionary(dd[@"atcSpecialTag"])) {
+        NSDictionary *atcDic = dd[@"atcSpecialTag"];
+        if (atcDic.count >0) {
+            return  40 + 57;
+        }
+    }
   
     return  40;
 }

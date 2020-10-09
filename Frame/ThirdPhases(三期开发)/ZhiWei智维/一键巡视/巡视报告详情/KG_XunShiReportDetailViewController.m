@@ -57,6 +57,7 @@
 @property (nonatomic, assign)  BOOL canUpdateOrSubmit;
 
 @property (nonatomic, strong)  KG_RemoveTaskView *alertView;
+
 @end
 
 @implementation KG_XunShiReportDetailViewController
@@ -65,6 +66,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushRemoveToAddressBook) name:@"pushRemoveToAddressBook" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveSpecialData:) name:@"saveSpecialData" object:nil];
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
     self.listModel = [[KG_XunShiReportDataModel alloc]init];
     self.radarModel = [[taskDetail alloc]init];
@@ -77,8 +79,7 @@
     [self getTemplateData];
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    
-    
+   
 }
 - (void)pushRemoveToAddressBook {
     
@@ -122,6 +123,7 @@
     self.xunshiTopView.layer.cornerRadius = 10;
     self.xunshiTopView.layer.masksToBounds = YES;
     self.xunshiTopView.shouqiMethod = ^{
+        
         UIView *tableHeaderView =self.tableView.tableHeaderView;
         
         CGRect frame = tableHeaderView.frame;
@@ -145,6 +147,7 @@
     };
     
     self.xunshiTopView.zhankaiMethod = ^{
+        
         UIView *tableHeaderView =self.tableView.tableHeaderView;
         
         CGRect frame = tableHeaderView.frame;
@@ -167,23 +170,18 @@
         }];
     };
     
-    
-    
     [self.xunshiTopView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tableHeadView.mas_left);
         make.right.equalTo(self.tableHeadView.mas_right);
         make.top.equalTo(self.tableHeadView.mas_top);
         make.height.equalTo(@266);
     }];
-    
-    
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navigationView.mas_bottom);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-    
 }
 
 - (UITableView *)tableView {
@@ -194,11 +192,9 @@
         _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-        
     }
     return _tableView;
 }
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -208,18 +204,23 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return 1;
+    
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     return footView;
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    
     return 10.f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
     return headView;
 }
@@ -228,6 +229,7 @@
     
     return 0.001;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == self.dataModel.task.count) {
         return 124;
@@ -254,6 +256,15 @@
         for (NSDictionary *detailArr in thirdArr) {
             NSArray *fourthArr = detailArr[@"childrens"];
             fourthHeight += fourthArr.count *40;
+            
+            for (NSDictionary *fifDic in fourthArr) {
+                if (isSafeDictionary(fifDic[@"atcSpecialTag"])) {
+                    NSDictionary *specDic = fifDic[@"atcSpecialTag"];
+                    if ([[specDic allValues] count] >0) {
+                        fourthHeight += 57;
+                    }
+                }
+            }
         }
     }
     totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
@@ -322,21 +333,17 @@
     return nil;
 }
 
-
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    
 }
-
 
 - (void)createNaviTopView {
     
     self.topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 224)];
     [self.view addSubview:self.topImage1];
     self.topImage1.contentMode = UIViewContentModeScaleAspectFill;
-    self.topImage1.image  =[UIImage imageNamed:@"zhiwei_topBgImage"];
+    self.topImage1.image = [UIImage imageNamed:@"zhiwei_topBgImage"];
     
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
@@ -381,8 +388,6 @@
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
-    
-    
 }
 
 /** 标题栏 **/
@@ -433,8 +438,6 @@
                 }
             }
             
-            
-            
             [self checkCanChangeTask:dataStr];
             if ([dataStr isEqualToString:@"提交任务"]) {
                 NSLog(@"提交任务");
@@ -479,14 +482,13 @@
         self.xunShiHandelView.hidden = NO;
     }
     
-    
 }
 //任务删除接口：
 //请求地址：/intelligent/atcSafeguard/remove/{id}
 //   其中，id是任务的id
 //请求方式：DELETE
 //删除任务
-- (void)deleteTask {
+- (void)deleteTask   {
     
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定删除吗？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil]];
@@ -693,9 +695,6 @@
     }else {
         paramDic[@"atcPatrolWorkList"] = workList;
     }
-    
-    
-    
     
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -1080,6 +1079,7 @@
 }
 
 - (void)refreshData {
+    
     self.xunshiTopView.model = self.dataModel;
     self.xunshiTopView.dataDic =self.dataDic;
     self.xunshiTopView.leaderString = safeString(self.dataDic[@"leaderName"]);
@@ -1139,7 +1139,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日HH时mm分"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY.MM.dd"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     
@@ -1344,7 +1344,89 @@
         return ;
     } ];
 }
-
-
+//请求地址：/intelligent/atcSafeguard/insertAtcSpecialTag
+//请求Body：List<AtcSpecialTag>对象
+//  [{
+//"patrolRecordId":"XXX",                   //任务的Id
+//"patrolInfoId":"XXX",                      //参数名称层级的id，即父节点的Id
+//"specialTagCode":null,                     //固定值
+//"specialTagName":"XXX",                  //参数名称
+//"specialTagValue":"XXX",                  //参数数值
+//"taskTime":"XXX",                       //任务时间
+//"equipmentCode":"XXX",                  //设备编码
+//"equipmentName":"XXX",                 //设备名称
+//"engineRoomCode":"XXX",                //机房编码
+//"engineRoomName":"XXX",                //机房名称
+//"description":"XXX",                      //描述内容
+//"source":"XXX"                          //任务所属大类型编码，有：
+//                    //specialTour、routineMaintenance、oneTouchTour、specialSafeguard
+//}]
+//请求方式：POST
+//请求返回：
+//如：
+//[{
+//"patrolRecordId":"8d200d7fcaaa4d9aae9af67252d43efb",
+//"patrolInfoId":"2934feb1-7350-478b-be53-2f38cea42ce6",
+//"specialTagCode":null,
+//"specialTagName":"1组电池容量",
+//"specialTagValue":"100.0%",
+//"taskTime":"2020.03.25",
+//"equipmentCode":"HCJF-DMEXDC",
+//"equipmentName":"DME后备电池",
+//"engineRoomCode":"HCDHT-JF",
+//"engineRoomName":"设备机房",
+//"description":"电池正常",
+//"source":"specialTour"
+//}] 
+- (void)saveSpecialData:(NSNotification *)notification {
+    NSDictionary *dic = notification.userInfo;
+    if (dic.count) {
+        NSString *str = safeString(dic[@"description"]);
+        NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/insertAtcSpecialTag"]];
+        
+        NSMutableArray *paramArr = [NSMutableArray arrayWithCapacity:0];
+       
+        
+        NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+        paramDic[@"patrolInfoId"] = safeString(dic[@"patrolRecordId"]);
+        paramDic[@"patrolRecordId"] = safeString(self.dataDic[@"id"]);
+        paramDic[@"specialTagCode"] = safeString(@"");
+        
+        paramDic[@"specialTagName"] = safeString(dic[@"specialTagName"]);
+        paramDic[@"specialTagValue"] = safeString(dic[@"specialTagValue"]);
+        
+        
+        NSString *timeStr = [self timestampToTimeStr:safeString(self.dataDic[@"createTime"])];
+        paramDic[@"taskTime"] = safeString(timeStr);
+        paramDic[@"equipmentCode"] = safeString(dic[@"equipmentCode"]);
+        paramDic[@"equipmentName"] = safeString(dic[@"equipmentName"]);
+        paramDic[@"engineRoomCode"] = safeString(dic[@"engineRoomCode"]);
+        paramDic[@"engineRoomName"] = safeString(dic[@"engineRoomName"]);
+        paramDic[@"description"] = safeString(str);
+        paramDic[@"source"] = safeString(self.dataDic[@"typeCode"]);
+        
+        [paramArr addObject:paramDic];
+   
+        [FrameBaseRequest postWithUrl:FrameRequestURL param:paramArr success:^(id result) {
+            NSInteger code = [[result objectForKey:@"errCode"] intValue];
+            if(code != 0){
+                
+                return ;
+            }
+            [FrameBaseRequest showMessage:@"保存特殊标记成功"];
+            NSLog(@"请求成功");
+          
+        }  failure:^(NSError *error) {
+            NSLog(@"请求失败 原因：%@",error);
+            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+                return;
+            }
+            [FrameBaseRequest showMessage:@"网络链接失败"];
+            return ;
+        } ];
+        
+    }
+}
 
 @end

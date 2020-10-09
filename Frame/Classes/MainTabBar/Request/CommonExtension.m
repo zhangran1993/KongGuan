@@ -195,7 +195,6 @@
 
 + (void)addTViewParent:(UIView *)ParentView textView:(FSTextView *)textView text:(NSString*)text placeholder:(NSString *)placeholder maxLength:(int)maxLength{
     
-    
     // FSTextView
     textView = [FSTextView textView];
     textView.font = FontSize(16);
@@ -239,6 +238,7 @@
     //NSLog(@"confromTimespStr =  %@::%f",confromTimespStr,date);
     return confromTimespStr;
 }
+
 +(void)showMessage:(NSString*)message {
     UIWindow* window = [UIApplication sharedApplication].keyWindow;
     UIView *showview = [[UIView alloc] initWithFrame:CGRectMake(1,1,1,1)] ;
@@ -365,8 +365,6 @@
     
     return containsEmoji;
 }
-
-
 /**
  *  组合请求参数
  *
@@ -376,12 +374,11 @@
  */
 + (NSMutableDictionary *)requestParams:(NSDictionary *)dict
 {
-    //
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
 
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
     return params;
 }
-
+    
 //创建颜色图片
 + (UIImage*)createImageWithColor: (UIColor*) color{
     CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
@@ -515,6 +512,8 @@
         iconString = @"导航技术支持";
     }else if([typeCode isEqualToString:@"dongsanbianGps"]){
         iconString = @"东三边导航运行岗";
+    }else if([typeCode isEqualToString:@"newairportEquipmentInspection"]){
+        iconString = @"新机场设备巡视岗";
     }
     return iconString;
 }
