@@ -17,6 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) void (^changeShouQiBlock)(BOOL shouqi);
 
 @property (nonatomic,assign) NSInteger currSection;
+
+@property (nonatomic,strong) NSDictionary *dataDic;
+
+
+@property (nonatomic,strong)      NSArray         *listArray;
+
+@property (nonatomic,strong)   void (^moreMethodBlock)( NSString *titleStr);
+
+@property (nonatomic,strong) void (^pushToNextStep)( NSString *titleStr,NSDictionary *dataDic);
+
 @end
 
 NS_ASSUME_NONNULL_END

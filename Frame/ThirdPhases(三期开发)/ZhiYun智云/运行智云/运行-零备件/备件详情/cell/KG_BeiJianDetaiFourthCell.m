@@ -37,6 +37,7 @@
 
 - (void)createSubviewsView {
     self.fourthView = [[KG_BeiJianFourthView alloc]init];
+    self.fourthView.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.fourthView];
     [self.fourthView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);

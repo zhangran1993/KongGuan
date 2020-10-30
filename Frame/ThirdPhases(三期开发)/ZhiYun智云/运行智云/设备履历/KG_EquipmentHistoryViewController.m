@@ -11,6 +11,7 @@
 #import "KG_InstrumentationSearchViewController.h"
 #import "KG_InstrumentationDetailViewController.h"
 #import "KG_EquipmentHistoryDetailViewController.h"
+#import "KG_StationFileViewController.h"
 @interface KG_EquipmentHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -324,11 +325,22 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    KG_EquipmentHistoryDetailViewController *vc = [[KG_EquipmentHistoryDetailViewController alloc]init];
-    NSDictionary *dic = self.dataArray[indexPath.section];
-    vc.idStr = safeString(dic[@"id"]);
-    vc.dataDic = dic;
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([self.selType isEqualToString:@"equipFile"]) {
+        KG_EquipmentHistoryDetailViewController *vc = [[KG_EquipmentHistoryDetailViewController alloc]init];
+        NSDictionary *dic = self.dataArray[indexPath.section];
+        vc.idStr = safeString(dic[@"id"]);
+        vc.dataDic = dic;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+       
+        KG_StationFileViewController *vc = [[KG_StationFileViewController alloc]init];
+        NSDictionary *dic = self.dataArray[indexPath.section];
+        vc.idStr = safeString(dic[@"id"]);
+        vc.dataDic = dic;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

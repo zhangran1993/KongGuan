@@ -277,7 +277,9 @@
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcInstrument/%d/%d",self.pageNum,self.pageSize]];
     WS(weakSelf);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         [weakSelf.tableView.mj_footer endRefreshing];
         if(code != 0){

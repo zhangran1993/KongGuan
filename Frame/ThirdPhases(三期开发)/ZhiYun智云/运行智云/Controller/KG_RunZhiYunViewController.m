@@ -18,6 +18,11 @@
 #import "KG_InstrumentationViewController.h"
 #import "KG_EquipmentHistoryViewController.h"
 #import "KG_HistoryWarnEventViewController.h"
+#import "KG_CaseLibraryViewController.h"
+#import "KG_InstrumentationViewController.h"
+#import "KG_ZhiXiu_EquipmentHistoryViewController.h"
+#import "KG_ZhiXiu_CaseLibraryViewController.h"
+#import "KG_ZhiXiu_HistoryWarnEventViewController.h"
 @interface KG_RunZhiYunViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource>
 //品牌
 @property (nonatomic,strong)UICollectionView *collectionView;
@@ -249,23 +254,22 @@
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 3){
         //历史告警事件
-        KG_HistoryWarnEventViewController *vc = [[KG_HistoryWarnEventViewController alloc]init];
+        KG_ZhiXiu_HistoryWarnEventViewController *vc = [[KG_ZhiXiu_HistoryWarnEventViewController alloc]init];
         vc.model = self.model;
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 4){
         //案例库
-        KG_ZhiXiuXunshiRecordViewController *vc = [[KG_ZhiXiuXunshiRecordViewController alloc]init];
+        KG_ZhiXiu_CaseLibraryViewController *vc = [[KG_ZhiXiu_CaseLibraryViewController alloc]init];
         vc.model = self.model;
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 5){
         //仪器仪表
-        KG_ZhiXiuXunshiRecordViewController *vc = [[KG_ZhiXiuXunshiRecordViewController alloc]init];
-        vc.model = self.model;
+        KG_InstrumentationViewController *vc = [[KG_InstrumentationViewController alloc]init];
+//        vc.model = self.model;
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 6){
         //设备履历
-        KG_EquipmentHistoryViewController *vc = [[KG_EquipmentHistoryViewController alloc]init];
-    
+        KG_ZhiXiu_EquipmentHistoryViewController *vc = [[KG_ZhiXiu_EquipmentHistoryViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 7){
         //线缆图谱
@@ -333,7 +337,7 @@
     self.rightButton.layer.borderWidth = 0.5f;
     self.rightButton.layer.cornerRadius = 12.5f;
     self.rightButton.layer.masksToBounds = YES;
-    
+    self.rightButton.userInteractionEnabled = NO;
     [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     [self.rightButton setTitle:@"黄城导航台" forState:UIControlStateNormal];
     self.rightButton.frame = CGRectMake(0,0,81,22);

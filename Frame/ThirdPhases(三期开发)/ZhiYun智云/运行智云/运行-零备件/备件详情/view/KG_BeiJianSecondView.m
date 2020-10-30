@@ -99,7 +99,7 @@
         
     }else if (indexPath.row == 2) {
         cell.titleLabel.text = @"部件号";
-        cell.detailLabel.text = safeString(self.dataDic[@"equipmentCode"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"partNumber"]);
         cell.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     }else if (indexPath.row == 3) {
         cell.titleLabel.text = @"存放地点";

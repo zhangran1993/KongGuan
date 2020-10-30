@@ -192,10 +192,10 @@
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = self.view.backgroundColor;
+        _tableView.backgroundColor = [UIColor clearColor];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.layer.cornerRadius = 10.f;
-        _tableView.layer.masksToBounds = YES;
+//        _tableView.layer.cornerRadius = 10.f;
+//        _tableView.layer.masksToBounds = YES;
         _tableView.scrollEnabled = YES;
     }
     return _tableView;
@@ -236,7 +236,7 @@
         if (cell == nil) {
             cell = [[KG_BeiJianDetailFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_BeiJianDetailFirstCell"];
         }
-       
+        cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         NSDictionary *dataDic = self.dataDic;
         cell.categoryString = self.categoryString;
@@ -249,6 +249,7 @@
         if (cell == nil) {
             cell = [[KG_BeiJianDetailSecondCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_BeiJianDetailSecondCell"];
         }
+        cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         NSDictionary *dataDic = self.dataDic;
         cell.categoryString = self.categoryString;
@@ -259,6 +260,7 @@
         if (cell == nil) {
             cell = [[KG_BeiJianDetailThirdCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_BeiJianDetailThirdCell"];
         }
+        cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.categoryString = self.categoryString;
         NSDictionary *dataDic = self.dataDic;
@@ -273,6 +275,7 @@
         if (cell == nil) {
             cell = [[KG_BeiJianDetaiFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_BeiJianDetaiFourthCell"];
         }
+        cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.categoryString = self.categoryString;
         NSDictionary *dataDic = self.dataDic;
@@ -399,11 +402,12 @@
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navigationView.mas_bottom).offset(18);
+        make.top.equalTo(self.navigationView.mas_bottom).offset(10);
         make.left.equalTo(self.view.mas_left).offset(16);
         make.right.equalTo(self.view.mas_right).offset(-16);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
+    
     
     
     

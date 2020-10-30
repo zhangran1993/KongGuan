@@ -43,14 +43,14 @@
 
     // gradient
     CAGradientLayer *gl = [CAGradientLayer layer];
-    gl.frame = CGRectMake(16,0,SCREEN_WIDTH- 32,50);
+    gl.frame = CGRectMake(0,0,SCREEN_WIDTH- 32,50);
     gl.startPoint = CGPointMake(0.5, 0);
     gl.endPoint = CGPointMake(0.5, 1);
     gl.colors = @[(__bridge id)[UIColor colorWithRed:220/255.0 green:233/255.0 blue:255/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:249/255.0 green:253/255.0 blue:255/255.0 alpha:1.0].CGColor];
     gl.locations = @[@(0), @(1.0f)];
     bgView.layer.cornerRadius = 10;
     bgView.layer.masksToBounds = YES;
-    
+    [bgView.layer addSublayer:gl];
     self.leftTitleLabel = [[UILabel alloc]init];
     [bgView addSubview:self.leftTitleLabel];
     self.leftTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -127,7 +127,7 @@
         cell.detailLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     }else if (indexPath.row == 1) {
         cell.titleLabel.text = @"所属设备";
-        cell.detailLabel.text = safeString(self.deviceStr);
+        cell.detailLabel.text = safeString(self.dataDic[@"equipmentName"]);
         cell.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
         
     }else if (indexPath.row == 2) {

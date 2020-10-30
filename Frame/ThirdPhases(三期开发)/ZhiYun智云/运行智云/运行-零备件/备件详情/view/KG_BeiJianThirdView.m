@@ -103,9 +103,11 @@
     self.textView = [[UITextView alloc]init];
     self.textView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.textView.layer.cornerRadius = 6;
-    self.textView.layer.borderWidth = 0.5;
+//    self.textView.layer.borderWidth = 0.5;
     self.textView.delegate = self;
-    self.textView.layer.borderColor = [[UIColor colorWithHexString:@"#E6E8ED"] CGColor];
+    self.textView.backgroundColor = [UIColor colorWithHexString:@"#F8F9FA"];
+       
+//    self.textView.layer.borderColor = [[UIColor colorWithHexString:@"#E6E8ED"] CGColor];
     self.textView.returnKeyType = UIReturnKeyDone;
     self.textView.text = @"";
     self.textView.userInteractionEnabled = YES;
@@ -129,6 +131,7 @@
     self.placeholderLabel = [[UILabel alloc]init];
     [textBgView addSubview:self.placeholderLabel];
     self.placeholderLabel.text = @"请填写备注内容";
+   
     self.placeholderLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
     self.placeholderLabel.numberOfLines = 1;
     self.placeholderLabel.textAlignment = NSTextAlignmentLeft;

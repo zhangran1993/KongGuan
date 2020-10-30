@@ -78,6 +78,16 @@
          make.height.equalTo(self.mas_height);
          
      }];
+    
+    UIView *lineView =[[UIView alloc]init];
+    [self addSubview:lineView];
+    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).offset(-16);
+        make.bottom.equalTo(self.mas_bottom);
+        make.left.equalTo(self.mas_left).offset(16);
+        make.height.equalTo(@0.5);
+    }];
 }
 
 - (void)setDataDic:(NSDictionary *)dataDic {

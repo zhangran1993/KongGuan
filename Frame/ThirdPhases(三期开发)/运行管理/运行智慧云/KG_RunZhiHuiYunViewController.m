@@ -16,6 +16,7 @@
 #import "KG_InstrumentationViewController.h"
 #import "KG_EquipmentHistoryViewController.h"
 #import "KG_HistoryWarnEventViewController.h"
+#import "KG_CaseLibraryViewController.h"
 @interface KG_RunZhiHuiYunViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource>
 //品牌
 @property (nonatomic,strong)UICollectionView *collectionView;
@@ -177,7 +178,9 @@
         KG_HistoryWarnEventViewController *vc = [[KG_HistoryWarnEventViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 4){
-        KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
+        //案例库
+        KG_CaseLibraryViewController *vc = [[KG_CaseLibraryViewController alloc]init];
+        
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 5){
         
@@ -253,7 +256,7 @@
     self.rightButton.layer.borderWidth = 0.5f;
     self.rightButton.layer.cornerRadius = 12.5f;
     self.rightButton.layer.masksToBounds = YES;
-    
+    self.rightButton.userInteractionEnabled = NO;
     [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     [self.rightButton setTitle:@"黄城导航台" forState:UIControlStateNormal];
     self.rightButton.frame = CGRectMake(0,0,81,22);
@@ -315,8 +318,6 @@
     }
     self.stationArray = [KG_ZhiTaiStationModel mj_objectArrayWithKeyValuesArray:list];
     [self getStationList];
-    
-    
     
 }
 

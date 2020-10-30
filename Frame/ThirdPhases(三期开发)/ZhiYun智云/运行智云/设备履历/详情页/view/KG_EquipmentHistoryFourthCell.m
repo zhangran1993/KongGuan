@@ -30,6 +30,8 @@
 @property (nonatomic ,assign)     BOOL               firstEnter;
 
 @property (nonatomic ,strong)     UIButton           *footBtn;
+
+@property (nonatomic ,strong)     UIButton           *rightBtn;
 @end
 
 @implementation KG_EquipmentHistoryFourthCell
@@ -105,52 +107,37 @@
         make.bottom.equalTo(self.centerView.mas_bottom);
     }];
     
+    self.rightBtn = [[UIButton alloc]init];
+    self.rightBtn.hidden = YES;
+    [self.centerView addSubview:self.rightBtn];
+    [self.rightBtn setImage: [UIImage imageNamed:@"common_right"] forState:UIControlStateNormal];
+    [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@18);
+        make.right.equalTo(self.centerView.mas_right).offset(-10);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+    }];
+    
     
     self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
     
     self.footBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/4, 0, SCREEN_WIDTH/2, 40)];
-    [self.footBtn setTitle:@"收起" forState:UIControlStateNormal];
-    if (self.shouqi) {
-        [self.footBtn setTitle:@"展开" forState:UIControlStateNormal];
-    }
+    [self.footBtn setTitle:@"更多" forState:UIControlStateNormal];
+   
     self.footBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     [self.footBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
-    [self.footBtn addTarget:self action:@selector(zhankaiMethod:) forControlEvents:UIControlEventTouchUpInside];
-    [self.footBtn setImage:[UIImage imageNamed:@"shouqi_icon"] forState:UIControlStateNormal];
-    if (self.shouqi) {
-        
-        [self.footBtn setImage:[UIImage imageNamed:@"zhankai"]  forState:UIControlStateNormal];
-    }
-    [self.footBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 70, 0,0 )];
+    [self.footBtn addTarget:self action:@selector(moreMethod:) forControlEvents:UIControlEventTouchUpInside];
+   
     [self.tableHeadView addSubview:self.footBtn];
+   
+    self.tableView.tableFooterView = self.tableHeadView;
     
 }
-- (void)zhankaiMethod :(UIButton *)button {
-    self.firstEnter = YES;
-    
-    if (self.shouqi) {
-        self.shouqi = NO;
-        if (self.changeShouQiBlock) {
-            self.changeShouQiBlock(self.shouqi);
-        }
- 
-    }else {
-        self.shouqi = YES;
 
-        if (self.changeShouQiBlock) {
-            self.changeShouQiBlock(self.shouqi);
-        }
+- (void)moreMethod:(UIButton *)button {
+    if(self.moreMethodBlock){
+        self.moreMethodBlock(safeString(self.titleLabel.text));
+    }
         
-    }
-    
-    if (self.shouqi) {
-        [self.footBtn setTitle:@"展开" forState:UIControlStateNormal];
-         [self.footBtn setImage:[UIImage imageNamed:@"zhankai"]  forState:UIControlStateNormal];
-    }else {
-        [self.footBtn setImage:[UIImage imageNamed:@"shouqi_icon"] forState:UIControlStateNormal];
-        [self.footBtn setTitle:@"收起" forState:UIControlStateNormal];
-    }
-    [self.tableView reloadData];
 }
 
 - (void)setDataModel:(KG_EquipmentHistoryModel *)dataModel {
@@ -159,31 +146,9 @@
     self.dataArray = self.dataModel.fileList;
     self.tableView.tableFooterView = self.tableHeadView;
     
-    if (!self.firstEnter) {
-        
-        if (self.dataArray.count >2) {
-            self.shouqi = YES;
-            
-        }else {
-            self.shouqi = NO;
-            
-        }
-        if (self.shouqi) {
-            [self.footBtn setTitle:@"展开" forState:UIControlStateNormal];
-            [self.footBtn setImage:[UIImage imageNamed:@"zhankai"]  forState:UIControlStateNormal];
-        }else {
-            [self.footBtn setImage:[UIImage imageNamed:@"shouqi_icon"] forState:UIControlStateNormal];
-            [self.footBtn setTitle:@"收起" forState:UIControlStateNormal];
-        }
-        [self.tableView reloadData];
-        return;
-    }
-
-    
     [self.tableView reloadData];
    
 }
-
 
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -192,7 +157,7 @@
         _tableView.dataSource = self;
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = YES;
+        _tableView.scrollEnabled = NO;
         
     }
     return _tableView;
@@ -200,7 +165,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (self.shouqi) {
+    if (self.dataArray.count >2) {
         return 2;
     }
     return self.dataArray.count;
@@ -227,6 +192,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    if (self.pushToNextStep) {
+        self.pushToNextStep(self.titleLabel.text,dataDic);
+    }
 }
 
 
@@ -257,6 +226,7 @@
 - (void)setCurrSection:(NSInteger)currSection {
     _currSection = currSection;
     self.titleLabel.text = @"设备故障事件记录";
+    self.rightBtn.hidden = YES;
     if (currSection == 3) {
         self.titleLabel.text = @"设备故障事件记录";
         self.iconImage.image = [UIImage imageNamed:@"kg_Failureevent_icon"];
@@ -285,7 +255,22 @@
     }else if (currSection == 10) {
         self.titleLabel.text = @"备件库存";
         self.iconImage.image = [UIImage imageNamed:@"kg_Failureevent_icon"];
+        self.rightBtn.hidden = NO;
     }
     
+}
+
+
+- (void)setDataDic:(NSDictionary *)dataDic {
+    _dataDic = dataDic;
+    
+    
+}
+
+
+- (void)setListArray:(NSArray *)listArray {
+    _listArray = listArray;
+    self.dataArray = listArray;
+    [self.tableView reloadData];
 }
 @end

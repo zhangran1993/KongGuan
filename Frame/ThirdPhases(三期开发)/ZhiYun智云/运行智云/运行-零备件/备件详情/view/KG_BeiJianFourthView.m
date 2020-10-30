@@ -15,6 +15,8 @@
 @property (nonatomic,strong)    UITableView             *tableView;
 
 @property (nonatomic,strong)    NSMutableArray          *dataArray;
+
+@property (nonatomic,strong) UIView *noDataView;
     
 
 
@@ -78,7 +80,39 @@
         make.bottom.equalTo(bgView.mas_bottom);
     }];
     
-     
+    self.noDataView = [[UIView alloc]init];
+    [bgView addSubview:self.noDataView];
+    [self.noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(bgView.mas_top).offset(50);
+        make.left.equalTo(bgView.mas_left).offset(20);
+        make.right.equalTo(bgView.mas_right).offset(-20);
+        make.bottom.equalTo(bgView.mas_bottom);
+    }];
+//    self.noDataView.hidden = YES;
+    UIImageView *icImage = [[UIImageView alloc]init];
+    icImage.image = [UIImage imageNamed:@"station_ReportNoData@2x"];
+    [self.noDataView addSubview:icImage];
+    [icImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@302);
+        make.height.equalTo(@153);
+        make.centerX.equalTo(self.noDataView.mas_centerX);
+        make.centerY.equalTo(self.noDataView.mas_centerY);
+    }];
+    
+    UILabel *noDataLabel = [[UILabel alloc]init];
+    [self.noDataView addSubview:noDataLabel];
+    noDataLabel.text = @"当前暂无任务";
+    noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
+    noDataLabel.font = [UIFont systemFontOfSize:12];
+    noDataLabel.textAlignment = NSTextAlignmentCenter;
+    [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.noDataView.mas_centerX);
+        make.height.equalTo(@17);
+        make.width.equalTo(@200);
+        make.top.equalTo(iconImage.mas_bottom).offset(27);
+    }];
+    
+    
 }
 
 
@@ -153,6 +187,24 @@
 - (void)setLvliArr:(NSArray *)lvliArr {
     _lvliArr = lvliArr;
     [self.tableView reloadData];
+    if (lvliArr.count == 0) {
+        self.noDataView.hidden = NO;
+    }else {
+        
+        self.noDataView.hidden = YES;
+    }
 }
+
+- (UIView *)noDataView {
+    
+    if (_noDataView) {
+        _noDataView = [[UIView alloc]init];
+      
+        
+    }
+    
+    return _noDataView;
+}
+
 
 @end

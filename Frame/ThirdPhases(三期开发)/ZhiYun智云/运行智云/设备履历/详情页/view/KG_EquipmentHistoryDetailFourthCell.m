@@ -30,18 +30,7 @@
 
 - (void)createSubviewsView {
     
-    self.iconImage = [[UIImageView alloc]init];
-    [self addSubview:self.iconImage];
-    self.iconImage.image = [UIImage imageNamed:@"kg_leng_icon"];
-    
-    [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@6);
-        make.left.equalTo(self.mas_left).offset(16);
-        make.centerY.equalTo(self.mas_centerY);
-    }];
-    
-    
-    
+  
     
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
@@ -51,9 +40,9 @@
     self.titleLabel.text = @"";
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImage.mas_right).offset(7);
+        make.left.equalTo(self.mas_left).offset(40);
         make.right.equalTo(self.mas_right).offset(-60);
-        make.centerY.equalTo(self.iconImage.mas_centerY);
+        make.centerY.equalTo(self.mas_centerY);
         make.height.equalTo(@45);
     }];
     
@@ -80,6 +69,14 @@
     _dataDic = dataDic;
     
     self.titleLabel.text = safeString(dataDic[@"name"]);
+    if(safeString(dataDic[@"name"]).length == 0) {
+        self.titleLabel.text = safeString(dataDic[@"title"]);
+        if(safeString(dataDic[@"title"]).length == 0) {
+            self.titleLabel.text = safeString(dataDic[@"taskName"]);
+        }
+    }
+    
+   
     
 }
 @end

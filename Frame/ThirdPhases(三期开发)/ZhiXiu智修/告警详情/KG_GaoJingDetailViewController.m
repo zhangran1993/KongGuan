@@ -20,6 +20,11 @@
 #import "KG_RunZhiYunViewController.h"
 #import "KG_ReViewPhotoView.h"
 #import <AVKit/AVKit.h>
+#import "KG_FailureNoticeViewController.h"
+
+
+#import "KG_EmergencyTreatmentViewController.h"
+#import "KG_EquipmentTroubleshootingViewController.h"
 @interface KG_GaoJingDetailViewController ()<UITableViewDelegate,UITableViewDataSource,TZImagePickerControllerDelegate>
 
 
@@ -320,6 +325,10 @@
         };
         cell.clickToGuZhang = ^{
             NSLog(@"跳转故障通告");
+            
+            KG_FailureNoticeViewController  *guVC = [[KG_FailureNoticeViewController alloc] init];
+            guVC.model = self.dataModel;
+            [self.navigationController pushViewController:guVC animated:YES];
         };
         cell.clickToHuiZhen = ^{
             NSLog(@"跳转远程会诊");
@@ -334,6 +343,26 @@
             cell = [[KG_GaoJingDetailThirdCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_GaoJingDetailThirdCell"];
             
         }
+        cell.pushToNextStep = ^(NSString * _Nonnull titleStr, KG_GaoJingDetailModel * _Nonnull model) {
+            if ([titleStr isEqualToString:@"EmergencyTreatment"]) {
+                KG_EmergencyTreatmentViewController  *vc = [[KG_EmergencyTreatmentViewController alloc] init];
+                vc.model = self.model;
+                vc.dataModel = model;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if ([titleStr isEqualToString:@"FailureNotice"]) {
+                
+                KG_FailureNoticeViewController  *vc = [[KG_FailureNoticeViewController alloc] init];
+                vc.model = model;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if ([titleStr isEqualToString:@"EquipmentTroubleshooting"]) {
+                KG_EquipmentTroubleshootingViewController *vc = [[KG_EquipmentTroubleshootingViewController alloc] init];
+                vc.model = model;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        };
+        cell.changeStatus = ^(NSString * _Nonnull titleStr) {
+            [self changeStatus:titleStr];
+        };
         cell.model = self.dataModel;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -414,6 +443,56 @@
     
 }
 
+- (void)changeStatus:(NSString *)titleStr {
+    if([titleStr isEqualToString:@"finish"]) {
+        
+        return;
+    }
+    NSString *idCode = safeString(self.model.id);
+    
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/saveAlarmInfo",WebNewHost];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = idCode;
+    paramDic[@"recordDescription"] = safeString(self.recordDescription) ;
+    paramDic[@"videosList"] = self.videoArray;
+    paramDic[@"imageList"] = self.imageArray;
+    paramDic[@"recordStatus"] =safeString(titleStr) ;
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        if (self.fixStatus) {
+            
+            [FrameBaseRequest showMessage:@"修改成功"];
+            self.fixStatus = NO;
+        }else {
+            if([UserManager shareUserManager].isDeletePicture) {
+                [FrameBaseRequest showMessage:@"删除成功"];
+            }else {
+                [FrameBaseRequest showMessage:@"上传成功"];
+            }
+        }
+        [self refreshGetData];
+        
+        [self.tableView reloadData];
+        
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+}
+
 - (void)playVideo:(NSString *)dic {
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", dic]];
@@ -430,7 +509,13 @@
     }else if (indexPath.section == 1) {
         return 136;
     }else if (indexPath.section == 2) {
-        return 131  ;
+        NSString *recordStatus = safeString(self.dataModel.info[@"recordStatus"]);
+        NSString *sstatus = safeString(self.dataModel.info[@"status"]);
+        NSString *hangUpStatus = safeString(self.dataModel.info[@"hangupStatus"]);
+        if ([recordStatus isEqualToString:@"completed"] || [sstatus isEqualToString:@"removed"] || [hangUpStatus isEqualToString:@"YES"]) {
+            return 131;
+        }
+        return 131 + 50  ;
     }else if (indexPath.section == 3) {
         return 317;
     }else if (indexPath.section == 4) {
@@ -445,8 +530,8 @@
     NSString *userID = [UserManager shareUserManager].userID ;
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
-     paramDic[@"id"] = safeString(dataDic[@"id"]);
-     paramDic[@"patrolName"] = safeString(userID);
+    paramDic[@"id"] = safeString(dataDic[@"id"]);
+    paramDic[@"patrolName"] = safeString(userID);
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
