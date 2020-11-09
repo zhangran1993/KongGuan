@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) KG_InstrumentationDetailModel *dataModel;
 
 @property (nonatomic,strong) void (^changeShouQiBlock)(BOOL shouqi);
+
+
+@property (nonatomic,strong) void(^pushToNextStep)(NSDictionary *dataDic);
 @end
 
 NS_ASSUME_NONNULL_END

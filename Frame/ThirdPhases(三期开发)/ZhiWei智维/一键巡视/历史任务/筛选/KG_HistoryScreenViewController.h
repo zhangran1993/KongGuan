@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString             *alarmStatusStr;
 @property (nonatomic, copy) NSString             *startTime;
 @property (nonatomic, copy) NSString             *endTime;
+
 @property (nonatomic ,strong) void(^confirmBlockMethod)(NSString *taskStr,NSString *roomStr,NSString *taskStausStr, NSString *startTimeStr,NSString *endTimeStr,NSArray *roomArray);
 @end
 

@@ -90,18 +90,18 @@
     }];
 //    self.noDataView.hidden = YES;
     UIImageView *icImage = [[UIImageView alloc]init];
-    icImage.image = [UIImage imageNamed:@"station_ReportNoData@2x"];
+    icImage.image = [UIImage imageNamed:@"no_lvli_Image"];
     [self.noDataView addSubview:icImage];
     [icImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@302);
-        make.height.equalTo(@153);
+        make.width.equalTo(@62);
+        make.height.equalTo(@57);
         make.centerX.equalTo(self.noDataView.mas_centerX);
-        make.centerY.equalTo(self.noDataView.mas_centerY);
+        make.top.equalTo(self.noDataView.mas_top).offset(50);
     }];
     
     UILabel *noDataLabel = [[UILabel alloc]init];
     [self.noDataView addSubview:noDataLabel];
-    noDataLabel.text = @"当前暂无任务";
+    noDataLabel.text = @"暂无备份履历";
     noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
     noDataLabel.font = [UIFont systemFontOfSize:12];
     noDataLabel.textAlignment = NSTextAlignmentCenter;
@@ -109,7 +109,7 @@
         make.centerX.equalTo(self.noDataView.mas_centerX);
         make.height.equalTo(@17);
         make.width.equalTo(@200);
-        make.top.equalTo(iconImage.mas_bottom).offset(27);
+        make.top.equalTo(icImage.mas_bottom).offset(5);
     }];
     
     
@@ -193,17 +193,6 @@
         
         self.noDataView.hidden = YES;
     }
-}
-
-- (UIView *)noDataView {
-    
-    if (_noDataView) {
-        _noDataView = [[UIView alloc]init];
-      
-        
-    }
-    
-    return _noDataView;
 }
 
 

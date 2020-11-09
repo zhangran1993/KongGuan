@@ -74,7 +74,7 @@
         make.left.equalTo(self.mas_left).offset(16);
         make.right.equalTo(self.mas_right).offset(-16);
         make.top.equalTo(self.mas_top).offset(5);
-        make.height.equalTo(@170);
+        make.height.equalTo(@165);
     }];
     self.centerView.layer.cornerRadius = 10.f;
     self.centerView.layer.masksToBounds = YES;

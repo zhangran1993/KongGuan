@@ -103,9 +103,12 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     
-    if (self.uploadReceive) {
-        self.uploadReceive(textField.text);
+    if(textField.text.length >0) {
+        if (self.uploadReceive) {
+            self.uploadReceive(textField.text);
+        }
     }
+    
     return YES;
 }
 

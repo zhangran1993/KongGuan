@@ -46,6 +46,15 @@
         _gradientType = 1;
         _type = type;
         
+        
+        self.colorLayerArray = [NSMutableArray arrayWithCapacity:0];
+        self.markLabelArray  = [NSMutableArray arrayWithCapacity:0];
+        self.gradientLayerArray  = [NSMutableArray arrayWithCapacity:0];
+        self.singleColorLayer = [NSMutableArray arrayWithCapacity:0];
+        
+        
+        
+        
         [self drawLine];
     }
     
@@ -477,34 +486,34 @@
     int v = value / 10;
     [self maxValue:v];
 }
-
-- (NSMutableArray *)colorLayerArray{
-    if (!_colorLayerArray) {
-        _colorLayerArray = [NSMutableArray array];
-    }
-    return _colorLayerArray;
-}
-
-
-- (NSMutableArray *)markLabelArray{
-    if (!_markLabelArray) {
-        _markLabelArray = [NSMutableArray array];
-    }
-    return _markLabelArray;
-}
-
-- (NSMutableArray *)gradientLayerArray{
-    if (!_gradientLayerArray) {
-        _gradientLayerArray = [NSMutableArray array];
-    }
-    return _gradientLayerArray;
-}
-
-- (NSMutableArray *)singleColorLayer{
-    if (!_singleColorLayer) {
-        _singleColorLayer = [NSMutableArray array];
-    }
-    return _singleColorLayer;
-}
+//
+//- (NSMutableArray *)colorLayerArray{
+//    if (!_colorLayerArray) {
+//        _colorLayerArray = [NSMutableArray array];
+//    }
+//    return _colorLayerArray;
+//}
+//
+//
+//- (NSMutableArray *)markLabelArray{
+//    if (!_markLabelArray) {
+//        _markLabelArray = [NSMutableArray array];
+//    }
+//    return _markLabelArray;
+//}
+//
+//- (NSMutableArray *)gradientLayerArray{
+//    if (!_gradientLayerArray) {
+//        _gradientLayerArray = [NSMutableArray array];
+//    }
+//    return _gradientLayerArray;
+//}
+//
+//- (NSMutableArray *)singleColorLayer{
+//    if (!_singleColorLayer) {
+//        _singleColorLayer = [NSMutableArray array];
+//    }
+//    return _singleColorLayer;
+//}
 
 @end

@@ -14,6 +14,8 @@
 #import "KG_XunShiReportDetailViewController.h"
 #import "KG_InspectionRecordsViewController.h"
 #import "KG_InspectionRecordCell.h"
+
+#import "KG_WeihuDailyReportDetailViewController.h"
 @interface KG_ZhiXiuXunshiRecordViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UIView *noDataView;
@@ -77,7 +79,7 @@
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
-        make.height.equalTo(@120);
+        make.height.equalTo(@105);
     }];
     
     UIImageView *speakIcon = [[UIImageView alloc]init];
@@ -95,7 +97,7 @@
     [topView addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     titleLabel.font = [UIFont systemFontOfSize:12];
-    titleLabel.text = @"这里仅展示与该告警事件有关的技术资料，您可以切换到该台站查看更多信息。";
+    titleLabel.text = @"这里仅展示与该告警事件有关的巡视维护记录，您可以切换到该台站查看更多信息。";
     titleLabel.numberOfLines = 2;
     [titleLabel sizeToFit];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -113,7 +115,7 @@
     [botBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     [botBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(topView.mas_right).offset(-20);
-        make.top.equalTo(topView.mas_top).offset(56);
+        make.top.equalTo(titleLabel.mas_bottom).offset(5);
         make.height.equalTo(@28);
         make.width.equalTo(@80);
     }];
@@ -121,6 +123,16 @@
     botBtn.layer.cornerRadius = 4.f;
     botBtn.layer.masksToBounds = YES;
     
+    
+    UIImageView *botImage = [[UIImageView alloc]init];
+    [topView addSubview:botImage];
+    botImage.image = [UIImage imageNamed:@"kg_jianbian_Image"];
+    [botImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(topView.mas_left);
+        make.right.equalTo(topView.mas_right);
+        make.bottom.equalTo(topView.mas_bottom);
+        make.height.equalTo(@18);
+    }];
 }
 
 
@@ -471,11 +483,31 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.row];
     
-    KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
-    vc.dataDic = dataDic;
-    [self.navigationController pushViewController:vc animated:YES];
-    //    NSString *str = self.dataArray[indexPath.row];
-    
+   
+    NSString *titleStr = safeString(dataDic[@"typeCode"]);
+    if([titleStr isEqualToString:@"oneTouchTour"]) {
+        
+        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+        vc.dataDic = dataDic;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }else  if([titleStr isEqualToString:@"routineMaintenance"]) {
+        
+        KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
+        vc.dataDic = dataDic;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }else  if([titleStr isEqualToString:@"specialSafeguard"] ||
+              [titleStr isEqualToString:@"specialTour"]) {
+        
+        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+        vc.dataDic = dataDic;
+        vc.themeTitleStr = @"特殊保障详情";
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
 }
 
 

@@ -80,7 +80,7 @@
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).offset(2);
         make.right.equalTo(self.titleLabel.mas_right);
-        
+        make.height.equalTo(@20);
         make.width.equalTo(@150);
     }];
     
@@ -102,10 +102,10 @@
     if([safeString(dic[@"status"]) isEqualToString:@"removed"]) {
         self.timeLabel.text = [NSString stringWithFormat:@"%@-\n%@",[self timestampToTimeStr:safeString(dic[@"suppressStartTime"])],[self timestampToTimeStr:safeString(dic[@"suppressEndTime"])]];
     }
-    if (safeString(dic[@"suppressStartTime"]).length == 0 &&
-        safeString(dic[@"suppressEndTime"]).length == 0) {
-        self.timeLabel.text = @"";
-    }
+//    if (safeString(dic[@"suppressStartTime"]).length == 0 &&
+//        safeString(dic[@"suppressEndTime"]).length == 0) {
+//        self.timeLabel.text = @"";
+//    }
     
     
 }

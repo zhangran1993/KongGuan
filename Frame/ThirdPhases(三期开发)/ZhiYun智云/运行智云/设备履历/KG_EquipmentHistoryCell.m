@@ -188,12 +188,14 @@
         self.firstLabel.text = @"所属台站：";
         self.secondTextLabel.text = safeString(dataDic[@"type"]);
         self.secondLabel.text = @"设备类型：";
-        self.thirdImageView.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"alarmStatus"])]];
+        self.thirdImageView.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"status"])]];
         self.thirdLabel.text = @"设备状态：";
         self.rightNumLabel.text = safeString(_dataDic[@"alarmNum"]);
         self.rightNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",safeString(_dataDic[@"status"])]];
-        if([safeString(_dataDic[@"alarmNum"]) floatValue] <=0) {
+        if([_dataDic[@"alarmNum"] floatValue] <=0) {
             self.rightNumLabel.hidden = YES;
+        }else {
+            self.rightNumLabel.hidden = NO;
         }
         
     }else {
@@ -205,7 +207,7 @@
         self.firstLabel.text = @"台站简称：";
         self.secondTextLabel.text = safeString(dataDic[@"categoryName"]);
         self.secondLabel.text = @"台站分类：";
-        self.thirdImageView.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"status"])]];
+        self.thirdImageView.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"alarmStatus"])]];
         self.thirdLabel.text = @"台站状态：";
         self.rightNumLabel.text = safeString(_dataDic[@"alarmNum"]);
         

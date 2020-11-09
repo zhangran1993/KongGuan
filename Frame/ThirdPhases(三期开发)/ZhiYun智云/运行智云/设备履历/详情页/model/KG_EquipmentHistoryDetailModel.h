@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 //备件统计
 @property (nonatomic ,strong) NSArray * sparePartsStatistics;
 
+//最后告警统计
+@property (nonatomic ,strong) NSDictionary * lastestWarnDic;
+
 @end
 
 NS_ASSUME_NONNULL_END

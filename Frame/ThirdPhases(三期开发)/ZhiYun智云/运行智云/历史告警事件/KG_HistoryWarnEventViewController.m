@@ -18,6 +18,10 @@
 #import "KG_ControlGaoJingAlertView.h"
 #import "KG_HistoryWarnEventScreenViewController.h"
 #import "KG_HistoryWarnEventCell.h"
+#import "KG_GaoJingDetailViewController.h"
+#import "KG_GaoJingModel.h"
+#import "KG_NoDataPromptView.h"
+
 
 @interface KG_HistoryWarnEventViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -52,6 +56,8 @@
 
 @property(strong,nonatomic)   NSArray              *roomArray;
 @property(strong,nonatomic)   NSArray              *kongArray;
+
+@property(strong,nonatomic)   KG_NoDataPromptView  *nodataView;
 @end
 
 @implementation KG_HistoryWarnEventViewController
@@ -238,6 +244,9 @@
     if(tableView == self.stationTabView){
         return self.stationArray.count;
     }
+    if (self.dataArray.count ==0) {
+        return 0;
+    }
     return 1;
 }
 
@@ -280,6 +289,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    NSDictionary *dataDic = self.dataArray[indexPath.section];
+    KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
+    KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
+    [model mj_setKeyValues:dataDic];
+    vc.model = model;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 
@@ -432,6 +447,11 @@
         NSLog(@"resultresult %@",result);
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
         [self.tableView reloadData];
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -665,6 +685,11 @@
         NSLog(@"resultresult %@",result);
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
         [self.tableView reloadData];
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -676,6 +701,22 @@
         return ;
     } ];
     
-    
+}
+
+- (KG_NoDataPromptView *)nodataView {
+    if (!_nodataView) {
+        _nodataView = [[KG_NoDataPromptView alloc]init];
+        [self.view addSubview:_nodataView];
+        [self.view bringSubviewToFront:_nodataView];
+        _nodataView.noDataLabel.text = @"当前暂无数据";
+        [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+       
+    }
+    return _nodataView;
 }
 @end

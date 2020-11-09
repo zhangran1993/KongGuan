@@ -41,6 +41,8 @@
     self.pageNum = 1;
     self.pageSize = 10;
     self.currIndex = 0;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshZhiWeiData) name:@"refreshZhiWeiData" object:nil];
     //初始化为日
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     
@@ -128,6 +130,12 @@
     }];
     
    
+}
+
+//刷新智维页面数据
+- (void)refreshZhiWeiData {
+    
+    [self refreshData];
 }
 
 - (void)backButtonClick:(UIButton *)button {
@@ -355,6 +363,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.row];
+    
      
     KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
     vc.dataDic = dataDic;
@@ -749,5 +758,48 @@
     }];
 }
 
+
+- (void)refreshData {
+    
+    self.pageNum = 1;
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcPatrolRecode/app/all/%d/%d",WebNewHost,self.pageNum,self.pageSize];
+    WS(weakSelf);
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+        [self.tableView.mj_footer endRefreshing];
+        [self.dataArray removeAllObjects];
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        
+        [self.tableView reloadData];
+        if(self.dataArray.count) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+}
 
 @end

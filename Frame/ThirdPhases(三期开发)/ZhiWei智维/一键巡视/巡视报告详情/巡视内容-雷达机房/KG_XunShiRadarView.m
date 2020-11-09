@@ -188,12 +188,27 @@
         NSArray *fourthArr = detailArr[@"childrens"];
         fourthHeight += fourthArr.count *40;
         for (NSDictionary *fifDic in fourthArr) {
-            if (isSafeDictionary(fifDic[@"atcSpecialTag"])) {
-                NSDictionary *specDic = fifDic[@"atcSpecialTag"];
-                if ([[specDic allValues] count] >0) {
-                    fourthHeight += 57;
+            NSArray *fifArr = fifDic[@"childrens"];
+            NSDictionary *sixDic = [fifArr firstObject];
+            
+            NSArray *sixArr = sixDic[@"childrens"];
+            if (sixArr.count >0) {
+                NSDictionary *sevenDic = [sixArr firstObject];
+                if (isSafeDictionary(sevenDic[@"atcSpecialTag"])) {
+                    NSDictionary *specDic = sevenDic[@"atcSpecialTag"];
+                    if (safeString(specDic[@"specialTagCode"]).length >0) {
+                        fourthHeight += 57;
+                    }
+                }
+            }else {
+                if (isSafeDictionary(sixDic[@"atcSpecialTag"])) {
+                    NSDictionary *specDic = sixDic[@"atcSpecialTag"];
+                    if (safeString(specDic[@"specialTagCode"]).length >0) {
+                        fourthHeight += 57;
+                    }
                 }
             }
+
         }
     }
     

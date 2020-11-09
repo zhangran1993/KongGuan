@@ -20,6 +20,13 @@
 #import "KG_FaultEventRecordViewController.h"
 #import "KG_EquipmentAdjustmentRecordViewController.h"
 #import "KG_WatchPdfViewController.h"
+#import "KG_GaoJingDetailViewController.h"
+#import "KG_GaoJingModel.h"
+
+
+#import "KG_XunShiReportDetailViewController.h"
+#import "KG_WeihuDailyReportDetailViewController.h"
+#import "KG_SparepartsInventoryViewController.h"
 @interface KG_EquipmentHistoryDetailViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -71,6 +78,9 @@
     
     //查询备件大分类
     [self querySparePartData];
+    
+    //查询最后告警统计
+    [self queryLastedWarnData];
   
 }
 
@@ -327,6 +337,7 @@
         if (cell == nil) {
             cell = [[KG_LastestWarnTotalCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_LastestWarnTotalCell"];
         }
+        cell.dataDic = self.dataModel.lastestWarnDic;
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
       
@@ -356,6 +367,16 @@
                 
             }else  if([titleStr isEqualToString:@"设备告警记录"]) {
                 
+                KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
+                KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
+                [model mj_setKeyValues:dataDic];
+                vc.model = model;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+                
+                
+            }else  if([titleStr isEqualToString:@"设备调整记录"]) {
+                
                 KG_EquipmentAdjustmentRecordViewController *vc = [[KG_EquipmentAdjustmentRecordViewController alloc]init];
                 vc.dataDic = dataDic;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -366,7 +387,37 @@
                 vc.dataDic = dataDic;
                 [self.navigationController pushViewController:vc animated:YES];
                 
+            }else  if([titleStr isEqualToString:@"巡视记录"]) {
+                
+                KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+                vc.dataDic = dataDic;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else  if([titleStr isEqualToString:@"维护记录"]) {
+                
+                KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
+                vc.dataDic = dataDic;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else  if([titleStr isEqualToString:@"特殊保障记录"]) {
+                
+                KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+                vc.dataDic = dataDic;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else  if([titleStr isEqualToString:@"备件库存"]) {
+                
+                
+                KG_SparepartsInventoryViewController *vc = [[KG_SparepartsInventoryViewController alloc]init];
+                KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
+                [model mj_setKeyValues:dataDic];
+                vc.model = model;
+                [self.navigationController pushViewController:vc animated:YES];
             }
+            
         };
      
         cell.moreMethodBlock = ^(NSString * _Nonnull titleStr) {
@@ -779,5 +830,41 @@
         //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
+}
+
+
+- (void)queryLastedWarnData {
+    
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDataCenter/getStationAlarmGrade"]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            return ;
+        }
+        
+        self.dataModel.lastestWarnDic = result[@"value"];
+        [self.tableView reloadData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+    
 }
 @end

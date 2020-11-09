@@ -12,6 +12,7 @@
 #import "KG_InstrumentationDetailViewController.h"
 #import "KG_EquipmentHistoryDetailViewController.h"
 #import "KG_StationFileViewController.h"
+#import "KG_EquipmentHistoryScreenViewController.h"
 @interface KG_EquipmentHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -43,6 +44,9 @@
 
 @property (nonatomic,strong) UIButton           *rightBtn;
 @property (nonatomic,strong) UIImageView        *rightBotImage;
+
+
+@property (nonatomic,copy)    NSString                  *selStr;
 
 @end
 
@@ -223,6 +227,7 @@
 
 //坐边按钮
 - (void)leftBtnMethod:(UIButton *)btn {
+    self.selStr = @"";
     [self.leftBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
     self.leftBotImage.hidden = NO;
     self.leftBtn.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
@@ -237,7 +242,7 @@
 
 //右边按钮
 - (void)rightBtnMethod:(UIButton *)btn {
-    
+    self.selStr = @"";
     [self.leftBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     self.leftBtn.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightRegular];
     self.leftBotImage.hidden = YES;
@@ -251,8 +256,16 @@
 
 //筛选
 - (void)screenAction:(UIButton *)btn {
+    KG_EquipmentHistoryScreenViewController *vc = [[KG_EquipmentHistoryScreenViewController alloc]init];
     
-   
+    vc.confirmBlockMethod = ^(NSString * _Nonnull selStr, NSArray * _Nonnull dataArray) {
+     
+        self.selStr = selStr;
+        [self queryData];
+        
+    };
+    vc.selStr = self.selStr;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 
@@ -292,8 +305,7 @@
         _tableView.backgroundColor = self.view.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-        // 上拉加载
-        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+       
         
     }
     return _tableView;
@@ -451,8 +463,19 @@
           
             return ;
         }
-       self.dataArray = result[@"value"];
-       [self.tableView reloadData];
+        self.dataArray = result[@"value"];
+        if (self.selStr.length >0) {
+            NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+            for (NSDictionary *dataDic in self.dataArray) {
+                if ([safeString(dataDic[@"name"]) isEqualToString:self.selStr]) {
+                    [arr addObject:dataDic];
+                }
+            }
+            self.dataArray = arr;
+        }
+        
+     
+        [self.tableView reloadData];
         
     } failure:^(NSURLSessionDataTask *error)  {
         [MBProgressHUD hideHUD];
@@ -507,6 +530,17 @@
             return ;
         }
         self.dataArray = result[@"value"];
+        
+        if (self.selStr.length >0) {
+            NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+            for (NSDictionary *dataDic in self.dataArray) {
+                if ([safeString(dataDic[@"name"]) isEqualToString:self.selStr]) {
+                    [arr addObject:dataDic];
+                }
+            }
+            self.dataArray = arr;
+        }
+        
         [self.tableView reloadData];
         
         

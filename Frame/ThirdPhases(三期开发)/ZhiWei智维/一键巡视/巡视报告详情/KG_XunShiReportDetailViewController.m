@@ -258,9 +258,13 @@
             fourthHeight += fourthArr.count *40;
             
             for (NSDictionary *fifDic in fourthArr) {
-                if (isSafeDictionary(fifDic[@"atcSpecialTag"])) {
-                    NSDictionary *specDic = fifDic[@"atcSpecialTag"];
-                    if ([[specDic allValues] count] >0) {
+                
+                NSArray *fifArr = fifDic[@"childrens"];
+                NSDictionary *sixDic = [fifArr firstObject];
+                
+                if (isSafeDictionary(sixDic[@"atcSpecialTag"])) {
+                    NSDictionary *specDic = sixDic[@"atcSpecialTag"];
+                    if (safeString(specDic[@"specialTagCode"]).length >0) {
                         fourthHeight += 57;
                     }
                 }
@@ -358,7 +362,9 @@
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
     self.titleLabel.text = @"巡视报告详情";
-    
+    if(self.themeTitleStr.length >0) {
+        self.titleLabel.text = safeString(self.themeTitleStr);
+    }
     /** 返回按钮 **/
     UIButton * backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
@@ -1326,7 +1332,9 @@
     params[@"patrolRecordId"] =safeString(self.dataDic[@"id"]);
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolDialog"]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
             
@@ -1335,6 +1343,7 @@
         [self getReceviceData];
         
     }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
         NSLog(@"请求失败 原因：%@",error);
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];

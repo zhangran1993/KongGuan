@@ -37,7 +37,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -65,7 +65,7 @@
     self.centerView.layer.shadowOffset = CGSizeMake(0,2);
     self.centerView.layer.shadowOpacity = 1;
     self.centerView.layer.shadowRadius = 2;
-
+    
     self.iconImage = [[UIImageView alloc]init];
     [self.centerView addSubview:self.iconImage];
     self.iconImage.image = [UIImage imageNamed:@"kg_anliku_deal"];
@@ -123,6 +123,7 @@
 
 //初始化collectionview
 - (void)initCollevtionView{
+    
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
     flowLayout.minimumLineSpacing = 28;
     flowLayout.minimumInteritemSpacing = 0;
@@ -143,7 +144,7 @@
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.scrollEnabled = YES;
     self.collectionView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-   
+    
     
 }
 #pragma mark ---- collectionView 数据源方法
@@ -175,26 +176,23 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     NSLog(@"%ld",(long)indexPath.row);
-   
+    
 }
 
-
+//设置数据源模式
 - (void)setDataModel:(KG_CaseLibraryDetailModel *)dataModel {
     _dataModel = dataModel;
     self.dataArray = self.dataModel.handleMethodList;
     [self.collectionView reloadData];
-  
-    self.rightTotalNumLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)self.dataArray.count];
-    
-    
-    
+    self.rightNumLabel.text = safeString(@"1");
+    self.rightTotalNumLabel.text = [NSString stringWithFormat:@"/%lu",(unsigned long)self.dataArray.count];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat pageWidth = SCREEN_WIDTH -32;
-    
+    //计算总共页面数量
     int page = floor((self.collectionView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    self.rightTotalNumLabel.text = [NSString stringWithFormat:@"%d",page];
+    self.rightNumLabel.text = [NSString stringWithFormat:@"%d",page+1];
 }
 
 @end

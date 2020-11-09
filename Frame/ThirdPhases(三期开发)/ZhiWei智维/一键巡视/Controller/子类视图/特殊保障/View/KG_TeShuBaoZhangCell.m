@@ -266,7 +266,8 @@
         
         [self createSignView:biaoqianArr];
     }else {
-        //        self.statusView.hidden = YES;
+        
+        
     }
 }
 

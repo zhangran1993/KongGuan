@@ -53,7 +53,7 @@
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightButton.titleLabel.font = FontSize(16);
     
-    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
     
     [self.view addSubview:self.rightButton];
@@ -69,12 +69,14 @@
     
     UIView *searchView = [[UIView alloc]init];
     [self.navigationView addSubview:searchView];
+    searchView.layer.cornerRadius = 5.f;
+    searchView.layer.masksToBounds = YES;
     searchView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.navigationView.mas_left).offset(16);
         make.centerY.equalTo(self.rightButton.mas_centerY);
         make.height.equalTo(@30);
-        make.right.equalTo(self.rightButton.mas_right).offset(-10);
+        make.right.equalTo(self.rightButton.mas_left).offset(-10);
     }];
     
     UIImageView *searchIconImage = [[UIImageView alloc]init];
@@ -89,11 +91,12 @@
     UITextField *textField = [[UITextField alloc]init];
     [searchView addSubview:textField];
     textField.placeholder = @"请输入搜索内容";
+    
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(searchIconImage.mas_right).offset(9);
         make.height.equalTo(searchView.mas_height);
         make.centerY.equalTo(searchView.mas_centerY);
-        make.right.equalTo(searchView.mas_right);
+        make.right.equalTo(searchView.mas_right).offset(- (54-16));
     }];
     textField.delegate = self;
     textField.textColor = [UIColor colorWithHexString:@"#24252A"];

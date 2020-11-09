@@ -20,6 +20,8 @@
 #import "KG_InstrumentationDetailSixthCell.h"
 #import "KG_YiQiOperationGuideAlertView.h"
 #import "KG_InstrumentationDetailModel.h"
+#import "KG_WatchPdfViewController.h"
+
 
 @interface KG_InstrumentationDetailViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
@@ -133,6 +135,7 @@
     }];
     self.titleLabel.text = @"仪器仪表详情";
     
+
     /** 返回按钮 **/
     UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
     [backBtn addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -335,6 +338,12 @@
         cell.changeShouQiBlock = ^(BOOL shouqi) {
             self.shouqi = shouqi;
             [self.tableView reloadData];
+        };
+        cell.pushToNextStep = ^(NSDictionary * _Nonnull dataDic) {
+            
+            KG_WatchPdfViewController *vc = [[KG_WatchPdfViewController alloc]init];
+            vc.dataDic = dataDic;
+            [self.navigationController pushViewController:vc animated:YES];
         };
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;

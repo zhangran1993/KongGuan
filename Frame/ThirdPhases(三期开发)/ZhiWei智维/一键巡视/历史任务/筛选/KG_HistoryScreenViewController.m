@@ -308,16 +308,38 @@
 //确认
 - (void)confirmMethod:(UIButton *)button {
     
-    if (self.startTime.length == 0 || self.endTime.length == 0) {
-        [FrameBaseRequest showMessage:@"请选择起始时间"];
+    //判断一下时间      开始时间 不能超过 结束时间
+    if (self.startTime.length > 0 && self.endTime.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择结束时间"];
         return;
     }
+    if (self.startTime.length == 0 && self.endTime.length > 0) {
+        [FrameBaseRequest showMessage:@"请选择开始时间"];
+        return;
+    }
+    if ([self compareStartTimeWithEndTime]) {
+        [FrameBaseRequest showMessage:@"开始时间不能超过结束时间"];
+        return;
+    }
+    
     
     if (self.confirmBlockMethod) {
         self.confirmBlockMethod(safeString(self.taskStr), safeString(self.roomStr), safeString(self.taskStatusStr), safeString(self.startTime), safeString(self.endTime),self.roomArray);
     }
     [self.navigationController popViewControllerAnimated:YES];
     
+}
+
+//比较起始时间和结束时间
+- (BOOL)compareStartTimeWithEndTime {
+ 
+    NSString *starTimer = self.startTime;
+    NSString *finishTimer = self.endTime;
+   
+    BOOL result1 = [starTimer compare:finishTimer]==NSOrderedDescending;
+    NSLog(@"result1:%d",result1);
+
+    return result1;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -328,12 +350,14 @@
             if (indexPath.section == 3) {
                 [headerView.rightBtn addTarget:self action:@selector(selStartTimeMethod:) forControlEvents:UIControlEventTouchUpInside];
                 if (self.startTime.length == 0) {
+                    headerView.titleLabel.text = @"开始时间";
                     headerView.promptLabel.text = @"请选择";
                 }else {
                     headerView.promptLabel.text = safeString(self.startTime);
                 }
             }else {
                 [headerView.rightBtn addTarget:self action:@selector(selEndTimeMethod:) forControlEvents:UIControlEventTouchUpInside];
+                headerView.titleLabel.text = @"结束时间";
                 if (self.endTime.length == 0) {
                     headerView.promptLabel.text = @"请选择";
                 }else {

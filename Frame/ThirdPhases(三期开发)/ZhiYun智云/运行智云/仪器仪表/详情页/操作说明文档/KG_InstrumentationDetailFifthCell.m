@@ -226,7 +226,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+  
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
     
+    if(self.pushToNextStep){
+        self.pushToNextStep(dataDic);
+    }
 }
 
 

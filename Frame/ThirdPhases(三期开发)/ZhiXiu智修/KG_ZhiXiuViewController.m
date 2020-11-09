@@ -60,6 +60,8 @@
 
 @property(strong,nonatomic)   NSArray            *roomArray;
 @property (nonatomic, assign) BOOL               isBlock;
+
+@property (nonatomic,strong) UIView *noDataView;
 @end
 
 @implementation KG_ZhiXiuViewController
@@ -347,6 +349,8 @@
                 [weakSelf.tableView.mj_footer resetNoMoreData];
             }
         }
+        
+       
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -1576,6 +1580,10 @@
                 [weakSelf.tableView.mj_footer resetNoMoreData];
             }
         }
+//        if (self.dataArray.count == 0) {
+//            [self.view addSubview:self.noDataView];
+//            [self.view bringSubviewToFront:self.noDataView];
+//        }
         [self.tableView reloadData];
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -1690,4 +1698,39 @@
    
     
 }
+
+
+
+- (UIView *)noDataView {
+    
+    if (_noDataView) {
+        _noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, 250, self.view.frame.size.width,300)];
+        UIImageView *iconImage = [[UIImageView alloc]init];
+        iconImage.image = [UIImage imageNamed:@"station_ReportNoData@2x"];
+        [_noDataView addSubview:iconImage];
+        [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@302);
+            make.height.equalTo(@153);
+            make.centerX.equalTo(_noDataView.mas_centerX);
+            make.centerY.equalTo(_noDataView.mas_centerY);
+        }];
+        
+        UILabel *noDataLabel = [[UILabel alloc]init];
+        [_noDataView addSubview:noDataLabel];
+        noDataLabel.text = @"当前暂无任务";
+        noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
+        noDataLabel.font = [UIFont systemFontOfSize:12];
+        noDataLabel.textAlignment = NSTextAlignmentCenter;
+        [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(_noDataView.mas_centerX);
+            make.height.equalTo(@17);
+            make.width.equalTo(@200);
+            make.top.equalTo(iconImage.mas_bottom).offset(27);
+        }];
+        
+    }
+    
+    return _noDataView;
+}
+
 @end

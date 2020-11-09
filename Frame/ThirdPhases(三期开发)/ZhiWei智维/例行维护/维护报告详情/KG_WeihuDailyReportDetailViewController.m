@@ -427,7 +427,7 @@
         make.centerX.equalTo(self.navigationView.mas_centerX);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
-    self.titleLabel.text = @"巡视报告详情";
+    self.titleLabel.text = @"维护报告详情";
     NSString *ss = safeString(self.dataDic[@"patrolCode"]);
     if ([ss isEqualToString:@"monthSafeguard"] ) {
         self.titleLabel.text = [NSString stringWithFormat:@"%@%@",safeString(self.dataDic[@"stationName"]),@"月维护报告"];

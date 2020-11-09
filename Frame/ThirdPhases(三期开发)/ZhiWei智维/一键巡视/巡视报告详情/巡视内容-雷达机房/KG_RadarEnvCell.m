@@ -289,12 +289,26 @@
     if (arr1.count >0) {
         dd = [arr1 firstObject];
     }
-    if (isSafeDictionary(dd[@"atcSpecialTag"])) {
-        NSDictionary *atcDic = dd[@"atcSpecialTag"];
-        if (atcDic.count >0) {
-            return  40 + 57;
+    NSArray *sixArr = dd[@"childrens"];
+    if (sixArr.count >0) {
+        NSDictionary *sevenDic = [sixArr firstObject];
+        if (isSafeDictionary(sevenDic[@"atcSpecialTag"])) {
+            NSDictionary *atcDic = sevenDic[@"atcSpecialTag"];
+            if (safeString(atcDic[@"specialTagCode"]).length >0) {
+                return  40 + 57;
+            }
+        }
+    }else {
+        if (isSafeDictionary(dd[@"atcSpecialTag"])) {
+            NSDictionary *atcDic = dd[@"atcSpecialTag"];
+            if (safeString(atcDic[@"specialTagCode"]).length >0) {
+                return  40 + 57;
+            }
         }
     }
+    
+    
+   
     return  40;
 }
 

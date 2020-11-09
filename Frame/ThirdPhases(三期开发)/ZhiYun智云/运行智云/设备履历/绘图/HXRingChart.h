@@ -19,19 +19,23 @@ typedef NS_ENUM(NSInteger,MarkViewDirection){
 @interface HXRingChart : UIView
 
 ///中心文字
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, weak) UIColor *titleColor;
-@property (nonatomic, weak) UIFont *titleFont;
+@property (nonatomic, copy)       NSString          *title;
+
+@property (nonatomic, weak)       UIColor           *titleColor;
+
+@property (nonatomic, weak)       UIFont            *titleFont;
 ///标注值
-@property (nonatomic, weak) UIColor *valueColor;
-@property (nonatomic, weak) UIFont *valueFont;
+@property (nonatomic, weak)       UIColor           *valueColor;
+
+@property (nonatomic, weak)       UIFont            *valueFont;
 ///颜色数组
-@property (nonatomic, strong) NSArray *colorArray;
+@property (nonatomic, strong)     NSArray           *colorArray;
 ///值数组
-@property (nonatomic, strong) NSArray *titleArray;
-@property (nonatomic, strong) NSArray *valueArray;
+@property (nonatomic, strong)     NSArray           *titleArray;
+
+@property (nonatomic, strong)     NSArray           *valueArray;
 ///图表宽
-@property (nonatomic, assign) CGFloat ringWidth;
+@property (nonatomic, assign)     CGFloat           ringWidth;
 
 /**
  初始化方法

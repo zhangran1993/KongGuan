@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDictionary *dataDic;
 
 @property (nonatomic,strong) void (^refreshData)();
+
+
+@property (nonatomic, strong) NSString *themeTitleStr;
 @end
 
 NS_ASSUME_NONNULL_END

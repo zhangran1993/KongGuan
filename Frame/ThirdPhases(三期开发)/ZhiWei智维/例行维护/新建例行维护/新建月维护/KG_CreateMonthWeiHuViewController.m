@@ -10,9 +10,9 @@
 #import "KG_CreateMonthWeiHuCell.h"
 #import "KG_AddressbookViewController.h"
 #import "KG_XunShiSelTimeView.h"
-#import "ZRDatePickerView.h"
+#import "WYLDatePickerView.h"
 #import "KG_CreateMonthWeiHuModel.h"
-@interface KG_CreateMonthWeiHuViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ZRDatePickerViewDelegate>{
+@interface KG_CreateMonthWeiHuViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,WYLDatePickerViewDelegate>{
     
 }
 
@@ -52,7 +52,7 @@
 
 @property (nonatomic, strong)   NSDictionary          *dataDic;
 
-@property (nonatomic, strong) ZRDatePickerView *dataPickerview;
+@property (nonatomic, strong) WYLDatePickerView *dataPickerview;
 
 @end
 
@@ -1125,10 +1125,10 @@
     }];
 }
 
-- (ZRDatePickerView *)dataPickerview
+- (WYLDatePickerView *)dataPickerview
 {
     if (!_dataPickerview) {
-        _dataPickerview = [[ZRDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:ZRDatePickerTypeYMDHMS];
+        _dataPickerview = [[WYLDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:WYLDatePickerTypeYMD];
         _dataPickerview.delegate = self;
         _dataPickerview.title = @"请选择时间";
         _dataPickerview.isSlide = NO;

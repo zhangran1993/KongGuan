@@ -17,6 +17,8 @@
 
 @property (nonatomic ,strong) HXBarChart   *chartBar;
 
+@property (nonatomic ,assign) BOOL         isShow;
+
 @end
 
 @implementation KG_SparePartsCell
@@ -229,8 +231,8 @@
 
 - (void)setListArray:(NSArray *)listArray {
     _listArray = listArray;
-    if (listArray.count >0) {
-        
+    if (listArray.count >0 &&!self.isShow) {
+        self.isShow = YES;
         NSMutableArray *titleArray = [NSMutableArray arrayWithCapacity:0];
         for (NSDictionary *dataDic in listArray) {
             [titleArray addObject:safeString(dataDic[@"categoryName"])];

@@ -25,13 +25,18 @@
 
 @property (nonatomic, strong)   UIView                  *navigationView;
 
+@property (nonatomic, strong)   UIImageView             *navigationBgImageView;
+
 @property (nonatomic, strong)   NSDictionary            *currentDic;
 
 @property (nonatomic, copy)     NSString                *categoryString;
 
 @property (nonatomic, copy)     NSString                *descriptionStr;
 
-@property (nonatomic, strong)   NSArray            *lvliArr;
+@property (nonatomic, strong)   NSArray                 *lvliArr;
+
+@property (nonatomic, strong)   UIImageView             *leftImage;
+
 
 
 @end
@@ -42,8 +47,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    [self createNaviTopView];
+
     [self createUI];
+    
+    [self createNaviTopView];
+    
     [self queryData];
     if (self.totalDic.count) {
         self.categoryString = safeString(self.totalDic[@"attachmentTypeName"]);
@@ -109,18 +117,30 @@
 }
 - (void)createNaviTopView {
     
-    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
-    [self.view addSubview:topImage1];
-    topImage1.backgroundColor  =[UIColor whiteColor];
-    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 208)];
-    [self.view addSubview:topImage];
-    topImage.backgroundColor  =[UIColor whiteColor];
-    topImage.image = [UIImage imageNamed:@"beijian_bgImage"];
+//    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+//    [self.view addSubview:topImage1];
+//    topImage1.backgroundColor  =[UIColor whiteColor];
+//    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 208)];
+//    [self.view addSubview:topImage];
+//    topImage.backgroundColor  =[UIColor colorWithHexString:@"#F6F7F9"];
+//    topImage.image = [UIImage imageNamed:@"beijian_bgImage"];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
+    
     self.navigationView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.navigationView];
     
+    self.navigationBgImageView = [[UIImageView alloc]init];
+    [self.navigationView addSubview:self.navigationBgImageView];
+    self.navigationBgImageView.backgroundColor = [UIColor clearColor];
+    
+    [self.navigationBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.navigationView.mas_left);
+        make.right.equalTo(self.navigationView.mas_right);
+        make.top.equalTo(self.navigationView.mas_top);
+        make.bottom.equalTo(self.navigationView.mas_bottom);
+    }];
+   
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
     
@@ -141,10 +161,10 @@
     }];
     
     //按钮设置点击范围扩大.实际显示区域为图片的区域
-    UIImageView *leftImage = [[UIImageView alloc] init];
-    leftImage.image = IMAGE(@"backwhite");
-    [backBtn addSubview:leftImage];
-    [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.leftImage = [[UIImageView alloc] init];
+    self.leftImage.image = IMAGE(@"backwhite");
+    [backBtn addSubview:self.leftImage];
+    [self.leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
@@ -197,6 +217,7 @@
 //        _tableView.layer.cornerRadius = 10.f;
 //        _tableView.layer.masksToBounds = YES;
         _tableView.scrollEnabled = YES;
+        _tableView.showsVerticalScrollIndicator = NO;
     }
     return _tableView;
 }
@@ -214,7 +235,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 0) {
-        return  250;
+        return  250 +NAVIGATIONBAR_HEIGHT +10;
     }else if (indexPath.section == 1) {
         return  250;
     }else if (indexPath.section == 2) {
@@ -402,9 +423,9 @@
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navigationView.mas_bottom).offset(10);
-        make.left.equalTo(self.view.mas_left).offset(16);
-        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.top.equalTo(self.view.mas_top);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     
@@ -474,5 +495,32 @@
         }
         return ;
     }];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+
+{
+    NSLog(@"contentOffset====%f",self.tableView.contentOffset.y);
+    if (self.tableView.contentOffset.y > 0) {
+        float orY= self.tableView.contentOffset.y/208;
+      
+        self.navigationBgImageView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+        self.navigationBgImageView.alpha = orY;
+        
+    }else {
+        self.navigationBgImageView.backgroundColor = [UIColor clearColor];
+        self.navigationBgImageView.alpha = 1;
+    }
+    
+//    if(self.tableView.contentOffset.y >10 ) {
+//
+//        self.leftImage.image = [UIImage imageNamed:@"back_black"];
+//        self.titleLabel.textColor = [UIColor colorWithHexString:@"24252A"];
+//    }else {
+//
+//        self.leftImage.image = [UIImage imageNamed:@"backwhite"];
+//        self.titleLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+//    }
+    
 }
 @end

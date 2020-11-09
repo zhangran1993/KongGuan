@@ -171,12 +171,23 @@
     if (arr.count >0) {
         dd = [arr firstObject];
     }
+    NSArray *sixArr = dd[@"childrens"];
+    if (sixArr.count >0) {
+       
+        dd = [sixArr firstObject];
+    }
+    
     if (isSafeDictionary(dd[@"atcSpecialTag"])) {
         NSDictionary *atcDic = dd[@"atcSpecialTag"];
-        if (atcDic.count && [[atcDic allValues] count] >0) {
+        if (atcDic.count && [[atcDic allValues] count] >0 && safeString(atcDic[@"specialTagCode"]).length >0) {
             self.detailView.hidden = NO;
             self.detailTitleLabel.text = [NSString stringWithFormat:@"%@特殊参数标记内容",safeString(atcDic[@"specialTagName"])];
             self.detailTextTitleLabel.text = safeString(atcDic[@"description"]);
+            if ([dd[@"special"] boolValue]) {
+                self.specialStarBtn.hidden = NO;
+            }else {
+                self.specialStarBtn.hidden = YES;
+            }
         }else {
             self.detailView.hidden = YES;
         }
@@ -648,11 +659,12 @@
     [self addSubview:self.selectBtn];
     self.selectBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 90, 0, 0);
     [self.selectBtn setImage:[UIImage imageNamed:@"common_right"] forState:UIControlStateNormal];
+    [self.selectBtn sizeToFit];
     [self.selectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.right.equalTo(self.mas_right).offset(-20);
         make.height.equalTo(self.mas_height);
-        make.width.equalTo(@120);
+//        make.width.equalTo(@120);
     }];
     
 }

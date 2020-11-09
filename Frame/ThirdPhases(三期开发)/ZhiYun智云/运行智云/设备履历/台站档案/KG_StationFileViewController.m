@@ -27,6 +27,10 @@
 #import "KG_GaoJingDetailViewController.h"
 #import "KG_GaoJingModel.h"
 
+#import "KG_XunShiReportDetailViewController.h"
+#import "KG_WeihuDailyReportDetailViewController.h"
+#import "KG_SparepartsInventoryViewController.h"
+
 @interface KG_StationFileViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -462,12 +466,47 @@
                 vc.dataDic = dataDic;
                 [self.navigationController pushViewController:vc animated:YES];
                 
+            }else  if([titleStr isEqualToString:@"设备调整记录"]) {
+                
+                KG_EquipmentAdjustmentRecordViewController *vc = [[KG_EquipmentAdjustmentRecordViewController alloc]init];
+                vc.dataDic = dataDic;
+                [self.navigationController pushViewController:vc animated:YES];
+                
             }else  if([titleStr isEqualToString:@"技术资料"]) {
                 
                 KG_WatchPdfViewController *vc = [[KG_WatchPdfViewController alloc]init];
                 vc.dataDic = dataDic;
                 [self.navigationController pushViewController:vc animated:YES];
                 
+            }else  if([titleStr isEqualToString:@"巡视记录"]) {
+                
+                KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+                vc.dataDic = dataDic;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else  if([titleStr isEqualToString:@"维护记录"]) {
+                
+                KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
+                vc.dataDic = dataDic;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else  if([titleStr isEqualToString:@"特殊保障记录"]) {
+                
+                KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+                vc.dataDic = dataDic;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                
+            }else  if([titleStr isEqualToString:@"备件库存"]) {
+                
+                
+                KG_SparepartsInventoryViewController *vc = [[KG_SparepartsInventoryViewController alloc]init];
+                KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
+                [model mj_setKeyValues:dataDic];
+                vc.model = model;
+                [self.navigationController pushViewController:vc animated:YES];
             }
         };
         

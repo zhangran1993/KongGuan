@@ -14,39 +14,32 @@
 #import "ZRDatePickerView.h"
 @interface KG_HistoryWarnEventScreenViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,ZRDatePickerViewDelegate>
 
-
 //
-@property (nonatomic,strong)UICollectionView *collectionView;
-
+@property (nonatomic,strong)   UICollectionView     *collectionView;
 /** 数组 */
-@property(nonatomic , strong) NSMutableArray *dataArray;
+@property(nonatomic , strong)  NSMutableArray       *dataArray;
 
-@property (nonatomic, strong) ZRDatePickerView *dataPickerview;
+@property (nonatomic, strong)  ZRDatePickerView     *dataPickerview;
 
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
-@property (nonatomic, strong)  UIButton  *rightButton;
+@property (nonatomic, strong)  UILabel              *titleLabel;
 
+@property (nonatomic, strong)  UIView               *navigationView;
+
+@property (nonatomic, strong)  UIButton             *rightButton;
 //机房
-@property(nonatomic , strong) NSArray *roomArray;
-
+@property(nonatomic , strong)  NSArray              *roomArray;
 //设备类型
-@property(nonatomic , strong) NSArray *equipTypeArray;
-
+@property(nonatomic , strong)  NSArray              *equipTypeArray;
 //告警等级
-@property(nonatomic , strong) NSArray *alarmLevelArray;
-
+@property(nonatomic , strong)  NSArray              *alarmLevelArray;
 //告警状态
-@property(nonatomic , strong) NSArray *alarmStatusArray;
+@property(nonatomic , strong)  NSArray              *alarmStatusArray;
 
+@property(strong,nonatomic)    NSArray              *guideListArray;
 
-@property(strong,nonatomic)   NSArray              *guideListArray;
+@property (nonatomic,assign)   int                  currIndex;
 
-
-
-@property (nonatomic,assign)   int currIndex;
-
-@property (nonatomic,assign)   BOOL isKongGuanDevice;
+@property (nonatomic,assign)   BOOL                  isKongGuanDevice;
 @end
 
 @implementation KG_HistoryWarnEventScreenViewController
@@ -93,7 +86,6 @@
     [self.collectionView registerClass:[KG_HistoryWarnEventScreenCell class] forCellWithReuseIdentifier:@"KG_HistoryWarnEventScreenCell"];
     [self.collectionView registerClass:[KG_NewScreenHeaderView class]  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"KG_NewScreenHeaderView"];
 //    [self.collectionView registerClass:[KG_NewScreenSelTimeCell class] forCellWithReuseIdentifier:@"KG_NewScreenSelTimeCell"];
-    
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -171,7 +163,6 @@
         return cell;
     }
     return nil;
-    
     
 }
 
@@ -284,7 +275,6 @@
     }];
     
     
-    
     UIButton *cancelBtn = [[UIButton alloc]init];
     [bottomView addSubview:cancelBtn];
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
@@ -321,7 +311,6 @@
         make.height.equalTo(@40);
     }];
     
-    
 }
 
 //取消
@@ -332,6 +321,22 @@
 
 //确认
 - (void)confirmMethod:(UIButton *)button {
+    //判断一下时间      开始时间 不能超过 结束时间
+    if (self.startTime.length > 0 && self.endTime.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择结束时间"];
+        return;
+    }
+    if (self.startTime.length == 0 && self.endTime.length > 0) {
+        [FrameBaseRequest showMessage:@"请选择开始时间"];
+        return;
+    }
+    if ([self compareStartTimeWithEndTime]) {
+        [FrameBaseRequest showMessage:@"开始时间不能超过结束时间"];
+        return;
+    }
+    
+    
+    
     if (self.confirmBlockMethod) {
         self.confirmBlockMethod(safeString(self.roomStr), safeString(self.equipTypeStr), safeString(self.kongguanTypeStr), safeString(self.alarmLevelStr), safeString(self.alarmStatusStr), safeString(self.startTime), safeString(self.endTime),self.roomArray,self.guideListArray);
     }
@@ -493,6 +498,10 @@
     
     NSLog(@"%ld",(long)indexpath.row);
     NSLog(@"%ld",(long)indexpath.section);
+    if(indexpath.section == 2 && !self.isKongGuanDevice) {
+        
+        return;
+    }
     if (indexpath.section == 0) {
         if (self.roomStr.length >0 && [self.roomStr isEqualToString:safeString(self.roomArray[indexpath.row][@"alias"])]) {
             self.roomStr = @"";
@@ -640,5 +649,17 @@
         return ;
     }];
     
+}
+
+//比较起始时间和结束时间
+- (BOOL)compareStartTimeWithEndTime {
+ 
+    NSString *starTimer = self.startTime;
+    NSString *finishTimer = self.endTime;
+   
+    BOOL result1 = [starTimer compare:finishTimer]==NSOrderedDescending;
+    NSLog(@"result1:%d",result1);
+
+    return result1;
 }
 @end

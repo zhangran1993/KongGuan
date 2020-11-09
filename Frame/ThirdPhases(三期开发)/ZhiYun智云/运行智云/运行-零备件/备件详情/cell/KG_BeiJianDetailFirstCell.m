@@ -37,13 +37,25 @@
 }
 
 - (void)createSubviewsView {
+    
+    
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self addSubview:topImage1];
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 208)];
+    [self addSubview:topImage];
+    topImage.backgroundColor  =[UIColor colorWithHexString:@"#F6F7F9"];
+    topImage.image = [UIImage imageNamed:@"beijian_bgImage"];
+    
+    
+    
     self.firstView = [[KG_BeiJianFirstView alloc]init];
     [self addSubview:self.firstView];
     [self.firstView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left);
-        make.right.equalTo(self.mas_right);
+        make.left.equalTo(self.mas_left).offset(16);
+        make.right.equalTo(self.mas_right).offset(-16);
         make.bottom.equalTo(self.mas_bottom);
-        make.top.equalTo(self.mas_top);
+        make.top.equalTo(self.mas_top).offset(NAVIGATIONBAR_HEIGHT +10 );
     }];
     self.firstView.layer.cornerRadius = 10.f;
     self.firstView.layer.masksToBounds = YES;

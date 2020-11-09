@@ -98,11 +98,25 @@
     self.screenResultLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.screenResultLabel.textAlignment = NSTextAlignmentLeft;
     self.screenResultLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    [self.screenResultLabel sizeToFit];
     [self.screenResultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.screenResultView.mas_left).offset(32);
         make.centerY.equalTo(self.screenResultView.mas_centerY);
         make.height.equalTo(self.screenResultView.mas_height);
-        make.right.equalTo(self.screenResultView.mas_right).offset(-100);
+        make.width.lessThanOrEqualTo(@(SCREEN_WIDTH - 32- 100));
+    }];
+    
+    UILabel *rizhiPromptLabel = [[UILabel alloc]init];
+    [self.screenResultView addSubview:rizhiPromptLabel];
+    rizhiPromptLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
+    rizhiPromptLabel.textAlignment = NSTextAlignmentLeft;
+    rizhiPromptLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    rizhiPromptLabel.text = @"的日志";
+    [rizhiPromptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.screenResultLabel.mas_right);
+        make.centerY.equalTo(self.screenResultView.mas_centerY);
+        make.height.equalTo(self.screenResultView.mas_height);
+        make.width.lessThanOrEqualTo(@(80));
     }];
     
     UIButton *closeBtn  = [[UIButton alloc]init];
@@ -508,6 +522,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.row];
     
+    if([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+        [FrameBaseRequest showMessage:@"请先领取任务"];
+        return;
+    }
     KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
     vc.dataDic = dataDic;
     [self.navigationController pushViewController:vc animated:YES];
@@ -1107,7 +1125,40 @@
             }
         }
         self.tableView.tableHeaderView = self.screenResultView;
-        self.screenResultLabel.text = [NSString stringWithFormat:@"%@到%@的日志",safeString(self.startTime),safeString(self.endTime)];
+        
+
+        
+        NSMutableString *parStr = [NSMutableString string];
+        if (self.taskStr.length >0) {
+            [parStr appendString:safeString(self.taskStr)];
+        }
+        
+        NSString *engineCode = @"";
+        for (NSDictionary *roomDic in self.roomArray) {
+            if ([self.roomStr isEqualToString:safeString(roomDic[@"alias"])]) {
+                engineCode = safeString(roomDic[@"code"]);
+                break;
+            }
+        }
+        
+        if (self.roomStr.length >0) {
+            [parStr appendString:safeString(self.roomStr)];
+        }
+        
+        NSString *statusCode = @"0";
+        statusCode = [self getTaskStatus:self.taskStatusStr];
+        
+        if (statusCode.length >0) {
+            [parStr appendString:safeString(statusCode)];
+        }
+        
+        if(safeString(self.startTime).length >0 && safeString(self.endTime).length >0) {
+            [parStr appendString:safeString(self.startTime)];
+            [parStr appendString:safeString(self.endTime)];
+                       
+        }
+        self.screenResultLabel.text = [NSString stringWithFormat:@"%@",safeString(parStr)];
+        
         [self.tableView reloadData];
         if(self.dataArray.count) {
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];

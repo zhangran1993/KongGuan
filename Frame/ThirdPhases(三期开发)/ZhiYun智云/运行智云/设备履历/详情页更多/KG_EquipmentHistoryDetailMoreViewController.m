@@ -10,6 +10,12 @@
 #import "KG_EquipmentHistoryDetailFourthCell.h"
 #import "KG_StandardSpecificationViewController.h"
 #import "KG_EquipmentHistoryDetailModel.h"
+
+#import "KG_FaultEventRecordViewController.h"
+#import "KG_EquipmentAdjustmentRecordViewController.h"
+#import "KG_WatchPdfViewController.h"
+#import "KG_GaoJingDetailViewController.h"
+#import "KG_GaoJingModel.h"
 @interface KG_EquipmentHistoryDetailMoreViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -17,7 +23,6 @@
 @property (nonatomic, strong) NSMutableArray            *dataArray;
 @property (nonatomic, strong) NSArray                   *listArray;
 @property (nonatomic, strong) UITableView               *tableView;
-
 
 @property (nonatomic, strong)   UILabel                 *titleLabel;
 
@@ -37,7 +42,6 @@
     self.pageNum =  1;
     [self createNaviTopView];
     [self initViewData];
-    
     
 }
 
@@ -245,8 +249,45 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    if([self.titleStr isEqualToString:@"设备故障事件记录"]) {
+        KG_FaultEventRecordViewController *vc = [[KG_FaultEventRecordViewController alloc]init];
+        vc.dataDic = dataDic;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if([self.titleStr isEqualToString:@"设备告警记录"]) {
+        //设备告警记录
+       
+        
+        KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
+        KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
+        [model mj_setKeyValues:dataDic];
+        vc.model = model;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+        
+        
+    }else if([self.titleStr isEqualToString:@"设备调整记录"]) {
+        //设备调整记录
+        KG_EquipmentAdjustmentRecordViewController *vc = [[KG_EquipmentAdjustmentRecordViewController alloc]init];
+        vc.dataDic = dataDic;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if([self.titleStr isEqualToString:@"技术资料"]) {
+        //查询技术资料
+        KG_WatchPdfViewController *vc = [[KG_WatchPdfViewController alloc]init];
+        vc.dataDic = dataDic;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if([self.titleStr isEqualToString:@"巡视记录"]) {
+        //查询巡视
+        [self getDeviceXunshiData];
+    }else if([self.titleStr isEqualToString:@"维护记录"]) {
+        //查询维护
+        [self getDeviceWeihuData];
+    }else if([self.titleStr isEqualToString:@"特殊保障记录"]) {
+        //查询特殊保障
+        [self getDeviceSpecialData];
+    }else if([self.titleStr isEqualToString:@"备件库存"]) {
+        
+    }
     
 }
 

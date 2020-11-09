@@ -19,6 +19,8 @@
 @property (nonatomic,strong) UILabel *numLabel;
 
 @property (nonatomic,strong) UITextView *textView;
+
+@property (strong, nonatomic) UIButton *saveBtn;
 @end
 
 @implementation KG_BeiJianThirdView
@@ -70,14 +72,14 @@
         make.height.equalTo(@30);
     }];
     
-    UIButton *saveBtn = [[UIButton alloc]init];
-    [saveBtn setTitle:@"保存" forState:UIControlStateNormal];
-    [bgView addSubview:saveBtn];
-    saveBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [saveBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
-    [saveBtn addTarget:self action:@selector(saveMethod:) forControlEvents:UIControlEventTouchUpInside];
-    [saveBtn sizeToFit];
-    [saveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.saveBtn = [[UIButton alloc]init];
+    [self.saveBtn setTitle:@"保存" forState:UIControlStateNormal];
+    [bgView addSubview:self.saveBtn];
+    self.saveBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [self.saveBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+    [self.saveBtn addTarget:self action:@selector(saveMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [self.saveBtn sizeToFit];
+    [self.saveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-19);
         make.centerY.equalTo(iconImage.mas_centerY);
         make.height.equalTo(@50);
@@ -205,6 +207,11 @@
     self.textView.text = ss;
     self.numLabel.text = [NSString stringWithFormat:@"%lu/50",(unsigned long)ss.length];
     
+    
+    [self.saveBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+    self.saveBtn.userInteractionEnabled = YES;
+    
+    
 }
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
@@ -226,8 +233,10 @@
     
     if ([safeString(descriptionStr) isEqualToString:@""]){
         self.placeholderLabel.hidden = NO;
+       
     }else{
         self.placeholderLabel.hidden = YES;
+       
     }
     if (safeString(descriptionStr).length == 0) {
         self.numLabel.text = @"0/50";
@@ -236,6 +245,9 @@
     }
     self.textView.text = safeString(descriptionStr);
     self.numLabel.text = [NSString stringWithFormat:@"%lu/50",(unsigned long)descriptionStr.length];
+    
+    [self.saveBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+    self.saveBtn.userInteractionEnabled = NO;
     
     
 }

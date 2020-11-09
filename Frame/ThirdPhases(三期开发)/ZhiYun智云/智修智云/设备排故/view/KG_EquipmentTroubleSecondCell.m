@@ -157,12 +157,12 @@
         [self.footView addSubview:self.bottomBtn];
         [self.bottomBtn setTitle:@"展开" forState:UIControlStateNormal];
         [self.bottomBtn setTitleColor:[UIColor colorWithHexString:@""] forState:UIControlStateNormal];
-        
        
         self.bottomBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
         [self.bottomBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
       
         [self.bottomBtn setImage:[UIImage imageNamed:@"zhankai"]  forState:UIControlStateNormal];
+        self.bottomBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 70, 0, 0);
         if (self.isZhankai) {
             [self.bottomBtn setImage:[UIImage imageNamed:@"shouqi_icon"] forState:UIControlStateNormal];
             [self.bottomBtn setTitle:@"收起" forState:UIControlStateNormal];

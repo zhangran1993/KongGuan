@@ -19,7 +19,8 @@
 #import "KG_HistoryWarnEventScreenViewController.h"
 #import "KG_HistoryWarnEventCell.h"
 #import "KG_HistoryWarnEventViewController.h"
-
+#import "KG_GaoJingDetailViewController.h"
+#import "KG_GaoJingModel.h"
 @interface KG_ZhiXiu_HistoryWarnEventViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray     *dataArray;
@@ -344,6 +345,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    NSDictionary *dataDic = self.dataArray[indexPath.section];
+    KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
+    KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
+    [model mj_setKeyValues:dataDic];
+    vc.model = model;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

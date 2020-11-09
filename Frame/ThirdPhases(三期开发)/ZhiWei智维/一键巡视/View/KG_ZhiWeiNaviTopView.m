@@ -133,6 +133,7 @@
     }
    
 }
+
 - (void)change:(UISegmentedControl *)sender {
     NSLog(@"测试");
     if (sender.selectedSegmentIndex == 0) {
@@ -162,6 +163,7 @@
             break;
     }
 }
+
 - (UIImage*)createImageWithColor: (UIColor*) color{
     CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
@@ -172,6 +174,7 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
+
 //获取一键巡视下任务子类型字典接口：
 //请求地址：/intelligent/atcDictionary?type_code=oneTouchTour
 //请求方式：GET

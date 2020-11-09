@@ -309,7 +309,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.section];
     NSArray *arr = dataDic[@"faultCaseInfo"];
-    return  40+ 60 *arr.count;
+    return  40+ 40 *arr.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

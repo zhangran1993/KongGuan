@@ -32,7 +32,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -55,7 +55,7 @@
         height = 50 + 50 *3 +44;
     }
     
-   
+    
     [self addSubview:self.topTableView];
     [self.topTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
@@ -117,7 +117,7 @@
     
     self.bottomBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     [self.bottomBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
-    
+    self.bottomBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 70, 0, 0);
     [self.bottomBtn setImage:[UIImage imageNamed:@"zhankai"]  forState:UIControlStateNormal];
     if (self.isZhanKai) {
         [self.bottomBtn setImage:[UIImage imageNamed:@"shouqi_icon"] forState:UIControlStateNormal];
@@ -134,7 +134,7 @@
     }];
     [self.bottomBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     self.topTableView.tableFooterView = self.footView;
- 
+    
     [self.topTableView reloadData];
     
     
@@ -144,8 +144,8 @@
 - (void)bottomButtonClick :(UIButton *)btn {
     self.isZhanKai = !self.isZhanKai;
     if (self.isZhanKai) {
-        NSInteger height = 50 + self.topArray.count *50;
-       
+        NSInteger height = 50 + self.topArray.count *50 +50;
+        
         [self.topTableView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.mas_top);
             make.left.equalTo(self.mas_left);
@@ -169,33 +169,45 @@
         [self.topTableView.tableFooterView removeFromSuperview];
         self.topTableView.tableFooterView = nil;
     }else {
-        self.footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
         
-        self.bottomBtn = [[UIButton alloc]init];
-        [self.footView addSubview:self.bottomBtn];
+        //        [self.topTableView.tableFooterView removeFromSuperview];
+        //        self.topTableView.tableFooterView = nil;
+        //        self.footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+        //
+        //        self.bottomBtn = [[UIButton alloc]init];
+        //        [self.footView addSubview:self.bottomBtn];
+        //        [self.bottomBtn setTitle:@"展开" forState:UIControlStateNormal];
+        //        [self.bottomBtn setTitleColor:[UIColor colorWithHexString:@""] forState:UIControlStateNormal];
+        //
+        //
+        //        self.bottomBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+        //        [self.bottomBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
+        //
+        //        [self.bottomBtn setImage:[UIImage imageNamed:@"zhankai"]  forState:UIControlStateNormal];
+        //        if (self.isZhanKai) {
+        //            [self.bottomBtn setImage:[UIImage imageNamed:@"shouqi_icon"] forState:UIControlStateNormal];
+        //            [self.bottomBtn setTitle:@"收起" forState:UIControlStateNormal];
+        //        }
+        //
+        //
+        //
+        //        [self.bottomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        //            make.left.equalTo(self.footView.mas_left);
+        //            make.right.equalTo(self.footView.mas_right);
+        //            make.top.equalTo(self.footView.mas_top);
+        //            make.bottom.equalTo(self.footView.mas_bottom);
+        //        }];
+        //        [self.bottomBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        //        self.topTableView.tableFooterView = self.footView;
+        //
+        
         [self.bottomBtn setTitle:@"展开" forState:UIControlStateNormal];
-        [self.bottomBtn setTitleColor:[UIColor colorWithHexString:@""] forState:UIControlStateNormal];
-        
-        
-        self.bottomBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-        [self.bottomBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
-        
         [self.bottomBtn setImage:[UIImage imageNamed:@"zhankai"]  forState:UIControlStateNormal];
         if (self.isZhanKai) {
             [self.bottomBtn setImage:[UIImage imageNamed:@"shouqi_icon"] forState:UIControlStateNormal];
             [self.bottomBtn setTitle:@"收起" forState:UIControlStateNormal];
         }
         
-        
-        
-        [self.bottomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.footView.mas_left);
-            make.right.equalTo(self.footView.mas_right);
-            make.top.equalTo(self.footView.mas_top);
-            make.bottom.equalTo(self.footView.mas_bottom);
-        }];
-        [self.bottomBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        self.topTableView.tableFooterView = self.footView;
         
     }
     
@@ -216,15 +228,17 @@
         _topTableView.backgroundColor = self.backgroundColor;
         _topTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _topTableView.scrollEnabled = NO;
-      
+        
     }
     return _topTableView;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-  
-    return 1;
+    if(self.topArray.count >0) {
+        return 1;
+    }
+    return 0;
     
 }
 
@@ -242,7 +256,7 @@
     }
     return self.topArray.count;
     
-
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -253,7 +267,7 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  
+    
     NSDictionary *dic = self.topArray[indexPath.row];
     if(self.pushToNextStep) {
         self.pushToNextStep(dic);
@@ -273,7 +287,7 @@
         return cell;
     }
     
-  
+    
     return nil;
     
 }
@@ -286,8 +300,8 @@
     return topView;
 }
 
-    
-    
+
+
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

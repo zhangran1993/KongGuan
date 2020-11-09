@@ -278,6 +278,84 @@
         [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     }
     
+    
+    
+    if ([safeString(dic[@"status"]) isEqualToString:@"unconfirmed"]) {
+        sta = @"未确认";
+        
+        self.confirmStatusBtn.userInteractionEnabled = YES;
+        self.confirmStatusBtn.alpha = 1;
+        
+        self.liftStatusBtn.userInteractionEnabled = YES;
+        self.liftStatusBtn.alpha = 1;
+        
+        self.hangUpStautsBtn.userInteractionEnabled = YES;
+        self.hangUpStautsBtn.alpha = 1;
+        
+        if ([dic[@"hangupStatus"] boolValue]) {
+            
+            [self.hangUpStautsBtn setAlpha:0.4];
+            self.hangUpStautsBtn.userInteractionEnabled = NO;
+        }else {
+            [self.hangUpStautsBtn setAlpha:1];
+            self.hangUpStautsBtn.userInteractionEnabled = YES;
+            
+        }
+        
+    }else if ([safeString(dic[@"status"]) isEqualToString:@"confirmed"]) {
+        sta = @"已确认";
+        self.confirmStatusBtn.userInteractionEnabled = NO;
+        self.confirmStatusBtn.alpha = 0.4;
+        
+        self.liftStatusBtn.userInteractionEnabled = YES;
+        self.liftStatusBtn.alpha = 1;
+        
+        self.hangUpStautsBtn.userInteractionEnabled = YES;
+        self.hangUpStautsBtn.alpha = 1;
+        
+        if ([dic[@"hangupStatus"] boolValue]) {
+            
+            [self.hangUpStautsBtn setAlpha:0.4];
+            self.hangUpStautsBtn.userInteractionEnabled = NO;
+        }else {
+            [self.hangUpStautsBtn setAlpha:1];
+            self.hangUpStautsBtn.userInteractionEnabled = YES;
+            
+        }
+        
+        
+    }else if ([safeString(dic[@"status"]) isEqualToString:@"removed"]) {
+        sta = @"已解除";
+        self.confirmStatusBtn.userInteractionEnabled = NO;
+        self.confirmStatusBtn.alpha = 0.4;
+        
+        self.liftStatusBtn.userInteractionEnabled = NO;
+        self.liftStatusBtn.alpha = 0.4;
+        
+        self.hangUpStautsBtn.userInteractionEnabled = NO;
+        self.hangUpStautsBtn.alpha = 0.4;
+        
+    }else if ([safeString(dic[@"status"]) isEqualToString:@"hangUp"]) {
+        sta = @"已挂起";
+        self.confirmStatusBtn.userInteractionEnabled = NO;
+        self.confirmStatusBtn.alpha = 0.4;
+       
+        
+    }else if ([safeString(dic[@"status"]) isEqualToString:@"completed"]) {
+        sta = @"已解决";
+        self.confirmStatusBtn.userInteractionEnabled = NO;
+        self.confirmStatusBtn.alpha = 0.4;
+        
+        self.liftStatusBtn.userInteractionEnabled = NO;
+        self.liftStatusBtn.alpha = 0.4;
+        
+        self.hangUpStautsBtn.userInteractionEnabled = NO;
+        self.hangUpStautsBtn.alpha = 0.4;
+    }
+    
+   
+    
+    
 }
 
 - (void)buttonClock:(UIButton *)button {

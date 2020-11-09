@@ -280,7 +280,7 @@
     if (biaoqianArr.count) {
         NSMutableString *s = [NSMutableString string];
         for (NSDictionary *dic in biaoqianArr) {
-            [s appendString:dic[@"specialTagName"]];
+            [s appendString:safeString(dic[@"specialTagName"])];
         }
         self.starLabel.text = safeString(s);
         [self.starLabel mas_updateConstraints:^(MASConstraintMaker *make) {
