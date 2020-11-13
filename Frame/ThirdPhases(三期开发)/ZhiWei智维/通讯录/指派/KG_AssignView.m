@@ -181,12 +181,12 @@
   
 }
 
-
 //添加联系人
 - (void)addContact:(UIButton *)button {
   
    [[NSNotificationCenter defaultCenter] postNotificationName:@"pushToAddressBook" object:self];
 }
+
 //取消
 - (void)cancelMethod:(UIButton *)button {
     self.hidden = YES;
@@ -194,6 +194,11 @@
 }
 //确定
 - (void)confirmMethod:(UIButton *)button {
+    
+    if(self.name.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择执行负责人"];
+        return;
+    }
     
     if (self.confirmBlockMethod) {
         self.confirmBlockMethod(self.dataDic,self.name,self.nameID);

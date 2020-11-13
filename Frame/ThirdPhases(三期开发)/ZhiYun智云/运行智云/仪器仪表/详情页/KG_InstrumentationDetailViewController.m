@@ -36,6 +36,8 @@
 
 @property (nonatomic, strong)   UIView                  *navigationView;
 
+@property (nonatomic, strong)   UIImageView             *navigationBgImageView;
+
 @property (nonatomic, strong)   UIButton                *searchBtn;
 
 @property (nonatomic, strong)   UIButton                *rightButton;
@@ -72,10 +74,11 @@
     self.dataModel = [[KG_InstrumentationDetailModel alloc]init];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     self.shouqi = YES;
-    [self createNaviTopView];
-    
     [self createUI];
     [self createTableView];
+    [self createNaviTopView];
+    
+    
     [self getData];
 }
 
@@ -87,7 +90,14 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
     [self.navigationController setNavigationBarHidden:YES];
-    
+    if([ self.tableView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
+        
+        if(@available(iOS 11.0, *)) {
+            self.tableView.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
+        }else{
+            
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -100,7 +110,7 @@
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navigationView.mas_bottom);
+        make.top.equalTo(self.view.mas_top);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
@@ -114,18 +124,27 @@
 }
 - (void)createNaviTopView {
     
-    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
-    [self.view addSubview:topImage1];
-    topImage1.backgroundColor  =[UIColor whiteColor];
-    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
-    [self.view addSubview:topImage];
-    topImage.backgroundColor  =[UIColor whiteColor];
-    topImage.image = [UIImage imageNamed:@"kg_InstruTopImage"];
+//    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+//    [self.view addSubview:topImage1];
+//    topImage1.backgroundColor  =[UIColor whiteColor];
+//    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+//    [self.view addSubview:topImage];
+//    topImage.backgroundColor  =[UIColor whiteColor];
+//    topImage.image = [UIImage imageNamed:@"kg_InstruTopImage"];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
     self.navigationView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.navigationView];
+    self.navigationBgImageView = [[UIImageView alloc]init];
+    [self.navigationView addSubview:self.navigationBgImageView];
+    self.navigationBgImageView.backgroundColor = [UIColor clearColor];
     
+    [self.navigationBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.navigationView.mas_left);
+        make.right.equalTo(self.navigationView.mas_right);
+        make.top.equalTo(self.navigationView.mas_top);
+        make.bottom.equalTo(self.navigationView.mas_bottom);
+    }];
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
     
@@ -206,8 +225,6 @@
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-       
-        
     }
     return _tableView;
 }
@@ -227,7 +244,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    if(indexPath.section == 0) {
        
-       return 170;
+       return 170 + NAVIGATIONBAR_HEIGHT ;
+       
    }else if(indexPath.section == 1) {
        
        return 45*5;
@@ -244,6 +262,9 @@
        NSArray *arr = self.dataModel.fileList;
        if (arr.count >2 &&self.shouqi) {
            return 48+ 40*2 +40;
+       }
+       if (arr.count <=2 ) {
+           return 48;
        }
        return 48 + self.dataModel.fileList.count *40 +40;
    }else if(indexPath.section == 5) {
@@ -383,13 +404,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
     return 10;
+    
 }
 
 //仪器仪表：获取某个仪器仪表的详情：
 //请求地址：/intelligent/atcInstrument/{id}
 //请求方式：GET
 //请求返回：
-
 
 - (void)queryData:(dispatch_group_t)group {
     
@@ -610,5 +631,22 @@
     }
     
     return _guideAlertView;
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+
+{
+    NSLog(@"contentOffset====%f",self.tableView.contentOffset.y);
+    if (self.tableView.contentOffset.y > 0) {
+        float orY= self.tableView.contentOffset.y/208;
+      
+        self.navigationBgImageView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+        self.navigationBgImageView.alpha = orY;
+        
+    }else {
+        self.navigationBgImageView.backgroundColor = [UIColor clearColor];
+        self.navigationBgImageView.alpha = 1;
+    }
+
 }
 @end

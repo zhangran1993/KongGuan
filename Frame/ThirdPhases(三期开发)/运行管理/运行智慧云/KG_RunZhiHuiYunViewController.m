@@ -191,11 +191,11 @@
         KG_EquipmentHistoryViewController *vc = [[KG_EquipmentHistoryViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 7){
-        KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
-        [self.navigationController pushViewController:vc animated:YES];
+//        KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
+//        [self.navigationController pushViewController:vc animated:YES];
     }else {
-        KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
-        [self.navigationController pushViewController:vc animated:YES];
+//        KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
+//        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 /**  数组  */

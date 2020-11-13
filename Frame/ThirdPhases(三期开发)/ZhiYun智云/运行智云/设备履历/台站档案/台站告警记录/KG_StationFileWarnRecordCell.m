@@ -94,7 +94,7 @@
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(7);
-        make.width.equalTo(@220);
+        make.right.equalTo(self.centerView.mas_right).offset(-50);
         make.centerY.equalTo(self.iconImage.mas_centerY);
         make.height.equalTo(@45);
     }];
@@ -119,7 +119,15 @@
     
     
     self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
-    
+//    UIView *lineView = [[UIView alloc]init];
+//    [self.tableHeadView addSubview:lineView];
+//    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+//    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.tableHeadView.mas_left).offset(16);
+//        make.right.equalTo(self.tableHeadView.mas_right).offset(-16);
+//        make.height.equalTo(@1);
+//        make.top.equalTo(self.tableHeadView.mas_top);
+//    }];
     self.footBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/4, 0, SCREEN_WIDTH/2, 40)];
     [self.footBtn setTitle:@"更多" forState:UIControlStateNormal];
    

@@ -659,7 +659,7 @@
         
         NSLog(@"请求成功");
         if ([result[@"value"] boolValue]) {
-            [FrameBaseRequest showMessage:@"指派成功"];
+            [FrameBaseRequest showMessage:@"移交成功"];
             self.alertView.hidden = YES;
         }
         

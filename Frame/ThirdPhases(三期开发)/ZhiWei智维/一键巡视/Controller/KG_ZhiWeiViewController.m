@@ -151,7 +151,7 @@
             self.alertView.hidden = YES;
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
         
     }  failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
@@ -352,6 +352,9 @@
 }
 
 - (void)createSegmentView {
+    self.naviTopView = nil;
+    [self.naviTopView removeFromSuperview];
+    
     self.naviTopView = [[KG_ZhiWeiNaviTopView alloc]init];
     self.naviTopView.selIndex = [UserManager shareUserManager].zhiweiSegmentCurIndex;
     self.naviTopView.backgroundColor = [UIColor whiteColor];

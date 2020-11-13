@@ -30,8 +30,6 @@
 
 - (void)createSubviewsView {
     
-  
-    
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -41,7 +39,7 @@
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(40);
-        make.right.equalTo(self.mas_right).offset(-60);
+        make.right.equalTo(self.mas_right).offset(-40);
         make.centerY.equalTo(self.mas_centerY);
         make.height.equalTo(@45);
     }];

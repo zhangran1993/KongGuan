@@ -104,34 +104,34 @@
     }];
     
       
-    self.searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    self.searchBtn.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-    [self.searchBtn setImage:[UIImage imageNamed:@"yun_searchIcon"] forState:UIControlStateNormal];
-    self.searchBtn.userInteractionEnabled = NO;
-    
-    [self.navigationView addSubview:self.searchBtn];
-    
-    
-    self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-    [self.rightButton setImage:[UIImage imageNamed:@"yun_rightIcon"] forState:UIControlStateNormal];
-//    [self.rightButton addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
-    self.rightButton.userInteractionEnabled = NO;
-    [self.navigationView addSubview:self.rightButton];
-    
-    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@44);
-        make.centerY.equalTo(self.titleLabel.mas_centerY);
-        make.right.equalTo(self.navigationView.mas_right).offset(-20);
-    }];
-    
-    [self.searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@44);
-        make.centerY.equalTo(self.titleLabel.mas_centerY);
-        make.right.equalTo(self.rightButton.mas_right).offset(-40);
-    }];
+//    self.searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//
+//    self.searchBtn.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
+//    [self.searchBtn setImage:[UIImage imageNamed:@"yun_searchIcon"] forState:UIControlStateNormal];
+//    self.searchBtn.userInteractionEnabled = NO;
+//
+//    [self.navigationView addSubview:self.searchBtn];
+//
+//
+//    self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
+//
+//    self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
+//    [self.rightButton setImage:[UIImage imageNamed:@"yun_rightIcon"] forState:UIControlStateNormal];
+////    [self.rightButton addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
+//    self.rightButton.userInteractionEnabled = NO;
+//    [self.navigationView addSubview:self.rightButton];
+//
+//    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.width.height.equalTo(@44);
+//        make.centerY.equalTo(self.titleLabel.mas_centerY);
+//        make.right.equalTo(self.navigationView.mas_right).offset(-20);
+//    }];
+//
+//    [self.searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.width.height.equalTo(@44);
+//        make.centerY.equalTo(self.titleLabel.mas_centerY);
+//        make.right.equalTo(self.rightButton.mas_right).offset(-40);
+//    }];
      
 }
 

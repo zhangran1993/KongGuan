@@ -113,10 +113,6 @@
     }];
     
     
-    
-    
-    
-    
     UILabel *titleLabel = [[UILabel alloc]init];
     [self addSubview:titleLabel];
     titleLabel.text = @"处理流程";
@@ -205,7 +201,7 @@
     [self.label3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.btn3.mas_centerX);
         make.top.equalTo(self.btn3.mas_bottom).offset(8);
-       
+        
         make.height.equalTo(@22);
     }];
     self.image3 = [[UIImageView alloc]init];
@@ -237,7 +233,7 @@
     [self.label4 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.btn4.mas_centerX);
         make.top.equalTo(self.btn4.mas_bottom).offset(8);
-      
+        
         make.height.equalTo(@22);
     }];
     self.image4 = [[UIImageView alloc]init];
@@ -259,7 +255,7 @@
         make.top.equalTo(titleLabel.mas_bottom).offset(17);
         make.width.height.equalTo(@40);
     }];
-  
+    
     self.label5 = [[UILabel alloc]init];
     [self addSubview:self.label5];
     self.label5.text = @"告警解决";
@@ -288,7 +284,7 @@
     [self.botBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     [self.botBtn setBackgroundImage:[UIImage imageNamed:@"kg_gaojing_liuchengBgImage"] forState:UIControlStateNormal];
     self.botBtn.titleLabel.font = [UIFont systemFontOfSize:12];
- 
+    
     [self.botBtn addTarget:self action:@selector(confirmMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.botBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.botView.mas_left);
@@ -296,8 +292,6 @@
         make.left.equalTo(self.botView.mas_left);
         make.right.equalTo(self.botView.mas_right);
     }];
-    
-    
     
 }
 
@@ -320,9 +314,6 @@
     }else if ([record isEqualToString:@"completed"]) {//完成
         recordStatus = @"finish";
     }
-    
-    
-   
     
     if ([recordStatus isEqualToString:@"unconfirmed"]) {
         //
@@ -394,8 +385,6 @@
         [self.btn5 setImage:[UIImage imageNamed:@"告警解决"] forState:UIControlStateNormal];
     }
     
-   
-    
     if ([recordStatus isEqualToString:@"unconfirmed"]) {
         
         self.botView.hidden = YES;
@@ -423,7 +412,6 @@
         self.label4.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
         self.label5.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
         
-        
         [self.botView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.btn3.mas_centerX);
             make.top.equalTo(self.btn3.mas_bottom).offset(37);
@@ -440,7 +428,6 @@
         
         self.label5.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
         
-        
         [self.botView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.btn4.mas_centerX);
             make.top.equalTo(self.btn4.mas_bottom).offset(37);
@@ -456,7 +443,6 @@
         self.label3.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
         self.label4.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
         
-        
         [self.botView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.btn5.mas_centerX);
             make.top.equalTo(self.btn5.mas_bottom).offset(37);
@@ -466,15 +452,12 @@
         
     }else if ([recordStatus isEqualToString:@"finish"]) {//告警解决
         self.botView.hidden = YES;
-      
+        
     }
-    
     if (self.changeStatus) {
         self.changeStatus(recordStatus);
     }
-    
 }
-
 
 - (void)btn2Method:(UIButton *)btn {
     if (self.pushToNextStep) {
@@ -496,19 +479,19 @@
 
 - (void)setModel:(KG_GaoJingDetailModel *)model {
     _model = model;
+    
+    //判断处理流程状态，根据接口返回的字段，判断流程进行到哪一步，优先级低于status字段
     NSString *recordStatus = safeString(model.info[@"recordStatus"]);
+    //判断告警的状态，如果是未确认，要先去点击确认，然后处理流程 状态流转到应急处理
+    
     NSString *sstatus = safeString(model.info[@"status"]);
+    //判断页面是否处于挂起状态
     NSString *hangUpStatus = safeString(model.info[@"hangupStatus"]);
     
-//    self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
-//    self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
-//    self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
-//    self.label1.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-//    self.label2.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-//    self.label3.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-//    self.label4.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-//    self.label5.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-//    self.botView.hidden = NO;
+//    recordStatus = @"confirmed";
+//
+//    sstatus = @"confirmed";
+    
     if ([recordStatus isEqualToString:@"unconfirmed"]) {
         
         self.label1.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
@@ -533,27 +516,7 @@
         self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
         
     }else if ([recordStatus isEqualToString:@"confirmed"]) {//告警确认
-        self.label1.textColor = [UIColor colorWithHexString:@"#004EC4"];
-        self.label2.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-        self.label3.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-        self.label4.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
-        self.label5.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
         
-        self.line1.backgroundColor = [UIColor colorWithHexString:@"#F2F3F5"];
-        self.line2.backgroundColor = [UIColor colorWithHexString:@"#F2F3F5"];
-        self.line3.backgroundColor = [UIColor colorWithHexString:@"#F2F3F5"];
-        self.line4.backgroundColor = [UIColor colorWithHexString:@"#F2F3F5"];
-        
-        [self.btn1 setImage:[UIImage imageNamed:@"告警确认"] forState:UIControlStateNormal];
-        [self.btn2 setImage:[UIImage imageNamed:@"应急处理gray"] forState:UIControlStateNormal];
-        [self.btn3 setImage:[UIImage imageNamed:@"故障通告gray"] forState:UIControlStateNormal];
-        [self.btn4 setImage:[UIImage imageNamed:@"设备排故gray"] forState:UIControlStateNormal];
-        [self.btn5 setImage:[UIImage imageNamed:@"告警解决gray"] forState:UIControlStateNormal];
-        
-        self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
-        self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
-        self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
-    }else if ([recordStatus isEqualToString:@"emergency"]) {//应急处理
         self.label1.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label2.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label3.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
@@ -574,7 +537,8 @@
         self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
         self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
-    }else if ([recordStatus isEqualToString:@"announce"]) {//故障通告
+        
+    }else if ([recordStatus isEqualToString:@"emergency"]) {//应急处理
         self.label1.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label2.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label3.textColor = [UIColor colorWithHexString:@"#004EC4"];
@@ -595,8 +559,7 @@
         self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_gray"];
-       
-    }else if ([recordStatus isEqualToString:@"shooting"]) {//设备排故
+    }else if ([recordStatus isEqualToString:@"announce"]) {//故障通告
         self.label1.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label2.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label3.textColor = [UIColor colorWithHexString:@"#004EC4"];
@@ -613,6 +576,28 @@
         [self.btn3 setImage:[UIImage imageNamed:@"故障通告"] forState:UIControlStateNormal];
         [self.btn4 setImage:[UIImage imageNamed:@"设备排故"] forState:UIControlStateNormal];
         [self.btn5 setImage:[UIImage imageNamed:@"告警解决gray"] forState:UIControlStateNormal];
+        
+        self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
+        self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
+        self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
+        
+    }else if ([recordStatus isEqualToString:@"shooting"]) {//设备排故
+        self.label1.textColor = [UIColor colorWithHexString:@"#004EC4"];
+        self.label2.textColor = [UIColor colorWithHexString:@"#004EC4"];
+        self.label3.textColor = [UIColor colorWithHexString:@"#004EC4"];
+        self.label4.textColor = [UIColor colorWithHexString:@"#004EC4"];
+        self.label5.textColor = [UIColor colorWithHexString:@"#004EC4"];
+        
+        self.line1.backgroundColor = [UIColor colorWithHexString:@"#E2ECFF"];
+        self.line2.backgroundColor = [UIColor colorWithHexString:@"#E2ECFF"];
+        self.line3.backgroundColor = [UIColor colorWithHexString:@"#E2ECFF"];
+        self.line4.backgroundColor = [UIColor colorWithHexString:@"#E2ECFF"];
+        
+        [self.btn1 setImage:[UIImage imageNamed:@"告警确认"] forState:UIControlStateNormal];
+        [self.btn2 setImage:[UIImage imageNamed:@"应急处理"] forState:UIControlStateNormal];
+        [self.btn3 setImage:[UIImage imageNamed:@"故障通告"] forState:UIControlStateNormal];
+        [self.btn4 setImage:[UIImage imageNamed:@"设备排故"] forState:UIControlStateNormal];
+        [self.btn5 setImage:[UIImage imageNamed:@"告警解决"] forState:UIControlStateNormal];
         self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
@@ -632,7 +617,7 @@
         [self.btn3 setImage:[UIImage imageNamed:@"故障通告"] forState:UIControlStateNormal];
         [self.btn4 setImage:[UIImage imageNamed:@"设备排故"] forState:UIControlStateNormal];
         [self.btn5 setImage:[UIImage imageNamed:@"告警解决"] forState:UIControlStateNormal];
-     
+        
         self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
@@ -641,7 +626,7 @@
     [self.botBtn setTitle:@"完成" forState:UIControlStateNormal];
     if ([recordStatus isEqualToString:@"unconfirmed"]) {
         
-        self.botView.hidden = NO;
+        self.botView.hidden = YES;
         [self.botView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.btn1.mas_centerX);
             make.top.equalTo(self.btn1.mas_bottom).offset(37);
@@ -649,7 +634,7 @@
             make.height.equalTo(@36);
         }];
     }else if ([recordStatus isEqualToString:@"confirmed"]) {//告警确认
-//        [self.botBtn setTitle:@"确认" forState:UIControlStateNormal];
+        //        [self.botBtn setTitle:@"确认" forState:UIControlStateNormal];
         self.botView.hidden = NO;
         [self.botView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.btn2.mas_centerX);
@@ -661,12 +646,11 @@
     }else if ([recordStatus isEqualToString:@"emergency"]) {//应急处理
         self.botView.hidden = NO;
         [self.botView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                   make.centerX.equalTo(self.btn3.mas_centerX);
-                   make.top.equalTo(self.btn3.mas_bottom).offset(37);
-                   make.width.equalTo(@44);
-                   make.height.equalTo(@36);
-               }];
-        
+            make.centerX.equalTo(self.btn3.mas_centerX);
+            make.top.equalTo(self.btn3.mas_bottom).offset(37);
+            make.width.equalTo(@44);
+            make.height.equalTo(@36);
+        }];
         
     }else if ([recordStatus isEqualToString:@"announce"]) {//故障通告
         self.botView.hidden = NO;
@@ -685,14 +669,17 @@
             make.height.equalTo(@36);
         }];
     }else if ([recordStatus isEqualToString:@"completed"]) {//告警解决
-
+        
         self.botView.hidden = YES;
-       
-
+        
+        
     }
     
-    
-    if ([sstatus isEqualToString:@"removed"] || [hangUpStatus isEqualToString:@"YES"]) {//已解除
+    //已解除或者已解决状态时，处理流程整体置为蓝色。
+    //当已挂起状态时，处理流程整体置为蓝色，当解除挂起时，页面状态根据 status 和recordstatus字段控制
+    if ([sstatus isEqualToString:@"removed"] || [hangUpStatus isEqualToString:@"YES"]
+        ||[sstatus isEqualToString:@"completed"] ) {
+        
         self.label1.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label2.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label3.textColor = [UIColor colorWithHexString:@"#004EC4"];
@@ -708,14 +695,12 @@
         [self.btn3 setImage:[UIImage imageNamed:@"故障通告"] forState:UIControlStateNormal];
         [self.btn4 setImage:[UIImage imageNamed:@"设备排故"] forState:UIControlStateNormal];
         [self.btn5 setImage:[UIImage imageNamed:@"告警解决"] forState:UIControlStateNormal];
+        
         self.image2.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image3.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.image4.image = [UIImage imageNamed:@"kg_liucheng_slider_blue"];
         self.botView.hidden = YES;
     }
-    
-    
-    
     
 }
 

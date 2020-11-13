@@ -62,7 +62,7 @@
         make.right.equalTo(headView.mas_right).offset(-16);
         make.centerY.equalTo(headView.mas_centerY);
     }];
-    self.headerLabel.text = safeString(self.dataDic[@"name"]);
+    self.headerLabel.text = safeString(self.dataDic[@"title"]);
     
     UIView *lineView = [[UIView alloc]init];
     [headView addSubview:lineView];
@@ -77,6 +77,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    
     NSLog(@"StationDetailController viewWillAppear");
     if (@available(iOS 13.0, *)){
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
@@ -86,13 +87,13 @@
     [self.navigationController setNavigationBarHidden:YES];
     
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
+    
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:NO];
     
 }
-
-
 
 -(NSMutableArray *)dataArray{
     if (_dataArray == nil) {
@@ -128,7 +129,6 @@
     }
     return _tableView;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -231,7 +231,6 @@
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
-    
 }
 
 - (void)backButtonClick:(UIButton *)button {
@@ -263,6 +262,7 @@
     return timeStr;
     
 }
+
 - (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];

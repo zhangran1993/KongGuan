@@ -66,14 +66,34 @@
 
 - (void)createSubviewsView {
     
+    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self addSubview:topImage1];
+    [topImage1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.height.equalTo(@(NAVIGATIONBAR_HEIGHT +44));
+        make.top.equalTo(self.mas_top);
+    }];
     
+    
+    topImage1.backgroundColor  =[UIColor whiteColor];
+    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 208)];
+    [self addSubview:topImage];
+    topImage.backgroundColor  =[UIColor colorWithHexString:@"#F6F7F9"];
+    topImage.image = [UIImage imageNamed:@"kg_shebeilvli_BgImaage"];
+    [topImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.height.equalTo(@(208));
+        make.top.equalTo(self.mas_top);
+    }];
     self.centerView = [[UIView alloc]init];
     self.centerView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self addSubview:self.centerView];
     [self.centerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.right.equalTo(self.mas_right).offset(-16);
-        make.top.equalTo(self.mas_top).offset(5);
+        make.top.equalTo(self.mas_top).offset( NAVIGATIONBAR_HEIGHT + 5);
         make.height.equalTo(@165);
     }];
     self.centerView.layer.cornerRadius = 10.f;

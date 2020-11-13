@@ -49,4 +49,6 @@
 
 + (NSString *) getWorkType:(NSString *)typeCode ;
 + (NSString *) getWeatherImage:(NSString *)weather;
+
++ (BOOL)isLingDao;
 @end

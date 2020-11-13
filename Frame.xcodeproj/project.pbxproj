@@ -218,6 +218,7 @@
 		2581ED55244E8C7A002B1D9F /* KG_ZhiTaiBottomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED54244E8C7A002B1D9F /* KG_ZhiTaiBottomCell.m */; };
 		2581ED5A244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED59244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m */; };
 		2581ED5D24503324002B1D9F /* KG_ZhiTaiStationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2581ED5C24503324002B1D9F /* KG_ZhiTaiStationModel.m */; };
+		2582C55D255E7260002FCC66 /* KG_SparePartsStatisticsCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2582C55C255E7260002FCC66 /* KG_SparePartsStatisticsCollectionViewCell.m */; };
 		25847AC124E3C6050044E9E7 /* KG_CommonWebAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25847AC024E3C6050044E9E7 /* KG_CommonWebAlertView.m */; };
 		258484172474CFF000F0AB09 /* KG_GaoJingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258484162474CFF000F0AB09 /* KG_GaoJingDetailViewController.m */; };
 		2584841B2474D20C00F0AB09 /* KG_GaoJingDetailFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2584841A2474D20C00F0AB09 /* KG_GaoJingDetailFirstCell.m */; };
@@ -375,6 +376,17 @@
 		2585866725469C66002993A0 /* KG_EquipmentTroubleshootDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2585866625469C66002993A0 /* KG_EquipmentTroubleshootDetailCell.m */; };
 		2585FE1A24C0322000521E7B /* KG_EquipCardFourthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE1924C0321F00521E7B /* KG_EquipCardFourthCell.m */; };
 		258624DA249228330066C0A4 /* KG_XunShiReportDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258624D9249228330066C0A4 /* KG_XunShiReportDataModel.m */; };
+		25862E59255B9047001AE8D6 /* 备件标签-维修@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E53255B9046001AE8D6 /* 备件标签-维修@2x.png */; };
+		25862E5A255B9047001AE8D6 /* 备件标签-使用中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E54255B9046001AE8D6 /* 备件标签-使用中@3x.png */; };
+		25862E5B255B9047001AE8D6 /* 备件标签-维修@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E55255B9046001AE8D6 /* 备件标签-维修@3x.png */; };
+		25862E5C255B9047001AE8D6 /* 备件标签-维修中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E56255B9047001AE8D6 /* 备件标签-维修中@2x.png */; };
+		25862E5D255B9047001AE8D6 /* 备件标签-维修中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E57255B9047001AE8D6 /* 备件标签-维修中@3x.png */; };
+		25862E5E255B9047001AE8D6 /* 备件标签-使用中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E58255B9047001AE8D6 /* 备件标签-使用中@2x.png */; };
+		25862E62255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E61255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m */; };
+		25862E65255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E64255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.m */; };
+		25862E69255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E68255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.m */; };
+		25862E6D255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E6C255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.m */; };
+		25862E70255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E6F255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.m */; };
 		25869A4F2490987300A2343D /* KG_OnsiteInspectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25869A4E2490987200A2343D /* KG_OnsiteInspectionView.m */; };
 		25869A582490AF3300A2343D /* lauchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 25869A522490AF3300A2343D /* lauchImage.png */; };
 		25869A592490AF3300A2343D /* lauchImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25869A532490AF3300A2343D /* lauchImage@3x.png */; };
@@ -601,11 +613,9 @@
 		258E026B24D7B24C00CDF8BA /* 备件标签-损坏@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */; };
 		258E026D24D7B24C00CDF8BA /* 备件标签-备品@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */; };
 		258E026E24D7B24C00CDF8BA /* 备件标签-备品@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */; };
-		258E026F24D7B24C00CDF8BA /* 备件标签-使用中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026524D7B24B00CDF8BA /* 备件标签-使用中@3x.png */; };
 		258E027124D7B24C00CDF8BA /* 备件标签-报废@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */; };
 		258E027224D7B24C00CDF8BA /* 备件标签-报废@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */; };
 		258E027324D7B24C00CDF8BA /* 备件标签-损坏@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */; };
-		258E027424D7B24C00CDF8BA /* 备件标签-使用中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026A24D7B24C00CDF8BA /* 备件标签-使用中@2x.png */; };
 		258E027824D7DE6200CDF8BA /* KG_BeiJianLvLiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E027724D7DE6200CDF8BA /* KG_BeiJianLvLiCell.m */; };
 		258E027C24D8122500CDF8BA /* KG_StandardSpecificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E027B24D8122500CDF8BA /* KG_StandardSpecificationViewController.m */; };
 		258E028024D8137F00CDF8BA /* KG_StandardSpecificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E027F24D8137F00CDF8BA /* KG_StandardSpecificationCell.m */; };
@@ -1405,6 +1415,8 @@
 		2581ED59244E9759002B1D9F /* KG_ZhiTaiRightAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiTaiRightAlertView.m; sourceTree = "<group>"; };
 		2581ED5B24503324002B1D9F /* KG_ZhiTaiStationModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ZhiTaiStationModel.h; sourceTree = "<group>"; };
 		2581ED5C24503324002B1D9F /* KG_ZhiTaiStationModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_ZhiTaiStationModel.m; sourceTree = "<group>"; };
+		2582C55B255E7260002FCC66 /* KG_SparePartsStatisticsCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_SparePartsStatisticsCollectionViewCell.h; sourceTree = "<group>"; };
+		2582C55C255E7260002FCC66 /* KG_SparePartsStatisticsCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_SparePartsStatisticsCollectionViewCell.m; sourceTree = "<group>"; };
 		25847ABF24E3C6050044E9E7 /* KG_CommonWebAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CommonWebAlertView.h; sourceTree = "<group>"; };
 		25847AC024E3C6050044E9E7 /* KG_CommonWebAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CommonWebAlertView.m; sourceTree = "<group>"; };
 		258484152474CFF000F0AB09 /* KG_GaoJingDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_GaoJingDetailViewController.h; sourceTree = "<group>"; };
@@ -1619,6 +1631,22 @@
 		2585FE1924C0321F00521E7B /* KG_EquipCardFourthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_EquipCardFourthCell.m; sourceTree = "<group>"; };
 		258624D8249228330066C0A4 /* KG_XunShiReportDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiReportDataModel.h; sourceTree = "<group>"; };
 		258624D9249228330066C0A4 /* KG_XunShiReportDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiReportDataModel.m; sourceTree = "<group>"; };
+		25862E53255B9046001AE8D6 /* 备件标签-维修@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修@2x.png"; sourceTree = "<group>"; };
+		25862E54255B9046001AE8D6 /* 备件标签-使用中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@3x.png"; sourceTree = "<group>"; };
+		25862E55255B9046001AE8D6 /* 备件标签-维修@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修@3x.png"; sourceTree = "<group>"; };
+		25862E56255B9047001AE8D6 /* 备件标签-维修中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修中@2x.png"; sourceTree = "<group>"; };
+		25862E57255B9047001AE8D6 /* 备件标签-维修中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修中@3x.png"; sourceTree = "<group>"; };
+		25862E58255B9047001AE8D6 /* 备件标签-使用中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@2x.png"; sourceTree = "<group>"; };
+		25862E60255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunLingBeiJianSearchViewController.h; sourceTree = "<group>"; };
+		25862E61255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunLingBeiJianSearchViewController.m; sourceTree = "<group>"; };
+		25862E63255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunLingBeiJianSearchCell.h; sourceTree = "<group>"; };
+		25862E64255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunLingBeiJianSearchCell.m; sourceTree = "<group>"; };
+		25862E67255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_SparePartsStatisticsListViewController.h; sourceTree = "<group>"; };
+		25862E68255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_SparePartsStatisticsListViewController.m; sourceTree = "<group>"; };
+		25862E6B255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_SparePartsStatisticsFirstCell.h; sourceTree = "<group>"; };
+		25862E6C255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_SparePartsStatisticsFirstCell.m; sourceTree = "<group>"; };
+		25862E6E255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_SparePartsStatisticsSecondCell.h; sourceTree = "<group>"; };
+		25862E6F255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_SparePartsStatisticsSecondCell.m; sourceTree = "<group>"; };
 		25869A4D2490987200A2343D /* KG_OnsiteInspectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_OnsiteInspectionView.h; sourceTree = "<group>"; };
 		25869A4E2490987200A2343D /* KG_OnsiteInspectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_OnsiteInspectionView.m; sourceTree = "<group>"; };
 		25869A522490AF3300A2343D /* lauchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lauchImage.png; sourceTree = "<group>"; };
@@ -1989,11 +2017,9 @@
 		258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@3x.png"; sourceTree = "<group>"; };
 		258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@3x.png"; sourceTree = "<group>"; };
 		258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@2x.png"; sourceTree = "<group>"; };
-		258E026524D7B24B00CDF8BA /* 备件标签-使用中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@3x.png"; sourceTree = "<group>"; };
 		258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@2x.png"; sourceTree = "<group>"; };
 		258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@3x.png"; sourceTree = "<group>"; };
 		258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@2x.png"; sourceTree = "<group>"; };
-		258E026A24D7B24C00CDF8BA /* 备件标签-使用中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@2x.png"; sourceTree = "<group>"; };
 		258E027624D7DE6200CDF8BA /* KG_BeiJianLvLiCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_BeiJianLvLiCell.h; sourceTree = "<group>"; };
 		258E027724D7DE6200CDF8BA /* KG_BeiJianLvLiCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_BeiJianLvLiCell.m; sourceTree = "<group>"; };
 		258E027A24D8122500CDF8BA /* KG_StandardSpecificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_StandardSpecificationViewController.h; sourceTree = "<group>"; };
@@ -3974,6 +4000,40 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		25862E5F255BCC8D001AE8D6 /* 搜索 */ = {
+			isa = PBXGroup;
+			children = (
+				25862E60255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.h */,
+				25862E61255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m */,
+				25862E63255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.h */,
+				25862E64255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.m */,
+			);
+			path = "搜索";
+			sourceTree = "<group>";
+		};
+		25862E66255BD6C4001AE8D6 /* 备件统计列表 */ = {
+			isa = PBXGroup;
+			children = (
+				25862E67255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.h */,
+				25862E68255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.m */,
+				25862E6A255BD91B001AE8D6 /* view */,
+			);
+			path = "备件统计列表";
+			sourceTree = "<group>";
+		};
+		25862E6A255BD91B001AE8D6 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				25862E6B255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.h */,
+				25862E6C255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.m */,
+				2582C55B255E7260002FCC66 /* KG_SparePartsStatisticsCollectionViewCell.h */,
+				2582C55C255E7260002FCC66 /* KG_SparePartsStatisticsCollectionViewCell.m */,
+				25862E6E255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.h */,
+				25862E6F255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		25869A4C2490983100A2343D /* 现场巡视详情 */ = {
 			isa = PBXGroup;
 			children = (
@@ -5016,6 +5076,8 @@
 		258E022724D2A5B900CDF8BA /* 运行-零备件 */ = {
 			isa = PBXGroup;
 			children = (
+				25862E66255BD6C4001AE8D6 /* 备件统计列表 */,
+				25862E5F255BCC8D001AE8D6 /* 搜索 */,
 				258E023F24D400D700CDF8BA /* 备件详情 */,
 				258E023224D3A8C100CDF8BA /* 备件分类 */,
 				258E022B24D2B71600CDF8BA /* view */,
@@ -5112,12 +5174,16 @@
 		258E026024D7B22F00CDF8BA /* 备件icon */ = {
 			isa = PBXGroup;
 			children = (
+				25862E58255B9047001AE8D6 /* 备件标签-使用中@2x.png */,
+				25862E54255B9046001AE8D6 /* 备件标签-使用中@3x.png */,
+				25862E53255B9046001AE8D6 /* 备件标签-维修@2x.png */,
+				25862E55255B9046001AE8D6 /* 备件标签-维修@3x.png */,
+				25862E56255B9047001AE8D6 /* 备件标签-维修中@2x.png */,
+				25862E57255B9047001AE8D6 /* 备件标签-维修中@3x.png */,
 				258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */,
 				258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */,
 				258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */,
 				258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */,
-				258E026A24D7B24C00CDF8BA /* 备件标签-使用中@2x.png */,
-				258E026524D7B24B00CDF8BA /* 备件标签-使用中@3x.png */,
 				258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */,
 				258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */,
 			);
@@ -7310,6 +7376,7 @@
 				2587BF82247775CF00BFAF52 /* 制冷可选未选中@3x.png in Resources */,
 				2584858F24765BEB00F0AB09 /* 阵雨_icon@2x.png in Resources */,
 				2584857124765BEB00F0AB09 /* 雾_icon@2x.png in Resources */,
+				25862E5B255B9047001AE8D6 /* 备件标签-维修@3x.png in Resources */,
 				2587BF8E247775CF00BFAF52 /* 制热不可选@3x.png in Resources */,
 				2580EECC2479234400E7D36B /* 红外传感器2@3x.png in Resources */,
 				2584855F24765BEB00F0AB09 /* 霜冻_icon@2x.png in Resources */,
@@ -7487,6 +7554,7 @@
 				2580EECE2479234400E7D36B /* 场监雷达2@2x.png in Resources */,
 				2580EE6A2479214500E7D36B /* 电子围栏@2x.png in Resources */,
 				2584858B24765BEB00F0AB09 /* 火险_icon@3x.png in Resources */,
+				25862E5A255B9047001AE8D6 /* 备件标签-使用中@3x.png in Resources */,
 				2584854B24765BEB00F0AB09 /* 干旱_icon@3x.png in Resources */,
 				258484F424765ADD00F0AB09 /* 阴@2x.png in Resources */,
 				258CEE2024B44A21007FEE18 /* ATS-蓝@3x.png in Resources */,
@@ -7504,13 +7572,13 @@
 				2580EEAE2479234400E7D36B /* UPS2@2x.png in Resources */,
 				258484F324765ADD00F0AB09 /* 雾@2x.png in Resources */,
 				25EDC5A6247E56670006821C /* 运行管理@2x.png in Resources */,
-				258E027424D7B24C00CDF8BA /* 备件标签-使用中@2x.png in Resources */,
 				2580EE592479214500E7D36B /* 二次雷达@2x.png in Resources */,
 				2584856A24765BEB00F0AB09 /* 冰雹_icon@3x.png in Resources */,
 				2580EE732479214500E7D36B /* 柴油发电机@3x.png in Resources */,
 				2580EE4B2479214500E7D36B /* 电量仪@2x.png in Resources */,
 				2584856F24765BEB00F0AB09 /* 高温_icon@2x.png in Resources */,
 				258484F724765ADD00F0AB09 /* 晴@2x.png in Resources */,
+				25862E5D255B9047001AE8D6 /* 备件标签-维修中@3x.png in Resources */,
 				258CEE2224B44A21007FEE18 /* 蓄电池-蓝@3x.png in Resources */,
 				2580EE752479214500E7D36B /* 水浸@3x.png in Resources */,
 				25EDC5A9247E56680006821C /* 智维_sel@2x.png in Resources */,
@@ -7546,6 +7614,7 @@
 				25EDC598247E56670006821C /* 智态@2x.png in Resources */,
 				25EDC5A1247E56670006821C /* 智修_sel@3x.png in Resources */,
 				2580EE482479214500E7D36B /* 空开@3x.png in Resources */,
+				25862E5E255B9047001AE8D6 /* 备件标签-使用中@2x.png in Resources */,
 				25EDC5AF247E56680006821C /* 智云_sel@2x.png in Resources */,
 				25EDC5A4247E56670006821C /* 智态@3x.png in Resources */,
 				2580EE612479214500E7D36B /* 门禁@2x.png in Resources */,
@@ -7619,6 +7688,7 @@
 				2580EEC82479234400E7D36B /* 烟感2@2x.png in Resources */,
 				258CEE4424B44A21007FEE18 /* 柴油发电机-蓝@2x.png in Resources */,
 				25EEB30F242D9AEB00B9F803 /* zhixiu_sel@2x.png in Resources */,
+				25862E59255B9047001AE8D6 /* 备件标签-维修@2x.png in Resources */,
 				2584854C24765BEB00F0AB09 /* 中雨_icon@3x.png in Resources */,
 				258484F024765ADD00F0AB09 /* 雷雨@2x.png in Resources */,
 				25EDC56D247CE8D70006821C /* 设备排故gray@3x.png in Resources */,
@@ -7667,7 +7737,6 @@
 				258484F624765ADD00F0AB09 /* 多云@3x.png in Resources */,
 				2580EE5E2479214500E7D36B /* 柴油发电机@2x.png in Resources */,
 				258CEE4F24B44A21007FEE18 /* 场监雷达-蓝@3x.png in Resources */,
-				258E026F24D7B24C00CDF8BA /* 备件标签-使用中@3x.png in Resources */,
 				25EEB30A242D9AEB00B9F803 /* task_sel@2x.png in Resources */,
 				2580EE742479214500E7D36B /* 电量仪@3x.png in Resources */,
 				2580EE6E2479214500E7D36B /* 配电柜@2x.png in Resources */,
@@ -7772,6 +7841,7 @@
 				2584854824765BEB00F0AB09 /* 雨夹雪_icon@2x.png in Resources */,
 				25C4B7052484A09F00BA84F4 /* 备件标签-损坏@2x.png in Resources */,
 				2584857C24765BEB00F0AB09 /* 干旱_icon@2x.png in Resources */,
+				25862E5C255B9047001AE8D6 /* 备件标签-维修中@2x.png in Resources */,
 				2580EEC92479234400E7D36B /* 传输设备2@3x.png in Resources */,
 				25906F72248A0D5C0010DD89 /* 电子栅栏@2x.png in Resources */,
 				2580EEC32479234400E7D36B /* 导航DVOR2@3x.png in Resources */,
@@ -7881,6 +7951,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25CF3F1A2500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m in Sources */,
+				25862E6D255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.m in Sources */,
 				258D295C246BF9DA004E8B5A /* RS_ConditionSearchModel.m in Sources */,
 				18E8DFB221F0BC9C00D5449F /* EzvizTrans.h in Sources */,
 				271825D1236C2B5E00D68C18 /* WarnTableViewCell.m in Sources */,
@@ -7912,6 +7983,7 @@
 				259A5C2C251B6B0700A97A97 /* KG_InstrumentationDetailContentFifthCell.m in Sources */,
 				25906F5724889F7C0010DD89 /* KG_RunManagerSecondCell.m in Sources */,
 				259181B025381B3500E4DC32 /* KG_CaseLibraryDetailModel.m in Sources */,
+				25862E69255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.m in Sources */,
 				FE419F6C206E08F800A35A2F /* VideoItems.m in Sources */,
 				258E028924DA36C700CDF8BA /* KG_ZhiXiuBeiJianListViewController.m in Sources */,
 				258484362475494A00F0AB09 /* KG_ResultPromptCell.m in Sources */,
@@ -7949,6 +8021,7 @@
 				25CF3EEC24FC951D00AD3ACA /* KG_ContactTopCell.m in Sources */,
 				2585863625415D51002993A0 /* KG_DutyGroupViewController.m in Sources */,
 				258D2929246A6C9A004E8B5A /* KG_LiXingWeiHuCell.m in Sources */,
+				2582C55D255E7260002FCC66 /* KG_SparePartsStatisticsCollectionViewCell.m in Sources */,
 				25EEB34C243D5C4400B9F803 /* KG_NiControlView.m in Sources */,
 				189B6CC921C6835500434DF5 /* PatrolRemindCell.m in Sources */,
 				258D2952246BD4B7004E8B5A /* KG_XunShiDetailLogCell.m in Sources */,
@@ -8117,6 +8190,7 @@
 				25B0D09C25104E8C009B13E2 /* KG_HistoryScreenHeaderView.m in Sources */,
 				25C4B76024878C3900BA84F4 /* KG_RunReportDetailJiaoJieBanCell.m in Sources */,
 				2584859824767B4800F0AB09 /* KG_KongTiaoCeDianViewController.m in Sources */,
+				25862E62255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m in Sources */,
 				250F190824BD387F00EBD8F7 /* KG_DMERightView.m in Sources */,
 				EC4E9AD221B0DA2400B69476 /* HomeCarouselView.m in Sources */,
 				25921072254AA7E600DAFCF7 /* HXRingChart.m in Sources */,
@@ -8200,6 +8274,7 @@
 				25C4B72F2486229F00BA84F4 /* KG_RunReportDetailThirdCell.m in Sources */,
 				FEFD281020748719004821E1 /* AlarmListCell.m in Sources */,
 				18B34DE721C34A230021C2E6 /* uploadModel.m in Sources */,
+				25862E70255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.m in Sources */,
 				EC70A5F621C109E500F858EE /* CCZAngelWalker.m in Sources */,
 				25893EE1242AFF4300D92C0F /* KG_ScrollListModel.m in Sources */,
 				FEE2491E206CB89C00D62197 /* Patroltems.m in Sources */,
@@ -8268,6 +8343,7 @@
 				25D1F05824249072007E5870 /* WYLHTTPSessionManager.m in Sources */,
 				250B886823C578A500C79136 /* CommonBaseViewController.m in Sources */,
 				25EEB349243D5BF600B9F803 /* KG_PowerOffView.m in Sources */,
+				25862E65255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.m in Sources */,
 				EC8795DA21B4C3F9000F3CC1 /* WheelModel.m in Sources */,
 				25858643254180B7002993A0 /* KG_CaseLibraryTypeSignCell.m in Sources */,
 				25950A9324597AD500BCCA8B /* KG_CommonDetailView.m in Sources */,

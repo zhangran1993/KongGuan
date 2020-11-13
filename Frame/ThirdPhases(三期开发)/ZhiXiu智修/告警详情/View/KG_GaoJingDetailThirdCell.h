@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_GaoJingDetailThirdCell : UITableViewCell
+
 @property (nonatomic,strong) KG_GaoJingDetailModel *model;
 
 @property (nonatomic,strong) void (^pushToNextStep)(NSString *titleStr,KG_GaoJingDetailModel *model);

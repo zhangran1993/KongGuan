@@ -10,6 +10,9 @@
 #import "KG_BeiJianListCell.h"
 #import "KG_BeiJianCategoryViewController.h"
 #import "KG_RunLingBeiJianViewController.h"
+
+#import "KG_RunLingBeiJianSearchViewController.h"
+#import "KG_SparePartsStatisticsListViewController.h"
 @interface KG_ZhiXiuBeiJianListViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -77,7 +80,7 @@
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
-        make.height.equalTo(@120);
+        make.height.equalTo(@105);
     }];
     
     UIImageView *speakIcon = [[UIImageView alloc]init];
@@ -200,7 +203,7 @@
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navigationView.mas_bottom).offset(111);
+        make.top.equalTo(self.navigationView.mas_bottom).offset(105);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
@@ -258,18 +261,18 @@
     self.searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
     self.searchBtn.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-    [self.searchBtn setImage:[UIImage imageNamed:@"yun_searchIcon"] forState:UIControlStateNormal];
-    self.searchBtn.userInteractionEnabled = NO;
-    
+    [self.searchBtn setImage:[UIImage imageNamed:@"search_icon"] forState:UIControlStateNormal];
+    self.searchBtn.userInteractionEnabled = YES;
+    [self.searchBtn addTarget:self action:@selector(searchMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationView addSubview:self.searchBtn];
     
     
     self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
     
     self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-    [self.rightButton setImage:[UIImage imageNamed:@"yun_rightIcon"] forState:UIControlStateNormal];
-    //    [self.rightButton addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
-    self.rightButton.userInteractionEnabled = NO;
+    [self.rightButton setImage:[UIImage imageNamed:@"kg_lingbeijian_rightIcon"] forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
+    self.rightButton.userInteractionEnabled = YES;
     [self.navigationView addSubview:self.rightButton];
     
     [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -285,6 +288,21 @@
     }];
     
 }
+- (void)searchMethod:(UIButton *)button {
+    
+    KG_RunLingBeiJianSearchViewController *vc = [[KG_RunLingBeiJianSearchViewController alloc]init];
+    vc.fromType = @"zhixiu";
+    vc.model = self.model;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)yiduAction {
+    
+    KG_SparePartsStatisticsListViewController *vc = [[KG_SparePartsStatisticsListViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 - (void)backButtonClick:(UIButton *)button {
     

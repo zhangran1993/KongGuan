@@ -42,8 +42,12 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-    self.dataArray = self.dataDic[@"handleGuideList"];
-    [self.tableView reloadData];
+    if (isSafeArray(self.dataDic[@"handleGuideList"])) {
+        
+        self.dataArray = self.dataDic[@"handleGuideList"];
+        [self.tableView reloadData];
+    }
+    
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 58)];
     headView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
@@ -108,8 +112,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
+    if(self.dataArray.count >0) {
+        return 1;
+    }
     
-    return 1;
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

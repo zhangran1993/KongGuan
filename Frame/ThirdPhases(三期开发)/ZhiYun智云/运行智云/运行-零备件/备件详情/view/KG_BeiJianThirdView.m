@@ -161,13 +161,11 @@
         make.height.equalTo(@20);
     }];
     
-    
-    
-     
 }
 - (void)saveMethod:(UIButton *)btn {
     [self.textView resignFirstResponder];
-    
+    [self.saveBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+    self.saveBtn.userInteractionEnabled = NO;
     if (self.saveBlockMethod) {
         self.saveBlockMethod(self.textView.text);
     }

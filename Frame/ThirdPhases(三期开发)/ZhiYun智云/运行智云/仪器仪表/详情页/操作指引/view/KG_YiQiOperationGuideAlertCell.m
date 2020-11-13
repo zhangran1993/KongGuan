@@ -49,10 +49,10 @@
         make.top.equalTo(self.mas_top);
     }];
     
-    UIView *lineView = [[UIView alloc]init];
-    [self addSubview:lineView];
-    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.lineView = [[UIView alloc]init];
+    [self addSubview:self.lineView];
+    self.lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@1);
         make.bottom.equalTo(self.mas_bottom);
         make.left.equalTo(self.mas_left).offset(16);

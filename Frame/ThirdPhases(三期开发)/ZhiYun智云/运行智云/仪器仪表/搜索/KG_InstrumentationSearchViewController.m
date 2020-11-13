@@ -9,6 +9,7 @@
 #import "KG_InstrumentationSearchViewController.h"
 #import "KG_InstrumentationSearchCell.h"
 #import "KG_XunShiReportDetailViewController.h"
+#import "KG_NoDataPromptView.h"
 @interface KG_InstrumentationSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong)    UITableView             *tableView;
@@ -23,7 +24,10 @@
 
 @property (nonatomic, strong)   UILabel                 *containLabel;
 
-@property (nonatomic, copy)   NSString                 *seachStr;
+@property (nonatomic, copy)     NSString                  *seachStr;
+
+
+@property(strong,nonatomic)   KG_NoDataPromptView  *nodataView;
 @end
 
 @implementation KG_InstrumentationSearchViewController
@@ -54,13 +58,15 @@
     self.rightButton.titleLabel.font = FontSize(16);
     
     [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+   
+    
     [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
     
     [self.view addSubview:self.rightButton];
     
     [self.rightButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@60);
+        make.width.equalTo(@40);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar);
         make.height.equalTo(@44);
         make.right.equalTo(self.view.mas_right).offset(-10);
@@ -285,6 +291,11 @@
         self.dataArray = result[@"value"];
         self.containLabel.text = [NSString stringWithFormat:@"包含“%@”的内容",safeString(search)];
         [self.tableView reloadData];
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         
         NSLog(@"1");
     }  failure:^(NSError *error) {
@@ -352,6 +363,25 @@
     [self.navigationController pushViewController:vc animated:YES];
     //    NSString *str = self.dataArray[indexPath.row];
     
+}
+
+
+- (KG_NoDataPromptView *)nodataView {
+    if (!_nodataView) {
+        _nodataView = [[KG_NoDataPromptView alloc]init];
+        [self.view addSubview:_nodataView];
+        [self.view bringSubviewToFront:_nodataView];
+        _nodataView.noDataLabel.text = @"未找到相关结果";
+        _nodataView.iconImage.image = [UIImage imageNamed:@"kg_lingbeijian_NodataImage"];
+        [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+       
+    }
+    return _nodataView;
 }
 
 @end

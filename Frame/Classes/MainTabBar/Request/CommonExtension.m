@@ -566,4 +566,22 @@
     
     return ss;
 }
+
++(BOOL)isLingDao {
+    
+    BOOL islingDao = NO;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"role"]){
+        NSArray *arr = [userDefaults objectForKey:@"role"];
+        if (arr.count) {
+            for (NSString *str in arr) {
+                if ([safeString(str) isEqualToString:@"领导"]) {
+                    islingDao = YES;
+                    break;
+                }
+            }
+        }
+    }
+    return islingDao;
+}
 @end

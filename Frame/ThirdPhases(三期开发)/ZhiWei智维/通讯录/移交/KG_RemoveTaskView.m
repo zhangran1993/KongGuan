@@ -190,6 +190,10 @@
 //确定
 - (void)confirmMethod:(UIButton *)button {
     
+    if (self.name.length == 0) {
+        [FrameBaseRequest showMessage:@"请选择移交人员"];
+        return;
+    }
     if (self.confirmBlockMethod) {
         self.confirmBlockMethod(self.dataDic,self.name,self.nameID);
     }

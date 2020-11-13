@@ -137,6 +137,9 @@
     }else if (indexPath.row == 3) {
         cell.titleLabel.text = @"备件分类";
         cell.detailLabel.text = safeString(self.categoryString);
+        if(self.categoryString.length == 0) {
+            cell.detailLabel.text = safeString(self.dataDic[@"categoryName"]);
+        }
         cell.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     }
     

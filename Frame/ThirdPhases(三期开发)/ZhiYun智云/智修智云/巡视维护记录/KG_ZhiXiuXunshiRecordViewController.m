@@ -16,6 +16,11 @@
 #import "KG_InspectionRecordCell.h"
 
 #import "KG_WeihuDailyReportDetailViewController.h"
+
+#import "KG_HistoryScreenViewController.h"
+
+#import "KG_AssignView.h"
+#import "KG_AddressbookViewController.h"
 @interface KG_ZhiXiuXunshiRecordViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UIView *noDataView;
@@ -34,6 +39,23 @@
 @property (nonatomic, strong)   UILabel                 *titleLabel;
 
 @property (nonatomic, strong)   UIView                  *navigationView;
+
+
+@property (nonatomic, strong)   UIButton   *rightButton;
+
+
+
+@property (nonatomic, copy)     NSString                *taskStr;
+@property (nonatomic, copy)     NSString                *roomStr;
+@property (nonatomic, copy)     NSString                *taskStatusStr;
+@property (nonatomic, copy)     NSString                *startTime;
+@property (nonatomic, copy)     NSString                *endTime;
+@property (nonatomic, strong)   NSArray                 *roomArray;
+
+@property (nonatomic, copy)     NSString                *searchString;
+
+
+@property (nonatomic, strong)  KG_AssignView            *alertPersonView;
 @end
 
 @implementation KG_ZhiXiuXunshiRecordViewController
@@ -44,6 +66,11 @@
     self.pageNum = 1;
     self.pageSize = 10;
     self.currIndex = 0;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushToAddressBook) name:@"pushToAddressBook" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addressBookSelPerson:) name:@"addressBookSelPerson" object:nil];
+    
     //初始化为日
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
@@ -67,6 +94,28 @@
     [self loadData];
 }
 
+- (void)pushToAddressBook {
+    
+    [UserManager shareUserManager].isSelContact = YES;
+    self.alertPersonView.hidden = YES;
+    
+    KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
+    vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
+        self.alertPersonView.hidden = NO;
+        self.alertPersonView.name = nameStr;
+        self.alertPersonView.nameID = nameID;
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)addressBookSelPerson:(NSNotification *)notification {
+    NSDictionary *dataDic = notification.userInfo;
+    if (dataDic.count) {
+        self.alertPersonView.hidden = NO;
+        self.alertPersonView.name = safeString(dataDic[@"nameStr"]);
+        self.alertPersonView.nameID = safeString(dataDic[@"nameID"]);
+    }
+}
 
 
 - (void)createTopView {
@@ -214,6 +263,20 @@
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+    
+    self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
+    [self.rightButton setImage:[UIImage imageNamed:@"history_screen_image"] forState:UIControlStateNormal];
+    //    [self.rightButton addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
+    self.rightButton.userInteractionEnabled = YES;
+    [self.navigationView addSubview:self.rightButton];
+    [self.rightButton addTarget:self action:@selector(screenMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@44);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.right.equalTo(self.navigationView.mas_right).offset(-20);
     }];
     
     
@@ -430,14 +493,7 @@
     };
     return cell;
 }
-//指派任务
-- (void)showSelContactAlertView:(NSDictionary *)dic {
-    
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"showAssignView"
-                                                        object:self
-                                                      userInfo:dic];
-}
+
 
 - (void)getTask:(NSDictionary *)dataDic {
     NSString *userID = [UserManager shareUserManager].userID ;
@@ -482,7 +538,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.row];
-    
+    if ([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+        
+        if ([CommonExtension isLingDao]) {
+            [FrameBaseRequest showMessage:@"请先指派任务"];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"请先领取任务"];
+        return;
+    }
    
     NSString *titleStr = safeString(dataDic[@"typeCode"]);
     if([titleStr isEqualToString:@"oneTouchTour"]) {
@@ -924,4 +988,295 @@
     }
     return _noDataView;
 }
+
+//筛选
+- (void)screenMethod:(UIButton *)button {
+    
+    KG_HistoryScreenViewController *vc = [[KG_HistoryScreenViewController alloc]init];
+    
+    vc.taskStr = self.taskStr;
+    vc.roomStr = self.roomStr;
+    vc.taskStatusStr = self.taskStatusStr;
+    vc.startTime = self.startTime;
+    vc.endTime = self.endTime;
+    
+    
+    vc.confirmBlockMethod = ^(NSString * _Nonnull taskStr, NSString * _Nonnull roomStr, NSString * _Nonnull taskStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray) {
+        
+        self.roomStr = roomStr;
+        self.taskStr = taskStr;
+        self.taskStatusStr = taskStausStr;
+        
+        self.startTime = startTimeStr;
+        self.endTime = endTimeStr;
+        self.roomArray = roomArray;
+        
+        if(roomStr.length == 0 && taskStr.length == 0 && taskStausStr.length == 0
+           && startTimeStr.length == 0 && endTimeStr.length == 0) {
+            
+            return ;
+        }
+        
+        [self screenHistoryData];
+    };
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void) screenHistoryData {
+    NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+    if (currentDic.count == 0) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"station"]){
+            currentDic = [userDefaults objectForKey:@"station"];
+        }else {
+            NSArray *stationArr = [UserManager shareUserManager].stationList;
+            
+            if (stationArr.count >0) {
+                currentDic = [stationArr firstObject][@"station"];
+            }
+        }
+    }
+    NSString *engineCode = @"";
+    for (NSDictionary *roomDic in self.roomArray) {
+        if ([self.roomStr isEqualToString:safeString(roomDic[@"alias"])]) {
+            engineCode = safeString(roomDic[@"code"]);
+            break;
+        }
+    }
+    self.pageNum = 1;
+    
+    
+    //    常规巡视取oneTouchTour；
+    //    例行维护取routineMaintenance；
+    //    特殊保障取specialSecurity；
+    //    全部取all
+    NSString *type = @"all";
+    if ([self.taskStr isEqualToString:@"一键巡视"]) {
+        type = @"oneTouchTour";
+    }else if ([self.taskStr isEqualToString:@"维护任务"]) {
+        type = @"routineMaintenance";
+    }else if ([self.taskStr isEqualToString:@"特殊保障"]) {
+        type = @"specialSecurity";
+    }else {
+        type = @"all";
+    }
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/appSearch/%@/%d/%d",safeString(type),self.pageNum,self.pageSize]];
+    NSMutableArray *paramArr = [NSMutableArray arrayWithCapacity:0];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"name"] = @"stationCode";
+    params[@"type"] = @"eq";
+    params[@"content"] = safeString(currentDic[@"code"]);
+    
+    //机房编码
+    NSMutableDictionary *params1 = [NSMutableDictionary dictionary];
+    params1[@"name"] = @"engineRoomCode";
+    params1[@"type"] = @"eq";
+    params1[@"content"] = safeString(engineCode);
+    //开始时间，如："2020-04-01"
+    NSMutableDictionary *params2 = [NSMutableDictionary dictionary];
+    params2[@"name"] = @"startTime";
+    params2[@"type"] = @"eq";
+    params2[@"content"] = safeString(self.startTime);
+    //结束时间，如："2020-04-13"
+    NSMutableDictionary *params3 = [NSMutableDictionary dictionary];
+    params3[@"name"] = @"endTime";
+    params3[@"type"] = @"eq";
+    params3[@"content"] = safeString(self.endTime);
+    //任务状态编码，取值0~5
+    
+    NSString *statusCode = @"0";
+    statusCode = [self getTaskStatus:self.taskStatusStr];
+    
+    [paramArr addObject:params];
+    [paramArr addObject:params1];
+    [paramArr addObject:params2];
+    [paramArr addObject:params3];
+    if(statusCode.length) {
+        NSMutableDictionary *params4 = [NSMutableDictionary dictionary];
+        params4[@"name"] = @"status";
+        params4[@"type"] = @"eq";
+        params4[@"content"] = safeString(statusCode);
+        [paramArr addObject:params4];
+    }
+    
+    WS(weakSelf);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramArr success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        [self.tableView.mj_footer endRefreshing];
+        [self.dataArray removeAllObjects];
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+//        self.tableView.tableHeaderView = self.screenResultView;
+        
+        
+        
+        NSMutableString *parStr = [NSMutableString string];
+        if (self.taskStr.length >0) {
+            [parStr appendString:safeString(self.taskStr)];
+        }
+        
+        NSString *engineCode = @"";
+        for (NSDictionary *roomDic in self.roomArray) {
+            if ([self.roomStr isEqualToString:safeString(roomDic[@"alias"])]) {
+                engineCode = safeString(roomDic[@"code"]);
+                break;
+            }
+        }
+        
+        if (self.roomStr.length >0) {
+            [parStr appendString:safeString(self.roomStr)];
+        }
+        
+        NSString *statusCode = @"0";
+        statusCode = [self getTaskStatus:self.taskStatusStr];
+        
+        if (statusCode.length >0) {
+            [parStr appendString:safeString(statusCode)];
+        }
+        
+        if(safeString(self.startTime).length >0 && safeString(self.endTime).length >0) {
+            [parStr appendString:safeString(self.startTime)];
+            [parStr appendString:safeString(self.endTime)];
+            
+        }
+//        self.screenResultLabel.text = [NSString stringWithFormat:@"%@",safeString(parStr)];
+        
+        [self.tableView reloadData];
+        if(self.dataArray.count) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+        NSLog(@"请求成功");
+        
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+}
+
+
+- (NSString *)getTaskStatus :(NSString *)status {
+    NSString *ss = @"";
+    if ([status isEqualToString:@"待执行"]) {
+        ss = @"0";
+    }else if ([status isEqualToString:@"进行中"]) {
+        ss = @"1";
+    }else if ([status isEqualToString:@"已完成"]) {
+        ss = @"2";
+    }else if ([status isEqualToString:@"逾期未完成"]) {
+        ss = @"3";
+    }else if ([status isEqualToString:@"逾期完成"]) {
+        ss = @"4";
+    }else if ([status isEqualToString:@"待领取"]) {
+        ss = @"5";
+    }else if ([status isEqualToString:@"待指派"]) {
+        ss = @"5";
+    }
+    return ss;
+    
+}
+
+//指派任务
+- (void)showSelContactAlertView:(NSDictionary *)dic {
+    
+    NSDictionary *dDic = dic;
+    
+    self.alertPersonView = [[KG_AssignView alloc]init];
+    [JSHmainWindow addSubview:self.alertPersonView];
+    self.alertPersonView.dataDic = dDic;
+    self.alertPersonView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
+        
+        [self assignData:dataDic name:name withNameID:nameID];
+        
+    };
+    [self.alertPersonView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+        make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+        make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+        make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+    }];
+}
+
+//任务移交接口：
+//请求地址：/intelligent/atcSafeguard/updateAtcPatrolRecode
+//请求方式：POST
+//请求Body：
+//{
+//    "id": "XXX",                 //任务Id，必填
+//    "patrolName": "XXX"         //任务执行负责人Id，必填
+////任务移交时修改这个字段为新的任务执行负责人Id即可
+//}
+- (void)assignData:(NSDictionary *)dataDic name:(NSString *)name withNameID:(NSString *)nameID{
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/updateAtcPatrolRecode"]];
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    paramDic[@"id"] = safeString(dataDic[@"id"]);
+    paramDic[@"patrolName"] = safeString(nameID);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+        NSLog(@"请求成功");
+        
+        [FrameBaseRequest showMessage:@"指派成功"];
+        self.alertPersonView.hidden = YES;
+        [self.dataArray removeAllObjects];
+        self.pageNum = 1;
+        
+        if (self.currIndex == 0) {
+            NSLog(@"1");
+            [self loadData];
+        }else if (self.currIndex == 1){
+            NSLog(@"2");
+            [self getXunShiHistoryData];
+        }else if (self.currIndex == 2){
+            NSLog(@"3");
+            [self getWeiHuHistoryData];
+        }else if (self.currIndex == 3){
+            NSLog(@"4");
+            [self getBaoZhangHistoryData];
+        }
+        
+        
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+}
+
 @end

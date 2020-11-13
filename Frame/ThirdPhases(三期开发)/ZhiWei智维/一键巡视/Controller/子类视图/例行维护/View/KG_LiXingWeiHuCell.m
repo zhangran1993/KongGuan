@@ -204,6 +204,8 @@
     [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
     [self.taskButton setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     self.taskButton.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.taskButton.layer.cornerRadius = 4.f;
+    self.taskButton.layer.masksToBounds = YES;
     [self.taskButton addTarget:self action:@selector(taskButtonMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.taskButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightView.mas_right).offset(-16);

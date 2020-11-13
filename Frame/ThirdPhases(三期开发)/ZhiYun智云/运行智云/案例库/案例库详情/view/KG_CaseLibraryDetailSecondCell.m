@@ -70,14 +70,14 @@
     [self.centerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.right.equalTo(self.mas_right).offset(-16);
-        make.top.equalTo(self.mas_top).offset(5);
-        make.height.equalTo(@172);
+        make.top.equalTo(self.mas_top);
+        make.height.equalTo(self.mas_height);
     }];
     self.centerView.layer.cornerRadius = 10.f;
     self.centerView.layer.masksToBounds = YES;
-    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
-    self.centerView.layer.shadowOpacity = 1;
-    self.centerView.layer.shadowRadius = 2;
+//    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
+//    self.centerView.layer.shadowOpacity = 1;
+//    self.centerView.layer.shadowRadius = 2;
 
     [self initCollevtionView];
     
@@ -117,7 +117,7 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.showsVerticalScrollIndicator = NO;
-    self.collectionView.scrollEnabled = YES;
+    self.collectionView.scrollEnabled = NO;
     self.collectionView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
    
     

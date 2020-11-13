@@ -101,7 +101,7 @@
     
     UILabel *noDataLabel = [[UILabel alloc]init];
     [self.noDataView addSubview:noDataLabel];
-    noDataLabel.text = @"暂无备份履历";
+    noDataLabel.text = @"暂无备件履历";
     noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
     noDataLabel.font = [UIFont systemFontOfSize:12];
     noDataLabel.textAlignment = NSTextAlignmentCenter;

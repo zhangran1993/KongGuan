@@ -225,6 +225,16 @@
     
    
     NSDictionary *dataDic = self.dataArray[indexPath.row];
+    
+    if ([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+        
+        if ([CommonExtension isLingDao]) {
+            [FrameBaseRequest showMessage:@"请先指派任务"];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"请先领取任务"];
+        return;
+    }
     if (self.didsel) {
         self.didsel(dataDic, @"teshubaozhang");
     }

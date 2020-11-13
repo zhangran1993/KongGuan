@@ -203,12 +203,12 @@
             
             return ;
         }
-        
-        if([safeString(result[@"value"]) isEqualToString:@"success"]) {
+//
+//        if([safeString(result[@"value"]) isEqualToString:@"success"]) {
             [self.dataArray removeAllObjects];
             [self queryYiJianXunShiData];
             [FrameBaseRequest showMessage:@"领取成功"];
-        }
+//        }
        
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -230,6 +230,15 @@
         NSDictionary *dataDic = listArray[indexPath.row];
         
         self.alertInfo = dataDic;
+        if ([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+            
+            if ([CommonExtension isLingDao]) {
+                [FrameBaseRequest showMessage:@"请先指派任务"];
+                return;
+            }
+            [FrameBaseRequest showMessage:@"请先领取任务"];
+            return;
+        }
         if ([safeString(self.alertInfo[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
 //            normalInspection一键巡视
             _alertView = nil;

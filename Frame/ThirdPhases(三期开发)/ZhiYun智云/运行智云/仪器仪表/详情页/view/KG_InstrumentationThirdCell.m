@@ -57,11 +57,11 @@
     }];
     self.centerView.layer.cornerRadius = 10.f;
     self.centerView.layer.masksToBounds = YES;
-    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
-    self.centerView.layer.shadowOpacity = 1;
-    self.centerView.layer.shadowRadius = 2;
-    
-    
+//    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
+//    self.centerView.layer.shadowOpacity = 1;
+//    self.centerView.layer.shadowRadius = 2;
+//    
+//    
     
     self.iconImage = [[UIImageView alloc]init];
     [self.centerView addSubview:self.iconImage];

@@ -257,6 +257,7 @@
     
     KG_HistorySearchViewController *vc = [[KG_HistorySearchViewController alloc]init];
     
+    
     vc.didselBlock = ^(NSString * _Nonnull nameID, NSString * _Nonnull name) {
         self.searchString = name;
         [self searchHistoryData:name];
@@ -286,6 +287,12 @@
         self.startTime = startTimeStr;
         self.endTime = endTimeStr;
         self.roomArray = roomArray;
+        
+        if(roomStr.length == 0 && taskStr.length == 0 && taskStausStr.length == 0
+           && startTimeStr.length == 0 && endTimeStr.length == 0) {
+            
+            return ;
+        }
         
         [self screenHistoryData];
     };
@@ -522,7 +529,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.row];
     
-    if([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+    if ([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+        
+        if ([CommonExtension isLingDao]) {
+            [FrameBaseRequest showMessage:@"请先指派任务"];
+            return;
+        }
         [FrameBaseRequest showMessage:@"请先领取任务"];
         return;
     }

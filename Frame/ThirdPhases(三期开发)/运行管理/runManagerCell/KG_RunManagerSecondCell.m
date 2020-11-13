@@ -37,16 +37,20 @@
 
 - (void)createSubviewsView {
     //
+    [self setUpWeihuView];
 }
 
 - (void)setReportListArr:(NSArray *)reportListArr {
     _reportListArr = reportListArr;
+    
+    [self.weihuTableView reloadData];
     //第二个
-    [self setUpWeihuView];
+//    [self setUpWeihuView];
 }
 
 //第二个维护view
 - (void)setUpWeihuView {
+    
     [self.stationWeihuView removeFromSuperview];
     self.stationWeihuView = nil;
     self.stationWeihuView = [[UIView alloc]init];
@@ -80,6 +84,7 @@
     }];
     
     [self.stationWeihuView addSubview:self.weihuTableView];
+    self.weihuTableView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self.weihuTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.stationWeihuView.mas_right).offset(-40);
         make.height.equalTo(@64);
@@ -96,8 +101,6 @@
         make.right.equalTo(self.stationWeihuView.mas_right);
     }];
     
-    
-    
     UIButton *rightBtn = [[UIButton alloc]init];
     [rightBtn setImage:[UIImage imageNamed:@"common_right"] forState:UIControlStateNormal];
     [self.stationWeihuView addSubview:rightBtn];
@@ -107,8 +110,6 @@
         make.centerY.equalTo(self.stationWeihuView.mas_centerY);
         make.right.equalTo(self.stationWeihuView.mas_right).offset(-10);
     }];
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -119,6 +120,7 @@
 }
 
 - (UITableView *)weihuTableView {
+    
     if (!_weihuTableView) {
         _weihuTableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _weihuTableView.delegate = self;
@@ -127,14 +129,11 @@
         _weihuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _weihuTableView.scrollEnabled = NO;
         
-        
     }
     return _weihuTableView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
     
      if ([tableView isEqual:self.weihuTableView]) {
          if(self.reportListArr.count == 1) {
@@ -150,16 +149,17 @@
   
   if ([tableView isEqual:self.weihuTableView]) {
         
-        KG_RunWeiHuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunWeiHuCell"];
-        if (cell == nil) {
-            cell = [[KG_RunWeiHuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunWeiHuCell"];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSDictionary *dataDic = self.reportListArr[indexPath.row];
-        cell.dataDic = dataDic;
-        
-        return cell;
-    }
+      KG_RunWeiHuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunWeiHuCell"];
+      if (cell == nil) {
+          cell = [[KG_RunWeiHuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunWeiHuCell"];
+      }
+      cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+      cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      NSDictionary *dataDic = self.reportListArr[indexPath.row];
+      cell.dataDic = dataDic;
+      
+      return cell;
+  }
     
     return nil;
 }

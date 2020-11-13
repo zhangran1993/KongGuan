@@ -67,9 +67,9 @@
     }];
     self.centerView.layer.cornerRadius = 10.f;
     self.centerView.layer.masksToBounds = YES;
-    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
-    self.centerView.layer.shadowOpacity = 1;
-    self.centerView.layer.shadowRadius = 2;
+//    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
+//    self.centerView.layer.shadowOpacity = 1;
+//    self.centerView.layer.shadowRadius = 2;
     
     
     
@@ -106,9 +106,9 @@
     }];
     
     
-    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-32, 40)];
     
-    self.footBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/4, 0, SCREEN_WIDTH/2, 40)];
+    self.footBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-32, 40)];
     [self.footBtn setTitle:@"收起" forState:UIControlStateNormal];
     if (self.shouqi) {
         [self.footBtn setTitle:@"展开" forState:UIControlStateNormal];

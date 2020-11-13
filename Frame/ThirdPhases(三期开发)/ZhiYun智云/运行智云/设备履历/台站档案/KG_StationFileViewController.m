@@ -45,6 +45,8 @@
 
 @property (nonatomic, strong)   UIView                  *navigationView;
 
+@property (nonatomic, strong)   UIImageView             *navigationBgImageView;
+
 @property (nonatomic, strong)   UIButton                *searchBtn;
 
 @property (nonatomic, strong)   UIButton                *rightButton;
@@ -62,10 +64,11 @@
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     self.dataModel = [[KG_EquipmentHistoryDetailModel alloc]init];
     self.model  = [[KG_GaoJingModel alloc]init];
-    [self createNaviTopView];
-    
     [self createUI];
     [self createTableView];
+    [self createNaviTopView];
+    
+    
     //设备台站告警记录
     [self queryStationAlarmListData];
     //关键环境事件记录
@@ -90,7 +93,14 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
     [self.navigationController setNavigationBarHidden:YES];
-    
+    if([ self.tableView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
+        
+        if(@available(iOS 11.0, *)) {
+            self.tableView.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
+        }else{
+            
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -102,7 +112,7 @@
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navigationView.mas_bottom);
+        make.top.equalTo(self.view.mas_top);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
@@ -115,19 +125,28 @@
     
 }
 - (void)createNaviTopView {
-    
-    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
-    [self.view addSubview:topImage1];
-    topImage1.backgroundColor  =[UIColor whiteColor];
-    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
-    [self.view addSubview:topImage];
-    topImage.backgroundColor  =[UIColor whiteColor];
-    topImage.image = [UIImage imageNamed:@"kg_InstruTopImage"];
+//
+//    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+//    [self.view addSubview:topImage1];
+//    topImage1.backgroundColor  =[UIColor whiteColor];
+//    UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
+//    [self.view addSubview:topImage];
+//    topImage.backgroundColor  =[UIColor whiteColor];
+//    topImage.image = [UIImage imageNamed:@"kg_InstruTopImage"];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
     self.navigationView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.navigationView];
+    self.navigationBgImageView = [[UIImageView alloc]init];
+    [self.navigationView addSubview:self.navigationBgImageView];
+    self.navigationBgImageView.backgroundColor = [UIColor clearColor];
     
+    [self.navigationBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.navigationView.mas_left);
+        make.right.equalTo(self.navigationView.mas_right);
+        make.top.equalTo(self.navigationView.mas_top);
+        make.bottom.equalTo(self.navigationView.mas_bottom);
+    }];
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -226,7 +245,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0) {
         
-        return 170;
+        return 170 + NAVIGATIONBAR_HEIGHT;
         
     }else if(indexPath.section == 1) {
         
@@ -826,6 +845,23 @@
         //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+
+{
+    NSLog(@"contentOffset====%f",self.tableView.contentOffset.y);
+    if (self.tableView.contentOffset.y > 0) {
+        float orY= self.tableView.contentOffset.y/208;
+      
+        self.navigationBgImageView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+        self.navigationBgImageView.alpha = orY;
+        
+    }else {
+        self.navigationBgImageView.backgroundColor = [UIColor clearColor];
+        self.navigationBgImageView.alpha = 1;
+    }
+
 }
 
 @end

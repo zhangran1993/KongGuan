@@ -83,7 +83,7 @@
 }
 
 - (void)createTableView {
-       
+    
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navigationView.mas_bottom);
@@ -91,11 +91,11 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-  
+    
 }
 
 - (void)createUI {
-   
+    
     
 }
 - (void)createNaviTopView {
@@ -114,7 +114,7 @@
     
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
-
+    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.navigationView.mas_centerX);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
@@ -227,6 +227,7 @@
 
 //坐边按钮
 - (void)leftBtnMethod:(UIButton *)btn {
+    self.rightButton.hidden = NO;
     self.selStr = @"";
     [self.leftBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
     self.leftBotImage.hidden = NO;
@@ -236,12 +237,13 @@
     self.rightBotImage.hidden = YES;
     self.selType =@"equipFile";
     [self queryData];
-
+    
 }
 
 
 //右边按钮
 - (void)rightBtnMethod:(UIButton *)btn {
+    self.rightButton.hidden = YES;
     self.selStr = @"";
     [self.leftBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     self.leftBtn.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightRegular];
@@ -259,7 +261,7 @@
     KG_EquipmentHistoryScreenViewController *vc = [[KG_EquipmentHistoryScreenViewController alloc]init];
     
     vc.confirmBlockMethod = ^(NSString * _Nonnull selStr, NSArray * _Nonnull dataArray) {
-     
+        
         self.selStr = selStr;
         [self queryData];
         
@@ -305,7 +307,7 @@
         _tableView.backgroundColor = self.view.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-       
+        
         
     }
     return _tableView;
@@ -325,12 +327,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-   
+    
     return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-   
+    
     
     return 136;
     
@@ -344,7 +346,7 @@
         vc.dataDic = dic;
         [self.navigationController pushViewController:vc animated:YES];
     }else {
-       
+        
         KG_StationFileViewController *vc = [[KG_StationFileViewController alloc]init];
         NSDictionary *dic = self.dataArray[indexPath.section];
         vc.idStr = safeString(dic[@"id"]);
@@ -357,7 +359,7 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-   
+    
     KG_EquipmentHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EquipmentHistoryCell"];
     if (cell == nil) {
         cell = [[KG_EquipmentHistoryCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipmentHistoryCell"];
@@ -372,21 +374,31 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    if (section == 0) {
+        UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+        topView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        return  topView;
+    }
+    
+    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
     topView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return  topView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 10;
+    if (section == 0) {
+        return  10;
+    }
+    return 0.001;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return footView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.001;
+    return 10;
 }
 
 
@@ -460,7 +472,7 @@
         [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-          
+            
             return ;
         }
         self.dataArray = result[@"value"];
@@ -474,7 +486,7 @@
             self.dataArray = arr;
         }
         
-     
+        
         [self.tableView reloadData];
         
     } failure:^(NSURLSessionDataTask *error)  {
@@ -491,7 +503,7 @@
         }else if(responses.statusCode == 502){
             
         }
-       
+        
         return ;
     }];
     
@@ -526,7 +538,7 @@
         [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-          
+            
             return ;
         }
         self.dataArray = result[@"value"];
@@ -562,4 +574,6 @@
     }];
     
 }
+
+
 @end

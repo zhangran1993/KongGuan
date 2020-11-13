@@ -80,7 +80,14 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
     [self.navigationController setNavigationBarHidden:YES];
-    
+    if([ self.tableView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
+        
+        if(@available(iOS 11.0, *)) {
+            self.tableView.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
+        }else{
+            
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -368,7 +375,7 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"保存成功"];
-        
+//        [self.tableView reloadData];
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);

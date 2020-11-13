@@ -477,10 +477,10 @@
             }
         };
         [self.xunShiHandelView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left);
-            make.right.equalTo(self.view.mas_right);
-            make.top.equalTo(self.view.mas_top);
-            make.bottom.equalTo(self.view.mas_bottom);
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
         }];
     }
     
@@ -547,6 +547,7 @@
     self.alertView.dataDic = dDic;
     self.alertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
         
+    
         [self assignData:dataDic name:name withNameID:nameID];
         
     };
@@ -582,12 +583,13 @@
         }
         
         NSLog(@"请求成功");
-        if ([result[@"value"] boolValue]) {
-            [FrameBaseRequest showMessage:@"指派成功"];
-            self.alertView.hidden = YES;
-        }
+        
+        [FrameBaseRequest showMessage:@"移交成功"];
+        self.alertView.hidden = YES;
+        
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
         
     }  failure:^(NSError *error) {
         [MBProgressHUD hideHUD];

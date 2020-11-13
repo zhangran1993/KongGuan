@@ -273,9 +273,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 7){
         //线缆图谱
-        KG_ZhiXiuXunshiRecordViewController *vc = [[KG_ZhiXiuXunshiRecordViewController alloc]init];
-        vc.model = self.model;
-        [self.navigationController pushViewController:vc animated:YES];
+//        KG_ZhiXiuXunshiRecordViewController *vc = [[KG_ZhiXiuXunshiRecordViewController alloc]init];
+//        vc.model = self.model;
+//        [self.navigationController pushViewController:vc animated:YES];
     }
     
 }

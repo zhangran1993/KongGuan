@@ -50,19 +50,20 @@
     
     
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.rightButton.titleLabel.font = FontSize(16);
+    self.rightButton.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     
-    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
     
     [self.view addSubview:self.rightButton];
     
     [self.rightButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton sizeToFit];
     [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@60);
+        
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar);
         make.height.equalTo(@44);
-        make.right.equalTo(self.view.mas_right).offset(-10);
+        make.right.equalTo(self.view.mas_right).offset(-15);
     }];
     
     
@@ -73,8 +74,11 @@
         make.left.equalTo(self.navigationView.mas_left).offset(16);
         make.centerY.equalTo(self.rightButton.mas_centerY);
         make.height.equalTo(@30);
-        make.right.equalTo(self.rightButton.mas_right).offset(-10);
+        make.right.equalTo(self.navigationView.mas_right).offset(-54);
     }];
+    searchView.layer.cornerRadius = 5.f;
+    searchView.layer.masksToBounds = YES;
+    
     
     UIImageView *searchIconImage = [[UIImageView alloc]init];
     [searchView addSubview:searchIconImage];
@@ -87,7 +91,7 @@
     
     UITextField *textField = [[UITextField alloc]init];
     [searchView addSubview:textField];
-    textField.placeholder = @"请输入搜索内容";
+    textField.placeholder = @"搜索";
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(searchIconImage.mas_right).offset(9);
         make.height.equalTo(searchView.mas_height);
@@ -270,6 +274,7 @@
 //搜索
 - (void)searchData:(NSString *)search {
     
+   
     NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
     if (currentDic.count == 0) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

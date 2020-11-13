@@ -8,6 +8,7 @@
 
 #import "KG_AddressbookSearchViewController.h"
 #import "KG_AddressbookSearchCell.h"
+#import "KG_NoDataPromptView.h"
 @interface KG_AddressbookSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong)    UITableView             *tableView;
@@ -22,6 +23,8 @@
 @property (nonatomic, strong)   UIButton                *rightButton;
 
 @property (nonatomic, strong)   UILabel                 *containLabel;
+
+@property(strong,nonatomic)   KG_NoDataPromptView  *nodataView;
 
 
 @end
@@ -268,6 +271,11 @@
             self.dataArray = dataDic[@"contacts"];
             
         }
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         self.containLabel.text = [NSString stringWithFormat:@"包含“%@”的内容",safeString(search)];
         [self.tableView reloadData];
         
@@ -282,5 +290,22 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
+}
+- (KG_NoDataPromptView *)nodataView {
+    if (!_nodataView) {
+        _nodataView = [[KG_NoDataPromptView alloc]init];
+        [self.view addSubview:_nodataView];
+        [self.view bringSubviewToFront:_nodataView];
+        _nodataView.noDataLabel.text = @"未找到相关结果";
+        _nodataView.iconImage.image = [UIImage imageNamed:@"kg_lingbeijian_NodataImage"];
+        [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+       
+    }
+    return _nodataView;
 }
 @end

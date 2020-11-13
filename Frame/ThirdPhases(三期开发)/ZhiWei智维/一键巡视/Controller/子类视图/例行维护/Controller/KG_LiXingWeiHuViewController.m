@@ -244,6 +244,16 @@
 {
     
     NSDictionary *dataDic = self.dataArray[indexPath.row];
+    
+    if ([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+        
+        if ([CommonExtension isLingDao]) {
+            [FrameBaseRequest showMessage:@"请先指派任务"];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"请先领取任务"];
+        return;
+    }
     if (self.didsel) {
         self.didsel(dataDic, @"lixingweihu");
     }
@@ -418,6 +428,14 @@
     NSLog(@"%ld",(long)index);
     [self.paraArr removeAllObjects];
     self.pageNum = 1;
+    if (index == 3) {
+        [self.addBtn setBackgroundImage:[UIImage imageNamed:@"video_add"] forState:UIControlStateNormal];
+        self.addBtn.userInteractionEnabled = NO;
+    }else {
+        
+        [self.addBtn setBackgroundImage:[UIImage imageNamed:@"add_btnIcon"] forState:UIControlStateNormal];
+        self.addBtn.userInteractionEnabled = YES;
+    }
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     
     if (index == 0) {

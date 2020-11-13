@@ -31,14 +31,16 @@
 
 - (void)setupDataSubviews {
     
-    self.noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    self.noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - NAVIGATIONBAR_HEIGHT)];
     [self addSubview:self.noDataView];
-    UIImageView *iconImage = [[UIImageView alloc]init];
-    iconImage.image = [UIImage imageNamed:@"station_ReportNoData@2x"];
-    [self.noDataView addSubview:iconImage];
-    [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@302);
-        make.height.equalTo(@153);
+    self.iconImage = [[UIImageView alloc]init];
+    self.iconImage.image = [UIImage imageNamed:@"kg_searchEmpty_Icon"];
+    self.iconImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self.noDataView addSubview:self.iconImage];
+    [self.iconImage sizeToFit];
+    [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.width.equalTo(@302);
+//        make.height.equalTo(@153);
         make.centerX.equalTo(_noDataView.mas_centerX);
         make.centerY.equalTo(_noDataView.mas_centerY);
     }];
@@ -53,7 +55,7 @@
         make.centerX.equalTo(_noDataView.mas_centerX);
         make.height.equalTo(@17);
         make.width.equalTo(@200);
-        make.top.equalTo(iconImage.mas_bottom).offset(27);
+        make.top.equalTo(self.iconImage.mas_bottom).offset(27);
     }];
 }
 
@@ -64,4 +66,6 @@
 - (void)hideView {
     self.hidden = YES;
 }
+
+
 @end

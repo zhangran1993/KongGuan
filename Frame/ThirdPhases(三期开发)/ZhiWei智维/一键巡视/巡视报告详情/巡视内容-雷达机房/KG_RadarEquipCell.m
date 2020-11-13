@@ -158,11 +158,7 @@
     if ([safeString(dataDic[@"measureTagName"]) isEqualToString:@"温度"]) {
         NSLog(@"2");
     }
-    if ([dataDic[@"special"] boolValue]) {
-        self.specialStarBtn.hidden = NO;
-    }else {
-        self.specialStarBtn.hidden = YES;
-    }
+    
     if ([safeString(dataDic[@"measureTagName"]) containsString:@"周"]) {
         NSLog(@"2");
     }
@@ -175,6 +171,11 @@
     if (sixArr.count >0) {
        
         dd = [sixArr firstObject];
+    }
+    if ([dd[@"special"] boolValue]) {
+        self.specialStarBtn.hidden = NO;
+    }else {
+        self.specialStarBtn.hidden = YES;
     }
     
     if (isSafeDictionary(dd[@"atcSpecialTag"])) {

@@ -201,7 +201,7 @@
     self.searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
     self.searchBtn.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-    [self.searchBtn setImage:[UIImage imageNamed:@"yun_searchIcon"] forState:UIControlStateNormal];
+    [self.searchBtn setImage:[UIImage imageNamed:@"search_icon"] forState:UIControlStateNormal];
     self.searchBtn.userInteractionEnabled = NO;
     
     [self.navigationView addSubview:self.searchBtn];
@@ -210,7 +210,7 @@
     self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
     
     self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-    [self.rightButton setImage:[UIImage imageNamed:@"yun_rightIcon"] forState:UIControlStateNormal];
+    [self.rightButton setImage:[UIImage imageNamed:@"kg_lingbeijian_rightIcon"] forState:UIControlStateNormal];
     //    [self.rightButton addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
     self.rightButton.userInteractionEnabled = NO;
     [self.navigationView addSubview:self.rightButton];

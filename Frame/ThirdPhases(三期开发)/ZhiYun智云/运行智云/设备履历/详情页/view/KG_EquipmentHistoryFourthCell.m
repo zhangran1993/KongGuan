@@ -69,11 +69,11 @@
     }];
     self.centerView.layer.cornerRadius = 10.f;
     self.centerView.layer.masksToBounds = YES;
-    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
-    self.centerView.layer.shadowOpacity = 1;
-    self.centerView.layer.shadowRadius = 2;
-    
-    
+//    self.centerView.layer.shadowOffset = CGSizeMake(0,2);
+//    self.centerView.layer.shadowOpacity = 1;
+//    self.centerView.layer.shadowRadius = 2;
+//    
+//    
     
     self.iconImage = [[UIImageView alloc]init];
     [self.centerView addSubview:self.iconImage];
@@ -111,6 +111,7 @@
     self.rightBtn.hidden = YES;
     [self.centerView addSubview:self.rightBtn];
     [self.rightBtn setImage: [UIImage imageNamed:@"common_right"] forState:UIControlStateNormal];
+    [self.rightBtn addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@18);
         make.right.equalTo(self.centerView.mas_right).offset(-10);
@@ -118,18 +119,36 @@
     }];
     
     
-    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
-    
+    self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-32, 40)];
+    UIView *lineView = [[UIView alloc]init];
+    [self.tableHeadView addSubview:lineView];
+//    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+//    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.tableHeadView.mas_left).offset(16);
+//        make.right.equalTo(self.tableHeadView.mas_right).offset(-16);
+//        make.height.equalTo(@1);
+//        make.top.equalTo(self.tableHeadView.mas_top);
+//    }];
     self.footBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/4, 0, SCREEN_WIDTH/2, 40)];
     [self.footBtn setTitle:@"更多" forState:UIControlStateNormal];
    
     self.footBtn.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     [self.footBtn setTitleColor:[UIColor colorWithHexString:@"#1860B0"] forState:UIControlStateNormal];
     [self.footBtn addTarget:self action:@selector(moreMethod:) forControlEvents:UIControlEventTouchUpInside];
-   
+     
     [self.tableHeadView addSubview:self.footBtn];
-   
+    [self.footBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.tableHeadView.mas_centerY);
+        make.height.equalTo(@40);
+        make.centerX.equalTo(self.tableHeadView.mas_centerX);
+        make.width.equalTo(@(SCREEN_WIDTH/2));
+    }];
     self.tableView.tableFooterView = self.tableHeadView;
+    
+}
+
+- (void)rightButtonClicked:(UIButton *)button {
+    
     
 }
 

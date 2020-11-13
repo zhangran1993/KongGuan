@@ -306,7 +306,6 @@ navigationController willShowViewController:
     [self createUI];
     [self getLoginNameInfo];
     
-   
     [self getStationReportAlarmInfo];
     [self getJiaoJieBanStatus];
     

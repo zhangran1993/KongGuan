@@ -325,12 +325,15 @@
             KG_NewScreenHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"KG_NewScreenHeaderView" forIndexPath:indexPath];
             if (indexPath.section == 4) {
                 [headerView.rightBtn addTarget:self action:@selector(selStartTimeMethod:) forControlEvents:UIControlEventTouchUpInside];
+                headerView.titleLabel.text = safeString(@"开始时间");
                 if (self.startTime.length == 0) {
                     headerView.promptLabel.text = @"请选择";
                 }else {
                     headerView.promptLabel.text = safeString(self.startTime);
                 }
             }else {
+                
+                headerView.titleLabel.text = safeString(@"结束时间");
                 [headerView.rightBtn addTarget:self action:@selector(selEndTimeMethod:) forControlEvents:UIControlEventTouchUpInside];
                 if (self.endTime.length == 0) {
                     headerView.promptLabel.text = @"请选择";

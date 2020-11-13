@@ -16,6 +16,10 @@
 #import "KG_WatchPdfViewController.h"
 #import "KG_GaoJingDetailViewController.h"
 #import "KG_GaoJingModel.h"
+
+#import "KG_XunShiReportDetailViewController.h"
+#import "KG_WeihuDailyReportDetailViewController.h"
+#import "KG_XunShiReportDetailViewController.h"
 @interface KG_EquipmentHistoryDetailMoreViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -278,17 +282,26 @@
         [self.navigationController pushViewController:vc animated:YES];
     }else if([self.titleStr isEqualToString:@"巡视记录"]) {
         //查询巡视
-        [self getDeviceXunshiData];
+        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+        vc.dataDic = dataDic;
+        
+        [self.navigationController pushViewController:vc animated:YES];
     }else if([self.titleStr isEqualToString:@"维护记录"]) {
         //查询维护
-        [self getDeviceWeihuData];
+        KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
+        vc.dataDic = dataDic;
+        
+        [self.navigationController pushViewController:vc animated:YES];
     }else if([self.titleStr isEqualToString:@"特殊保障记录"]) {
         //查询特殊保障
-        [self getDeviceSpecialData];
+        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+        vc.dataDic = dataDic;
+        vc.themeTitleStr = @"特殊保障详情";
+        [self.navigationController pushViewController:vc animated:YES];
     }else if([self.titleStr isEqualToString:@"备件库存"]) {
         
     }
-    
+ 
 }
 
 

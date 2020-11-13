@@ -164,7 +164,8 @@
     }];
     
     self.textView = [[UITextView alloc]init];
-    self.textView.text = @"12";
+    self.textView.userInteractionEnabled = NO;
+    self.textView.text = @"故障案例库说明详情";
     self.textView.textColor = [UIColor colorWithHexString:@"#626470"];
     self.textView.font = [UIFont systemFontOfSize:14];
     [self.view addSubview:self.textView];

@@ -25,30 +25,38 @@
 
 #import "KG_EmergencyTreatmentViewController.h"
 #import "KG_EquipmentTroubleshootingViewController.h"
+
 @interface KG_GaoJingDetailViewController ()<UITableViewDelegate,UITableViewDataSource,TZImagePickerControllerDelegate>
 
 
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong)         NSMutableArray        *dataArray;
 
-@property (nonatomic, strong) NSMutableArray *imageArray;
-@property (nonatomic, strong) NSMutableArray *videoArray;
+@property (nonatomic, strong)         UITableView           *tableView;
 
-@property (nonatomic, strong) KG_GaoJingDetailModel *dataModel;
+@property (nonatomic, strong)         NSMutableArray        *imageArray;
 
-@property (nonatomic, copy) NSString *recordDescription;
+@property (nonatomic, strong)         NSMutableArray        *videoArray;
 
-@property (nonatomic, strong) NSMutableDictionary *paramDic;
+@property (nonatomic, strong)         KG_GaoJingDetailModel *dataModel;
 
-@property (nonatomic, copy) NSString *removeStartTime;
-@property (nonatomic, copy) NSString *removeEndTime;
+@property (nonatomic, copy)           NSString              *recordDescription;
 
-@property (nonatomic, strong) KG_ReViewPhotoView *rePhotoView;
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
-@property (nonatomic, assign)   BOOL fixStatus;
+@property (nonatomic, strong)         NSMutableDictionary   *paramDic;
 
-@property (nonatomic, assign)   AVPlayerViewController *playerViewController;
+@property (nonatomic, copy)           NSString              *removeStartTime;
+
+@property (nonatomic, copy)           NSString              *removeEndTime;
+
+@property (nonatomic, strong)         KG_ReViewPhotoView    *rePhotoView;
+
+@property (nonatomic, strong)         UILabel               *titleLabel;
+
+@property (nonatomic, strong)         UIView                *navigationView;
+
+@property (nonatomic, assign)         BOOL                  fixStatus;
+
+@property (nonatomic, assign)         AVPlayerViewController *playerViewController;
+
 @end
 
 @implementation KG_GaoJingDetailViewController
@@ -57,16 +65,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    
     [self initViewData];
     [self createNaviTopView];
     [self createTableView];
     [self getData];
 }
+
 - (void)refreshGetData {
+    
     NSString *idCode = safeString(self.model.id);
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/getAlarmInfo/%@",idCode]];
-   
+    
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -101,6 +112,7 @@
         
     }];
 }
+
 //获取某个告警详情信息：
 //请求地址：/intelligent/keepInRepair/getAlarmInfo/{id}
 //请求方式：GET
@@ -186,16 +198,20 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-   
+    
 }
 
 
 - (void)backButtonClick:(UIButton *)button {
-   
-     [self.navigationController popViewControllerAnimated:YES];
     
+    if (self.refreshData) {
+        self.refreshData();
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -208,6 +224,7 @@
     }
     return _titleLabel;
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     if (@available(iOS 13.0, *)){
@@ -218,6 +235,7 @@
     [self.navigationController setNavigationBarHidden:YES];
     
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:YES];
@@ -239,8 +257,10 @@
 
 
 -(void)backAction {
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)createTableView {
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -276,9 +296,6 @@
     }
     return _tableView;
 }
-
-
-
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -392,7 +409,7 @@
             NSLog(@"%@",self.videoArray);
         };
         cell.zhankaiMethod = ^(NSString * _Nonnull dataDic) {
-        
+            
             NSLog(@"%@",dataDic);
             [self zhankaiImage:dataDic];
         };
@@ -509,19 +526,30 @@
     }else if (indexPath.section == 1) {
         return 136;
     }else if (indexPath.section == 2) {
+        
+        //当状态为已完成或者是已解除状态时，底部视图不显示操作view
+        //当状态为已挂起时，不显示
+        //排序优先级 按照 是否挂起状态、 已解除或者已完成状态之后，再根据处理流程的状态去判断处理流程的操作流程
         NSString *recordStatus = safeString(self.dataModel.info[@"recordStatus"]);
         NSString *sstatus = safeString(self.dataModel.info[@"status"]);
         NSString *hangUpStatus = safeString(self.dataModel.info[@"hangupStatus"]);
+        
         if ([recordStatus isEqualToString:@"completed"] || [sstatus isEqualToString:@"removed"] || [hangUpStatus isEqualToString:@"YES"]) {
-            return 131;
+            return 131 ;
         }
         return 131 + 50  ;
     }else if (indexPath.section == 3) {
+        
         return 317;
+        
     }else if (indexPath.section == 4) {
+        
         return 104;
+        
     }else if (indexPath.section == 5) {
+        
         return self.dataModel.log.count *60+44;
+        
     }
     return 0;
 }
@@ -546,7 +574,7 @@
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-           [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
             return;
         }
         [FrameBaseRequest showMessage:@"网络链接失败"];
@@ -557,9 +585,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    //    NSString *str = self.dataArray[indexPath.row];
-    
+   
 }
 
 
@@ -570,6 +596,7 @@
     }
     return _videoArray;
 }
+
 - (NSMutableArray *)imageArray {
     
     if (!_imageArray) {
@@ -577,6 +604,7 @@
     }
     return _imageArray;
 }
+
 - (NSMutableArray *)dataArray {
     
     if (!_dataArray) {
@@ -588,20 +616,24 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+    
     return footView;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return headView;
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0.001;
+    
+    return 10;
+    
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
     return 0.001;
@@ -620,7 +652,7 @@
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         NSLog(@"%@",photos);
         
-         [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+        [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
         [self.tableView reloadData];
         [self upDateHeadIcon:[photos firstObject]];
         
@@ -651,6 +683,7 @@
 //        return ;
 //    }];
 //}
+
 #pragma mark - UIImagePickerController
 - (void)pushTZVideoPickerController {
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 columnNumber:5 delegate:self pushPhotoPickerVc:YES];
@@ -683,26 +716,29 @@
 }
 
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto {
-    PHAsset *asset = [assets firstObject];
-    NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
-    NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
-    
+//    PHAsset *asset = [assets firstObject];
+//    NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
+//    NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
+//
     
 }
+
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto infos:(NSArray<NSDictionary *> *)infos {
     NSLog(@"1");
 }
+
 //- (void)imagePickerControllerDidCancel:(TZImagePickerController *)picker __attribute__((deprecated("Use -tz_imagePickerControllerDidCancel:.")));
 - (void)tz_imagePickerControllerDidCancel:(TZImagePickerController *)picker {
     NSLog(@"1");
 }
+
 - (void)upDateHeadIcon:(UIImage *)photo{
     
     //请求地址
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/meetRecodeMedia/setAtcAlarmManager",WebNewHost];
     //photo.压缩
     NSData * datapng = UIImageJPEGRepresentation(photo, 0.3);
-   
+    
     //请求设置
     AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
     manager.requestSerializer.HTTPShouldHandleCookies = YES;
@@ -775,7 +811,7 @@
     paramDic[@"videosList"] = self.videoArray;
     paramDic[@"imageList"] = self.imageArray;
     paramDic[@"recordStatus"] =safeString(self.dataModel.info[@"recordStatus"]) ;
-   
+    
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -888,12 +924,6 @@
         }];
     }
     
-    
-    //
-    //
-    //    NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
-    //    NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
-    //
 }
 
 // If user picking a gif image and allowPickingMultipleVideo is NO, this callback will be called.
@@ -903,6 +933,7 @@
 - (void)imagePickerController:(TZImagePickerController *)picker{
     
 }
+
 -(void)dealloc
 {
     [super dealloc];
@@ -910,8 +941,9 @@
     //移除当前所有通知
     NSLog(@"移除了所有的通知");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
+    
 }
+
 //确认
 - (void)confirmData {
     if ([safeString(self.dataModel.info[@"status"]) isEqualToString:@"removed"]) {
@@ -936,6 +968,7 @@
         
     }
 }
+
 //解除
 - (void)removeData {
     if ([safeString(self.dataModel.info[@"status"]) isEqualToString:@"removed"]) {
@@ -1077,6 +1110,7 @@
     }];
 }
 
+//展开放大图片、
 - (void)zhankaiImage:(NSString *)str {
     if(str.length == 0){
         return;
@@ -1104,7 +1138,6 @@
         [self.navigationController presentViewController:alertVc animated:YES completion:^{
             
         }];
-  
     };
 }
 

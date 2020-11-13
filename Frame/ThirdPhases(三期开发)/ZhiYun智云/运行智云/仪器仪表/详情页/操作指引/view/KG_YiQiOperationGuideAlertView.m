@@ -88,7 +88,15 @@
     headLabel.textColor = [UIColor colorWithHexString:@"#030303"];
     headLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
     
-    
+    UIView *lineView = [[UIView alloc]init];
+    [headView addSubview:lineView];
+    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headView.mas_left).offset(16);
+        make.right.equalTo(headView.mas_right).offset(-16);
+        make.top.equalTo(headLabel.mas_bottom);
+        make.height.equalTo(@1);
+    }];
     
     
     self.tableView.tableHeaderView = headView;
@@ -127,6 +135,14 @@
     }
     cell.titleLabel.text = safeString(self.dataArray[indexPath.row][@"name"]);
     cell.titleLabel.textColor = [UIColor colorWithHexString:@"#2F5ED1"];
+    
+    if (self.dataArray.count) {
+        if (indexPath.row == self.dataArray.count -1) {
+            cell.lineView.hidden = YES;
+        }else {
+            cell.lineView.hidden = NO;
+        }
+    }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;

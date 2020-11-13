@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,strong)     UILabel            *titleLabel;
 
+@property (nonatomic ,strong)     UIView             *lineView;
+
 @end
 
 NS_ASSUME_NONNULL_END

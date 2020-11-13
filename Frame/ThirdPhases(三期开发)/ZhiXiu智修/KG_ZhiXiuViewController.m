@@ -21,6 +21,7 @@
 #import <UIButton+WebCache.h>
 #import "KG_ControlGaoJingAlertView.h"
 #import "KG_NewScreenViewController.h"
+#import "KG_NoDataPromptView.h"
 
 @interface KG_ZhiXiuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -60,8 +61,11 @@
 
 @property(strong,nonatomic)   NSArray            *roomArray;
 @property (nonatomic, assign) BOOL               isBlock;
+//
+//@property (nonatomic,strong) UIView *noDataView;
 
-@property (nonatomic,strong) UIView *noDataView;
+
+@property(strong,nonatomic)   KG_NoDataPromptView  *nodataView;
 @end
 
 @implementation KG_ZhiXiuViewController
@@ -339,6 +343,11 @@
         [self.tableView.mj_footer endRefreshing];
         NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
         [self.dataArray addObjectsFromArray:arr] ;
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         int pages = [result[@"value"][@"pages"] intValue];
         
         if (self.pageNum >= pages) {
@@ -377,6 +386,11 @@
         [self.tableView.mj_footer endRefreshing];
         NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
         [self.dataArray addObjectsFromArray:arr] ;
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         int pages = [result[@"value"][@"pages"] intValue];
         
         if (self.pageNum >= pages) {
@@ -891,6 +905,9 @@
         KG_GaoJingModel *model = self.dataArray[indexPath.section];
         KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
         vc.model = model;
+        vc.refreshData = ^{
+            [self queryGaoJingData];
+        };
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -1117,6 +1134,11 @@
         [self.tableView.mj_footer endRefreshing];
         NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
         [self.dataArray addObjectsFromArray:arr] ;
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         int pages = [result[@"value"][@"pages"] intValue];
         
         if (self.pageNum >= pages) {
@@ -1160,6 +1182,11 @@
         [self.tableView.mj_footer endRefreshing];
         NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
         [self.dataArray addObjectsFromArray:arr] ;
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         int pages = [result[@"value"][@"pages"] intValue];
         
         if (self.pageNum >= pages) {
@@ -1570,6 +1597,11 @@
         [self.tableView.mj_footer endRefreshing];
         NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
         [self.dataArray addObjectsFromArray:arr] ;
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         int pages = [result[@"value"][@"pages"] intValue];
         
         if (self.pageNum >= pages) {
@@ -1700,37 +1732,54 @@
 }
 
 
+//
+//- (UIView *)noDataView {
+//
+//    if (_noDataView) {
+//        _noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, 250, self.view.frame.size.width,300)];
+//        UIImageView *iconImage = [[UIImageView alloc]init];
+//        iconImage.image = [UIImage imageNamed:@"station_ReportNoData@2x"];
+//        [_noDataView addSubview:iconImage];
+//        [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.width.equalTo(@302);
+//            make.height.equalTo(@153);
+//            make.centerX.equalTo(_noDataView.mas_centerX);
+//            make.centerY.equalTo(_noDataView.mas_centerY);
+//        }];
+//
+//        UILabel *noDataLabel = [[UILabel alloc]init];
+//        [_noDataView addSubview:noDataLabel];
+//        noDataLabel.text = @"当前暂无任务";
+//        noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
+//        noDataLabel.font = [UIFont systemFontOfSize:12];
+//        noDataLabel.textAlignment = NSTextAlignmentCenter;
+//        [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(_noDataView.mas_centerX);
+//            make.height.equalTo(@17);
+//            make.width.equalTo(@200);
+//            make.top.equalTo(iconImage.mas_bottom).offset(27);
+//        }];
+//
+//    }
+//
+//    return _noDataView;
+//}
 
-- (UIView *)noDataView {
-    
-    if (_noDataView) {
-        _noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, 250, self.view.frame.size.width,300)];
-        UIImageView *iconImage = [[UIImageView alloc]init];
-        iconImage.image = [UIImage imageNamed:@"station_ReportNoData@2x"];
-        [_noDataView addSubview:iconImage];
-        [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.equalTo(@302);
-            make.height.equalTo(@153);
-            make.centerX.equalTo(_noDataView.mas_centerX);
-            make.centerY.equalTo(_noDataView.mas_centerY);
+
+- (KG_NoDataPromptView *)nodataView {
+    if (!_nodataView) {
+        _nodataView = [[KG_NoDataPromptView alloc]init];
+        [self.view addSubview:_nodataView];
+        [self.view bringSubviewToFront:_nodataView];
+        _nodataView.noDataLabel.text = @"当前暂无数据";
+        [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT +50 +44);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
         }];
-        
-        UILabel *noDataLabel = [[UILabel alloc]init];
-        [_noDataView addSubview:noDataLabel];
-        noDataLabel.text = @"当前暂无任务";
-        noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
-        noDataLabel.font = [UIFont systemFontOfSize:12];
-        noDataLabel.textAlignment = NSTextAlignmentCenter;
-        [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(_noDataView.mas_centerX);
-            make.height.equalTo(@17);
-            make.width.equalTo(@200);
-            make.top.equalTo(iconImage.mas_bottom).offset(27);
-        }];
-        
+       
     }
-    
-    return _noDataView;
+    return _nodataView;
 }
-
 @end

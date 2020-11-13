@@ -140,7 +140,7 @@
     [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@44);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
-        make.right.equalTo(self.navigationView.mas_right).offset(-20);
+        make.right.equalTo(self.navigationView.mas_right).offset(-12);
     }];
     
 

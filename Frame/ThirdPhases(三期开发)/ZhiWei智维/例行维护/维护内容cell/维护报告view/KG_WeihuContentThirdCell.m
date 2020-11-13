@@ -168,7 +168,7 @@
         dd = [arr firstObject];
     }
     
-    if ([dataDic[@"special"] boolValue]) {
+    if ([dd[@"special"] boolValue]) {
         self.specialStarBtn.hidden = NO;
     }else {
         self.specialStarBtn.hidden = YES;

@@ -204,7 +204,7 @@
     [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.rightView.mas_left).offset(15);
         make.top.equalTo(self.detailLabel.mas_bottom).offset(11);
-        make.right.equalTo(self.rightView.mas_right).offset(-15);
+        make.right.equalTo(self.rightView.mas_right).offset(-120);
         make.height.equalTo(@12);
     }];
     
@@ -215,7 +215,7 @@
     [self.specialView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.rightView.mas_left).offset(15);
         make.top.equalTo(self.detailLabel.mas_bottom).offset(11);
-        make.right.equalTo(self.rightView.mas_right).offset(-15);
+        make.right.equalTo(self.rightView.mas_right).offset(-120);
         make.height.equalTo(@12);
     }];
     
@@ -286,6 +286,8 @@
     [self.taskButton setTitle:@"指派任务" forState:UIControlStateNormal];
     [self.taskButton setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
     self.taskButton.titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.taskButton.layer.cornerRadius = 4.f;
+    self.taskButton.layer.masksToBounds = YES;
     [self.taskButton addTarget:self action:@selector(taskButtonMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.taskButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightView.mas_right).offset(-16);
