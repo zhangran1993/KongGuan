@@ -137,7 +137,7 @@
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
         noDataLabel.font = [UIFont systemFontOfSize:14];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
-        noDataLabel.text = @"当前暂无任务";
+        noDataLabel.text = @"当前暂无数据";
         [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(noDataView.mas_left);
             make.right.equalTo(noDataView.mas_right);

@@ -47,6 +47,8 @@
 @property (nonatomic, strong)   NSArray                 *roomArray;
 
 @property (nonatomic, copy)     NSString                *searchString;
+
+@property (nonatomic ,assign)   BOOL                    isScreenStatus;
 @end
 
 @implementation KG_InspectionRecordsViewController
@@ -57,6 +59,7 @@
     self.pageNum = 1;
     self.pageSize = 10;
     self.currIndex = 0;
+    self.isScreenStatus = NO;//刚开始不是筛选状态
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshZhiWeiData) name:@"refreshZhiWeiData" object:nil];
     
@@ -249,31 +252,7 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
-//筛选方法
-- (void)screenMethod {
-    NSArray *array = @[@{@"sectionName": @"内容",
-                         @"sectionType": @(RS_ConditionSearchSectionTypeNormal),
-                         @"allowMutiSelect": @(YES),
-                         @"allowPackUp": @(YES),
-                         @"itemArrM": @[@{@"itemName":@"开始时间"},
-                                        @{@"itemName":@"结束时间"}]},
-                       @{@"sectionName":@"起始时间",
-                         @"sectionType":@(RS_ConditionSearchSectionTypeInterval),
-                         @"allowMutiSelect":@(NO),
-                         @"allowPackUp":@(NO),
-                         @"intervalStart":@"",
-                         @"intervalEnd":@"",
-                         @"intervalIsInput":@(NO),
-                         @"itemArrM":
-                             @[@{@"itemName":@"开始时间"},
-                               @{@"itemName":@"结束时间"}]}];
-    
-    RS_ConditionSearchView *searchView = [[RS_ConditionSearchView alloc] initWithCondition:array];
-    
-    //          searchView.conditionDataArr = array;
-    [searchView show];
-    
-}
+
 //搜索方法
 - (void)serachMethod {
     KG_NiControlSearchViewController *vc = [[KG_NiControlSearchViewController alloc]init];
@@ -297,12 +276,15 @@
         [self loadData];
     }else if (index == 1){
         NSLog(@"2");
+        self.isScreenStatus = NO;
         [self getXunShiHistoryData];
     }else if (index == 2){
         NSLog(@"3");
+        self.isScreenStatus = NO;
         [self getWeiHuHistoryData];
     }else if (index == 3){
         NSLog(@"4");
+        self.isScreenStatus = NO;
         [self getBaoZhangHistoryData];
     }
   
@@ -539,7 +521,17 @@
 
 - (void)loadMoreData {
     
+    
+    
+    
     self.pageNum ++;
+    
+    if (self.isScreenStatus && self.currIndex == 0) {
+        [self loadScreenMoreHistoryData];
+        return;
+    }
+    
+    
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     //全部
     if (self.currIndex == 0) {
@@ -983,14 +975,164 @@
         
         if(roomStr.length == 0 && taskStr.length == 0 && taskStausStr.length == 0
            && startTimeStr.length == 0 && endTimeStr.length == 0) {
-            
+            self.isScreenStatus = NO;
             return ;
         }
+        self.isScreenStatus = YES;
         
         [self screenHistoryData];
     };
     
     [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)loadScreenMoreHistoryData {
+    
+    NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+    if (currentDic.count == 0) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"station"]){
+            currentDic = [userDefaults objectForKey:@"station"];
+        }else {
+            NSArray *stationArr = [UserManager shareUserManager].stationList;
+            
+            if (stationArr.count >0) {
+                currentDic = [stationArr firstObject][@"station"];
+            }
+        }
+    }
+    NSString *engineCode = @"";
+    for (NSDictionary *roomDic in self.roomArray) {
+        if ([self.roomStr isEqualToString:safeString(roomDic[@"alias"])]) {
+            engineCode = safeString(roomDic[@"code"]);
+            break;
+        }
+    }
+   
+    
+    //    常规巡视取oneTouchTour；
+    //    例行维护取routineMaintenance；
+    //    特殊保障取specialSecurity；
+    //    全部取all
+    NSString *type = @"all";
+    if ([self.taskStr isEqualToString:@"一键巡视"]) {
+        type = @"oneTouchTour";
+    }else if ([self.taskStr isEqualToString:@"维护任务"]) {
+        type = @"routineMaintenance";
+    }else if ([self.taskStr isEqualToString:@"特殊保障"]) {
+        type = @"specialSecurity";
+    }else {
+        type = @"all";
+    }
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/appSearch/%@/%d/%d",safeString(type),self.pageNum,self.pageSize]];
+    NSMutableArray *paramArr = [NSMutableArray arrayWithCapacity:0];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"name"] = @"stationCode";
+    params[@"type"] = @"eq";
+    params[@"content"] = safeString(currentDic[@"code"]);
+    
+    //机房编码
+    NSMutableDictionary *params1 = [NSMutableDictionary dictionary];
+    params1[@"name"] = @"engineRoomCode";
+    params1[@"type"] = @"eq";
+    params1[@"content"] = safeString(engineCode);
+    //开始时间，如："2020-04-01"
+    NSMutableDictionary *params2 = [NSMutableDictionary dictionary];
+    params2[@"name"] = @"startTime";
+    params2[@"type"] = @"eq";
+    params2[@"content"] = safeString(self.startTime);
+    //结束时间，如："2020-04-13"
+    NSMutableDictionary *params3 = [NSMutableDictionary dictionary];
+    params3[@"name"] = @"endTime";
+    params3[@"type"] = @"eq";
+    params3[@"content"] = safeString(self.endTime);
+    //任务状态编码，取值0~5
+    
+    NSString *statusCode = @"0";
+    statusCode = [self getTaskStatus:self.taskStatusStr];
+    
+    [paramArr addObject:params];
+    [paramArr addObject:params1];
+    [paramArr addObject:params2];
+    [paramArr addObject:params3];
+    if(statusCode.length) {
+        NSMutableDictionary *params4 = [NSMutableDictionary dictionary];
+        params4[@"name"] = @"status";
+        params4[@"type"] = @"eq";
+        params4[@"content"] = safeString(statusCode);
+        [paramArr addObject:params4];
+    }
+    
+    WS(weakSelf);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramArr success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        [self.tableView.mj_footer endRefreshing];
+      
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+       
+        NSMutableString *parStr = [NSMutableString string];
+        if (self.taskStr.length >0) {
+            [parStr appendString:safeString(self.taskStr)];
+        }
+        
+        NSString *engineCode = @"";
+        for (NSDictionary *roomDic in self.roomArray) {
+            if ([self.roomStr isEqualToString:safeString(roomDic[@"alias"])]) {
+                engineCode = safeString(roomDic[@"code"]);
+                break;
+            }
+        }
+        
+        if (self.roomStr.length >0) {
+            [parStr appendString:safeString(self.roomStr)];
+        }
+        
+        NSString *statusCode = @"0";
+        statusCode = [self getTaskStatus:self.taskStatusStr];
+        
+        if (statusCode.length >0) {
+            [parStr appendString:safeString(statusCode)];
+        }
+        
+        if(safeString(self.startTime).length >0 && safeString(self.endTime).length >0) {
+            [parStr appendString:safeString(self.startTime)];
+            [parStr appendString:safeString(self.endTime)];
+            
+        }
+        //        self.screenResultLabel.text = [NSString stringWithFormat:@"%@",safeString(parStr)];
+        
+        [self.tableView reloadData];
+       
+        NSLog(@"请求成功");
+        
+    }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
     
 }
 

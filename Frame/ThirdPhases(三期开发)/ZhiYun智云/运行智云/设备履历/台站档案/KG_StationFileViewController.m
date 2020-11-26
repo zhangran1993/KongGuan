@@ -82,6 +82,14 @@
     [self getDeviceWeihuData];
     //查询特殊保障
     [self getDeviceSpecialData];
+    if([ self.tableView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
+          
+          if(@available(iOS 11.0, *)) {
+              self.tableView.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
+          }else{
+              
+          }
+      }
     
 }
 

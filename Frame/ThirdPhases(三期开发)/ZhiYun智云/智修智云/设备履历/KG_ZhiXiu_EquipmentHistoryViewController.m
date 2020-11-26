@@ -362,7 +362,7 @@
         
         UILabel *noDataLabel = [[UILabel alloc]init];
         [_noDataView addSubview:noDataLabel];
-        noDataLabel.text = @"当前暂无任务";
+        noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;

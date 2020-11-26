@@ -48,6 +48,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.pageNum = 1;
     self.pageSize = 10;
     self.currIndex = 0;
@@ -76,7 +77,7 @@
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
-        make.height.equalTo(@120);
+        make.height.equalTo(@105);
     }];
     
     UIImageView *speakIcon = [[UIImageView alloc]init];
@@ -124,13 +125,14 @@
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(topView.mas_bottom).offset(10);
+        make.top.equalTo(topView.mas_bottom);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
     
 }
+
 - (void)botMethod:(UIButton *)btn {
     
     KG_CaseLibraryViewController *vc = [[KG_CaseLibraryViewController alloc]init];
@@ -266,7 +268,7 @@
         _tableView.tableHeaderView = headView;
         headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         // 上拉加载
-        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+//        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     }
     return _tableView;
 }
@@ -281,13 +283,20 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+        headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        return headView;
+    }
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return headView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
+    if (section == 0) {
+        return 0.001;
+    }
     return 10;
 }
 

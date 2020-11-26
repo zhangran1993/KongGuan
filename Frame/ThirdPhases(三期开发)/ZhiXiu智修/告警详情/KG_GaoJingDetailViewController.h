@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) NSDictionary *dataDic;
 
 @property (nonatomic,strong) void (^refreshData)();
+
+
 @end
 
 NS_ASSUME_NONNULL_END

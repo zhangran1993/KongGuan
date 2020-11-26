@@ -55,7 +55,7 @@
     [self.firstLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top);
-        make.width.lessThanOrEqualTo(@120);
+        make.width.lessThanOrEqualTo(@110);
         make.height.equalTo(@50);
     }];
     

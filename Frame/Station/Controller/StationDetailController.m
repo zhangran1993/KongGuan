@@ -725,6 +725,10 @@
                  [self getTemHuiData:[_objects0 firstObject][@"stationCode"] withCode:[_objects0 firstObject][@"code"]];
             }
            
+        }else {
+            
+            [self.temArray removeAllObjects];
+            
         }
         NSLog(@"1");
         

@@ -58,7 +58,7 @@
    
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     self.dataModel = [[KG_EquipmentHistoryDetailModel alloc]init];
-    
+  
     
     [self createUI];
     [self createTableView];
@@ -84,6 +84,14 @@
     
     //查询最后告警统计
     [self queryLastedWarnData];
+    if([ self.tableView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
+          
+          if(@available(iOS 11.0, *)) {
+              self.tableView.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
+          }else{
+              
+          }
+      }
   
 }
 

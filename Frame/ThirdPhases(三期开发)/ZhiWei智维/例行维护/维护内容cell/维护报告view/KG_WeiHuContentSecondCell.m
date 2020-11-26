@@ -7,7 +7,7 @@
 //
 
 #import "KG_WeiHuContentSecondCell.h"
-#import "KG_WeihuContentThirdCell.h"
+#import "KG_WeihuContentNewThirdCell.h"
 @interface KG_WeiHuContentSecondCell ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -101,9 +101,9 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    KG_WeihuContentThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_WeihuContentThirdCell"];
+    KG_WeihuContentNewThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_WeihuContentNewThirdCell"];
     if (cell == nil) {
-        cell = [[KG_WeihuContentThirdCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_WeihuContentThirdCell"];
+        cell = [[KG_WeihuContentNewThirdCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_WeihuContentNewThirdCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
     

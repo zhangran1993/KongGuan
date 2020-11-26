@@ -250,8 +250,8 @@
         createReportLabel.textColor = [UIColor colorWithHexString:@"#BEBFC7"];
         createReportBtn.userInteractionEnabled = NO;
         createReportView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-        
     }
+    
     
     UIView *lineView = [[UIView alloc]init];
     lineView.backgroundColor = [UIColor colorWithHexString:@"#E1E1E5"];

@@ -110,7 +110,7 @@
             if (arr.count) {
                 for (NSString *str in arr) {
                     if ([safeString(str) isEqualToString:@"领导"]) {
-                        self.statusLabel.text = @"待领取";
+                        self.statusLabel.text = @"待指派";
                         NSLog(@"是个领导");
                         break;
                     }

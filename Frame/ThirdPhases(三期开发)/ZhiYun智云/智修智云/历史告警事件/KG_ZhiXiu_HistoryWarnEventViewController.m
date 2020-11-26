@@ -21,6 +21,8 @@
 #import "KG_HistoryWarnEventViewController.h"
 #import "KG_GaoJingDetailViewController.h"
 #import "KG_GaoJingModel.h"
+#import "KG_NoDataPromptView.h"
+
 @interface KG_ZhiXiu_HistoryWarnEventViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray     *dataArray;
@@ -54,6 +56,9 @@
 
 @property(strong,nonatomic)   NSArray              *roomArray;
 @property(strong,nonatomic)   NSArray              *kongArray;
+
+
+@property(strong,nonatomic)   KG_NoDataPromptView  *nodataView;
 
 @end
 
@@ -347,6 +352,9 @@
     
     NSDictionary *dataDic = self.dataArray[indexPath.section];
     KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
+    vc.refreshData = ^{
+        [self queryData];
+    };
     KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
     [model mj_setKeyValues:dataDic];
     vc.model = model;
@@ -408,7 +416,11 @@
         NSLog(@"resultresult %@",result);
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
         [self.tableView reloadData];
-        
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         int pages = [result[@"value"][@"pages"] intValue];
         
         if (self.pageNum >= pages) {
@@ -503,6 +515,11 @@
         NSLog(@"resultresult %@",result);
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
         [self.tableView reloadData];
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -725,7 +742,7 @@
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/searchAlarmInfo/%d/%d",self.pageNum,self.pageSize]];
 
-    
+    WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
@@ -736,6 +753,21 @@
         NSLog(@"resultresult %@",result);
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
         [self.tableView reloadData];
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -748,5 +780,22 @@
     } ];
     
     
+}
+
+- (KG_NoDataPromptView *)nodataView {
+    if (!_nodataView) {
+        _nodataView = [[KG_NoDataPromptView alloc]init];
+        [self.view addSubview:_nodataView];
+        [self.view bringSubviewToFront:_nodataView];
+        _nodataView.noDataLabel.text = @"当前暂无数据";
+        [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT + 102);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+       
+    }
+    return _nodataView;
 }
 @end

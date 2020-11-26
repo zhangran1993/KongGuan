@@ -7,7 +7,7 @@
 //
 
 #import "KG_RadarEnvCell.h"
-#import "KG_RadarEquipCell.h"
+#import "KG_XunShiLastDetailCell.h"
 @interface KG_RadarEnvCell ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -232,46 +232,45 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    KG_RadarEquipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RadarEquipCell"];
+    KG_XunShiLastDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_XunShiLastDetailCell"];
     if (cell == nil) {
-        cell = [[KG_RadarEquipCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RadarEquipCell"];
+        cell = [[KG_XunShiLastDetailCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_XunShiLastDetailCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
     self.currIndex = indexPath.row;
     self.currSection = indexPath.section;
     cell.specialData = ^(NSDictionary * _Nonnull dataDic) {
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        
+
         [dic setValue:safeString(dataDic[@"description"]) forKey:@"description"];
         [dic setValue:safeString(dataDic[@"specialTagName"]) forKey:@"specialTagName"];
         [dic setValue:safeString(dataDic[@"specialTagValue"]) forKey:@"specialTagValue"];
         [dic setValue:safeString(dataDic[@"patrolRecordId"]) forKey:@"patrolRecordId"];
-//        [dic setValue:safeString(dataDic[@"infoId"]) forKey:@"patrolInfoId"];
-        
-        
-        
-       
+
         [dic setValue:safeString(dataDic[@"engineRoomCode"]) forKey:@"engineRoomCode"];
         [dic setValue:safeString(dataDic[@"engineRoomName"]) forKey:@"engineRoomName"];
-        //        [dataDic setValue:safeString(self.dataDic[@"taskTime"]) forKey:@"taskTime"];
-        
+      
         NSDictionary *currDic = self.listArray[self.currSection];
         [dic setValue:safeString(currDic[@"equipmentCode"]) forKey:@"equipmentCode"];
         [dic setValue:safeString(currDic[@"equipmentName"]) forKey:@"equipmentName"];
-        
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"saveSpecialData"
           object:self
         userInfo:dic];
     };
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    self.dataArray = self.dataDic[indexPath.section];
     NSDictionary *dic = self.listArray[indexPath.section];
-    NSArray *arr = dic[@"childrens"];
-    NSDictionary *detailDic = arr[indexPath.row];
-    cell.dataDic = detailDic;
-   
+    if(dic.count) {
+        NSArray *arr = dic[@"childrens"];
+        if (arr.count) {
+            NSDictionary *detailDic = arr[indexPath.row];
+            cell.dataDic = detailDic;
+        }
+    }
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     

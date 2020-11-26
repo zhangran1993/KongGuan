@@ -12,29 +12,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_RadarEquipCell : UITableViewCell
 
-@property (nonatomic, strong) UIImageView *leftIcon ;
+@property (nonatomic, strong) UIImageView           *leftIcon ;
 
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *detailLabel;
-@property (nonatomic, strong) UILabel *tempLabel;
-@property (nonatomic, strong) UIImageView *zhexianIcon ;
-@property (nonatomic, strong) UIImageView *starIcon ;
+@property (nonatomic, strong) UILabel               *titleLabel;
 
-@property (nonatomic, strong) UIView *detailView;
-@property (nonatomic, strong) UILabel *detailTitleLabel;
-@property (nonatomic, strong) UILabel *detailTextTitleLabel;
-@property (nonatomic, strong) UISegmentedControl *segmentedControl;
+@property (nonatomic, strong) UILabel               *detailLabel;
 
-@property (nonatomic, strong) NSDictionary *dataDic;
-@property (nonatomic, strong) UIButton *selectBtn;
+@property (nonatomic, strong) UILabel               *tempLabel;
 
-@property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong) UIImageView           *zhexianIcon;
 
+@property (nonatomic, strong) UIImageView           *starIcon ;
 
-@property (nonatomic, strong) UIButton *specialStarBtn;
-@property (nonatomic, strong) UIButton *promptBtn;
+@property (nonatomic, strong) UIView                *detailView;
 
-@property (nonatomic,strong) void(^specialData)(NSDictionary *dataDic);
+@property (nonatomic, strong) UILabel               *detailTitleLabel;
+
+@property (nonatomic, strong) UILabel               *detailTextTitleLabel;
+
+@property (nonatomic, strong) UISegmentedControl    *segmentedControl;
+
+@property (nonatomic, strong) NSDictionary          *dataDic;
+
+@property (nonatomic, strong) UIButton              *selectBtn;
+
+@property (nonatomic, strong) UITextView            *textView;
+
+@property (nonatomic, strong) UIButton              *specialStarBtn;
+
+@property (nonatomic, strong) UIButton              *promptBtn;
+
+@property (nonatomic, strong) void(^specialData)(NSDictionary *dataDic);
+
 @end
 
 NS_ASSUME_NONNULL_END

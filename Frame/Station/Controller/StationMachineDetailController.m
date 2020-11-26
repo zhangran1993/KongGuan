@@ -871,7 +871,6 @@
     }else if ([level isEqualToString:@"1"]) {
         levelString = @"level_jinji";
     }
-    
     //紧急
     return levelString;
 }

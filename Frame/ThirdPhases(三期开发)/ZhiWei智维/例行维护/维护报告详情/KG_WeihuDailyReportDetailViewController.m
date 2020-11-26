@@ -663,6 +663,7 @@
             self.alertView.hidden = YES;
         }
         
+        [self queryReportDetailData];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
         
     }  failure:^(NSError *error) {

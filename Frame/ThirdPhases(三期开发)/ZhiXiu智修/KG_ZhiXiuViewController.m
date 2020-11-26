@@ -61,6 +61,8 @@
 
 @property(strong,nonatomic)   NSArray            *roomArray;
 @property (nonatomic, assign) BOOL               isBlock;
+
+@property (nonatomic, assign) BOOL               isScreenStatus;
 //
 //@property (nonatomic,strong) UIView *noDataView;
 
@@ -75,6 +77,7 @@
     [self.navigationController setNavigationBarHidden:YES];
     // Do any additional setup after loading the view
     self.isOpenSwh = NO;
+    self.isScreenStatus = NO;//一开始进入 不是筛选状态
     self.isBlock = NO;
     [self createNaviTopView];
     [self createSegmentView];
@@ -187,7 +190,6 @@
         make.top.equalTo(swhView.mas_top);
         make.bottom.equalTo(swhView.mas_bottom);
         make.width.equalTo(@200);
-        
     }];
     
     self.swh = [[UIButton alloc]init];
@@ -587,10 +589,164 @@
         self.endTime = endTimeStr;
         self.roomArray = roomArray;
         self.isBlock = YES;
+        if(roomStr.length == 0 && equipTypeStr.length == 0 && alarmLevelStr.length == 0
+           &&alarmStausStr.length == 0  && startTimeStr.length == 0 && endTimeStr.length == 0) {
+            self.isScreenStatus = NO;
+            return ;
+        }
+        self.isScreenStatus = YES;
         [self screenMethodData];
     };
     [self.navigationController pushViewController:vc animated:YES];
     
+}
+
+- (void)loadmoreScreenData {
+    self.pageNum ++;
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(currDic[@"code"]);
+    [self.paraArr addObject:paraDic];
+    NSString *roomString = @"";
+    for (NSDictionary *dataDic in self.roomArray) {
+        if ([safeString(dataDic[@"alias"]) isEqualToString:self.roomStr]) {
+            roomString = safeString(dataDic[@"code"]);
+            break;
+        }
+    }
+    NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+    paraDic1[@"name"] = @"engineRoomCode";
+    paraDic1[@"type"] = @"eq";
+    paraDic1[@"content"] = safeString(roomString);
+    if (roomString.length) {
+        [self.paraArr addObject:paraDic1];
+    }
+    
+    
+    NSString *alarmStatusCode = @"";
+    if ([self.alarmStatusStr isEqualToString:@"未确认"]) {
+        alarmStatusCode = @"unconfirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已确认"]) {
+        alarmStatusCode = @"confirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解决"]) {
+        alarmStatusCode = @"completed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解除"]) {
+        alarmStatusCode = @"removed";
+    }
+    
+    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
+    paraDic2[@"name"] = @"alarmStatus";
+    paraDic2[@"type"] = @"eq";
+    paraDic2[@"content"] = safeString(alarmStatusCode);
+    
+    if (alarmStatusCode.length) {
+        [self.paraArr addObject:paraDic2];
+    }
+    
+    
+    NSString *equipCode = @"";
+    if ([self.equipTypeStr isEqualToString:@"安防"]) {
+        equipCode = @"security";
+    }else if ([self.equipTypeStr isEqualToString:@"环境"]) {
+        equipCode = @"environmental";
+    }else if ([self.equipTypeStr isEqualToString:@"动力"]) {
+        equipCode = @"power";
+    }else if ([self.equipTypeStr isEqualToString:@"设备"]) {
+        equipCode = @"equipment";
+    }
+    NSMutableDictionary *paraDic3 = [NSMutableDictionary dictionary];
+    paraDic3[@"name"] = @"equipmentGroup";
+    paraDic3[@"type"] = @"eq";
+    paraDic3[@"content"] = safeString(equipCode);
+    if (equipCode.length) {
+        [self.paraArr addObject:paraDic3];
+    }
+       
+    
+    
+    NSString *alarmLevelCode = @"";
+    if ([self.alarmLevelStr isEqualToString:@"紧急"]) {
+        alarmLevelCode = @"1";
+    }else if ([self.alarmLevelStr isEqualToString:@"重要"]) {
+        alarmLevelCode = @"2";
+    }else if ([self.alarmLevelStr isEqualToString:@"次要"]) {
+        alarmLevelCode = @"3";
+    }else if ([self.alarmLevelStr isEqualToString:@"提示"]) {
+        alarmLevelCode = @"4";
+    }else if ([self.alarmLevelStr isEqualToString:@"正常"]) {
+        alarmLevelCode = @"5";
+    }
+    
+    NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
+    paraDic4[@"name"] = @"alarmLevel";
+    paraDic4[@"type"] = @"eq";
+    paraDic4[@"content"] = safeString(alarmLevelCode);
+    if (alarmLevelCode.length) {
+        [self.paraArr addObject:paraDic4];
+    }
+    
+    
+    NSMutableDictionary *paraDic5 = [NSMutableDictionary dictionary];
+    paraDic5[@"name"] = @"startTime";
+    paraDic5[@"type"] = @"eq";
+    paraDic5[@"content"] = safeString(self.startTime);
+    if (safeString(self.startTime).length) {
+        [self.paraArr addObject:paraDic5];
+    }
+    
+    NSMutableDictionary *paraDic6 = [NSMutableDictionary dictionary];
+    paraDic6[@"name"] = @"endTime";
+    paraDic6[@"type"] = @"eq";
+    paraDic6[@"content"] = safeString(self.endTime);
+    
+    if (safeString(self.endTime).length) {
+        [self.paraArr addObject:paraDic6];
+    }
+    NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/searchAlarmInfo/%d/%d",WebNewHost,self.pageNum,self.pageSize];
+    WS(weakSelf);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            
+            return ;
+        }
+       
+        [self.tableView.mj_footer endRefreshing];
+        NSArray *arr = [KG_GaoJingModel mj_objectArrayWithKeyValuesArray:result[@"value"][@"records"]];
+        [self.dataArray addObjectsFromArray:arr] ;
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        
+        
+        [self.tableView reloadData];
+    } failure:^(NSError *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        return ;
+    }];
+
 }
 
 //获取某个台站下筛选自动告警事件：
@@ -879,14 +1035,10 @@
                 cell.showLeftSrcollView = @"0";
             }
         }else {
-            
             cell.showLeftSrcollView = @"0";
         }
-        
         return cell;
-        
     }
-    
     return nil;
     
 }
@@ -910,7 +1062,6 @@
         };
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
 }
 
 //筛选方法2
@@ -974,6 +1125,10 @@
 
 - (void)loadMoreData {
     self.pageNum ++;
+    if (self.isScreenStatus) {
+        [self loadmoreScreenData];
+    }
+    
     //全部
     if (self.currIndex == 0) {
         [self queryMoreGaoJingData];
@@ -1045,6 +1200,7 @@
             [self addScreenDic];
             [self queryGaoJingData];
         }else if (index == 1){
+            self.isScreenStatus = NO;
             NSLog(@"2");
             NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
             paraDic[@"name"] = @"stationCode";
@@ -1060,6 +1216,7 @@
             [self addScreenDic];
             [self queryGaoJingData];
         }else if (index == 2){
+            self.isScreenStatus = NO;
             NSLog(@"3");
             NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
             paraDic[@"name"] = @"stationCode";

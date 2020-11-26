@@ -24,8 +24,7 @@
     self = [super init];
     if (self) {
         self.xunshiString = @"一键巡视";
-        [self getXunShiNameData];
-          
+       [self setupDataSubviews];
 //        [self quertTaskChildData];
        
     }
@@ -36,6 +35,12 @@
 //创建视图
 -(void)setupDataSubviews
 {
+    
+    self.xunshiString = [UserManager shareUserManager].xunshiTypeStr;
+    if (self.xunshiString.length == 0) {
+        self.xunshiString = @"一键巡视";
+    }
+    
     NSArray *array = @[safeString(self.xunshiString) ,@"例行维护",@"特殊保障"];
     self.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     UIView *bgView = [[UIView alloc]init];
@@ -68,7 +73,7 @@
                                 forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     
     //scroView
-    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,nvbH,SCREEN_WIDTH,SCREEN_HEIGHT-nvbH -Height_TabBar  -NAVIGATIONBAR_HEIGHT  )];
+    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,nvbH,SCREEN_WIDTH,SCREEN_HEIGHT-nvbH -Height_TabBar  -NAVIGATIONBAR_HEIGHT)];
     scrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     scrollView.pagingEnabled = YES;
     scrollView.scrollEnabled = NO;
@@ -196,36 +201,36 @@
     }];
     
 }
-//判断显示一键巡视还是现场巡视
-- (void)getXunShiNameData {
-//    {stationCode}
-    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
-    
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/templateVerify/%@",safeString(currDic[@"code"])]];
-      [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-          NSInteger code = [[result objectForKey:@"errCode"] intValue];
-          if(code  <= -1){
-              [FrameBaseRequest showMessage:result[@"errMsg"]];
-              return ;
-          }
-          
-          if(![result[@"value"] boolValue]) {
-              
-              self.xunshiString = @"现场巡视";
-          }else {
-              self.xunshiString = @"一键巡视";
-          }
-          [self setupDataSubviews];
-         
-          NSLog(@"1");
-      } failure:^(NSURLSessionDataTask *error)  {
-          FrameLog(@"请求失败，返回数据 : %@",error);
-          NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-         
-          [FrameBaseRequest showMessage:@"网络链接失败"];
-          return ;
-          
-      }];
-}
+////判断显示一键巡视还是现场巡视
+//- (void)getXunShiNameData {
+////    {stationCode}
+//    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+//
+//    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/templateVerify/%@",safeString(currDic[@"code"])]];
+//      [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+//          NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//          if(code  <= -1){
+//              [FrameBaseRequest showMessage:result[@"errMsg"]];
+//              return ;
+//          }
+//
+//          if(![result[@"value"] boolValue]) {
+//
+//              self.xunshiString = @"现场巡视";
+//          }else {
+//              self.xunshiString = @"一键巡视";
+//          }
+//
+//
+//          NSLog(@"1");
+//      } failure:^(NSURLSessionDataTask *error)  {
+//          FrameLog(@"请求失败，返回数据 : %@",error);
+//          NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+//
+//          [FrameBaseRequest showMessage:@"网络链接失败"];
+//          return ;
+//
+//      }];
+//}
 
 @end

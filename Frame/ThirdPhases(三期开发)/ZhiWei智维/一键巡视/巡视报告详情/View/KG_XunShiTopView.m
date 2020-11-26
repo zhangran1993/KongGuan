@@ -212,6 +212,13 @@
     headTitle.numberOfLines = 1;
     
     UIImageView *stastusImage = [[UIImageView alloc]init];
+    if (safeString(self.model.taskName).length) {
+        stastusImage.hidden = NO;
+        
+    }else {
+        stastusImage.hidden = YES;
+    }
+    
     stastusImage.image = [UIImage imageNamed:[self getTaskImage:safeString(self.model.taskStatus)]];
     [stastusImage sizeToFit];
     [headView addSubview:stastusImage];

@@ -36,38 +36,38 @@
 @property (strong, nonatomic) NSDictionary *currentStationDic;
 
 
-@property (nonatomic, strong)  UIView    *navigationView;
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *stationReportView;//台站任务提醒
-@property (nonatomic, strong)  UIView    *stationWeihuView;//维护
-@property (nonatomic, strong)  UIView    *runReprtView;//运行报告View
-@property (nonatomic, strong)  UIView    *jiaojiebanView;//交接班View
-@property (nonatomic, strong)  UIView    *zhihuiyunView;
+@property (nonatomic, strong)  UIView           *navigationView;
+@property (nonatomic, strong)  UILabel          *titleLabel;
+@property (nonatomic, strong)  UIView           *stationReportView;//台站任务提醒
+@property (nonatomic, strong)  UIView           *stationWeihuView;//维护
+@property (nonatomic, strong)  UIView           *runReprtView;//运行报告View
+@property (nonatomic, strong)  UIView           *jiaojiebanView;//交接班View
+@property (nonatomic, strong)  UIView           *zhihuiyunView;
 
-@property (nonatomic, strong)  NSDictionary *loginNameInfo;
+@property (nonatomic, strong)  NSDictionary     *loginNameInfo;
 
-@property (nonatomic, strong)  NSArray    *reportListArr;//维护
-@property (nonatomic, strong)  NSArray    *stationTaskInfoArr;//台站任务提醒
-@property (nonatomic, strong)  NSArray    *stationRunReportArr;//台站运行报告arr
-@property (nonatomic, strong)  NSArray    *jiaojiebanListArr;
+@property (nonatomic, strong)  NSArray          *reportListArr;//维护
+@property (nonatomic, strong)  NSArray          *stationTaskInfoArr;//台站任务提醒
+@property (nonatomic, strong)  NSArray          *stationRunReportArr;//台站运行报告arr
+@property (nonatomic, strong)  NSArray          *jiaojiebanListArr;
 
-@property (nonatomic, strong)  UITableView *reportTableView;//1
-@property (nonatomic, strong)  UITableView *weihuTableView;//2
-@property (nonatomic, strong)  UITableView *runReportTableView;//3
-@property (nonatomic, strong)  UITableView *jiaoJieBanTableView;//3
-@property (nonatomic, strong)  UITableView *tableView;//3
-@property (nonatomic, strong)  UIScrollView *scrollView;
-@property (nonatomic, strong)  NSDictionary *jiaoJieBanInfo;
+@property (nonatomic, strong)  UITableView      *reportTableView;//1
+@property (nonatomic, strong)  UITableView      *weihuTableView;//2
+@property (nonatomic, strong)  UITableView      *runReportTableView;//3
+@property (nonatomic, strong)  UITableView      *jiaoJieBanTableView;//3
+@property (nonatomic, strong)  UITableView      *tableView;//3
+@property (nonatomic, strong)  UIScrollView     *scrollView;
+@property (nonatomic, strong)  NSDictionary     *jiaoJieBanInfo;
 @property (nonatomic, strong)  ZRDatePickerView *dataPickerview;
 @property (nonatomic, strong)  KG_JiaoJieBanAlertView *jiaoJieBanAlertView;
 @property (nonatomic, strong)  KG_CreateReportAlertView *createReportAlertView;
 @property (nonatomic, strong)  KG_ChooseJiaoJieBanAlertView *jieBanAlertView;
 @property (nonatomic ,assign) int currIndex;
 
-@property (nonatomic,copy) NSString *startTime;
-@property (nonatomic,copy) NSString *endTime;
+@property (nonatomic,copy)     NSString         *startTime;
+@property (nonatomic,copy)     NSString         *endTime;
 
-@property (strong, nonatomic) UIButton *leftIconImage;
+@property (strong, nonatomic)  UIButton         *leftIconImage;
 
 @end
 
@@ -85,7 +85,7 @@
     }
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    
+    [self getXunShiNameData];
 //  注册通知刷新当前页面的数据
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshYunxingData) name:@"refreshYunxingData" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
@@ -117,6 +117,7 @@
     LoginViewController *login = [[LoginViewController alloc] init];
     [self.slideMenuController showViewController:login];
 }
+
 //登录已过期方法
 - (void)loginOutMethod {
     [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
@@ -166,7 +167,6 @@
         NSLog(@"cookie设置失败");
         [self login];
     }
-    
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -1179,8 +1179,6 @@ navigationController willShowViewController:
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-
-    
     if(indexPath.section == 0){
         if (self.stationTaskInfoArr.count == 0) {
             return 53+44;
@@ -1196,7 +1194,9 @@ navigationController willShowViewController:
     }else if(indexPath.section == 1){
         return 72;
     }else if(indexPath.section == 2){
+        
         return 125 +80*self.stationRunReportArr.count;
+        
     }else if(indexPath.section == 3){
         return self.jiaojiebanListArr.count *80+40;
     }else if(indexPath.section == 4){
@@ -1371,6 +1371,11 @@ navigationController willShowViewController:
     
 }
 
+//
+//获取用户岗位交接班信息接口：
+//请求地址：/intelligent/atcChangeShiftsRecord/operation/{userId}
+
+
 //交接班状态接口：
 //请求地址：/atcChangeShiftsRecord /verification/{userId}
 //请求方式：GET
@@ -1384,7 +1389,8 @@ navigationController willShowViewController:
         [UserManager shareUserManager].userID =safeString([userDefaults objectForKey:@"id"]) ;
     }
     
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/verification/%@",[UserManager shareUserManager].userID]];
+//    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/verification/%@",[UserManager shareUserManager].userID]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/operation/%@",[UserManager shareUserManager].userID]];
     
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         
@@ -1419,7 +1425,7 @@ navigationController willShowViewController:
 //如：
 
 - (void)queryJiaoJieBaneListData {
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcChangeShiftsRecord/1/20"];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcChangeShiftsRecord/1/20"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
     params[@"post"] = @"";
@@ -1632,6 +1638,38 @@ navigationController willShowViewController:
         self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
         [self.dataPickerview  show];
     }];
+}
+
+//判断显示一键巡视还是现场巡视
+- (void)getXunShiNameData {
+//    {stationCode}
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/templateVerify/%@",safeString(currDic[@"code"])]];
+      [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+          NSInteger code = [[result objectForKey:@"errCode"] intValue];
+          if(code  <= -1){
+              [FrameBaseRequest showMessage:result[@"errMsg"]];
+              return ;
+          }
+          
+          if(![result[@"value"] boolValue]) {
+              
+              [UserManager shareUserManager].xunshiTypeStr = @"现场巡视";
+          }else {
+              [UserManager shareUserManager].xunshiTypeStr = @"一键巡视";
+          }
+          [self setupDataSubviews];
+         
+          NSLog(@"1");
+      } failure:^(NSURLSessionDataTask *error)  {
+          FrameLog(@"请求失败，返回数据 : %@",error);
+          NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+         
+          [FrameBaseRequest showMessage:@"网络链接失败"];
+          return ;
+          
+      }];
 }
 
 @end

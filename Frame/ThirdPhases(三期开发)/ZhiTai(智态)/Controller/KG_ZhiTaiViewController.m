@@ -101,7 +101,7 @@
 
 - (void)createScrollView
 {
-    self.bgScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    self.bgScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT- SafeAreaBottomMargin - Height_TabBar)];
     NSLog(@"SCREEN_HEIGHT %f",SCREEN_HEIGHT);
     NSLog(@"HEIGHT_SCREEN %f",HEIGHT_SCREEN);
     
@@ -109,10 +109,7 @@
     self.bgScrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
     self.bgScrollView.scrollEnabled = YES;
-   
     self.bgScrollView.contentSize = CGSizeMake(0, 600 + 183 +112 + 50 +100 +100);
-    
-    
     
     [self.view addSubview:self.bgScrollView];
     self.bgScrollView.showsVerticalScrollIndicator = YES;
@@ -267,7 +264,7 @@
     self.runView = nil;
     int runHeight = 88;
     if (self.dataModel.mainEquipmentDetails.count >2) {
-        runHeight = 112;
+        runHeight = 88+ 40;
     }
     
     self.runView= [[UIView alloc]initWithFrame:CGRectMake(16, NAVIGATIONBAR_HEIGHT +24+6, SCREEN_WIDTH -32, runHeight +233)];
@@ -673,14 +670,12 @@
                 StationMachine.zhitaiDic = self.dvorDic;
                 [self.navigationController pushViewController:StationMachine animated:YES];
                 
-                
             };
             [_scrollView addSubview:self.dvorView];
             
         }
         
         NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
-        
         
     }
     
@@ -896,7 +891,7 @@
                 if (he + 183 +112 + 50 +100 +100 <SCREEN_HEIGHT) {
                     self.bgScrollView.contentSize = CGSizeMake(0,SCREEN_HEIGHT);
                 }else {
-                    self.bgScrollView.contentSize = CGSizeMake(0, he + 183 +112 + 50 +100 +100);
+                    self.bgScrollView.contentSize = CGSizeMake(0, he + 360 +NAVIGATIONBAR_HEIGHT +50 +80 );
                 }
             }
            

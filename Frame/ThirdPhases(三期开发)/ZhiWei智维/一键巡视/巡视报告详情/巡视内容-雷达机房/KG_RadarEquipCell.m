@@ -169,7 +169,7 @@
     }
     NSArray *sixArr = dd[@"childrens"];
     if (sixArr.count >0) {
-       
+        
         dd = [sixArr firstObject];
     }
     if ([dd[@"special"] boolValue]) {
@@ -199,7 +199,7 @@
        [safeString(dd[@"type"]) isEqualToString:@"data"]
        ){
         NSDictionary *dd = [dataDic[@"childrens"] firstObject];
-        NSString *value = safeString(dd[@"value"]) ;
+        NSString *value = safeString(dd[@"value"]);
         NSString *valueNum = safeString(self.dataDic[@"measureValueAlias"]) ;
         if (valueNum.length == 0) {
             self.promptView.hidden = NO;
@@ -336,7 +336,7 @@
                         }
                     }
                 }
-
+                
             }
         }
     }else if( [safeString(dd[@"type"])  isEqualToString:@"radio"]) {
@@ -346,7 +346,7 @@
             self.segmentedControl.userInteractionEnabled = NO;
         }
         
-      
+        
         self.selectBtn.hidden = YES;
         self.textView.hidden = YES;
         
@@ -438,6 +438,7 @@
     }else if( [safeString(dd[@"type"])  isEqualToString:@"data"]) {
         
         self.detailLabel.hidden = NO;
+        
         self.segmentedControl.hidden = YES;
         
         self.selectBtn.hidden = YES;
@@ -451,10 +452,16 @@
         self.selectBtn.hidden = NO;
         
         self.textView.hidden = YES;
+        
+        [self.specialStarBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@30);
+            make.right.equalTo(self.selectBtn.mas_left).offset(-20);
+            make.centerY.equalTo(self.titleLabel.mas_centerY);
+        }];
         if ([UserManager shareUserManager].isChangeTask) {
             self.selectBtn.userInteractionEnabled = YES;
         }else {
-            self.selectBtn.userInteractionEnabled = NO;
+            self.selectBtn.userInteractionEnabled = NO ;
         }
         if(safeString(self.dataDic[@"measureValueAlias"]).length >0)
         {
@@ -466,17 +473,17 @@
                 
                 NSArray *array = [value componentsSeparatedByString:@"@&@"];
                 if (array.count == 2) {
-                   
+                    
                     if (valueNum.length >0) {
                         if ([valueNum isEqualToString:array[0]]) {
-                           
-                             [self.selectBtn setTitle:array[0] forState:UIControlStateNormal];
+                            
+                            [self.selectBtn setTitle:array[0] forState:UIControlStateNormal];
                         }else if ([valueNum isEqualToString:array[1]]) {
                             [self.selectBtn setTitle:array[1] forState:UIControlStateNormal];
                             
                         }
                     }else {
-                         [self.selectBtn setTitle:array[0] forState:UIControlStateNormal];
+                        [self.selectBtn setTitle:array[0] forState:UIControlStateNormal];
                     }
                 }
             }
@@ -484,28 +491,28 @@
         }
         NSString *value = safeString(dd[@"value"]) ;
         if (value.length >0) {
-                           
+            
             NSArray *array = [value componentsSeparatedByString:@"@&@"];
             NSString *parentId = safeString(dd[@"parentId"]) ;
             NSDictionary *dic =  [UserManager shareUserManager].resultDic;
             if ([dic count]) {
-            NSArray *arr = [dic allKeys];
-            if (arr.count) {
-                
-                for (NSString *pId in arr) {
-                    if ([pId isEqualToString:parentId]) {
-                        NSString *cc = [dic objectForKey:parentId];
-                        if ([cc isEqualToString:array[0]]) {
-                           
-                            [self.selectBtn setTitle:array[0] forState:UIControlStateNormal];
-                        }else if ([cc isEqualToString:array[1]]) {
-                           [self.selectBtn setTitle:array[1] forState:UIControlStateNormal];
-                            
+                NSArray *arr = [dic allKeys];
+                if (arr.count) {
+                    
+                    for (NSString *pId in arr) {
+                        if ([pId isEqualToString:parentId]) {
+                            NSString *cc = [dic objectForKey:parentId];
+                            if ([cc isEqualToString:array[0]]) {
+                                
+                                [self.selectBtn setTitle:array[0] forState:UIControlStateNormal];
+                            }else if ([cc isEqualToString:array[1]]) {
+                                [self.selectBtn setTitle:array[1] forState:UIControlStateNormal];
+                                
+                            }
                         }
                     }
                 }
             }
-        }
         }
         [self.selectBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -
                                                             self.selectBtn.imageView.frame.size.width, 0, self.selectBtn.imageView.frame.size.width)];
@@ -531,9 +538,9 @@
             self.textView.text = @"";
         }
         
-    
-    NSString *value = safeString(dd[@"value"]) ;
-    if (value.length >0) {
+        
+        NSString *value = safeString(dd[@"value"]) ;
+        if (value.length >0) {
             
             NSArray *array = [value componentsSeparatedByString:@"@&@"];
             NSString *parentId = safeString(dd[@"parentId"]) ;
@@ -589,7 +596,7 @@
     [self.segmentedControl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-20);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
-       
+        
         make.height.equalTo(@24);
     }];
 }
@@ -665,7 +672,7 @@
         make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.right.equalTo(self.mas_right).offset(-20);
         make.height.equalTo(self.mas_height);
-//        make.width.equalTo(@120);
+        //        make.width.equalTo(@120);
     }];
     
 }
@@ -681,7 +688,7 @@
                 [toDic addEntriesFromDictionary:str];
                 
                 [UserManager shareUserManager].resultDic = toDic;
-            
+                
                 NSString *ss = safeString([[str allValues] firstObject]);
                 [self.selectBtn setTitle:ss forState:UIControlStateNormal];
             }
@@ -746,18 +753,18 @@
         textView.text = @"";
     }
     return YES;
-   
+    
 }
 //当textView的内容发生改变的时候调用
 - (void)textViewDidChange:(UITextView *)textView {
     
-//    if (self.textStringChangeBlock) {
-//        self.textStringChangeBlock(textView.text);
-//    }
+    //    if (self.textStringChangeBlock) {
+    //        self.textStringChangeBlock(textView.text);
+    //    }
     
     NSDictionary *dd = [self.dataDic[@"childrens"] firstObject];
-       
-     NSString *infoId = safeString(dd[@"parentId"]);
+    
+    NSString *infoId = safeString(dd[@"parentId"]);
     [UserManager shareUserManager].changeEquipStatus = YES;
     NSMutableDictionary *toDic = [NSMutableDictionary dictionary];
     NSDictionary *resultDic  = [UserManager shareUserManager].resultDic;
@@ -800,15 +807,13 @@
         [dataDic setValue:safeString(self.dataDic[@"measureTagName"]) forKey:@"specialTagName"];
         [dataDic setValue:safeString(self.dataDic[@"measureValueAlias"]) forKey:@"specialTagValue"];
         [dataDic setValue:safeString(dd[@"parentId"]) forKey:@"patrolRecordId"];
-//        [dataDic setValue:safeString(dd[@"infoId"]) forKey:@"patrolInfoId"];
+        //        [dataDic setValue:safeString(dd[@"infoId"]) forKey:@"patrolInfoId"];
         
-        
-        
-//        [dataDic setValue:safeString(self.dataDic[@"equipmentCode"]) forKey:@"equipmentCode"];
-//        [dataDic setValue:safeString(self.dataDic[@"equipmentName"]) forKey:@"equipmentName"];
+        //        [dataDic setValue:safeString(self.dataDic[@"equipmentCode"]) forKey:@"equipmentCode"];
+        //        [dataDic setValue:safeString(self.dataDic[@"equipmentName"]) forKey:@"equipmentName"];
         [dataDic setValue:safeString(self.dataDic[@"engineRoomCode"]) forKey:@"engineRoomCode"];
         [dataDic setValue:safeString(self.dataDic[@"engineRoomName"]) forKey:@"engineRoomName"];
-//        [dataDic setValue:safeString(self.dataDic[@"taskTime"]) forKey:@"taskTime"];
+        //        [dataDic setValue:safeString(self.dataDic[@"taskTime"]) forKey:@"taskTime"];
         
         if (self.specialData) {
             self.specialData(dataDic);
@@ -825,7 +830,7 @@
 }
 
 - (void)promptMethod:(UIButton *)btn {
-   
+    
     _promptView = nil;
     [_promptView removeFromSuperview];
     NSLog(@"点击了提示标记");
@@ -844,7 +849,7 @@
     
     if (!_signView) {
         _signView = [[KG_SpecilaCanShuSignView alloc]init];
-       
+        
     }
     return _signView;
 }
@@ -853,7 +858,7 @@
     
     if (!_promptView) {
         _promptView = [[KG_SpecialNoneDataView alloc]init];
-       
+        
     }
     return _promptView;
 }

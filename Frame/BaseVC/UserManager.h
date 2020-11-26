@@ -58,4 +58,7 @@ interfaceSingle(UserManager)
 @property(nonatomic, assign) BOOL changeEquipStatus;
 
 @property(nonatomic, assign) BOOL isSelContact;
+
+
+@property(nonatomic, copy)   NSString   *xunshiTypeStr;
 @end

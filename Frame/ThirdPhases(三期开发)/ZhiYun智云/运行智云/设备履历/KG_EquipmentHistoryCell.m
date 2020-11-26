@@ -36,22 +36,18 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
-    
-    
+
     if([super initWithStyle:style reuseIdentifier:reuseIdentifier]){
-        
         
         [self createUI];
     }
-    
     return self;
 }
-
 
 - (void)createUI{
     
@@ -63,7 +59,6 @@
         make.width.equalTo(@148);
         make.height.equalTo(@105);
     }];
-    
     
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
@@ -77,7 +72,6 @@
         make.top.equalTo(self.iconImage.mas_top).offset(3);
         make.height.equalTo(@20);
     }];
-    
     
     self.firstLabel = [[UILabel alloc]init];
     [self addSubview:self.firstLabel];
@@ -104,8 +98,6 @@
         make.centerY.equalTo(self.firstLabel.mas_centerY);
         make.height.equalTo(@20);
     }];
-    
-    
     
     self.secondLabel = [[UILabel alloc]init];
     [self addSubview:self.secondLabel];
@@ -173,17 +165,12 @@
     }];
 }
 
-
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic =dataDic;
-    
     if ([self.selType isEqualToString:@"equipFile"]) {
         
-        
         [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]]  ];
-        
         self.titleLabel.text = safeString(dataDic[@"name"]);
-        
         self.firstTextLabel.text = safeString(dataDic[@"stationName"]);
         self.firstLabel.text = @"所属台站：";
         self.secondTextLabel.text = safeString(dataDic[@"type"]);
@@ -197,12 +184,9 @@
         }else {
             self.rightNumLabel.hidden = NO;
         }
-        
     }else {
-        [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]]  ];
-        
+        [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,_dataDic[@"picture"]]]];
         self.titleLabel.text = safeString(dataDic[@"name"]);
-        
         self.firstTextLabel.text = safeString(dataDic[@"alias"]);
         self.firstLabel.text = @"台站简称：";
         self.secondTextLabel.text = safeString(dataDic[@"categoryName"]);
@@ -210,18 +194,12 @@
         self.thirdImageView.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"alarmStatus"])]];
         self.thirdLabel.text = @"台站状态：";
         self.rightNumLabel.text = safeString(_dataDic[@"alarmNum"]);
-        
-        
-        
     }
-    
-   
-    
 }
 
 - (NSString *)getLevelImage:(NSString *)level {
+    //紧急
     NSString *levelString = @"正常";
-    
     if ([level isEqualToString:@"正常"]) {
         levelString = @"level_normal";
     }else if ([level isEqualToString:@"提示"]) {
@@ -232,9 +210,9 @@
         levelString = @"level_important";
     }else if ([level isEqualToString:@"紧急"]) {
         levelString = @"level_jinji";
+    }else if ([level isEqualToString:@"预警"]) {
+        levelString = @" level_yujing";
     }
-    
-    //紧急
     return levelString;
 }
 
@@ -242,6 +220,7 @@
     _selType = selType;
     
 }
+
 - (UIColor *)getTextColor:(NSString *)level {
     UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
     
@@ -256,8 +235,7 @@
     }else if ([level isEqualToString:@"紧急"]) {
         textColor = [UIColor colorWithHexString:@"F62546"];
     }
-    
-    //紧急
     return textColor;
 }
+
 @end

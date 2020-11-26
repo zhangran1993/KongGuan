@@ -483,17 +483,17 @@
             
             return ;
         }
-        if (self.fixStatus) {
-            
-            [FrameBaseRequest showMessage:@"修改成功"];
-            self.fixStatus = NO;
-        }else {
-            if([UserManager shareUserManager].isDeletePicture) {
-                [FrameBaseRequest showMessage:@"删除成功"];
-            }else {
-                [FrameBaseRequest showMessage:@"上传成功"];
-            }
-        }
+//        if (self.fixStatus) {
+//
+//            [FrameBaseRequest showMessage:@"修改成功"];
+//            self.fixStatus = NO;
+//        }else {
+//            if([UserManager shareUserManager].isDeletePicture) {
+//                [FrameBaseRequest showMessage:@"删除成功"];
+//            }else {
+//                [FrameBaseRequest showMessage:@"上传成功"];
+//            }
+//        }
         [self refreshGetData];
         
         [self.tableView reloadData];
@@ -534,7 +534,7 @@
         NSString *sstatus = safeString(self.dataModel.info[@"status"]);
         NSString *hangUpStatus = safeString(self.dataModel.info[@"hangupStatus"]);
         
-        if ([recordStatus isEqualToString:@"completed"] || [sstatus isEqualToString:@"removed"] || [hangUpStatus isEqualToString:@"YES"]) {
+        if ([recordStatus isEqualToString:@"completed"]) {
             return 131 ;
         }
         return 131 + 50  ;

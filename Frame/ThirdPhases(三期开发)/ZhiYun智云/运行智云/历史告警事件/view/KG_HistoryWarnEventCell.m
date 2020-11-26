@@ -231,7 +231,10 @@
         levelString = @"level_important";
     }else if ([level isEqualToString:@"紧急"]) {
         levelString = @"level_jinji";
+    }else if ([level isEqualToString:@"预警"]) {
+        levelString = @" level_yujing";
     }
+       
     
     //紧急
     return levelString;

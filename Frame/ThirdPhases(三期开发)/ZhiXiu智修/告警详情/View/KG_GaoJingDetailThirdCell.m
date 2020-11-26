@@ -677,8 +677,7 @@
     
     //已解除或者已解决状态时，处理流程整体置为蓝色。
     //当已挂起状态时，处理流程整体置为蓝色，当解除挂起时，页面状态根据 status 和recordstatus字段控制
-    if ([sstatus isEqualToString:@"removed"] || [hangUpStatus isEqualToString:@"YES"]
-        ||[sstatus isEqualToString:@"completed"] ) {
+    if ([sstatus isEqualToString:@"completed"] ) {
         
         self.label1.textColor = [UIColor colorWithHexString:@"#004EC4"];
         self.label2.textColor = [UIColor colorWithHexString:@"#004EC4"];

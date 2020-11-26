@@ -266,17 +266,24 @@
         [self.hangUpStautsBtn setTitle:@"挂起" forState:UIControlStateNormal];
         
     }
-    if([sta isEqualToString:@"已确认"]){
-        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
-        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#AABBCD"] forState:UIControlStateNormal];
-        self.confirmStatusBtn.userInteractionEnabled = NO;
-        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F8"]];
-    }else if([sta isEqualToString:@"未确认"]){
-        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
-        self.confirmStatusBtn.userInteractionEnabled = YES;
-        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-    }
+//    if([sta isEqualToString:@"已确认"]){
+//        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
+//        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#AABBCD"] forState:UIControlStateNormal];
+//        self.confirmStatusBtn.userInteractionEnabled = NO;
+//        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F8"]];
+//    }else if([sta isEqualToString:@"未确认"]){
+//        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
+//        self.confirmStatusBtn.userInteractionEnabled = YES;
+//        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+//        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+//    }else {
+//      
+//        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
+//        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#2F5ED1"] forState:UIControlStateNormal];
+//        self.confirmStatusBtn.userInteractionEnabled = NO;
+//        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+//        
+//    }
     
     
     

@@ -13,6 +13,8 @@
 #import "KG_EquipmentHistoryDetailViewController.h"
 #import "KG_StationFileViewController.h"
 #import "KG_EquipmentHistoryScreenViewController.h"
+#import "KG_NoDataPromptView.h"
+
 @interface KG_EquipmentHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -39,13 +41,13 @@
 @property (nonatomic,copy)    NSString                  *selType;
 
 
-@property (nonatomic,strong) UIButton           *leftBtn;
-@property (nonatomic,strong) UIImageView        *leftBotImage;
+@property (nonatomic,strong) UIButton                   *leftBtn;
+@property (nonatomic,strong) UIImageView                *leftBotImage;
 
-@property (nonatomic,strong) UIButton           *rightBtn;
-@property (nonatomic,strong) UIImageView        *rightBotImage;
+@property (nonatomic,strong) UIButton                   *rightBtn;
+@property (nonatomic,strong) UIImageView                *rightBotImage;
 
-
+@property (nonatomic,strong)  KG_NoDataPromptView       *nodataView;
 @property (nonatomic,copy)    NSString                  *selStr;
 
 @end
@@ -427,7 +429,7 @@
         
         UILabel *noDataLabel = [[UILabel alloc]init];
         [_noDataView addSubview:noDataLabel];
-        noDataLabel.text = @"当前暂无任务";
+        noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
@@ -484,6 +486,11 @@
                 }
             }
             self.dataArray = arr;
+        }
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
         }
         
         
@@ -552,6 +559,11 @@
             }
             self.dataArray = arr;
         }
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
         
         [self.tableView reloadData];
         
@@ -575,5 +587,20 @@
     
 }
 
-
+- (KG_NoDataPromptView *)nodataView {
+    if (!_nodataView) {
+        _nodataView = [[KG_NoDataPromptView alloc]init];
+        [self.view addSubview:_nodataView];
+        [self.view bringSubviewToFront:_nodataView];
+        _nodataView.noDataLabel.text = @"当前暂无数据";
+        [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+       
+    }
+    return _nodataView;
+}
 @end

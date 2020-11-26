@@ -354,6 +354,7 @@
     }];
     
 }
+
 //获取台站备件数量统计图接口：
 //请求地址：
 ///intelligent/atcDataCenter/getAttachmentByEquipmentInfo/{stationCode}/{equipmentCategory}

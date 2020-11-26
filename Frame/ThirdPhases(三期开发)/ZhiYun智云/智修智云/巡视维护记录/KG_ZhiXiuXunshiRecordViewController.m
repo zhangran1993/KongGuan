@@ -23,52 +23,47 @@
 #import "KG_AddressbookViewController.h"
 @interface KG_ZhiXiuXunshiRecordViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic,strong) UIView *noDataView;
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) SegmentTapView *segment;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic,strong)       UIView                *noDataView;
+@property (nonatomic, strong)      NSMutableArray        *dataArray;
+@property (nonatomic, strong)      SegmentTapView        *segment;
+@property (nonatomic, strong)      UITableView           *tableView;
 
+@property (nonatomic ,assign)      int                   pageNum;
+@property (nonatomic ,assign)      int                   pageSize;
 
-@property (nonatomic ,assign) int pageNum;
-@property (nonatomic ,assign) int pageSize;
+@property (nonatomic ,strong)      NSMutableArray        *paraArr;
 
-@property (nonatomic ,strong) NSMutableArray *paraArr;
+@property (nonatomic ,assign)      int                   currIndex;
 
-@property (nonatomic ,assign) int currIndex;
+@property (nonatomic, strong)      UILabel               *titleLabel;
 
-@property (nonatomic, strong)   UILabel                 *titleLabel;
+@property (nonatomic, strong)      UIView                *navigationView;
 
-@property (nonatomic, strong)   UIView                  *navigationView;
+@property (nonatomic, strong)      UIButton              *rightButton;
 
+@property (nonatomic, copy)        NSString              *taskStr;
+@property (nonatomic, copy)        NSString              *roomStr;
+@property (nonatomic, copy)        NSString              *taskStatusStr;
+@property (nonatomic, copy)        NSString              *startTime;
+@property (nonatomic, copy)        NSString              *endTime;
+@property (nonatomic, strong)      NSArray               *roomArray;
 
-@property (nonatomic, strong)   UIButton   *rightButton;
+@property (nonatomic, copy)        NSString              *searchString;
+@property (nonatomic, strong)      KG_AssignView         *alertPersonView;
 
-
-
-@property (nonatomic, copy)     NSString                *taskStr;
-@property (nonatomic, copy)     NSString                *roomStr;
-@property (nonatomic, copy)     NSString                *taskStatusStr;
-@property (nonatomic, copy)     NSString                *startTime;
-@property (nonatomic, copy)     NSString                *endTime;
-@property (nonatomic, strong)   NSArray                 *roomArray;
-
-@property (nonatomic, copy)     NSString                *searchString;
-
-
-@property (nonatomic, strong)  KG_AssignView            *alertPersonView;
 @end
 
 @implementation KG_ZhiXiuXunshiRecordViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.pageNum = 1;
-    self.pageSize = 10;
-    self.currIndex = 0;
+    self.pageNum      = 1;
+    self.pageSize     = 10;
+    self.currIndex    = 0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushToAddressBook) name:@"pushToAddressBook" object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addressBookSelPerson:) name:@"addressBookSelPerson" object:nil];
     
     //初始化为日
@@ -78,13 +73,10 @@
     paraDic[@"type"] = @"eq";
     paraDic[@"content"] = safeString(self.model.equipmentCode);
     
-    
     NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
     paraDic1[@"name"] = @"typeCode";
     paraDic1[@"type"] = @"eq";
     paraDic1[@"content"] = @"all";
-    
-    
     
     [self.paraArr addObject:paraDic];
     [self.paraArr addObject:paraDic1];
@@ -95,7 +87,6 @@
 }
 
 - (void)pushToAddressBook {
-    
     [UserManager shareUserManager].isSelContact = YES;
     self.alertPersonView.hidden = YES;
     
@@ -109,6 +100,7 @@
 }
 
 - (void)addressBookSelPerson:(NSNotification *)notification {
+    
     NSDictionary *dataDic = notification.userInfo;
     if (dataDic.count) {
         self.alertPersonView.hidden = NO;
@@ -116,7 +108,6 @@
         self.alertPersonView.nameID = safeString(dataDic[@"nameID"]);
     }
 }
-
 
 - (void)createTopView {
     UIView *topView = [[UIView alloc]init];
@@ -172,7 +163,6 @@
     botBtn.layer.cornerRadius = 4.f;
     botBtn.layer.masksToBounds = YES;
     
-    
     UIImageView *botImage = [[UIImageView alloc]init];
     [topView addSubview:botImage];
     botImage.image = [UIImage imageNamed:@"kg_jianbian_Image"];
@@ -184,18 +174,16 @@
     }];
 }
 
-
 - (void)botMethod:(UIButton *)btn {
     
     KG_InspectionRecordsViewController *vc = [[KG_InspectionRecordsViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
 - (void)createSegmentView{
     NSArray *array = @[@"全部",@"常规巡视",@"例行维护",@"特殊保障"];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    self.segment = [[SegmentTapView alloc] initWithFrame:CGRectMake(0, NAVIGATIONBAR_HEIGHT +111, SCREEN_WIDTH, 44) withDataArray:array withFont:15];
+    self.segment = [[SegmentTapView alloc] initWithFrame:CGRectMake(0, NAVIGATIONBAR_HEIGHT +102, SCREEN_WIDTH, 44) withDataArray:array withFont:15];
     self.segment.delegate = self;
     [self.view addSubview:self.segment];
     
@@ -208,7 +196,8 @@
         make.bottom.equalTo(self.view.mas_bottom);
     }];
 }
--(void)viewWillAppear:(BOOL)animated{
+
+- (void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     if (@available(iOS 13.0, *)){
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
@@ -218,7 +207,8 @@
     [self.navigationController setNavigationBarHidden:YES];
     
 }
--(void)viewWillDisappear:(BOOL)animated{
+
+- (void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:YES];
     
@@ -278,7 +268,6 @@
         make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.right.equalTo(self.navigationView.mas_right).offset(-20);
     }];
-    
     
 }
 
@@ -409,15 +398,11 @@
         
         [self.paraArr addObject:paraDic];
         [self.paraArr addObject:paraDic1];
-        
     }
     
     [self loadData];
     
 }
-
-
-
 
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -517,7 +502,7 @@
         [self.dataArray removeAllObjects];
         self.pageNum = 1;
         
-      
+        
         [self loadData];
         
         
@@ -547,7 +532,7 @@
         [FrameBaseRequest showMessage:@"请先领取任务"];
         return;
     }
-   
+    
     NSString *titleStr = safeString(dataDic[@"typeCode"]);
     if([titleStr isEqualToString:@"oneTouchTour"]) {
         
@@ -587,11 +572,11 @@
 - (void)loadMoreData {
     
     self.pageNum ++;
-   
+    
     //全部
-   
+    
     [self loadAllMoreData];
-   
+    
     
 }
 //获取某个台站下的历史任务接口（全部）：
@@ -622,10 +607,10 @@
         [self.tableView.mj_footer endRefreshing];
         
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
-//        if (self.dataArray.count == 0) {
-//            [self.view addSubview:self.noDataView];
-//            [self.view bringSubviewToFront:self.noDataView];
-//        }
+        //        if (self.dataArray.count == 0) {
+        //            [self.view addSubview:self.noDataView];
+        //            [self.view bringSubviewToFront:self.noDataView];
+        //        }
         int pages = [result[@"value"][@"pages"] intValue];
         
         if (self.pageNum >= pages) {
@@ -974,7 +959,7 @@
         
         UILabel *noDataLabel = [[UILabel alloc]init];
         [_noDataView addSubview:noDataLabel];
-        noDataLabel.text = @"当前暂无任务";
+        noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
@@ -1111,6 +1096,7 @@
             
             return ;
         }
+        [self.segment selectIndex:0];
         [self.tableView.mj_footer endRefreshing];
         [self.dataArray removeAllObjects];
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
@@ -1124,7 +1110,7 @@
                 [weakSelf.tableView.mj_footer resetNoMoreData];
             }
         }
-//        self.tableView.tableHeaderView = self.screenResultView;
+        //        self.tableView.tableHeaderView = self.screenResultView;
         
         
         
@@ -1157,7 +1143,7 @@
             [parStr appendString:safeString(self.endTime)];
             
         }
-//        self.screenResultLabel.text = [NSString stringWithFormat:@"%@",safeString(parStr)];
+        //        self.screenResultLabel.text = [NSString stringWithFormat:@"%@",safeString(parStr)];
         
         [self.tableView reloadData];
         if(self.dataArray.count) {
@@ -1179,7 +1165,7 @@
 }
 
 
-- (NSString *)getTaskStatus :(NSString *)status {
+- (NSString *)getTaskStatus :(NSString *)status{
     NSString *ss = @"";
     if ([status isEqualToString:@"待执行"]) {
         ss = @"0";
@@ -1197,7 +1183,6 @@
         ss = @"5";
     }
     return ss;
-    
 }
 
 //指派任务
@@ -1244,7 +1229,6 @@
             
             return ;
         }
-        
         NSLog(@"请求成功");
         
         [FrameBaseRequest showMessage:@"指派成功"];

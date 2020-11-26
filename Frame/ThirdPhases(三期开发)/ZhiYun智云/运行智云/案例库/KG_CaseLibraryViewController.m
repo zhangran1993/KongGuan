@@ -53,6 +53,7 @@
     self.pageSize = 10;
     self.currIndex = 0;
     //初始化为日
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     
     NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
@@ -240,7 +241,7 @@
         _tableView.tableHeaderView = headView;
         headView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         // 上拉加载
-        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+//        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     }
     return _tableView;
 }

@@ -58,6 +58,8 @@
 @property(strong,nonatomic)   NSArray              *kongArray;
 
 @property(strong,nonatomic)   KG_NoDataPromptView  *nodataView;
+
+@property (nonatomic, assign) BOOL                 isScreenStatus;
 @end
 
 @implementation KG_HistoryWarnEventViewController
@@ -178,8 +180,6 @@
     vc.kongguanTypeStr = self.kongguanTypeStr;
     vc.confirmBlockMethod = ^(NSString * _Nonnull roomStr, NSString * _Nonnull equipTypeStr, NSString * _Nonnull kongguanTypeStr, NSString * _Nonnull alarmLevelStr, NSString * _Nonnull alarmStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray, NSArray * _Nonnull kongArray) {
         
-    
-        
         
         self.roomStr = roomStr;
         self.equipTypeStr =equipTypeStr;
@@ -190,6 +190,13 @@
         self.endTime = endTimeStr;
         self.roomArray = roomArray;
         self.kongArray = kongArray;
+        
+        if(roomStr.length == 0 && equipTypeStr.length == 0 && kongguanTypeStr.length == 0
+          && alarmLevelStr.length == 0 && startTimeStr.length == 0 && endTimeStr.length == 0) {
+            self.isScreenStatus = NO;
+            return ;
+        }
+        self.isScreenStatus = YES;
         //筛选数据
         [self screenMethodData];
     };
@@ -291,6 +298,9 @@
     
     NSDictionary *dataDic = self.dataArray[indexPath.section];
     KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
+    vc.refreshData = ^{
+        [self queryData];
+    };
     KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
     [model mj_setKeyValues:dataDic];
     vc.model = model;
@@ -330,6 +340,13 @@
 //加载更多
 - (void)loadMoreData {
     self.pageNum ++;
+    
+    if (self.isScreenStatus) {
+    
+        [self loadMoreScreenData];
+        return;
+            
+    }
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/searchAlarmInfo/%d/%d",self.pageNum,self.pageSize]];
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
@@ -374,6 +391,130 @@
         return ;
     } ];
     
+}
+//加载筛选更多的数据
+- (void)loadMoreScreenData {
+    
+    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
+    paraDic[@"name"] = @"stationCode";
+    paraDic[@"type"] = @"eq";
+    paraDic[@"content"] = safeString(currDic[@"code"]);
+    [self.paraArr addObject:paraDic];
+    
+    NSString *roomString = @"";
+    for (NSDictionary *dataDic in self.roomArray) {
+        if ([safeString(dataDic[@"alias"]) isEqualToString:self.roomStr]) {
+            roomString = safeString(dataDic[@"code"]);
+            break;
+        }
+    }
+    NSMutableDictionary *paraDic1 = [NSMutableDictionary dictionary];
+    paraDic1[@"name"] = @"engineRoomCode";
+    paraDic1[@"type"] = @"eq";
+    paraDic1[@"content"] = safeString(roomString);
+    if (roomString.length) {
+        [self.paraArr addObject:paraDic1];
+    }
+    
+    
+    NSString *alarmStatusCode = @"";
+    if ([self.alarmStatusStr isEqualToString:@"未确认"]) {
+        alarmStatusCode = @"unconfirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已确认"]) {
+        alarmStatusCode = @"confirmed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解决"]) {
+        alarmStatusCode = @"completed";
+    }else if ([self.alarmStatusStr isEqualToString:@"已解除"]) {
+        alarmStatusCode = @"removed";
+    }
+    
+    NSMutableDictionary *paraDic2 = [NSMutableDictionary dictionary];
+    paraDic2[@"name"] = @"alarmStatus";
+    paraDic2[@"type"] = @"eq";
+    paraDic2[@"content"] = safeString(alarmStatusCode);
+    
+    if (alarmStatusCode.length) {
+        [self.paraArr addObject:paraDic2];
+    }
+    
+    
+    NSString *equipCode = @"";
+    if ([self.equipTypeStr isEqualToString:@"安防"]) {
+        equipCode = @"security";
+    }else if ([self.equipTypeStr isEqualToString:@"环境"]) {
+        equipCode = @"environmental";
+    }else if ([self.equipTypeStr isEqualToString:@"动力"]) {
+        equipCode = @"power";
+    }else if ([self.equipTypeStr isEqualToString:@"设备"]) {
+        equipCode = @"equipment";
+    }
+    NSMutableDictionary *paraDic3 = [NSMutableDictionary dictionary];
+    paraDic3[@"name"] = @"equipmentGroup";
+    paraDic3[@"type"] = @"eq";
+    paraDic3[@"content"] = safeString(equipCode);
+    if (equipCode.length) {
+        [self.paraArr addObject:paraDic3];
+    }
+    
+    
+    NSString *alarmLevelCode = @"";
+    if ([self.alarmLevelStr isEqualToString:@"紧急"]) {
+        alarmLevelCode = @"1";
+    }else if ([self.alarmLevelStr isEqualToString:@"重要"]) {
+        alarmLevelCode = @"2";
+    }else if ([self.alarmLevelStr isEqualToString:@"次要"]) {
+        alarmLevelCode = @"3";
+    }else if ([self.alarmLevelStr isEqualToString:@"提示"]) {
+        alarmLevelCode = @"4";
+    }else if ([self.alarmLevelStr isEqualToString:@"正常"]) {
+        alarmLevelCode = @"5";
+    }
+    
+    NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
+    paraDic4[@"name"] = @"alarmLevel";
+    paraDic4[@"type"] = @"eq";
+    paraDic4[@"content"] = safeString(alarmLevelCode);
+    if (alarmLevelCode.length) {
+        [self.paraArr addObject:paraDic4];
+    }
+    
+    
+    NSMutableDictionary *paraDic5 = [NSMutableDictionary dictionary];
+    paraDic5[@"name"] = @"startTime";
+    paraDic5[@"type"] = @"eq";
+    paraDic5[@"content"] = safeString(self.startTime);
+    if (safeString(self.startTime).length) {
+        [self.paraArr addObject:paraDic5];
+    }
+    
+    NSMutableDictionary *paraDic6 = [NSMutableDictionary dictionary];
+    paraDic6[@"name"] = @"endTime";
+    paraDic6[@"type"] = @"eq";
+    paraDic6[@"content"] = safeString(self.endTime);
+    
+    if (safeString(self.endTime).length) {
+        [self.paraArr addObject:paraDic6];
+    }
+    NSMutableDictionary *paraDic7 = [NSMutableDictionary dictionary];
+    paraDic7[@"name"] = @"equipmentCategory";
+    paraDic7[@"type"] = @"eq";
+    
+    
+    NSString *kongString = @"";
+    for (NSDictionary *dataDic in self.kongArray) {
+        if ([safeString(dataDic[@"name"]) isEqualToString:self.kongguanTypeStr]) {
+            kongString = safeString(dataDic[@"code"]);
+            break;
+        }
+    }
+    paraDic7[@"content"] = safeString(kongString);
+    if (kongString.length) {
+        [self.paraArr addObject:paraDic7];
+    }
+    
+    NSLog(@"1");
+    [self queryScreenData];
 }
 
 
@@ -663,7 +804,46 @@
     }
     
     NSLog(@"1");
-    [self queryScreenData];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/searchAlarmInfo/%d/%d",self.pageNum,self.pageSize]];
+    WS(weakSelf);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
+        if(code != 0){
+            
+            return ;
+        }
+       
+        NSLog(@"resultresult %@",result);
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
+        [self.tableView reloadData];
+        if (self.dataArray.count == 0) {
+            [self.nodataView showView];
+        }else {
+            [self.nodataView hideView];
+        }
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        
+    }failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        [MBProgressHUD hideHUD];
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
 }
 
 - (void)queryScreenData {
@@ -673,10 +853,11 @@
 //           其中，pageNum是页码，pageSize是每页的数据量
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/searchAlarmInfo/%d/%d",self.pageNum,self.pageSize]];
-
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    WS(weakSelf);
     [FrameBaseRequest postWithUrl:FrameRequestURL param:self.paraArr success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        [MBProgressHUD hideHUD];
         if(code != 0){
             
             return ;
@@ -690,8 +871,19 @@
         }else {
             [self.nodataView hideView];
         }
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (weakSelf.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [weakSelf.tableView.mj_footer resetNoMoreData];
+            }
+        }
         
     }  failure:^(NSError *error) {
+        [MBProgressHUD  hideHUD];
         NSLog(@"请求失败 原因：%@",error);
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];

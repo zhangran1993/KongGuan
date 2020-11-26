@@ -79,7 +79,7 @@
     [self getTemplateData];
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-   
+    
 }
 - (void)pushRemoveToAddressBook {
     
@@ -408,13 +408,12 @@
     }
     return _titleLabel;
 }
+
 - (void)back
 {
-    
     [self.navigationController popViewControllerAnimated:YES];
-    
-    
 }
+
 - (void)moreAction {
     
     if(!self.canUpdateOrSubmit) {
@@ -443,10 +442,15 @@
                     return;
                 }
             }
-            
             [self checkCanChangeTask:dataStr];
             if ([dataStr isEqualToString:@"提交任务"]) {
                 NSLog(@"提交任务");
+                if([safeString(self.dataDic[@"status"]) isEqualToString:@"2"] ||
+                   [safeString(self.dataDic[@"status"]) isEqualToString:@"4"]) {
+                    
+                    [FrameBaseRequest showMessage:@"已完成任务不能提交任务"];
+                    return;
+                }
                 [self uploadTask];
             }else if ([dataStr isEqualToString:@"移交任务"]) {
                 NSLog(@"移交任务");
@@ -455,6 +459,13 @@
                 NSLog(@"删除任务");
                 [self deleteTask];
             }else {
+                
+                if([safeString(self.dataDic[@"status"]) isEqualToString:@"2"] ||
+                   [safeString(self.dataDic[@"status"]) isEqualToString:@"4"]) {
+                    [FrameBaseRequest showMessage:@"已完成任务不能修改任务"];
+                    return;
+                }
+                
                 [self.moreBtn removeFromSuperview];
                 self.moreBtn = nil;
                 /** 更多按钮 **/
@@ -487,7 +498,6 @@
     if (self.xunShiHandelView.hidden) {
         self.xunShiHandelView.hidden = NO;
     }
-    
 }
 //任务删除接口：
 //请求地址：/intelligent/atcSafeguard/remove/{id}
@@ -499,7 +509,6 @@
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"您确定删除吗？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil]];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-        
         
         NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/remove/%@",safeString(self.dataDic[@"id"])]];
         [FrameBaseRequest deleteWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -515,7 +524,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
             [self.navigationController popViewControllerAnimated:YES];
             
-        }  failure:^(NSError *error) {
+        }failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
             if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
@@ -524,12 +533,9 @@
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];
-        
-        
     }]];
     
     [self presentViewController:alertContor animated:NO completion:nil];
-  
 }
 
 //移交任务
@@ -546,10 +552,7 @@
     [JSHmainWindow addSubview:self.alertView];
     self.alertView.dataDic = dDic;
     self.alertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
-        
-    
         [self assignData:dataDic name:name withNameID:nameID];
-        
     };
     [self.alertView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
@@ -581,13 +584,12 @@
             
             return ;
         }
-        
         NSLog(@"请求成功");
         
         [FrameBaseRequest showMessage:@"移交成功"];
         self.alertView.hidden = YES;
         
-        
+        [self queryReportDetailData];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
         
@@ -602,7 +604,6 @@
         return ;
     } ];
 }
-
 
 //修改任务
 - (void)saveAction {
@@ -648,11 +649,8 @@
         }
     }
     
-    
-    
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
-    
     
     paramDic[@"id"] = safeString(self.dataDic[@"id"]);
     NSDictionary *resultDic = [UserManager shareUserManager].resultDic;
@@ -670,7 +668,6 @@
         paramDic[@"remark"] = [self convertToJsonData:remarkDic];
     }
     
-    
     paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
     //
     NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
@@ -686,9 +683,7 @@
         
     }else {
         paramDic[@"atcPatrolLabelList"] = labelList;
-        
     }
-    
     
     NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
     //    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
@@ -730,9 +725,7 @@
             make.right.equalTo(self.navigationView.mas_right).offset(-13);
         }];
         
-        
-        
-    } failure:^(NSError *error)  {
+    }failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
@@ -765,7 +758,6 @@
         }
     }
     
-    
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
     
@@ -786,7 +778,6 @@
         paramDic[@"remark"] = [self convertToJsonData:remarkDic];
     }
     
-    
     paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
     //
     NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
@@ -805,7 +796,6 @@
         
     }
     
-    
     NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
     //    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
     //    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
@@ -819,9 +809,6 @@
     }else {
         paramDic[@"atcPatrolWorkList"] = workList;
     }
-    
-    
-    
     
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -892,7 +879,6 @@
         }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
-        
     }];
     
 }
@@ -955,19 +941,14 @@
                                         [dd1 setValue:[NSString stringWithFormat:@"%@",resultvalueStr] forKey:resultkeyStr];
                                         [resultDic addEntriesFromDictionary:dd1];
                                     }
-                                    
-                                    
                                 }
-                                
                             }
-                            
                             NSLog(@"1");
                         }
                     }
                 }
             }
         }
-        
         [UserManager shareUserManager].remarkDic = remarkDic;
         [UserManager shareUserManager].resultDic = nil;
         for (taskDetail *detailModel in self.dataModel.task) {
@@ -979,11 +960,10 @@
                 self.upsModel = detailModel;
             }
         }
-        
         [self getTaskFaBuTiJiaoData];
         [self getReceviceData];
         [self getLogData];
-        [self refreshData];
+        [self refreshViewData];
         
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
@@ -1086,11 +1066,11 @@
     return _xunshiTopView;
 }
 
-- (void)refreshData {
+- (void)refreshViewData {
     
     self.xunshiTopView.model = self.dataModel;
     self.xunshiTopView.dataDic =self.dataDic;
-    self.xunshiTopView.leaderString = safeString(self.dataDic[@"leaderName"]);
+    //    self.xunshiTopView.leaderString = safeString(self.dataDic[@"leaderName"]);
     //    self.radarView.detailModel = self.radarModel;
     //    self.powerView.detailModel = self.powerModel;
     //    self.upsView.detailModel = self.upsModel;
@@ -1185,7 +1165,6 @@
 - (KG_XunShiHandleView *)xunShiHandelView {
     if (!_xunShiHandelView) {
         _xunShiHandelView = [[KG_XunShiHandleView alloc]init];
-        
     }
     return _xunShiHandelView;
 }
@@ -1204,7 +1183,6 @@
         self.receiveArr = result[@"value"];
         [self.tableView reloadData];
         
-        
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -1221,7 +1199,6 @@
         
     }];
 }
-
 
 //获得日志
 - (void)getLogData {
@@ -1240,7 +1217,6 @@
             if (isSafeArray(result[@"value"][@"records"])) {
                 self.logArr = result[@"value"][@"records"];
             }
-            
         }
         
         for (NSDictionary *logDic in self.logArr) {
@@ -1250,7 +1226,6 @@
             }
         }
         [self.tableView reloadData];
-        
         
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
@@ -1271,9 +1246,7 @@
 
 #pragma mark ----  字典转Json字符串
 -(NSString *)convertToJsonData:(NSDictionary *)dict
-
 {
-    
     if (dict.count ==0) {
         return @"";
     }
@@ -1284,8 +1257,6 @@
     NSString *jsonString;
     
     if (!jsonData) {
-        
-        
         
     }else{
         
@@ -1396,7 +1367,6 @@
         NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/insertAtcSpecialTag"]];
         
         NSMutableArray *paramArr = [NSMutableArray arrayWithCapacity:0];
-       
         
         NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
         paramDic[@"patrolInfoId"] = safeString(dic[@"patrolRecordId"]);
@@ -1417,7 +1387,7 @@
         paramDic[@"source"] = safeString(self.dataDic[@"typeCode"]);
         
         [paramArr addObject:paramDic];
-   
+        
         [FrameBaseRequest postWithUrl:FrameRequestURL param:paramArr success:^(id result) {
             NSInteger code = [[result objectForKey:@"errCode"] intValue];
             if(code != 0){
@@ -1425,8 +1395,9 @@
                 return ;
             }
             [FrameBaseRequest showMessage:@"保存特殊标记成功"];
+            [self queryReportDetailData];
             NSLog(@"请求成功");
-          
+            
         }  failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
             if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
@@ -1436,7 +1407,6 @@
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];
-        
     }
 }
 

@@ -319,7 +319,7 @@
             if (arr.count) {
                 for (NSString *str in arr) {
                     if ([safeString(str) isEqualToString:@"领导"]) {
-                        ss = @"待领取";
+                        ss = @"待指派";
                         NSLog(@"是个领导");
                         break;
                     }

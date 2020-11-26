@@ -505,7 +505,7 @@
         
         UILabel *noDataLabel = [[UILabel alloc]init];
         [_noDataView addSubview:noDataLabel];
-        noDataLabel.text = @"当前暂无任务";
+        noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
@@ -522,9 +522,16 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+    if(section == 0) {
+        
+        UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
+        topView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        return topView;
+    }
+    UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
     topView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return topView;
+    
 }
 //    if ([tableView isEqual:self.topTableView]) {
 //
@@ -636,8 +643,10 @@
 //    return  topView;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
-    return 10;
+    if (section == 0) {
+        return 10;
+    }
+    return 0.001;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {

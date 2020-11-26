@@ -11,18 +11,25 @@
 #import "KG_LiXingWeiHuCell.h"
 #import "KG_XunShiLogCell.h"
 #import "KG_GetLogCell.h"
+
 @interface KG_XunShiLogView ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
-@property (nonatomic ,strong) UITableView *tableView;
-@property (nonatomic ,strong) NSMutableArray *dataArray;
+@property (nonatomic ,strong)  UITableView             *tableView;
 
-@property (nonatomic, strong) KG_XunShiSegmentView *segment;
+@property (nonatomic ,strong)  NSMutableArray          *dataArray;
 
-@property (nonatomic, strong) UIView *bottomView;
+@property (nonatomic, strong)  KG_XunShiSegmentView    *segment;
 
-@property (nonatomic, strong) UIView *bottomLogView;
-@property (nonatomic ,strong) NSMutableArray *logArray;
-@property (nonatomic ,strong) UITableView *logTableView;
+@property (nonatomic, strong)  UIView                  *bottomView;
+
+@property (nonatomic, strong)  UIView                  *bottomLogView;
+
+@property (nonatomic ,strong)  NSMutableArray          *logArray;
+
+@property (nonatomic ,strong)  UITableView             *logTableView;
+
+@property(strong,nonatomic)    UIView     *nodataView;
+
 @end
 
 @implementation KG_XunShiLogView
@@ -33,6 +40,11 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardWillHideNotification object:nil];
         [self createView];
+        if (self.receiveArr.count == 0) {
+            self.nodataView.hidden = NO;
+        }else {
+            self.nodataView.hidden = YES;
+        }
        
     }
     return self;
@@ -117,7 +129,7 @@
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        _tableView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
         UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 6)];
@@ -133,10 +145,22 @@
         self.bottomView.hidden = NO;
         self.tableView.hidden = NO;
         self.logTableView.hidden = YES;
+        if (self.receiveArr.count == 0) {
+            self.nodataView.hidden = NO;
+        }else {
+            self.nodataView.hidden = YES;
+        }
+        
     }else if(index == 1) {
         self.bottomView.hidden = YES;
         self.tableView.hidden = YES;
         self.logTableView.hidden = NO;
+        if (self.logArr.count == 0) {
+            self.nodataView.hidden = NO;
+        }else {
+            self.nodataView.hidden = YES;
+        }
+       
     }
     
 }
@@ -227,10 +251,16 @@
 
 - (void)setReceiveArr:(NSArray *)receiveArr {
     _receiveArr = receiveArr;
+    if (_receiveArr.count == 0) {
+        self.nodataView.hidden = NO;
+    }else {
+        self.nodataView.hidden = YES;
+    }
     [self.tableView reloadData];
 }
 - (void)setLogArr:(NSArray *)logArr {
     _logArr = logArr;
+   
     [self.logTableView reloadData];
 }
 
@@ -255,15 +285,56 @@
     CGFloat duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect frame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
       
-   
+    
     [UIView animateWithDuration:duration animations:^{
-          
+        
     }];
 }
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     
+}
+
+
+- (UIView *)nodataView {
+    if (!_nodataView) {
+        _nodataView = [[UIView alloc]init];
+        [self addSubview:_nodataView];
+        [self bringSubviewToFront:_nodataView];
+     
+        UIImageView *iconImage = [[UIImageView alloc]init];
+        iconImage.image = [UIImage imageNamed:@"no_lvli_Image"];
+        iconImage.contentMode = UIViewContentModeScaleAspectFit;
+        [_nodataView addSubview:iconImage];
+        [iconImage sizeToFit];
+        [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+         
+            make.centerX.equalTo(_nodataView.mas_centerX);
+            make.centerY.equalTo(_nodataView.mas_centerY);
+        }];
+        
+        UILabel *noDataLabel = [[UILabel alloc]init];
+        [_nodataView addSubview:noDataLabel];
+        noDataLabel.text = @"当前暂无数据";
+        noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
+        noDataLabel.font = [UIFont systemFontOfSize:12];
+        noDataLabel.textAlignment = NSTextAlignmentCenter;
+        [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(_nodataView.mas_centerX);
+            make.height.equalTo(@17);
+            make.width.equalTo(@200);
+            make.top.equalTo(iconImage.mas_bottom).offset(27);
+        }];
+        [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.segment.mas_bottom);
+            make.left.equalTo(self.mas_left);
+            make.right.equalTo(self.mas_right);
+            make.height.equalTo(@160);
+        }];
+        
+    }
+    return _nodataView;
 }
 
 @end
