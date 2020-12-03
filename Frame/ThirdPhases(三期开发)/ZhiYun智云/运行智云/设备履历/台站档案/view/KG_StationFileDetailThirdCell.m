@@ -115,15 +115,15 @@
     
     if(indexPath.row == 0) {
         
-        cell.detailLabel.text = safeString(self.dataDic[@"code"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"address"]);
     }else if(indexPath.row == 1) {
-        cell.detailLabel.text = safeString(self.dataDic[@"categoryName"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"longitude"]);
         
     }else if(indexPath.row == 2) {
-        cell.detailLabel.text = [NSString stringWithFormat:@"%@级",safeString(self.dataDic[@"level"])];
+        cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(self.dataDic[@"latitude"])];
         
     }else if(indexPath.row == 3) {
-        cell.detailLabel.text = safeString(self.dataDic[@"useStatus"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"altitude"]);
         
     }
     cell.titleLabel.text = safeString(self.dataArray[indexPath.row]);

@@ -32,6 +32,8 @@
 @property (nonatomic ,strong)     UIButton           *footBtn;
 
 @property (nonatomic ,strong)     UIButton           *rightBtn;
+
+@property (nonatomic ,strong)     UIButton           *rightBgBtn;
 @end
 
 @implementation KG_EquipmentHistoryFourthCell
@@ -119,6 +121,20 @@
     }];
     
     
+    self.rightBgBtn = [[UIButton alloc]init];
+    self.rightBgBtn.hidden = YES;
+    [self.centerView addSubview:self.rightBgBtn];
+   
+    [self.rightBgBtn addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightBgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(self.centerView.mas_height);
+        make.right.equalTo(self.centerView.mas_right).offset(-10);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.width.equalTo(@200);
+    }];
+    
+    
+    
     self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-32, 40)];
     UIView *lineView = [[UIView alloc]init];
     [self.tableHeadView addSubview:lineView];
@@ -149,7 +165,10 @@
 
 - (void)rightButtonClicked:(UIButton *)button {
     
-    
+    NSDictionary *dataDic = self.dataDic;
+    if (self.pushToNextStep) {
+        self.pushToNextStep(@"备件库存",dataDic);
+    }
 }
 
 - (void)moreMethod:(UIButton *)button {
@@ -246,6 +265,7 @@
     _currSection = currSection;
     self.titleLabel.text = @"设备故障事件记录";
     self.rightBtn.hidden = YES;
+    self.rightBgBtn.hidden = YES;
     if (currSection == 3) {
         self.titleLabel.text = @"设备故障事件记录";
         self.iconImage.image = [UIImage imageNamed:@"kg_Failureevent_icon"];
@@ -275,6 +295,7 @@
         self.titleLabel.text = @"备件库存";
         self.iconImage.image = [UIImage imageNamed:@"kg_Failureevent_icon"];
         self.rightBtn.hidden = NO;
+        self.rightBgBtn.hidden = NO;
     }
     
 }

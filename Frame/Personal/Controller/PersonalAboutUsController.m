@@ -35,7 +35,6 @@
     [super viewDidLoad];
     [self createNaviTopView];
     
-    
     if (@available(iOS 13.0, *)){
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
     }else {

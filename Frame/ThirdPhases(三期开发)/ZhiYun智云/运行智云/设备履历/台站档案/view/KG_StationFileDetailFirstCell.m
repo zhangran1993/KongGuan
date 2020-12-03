@@ -269,7 +269,7 @@
     self.healthTextLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.healthTextLabel.font = [UIFont systemFontOfSize:14];
     self.healthTextLabel.textAlignment = NSTextAlignmentRight;
-    self.healthTextLabel.text = @"良好:";
+    self.healthTextLabel.text = @"良好";
     self.healthTextLabel.numberOfLines = 1;
     [self.healthTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.centerView.mas_right).offset(-15);
@@ -366,5 +366,10 @@
     
     //紧急
     return textColor;
+}
+
+- (void)setHealthStr:(NSString *)healthStr {
+    _healthStr = healthStr;
+    self.healthTextLabel.text = healthStr;
 }
 @end

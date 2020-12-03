@@ -11,8 +11,9 @@
 @interface KG_RunManagerFirstCell ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
-@property (nonatomic, strong)  UIView    *stationReportView;//台站任务提醒
-@property (nonatomic, strong)  UITableView *reportTableView;//1
+@property (nonatomic, strong)  UIView         *stationReportView;//台站任务提醒
+@property (nonatomic, strong)  UITableView    *reportTableView;//1
+
 @end
 
 @implementation KG_RunManagerFirstCell
@@ -213,8 +214,8 @@
     return 0;
 }
 
-
 - (UITableView *)reportTableView {
+    
     if (!_reportTableView) {
         _reportTableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _reportTableView.delegate = self;
@@ -222,12 +223,12 @@
         _reportTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _reportTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _reportTableView.scrollEnabled = NO;
-         _reportTableView.layer.cornerRadius = 8;
-         _reportTableView.layer.masksToBounds = YES;
-         
+        _reportTableView.layer.cornerRadius = 8;
+        _reportTableView.layer.masksToBounds = YES;
     }
     return _reportTableView;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if ([tableView isEqual:self.reportTableView]) {

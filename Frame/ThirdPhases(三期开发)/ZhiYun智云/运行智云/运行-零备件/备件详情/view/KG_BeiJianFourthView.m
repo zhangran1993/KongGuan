@@ -136,9 +136,17 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    NSDictionary *dataDic = self.dataArray[indexPath.row];
-   
-    return 80;
+    NSDictionary *dataDic = self.lvliArr[indexPath.row];
+    int height = 0;
+    NSString *str = safeString(dataDic[@"content"]);
+    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 220, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+    NSLog(@"%f",fontRect.size.height);
+    if (fontRect.size.height <40) {
+        height += 80;
+    }else {
+        height += fontRect.size.height +40;
+    }
+    return height;
     
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -503,7 +503,7 @@
         [self.navigationController pushViewController:vc animated:NO];
     }
    
-    if(scrollView.contentOffset.y == 0) {
+    if(scrollView.contentOffset.y == 0 &&scrollView.contentOffset.x != 0 ) {
         NSInteger index = scrollView.contentOffset.x / SCREEN_WIDTH;
         [self selectButton:index];
     }

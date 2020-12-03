@@ -377,8 +377,8 @@
 
 - (void)queryDetailData{
    
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcFaultCase/%@",safeString(self.idStr)]];
-    
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcFaultCase/%@",safeString(self.idStr)]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         [MBProgressHUD hideHUDForView:JSHmainWindow];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];

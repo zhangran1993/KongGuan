@@ -166,6 +166,7 @@
     self.chartBar .contentValue = 12 * 45;
     self.chartBar .barWidth = 25;
     self.chartBar .margin = 20;
+    self.chartBar.hidden = YES;
     
 }
 
@@ -260,6 +261,7 @@
         }
         self.chartBar.colorArray = colorArray ;
         [self.chartBar drawChart];
+        self.chartBar.hidden = NO;
     }
     
 }

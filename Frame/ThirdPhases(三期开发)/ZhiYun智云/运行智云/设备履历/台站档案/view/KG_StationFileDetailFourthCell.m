@@ -80,6 +80,8 @@
     _dataDic = dataDic;
     
     
+    
+    
 }
 
 
@@ -117,18 +119,18 @@
     
     if(indexPath.row == 0) {
         
-        cell.detailLabel.text = safeString(self.dataDic[@"code"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"clearanceRequirement"]);
     }else if(indexPath.row == 1) {
-        cell.detailLabel.text = safeString(self.dataDic[@"categoryName"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"environmentInformation"]);
         
     }else if(indexPath.row == 2) {
-        cell.detailLabel.text = [NSString stringWithFormat:@"%@级",safeString(self.dataDic[@"level"])];
+        cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(self.dataDic[@"serviceRadius"])];
         
     }else if(indexPath.row == 3) {
-        cell.detailLabel.text = safeString(self.dataDic[@"useStatus"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"lightningProtectionConfiguration"]);
         
     }else if(indexPath.row == 4) {
-        cell.detailLabel.text = safeString(self.dataDic[@"competentUnit"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"powerSupply"]);
     }
     cell.titleLabel.text = safeString(self.dataArray[indexPath.row]);
    

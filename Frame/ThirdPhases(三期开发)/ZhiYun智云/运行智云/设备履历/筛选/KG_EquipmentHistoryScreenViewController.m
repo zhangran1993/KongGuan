@@ -39,8 +39,6 @@
     [self initCollevtionView];
     [self createBottomView];
     [self queryData];
-
-  
 }
 
 -(void)createTopView {
@@ -70,7 +68,6 @@
     
 }
 
-
 //初始化collectionview
 - (void)initCollevtionView{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
@@ -90,8 +87,6 @@
     [self.collectionView registerClass:[KG_WeiHuCardAlertHeaderView class]  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"KG_WeiHuCardAlertHeaderView"];
     [self.collectionView registerClass:[KG_EquipmentHistoryEquScreenCell class] forCellWithReuseIdentifier:@"KG_EquipmentHistoryEquScreenCell"];
 
-    
-    
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.showsVerticalScrollIndicator = NO;
@@ -99,9 +94,7 @@
     self.collectionView.scrollEnabled = YES;
     self.collectionView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
-    
 }
-
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     
@@ -112,19 +105,17 @@
     NSDictionary *dataDic = self.dataArray[section];
     
     NSArray *arr = dataDic[@"mainEquipmentList"];
-    
     return arr.count;
     
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     if (collectionView == self.collectionView) {
        
         KG_EquipmentHistoryEquScreenCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"KG_EquipmentHistoryEquScreenCell" forIndexPath:indexPath];
       
         NSDictionary *dataDic = self.dataArray[indexPath.section];
-        
         NSArray *arr = dataDic[@"mainEquipmentList"];
         
         NSDictionary *detailDic = arr[indexPath.row];
@@ -138,13 +129,12 @@
     }
     return nil;
     
-    
 }
 
 #pragma mark  定义每个UICollectionViewCell的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
    
-    return  CGSizeMake((SCREEN_WIDTH -32)/3,38);
+    return CGSizeMake((SCREEN_WIDTH -32-30)/3,38);
     
 }
 
@@ -154,7 +144,7 @@
     NSLog(@"%ldrow====-----------",(long)indexPath.row);
     
 }
-/**  数组  */
+/**数组  */
 -(NSMutableArray *)dataArray{
     if (_dataArray == nil) {
         _dataArray = [[NSMutableArray alloc]init];
@@ -205,11 +195,13 @@
     }];
     
 }
+
 - (void)backButtonClick:(UIButton *)button {
     
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -246,8 +238,6 @@
         make.top.equalTo(bottomView.mas_top);
     }];
     
-    
-    
     UIButton *cancelBtn = [[UIButton alloc]init];
     [bottomView addSubview:cancelBtn];
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
@@ -266,7 +256,6 @@
         make.height.equalTo(@40);
     }];
     
-    
     UIButton *confirmBtn = [[UIButton alloc]init];
     [bottomView addSubview:confirmBtn];
     [confirmBtn setTitle:@"确认" forState:UIControlStateNormal];
@@ -283,7 +272,6 @@
         make.width.equalTo(@(SCREEN_WIDTH/2-5-16));
         make.height.equalTo(@40);
     }];
-    
     
 }
 
@@ -302,6 +290,7 @@
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
 
     if (kind == UICollectionElementKindSectionHeader) {
@@ -312,7 +301,6 @@
         NSDictionary *dataDic = self.dataArray[indexPath.section];
         headerView.titleLabel.text = safeString(dataDic[@"categoryName"]);
         
-      
         return headerView;
     }
     return nil;
@@ -347,7 +335,6 @@
                 currentDic = [stationArr firstObject][@"station"];
             }
         }
-        
     }
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcEquipment/mainDevices/%@",safeString(currentDic[@"code"])]];
@@ -360,10 +347,7 @@
             return ;
         }
         self.dataArray = result[@"value"];
-        
         [self.collectionView reloadData];
-        
-      
         
     } failure:^(NSURLSessionDataTask *error)  {
         [MBProgressHUD hideHUD];
@@ -379,11 +363,11 @@
         }else if(responses.statusCode == 502){
             
         }
-        
         return ;
     }];
     
 }
+
 - (void)onTouchBtnInCell:(UIButton *)sender {
     
     CGPoint point = sender.center;
@@ -410,10 +394,7 @@
         }
     }
     
-    
     [self.collectionView reloadData];
-    
-    
     
 }
 

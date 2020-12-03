@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,strong) NSDictionary *dataDic ;
 
+
+@property (nonatomic ,copy) NSString *healthStr ;
+
 @property (nonatomic,strong) KG_EquipmentHistoryModel *dataModel;
 @end
 

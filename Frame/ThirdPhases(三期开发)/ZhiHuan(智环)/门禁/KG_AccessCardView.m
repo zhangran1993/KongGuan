@@ -156,17 +156,21 @@
     }];
     
     
+
     self.roomLabel = [[UILabel alloc]init];
     self.roomLabel.font = [UIFont systemFontOfSize:14];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.roomLabel.numberOfLines = 1;
+    self.roomLabel.numberOfLines = 2;
+    [self.roomLabel sizeToFit];
     [self.topView addSubview:self.roomLabel];
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(6);
         make.top.equalTo(self.topView.mas_top).offset(24);
         make.right.equalTo(self.topView.mas_right).offset(0);
-        make.height.equalTo(@21);
     }];
+    
+    
+    
     
     self.gaojingLabel = [[UILabel alloc]init];
     self.gaojingLabel.font = [UIFont systemFontOfSize:14];

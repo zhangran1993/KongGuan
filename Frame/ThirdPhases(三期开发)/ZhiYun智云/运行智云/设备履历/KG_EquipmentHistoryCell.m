@@ -194,6 +194,12 @@
         self.thirdImageView.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"alarmStatus"])]];
         self.thirdLabel.text = @"台站状态：";
         self.rightNumLabel.text = safeString(_dataDic[@"alarmNum"]);
+        self.rightNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",safeString(_dataDic[@"alarmStatus"])]];
+        if([_dataDic[@"alarmNum"] floatValue] <=0) {
+            self.rightNumLabel.hidden = YES;
+        }else {
+            self.rightNumLabel.hidden = NO;
+        }
     }
 }
 
@@ -211,7 +217,7 @@
     }else if ([level isEqualToString:@"紧急"]) {
         levelString = @"level_jinji";
     }else if ([level isEqualToString:@"预警"]) {
-        levelString = @" level_yujing";
+        levelString = @"level_yujing";
     }
     return levelString;
 }
@@ -222,18 +228,20 @@
 }
 
 - (UIColor *)getTextColor:(NSString *)level {
-    UIColor *textColor = [UIColor colorWithHexString:@"FFFFFF"];
+    UIColor *textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
     if ([level isEqualToString:@"正常"]) {
-        textColor = [UIColor colorWithHexString:@"FFFFFF"];
+        textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }else if ([level isEqualToString:@"提示"]) {
-        textColor = [UIColor colorWithHexString:@"2986F1"];
+        textColor = [UIColor colorWithHexString:@"#2986F1"];
     }else if ([level isEqualToString:@"次要"]) {
-        textColor = [UIColor colorWithHexString:@"FFA800"];
+        textColor = [UIColor colorWithHexString:@"#FFA800"];
     }else if ([level isEqualToString:@"重要"]) {
-        textColor = [UIColor colorWithHexString:@"FC7D0E"];
+        textColor = [UIColor colorWithHexString:@"#FC7D0E"];
     }else if ([level isEqualToString:@"紧急"]) {
-        textColor = [UIColor colorWithHexString:@"F62546"];
+        textColor = [UIColor colorWithHexString:@"#F62546"];
+    }else if ([level isEqualToString:@"预警"]) {
+        textColor = [UIColor colorWithHexString:@"#DB9B3B"];
     }
     return textColor;
 }

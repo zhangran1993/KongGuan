@@ -207,7 +207,6 @@
     [peopleTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(shuImage2.mas_centerY);
         make.right.equalTo(self.centerView.mas_right).offset(-20);
-        
         make.height.equalTo(@20);
     }];
 
@@ -232,7 +231,6 @@
     [resultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(shuImage3.mas_centerY);
         make.left.equalTo(shuImage3.mas_right).offset(8);
-        
         make.height.equalTo(@20);
     }];
     UILabel *resultTextLabel = [[UILabel alloc]init];
@@ -246,7 +244,6 @@
     [resultTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(shuImage3.mas_centerY);
         make.right.equalTo(self.centerView.mas_right).offset(-20);
-        
         make.height.equalTo(@20);
     }];
     [self.centerView addSubview:self.tableView];
@@ -271,7 +268,6 @@
         _tableView.backgroundColor = self.backgroundColor;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-        
     }
     return _tableView;
 }
@@ -283,7 +279,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return   1;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

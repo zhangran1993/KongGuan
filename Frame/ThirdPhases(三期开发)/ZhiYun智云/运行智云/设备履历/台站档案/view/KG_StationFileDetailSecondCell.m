@@ -11,6 +11,7 @@
 @interface KG_StationFileDetailSecondCell ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
+
 @property (nonatomic, strong)     UITableView        *tableView;
 
 @property (nonatomic, strong)     NSMutableArray     *dataArray;
@@ -31,6 +32,7 @@
 
     // Configure the view for the selected state
 }
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -46,8 +48,6 @@
     [self.dataArray addObject:@"使用状态"];
     [self.dataArray addObject:@"主管单位"];
     [self.dataArray addObject:@"台站投产日期"];
-    
-    
     
     self.centerView = [[UIView alloc]init];
     self.centerView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
@@ -73,15 +73,11 @@
         make.bottom.equalTo(self.centerView.mas_bottom);
     }];
     
-    
 }
 
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
-    
-    
 }
-
 
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -116,22 +112,31 @@
 //    cell.dic = dic;
     
     if(indexPath.row == 0) {
+        BOOL isNear = self.dataDic[@"nearField"];
+        if (isNear) {
+            cell.detailLabel.text = safeString(@"近场");
+        }else {
+            cell.detailLabel.text = safeString(@"远场");
+        }
         
-        cell.detailLabel.text = safeString(self.dataDic[@"code"]);
     }else if(indexPath.row == 1) {
-        cell.detailLabel.text = safeString(self.dataDic[@"categoryName"]);
         
-    }else if(indexPath.row == 2) {
         cell.detailLabel.text = [NSString stringWithFormat:@"%@级",safeString(self.dataDic[@"level"])];
-        
+              
+    }else if(indexPath.row == 2) {
+      cell.detailLabel.text = safeString(self.dataDic[@"useStatus"]);
     }else if(indexPath.row == 3) {
-        cell.detailLabel.text = safeString(self.dataDic[@"useStatus"]);
+        cell.detailLabel.text = safeString(self.dataDic[@"competentUnit"]);
         
     }else if(indexPath.row == 4) {
-        cell.detailLabel.text = safeString(self.dataDic[@"competentUnit"]);
+        
+        if(safeString(self.dataDic[@"productionDate"]).length >0 ){
+            cell.detailLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"productionDate"])];
+        }
+        
     }
     cell.titleLabel.text = safeString(self.dataArray[indexPath.row]);
-   
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -193,4 +198,5 @@
     return ss;
         
 }
+
 @end

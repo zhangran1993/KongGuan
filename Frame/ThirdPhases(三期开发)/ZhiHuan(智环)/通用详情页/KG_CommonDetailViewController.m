@@ -268,8 +268,8 @@
     self.sliderBgView.backgroundColor = self.view.backgroundColor;
     
     float sliderV_X = SCREEN_WIDTH/2;
-    float sliderVX =  sliderV_X;
-    UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderVX, 10, 6, 6)];
+    float sliderVX = sliderV_X;
+    UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderVX - self.dataArray.count *5, 10, 6, 6)];
     
     sliderV.layer.cornerRadius = 3;
     sliderV.backgroundColor = [UIColor colorWithHexString:@"#005DC4"];
@@ -277,7 +277,7 @@
     _sliderView=sliderV;
     for (int i = 0; i <self.dataArray.count; i++) {
         //滑块
-        float sliderV_X =SCREEN_WIDTH /2+ i*10;
+        float sliderV_X =SCREEN_WIDTH /2+ i*10  - self.dataArray.count *5;
         //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
         
         float sliderX = sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);
@@ -380,7 +380,7 @@
 {
     
     [UIView animateWithDuration:0.3 animations:^{
-        float sliderV_X = SCREEN_WIDTH/2 + ( index )*10;
+        float sliderV_X = SCREEN_WIDTH/2 + ( index )*10 - self.dataArray.count *5;
         //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
         
         float sliderX =  sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);

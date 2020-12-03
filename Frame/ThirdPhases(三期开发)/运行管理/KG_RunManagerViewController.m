@@ -85,8 +85,8 @@
     }
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    [self getXunShiNameData];
-//  注册通知刷新当前页面的数据
+    
+    //  注册通知刷新当前页面的数据
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshYunxingData) name:@"refreshYunxingData" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCookies) name:@"changeCookies" object:nil];
@@ -134,8 +134,9 @@
     //移除当前所有通知
     NSLog(@"移除了所有的通知");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
+    
 }
+
 - (void)getLoginInfo {
     //取出保存的cookie
     
@@ -157,7 +158,7 @@
             
         }
         [self queryData];
-       
+        
         [UserManager shareUserManager].loginSuccess = YES;
         
         [UserManager shareUserManager].userID =safeString([userDefaults objectForKey:@"id"]) ;
@@ -167,9 +168,9 @@
         NSLog(@"cookie设置失败");
         [self login];
     }
-    
 }
--(void)viewWillAppear:(BOOL)animated{
+
+-(void)viewWillAppear:(BOOL)animated {
     
     NSLog(@"StationDetailController viewWillAppear");
     if (@available(iOS 13.0, *)){
@@ -197,7 +198,6 @@
     }else {
         [self.leftIconImage setImage: [UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     }
-    
 }
 
 - (void)refreshYunxingData {
@@ -207,7 +207,6 @@
         [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
         
     }else {
-        
         [self.leftIconImage setImage: [UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     }
     [UserManager shareUserManager].zhiweiSegmentCurIndex = 0;
@@ -215,26 +214,20 @@
     [self queryData];
     
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:YES];
     
 }
 
-
--(void)navigationController:(UINavigationController*)
-
-navigationController willShowViewController:
-
-(UIViewController *)viewController animated:(BOOL)animated
-
-{
-    
+-(void)navigationController:(UINavigationController*)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+  
     [viewController viewWillAppear:animated];
-    
 }
+
 - (void)login {
-   
+    
     NSString *userString = @"";
     NSString *passString = @"";
     
@@ -274,10 +267,8 @@ navigationController willShowViewController:
         }
         NSLog(@"resultresult %@",result);
         [self queryData];
-       
         
         [UserManager shareUserManager].loginSuccess = YES;
-        
         [UserManager shareUserManager].userID = result[@"value"][@"userInfo"][@"id"];
         
     }  failure:^(NSError *error) {
@@ -290,13 +281,12 @@ navigationController willShowViewController:
             [self.slideMenuController showViewController:login];
             return;
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     } ];
     
     return ;
 }
-
 
 - (void)queryData{
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
@@ -309,8 +299,6 @@ navigationController willShowViewController:
     [self getStationReportAlarmInfo];
     [self getJiaoJieBanStatus];
     
-    
- 
     [self quertFrameData];
     [self getRunPromptDetailData];
     [self getRunReportDetailData];
@@ -324,10 +312,10 @@ navigationController willShowViewController:
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/stationList"]];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-       
+        
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-           
+            //当返回的数据为空时，return
             //            [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
@@ -359,13 +347,13 @@ navigationController willShowViewController:
         }else if(responses.statusCode == 502){
             
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
 }
 
 - (void)createData {
-     
+    
     NSArray *stationArr = [UserManager shareUserManager].stationList;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"station"]){
@@ -392,14 +380,14 @@ navigationController willShowViewController:
         }
     }
     [userDefaults setObject:dataDic forKey:@"station"];
-    
     [UserManager shareUserManager].currentStationDic = self.currentStationDic;
+    
 }
 
 - (void)createUI {
     [self setupDataSubviews];
     [self setUpDataTableView];
-
+    
 }
 
 - (void) setUpDataTableView{
@@ -423,7 +411,7 @@ navigationController willShowViewController:
     }];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self.tableView reloadData];
-
+    
 }
 
 //跳转智慧云
@@ -434,41 +422,39 @@ navigationController willShowViewController:
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
 //交接班记录
 - (void)jiaojieBanRecord{
     KG_JiaoJieBanRecordViewController *vc = [[KG_JiaoJieBanRecordViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
 
 //交班
 - (void)jiaobanMethod {
-//    交班接口：
-//    请求地址：/atcChangeShiftsRecord/shiftHandover/{post}/{runReportId}
-//    请求方式：POST
-//    请求参数：post岗位编码 runReportId报告id
-//    请求返回：
-//    如：
-//    {
-//        "errCode": 0,
-//        "errMsg": "",
-//        "value": true              //交接成功返回true
-//    }
- 
-//    int num  =0;
+    //    交班接口：
+    //    请求地址：/atcChangeShiftsRecord/shiftHandover/{post}/{runReportId}
+    //    请求方式：POST
+    //    请求参数：post岗位编码 runReportId报告id
+    //    请求返回：
+    //    如：
+    //    {
+    //        "errCode": 0,
+    //        "errMsg": "",
+    //        "value": true              //交接成功返回true
+    //    }
     
-//    for (NSDictionary *dd in self.jiaojiebanListArr) {
-//        if (safeString(dd[@"successorName"]).length>0) {
-//            num ++;
-//        }
-//
-//    }
-//    if (num == 0) {
-//        [FrameBaseRequest showMessage:@"请先接班再交班"];
-//        return;
-//    }
-  
+    //    int num  =0;
+    
+    //    for (NSDictionary *dd in self.jiaojiebanListArr) {
+    //        if (safeString(dd[@"successorName"]).length>0) {
+    //            num ++;
+    //        }
+    //
+    //    }
+    //    if (num == 0) {
+    //        [FrameBaseRequest showMessage:@"请先接班再交班"];
+    //        return;
+    //    }
+    
     
     if ([self.jiaoJieBanInfo[@"handoverInfo"] count] == 1) {
         KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
@@ -479,7 +465,7 @@ navigationController willShowViewController:
         }
         vc.dataDic = dd;
         vc.jiaojiebanArray = self.jiaojiebanListArr;
-       
+        
         vc.pushType = @"jiaoban";
         [self.navigationController pushViewController:vc animated:YES];
     }else {
@@ -497,23 +483,18 @@ navigationController willShowViewController:
             [self.navigationController pushViewController:vc animated:YES];
         };
     }
-    
-    
-   
-   
 }
 //接班
 - (void)jiebanMethod {
-//    接班接口：
-//    请求地址：/atcChangeShiftsRecord/succession/{post}/{runReportId}
-//    请求方式：POST
-//    请求参数：post岗位编码 runReportId报告id
-//    请求返回：
-//    如：
-//    {
-//        "errCode": 0,
-//
-    
+    //    接班接口：
+    //    请求地址：/atcChangeShiftsRecord/succession/{post}/{runReportId}
+    //    请求方式：POST
+    //    请求参数：post岗位编码 runReportId报告id
+    //    请求返回：
+    //    如：
+    //    {
+    //        "errCode": 0,
+    //
     if ([self.jiaoJieBanInfo[@"successInfo"] count] == 1) {
         NSDictionary *dataDic =  [self.jiaoJieBanInfo[@"successInfo"] firstObject];
         NSString *reportId = safeString(dataDic[@"atcRunReportId"]);
@@ -524,7 +505,6 @@ navigationController willShowViewController:
         KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
         vc.jiaojiebanArray = self.jiaojiebanListArr;
         vc.dataDic = [self.jiaoJieBanInfo[@"successInfo"] firstObject];
-        
         vc.pushType = @"jieban";
         [self.navigationController pushViewController:vc animated:YES];
     }else {
@@ -538,13 +518,7 @@ navigationController willShowViewController:
             vc.pushType = @"jieban";
             [self.navigationController pushViewController:vc animated:YES];
         };
-        
     }
-   
-    
-   
-    
-    
     
 }
 //生成运行报告
@@ -564,10 +538,9 @@ navigationController willShowViewController:
         [_createReportAlertView removeFromSuperview];
         _createReportAlertView = nil;
         [self  getReportIdData:dataDic withEndTime:endTime];
-       
-       
     };
 }
+
 //新增运行报告接口：
 //请求地址：/atcRunReport/
 //请求方式：POST
@@ -585,7 +558,6 @@ navigationController willShowViewController:
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunReport"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
-    
     params[@"reportRange"] =safeString(dataDic[@"stationCode"]);
     if (safeString(dataDic[@"time"]).length >10) {
         NSString *timeStr = safeString(dataDic[@"time"]);
@@ -599,18 +571,17 @@ navigationController willShowViewController:
         NSString *startTimeStr = [safeString(dataDic[@"time"]) substringToIndex:10];
         NSString *endTimeStr = [endTime substringToIndex:10];
         
-//        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
+        //        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
         
         NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",safeString(dataDic[@"stationName"]),startTimeStr,endTimeStr,@"运行报告"];
         params[@"title"] = title;
     }
-   
     
     params[@"status"] = @"true";
     params[@"submitTime"] = @"";
     params[@"post"] = safeString(dataDic[@"post"]);
     params[@"submitter"] = safeString([UserManager shareUserManager].userID);
-   
+    
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
@@ -642,8 +613,8 @@ navigationController willShowViewController:
         
         return ;
     } ];
-    
 }
+
 -(NSString *) CurTimeMilSec:(NSString*)pstrTime
 {
     NSDateFormatter *pFormatter= [[NSDateFormatter alloc]init];
@@ -652,13 +623,11 @@ navigationController willShowViewController:
     return [NSString stringWithFormat:@"%.f",[pCurrentDate timeIntervalSince1970] * 1000];
 }
 
-
 - (void)reportRightMethod {
     KG_RunListViewController *vc = [[KG_RunListViewController alloc]init];
-//    vc.dataArray = self.stationRunReportArr;
+    //    vc.dataArray = self.stationRunReportArr;
     [self.navigationController pushViewController:vc animated:YES];
 }
-
 
 //维护显示全部
 - (void)weihuMethod{
@@ -678,6 +647,7 @@ navigationController willShowViewController:
     //    [self.navigationController pushViewController:vc animated:YES];
     
 }
+
 //创建视图
 -(void)setupDataSubviews
 {
@@ -692,10 +662,8 @@ navigationController willShowViewController:
         make.top.equalTo(self.view.mas_top);
     }];
     
-    
     //按钮设置点击范围扩大.实际显示区域为图片的区域
     self.leftIconImage = [[UIButton alloc] init];
-    
     [self.navigationView addSubview:self.leftIconImage];
     self.leftIconImage.layer.cornerRadius =17.f;
     self.leftIconImage.layer.masksToBounds = YES;
@@ -703,14 +671,12 @@ navigationController willShowViewController:
     [self.leftIconImage addTarget:self action:@selector(leftCenterButtonClick) forControlEvents:UIControlEventTouchUpInside];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"icon"]){
-
-        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
         
+        [self.leftIconImage sd_setImageWithURL:[NSURL URLWithString:[WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head_blueIcon"]];
     }else {
         
         [self.leftIconImage setImage: [UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     }
-    
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.backgroundColor = [UIColor clearColor];
@@ -726,7 +692,6 @@ navigationController willShowViewController:
         make.width.equalTo(@250);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
-   
     
     [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.navigationView.mas_left).offset(16);
@@ -745,7 +710,6 @@ navigationController willShowViewController:
         make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
     [zhibanBtn addTarget:self action:@selector(zhibanMethod) forControlEvents:UIControlEventTouchUpInside];
-    
 }
 /**
  弹出个人中心
@@ -754,13 +718,13 @@ navigationController willShowViewController:
     [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
     [self.slideMenuController showMenu];
 }
+
 //查看值班表
 - (void)zhibanMethod {
     PersonalPatrolController *PatrolController = [[PersonalPatrolController alloc] init];
     [self.navigationController pushViewController:PatrolController animated:YES];
     
 }
-
 
 - (void)loginSuccess {
     if (self.currentStationDic.count == 0) {
@@ -770,6 +734,7 @@ navigationController willShowViewController:
         
     }
 }
+
 #pragma mark - life cycle 生命周期方法
 -(void)firstLoginNotify{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -782,12 +747,12 @@ navigationController willShowViewController:
         return ;
     }
 }
+
 //获取登录人值班信息接口：
 //请求地址：/
 //请求方式：GET
 //请求返回：
-
-- (void) getLoginNameInfo {
+- (void)getLoginNameInfo {
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcShiftManagement/getShiftInfo"]];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -802,7 +767,6 @@ navigationController willShowViewController:
         [userDefaults removeObjectForKey:@"loginNameInfo"];
         [userDefaults setObject:self.loginNameInfo forKey:@"loginNameInfo"];
         [userDefaults synchronize];
-      
         
         NSString *name = safeString(self.loginNameInfo[@"userName"]);
         NSString *zhiban = @"今日不值班";
@@ -810,7 +774,6 @@ navigationController willShowViewController:
             zhiban = @"今日值班";
         }
         self.titleLabel.text = [NSString stringWithFormat:@"%@-%@",name,zhiban];
-        
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -851,8 +814,6 @@ navigationController willShowViewController:
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        
-      
         self.stationTaskInfoArr = result[@"value"];
         
         [self.tableView reloadData];
@@ -868,14 +829,10 @@ navigationController willShowViewController:
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.slideMenuController showViewController:login];
             return;
-            
         }else if(responses.statusCode == 502){
             
         }
-        
     }];
-    
-    
 }
 
 //请求地址：/atcPatrolRecode/getCurrTaskInfo
@@ -898,7 +855,6 @@ navigationController willShowViewController:
         [MBProgressHUD hideHUD];
         NSLog(@"完成1");
     }];
-    
 }
 
 
@@ -908,21 +864,19 @@ navigationController willShowViewController:
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    if ([tableView isEqual:self.reportTableView]) {
-//        return self.stationTaskInfoArr.count;
-//    }else if ([tableView isEqual:self.weihuTableView]) {
-//        return self.reportListArr.count;
-//    }else if ([tableView isEqual:self.runReportTableView]) {
-//        return 2;
-//    }else if ([tableView isEqual:self.jiaoJieBanTableView]) {
-//        return self.jiaojiebanListArr.count;
-//    }
-//    return 0;
-    
+    //    if ([tableView isEqual:self.reportTableView]) {
+    //        return self.stationTaskInfoArr.count;
+    //    }else if ([tableView isEqual:self.weihuTableView]) {
+    //        return self.reportListArr.count;
+    //    }else if ([tableView isEqual:self.runReportTableView]) {
+    //        return 2;
+    //    }else if ([tableView isEqual:self.jiaoJieBanTableView]) {
+    //        return self.jiaojiebanListArr.count;
+    //    }
+    //    return 0;
     return 1;
     
 }
-
 
 - (UITableView *)reportTableView {
     if (!_reportTableView) {
@@ -932,8 +886,6 @@ navigationController willShowViewController:
         _reportTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _reportTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _reportTableView.scrollEnabled = YES;
-        
-        
     }
     return _reportTableView;
 }
@@ -946,8 +898,6 @@ navigationController willShowViewController:
         _runReportTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _runReportTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _runReportTableView.scrollEnabled = YES;
-        
-        
     }
     return _runReportTableView;
 }
@@ -959,8 +909,6 @@ navigationController willShowViewController:
         _tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
-        
-        
     }
     return _tableView;
 }
@@ -972,13 +920,9 @@ navigationController willShowViewController:
         _jiaoJieBanTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _jiaoJieBanTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _jiaoJieBanTableView.scrollEnabled = YES;
-        
-        
     }
     return _jiaoJieBanTableView;
 }
-
-
 
 - (UITableView *)weihuTableView {
     if (!_weihuTableView) {
@@ -988,8 +932,6 @@ navigationController willShowViewController:
         _weihuTableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _weihuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _weihuTableView.scrollEnabled = YES;
-        
-        
     }
     return _weihuTableView;
 }
@@ -997,9 +939,7 @@ navigationController willShowViewController:
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.01)];
-    
     return headView;
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -1019,36 +959,33 @@ navigationController willShowViewController:
 }
 
 - (void)gotoDetailPage:(NSDictionary *)dataDic {
-
+    
     KG_RunReportDetailViewController *vc = [[KG_RunReportDetailViewController alloc]init];
     vc.jiaojiebanArray = self.jiaojiebanListArr;
     vc.dataDic = dataDic;
     [self.navigationController pushViewController:vc animated:YES];
-
+    
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 0) {
-         KG_RunManagerFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerFirstCell"];
+        KG_RunManagerFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerFirstCell"];
         if (cell == nil) {
             cell = [[KG_RunManagerFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerFirstCell"];
-            
         }
         cell.watchTotal = ^{
             [self watahTotalMethod];
         };
         cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-       
+        
         cell.stationTaskInfoArr = self.stationTaskInfoArr;
-     
         
         return cell;
     }else if (indexPath.section == 1) {
         KG_RunManagerSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerSecondCell"];
         if (cell == nil) {
             cell = [[KG_RunManagerSecondCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerSecondCell"];
-            
         }
         if (self.reportListArr.count >0) {
             cell.reportListArr = self.reportListArr;
@@ -1056,33 +993,30 @@ navigationController willShowViewController:
         cell.weihuBlockMethod = ^{
             [self weihuMethod];
         };
-       
+        
         cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         
         return cell;
     }else if (indexPath.section == 2) {
         KG_RunManagerThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerThirdCell"];
         if (cell == nil) {
             cell = [[KG_RunManagerThirdCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerThirdCell"];
-            
-            
         }
         
-//        if (self.jiaoJieBanInfo.count >0) {
-            cell.jiaoJieBanInfo = self.jiaoJieBanInfo;
-//        }
-//        if (self.stationRunReportArr.count>0) {
-            cell.stationRunReportArr = self.stationRunReportArr;
-//        }
+        //        if (self.jiaoJieBanInfo.count >0) {
+        cell.jiaoJieBanInfo = self.jiaoJieBanInfo;
+        //        }
+        //        if (self.stationRunReportArr.count>0) {
+        cell.stationRunReportArr = self.stationRunReportArr;
+        //        }
         
         cell.runReportBlockMethod = ^{
             [self reportRightMethod];
         };
         cell.gotoDetailBlockMethod = ^(NSDictionary * _Nonnull dic) {
-                   [self gotoDetailPage:dic];
-               };
+            [self gotoDetailPage:dic];
+        };
         cell.jiaobanBlockMethod = ^{
             [self jiaobanMethod];
         };
@@ -1094,18 +1028,15 @@ navigationController willShowViewController:
         };
         cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-       
         return cell;
+        
     }else if (indexPath.section == 3) {
         KG_RunManagerFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerFourthCell"];
         if (cell == nil) {
             cell = [[KG_RunManagerFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerFourthCell"];
-           
         }
-       
+        
         cell.jiaojiebanListArr = self.jiaojiebanListArr;
-                       
         
         cell.jiaojiebanBlockMethod  = ^{
             [self jiaojieBanRecord];
@@ -1125,56 +1056,56 @@ navigationController willShowViewController:
         };
         cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-       
+        
         return cell;
     }
     
-//    if ([tableView isEqual:self.reportTableView]) {
-//        KG_StationReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_StationReportCell"];
-//        if (cell == nil) {
-//            cell = [[KG_StationReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_StationReportCell"];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        NSDictionary *dataDic = self.stationTaskInfoArr[indexPath.row];
-//        cell.dataDic = dataDic;
-//
-//        return cell;
-//    }else if ([tableView isEqual:self.weihuTableView]) {
-//
-//        KG_RunWeiHuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunWeiHuCell"];
-//        if (cell == nil) {
-//            cell = [[KG_RunWeiHuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunWeiHuCell"];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        NSDictionary *dataDic = self.reportListArr[indexPath.row];
-//        cell.dataDic = dataDic;
-//
-//        return cell;
-//    }else if ([tableView isEqual:self.runReportTableView]) {
-//
-//        KG_RunReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportCell"];
-//        if (cell == nil) {
-//            cell = [[KG_RunReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportCell"];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        NSDictionary *dataDic = self.stationRunReportArr[indexPath.row];
-//        cell.dataDic = dataDic;
-//
-//        return cell;
-//    }else if ([tableView isEqual:self.jiaoJieBanTableView]) {
-//
-//        KG_RunJiaoJieBanCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunJiaoJieBanCell"];
-//        if (cell == nil) {
-//            cell = [[KG_RunJiaoJieBanCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunJiaoJieBanCell"];
-//        }
-//        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        NSDictionary *dataDic = self.jiaojiebanListArr[indexPath.row];
-//        cell.dic = dataDic;
-//
-//        return cell;
-//    }
-//
+    //    if ([tableView isEqual:self.reportTableView]) {
+    //        KG_StationReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_StationReportCell"];
+    //        if (cell == nil) {
+    //            cell = [[KG_StationReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_StationReportCell"];
+    //        }
+    //        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    //        NSDictionary *dataDic = self.stationTaskInfoArr[indexPath.row];
+    //        cell.dataDic = dataDic;
+    //
+    //        return cell;
+    //    }else if ([tableView isEqual:self.weihuTableView]) {
+    //
+    //        KG_RunWeiHuCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunWeiHuCell"];
+    //        if (cell == nil) {
+    //            cell = [[KG_RunWeiHuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunWeiHuCell"];
+    //        }
+    //        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    //        NSDictionary *dataDic = self.reportListArr[indexPath.row];
+    //        cell.dataDic = dataDic;
+    //
+    //        return cell;
+    //    }else if ([tableView isEqual:self.runReportTableView]) {
+    //
+    //        KG_RunReportCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunReportCell"];
+    //        if (cell == nil) {
+    //            cell = [[KG_RunReportCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunReportCell"];
+    //        }
+    //        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    //        NSDictionary *dataDic = self.stationRunReportArr[indexPath.row];
+    //        cell.dataDic = dataDic;
+    //
+    //        return cell;
+    //    }else if ([tableView isEqual:self.jiaoJieBanTableView]) {
+    //
+    //        KG_RunJiaoJieBanCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunJiaoJieBanCell"];
+    //        if (cell == nil) {
+    //            cell = [[KG_RunJiaoJieBanCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunJiaoJieBanCell"];
+    //        }
+    //        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    //        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    //        NSDictionary *dataDic = self.jiaojiebanListArr[indexPath.row];
+    //        cell.dic = dataDic;
+    //
+    //        return cell;
+    //    }
+    //
     return nil;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -1213,7 +1144,7 @@ navigationController willShowViewController:
 //  [self.navigationController pushViewController:vc animated:YES];
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
- 
+    
     
     //    NSString *str = self.dataArray[indexPath.row];
     
@@ -1272,15 +1203,13 @@ navigationController willShowViewController:
                 [self.slideMenuController showViewController:login];
                 return;
             }
-//            [FrameBaseRequest showMessage:@"网络链接失败"];
+            //            [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];
     });
     
 }
 - (void)getRunPromptDetailData{
-    
-    
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunPrompt/1/20"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -1309,7 +1238,7 @@ navigationController willShowViewController:
             [self.slideMenuController showViewController:login];
             return;
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         
         return ;
     } ];
@@ -1334,12 +1263,12 @@ navigationController willShowViewController:
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"station"]){
-//        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
+        //        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
         
     }
     
-//    params[@"title"] = @"";
-//    params[@"time"] = @"";
+    //    params[@"title"] = @"";
+    //    params[@"time"] = @"";
     
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -1362,7 +1291,7 @@ navigationController willShowViewController:
             [self.slideMenuController showViewController:login];
             return;
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         
         
         return ;
@@ -1389,8 +1318,8 @@ navigationController willShowViewController:
         [UserManager shareUserManager].userID =safeString([userDefaults objectForKey:@"id"]) ;
     }
     
-//    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/verification/%@",[UserManager shareUserManager].userID]];
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/operation/%@",[UserManager shareUserManager].userID]];
+    //    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/verification/%@",[UserManager shareUserManager].userID]];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/verification/%@",[UserManager shareUserManager].userID]];
     
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         
@@ -1409,7 +1338,7 @@ navigationController willShowViewController:
         
         
     }];
- 
+    
 }
 
 //查询交接班列表接口：
@@ -1442,23 +1371,23 @@ navigationController willShowViewController:
         NSDate *date=[NSDate date];
         NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
         for (NSDictionary *dateDic in arr) {
-           
+            
             NSString *ti = [self timestampToTimeStr:safeString(dateDic[@"createTime"])];
             if ([timeStr isEqualToString:ti]) {
                 [dateArr addObject:dateDic];
             }
         }
-       
+        
         NSMutableArray *aa = [NSMutableArray arrayWithCapacity:0];
-         for (NSDictionary *dd in dateArr) {
-             if ([safeString(dd[@"handoverName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]|| [safeString(dd[@"successorName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]) {
-                 [aa addObject:dd];
-             }
-         }
-         self.jiaojiebanListArr = aa;
+        for (NSDictionary *dd in dateArr) {
+            if ([safeString(dd[@"handoverName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]|| [safeString(dd[@"successorName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]) {
+                [aa addObject:dd];
+            }
+        }
+        self.jiaojiebanListArr = aa;
         [self.tableView reloadData];
         NSLog(@"resultresult %@",result);
-       
+        
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
         [MBProgressHUD hideHUD];
@@ -1469,7 +1398,7 @@ navigationController willShowViewController:
             [self.slideMenuController showViewController:login];
             return;
         }
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
         
         return ;
     } ];
@@ -1532,24 +1461,24 @@ navigationController willShowViewController:
     //    请求方式：GET
     //    请求返回：
     //    如：http://192.168.100.173:8089/intelligent/atcDictionary?type_code=taskStatus
-//    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=shiftPositionCategory"]];
-//    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-//        NSInteger code = [[result objectForKey:@"errCode"] intValue];
-//        if(code  <= -1){
-//            [FrameBaseRequest showMessage:result[@"errMsg"]];
-//            return ;
-//        }
-//
-//        NSLog(@"1");
-//    } failure:^(NSURLSessionDataTask *error)  {
-//        FrameLog(@"请求失败，返回数据 : %@",error);
-//        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//
-//        [FrameBaseRequest showMessage:@"网络链接失败"];
-//        return ;
-//
-//    }];
-//
+    //    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDictionary?type_code=shiftPositionCategory"]];
+    //    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+    //        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+    //        if(code  <= -1){
+    //            [FrameBaseRequest showMessage:result[@"errMsg"]];
+    //            return ;
+    //        }
+    //
+    //        NSLog(@"1");
+    //    } failure:^(NSURLSessionDataTask *error)  {
+    //        FrameLog(@"请求失败，返回数据 : %@",error);
+    //        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+    //
+    //        [FrameBaseRequest showMessage:@"网络链接失败"];
+    //        return ;
+    //
+    //    }];
+    //
     
 }
 - (BOOL)validateWithDate:(NSDate *)date
@@ -1557,7 +1486,7 @@ navigationController willShowViewController:
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDate *now = [NSDate date];
     NSDateComponents *components = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:now];
-//    components.hour = 8;
+    //    components.hour = 8;
     // 当天起始时间
     NSDate *startDate = [calendar dateFromComponents:components];
     // 当天结束时间
@@ -1581,6 +1510,7 @@ navigationController willShowViewController:
     return timeStr;
     
 }
+
 - (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
@@ -1611,20 +1541,17 @@ navigationController willShowViewController:
 }
 
 - (void)datePickerViewSaveBtnClickDelegate:(NSString *)timer {
-  
+    
     if (self.currIndex == 0) {
         self.startTime = timer;
-       
         
     }else {
         //end
         self.endTime = timer;
-       
+        
     }
-    
     [UIView animateWithDuration:0.3 animations:^{
         self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
-        
         [self.dataPickerview  show];
     }];
     
@@ -1642,34 +1569,34 @@ navigationController willShowViewController:
 
 //判断显示一键巡视还是现场巡视
 - (void)getXunShiNameData {
-//    {stationCode}
-    NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+    //    {stationCode}
+    NSDictionary *currDic = self.currentStationDic;
     
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/templateVerify/%@",safeString(currDic[@"code"])]];
-      [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
-          NSInteger code = [[result objectForKey:@"errCode"] intValue];
-          if(code  <= -1){
-              [FrameBaseRequest showMessage:result[@"errMsg"]];
-              return ;
-          }
-          
-          if(![result[@"value"] boolValue]) {
-              
-              [UserManager shareUserManager].xunshiTypeStr = @"现场巡视";
-          }else {
-              [UserManager shareUserManager].xunshiTypeStr = @"一键巡视";
-          }
-          [self setupDataSubviews];
-         
-          NSLog(@"1");
-      } failure:^(NSURLSessionDataTask *error)  {
-          FrameLog(@"请求失败，返回数据 : %@",error);
-          NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-         
-          [FrameBaseRequest showMessage:@"网络链接失败"];
-          return ;
-          
-      }];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/templateVerify/%@",safeString(currDic[@"code"])]];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        
+        if(![result[@"value"] boolValue]) {
+            
+            [UserManager shareUserManager].xunshiTypeStr = @"现场巡视";
+        }else {
+            [UserManager shareUserManager].xunshiTypeStr = @"一键巡视";
+        }
+        [self setupDataSubviews];
+        
+        NSLog(@"1");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
 }
 
 @end

@@ -431,7 +431,6 @@
                 
             }else  if([titleStr isEqualToString:@"备件库存"]) {
                 
-                
                 KG_SparepartsInventoryViewController *vc = [[KG_SparepartsInventoryViewController alloc]init];
                 KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
                 [model mj_setKeyValues:dataDic];

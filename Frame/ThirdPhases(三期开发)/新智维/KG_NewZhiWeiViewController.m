@@ -54,10 +54,9 @@
     [self.navigationController setNavigationBarHidden:YES];
    
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-    
-    
 }
 
 - (void)createNaviTopView {
@@ -108,7 +107,7 @@
         
     }else {
         
-        [self.leftIconImage setImage: [UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
+        [self.leftIconImage setImage:[UIImage imageNamed:@"head_blueIcon"] forState:UIControlStateNormal];
     }
       
     UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -161,10 +160,7 @@
     //单台站不可点击
     self.rightButton.userInteractionEnabled = NO;
     [self createSegmentView];
-    
-    
 }
-
 
 - (void)rightAction {
     
@@ -178,10 +174,11 @@
 }
 
 - (void)backButtonClick:(UIButton *)button {
-    [self leftCenterButtonClick];
-//    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     
+    [self leftCenterButtonClick];
+ 
 }
+
 /**
  弹出个人中心
  */
@@ -189,7 +186,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
     [self.slideMenuController showMenu];
 }
-
 
 /** 标题栏 **/
 - (UILabel *)titleLabel {
@@ -206,7 +202,6 @@
 
 -(void)stationAction {
     
-    
     NSArray *array = [UserManager shareUserManager].stationList;
     
     NSMutableArray *list = [NSMutableArray array];
@@ -216,8 +211,8 @@
     self.stationArray = [KG_ZhiTaiStationModel mj_objectArrayWithKeyValuesArray:list];
     [self getStationList];
   
-    
 }
+
 -(void)getStationList{
     
     UIViewController *vc = [UIViewController new];
@@ -267,19 +262,14 @@
         make.height.equalTo(@7);
     }];
     
-    
-    
-    
-    
-    
     [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentLeft overlayDismissed:nil];
     
 }
+
 -(void)closeFrame{//消失
     
     [self cb_dismissPopupViewControllerAnimated:YES completion:nil];
 }
-
 
 - (void)createSegmentView {
     
@@ -305,7 +295,6 @@
     self.segmentedControl.frame = CGRectMake(16, 8, SCREEN_WIDTH - 32,30);
     [self.segmentedControl addTarget:self action:@selector(change:) forControlEvents:UIControlEventValueChanged];
     
-    
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF"]}forState:UIControlStateSelected];
     
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#2F5ED1"],NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0f]}forState:UIControlStateNormal];
@@ -319,7 +308,6 @@
     
     [self.segmentedControl setBackgroundImage:[self createImageWithColor:[UIColor colorWithHexString:@"#2F5ED1"]]
                                 forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    
     
 }
 
@@ -360,6 +348,5 @@
             break;
     }
 }
-
 
 @end

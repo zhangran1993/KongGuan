@@ -53,6 +53,9 @@
 
 @property (nonatomic, strong)   KG_EquipmentHistoryDetailModel *dataModel;
 
+
+@property (nonatomic,copy)     NSString                  *healthStr;
+
 @end
 
 @implementation KG_StationFileViewController
@@ -82,6 +85,8 @@
     [self getDeviceWeihuData];
     //查询特殊保障
     [self getDeviceSpecialData];
+    
+    [self getStationHealthData];
     if([ self.tableView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
           
           if(@available(iOS 11.0, *)) {
@@ -321,6 +326,7 @@
             cell = [[KG_StationFileDetailFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_StationFileDetailFirstCell"];
         }
         cell.dataDic = self.dataDic;
+        cell.healthStr = self.healthStr;
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -871,5 +877,46 @@
     }
 
 }
-
+//获取大下拉台站健康度接口：
+//请求地址：/intelligent/atcStationHealth/health/{stationCode}/{type}
+//     其中，stationCode是台站编码
+//           type是健康度计算类型：
+//                     comprehensiveScoringMethod：综合评分法
+//                     syntheticalIndexMethod：综合指数法
+//greyCorrelativeAnalysis：灰色关联分析法
+//请求方式：GET
+//请求返回：
+//如: /intelligent/atcStationHealth/health/HCDHT/comprehensiveScoringMethod
+- (void)getStationHealthData {
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcStationHealth/health/%@/comprehensiveScoringMethod",safeString(self.dataDic[@"code"])]];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        
+        NSDictionary *dataDic = result[@"value"];
+        if (isSafeDictionary(dataDic)) {
+            self.healthStr = dataDic[@"grade"];
+            [self.tableView reloadData];
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+       NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+       if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+           [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+           return;
+           
+       }else if(responses.statusCode == 502){
+           
+       }
+        return ;
+        
+    }];
+    
+}
 @end

@@ -22,7 +22,6 @@
 
 @property (nonatomic,strong) UIView         *lineView;
 
-
 @end
 
 @implementation KG_BeiJianLvLiCell
@@ -47,7 +46,6 @@
 
 - (void)createSubviewsView {
    
-    
     self.leftTitleLabel = [[UILabel alloc]init];
     self.leftTitleLabel.text = @"";
     [self addSubview:self.leftTitleLabel];
@@ -62,7 +60,6 @@
         make.left.equalTo(self.mas_left).offset(16);
         make.width.equalTo(@120);
     }];
-    
     
     
     self.iconImage = [[UIImageView alloc]init];
@@ -104,7 +101,7 @@
     self.rightDetailLabel.text = @"";
     self.rightDetailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.rightDetailLabel.textAlignment = NSTextAlignmentLeft;
-    self.rightDetailLabel.numberOfLines = 3;
+    self.rightDetailLabel.numberOfLines = 0;
     self.rightDetailLabel.font = [UIFont systemFontOfSize:14];
     [self.rightDetailLabel sizeToFit];
     [self addSubview:self.rightDetailLabel];

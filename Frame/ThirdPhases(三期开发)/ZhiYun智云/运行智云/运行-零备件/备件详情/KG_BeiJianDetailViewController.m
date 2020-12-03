@@ -251,7 +251,21 @@
         if (self.lvliArr.count == 0) {
             return 240;
         }
-        return self.lvliArr.count *80 + 50;
+        
+        int height = 0;
+        for (NSDictionary *dataDic in self.lvliArr) {
+            NSString *str = safeString(dataDic[@"content"]);
+            CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 220, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+            NSLog(@"%f",fontRect.size.height);
+            if (fontRect.size.height <40) {
+                height += 80;
+            }else {
+                height += fontRect.size.height +40;
+            }
+            
+        }
+        
+        return height + 50;
     }
     return 0;
     

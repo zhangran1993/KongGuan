@@ -53,8 +53,6 @@
         make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
 //    [self.rightBtn addTarget:self action:@selector(rightMethod:) forControlEvents:UIControlEventTouchUpInside];
-    
-
 }
 
 - (void)rightMethod:(UIButton *)button {
@@ -62,19 +60,40 @@
     
 }
 
-
 - (void)setDataDic:(NSDictionary *)dataDic {
     _dataDic = dataDic;
-    
-    self.titleLabel.text = safeString(dataDic[@"name"]);
+
+    self.titleLabel.text = [NSString stringWithFormat:@"%@ %@",[self timestampToTimeStr:safeString(self.dataDic[@"createTime"])] ,safeString(dataDic[@"name"])];
     if(safeString(dataDic[@"name"]).length == 0) {
-        self.titleLabel.text = safeString(dataDic[@"title"]);
+       
+        self.titleLabel.text = [NSString stringWithFormat:@"%@ %@",[self timestampToTimeStr:safeString(self.dataDic[@"createTime"])] ,safeString(dataDic[@"title"])];
         if(safeString(dataDic[@"title"]).length == 0) {
-            self.titleLabel.text = safeString(dataDic[@"taskName"]);
+            
+            self.titleLabel.text = [NSString stringWithFormat:@"%@ %@",[self timestampToTimeStr:safeString(self.dataDic[@"createTime"])] ,safeString(dataDic[@"taskName"])];
         }
     }
+}
+
+//将时间戳转换为时间字符串
+- (NSString *)timestampToTimeStr:(NSString *)timestamp {
+    if (isSafeObj(timestamp)==NO) {
+        return @"-/-";
+    }
+    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    return timeStr;
     
-   
-    
+}
+
+- (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
+    //设置时区
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    return formatter;
 }
 @end
