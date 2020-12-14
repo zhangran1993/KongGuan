@@ -26,37 +26,37 @@
     [super viewDidLoad];
     self.title = @"APP介绍";
     
-    
     [self.navigationController setNavigationBarHidden:YES];
     [self createNaviTopView];
     [self backBtn];
     [self loadBgView];
-    
 }
+
 -(void)loadBgView{
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     //logo和版本
     UIImageView *logoImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     
-    logoImg.frame = CGRectMake(WIDTH_SCREEN/2-FrameWidth(60), FrameWidth(60) +Height_NavBar, FrameWidth(120), FrameWidth(120));
+    logoImg.frame = CGRectMake((WIDTH_SCREEN- 60)/2, 50 +Height_NavBar,60, 60);
     
-    UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-FrameWidth(60),FrameWidth(200)+Height_NavBar ,FrameWidth(120), 20)];
+    UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-200/2,60 + 50 +Height_NavBar +15 ,200, 20)];
     vsersionLabel.textAlignment = NSTextAlignmentCenter;
-    vsersionLabel.text = AppVersion;
+    vsersionLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
+    vsersionLabel.text = [NSString stringWithFormat:@"%@%@",@"智慧台站",AppVersion] ;
     [self.view addSubview:vsersionLabel];
     
     [self.view addSubview:logoImg];
     //APP介绍
-    UILabel * intoductionLabel = [[UILabel alloc] initWithFrame:CGRectMake((WIDTH_SCREEN -FrameWidth(580))/2, FrameWidth(270)+Height_NavBar, FrameWidth(580),FrameWidth(580))];
+    UILabel * intoductionLabel = [[UILabel alloc] initWithFrame:CGRectMake(32, Height_NavBar + 60 +50 +20 +50 +15,SCREEN_WIDTH -64,FrameWidth(580))];
     
     intoductionLabel.numberOfLines = 20;
-    intoductionLabel.font = FontSize(17);
-    [intoductionLabel setTextColor:[UIColor grayColor]];
+    intoductionLabel.font = [UIFont systemFontOfSize:12];
+    [intoductionLabel setTextColor:[UIColor colorWithHexString:@"#626470"]];
     NSMutableParagraphStyle  *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     // 行间距设置为30
-    [paragraphStyle  setLineSpacing:5];
-    NSString  *testString =  @"      智慧台站是一款针对民航空管业内人士提供通导外台站远程监控、信息通报、智能排故、大数据分析的专业软件。通过移动互联网帮助业内外台站维护人士第一时间掌握台站运行情况，引入大数据、AI技术，实现联动性智能运维，贯彻无人值守管理办法，提升外台站的应急处置能力，辅助台站管理人员综合决策，实现通导集约化管理。";
+    [paragraphStyle  setLineSpacing:3];
+    NSString  *testString = @"      智慧台站是一款针对民航空管业内人士提供通导外台站远程监控、信息通报、智能排故、大数据分析的专业软件。通过移动互联网帮助业内外台站维护人士第一时间掌握台站运行情况，引入大数据、AI技术，实现联动性智能运维，贯彻无人值守管理办法，提升外台站的应急处置能力，辅助台站管理人员综合决策，实现通导集约化管理。";
     NSMutableAttributedString  *setString = [[NSMutableAttributedString alloc] initWithString:testString];
     [setString  addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [testString length])];
     
@@ -64,11 +64,7 @@
     [intoductionLabel  setAttributedText:setString];
     [intoductionLabel sizeToFit];
     
-    
-    
     [self.view addSubview:intoductionLabel];
-    
-    
     
 }
 

@@ -30,7 +30,7 @@
 #import "KG_RunMangerFifthCell.h"
 #import "KG_ChooseJiaoJieBanAlertView.h"
 #import <SDWebImage/UIButton+WebCache.h>
-
+#import "KG_MineViewController.h"
 
 @interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UINavigationControllerDelegate,ZRDatePickerViewDelegate>
 @property (strong, nonatomic) NSDictionary *currentStationDic;
@@ -417,9 +417,13 @@
 //跳转智慧云
 - (void)goToZhiHuiYunMethod {
     //运行-智云
-    KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
-    vc.isPush = YES;
+//    KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
+//    vc.isPush = YES;
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
+        
 }
 
 //交接班记录

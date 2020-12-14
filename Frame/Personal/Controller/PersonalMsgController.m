@@ -43,7 +43,6 @@
     [super viewDidLoad];
     [self createNaviTopView];
     
-    
     if (@available(iOS 13.0, *)){
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
     }else {
@@ -58,14 +57,58 @@
 -(void)loadBgView{
     self.title = @"消息通知";
     //背景色
-    self.view.backgroundColor =  BGColor ;
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
+    //预警消息
+    UIView *yujingView = [[UIView alloc] initWithFrame:CGRectMake(0, Height_NavBar +10 ,WIDTH_SCREEN,80)];
+    yujingView.backgroundColor = [UIColor whiteColor];
+   
+    //点击效果
+    UIButton *yujinglViewButton = [[UIButton alloc] initWithFrame:yujingView.bounds];
+    [yujinglViewButton addTarget:self action:@selector(AlarmView) forControlEvents:UIControlEventTouchUpInside];
+    [yujinglViewButton setBackgroundImage:[CommonExtension createImageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
+    [yujinglViewButton setBackgroundImage:[CommonExtension createImageWithColor:[UIColor colorWithHexString:kCellHighlightColor]] forState:UIControlStateHighlighted];
+    [yujingView addSubview:yujinglViewButton];
     
+    [yujingView setUserInteractionEnabled:YES];
+    [yujingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlarmView)]];
+    [self.view addSubview:yujingView];
+    
+    UIImageView *yujingImg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20,40, 40)];
+   
+    yujingImg.image = [UIImage imageNamed:@"kg_messCenter_yujing"];
+    [yujingView addSubview:yujingImg];
+    
+    UILabel *yujingTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 + 40 + 14, 17, 200, 22)];
+    yujingTitleLabel.text = @"预警消息";
+    yujingTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    yujingTitleLabel.font = FontSize(16);
+    [yujingView addSubview:yujingTitleLabel];
+    
+    _yujingNumLabel = [[UILabel alloc]init];
+    // CGSize size = [@"告警消息" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(16),NSFontAttributeName,nil]];
+    _yujingNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
+    //_yujingNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
+    _yujingNumLabel.font = FontSize(10);
+    _yujingNumLabel.layer.cornerRadius = 4;
+    _yujingNumLabel.clipsToBounds = YES;
+    _yujingNumLabel.textColor = [UIColor whiteColor];
+    _yujingNumLabel.textAlignment = NSTextAlignmentCenter;
+    _yujingNumLabel.backgroundColor = [UIColor redColor];
+    [_yujingNumLabel setHidden:YES];
+    [yujingView addSubview:_yujingNumLabel];
+    
+    UILabel *yujingDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 +40 +14, 17+22 +3, SCREEN_WIDTH - 16- 74,22)];
+    yujingDescLabel.numberOfLines = 1;
+    yujingDescLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    yujingDescLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    yujingDescLabel.font =FontSize(14);
+    yujingDescLabel.text = @"预警消息列表在此处显示";
+    [yujingView addSubview:yujingDescLabel];
     
     //告警消息
-    UIView *WarnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 + Height_NavBar,WIDTH_SCREEN, FrameWidth(143))];
+    UIView *WarnView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 + Height_NavBar +10+80 +1,WIDTH_SCREEN, 80)];
     WarnView.backgroundColor = [UIColor whiteColor];
-    WarnView.layer.cornerRadius = 3;
     
     //点击效果
     UIButton *patrolViewButton = [[UIButton alloc] initWithFrame:WarnView.bounds];
@@ -76,22 +119,23 @@
     
     [self.view addSubview:WarnView];
     
-    UIImageView *WarnImg = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(20), FrameWidth(95), FrameWidth(95))];
-    WarnImg.layer.cornerRadius = 2;
-    WarnImg.image = [UIImage imageNamed:@"personal_warn_msg"];
+    UIImageView *WarnImg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20,40, 40)];
+   
+    WarnImg.image = [UIImage imageNamed:@"kg_messCenter_gongjing"];
     [WarnView addSubview:WarnImg];
     
-    UILabel *WarnTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(144), FrameWidth(35), FrameWidth(480), FrameWidth(30))];
+    UILabel *WarnTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 + 40 + 14, 17, 200, 22)];
     WarnTitleLabel.text = @"告警消息";
-    WarnTitleLabel.font = FontSize(17);
+    WarnTitleLabel.font = FontSize(16);
+    WarnTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [WarnView addSubview:WarnTitleLabel];
     
     _newsNumLabel = [[UILabel alloc]init];
     CGSize size = [@"告警消息" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(16),NSFontAttributeName,nil]];
-    _newsNumLabel.frame = CGRectMake(FrameWidth(180)+size.width, FrameWidth(35), FrameWidth(25), FrameWidth(25));
+    _newsNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
     //_newsNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _newsNumLabel.font = FontSize(10);
-    _newsNumLabel.layer.cornerRadius = FrameWidth(13);
+    _newsNumLabel.layer.cornerRadius = 4;
     _newsNumLabel.clipsToBounds = YES;
     _newsNumLabel.textColor = [UIColor whiteColor];
     _newsNumLabel.textAlignment = NSTextAlignmentCenter;
@@ -99,64 +143,18 @@
     [_newsNumLabel setHidden:YES];
     [WarnView addSubview:_newsNumLabel];
     
-    UILabel *WarnDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(144), FrameWidth(65), FrameWidth(480), FrameWidth(60))];
-    WarnDescLabel.numberOfLines = 3;
+    UILabel *WarnDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 +40 +14, 17+22 +3, SCREEN_WIDTH - 16- 74,22)];
+    WarnDescLabel.numberOfLines = 1;
     WarnDescLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    WarnDescLabel.textColor = [UIColor grayColor];
-    WarnDescLabel.font =FontSize(15);
+    WarnDescLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    WarnDescLabel.font =FontSize(14);
     WarnDescLabel.text = @"告警消息列表在此处显示";
     [WarnView addSubview:WarnDescLabel];
     
-    //预警消息
-    UIView *yujingView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(144) +Height_NavBar,WIDTH_SCREEN, FrameWidth(143))];
-    yujingView.backgroundColor = [UIColor whiteColor];
-    yujingView.layer.cornerRadius = 3;
-    
-    //点击效果
-    UIButton *yujinglViewButton = [[UIButton alloc] initWithFrame:WarnView.bounds];
-    [yujinglViewButton addTarget:self action:@selector(AlarmView) forControlEvents:UIControlEventTouchUpInside];
-    [yujinglViewButton setBackgroundImage:[CommonExtension createImageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
-    [yujinglViewButton setBackgroundImage:[CommonExtension createImageWithColor:[UIColor colorWithHexString:kCellHighlightColor]] forState:UIControlStateHighlighted];
-    [yujingView addSubview:yujinglViewButton];
-    
-    [yujingView setUserInteractionEnabled:YES];
-    [yujingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlarmView)]];
-    [self.view addSubview:yujingView];
-    
-    UIImageView *yujingImg = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(20), FrameWidth(95), FrameWidth(95))];
-    yujingImg.layer.cornerRadius = 2;
-    yujingImg.image = [UIImage imageNamed:@"personal_alarm_msg"];
-    [yujingView addSubview:yujingImg];
-    
-    UILabel *yujingTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(144), FrameWidth(35), FrameWidth(480), FrameWidth(30))];
-    yujingTitleLabel.text = @"预警消息";
-    yujingTitleLabel.font = FontSize(17);
-    [yujingView addSubview:yujingTitleLabel];
-    
-    _yujingNumLabel = [[UILabel alloc]init];
-   // CGSize size = [@"告警消息" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(16),NSFontAttributeName,nil]];
-    _yujingNumLabel.frame = CGRectMake(FrameWidth(180)+size.width, FrameWidth(35), FrameWidth(25), FrameWidth(25));
-    //_yujingNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
-    _yujingNumLabel.font = FontSize(10);
-    _yujingNumLabel.layer.cornerRadius = FrameWidth(13);
-    _yujingNumLabel.clipsToBounds = YES;
-    _yujingNumLabel.textColor = [UIColor whiteColor];
-    _yujingNumLabel.textAlignment = NSTextAlignmentCenter;
-    _yujingNumLabel.backgroundColor = [UIColor redColor];
-    [_yujingNumLabel setHidden:YES];
-    [yujingView addSubview:_yujingNumLabel];
-    
-    UILabel *yujingDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(144), FrameWidth(65), FrameWidth(480), FrameWidth(60))];
-    yujingDescLabel.numberOfLines = 3;
-    yujingDescLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    yujingDescLabel.textColor = [UIColor grayColor];
-    yujingDescLabel.font =FontSize(15);
-    yujingDescLabel.text = @"预警消息列表在此处显示";
-    [yujingView addSubview:yujingDescLabel];
-    
+   
     //公告消息
-    UIView *RadioView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(288)+ Height_NavBar,WIDTH_SCREEN, FrameWidth(143))];
-    RadioView.layer.cornerRadius = 3;
+    UIView *RadioView = [[UIView alloc] initWithFrame:CGRectMake(0, 0 + Height_NavBar +10+80 +1 +80 +1,WIDTH_SCREEN, 80)];
+  
     RadioView.backgroundColor = [UIColor whiteColor];
     
     //点击效果
@@ -168,19 +166,20 @@
     
     [self.view addSubview:RadioView];
     
-    UIImageView *RadioImg = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(20), FrameWidth(95), FrameWidth(95))];
-    RadioImg.layer.cornerRadius = 2;
-    RadioImg.image = [UIImage imageNamed:@"personal_radio_msg"];
+    UIImageView *RadioImg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20,40, 40)];
+   
+    RadioImg.image = [UIImage imageNamed:@"kg_messCenter_gonggao"];
     [RadioView addSubview:RadioImg];
     
-    UILabel *RadioTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(144), FrameWidth(35), FrameWidth(480), FrameWidth(30))];
+    UILabel *RadioTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 + 40 + 14, 17, 200, 22)];
     RadioTitleLabel.text = @"公告消息";
-    RadioTitleLabel.font = FontSize(17);
+    RadioTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    RadioTitleLabel.font = FontSize(16);
     [RadioView addSubview:RadioTitleLabel];
     
     _gonggaoNumLabel = [[UILabel alloc]init];
     // CGSize size = [@"告警消息" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(16),NSFontAttributeName,nil]];
-    _gonggaoNumLabel.frame = CGRectMake(FrameWidth(180)+size.width, FrameWidth(35), FrameWidth(25), FrameWidth(25));
+    _gonggaoNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
     //_gonggaoNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _gonggaoNumLabel.font = FontSize(10);
     _gonggaoNumLabel.layer.cornerRadius = FrameWidth(13);
@@ -191,15 +190,15 @@
     [_gonggaoNumLabel setHidden:YES];
     [RadioView addSubview:_gonggaoNumLabel];
     
-    UILabel *RadioDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(144), FrameWidth(65), FrameWidth(480), FrameWidth(60))];
-    RadioDescLabel.numberOfLines = 3;
+    UILabel *RadioDescLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 +40 +14, 17+22 +3, SCREEN_WIDTH - 16- 74,22)];
+    RadioDescLabel.numberOfLines = 1;
     RadioDescLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    RadioDescLabel.textColor = [UIColor grayColor];
-    RadioDescLabel.font =FontSize(15);
+    RadioDescLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
+    RadioDescLabel.font = FontSize(14);
     RadioDescLabel.text = @"公告消息列表在此处显示";
     [RadioView addSubview:RadioDescLabel];
-    
     return ;
+    
 }
 
 -(void)getNewsNum{

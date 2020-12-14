@@ -54,8 +54,6 @@
         make.width.equalTo(@300);
     }];
     
-    
-    
     self.statusImage = [[UIImageView alloc]init];
     [self addSubview:self.statusImage];
     [self.statusImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -66,7 +64,6 @@
     }];
     self.statusImage.image = [UIImage imageNamed:@"level_jinji"];
     
-    
     UIView *lineImage = [[UIView alloc]init];
     [self addSubview:lineImage];
     lineImage.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
@@ -76,7 +73,6 @@
         make.top.equalTo(self.roomLabel.mas_bottom).offset(11);
         make.height.equalTo(@1);
     }];
-    
     
     self.confirmBtn = [[UIButton alloc]init];
     [self addSubview:self.confirmBtn];
@@ -135,7 +131,6 @@
     }];
     self.gaojingImage.image = [UIImage imageNamed:@"gaojing_red"];
     
-    
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
     self.detailLabel.text = @"电池组2#";
@@ -167,7 +162,7 @@
     self.hangUpStautsBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     self.hangUpStautsBtn.layer.cornerRadius = 4;
     self.hangUpStautsBtn.layer.masksToBounds = YES;
-   
+    
     [self.hangUpStautsBtn setTitle:@"挂起" forState:UIControlStateNormal];
     [self.hangUpStautsBtn addTarget:self action:@selector(hangMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.hangUpStautsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -177,8 +172,6 @@
         make.bottom.equalTo(self.mas_bottom).offset(-11);
     }];
     
-    
-    
     self.liftStatusBtn = [[UIButton alloc]init];
     [self addSubview:self.liftStatusBtn];
     [self.liftStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
@@ -187,7 +180,7 @@
     self.liftStatusBtn.layer.cornerRadius = 4;
     self.liftStatusBtn.layer.masksToBounds = YES;
     [self.liftStatusBtn addTarget:self action:@selector(liftMethod:) forControlEvents:UIControlEventTouchUpInside];
-   
+    
     [self.liftStatusBtn setTitle:@"解除" forState:UIControlStateNormal];
     [self.liftStatusBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.hangUpStautsBtn.mas_left).offset(-10);
@@ -195,7 +188,6 @@
         make.height.equalTo(@28);
         make.bottom.equalTo(self.mas_bottom).offset(-11);
     }];
-    
     
     self.confirmStatusBtn = [[UIButton alloc]init];
     [self addSubview:self.confirmStatusBtn];
@@ -205,7 +197,7 @@
     self.confirmStatusBtn.layer.cornerRadius = 4;
     self.confirmStatusBtn.layer.masksToBounds = YES;
     [self.confirmStatusBtn addTarget:self action:@selector(confirmMethod:) forControlEvents:UIControlEventTouchUpInside];
-  
+    
     [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
     [self.confirmStatusBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.liftStatusBtn.mas_left).offset(-10);
@@ -216,7 +208,6 @@
     
 }
 
-
 - (void)setModel:(KG_GaoJingDetailModel *)model {
     _model = model;
     NSDictionary *dic = model.info;
@@ -224,9 +215,9 @@
         return;
     }
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(dic[@"stationName"]),safeString(dic[@"engineRoomName"])];
-   self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"happenTime"])];
-   self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(dic[@"level"])]];
-   self.gaojingImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(dic[@"level"])]];
+    self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"happenTime"])];
+    self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(dic[@"level"])]];
+    self.gaojingImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(dic[@"level"])]];
     NSString *sta = @"未确认";
     if ([safeString(dic[@"status"]) isEqualToString:@"unconfirmed"]) {
         sta = @"未确认";
@@ -251,8 +242,6 @@
         self.iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
     }
     
-    
-    
     if(safeString(dic[@"equipmentCategory"]).length == 0){
         self.iconImage.image = [UIImage imageNamed: safeString(dic[@"equipmentName"])];
     }
@@ -266,26 +255,24 @@
         [self.hangUpStautsBtn setTitle:@"挂起" forState:UIControlStateNormal];
         
     }
-//    if([sta isEqualToString:@"已确认"]){
-//        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
-//        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#AABBCD"] forState:UIControlStateNormal];
-//        self.confirmStatusBtn.userInteractionEnabled = NO;
-//        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F8"]];
-//    }else if([sta isEqualToString:@"未确认"]){
-//        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
-//        self.confirmStatusBtn.userInteractionEnabled = YES;
-//        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-//        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-//    }else {
-//      
-//        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
-//        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#2F5ED1"] forState:UIControlStateNormal];
-//        self.confirmStatusBtn.userInteractionEnabled = NO;
-//        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
-//        
-//    }
-    
-    
+    //    if([sta isEqualToString:@"已确认"]){
+    //        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
+    //        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#AABBCD"] forState:UIControlStateNormal];
+    //        self.confirmStatusBtn.userInteractionEnabled = NO;
+    //        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#F3F5F8"]];
+    //    }else if([sta isEqualToString:@"未确认"]){
+    //        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
+    //        self.confirmStatusBtn.userInteractionEnabled = YES;
+    //        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
+    //        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    //    }else {
+    //
+    //        [self.confirmStatusBtn setTitle:@"确认" forState:UIControlStateNormal];
+    //        [self.confirmStatusBtn setTitleColor:[UIColor colorWithHexString:@"#2F5ED1"] forState:UIControlStateNormal];
+    //        self.confirmStatusBtn.userInteractionEnabled = NO;
+    //        [self.confirmStatusBtn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
+    //
+    //    }
     
     if ([safeString(dic[@"status"]) isEqualToString:@"unconfirmed"]) {
         sta = @"未确认";
@@ -308,7 +295,6 @@
             self.hangUpStautsBtn.userInteractionEnabled = YES;
             
         }
-        
     }else if ([safeString(dic[@"status"]) isEqualToString:@"confirmed"]) {
         sta = @"已确认";
         self.confirmStatusBtn.userInteractionEnabled = NO;
@@ -327,10 +313,7 @@
         }else {
             [self.hangUpStautsBtn setAlpha:1];
             self.hangUpStautsBtn.userInteractionEnabled = YES;
-            
         }
-        
-        
     }else if ([safeString(dic[@"status"]) isEqualToString:@"removed"]) {
         sta = @"已解除";
         self.confirmStatusBtn.userInteractionEnabled = NO;
@@ -346,29 +329,25 @@
         sta = @"已挂起";
         self.confirmStatusBtn.userInteractionEnabled = NO;
         self.confirmStatusBtn.alpha = 0.4;
-       
         
     }else if ([safeString(dic[@"status"]) isEqualToString:@"completed"]) {
         sta = @"已解决";
         self.confirmStatusBtn.userInteractionEnabled = NO;
         self.confirmStatusBtn.alpha = 0.4;
-        
-        self.liftStatusBtn.userInteractionEnabled = NO;
-        self.liftStatusBtn.alpha = 0.4;
-        
-        self.hangUpStautsBtn.userInteractionEnabled = NO;
-        self.hangUpStautsBtn.alpha = 0.4;
+        //
+        //        self.liftStatusBtn.userInteractionEnabled = NO;
+        //        self.liftStatusBtn.alpha = 0.4;
+        //
+        //        self.hangUpStautsBtn.userInteractionEnabled = NO;
+        //        self.hangUpStautsBtn.alpha = 0.4;
     }
-    
-   
-    
-    
 }
 
 - (void)buttonClock:(UIButton *)button {
     
     
 }
+
 //将时间戳转换为时间字符串
 - (NSString *)timestampToTimeStr:(NSString *)timestamp {
     if (isSafeObj(timestamp)==NO) {
@@ -376,10 +355,10 @@
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
     NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm"] stringFromDate:date];
-    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     
 }
+
 - (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
@@ -405,7 +384,6 @@
     }else if ([level isEqualToString:@"1"]) {
         levelString = @"level_jinji";
     }
-    
     //紧急
     return levelString;
 }
@@ -427,8 +405,8 @@
     if (self.confirmMethod) {
         self.confirmMethod();
     }
-    
 }
+
 - (NSString *)getGaoJingImage:(NSString *)level {
     NSString *levelString = @"0";
     

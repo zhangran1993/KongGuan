@@ -25,6 +25,7 @@
 @property (nonatomic ,strong)     UILabel         *malfunTextLabel;
 
 @property (nonatomic ,strong)     UILabel         *rightLabel;
+
 @end
 
 @implementation KG_CaseLibraryDetailFirstCell
@@ -49,7 +50,6 @@
 
 - (void)createSubviewsView {
     
-    
     UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
     [self addSubview:topImage1];
     [topImage1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -58,7 +58,6 @@
         make.height.equalTo(@(NAVIGATIONBAR_HEIGHT +44));
         make.top.equalTo(self.mas_top);
     }];
-    
     
     topImage1.backgroundColor  =[UIColor whiteColor];
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 208)];
@@ -71,7 +70,6 @@
         make.height.equalTo(@(208));
         make.top.equalTo(self.mas_top);
     }];
-    
     
     
     self.centerView = [[UIView alloc]init];
@@ -165,7 +163,6 @@
         make.top.equalTo(self.malfunLabel.mas_bottom).offset(22);
     }];
   
-    
 }
 
 
@@ -178,7 +175,6 @@
     self.malfunTextLabel.text = [self getLevelStr:safeString(dataModel.grade)];
     
     self.rightLabel.text = safeString(dataModel.name);
-    
     
 }
 

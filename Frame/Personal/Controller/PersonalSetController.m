@@ -93,7 +93,7 @@
     [editPwdView setUserInteractionEnabled:YES];
     [editPwdView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editPwd)]];
     UILabel *editPwdLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
-    editPwdLabel.text = @"修改密码";
+    editPwdLabel.text = @"设置";
     editPwdLabel.font = FontSize(17);
     editPwdLabel.textColor = [UIColor grayColor];
     [editPwdView addSubview:editPwdLabel];

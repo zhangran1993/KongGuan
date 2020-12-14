@@ -58,76 +58,127 @@
     
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
+    UIView *bgView = [[UIView alloc]init];
+    [self.view addSubview:bgView];
+    bgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.height.equalTo(@60);
+    }];
+    
+    UILabel *accountLabel = [[UILabel alloc]init];
+    [self.view addSubview:accountLabel];
+    accountLabel.text = @"用户名";
+    accountLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    accountLabel.font = [UIFont systemFontOfSize:14];
+    [accountLabel sizeToFit];
+    accountLabel.numberOfLines = 1;
+    [accountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +28.5);
+        make.height.equalTo(@13);
+    }];
+    
+    UILabel *accountDetailLabel = [[UILabel alloc]init];
+    [self.view addSubview:accountDetailLabel];
+    accountDetailLabel.text = @"-";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey:@"name"]) {
+        
+        accountDetailLabel.text = [userDefaults objectForKey:@"name"];
+        
+    }
+    accountDetailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    accountDetailLabel.font = [UIFont systemFontOfSize:14];
+    [accountDetailLabel sizeToFit];
+    accountDetailLabel.numberOfLines = 1;
+    [accountDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(90.5);
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +28.5);
+        make.height.equalTo(@13);
+    }];
+    
+    
     //旧密码
-    UIView *oldPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(20)+ Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
+    UIView *oldPwdView = [[UIView alloc] initWithFrame:CGRectMake(0,  60 + Height_NavBar, WIDTH_SCREEN, 50)];
     oldPwdView.backgroundColor = [UIColor whiteColor];
-    UILabel *oldPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
-    oldPwdTitleLabel.font = FontSize(15);
-    oldPwdTitleLabel.text = @"旧密码";
-    oldPwdTitleLabel.textColor = [UIColor  grayColor];
+    UILabel *oldPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 50, 50)];
+    oldPwdTitleLabel.font = FontSize(14);
+    oldPwdTitleLabel.text = @"原密码";
+    oldPwdTitleLabel.textColor = [UIColor  colorWithHexString:@"#24252A"];
     [oldPwdView addSubview:oldPwdTitleLabel];
-    _oldPwdText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
-    _oldPwdText.font = FontSize(15);
+    
+    _oldPwdText = [[UITextField alloc]initWithFrame:CGRectMake(90.5, 0, FrameWidth(300), 50)];
+    _oldPwdText.font = FontSize(14);
     _oldPwdText.secureTextEntry = YES;
-    _oldPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写旧密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(15)}];
-    //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-//    [_oldPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
-    //[_oldPwdText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
-    _oldPwdText.tag=1;
+    _oldPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写原密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(14)}];
+    _oldPwdText.tag = 1;
     _oldPwdText.delegate = self;
     [oldPwdView addSubview:_oldPwdText];
     [self.view addSubview:oldPwdView];
     
     
     //新密码
-    UIView *newPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(110)+ Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
+    UIView *newPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, 60 + 60 + Height_NavBar, WIDTH_SCREEN, 50)];
     newPwdView.backgroundColor = [UIColor whiteColor];
-    UILabel *newPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
-    newPwdTitleLabel.font = FontSize(15);
+    UILabel *newPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 50,50)];
+    newPwdTitleLabel.font = FontSize(14);
     newPwdTitleLabel.text = @"新密码";
-    newPwdTitleLabel.textColor = [UIColor  grayColor];
+    newPwdTitleLabel.textColor = [UIColor  colorWithHexString:@"#24252A"];
     [newPwdView addSubview:newPwdTitleLabel];
-    _oneNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
-    _oneNewPwdText.font = FontSize(15);
+    
+    _oneNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(90.5, 0, FrameWidth(300), 50)];
+    _oneNewPwdText.font = FontSize(14);
     _oneNewPwdText.secureTextEntry = YES;
-    _oneNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(15)}];
-    //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-//    [_oneNewPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
-    //[_oneNewPwdText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
-    _oneNewPwdText.tag=2;
+    _oneNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(14)}];
+    _oneNewPwdText.tag = 2;
     _oneNewPwdText.delegate = self;
     [newPwdView addSubview:_oneNewPwdText];
     [self.view addSubview:newPwdView];
     
+    
+    UIView *lineView = [[UIView alloc]init];
+    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [newPwdView addSubview:lineView];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(newPwdView.mas_left).offset(16);
+        make.right.equalTo(newPwdView.mas_right).offset(-16);
+        make.top.equalTo(newPwdTitleLabel.mas_bottom);
+        make.height.equalTo(@1);
+    }];
+    
+    
     //确认密码
-    UIView *sureNewPwdView = [[UIView alloc] initWithFrame:CGRectMake(0,FrameWidth(200)+ Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
+    UIView *sureNewPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, 60 + 60 + Height_NavBar +50 , WIDTH_SCREEN, 50)];
     sureNewPwdView.backgroundColor = [UIColor whiteColor];
-    UILabel *sureNewPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(20), 0, WIDTH_SCREEN/2,FrameWidth(80))];
-    sureNewPwdTitleLabel.font = FontSize(15);
+    UILabel *sureNewPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 60,50)];
+    sureNewPwdTitleLabel.font = FontSize(14);
     sureNewPwdTitleLabel.text = @"确认密码";
-    sureNewPwdTitleLabel.textColor = [UIColor  grayColor];
+    sureNewPwdTitleLabel.textColor = [UIColor  colorWithHexString:@"#24252A"];
     [sureNewPwdView addSubview:sureNewPwdTitleLabel];
-    _sureNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(180), 0, FrameWidth(300), FrameWidth(80))];
-    _sureNewPwdText.font = FontSize(15);
+    
+    _sureNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(90.5, 0, FrameWidth(300), 50)];
+    _sureNewPwdText.font = FontSize(14);
     _sureNewPwdText.secureTextEntry = YES;
-    _sureNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请再次输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(15)}];
-    //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-//    [_sureNewPwdText setValue:FontSize(15) forKeyPath:@"_placeholderLabel.font"];
-    //[_sureNewPwdText setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.8] forKeyPath:@"_placeholderLabel.textColor"];
-    _sureNewPwdText.tag=2;
+    _sureNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请再次输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(14)}];
+ 
+    _sureNewPwdText.tag = 2;
     _sureNewPwdText.delegate = self;
     [sureNewPwdView addSubview:_sureNewPwdText];
     [self.view addSubview:sureNewPwdView];
-    //修改密码
-    UIButton *submitButton = [[UIButton alloc] initWithFrame: CGRectMake((WIDTH_SCREEN-FrameWidth(470))/2, FrameWidth(470),FrameWidth(470), FrameWidth(80))];
-    [submitButton setTitle:@"修改密码" forState:UIControlStateNormal];
-    [submitButton addTarget:self action:@selector(submitAll) forControlEvents:UIControlEventTouchUpInside];
-    [submitButton.layer setCornerRadius:FrameWidth(40)]; //设置矩形四个圆角半径
-    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
-    submitButton.titleLabel.font = FontSize(16);
-    [submitButton.layer setBackgroundColor:[UIColor colorWithRed:100/255.0 green:170/255.0 blue:250/255.0 alpha:1].CGColor];//边框颜色
-    [self.view addSubview:submitButton];
     
+//    //修改密码
+//    UIButton *submitButton = [[UIButton alloc] initWithFrame: CGRectMake((WIDTH_SCREEN-FrameWidth(470))/2, FrameWidth(470),FrameWidth(470), FrameWidth(80))];
+//    [submitButton setTitle:@"修改密码" forState:UIControlStateNormal];
+//    [submitButton addTarget:self action:@selector(submitAll) forControlEvents:UIControlEventTouchUpInside];
+//    [submitButton.layer setCornerRadius:FrameWidth(40)]; //设置矩形四个圆角半径
+//    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
+//    submitButton.titleLabel.font = FontSize(16);
+//    [submitButton.layer setBackgroundColor:[UIColor colorWithRed:100/255.0 green:170/255.0 blue:250/255.0 alpha:1].CGColor];//边框颜色
+//    [self.view addSubview:submitButton];
+//
     
      
 }
@@ -155,13 +206,14 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     return [textField resignFirstResponder];
 }
+
 -(void)submitAll{
     NSLog(@"submitAll");
     [_oldPwdText  resignFirstResponder];
     [_oneNewPwdText  resignFirstResponder];
     [_sureNewPwdText  resignFirstResponder];
     if(_oldPwdText.text.length <= 0 ){
-        [FrameBaseRequest showMessage:@"请填写旧密码"];
+        [FrameBaseRequest showMessage:@"请填写原密码"];
         return ;
     }
     if(_oneNewPwdText.text.length <= 0 ){
@@ -211,12 +263,11 @@
     
     [self presentViewController:alertContor animated:NO completion:nil];
     
-    
-    
 }
 
 
 -(void)backBtn{
+    
     UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
     [leftButon setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
@@ -245,13 +296,14 @@
     
     return ;
 }
+
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
 
 - (void)createNaviTopView {
     
@@ -294,15 +346,28 @@
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
-   
+    
+    self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.rightButton.titleLabel.font = FontSize(16);
+    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+    [self.rightButton setTitle:@"完成" forState:UIControlStateNormal];
+    [self.navigationView addSubview:self.rightButton];
+    [self.rightButton addTarget:self action:@selector(submitAll) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@60);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.height.equalTo(@22);
+        make.right.equalTo(self.navigationView.mas_right).offset(-16);
+    }];
+    
 }
 
 - (void)backButtonClick:(UIButton *)button {
-   
-     [self.navigationController popViewControllerAnimated:YES];
     
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -315,6 +380,7 @@
     }
     return _titleLabel;
 }
+
 - (UIImage*)createImageWithColor: (UIColor*) color{
     CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
