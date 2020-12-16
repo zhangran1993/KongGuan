@@ -15,6 +15,11 @@
 #import <MJRefresh.h>
 #import <MJExtension.h>
 #import "UIColor+Extension.h"
+#import "KG_MyMessageDetailCell.h"
+
+#import "KG_YujingDetailCell.h"
+#import "KG_GonggaoDetailCell.h"
+#import "KG_GaojingDetailCell.h"
 @interface PersonalMsgListController ()<UITableViewDataSource,UITableViewDelegate,EmptyDataSetDelegate>
 
 @property (strong, nonatomic) NSMutableArray<MsgItems *> * msgList;
@@ -57,11 +62,11 @@
     [self createNaviTopView];
     
     self.navigationItem.title = _thistitle;//详情
-     [self setupTable];
+    [self setupTable];
 }
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"PersonalMsgListController viewWillAppear");
-   
+    
 }
 #pragma mark - private methods 私有方法
 
@@ -88,7 +93,7 @@
     self.tableview.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, FrameWidth(30))];
     self.tableview.separatorStyle = UITableViewCellSelectionStyleNone;
     
- 
+    
     [self.view addSubview:self.tableview];
     
     // 头部刷新控件
@@ -97,7 +102,7 @@
     
     // 尾部刷新控件
     self.tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotificationAction) name:kNetworkStatusNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotificationAction) name:kNetworkStatusNotification object:nil];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navigationView.mas_bottom);
         make.left.equalTo(self.view.mas_left);
@@ -185,7 +190,7 @@
             return ;
         }
         //self.msgList = [[MsgItems class] mj_objectArrayWithKeyValuesArray: result[@"value"][@"records"]];
-      
+        
         //[self.tableview reloadData];
         
         
@@ -290,11 +295,11 @@
         //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
         //            [FrameBaseRequest logout];
         //            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-//            [self.navigationController popToViewController:viewCtl animated:YES];
-//            return;
-//        }else if(responses.statusCode == 502){
-//            
-//        }
+        //            [self.navigationController popToViewController:viewCtl animated:YES];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
@@ -342,29 +347,34 @@
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-        return FrameWidth(110) +self.msgList[indexPath.row].LabelHeight;
-    //if(self.detail[indexPath.row].typeid==1){
-    /*
-     if(indexPath.row==0){
-     if(getScreen.size.height > allHeight){
-     return getScreen.size.height*2;
-     }
-     return  allHeight;//+
-     }
-     return 0;
-     */
+    
+    MsgItems *model = self.msgList[indexPath.row];
+    NSString *str = safeString(model.content);
+    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 32-57, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+    NSLog(@"%f",fontRect.size.height);
+    int height = 0;
+    if (fontRect.size.height <21) {
+        height =21;
+    }else {
+        height = fontRect.size.height;
+    }
+    return 50 + 12 +12 + 40 + height;
+    
+    
+    
+    //    height += fontRect.size.height;
 }
-
-#pragma mark - UITableviewDatasource 数据源方法
-- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-        UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-        cell.backgroundColor = [UIColor colorWithHexString:kCellHighlightColor];
-}
-
-- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-        UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-        cell.backgroundColor = [UIColor whiteColor];
-}
+//
+//#pragma mark - UITableviewDatasource 数据源方法
+//- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+//    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+//    cell.backgroundColor = [UIColor colorWithHexString:kCellHighlightColor];
+//}
+//
+//- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+//    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+//    cell.backgroundColor = [UIColor whiteColor];
+//}
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -374,56 +384,65 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *thiscell = [[UITableViewCell alloc] init];
-    thiscell.selectionStyle = UITableViewCellSelectionStyleNone;//不可选择
-    thiscell.backgroundColor = [UIColor whiteColor];
-    
-  
-    
-    NSString * createTime =  [FrameBaseRequest getDateByTimesp:self.msgList[indexPath.row].createTime dateType:@"YYYY-MM-dd HH:mm"];
-    
-    UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, WIDTH_SCREEN, 1)];
-    lineLabel.backgroundColor = BGColor;
-    [thiscell addSubview:lineLabel];
-    
-    UIImageView *msgImg = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(22), FrameWidth(35), FrameWidth(38), FrameWidth(38))];
-    msgImg.image = [UIImage imageNamed:self.imgType];
-    [thiscell addSubview:msgImg];//station_right
-    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(75), FrameWidth(40), FrameWidth(225), FrameWidth(30))];
-    titleLabel.text = [NSString stringWithFormat:@"【%@】",_thistitle] ;//@"【告警消息】"
-    titleLabel.font = FontSize(17);
-    [thiscell addSubview:titleLabel];
-    
-    UILabel *dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(300), FrameWidth(40), FrameWidth(320), FrameWidth(35))];
-    dateLabel.text = createTime;
-    dateLabel.textAlignment = NSTextAlignmentRight;
-    dateLabel.textColor = [UIColor grayColor];
-    dateLabel.font = FontSize(14);
-    [thiscell addSubview:dateLabel];
-    
-    
-    UILabel *msgLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(80), FrameWidth(70), FrameWidth(550), FrameWidth(40)+self.msgList[indexPath.row].LabelHeight)];
-
-    NSString *msgString =  self.msgList[indexPath.row].content;//[NSString stringWithFormat:@"%@级告警:%@-%@-%@-%@:%@", self.msgList[indexPath.row].level, self.msgList[indexPath.row].stationName, self.msgList[indexPath.row].engineRoomName, self.msgList[indexPath.row].equipmentName, self.msgList[indexPath.row].measureTagName, self.msgList[indexPath.row].realTimeValueAlias];
-    
-    
-    msgLabel.text = msgString;
-    msgLabel.numberOfLines = 0;
-    msgLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    msgLabel.textColor = [UIColor grayColor];
-    msgLabel.font = FontSize(14);
-    [thiscell addSubview:msgLabel];
-    
-    if(self.msgList[indexPath.row].status == 1){
-        titleLabel.textColor = [UIColor lightGrayColor];
-        dateLabel.textColor = [UIColor lightGrayColor];
-        msgLabel.textColor = [UIColor lightGrayColor];
-    }else{
+    if([_thistitle isEqualToString:@"公告消息"]){
+        
+        KG_GonggaoDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_GonggaoDetailCell"];
+        if (cell == nil) {
+            cell = [[KG_GonggaoDetailCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_GonggaoDetailCell"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        NSString * createTime =  [FrameBaseRequest getDateByTimesp:self.msgList[indexPath.row].createTime dateType:@"YYYY-MM-dd HH:mm"];
+        
+        cell.titleLabel.text  = [NSString stringWithFormat:@"【%@】",_thistitle] ;//@"【告警消息】"
+        
+        cell.timeLabel.text = createTime;
+        NSString *msgString =  self.msgList[indexPath.row].content;
+        cell.detailLabel.text = msgString;
+        cell.iconImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(msgString)]];
+        
+        return cell;
+    }else if([_thistitle isEqualToString:@"预警消息"]){
+        
+        KG_YujingDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_YujingDetailCell"];
+        if (cell == nil) {
+            cell = [[KG_YujingDetailCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_YujingDetailCell"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        NSString * createTime =  [FrameBaseRequest getDateByTimesp:self.msgList[indexPath.row].createTime dateType:@"YYYY-MM-dd HH:mm"];
+        
+        cell.titleLabel.text  = [NSString stringWithFormat:@"【%@】",_thistitle] ;//@"【告警消息】"
+        
+        cell.timeLabel.text = createTime;
+        NSString *msgString =  self.msgList[indexPath.row].content;
+        cell.detailLabel.text = msgString;
+        return cell;
+    }else{//告警消息
+        
+        KG_GaojingDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_GaojingDetailCell"];
+        if (cell == nil) {
+            cell = [[KG_GaojingDetailCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_GaojingDetailCell"];
+            cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        NSString * createTime =  [FrameBaseRequest getDateByTimesp:self.msgList[indexPath.row].createTime dateType:@"YYYY-MM-dd HH:mm"];
+        
+        cell.titleLabel.text  = [NSString stringWithFormat:@"【%@】",_thistitle] ;//@"【告警消息】"
+        
+        cell.timeLabel.text = createTime;
+        NSString *msgString =  self.msgList[indexPath.row].content;
+        cell.detailLabel.text = msgString;
+        
+        cell.iconImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(msgString)]];
+        return cell;
         
     }
+   
+   
+ 
     
-    
-    return thiscell;
+    return nil;
     
     
     
@@ -435,7 +454,7 @@
     //添加一个删除按钮
     UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"标为已读" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         
-
+        
         
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/addUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
@@ -456,13 +475,13 @@
         } failure:^(NSError *error)  {
             FrameLog(@"errorerrorerrorerrorerrorerror : %ld",(long)error.code);
             FrameLog(@"请求失败，返回数据 : %@",error);
-//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//                [FrameBaseRequest logout];
-//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-//                [self.navigationController popToViewController:viewCtl animated:YES];
-//                return;
-//            }
+            //            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            //                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            //                [FrameBaseRequest logout];
+            //                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            //                [self.navigationController popToViewController:viewCtl animated:YES];
+            //                return;
+            //            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         }];
@@ -473,7 +492,7 @@
     
     //添加一个编辑按钮
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-       
+        
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/deleteUserAlarm/%@/%@",self.putType,self.msgList[indexPath.row].id]];
         
@@ -489,13 +508,13 @@
             return ;
         } failure:^(NSError *error)  {
             FrameLog(@"请求失败，返回数据 : %@",error);
-//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//                [FrameBaseRequest logout];
-//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-//                [self.navigationController popToViewController:viewCtl animated:YES];
-//                return;
-//            }
+            //            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            //                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            //                [FrameBaseRequest logout];
+            //                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            //                [self.navigationController popToViewController:viewCtl animated:YES];
+            //                return;
+            //            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         }];
@@ -544,13 +563,13 @@
         return ;
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
-//        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//            UIViewController *viewCtl = self.navigationController.viewControllers[0];
-//            [self.navigationController popToViewController:viewCtl animated:YES];
-//            return;
-//        }
+        //        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //            UIViewController *viewCtl = self.navigationController.viewControllers[0];
+        //            [self.navigationController popToViewController:viewCtl animated:YES];
+        //            return;
+        //        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
@@ -567,7 +586,7 @@
     [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
     self.navigationItem.leftBarButtonItem = fixedButton;
-
+    
     
     UIButton *deleteButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     if(self.msgList.count > 0){
@@ -598,7 +617,7 @@
 -(void)backAction {
     if([_from isEqualToString:@"home"]){
         [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation2"] forBarMetrics:UIBarMetricsDefault];
-    } 
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -622,13 +641,13 @@
             [self setupTable];//刷新列表
         }  failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
-//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//                [FrameBaseRequest logout];
-//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-//                [self.navigationController popToViewController:viewCtl animated:YES];
-//                return;
-//            }
+            //            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            //                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            //                [FrameBaseRequest logout];
+            //                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            //                [self.navigationController popToViewController:viewCtl animated:YES];
+            //                return;
+            //            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];
@@ -661,13 +680,13 @@
             [self setupTable];//刷新列表
         }  failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
-//            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
-//                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//                [FrameBaseRequest logout];
-//                UIViewController *viewCtl = self.navigationController.viewControllers[0];
-//                [self.navigationController popToViewController:viewCtl animated:YES];
-//                return;
-//            }
+            //            if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            //                [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+            //                [FrameBaseRequest logout];
+            //                UIViewController *viewCtl = self.navigationController.viewControllers[0];
+            //                [self.navigationController popToViewController:viewCtl animated:YES];
+            //                return;
+            //            }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
         } ];
@@ -728,14 +747,14 @@
     }];
     
     
-   
     
-   
+    
+    
 }
 
 - (void)backButtonClick:(UIButton *)button {
-   
-     [self.navigationController popViewControllerAnimated:YES];
+    
+    [self.navigationController popViewControllerAnimated:YES];
     
     
 }
@@ -761,6 +780,28 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
+
+
+- (NSString *)getGaoJingImage:(NSString *)level {
+    NSString *levelString = @"level_normal";
+    
+    if ([level containsString:@"正常"]) {
+        levelString = @"gaojing_red";
+    }else if ([level containsString:@"提示"]) {
+        levelString = @"gaojing_prompt";
+    }else if ([level containsString:@"次要"]) {
+        levelString = @"gaojing_ciyao";
+    }else if ([level containsString:@"重要"]) {
+        levelString = @"gaojing_important";
+    }else if ([level containsString:@"紧急"]) {
+        levelString = @"gaojing_red";
+    }else {
+        levelString = @"gaojing_red";
+    }
+    //紧急
+    return levelString;
+}
+
 @end
 
 

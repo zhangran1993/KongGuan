@@ -137,6 +137,7 @@
     if (cell == nil) {
         cell = [[KG_MineThirdDetailCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_MineThirdDetailCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     NSString *ss = self.dataArray[indexPath.row];
     cell.str = ss;

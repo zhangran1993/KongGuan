@@ -8,7 +8,9 @@
 
 #import "KG_DutyManageViewController.h"
 #import "KG_DutyManageCell.h"
-@interface KG_DutyManageViewController ()<UITableViewDelegate,UITableViewDataSource>{
+#import "PGDatePickManager.h"
+
+@interface KG_DutyManageViewController ()<UITableViewDelegate,UITableViewDataSource,PGDatePickerDelegate>{
     
 }
 
@@ -22,10 +24,20 @@
 
 @property (nonatomic, strong)   UIButton                 *rightButton;
 
-
 @property (nonatomic, strong)   UIView                   *selDataView;
 
 @property (nonatomic, strong)   UILabel                  *selDataTitleLabel;
+
+
+@property (nonatomic, copy)     NSString                 *currentDateStr;
+
+
+@property (nonatomic,assign)    NSString* dateStrA;
+@property (nonatomic,assign)    NSInteger viewNum;
+@property (nonatomic,assign)    NSInteger chooseDay;
+@property                       NSDate *NdDate;
+//时间选择器
+@property(strong,nonatomic)     PGDatePicker *DatePicker;
 
 @end
 
@@ -40,6 +52,8 @@
     [self createNaviTopView];
     [self createSelDataView];
     [self createTableView];
+    [self setDateNow];
+    [self queryZhiBanData];
 }
 
 
@@ -57,12 +71,12 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-    
+
 }
 
 - (void)initData {
     
-    self.dataArray = [NSArray arrayWithObjects:@"密码修改",nil];
+    
 }
 
 - (void)createSelDataView {
@@ -72,10 +86,9 @@
     [self.selDataView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +21);
-        make.height.equalTo(@74);
+        make.top.equalTo(self.titleLabel.mas_bottom).offset(21);
+        make.height.equalTo(@38);
     }];
-    
     
     UIButton *leftBtn = [[UIButton alloc]init];
     [self.selDataView addSubview:leftBtn];
@@ -97,7 +110,19 @@
         make.centerY.equalTo(self.selDataView.mas_centerY);
     }];
     
+    UIButton *centerBtn = [[UIButton alloc]init];
+    [self.selDataView addSubview:centerBtn];
+    
+    [centerBtn addTarget:self action:@selector(dateAction) forControlEvents:UIControlEventTouchUpInside];
+    [centerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(leftBtn.mas_right).offset(10);
+        make.right.equalTo(rightBtn.mas_left).offset(-10);
+        make.centerY.equalTo(rightBtn.mas_centerY);
+        make.height.equalTo(@40);
+    }];
+    
     self.selDataTitleLabel = [[UILabel alloc]init];
+    [self.selDataView addSubview:self.selDataTitleLabel];
     self.selDataTitleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.selDataTitleLabel.font = [UIFont systemFontOfSize:16];
     self.selDataTitleLabel.numberOfLines = 1;
@@ -115,15 +140,13 @@
 - (void)selTimeLeftMethod :(UIButton *)button {
     
     
-    
+    [self lastDay];
 }
 
 //右边选择日期
 - (void)selTimeRightMethod :(UIButton *)button {
-    
+    [self nextDay];
 }
-
-
 
 - (void)createNaviTopView {
     
@@ -166,7 +189,29 @@
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
-  
+    
+    self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.rightButton.titleLabel.font = FontSize(16);
+    
+    [self.rightButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+    [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+    
+    [self.view addSubview:self.rightButton];
+    
+    [self.rightButton addTarget:self action:@selector(tiaobanMethod) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@60);
+        make.centerY.equalTo(backBtn.mas_centerY);
+        make.height.equalTo(@44);
+        make.right.equalTo(self.view.mas_right).offset(-10);
+    }];
+    
+}
+
+//调班
+- (void)tiaobanMethod {
+    
+    
 }
 
 - (void)backButtonClick:(UIButton *)button {
@@ -174,10 +219,11 @@
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
-        UILabel * titleLabel = [[UILabel alloc] init];
+        UILabel *titleLabel = [[UILabel alloc] init];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
@@ -206,7 +252,7 @@
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +21 +38 + 15);
-        make.bottom.equalTo(self.view.mas_bottom);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-TABBAR_HEIGHT);
     }];
 }
 
@@ -239,7 +285,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    
-    return 50;
+    return 37;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -249,6 +295,27 @@
         cell = [[KG_DutyManageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_DutyManageCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
+    
+    NSDictionary *dataDic = self.dataArray[indexPath.row];
+    if (self.dataArray.count) {
+        if (self.dataArray.count -1 == indexPath.row) {
+            cell.botLineView.hidden = NO;
+        }else {
+            cell.botLineView.hidden = YES;
+        }
+    }
+    
+    if (indexPath.row %2 == 0) {//如果是偶数
+  
+        cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    }else{//如果是奇数
+
+        cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#FBFBFB"];
+    }
+    
+    
+    cell.dataDic = dataDic;
+    
     return cell;
 }
 
@@ -258,6 +325,117 @@
     
 }
 
+//查询值班数据
+- (void)queryZhiBanData {
+    
+    NSString * current_date = [NSString stringWithFormat:@"/intelligent/api/dutyList/%@",_dateStrA];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:current_date];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil  success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        //        _onetableview.emptyDataSetDelegate = self;
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.dataArray = result[@"value"];
+        [self.tableView reloadData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+    
+    return ;
+}
 
+-(void)lastDay{
+    _chooseDay --;
+    [self setDateNow];
+}
+-(void)nextDay{
+    _chooseDay ++;
+    [self setDateNow];
+}
+-(void)setDateNow{
+    NSDate *date = [NSDate date];
+    if([_NdDate isKindOfClass:[NSNull class]] || [_NdDate isEqual:[NSNull null]] || _NdDate == nil){
+        
+    }else{
+        date = _NdDate;
+    }
+    if(_chooseDay != 0){
+        date = [NSDate dateWithTimeInterval:24*60*60*_chooseDay sinceDate:date];
+    }
+    //NSDate * date = [NSDate date];//当前时间 NSDate *lastDay = [NSDate dateWithTimeInterval:-24*60*60 sinceDate:date];//前一天 NSDate *nextDay = [NSDate dateWithTimeInterval:24*60*60 sinceDate:date];//后一天
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    
+    comps = [calendar components:unitFlags fromDate:date];
+    
+    
+    NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"星期日", @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", nil];
+    NSString *weekStr = [weekdays objectAtIndex:comps.weekday];
+
+    NSDateFormatter *dateFormaterA = [[NSDateFormatter alloc]init];
+    [dateFormaterA setDateFormat:@"yyyy-MM-dd"];
+    _dateStrA = [dateFormaterA stringFromDate:date];
+
+    self.selDataTitleLabel.text = [NSString stringWithFormat:@"%@ %@", _dateStrA, weekStr ] ;
+    
+    [self queryZhiBanData];
+}
+
+//时间选择器
+
+-(void)dateAction{
+    PGDatePickManager *datePickManager = [[PGDatePickManager alloc]init];
+    datePickManager.isShadeBackground = true;
+    _DatePicker = datePickManager.datePicker;
+    _DatePicker.delegate = self;
+    _DatePicker.datePickerType = PGPickerViewLineTypeline;
+    _DatePicker.isHiddenMiddleText = false;
+    _DatePicker.datePickerMode = PGDatePickerModeDate;
+    [self presentViewController:datePickManager animated:false completion:nil];
+    
+}
+
+#pragma PGDatePickerDelegate
+- (void)datePicker:(PGDatePicker *)datePicker didSelectDate:(NSDateComponents *)dateComponents {
+    
+    dateComponents.hour = 0;
+    dateComponents.minute = 0;
+    dateComponents.second = 0;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat =@"yyyy-MM-dd";
+    NSCalendar * calendar = [NSCalendar currentCalendar];
+    
+    // 时间转为字符串
+    NSString *dateStr = [formatter stringFromDate:[calendar dateFromComponents:dateComponents]];
+    //NSString *dateStr = [NSString stringWithFormat:@"%ld-%ld-%ld",(long)dateComponents.year,(long)dateComponents.month,(long)dateComponents.day];
+    NSLog(@"dateStrdateStrdateStr%@",dateStr);
+    
+    NSCalendar *calendar1 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    
+    
+    _NdDate = [calendar1 dateFromComponents:dateComponents];
+    
+    comps = [calendar components:unitFlags fromDate:_NdDate];
+    [calendar components:unitFlags fromDate:_NdDate];
+    NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"星期日", @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", nil];
+    NSString *weekStr = [weekdays objectAtIndex:comps.weekday];
+    _dateStrA = dateStr;
+ 
+    self.selDataTitleLabel.text = [NSString stringWithFormat:@"%@ %@", dateStr, weekStr];
+    _chooseDay = 0;
+    [self queryZhiBanData];
+}
 
 @end

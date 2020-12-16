@@ -105,8 +105,11 @@
     }else if ([str isEqualToString:@"清除缓存"]) {
        
         self.iconImage.image = [UIImage imageNamed:@"kg_clearcache"];
+    }else if ([str isEqualToString:@"密码修改"]) {
+       
+        self.iconImage.image = [UIImage imageNamed:@"center_changpass"];
     }
-    
+        
 }
 
 @end

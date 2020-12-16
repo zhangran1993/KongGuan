@@ -55,7 +55,7 @@
     [intoductionLabel setTextColor:[UIColor colorWithHexString:@"#626470"]];
     NSMutableParagraphStyle  *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     // 行间距设置为30
-    [paragraphStyle  setLineSpacing:3];
+    [paragraphStyle  setLineSpacing:8];
     NSString  *testString = @"      智慧台站是一款针对民航空管业内人士提供通导外台站远程监控、信息通报、智能排故、大数据分析的专业软件。通过移动互联网帮助业内外台站维护人士第一时间掌握台站运行情况，引入大数据、AI技术，实现联动性智能运维，贯彻无人值守管理办法，提升外台站的应急处置能力，辅助台站管理人员综合决策，实现通导集约化管理。";
     NSMutableAttributedString  *setString = [[NSMutableAttributedString alloc] initWithString:testString];
     [setString  addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [testString length])];

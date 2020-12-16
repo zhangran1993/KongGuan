@@ -667,6 +667,10 @@
 		25906F70248A0D5C0010DD89 /* 监控@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25906F6C248A0D5C0010DD89 /* 监控@2x.png */; };
 		25906F71248A0D5C0010DD89 /* 电子栅栏@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25906F6D248A0D5C0010DD89 /* 电子栅栏@3x.png */; };
 		25906F72248A0D5C0010DD89 /* 电子栅栏@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25906F6E248A0D5C0010DD89 /* 电子栅栏@2x.png */; };
+		25907D7D25884E76002829CB /* KG_MyMessageDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25907D7C25884E76002829CB /* KG_MyMessageDetailCell.m */; };
+		25907D832588854A002829CB /* KG_GonggaoDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25907D822588854A002829CB /* KG_GonggaoDetailCell.m */; };
+		25907D862588855A002829CB /* KG_GaojingDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25907D852588855A002829CB /* KG_GaojingDetailCell.m */; };
+		25907D892588856A002829CB /* KG_YujingDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25907D882588856A002829CB /* KG_YujingDetailCell.m */; };
 		2591819C2537D6C000E4DC32 /* KG_CaseLibraryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2591819B2537D6C000E4DC32 /* KG_CaseLibraryDetailViewController.m */; };
 		259181A02537D95B00E4DC32 /* KG_CaseLibraryDetailFirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2591819F2537D95B00E4DC32 /* KG_CaseLibraryDetailFirstCell.m */; };
 		259181A92537D9DC00E4DC32 /* KG_CaseLibraryDetailThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259181A32537D9DA00E4DC32 /* KG_CaseLibraryDetailThirdCell.m */; };
@@ -2134,6 +2138,14 @@
 		25906F6C248A0D5C0010DD89 /* 监控@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "监控@2x.png"; sourceTree = "<group>"; };
 		25906F6D248A0D5C0010DD89 /* 电子栅栏@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电子栅栏@3x.png"; sourceTree = "<group>"; };
 		25906F6E248A0D5C0010DD89 /* 电子栅栏@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "电子栅栏@2x.png"; sourceTree = "<group>"; };
+		25907D7B25884E76002829CB /* KG_MyMessageDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_MyMessageDetailCell.h; sourceTree = "<group>"; };
+		25907D7C25884E76002829CB /* KG_MyMessageDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_MyMessageDetailCell.m; sourceTree = "<group>"; };
+		25907D812588854A002829CB /* KG_GonggaoDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_GonggaoDetailCell.h; sourceTree = "<group>"; };
+		25907D822588854A002829CB /* KG_GonggaoDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_GonggaoDetailCell.m; sourceTree = "<group>"; };
+		25907D842588855A002829CB /* KG_GaojingDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_GaojingDetailCell.h; sourceTree = "<group>"; };
+		25907D852588855A002829CB /* KG_GaojingDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_GaojingDetailCell.m; sourceTree = "<group>"; };
+		25907D872588856A002829CB /* KG_YujingDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_YujingDetailCell.h; sourceTree = "<group>"; };
+		25907D882588856A002829CB /* KG_YujingDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_YujingDetailCell.m; sourceTree = "<group>"; };
 		2591819A2537D6C000E4DC32 /* KG_CaseLibraryDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CaseLibraryDetailViewController.h; sourceTree = "<group>"; };
 		2591819B2537D6C000E4DC32 /* KG_CaseLibraryDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CaseLibraryDetailViewController.m; sourceTree = "<group>"; };
 		2591819E2537D95B00E4DC32 /* KG_CaseLibraryDetailFirstCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CaseLibraryDetailFirstCell.h; sourceTree = "<group>"; };
@@ -4377,6 +4389,7 @@
 		258A62DC2580552A005A8105 /* 个人中心 */ = {
 			isa = PBXGroup;
 			children = (
+				25907D7A25884E58002829CB /* 我的消息 */,
 				2589E92B258217AA0065A022 /* 值班管理 */,
 				2589E91F2581ED300065A022 /* 账号安全 */,
 				2589E9122581BBAF0065A022 /* 关于我们 */,
@@ -5605,6 +5618,45 @@
 				25906F5F2488A3070010DD89 /* KG_RunMangerFifthCell.m */,
 			);
 			path = runManagerCell;
+			sourceTree = "<group>";
+		};
+		25907D7A25884E58002829CB /* 我的消息 */ = {
+			isa = PBXGroup;
+			children = (
+				25907D8025888533002829CB /* 公告消息 */,
+				25907D7F2588852B002829CB /* 告警消息 */,
+				25907D7E25888524002829CB /* 预警消息 */,
+				25907D7B25884E76002829CB /* KG_MyMessageDetailCell.h */,
+				25907D7C25884E76002829CB /* KG_MyMessageDetailCell.m */,
+			);
+			path = "我的消息";
+			sourceTree = "<group>";
+		};
+		25907D7E25888524002829CB /* 预警消息 */ = {
+			isa = PBXGroup;
+			children = (
+				25907D872588856A002829CB /* KG_YujingDetailCell.h */,
+				25907D882588856A002829CB /* KG_YujingDetailCell.m */,
+			);
+			path = "预警消息";
+			sourceTree = "<group>";
+		};
+		25907D7F2588852B002829CB /* 告警消息 */ = {
+			isa = PBXGroup;
+			children = (
+				25907D842588855A002829CB /* KG_GaojingDetailCell.h */,
+				25907D852588855A002829CB /* KG_GaojingDetailCell.m */,
+			);
+			path = "告警消息";
+			sourceTree = "<group>";
+		};
+		25907D8025888533002829CB /* 公告消息 */ = {
+			isa = PBXGroup;
+			children = (
+				25907D812588854A002829CB /* KG_GonggaoDetailCell.h */,
+				25907D822588854A002829CB /* KG_GonggaoDetailCell.m */,
+			);
+			path = "公告消息";
 			sourceTree = "<group>";
 		};
 		259181992537D69800E4DC32 /* 案例库详情 */ = {
@@ -8193,6 +8245,7 @@
 				25EDC547247BA6410006821C /* KG_SelPhotoCollectionViewCell.m in Sources */,
 				25906F5424889D570010DD89 /* KG_RunManagerFirstCell.m in Sources */,
 				258DBCF625302FE100F010DD /* KG_HistoryWarnEventViewController.m in Sources */,
+				25907D7D25884E76002829CB /* KG_MyMessageDetailCell.m in Sources */,
 				258586312541293D002993A0 /* KG_FailureNoticeFlowChartViewController.m in Sources */,
 				25EFF0D024EB6EAA001F02E5 /* KG_NewScreenViewController.m in Sources */,
 				258B6FC82548172900C936E7 /* KG_StationFileDetailFourthCell.m in Sources */,
@@ -8357,6 +8410,7 @@
 				2584D61024440C110059A949 /* KG_DetailRightModel.m in Sources */,
 				258AB23224AD7E680025C637 /* KG_WeiHuContentView.m in Sources */,
 				25D748882580C55C00606BDB /* KG_MineThirdDetailCell.m in Sources */,
+				25907D832588854A002829CB /* KG_GonggaoDetailCell.m in Sources */,
 				25EEB355243EC8F200B9F803 /* KG_NiControlCell.m in Sources */,
 				258F7731252027280043B3A6 /* KG_EquipmentHistoryViewController.m in Sources */,
 				2593C78B254BEA8200D3E2E5 /* KG_EquipmentHistoryEquScreenCell.m in Sources */,
@@ -8567,6 +8621,7 @@
 				FEE24924206CB92E00D62197 /* PatroTextFieldCell.m in Sources */,
 				258D2938246A6C9A004E8B5A /* KG_XunShiTopView.m in Sources */,
 				25CF3F422502174B00AD3ACA /* KG_CreateTeShuBaoZhangViewController.m in Sources */,
+				25907D892588856A002829CB /* KG_YujingDetailCell.m in Sources */,
 				EC61EA0521C8835400FACC83 /* UIScrollView+EmptyDataSet.m in Sources */,
 				25B0D09925104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m in Sources */,
 				25EEB329243481BE00B9F803 /* KG_SecondFloorViewController.m in Sources */,
@@ -8689,6 +8744,7 @@
 				EC5E52DE21B7A28D009212D7 /* PopularModel.m in Sources */,
 				258D2925246A6C9A004E8B5A /* KG_SelEquipClassCell.m in Sources */,
 				EC025D9521C8DC02001A3F5E /* DIYNoDataView.m in Sources */,
+				25907D862588855A002829CB /* KG_GaojingDetailCell.m in Sources */,
 				1892F57E2106E46E00534833 /* FrameSettingItem.m in Sources */,
 				FE416DC7205CC8C40044229F /* PersonalSendOpinionController.m in Sources */,
 				257DF8D6253189AF0008E252 /* KG_HistoryWarnEventScreenViewController.m in Sources */,

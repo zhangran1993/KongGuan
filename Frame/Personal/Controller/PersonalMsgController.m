@@ -16,21 +16,20 @@
 #import <MJExtension.h>
 
 @interface PersonalMsgController (){
-    int timeCont;
-    NSTimer *timer;
+    int       timeCont;
+    NSTimer   *timer;
 }
 
 /** 存放数据模型的数组 */
 //@property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
 //@property(strong,nonatomic)UITableView *stationTabView;
-@property(strong,nonatomic)UILabel *newsNumLabel;
-@property(strong,nonatomic)UILabel *yujingNumLabel;
-@property(strong,nonatomic)UILabel *gonggaoNumLabel;
+@property(strong,nonatomic)    UILabel       *newsNumLabel;
+@property(strong,nonatomic)    UILabel       *yujingNumLabel;
+@property(strong,nonatomic)    UILabel       *gonggaoNumLabel;
 
-
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
-@property (nonatomic, strong)  UIButton  *rightButton;
+@property (nonatomic, strong)  UILabel       *titleLabel;
+@property (nonatomic, strong)  UIView        *navigationView;
+@property (nonatomic, strong)  UIButton      *rightButton;
 
 @end
 

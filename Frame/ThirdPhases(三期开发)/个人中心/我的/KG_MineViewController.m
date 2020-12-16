@@ -17,6 +17,9 @@
 #import "KG_CenterCommonViewController.h"
 #import "KG_AccountSafeViewController.h"
 
+#import "PersonalMsgController.h"
+#import "PersonalMsgListController.h"
+#import "PersonalViewController.h"
 @interface KG_MineViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -124,7 +127,27 @@
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
+        
       
+        
+        cell.pushToNextStep = ^(NSString * _Nonnull title) {
+            if ([title isEqualToString:@"消息中心"]) {
+                PersonalMsgController *ChooseStation = [[PersonalMsgController alloc] init];
+                [self.navigationController pushViewController: ChooseStation animated:YES];
+            }else if ([title isEqualToString:@"预警消息"]) {
+                PersonalMsgListController  * PersonalMsg = [[PersonalMsgListController alloc] init];
+                PersonalMsg.thistitle = @"预警消息";
+                [self.navigationController pushViewController: PersonalMsg animated:YES];
+            }else if ([title isEqualToString:@"告警消息"]) {
+                PersonalMsgListController  * PersonalMsg = [[PersonalMsgListController alloc] init];
+                PersonalMsg.thistitle = @"告警消息";
+                [self.navigationController pushViewController: PersonalMsg animated:YES];
+            }else if ([title isEqualToString:@"公告消息"]) {
+                PersonalMsgListController * PersonalMsg = [[PersonalMsgListController alloc] init];
+                PersonalMsg.thistitle = @"公告消息";
+                [self.navigationController pushViewController: PersonalMsg animated:YES];
+            }
+        };
         return cell;
         
     }else if (indexPath.section == 1) {

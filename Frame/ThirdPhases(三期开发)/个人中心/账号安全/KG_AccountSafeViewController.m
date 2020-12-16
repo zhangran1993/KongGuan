@@ -7,8 +7,9 @@
 //
 
 #import "KG_AccountSafeViewController.h"
-#import "PersonalSetController.h"
+#import "PersonalEditPwdController.h"
 #import "KG_CenterCommonCell.h"
+
 @interface KG_AccountSafeViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -186,6 +187,7 @@
     if (cell == nil) {
         cell = [[KG_CenterCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_CenterCommonCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     NSString *ss = self.dataArray[indexPath.row];
     cell.str = ss;
@@ -194,7 +196,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    PersonalSetController *vc = [[PersonalSetController alloc]init];
+    PersonalEditPwdController *vc = [[PersonalEditPwdController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 
 }

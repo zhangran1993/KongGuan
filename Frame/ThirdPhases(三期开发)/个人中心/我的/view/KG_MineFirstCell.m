@@ -149,10 +149,19 @@
         make.height.equalTo(@22);
     }];
     
+    UIButton *bgBtn = [[UIButton alloc]init];
+    [self addSubview:bgBtn];
+    [bgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@40);
+        make.right.equalTo(self.mas_right);
+        make.top.equalTo(self.bgImage.mas_bottom).offset(-10);
+    }];
+    [bgBtn addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
     UIButton *rightButton = [[UIButton alloc]init];
     [self addSubview:rightButton];
     [rightButton setImage:[UIImage imageNamed:@"center_rightImage"] forState:UIControlStateNormal];\
-    
+    [rightButton addTarget:self action:@selector(rightButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@18);
         make.right.equalTo(self.mas_right).offset(-11);
@@ -163,6 +172,8 @@
     UIButton *guzhangBtn = [[UIButton alloc]init];
     [self addSubview:guzhangBtn];
     [guzhangBtn setImage:[UIImage imageNamed:@"center_yujing_image"] forState:UIControlStateNormal];
+    [guzhangBtn addTarget:self action:@selector(yujingButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
+    
     [guzhangBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(38);
         make.top.equalTo(self.bgImage.mas_bottom).offset(51+3-10);
@@ -186,6 +197,7 @@
     UIButton *beijianBtn = [[UIButton alloc]init];
     [self addSubview:beijianBtn];
     [beijianBtn setImage:[UIImage imageNamed:@"center_gaojing_image"] forState:UIControlStateNormal];
+    [beijianBtn addTarget:self action:@selector(gaojingButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
     [beijianBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);
         make.top.equalTo(self.bgImage.mas_bottom).offset(51+3-10);
@@ -208,6 +220,7 @@
     
     UIButton *levelBtn = [[UIButton alloc]init];
     [self addSubview:levelBtn];
+    [levelBtn addTarget:self action:@selector(gonggaoButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
     [levelBtn setImage:[UIImage imageNamed:@"center_gonggao_image"] forState:UIControlStateNormal];
     [levelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-40);
@@ -231,10 +244,44 @@
 
 }
 
+- (void)rightButtonClicked :(UIButton *)btn {
+    
+    if (self.pushToNextStep) {
+        self.pushToNextStep(@"消息中心");
+    }
+}
+
 //所属台站点击
 - (void)stationClickMethod:(UIButton *)button {
     
     
+    
+}
+
+//公告点击
+- (void)gonggaoButtonCLicked:(UIButton *)button {
+    
+    
+    if (self.pushToNextStep) {
+           self.pushToNextStep(@"公告消息");
+       }
+}
+
+//告警消息点击
+- (void)gaojingButtonCLicked:(UIButton *)button {
+    
+    if (self.pushToNextStep) {
+           self.pushToNextStep(@"告警消息");
+       }
+    
+}
+
+//预警消息点击
+- (void)yujingButtonCLicked:(UIButton *)button {
+    
+    if (self.pushToNextStep) {
+           self.pushToNextStep(@"预警消息");
+       }
     
 }
 @end

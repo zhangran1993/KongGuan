@@ -64,61 +64,104 @@
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     //文字内容
-    UILabel  *opinionLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(23),FrameWidth(35) +Height_NavBar ,FrameWidth(220), 20)];
+    UILabel  *opinionLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, +Height_NavBar ,FrameWidth(220),40)];
     opinionLabel.textAlignment = NSTextAlignmentLeft;
-    opinionLabel.text = @"问题和意见";
-    opinionLabel.font = FontSize(18);
+    opinionLabel.text = @"请描述具体问题";
+    opinionLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    opinionLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.view addSubview:opinionLabel];
-    //问题主题
-    UIView *opinionView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(90)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
-    opinionView.backgroundColor = [UIColor whiteColor];
-  
-    _titletext = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(20), 0, FrameWidth(500), FrameWidth(80))];
-    _titletext.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"您的主题" attributes:@{NSForegroundColorAttributeName: [UIColor grayColor],NSFontAttributeName:FontSize(17)}];
-    //[textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
-//    [_titletext setValue:FontSize(17) forKeyPath:@"_placeholderLabel.font"];
-//    [_titletext setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.6] forKeyPath:@"_placeholderLabel.textColor"];
-    _titletext.tag=2;
-    _titletext.delegate = self;
-    [opinionView addSubview:_titletext];
-    [self.view addSubview:opinionView];
+//    问题主题
+
+
     //问题描述
-    UIView *opiniondescView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(180) +Height_NavBar, WIDTH_SCREEN, FrameWidth(320))];
+    UIView *opiniondescView = [[UIView alloc] initWithFrame:CGRectMake(16, FrameWidth(180) +Height_NavBar, WIDTH_SCREEN, 130)];
     opiniondescView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:opiniondescView];
+    [opiniondescView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.top.equalTo(opinionLabel.mas_bottom);
+        make.height.equalTo(@130);
+    }];
     
     _desctext = [[UITextView alloc]initWithFrame:CGRectMake(5, 10, WIDTH_SCREEN-10, opiniondescView.frame.size.height-20)];
-    _desctext.font = FontSize(17);
+    _desctext.font = FontSize(14);
     _desctext.tag = 100;
     _desctext.delegate = self;
     _desctext.textColor = [UIColor lightGrayColor];
     _desctext.layer.borderWidth = 0;
-    _desctext.text = @"请填写10字以上的问题描述以便我们提供更好的帮助";
+    _desctext.text = @"异常发生的时间、网络状况、具体位置及表现等";
     if(self.thisdesc){
         _desctext.text = self.thisdesc;
         _desctext.textColor = [UIColor blackColor];
     }
     [opiniondescView addSubview:_desctext];
+    [_desctext mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(opiniondescView.mas_left);
+        make.right.equalTo(opiniondescView.mas_right);
+        make.top.equalTo(opiniondescView.mas_top);
+        make.height.equalTo(opiniondescView.mas_height);
+    }];
     
-    [self.view addSubview:opiniondescView];
     //上传问题截图
     
     UILabel  *opinionImgLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(23),FrameWidth(530)+Height_NavBar ,FrameWidth(220), 20)];
     opinionImgLabel.textAlignment = NSTextAlignmentLeft;
-    opinionImgLabel.text = @"上传问题截图";
-    opinionImgLabel.font = FontSize(18);
+    opinionImgLabel.text = @"图片补充：(相关图能帮程序员哥哥解决问题哦~)";
+    opinionImgLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    opinionImgLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.view addSubview:opinionImgLabel];
-    
+    [opinionImgLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16.5);
+        make.right.equalTo(self.view.mas_right).offset(-16.5);
+        make.top.equalTo(opiniondescView.mas_bottom).offset(15.5);
+        make.height.equalTo(@18);
+    }];
     
     
     
     //图片上传
     UIView *ImgView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(580)+Height_NavBar, WIDTH_SCREEN, FrameWidth(135))];
+    [self.view addSubview:ImgView];
     ImgView.backgroundColor = [UIColor whiteColor];
+    [ImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(opinionImgLabel.mas_bottom).offset(12);
+        make.height.equalTo(@100);
+    }];
     
     
     _image1 = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(15), FrameWidth(15), FrameWidth(100), FrameWidth(100))];
+    [ImgView addSubview:_image1];
+    [_image1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(ImgView.mas_left).offset(16);
+        make.width.equalTo(@100);
+        make.top.equalTo(ImgView.mas_top);
+        make.height.equalTo(@100);
+    }];
+    
+     
+    
     _image2 = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(130), FrameWidth(15), FrameWidth(100), FrameWidth(100))];
+    [ImgView addSubview:_image2];
+    [_image2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_image1.mas_right).offset(10);
+        make.width.equalTo(@100);
+        make.top.equalTo(ImgView.mas_top);
+        make.height.equalTo(@100);
+    }];
+    
+   
     _image3 = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(245), FrameWidth(15), FrameWidth(100), FrameWidth(100))];
+    [ImgView addSubview:_image3];
+    [_image3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_image2.mas_right).offset(10);
+        make.width.equalTo(@100);
+        make.top.equalTo(ImgView.mas_top);
+        make.height.equalTo(@100);
+    }];
+    
     
     _image1.image = [UIImage imageNamed:@"0"];
     _image1.clipsToBounds = YES;
@@ -156,37 +199,83 @@
     [_imgbtn2 setHidden:true];
     [_imgbtn3 setHidden:true];
     */
-    [ImgView addSubview:_image1];
-    [ImgView addSubview:_image2];
-    [ImgView addSubview:_image3];
-    [self.view addSubview:ImgView];
+   
+    UILabel *contactLabel = [[UILabel alloc]init];
+    [self.view addSubview:contactLabel];
+    contactLabel.text = @"联系方式：(选填)";
+    contactLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    contactLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    contactLabel.textAlignment = NSTextAlignmentLeft;
+    [contactLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.top.equalTo(ImgView.mas_bottom).offset(16);
+        make.width.equalTo(@200);
+        make.height.equalTo(@13.5);
+    }];
     
+    UIView *opinionView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(90)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
+    opinionView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:opinionView];
+    opinionView.layer.cornerRadius = 6.f;
+    opinionView.layer.masksToBounds = YES;
+    opinionView.layer.borderWidth = 1;
+    opinionView.layer.borderColor = [[UIColor colorWithHexString:@"#DBDCE7"] CGColor];
+    [opinionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.top.equalTo(contactLabel.mas_bottom).offset(12);
+        make.height.equalTo(@44);
+        
+    }];
     
+    _titletext = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(20), 0, FrameWidth(500), FrameWidth(80))];
+    _titletext.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请注明是QQ/微信/手机号的哪一种" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#BABCC4"],NSFontAttributeName:FontSize(14)}];
+   
+//    [_titletext setValue:FontSize(17) forKeyPath:@"_placeholderLabel.font"];
+//    [_titletext setValue:[UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:0.6] forKeyPath:@"_placeholderLabel.textColor"];
+    _titletext.tag=2;
+    _titletext.delegate = self;
+    [opinionView addSubview:_titletext];
+    [_titletext mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(opinionView.mas_left);
+        make.right.equalTo(opinionView.mas_right);
+        make.height.equalTo(opinionView.mas_height);
+        make.top.equalTo(opinionView.mas_top);
+    }];
+  
     //问题提交
     UIButton *submitButton = [[UIButton alloc] initWithFrame: CGRectMake((WIDTH_SCREEN-FrameWidth(470))/2, FrameWidth(820)+Height_NavBar, FrameWidth(470), FrameWidth(80))];
-    [submitButton setTitle:@"问题提交" forState:UIControlStateNormal];
+    [submitButton setTitle:@"提交" forState:UIControlStateNormal];
     [submitButton addTarget:self action:@selector(submit) forControlEvents:UIControlEventTouchUpInside];
-    [submitButton.layer setCornerRadius:FrameWidth(40)]; //设置矩形四个圆角半径
+    [submitButton.layer setCornerRadius:4]; //设置矩形四个圆角半径
     [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
-    submitButton.titleLabel.font = FontSize(18);
-    [submitButton.layer setBackgroundColor:[UIColor colorWithRed:100/255.0 green:170/255.0 blue:250/255.0 alpha:1].CGColor];//边框颜色
+    submitButton.titleLabel.font = FontSize(16);
+    [submitButton setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
     [self.view addSubview:submitButton];
     
-    return ;
+    [submitButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_bottom).offset(-TABBAR_HEIGHT-30);
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.height.equalTo(@44);
+    }];
+    return;
+    
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField{
+    
     if ([FrameBaseRequest stringContainsEmoji:textField.text]) {
         UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"输入内容含有表情，请重新输入" message:@"" preferredStyle:UIAlertControllerStyleAlert];
         [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
         [self presentViewController:alertContor animated:NO completion:nil];
-        
         textField.text = @"";
         [textField becomeFirstResponder];
     }else {
+        
     }
-    
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
     if ([FrameBaseRequest stringContainsEmoji:textField.text]) {
         UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"输入内容含有表情，请重新输入" message:@"" preferredStyle:UIAlertControllerStyleAlert];
         [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
@@ -223,11 +312,14 @@
     }
 }
 -(void)textViewDidChange:(UITextView *)textView{
+    
     NSLog(@"textViewDidChange");
     if([_desctext.text rangeOfString:@"\n"].length >0){
+        
     }
 }
 - (void)textViewDidChangeSelection:(UITextView *)textView{
+    
     NSLog(@"textViewDidChangeSelection");
     if ([FrameBaseRequest stringContainsEmoji:textView.text]) {
         UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"输入内容含有表情，请重新输入" message:@"" preferredStyle:UIAlertControllerStyleAlert];
@@ -239,17 +331,14 @@
     }
 }
 
-
-
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     NSLog(@"textViewDidBeginEditing");
     if([_desctext.text isEqualToString:@"请填写10字以上的问题描述以便我们提供更好的帮助"]){
-        _desctext.text=@"";
-        _desctext.textColor=[UIColor blackColor];
+        _desctext.text = @"";
+        _desctext.textColor = [UIColor blackColor];
     }
 }
-
 
 -(void)viewWillAppear:(BOOL)animated{
     
@@ -259,8 +348,6 @@
 {
     
 }
-
-
 
 -(void)submit{
     if(_submitNum == 1){
@@ -295,8 +382,7 @@
     }
     //_titletext.text = [_titletext.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     //_desctext.text = [_desctext.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    
+
     int hasEmoji = 0;
      if ([FrameBaseRequest stringContainsEmoji:_titletext.text]) {
          hasEmoji = 1;
@@ -372,23 +458,12 @@
     [leftButon addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *fixedButton = [[UIBarButtonItem alloc]initWithCustomView:leftButon];
     self.navigationItem.leftBarButtonItem = fixedButton;
-   
-    
 }
 
 -(void)backAction {
+    
     [self.navigationController popViewControllerAnimated:YES];
-    /*
-     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     [userDefaults removeObjectForKey:@"nowurl"];
-     //[self.navigationController pushViewController:[[FrameLoginController alloc]init] animated:YES];
-     //[self.navigationController popViewControllerAnimated:YES];
-     //[self dismissViewControllerAnimated:YES completion:nil];
-     //NSLog(@"返回到登陆页");
-     UIViewController *viewCtl = self.navigationController.viewControllers[1];
-     [self.navigationController popToViewController:viewCtl animated:YES];
-     //[self.navigationController popViewControllerAnimated:YES];
-     */
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -410,12 +485,10 @@
     if(viewClicked.tag != _image2.tag&&imgcount==1){
         [self Delete:viewClicked.tag];
         return;
-        
     }
     if(viewClicked.tag != _image3.tag&&imgcount==2){
         [self Delete:viewClicked.tag];
         return;
-        
     }
     // 1.判断相册是否可以打开
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
@@ -455,11 +528,9 @@
         
         
     }];
-    
 }
 
 - (void)upDateHeadIcon:(UIImage *)photo{
-    
     //请求地址
     NSString *FrameRequestURL = [WebHost stringByAppendingString:@"/upload/app/feedback"];
 
@@ -471,7 +542,6 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",  @"text/html", @"image/jpeg",  @"image/png", @"application/octet-stream", @"text/json",@"multipart/form-data",@"application/x-www-form-urlencoded", nil];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     //manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
     
     [manager POST:FrameRequestURL parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> _Nonnull formData) {
         //上传的参数(上传图片，以文件流的格式)
@@ -536,7 +606,11 @@
         [_image3 setHidden:false];
     }
 }
--(void)show1{[_imgbtn1 setHidden:false]; }
+
+-(void)show1{
+    
+    [_imgbtn1 setHidden:false];
+}
 -(void)show2{
     [_imgbtn1 setHidden:false];
     [_imgbtn2 setHidden:false];
@@ -546,6 +620,7 @@
     [_imgbtn2 setHidden:false];
     [_imgbtn3 setHidden:false];
 }
+
 -(void)delete:(UIButton*)sender{
     NSInteger imgcount = [_imgArray count];
     if(imgcount >= sender.tag){
@@ -553,8 +628,8 @@
         [self setImage];
         
     }
-    
 }
+
 -(void)Delete:(NSInteger)tg{
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"删除该张图片？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
@@ -569,12 +644,7 @@
     }]];
     [self presentViewController:alertContor animated:NO completion:nil];
     
-    
-    
-    
-    
 }
-
 
 -(UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)theTize//图片压缩到指定CGSize大小
 {
@@ -596,7 +666,7 @@
     topImage.image = [self createImageWithColor:[UIColor clearColor]];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
-    self.navigationView.backgroundColor = [UIColor clearColor];
+    self.navigationView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.navigationView];
     
     /** 添加标题栏 **/
@@ -633,8 +703,8 @@
    
      [self.navigationController popViewControllerAnimated:YES];
     
-    
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -647,6 +717,7 @@
     }
     return _titleLabel;
 }
+
 - (UIImage*)createImageWithColor: (UIColor*) color{
     CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);

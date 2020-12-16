@@ -201,6 +201,7 @@
     if (cell == nil) {
         cell = [[KG_CenterCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_CenterCommonCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     NSString *ss = self.dataArray[indexPath.section];
     cell.str = ss;

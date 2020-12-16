@@ -32,6 +32,8 @@
 #import <SDWebImage/UIButton+WebCache.h>
 #import "KG_MineViewController.h"
 
+
+#import "KG_DutyManageViewController.h"
 @interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UINavigationControllerDelegate,ZRDatePickerViewDelegate>
 @property (strong, nonatomic) NSDictionary *currentStationDic;
 
@@ -725,7 +727,7 @@
 
 //查看值班表
 - (void)zhibanMethod {
-    PersonalPatrolController *PatrolController = [[PersonalPatrolController alloc] init];
+    KG_DutyManageViewController *PatrolController = [[KG_DutyManageViewController alloc] init];
     [self.navigationController pushViewController:PatrolController animated:YES];
     
 }
