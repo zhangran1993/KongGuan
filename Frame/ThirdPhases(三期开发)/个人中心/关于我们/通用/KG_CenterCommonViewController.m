@@ -9,6 +9,8 @@
 #import "KG_CenterCommonViewController.h"
 
 #import "KG_CenterCommonCell.h"
+#import "KG_SetFontSystemViewController.h"
+#import "KG_NewMessNotiViewController.h"
 @interface KG_CenterCommonViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -210,18 +212,65 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//
-//      if ([ss isEqualToString:@"新消息通知"]) {
-//          
-//         
-//      }else if ([ss isEqualToString:@"字体大小"]) {
-//          
-//          
-//      }else if ([ss isEqualToString:@"清除缓存"]) {
-//          
-//          
-//      }
-
+    NSString *ss = self.dataArray[indexPath.section];
+    if ([ss isEqualToString:@"新消息通知"]) {
+        
+        KG_NewMessNotiViewController *vc = [[KG_NewMessNotiViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }else if ([ss isEqualToString:@"字体大小"]) {
+        
+        KG_SetFontSystemViewController *vc = [[KG_SetFontSystemViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+        
+    }else if ([ss isEqualToString:@"清除缓存"]) {
+        
+        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:nil message:@"确认要清除缓存吗？" preferredStyle:UIAlertControllerStyleAlert];
+        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            
+           
+            
+        }]];
+        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            
+            NSLog(@"登录缓存不可清除   %f",[self folderSizeAtPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).lastObject]);
+            NSLog(@"size   %f",[self folderSizeAtPath:NSTemporaryDirectory()]);
+            //
+            CGFloat size = [self folderSizeAtPath:NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject] +[self folderSizeAtPath:NSTemporaryDirectory()];
+            //if(size <= 0.00025){wo
+            //   size = 0.0;
+            //}
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults removeObjectForKey:@"station"];
+            
+            NSString *message =@"";
+            if(size > 1){
+                message =[NSString stringWithFormat:@"成功清理%.2fM缓存", size];
+            } else if(size == 0){
+                message =[NSString stringWithFormat:@"成功清理%dK缓存", 0];
+            }else{
+                message =[NSString stringWithFormat:@"成功清理%.2fKB缓存", size * 1024.0];
+            }
+            
+            
+            [self cleanCaches:NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject];
+            //[self cleanCaches:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).lastObject];
+            [self cleanCaches:NSTemporaryDirectory()];
+            //NSString * msg = [NSString stringWithFormat:@"成功清理%0.2fKB缓存",huan];
+            
+            [FrameBaseRequest showMessage:message];
+            return ;
+        }]];
+        
+        [self presentViewController:alertContor animated:NO completion:nil];
+        
+        
+        
+        
+        
+    }
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -246,4 +295,41 @@
     
     return 4;
 }
+
+
+// 计算目录大小
+- (CGFloat)folderSizeAtPath:(NSString *)path{
+    // 利用NSFileManager实现对文件的管理
+    NSFileManager *manager = [NSFileManager defaultManager];
+    CGFloat size = 0;
+    if ([manager fileExistsAtPath:path]) {
+        // 获取该目录下的文件，计算其大小
+        NSArray *childrenFile = [manager subpathsAtPath:path];
+        for (NSString *fileName in childrenFile) {
+            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
+            size += [manager attributesOfItemAtPath:absolutePath error:nil].fileSize;
+        }
+        // 将大小转化为M
+        return size / 1024.0 / 1024.0;
+    }
+    return 0;
+}
+// 根据路径删除文件
+- (void)cleanCaches:(NSString *)path{
+    // 利用NSFileManager实现对文件的管理
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path]) {
+        // 获取该路径下面的文件名
+        NSArray *childrenFiles = [fileManager subpathsAtPath:path];
+        for (NSString *fileName in childrenFiles) {
+            // 拼接路径
+            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
+            // 将文件删除
+            [fileManager removeItemAtPath:absolutePath error:nil];
+        }
+    }
+    
+}
+
+
 @end

@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong)   UILabel           *detailLabel;
 
+@property (nonatomic, strong)   UILabel           *positionLabel;
+
 @property (nonatomic, strong)   UIView            *circleView;
 
 @property (nonatomic, strong)   UIView            *bgView;
@@ -67,6 +69,23 @@
         make.height.equalTo(@180);
     }];
     
+    
+
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *name = [userDefaults objectForKey:@"name"];
+    NSArray * positions = [userDefaults objectForKey:@"role"];
+    NSString *position = @"";
+    if(![positions  isEqual: @[]] ){
+        position = positions[0];
+        for (int i = 1; i < positions.count; i++) {
+            position = [NSString stringWithFormat:@"%@、%@",position,positions[i]];
+        }
+        //position = [userDefaults objectForKey:@"role"][0];
+    }
+    
+    
+    
     self.iconImage = [[UIImageView alloc]init];
     [self addSubview:self.iconImage];
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -74,6 +93,26 @@
         make.top.equalTo(self.mas_top).offset(66);
         make.height.width.equalTo(@74);
     }];
+    
+    self.iconImage.layer.cornerRadius = 74/2;
+    self.iconImage.layer.masksToBounds = YES;
+    
+    
+    if([userDefaults objectForKey:@"icon"]){
+        NSString *iconString = [userDefaults objectForKey:@"icon"];
+      
+        
+        
+        if([iconString isEqualToString:@"head_blueIcon"]) {
+            self.iconImage.image = [UIImage imageNamed:@"head_icon"];
+        }else {
+            [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+        }
+    }else {
+        
+        self.iconImage.image = [UIImage imageNamed:@"head_icon"];
+    }
+    
     
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
@@ -87,17 +126,47 @@
         make.width.equalTo(@120);
     }];
     
+    self.titleLabel.text = name;
+    
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
-    self.detailLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightBold];
+    self.detailLabel.font = [UIFont systemFontOfSize:14];
+    [self.detailLabel sizeToFit];
+
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(16);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(5);
-        make.height.equalTo(@28);
-        make.right.equalTo(self.mas_right).offset(-29);
+        make.height.equalTo(@20);
+        make.width.lessThanOrEqualTo(@(SCREEN_WIDTH - 108-29));
+//        make.right.equalTo(self.mas_right).offset(-29);
     }];
+    
+ 
+    self.detailLabel.text = position;
+    
+    
+    
+    self.positionLabel = [[UILabel alloc]init];
+    [self addSubview:self.positionLabel];
+    self.positionLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    self.positionLabel.textAlignment = NSTextAlignmentLeft;
+    self.positionLabel.font = [UIFont systemFontOfSize:14];
+    [self.positionLabel sizeToFit];
+    
+    [self.positionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.iconImage.mas_right).offset(16);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(5);
+        make.height.equalTo(@20);
+        make.width.lessThanOrEqualTo(@(SCREEN_WIDTH - 108-29));
+        //        make.right.equalTo(self.mas_right).offset(-29);
+    }];
+    self.positionLabel.text = position;
+    
+    
+    
+    
     
     
     self.staRightBtn = [[UIButton alloc]init];
@@ -105,7 +174,7 @@
     [self.staRightBtn setImage:[UIImage imageNamed:@"center_rightImage"] forState:UIControlStateNormal];
     [self.staRightBtn addTarget:self action:@selector(stationClickMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.staRightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-8);
+        make.left.equalTo(self.detailLabel.mas_right).offset(5);
         make.width.height.equalTo(@18);
         make.centerY.equalTo(self.detailLabel.mas_centerY);
     }];
@@ -254,6 +323,9 @@
 //所属台站点击
 - (void)stationClickMethod:(UIButton *)button {
     
+    if(self.pushToPesonalMessPage){
+        self.pushToPesonalMessPage();
+    }
     
     
 }
@@ -282,6 +354,20 @@
     if (self.pushToNextStep) {
            self.pushToNextStep(@"预警消息");
        }
+    
+}
+
+- (void)setStaStr:(NSString *)staStr {
+    _staStr = staStr;
+    self.detailLabel.text = safeString(staStr);
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"icon"]){
+        //            NSString *iconString = [userDefaults objectForKey:@"icon"];
+        [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [WebNewHost stringByAppendingString:[userDefaults objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"head_icon"]];
+    }else {
+        
+        self.iconImage.image = [UIImage imageNamed:@"head_icon"];
+    }
     
 }
 @end

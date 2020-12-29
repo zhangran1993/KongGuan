@@ -38,11 +38,7 @@
 }
 
 - (void)createSubviewsView {
-    
 
-    
-    
-    
     UIView *shuView = [[UIView alloc]init];
     [self addSubview:shuView];
     shuView.layer.cornerRadius = 2.f;
@@ -71,6 +67,7 @@
     UIButton *rightButton = [[UIButton alloc]init];
     [self addSubview:rightButton];
     [rightButton setImage:[UIImage imageNamed:@"center_rightImage"] forState:UIControlStateNormal];\
+    [rightButton addTarget:self action:@selector(buttonCLicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@18);
@@ -86,6 +83,8 @@
         make.top.equalTo(self.mas_top).offset(51);
         make.width.height.equalTo(@60);
     }];
+    
+    [guzhangBtn addTarget:self action:@selector(buttonCLicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *guzhangLabel = [[UILabel alloc]init];
     [self addSubview:guzhangLabel];
@@ -109,6 +108,7 @@
         make.top.equalTo(self.mas_top).offset(51);
         make.width.height.equalTo(@60);
     }];
+    [beijianBtn addTarget:self action:@selector(buttonCLicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *beijianLabel = [[UILabel alloc]init];
     [self addSubview:beijianLabel];
@@ -132,6 +132,7 @@
         make.top.equalTo(self.mas_top).offset(51);
         make.width.height.equalTo(@60);
     }];
+    [levelBtn addTarget:self action:@selector(buttonCLicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *levelLabel = [[UILabel alloc]init];
     [self addSubview:levelLabel];
@@ -147,5 +148,12 @@
         make.width.equalTo(@80);
     }];
     
+}
+
+- (void)buttonCLicked :(UIButton *)btn {
+    
+    if (self.pushToDataManager) {
+        self.pushToDataManager();
+    }
 }
 @end

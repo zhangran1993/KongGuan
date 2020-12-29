@@ -126,6 +126,17 @@
         make.height.equalTo(self.mas_height);
         make.width.equalTo(@((SCREEN_WIDTH -32)/2));
     }];
+    self.changeDutyButton = [[UIButton alloc]init];
+    [self addSubview:self.changeDutyButton];
+    [self.changeDutyButton setImage:[UIImage imageNamed:@"kg_changeDuty"] forState:UIControlStateNormal];
+    [self.changeDutyButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@17);
+        make.right.equalTo(self.mas_right).offset(-46);
+        make.centerY.equalTo(self.mas_centerY);
+    }];
+    self.changeDutyButton.hidden = YES;
+    [self.changeDutyButton addTarget:self action:@selector(changeDuty:) forControlEvents:UIControlEventTouchUpInside];
+    
     
 }
 
@@ -136,5 +147,12 @@
     
     self.rightTitleLabel.text = safeString(dataDic[@"name"]);
     
+}
+
+- (void)changeDuty:(UIButton *)button {
+    
+    if (self.ischangeDutyBlock) {
+        self.ischangeDutyBlock(self.dataDic);
+    }
 }
 @end

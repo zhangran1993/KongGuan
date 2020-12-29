@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_MineSecondCell : UITableViewCell
 
+@property (nonatomic,strong)void (^pushToDataManager)();
+
 @end
 
 NS_ASSUME_NONNULL_END

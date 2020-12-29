@@ -51,8 +51,20 @@ static NSString * const FrameCellID = @"ChooseStation";
     //初始化tableview
     [self.view addSubview:self.tableView];
     [self setupTable];
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    UIView *bgView = [[UIView alloc]init];
+    [self.view addSubview:bgView];
+    bgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navigationView.mas_bottom);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.height.equalTo(@10);
+    }];
+    
+    
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.navigationView.mas_bottom).offset(10);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
@@ -79,7 +91,9 @@ static NSString * const FrameCellID = @"ChooseStation";
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation"] forBarMetrics:UIBarMetricsDefault];
    
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
+        
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -98,13 +112,15 @@ static NSString * const FrameCellID = @"ChooseStation";
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
 }
+
 -(void)backAction {
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation2"] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = self.view.backgroundColor;
@@ -283,10 +299,10 @@ static NSString * const FrameCellID = @"ChooseStation";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     ChooseStationCell *cell = [tableView dequeueReusableCellWithIdentifier:FrameCellID];
-    cell.selectionStyle = 0;
-    [cell prepareForReuse];
-    [cell.contentView setFrame:CGRectMake(0, 0, self.view.frame.size.width, cell.bounds.size.height)];
-    
+//    cell.selectionStyle = 0;
+//    [cell prepareForReuse];
+//    [cell.contentView setFrame:CGRectMake(0, 0, self.view.frame.size.width, cell.bounds.size.height)];
+//
     cell.station = self.stations[indexPath.row];
     
     
@@ -297,7 +313,7 @@ static NSString * const FrameCellID = @"ChooseStation";
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
 
-    return FrameWidth(80);
+    return 55;
 }
 -(CGFloat)getHeightByWidth:(CGFloat)width title:(NSString *)title font:(UIFont *)font {
     
@@ -345,7 +361,7 @@ static NSString * const FrameCellID = @"ChooseStation";
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
     [self.view addSubview:topImage];
     topImage.backgroundColor  =[UIColor clearColor];
-    topImage.image = [self createImageWithColor:[UIColor clearColor]];
+    topImage.image = [self createImageWithColor:[UIColor whiteColor]];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
     self.navigationView.backgroundColor = [UIColor clearColor];

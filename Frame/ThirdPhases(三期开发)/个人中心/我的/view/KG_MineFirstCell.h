@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic ,strong) void (^pushToNextStep)( NSString *title);
+
+@property (nonatomic ,strong) void (^pushToPesonalMessPage)();
+
+
+@property (nonatomic ,copy)   NSString   *staStr;
 @end
 
 NS_ASSUME_NONNULL_END

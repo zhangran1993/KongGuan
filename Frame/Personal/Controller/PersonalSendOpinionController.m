@@ -19,6 +19,8 @@
 @property(nonatomic)int *num;
 @property (strong, nonatomic) UIWindow *window;
 @property(strong,nonatomic)UITextField *titletext;
+
+@property(strong,nonatomic)UITextField *themetext;
 @property(strong,nonatomic)UITextView *desctext;
 @property(strong,nonatomic)UIImageView *image1;
 @property(strong,nonatomic)UIImageView *image2;
@@ -62,17 +64,54 @@
 -(void)loadBgView{
     // int thisViewwidth = getScreen.size.width/2;
     //背景色
-    self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
+    self.view.backgroundColor =  [UIColor  colorWithHexString:@"#F6F7F9"] ;
+    
     //文字内容
-    UILabel  *opinionLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, +Height_NavBar ,FrameWidth(220),40)];
+    UILabel  *themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, Height_NavBar ,FrameWidth(220),40)];
+    themeLabel.textAlignment = NSTextAlignmentLeft;
+    themeLabel.text = @"主题";
+    themeLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    themeLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    [self.view addSubview:themeLabel];
+    //    问题主题
+    UIView *themeView = [[UIView alloc] initWithFrame:CGRectMake(0, FrameWidth(90)+Height_NavBar, WIDTH_SCREEN, FrameWidth(80))];
+    themeView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:themeView];
+    themeView.layer.cornerRadius = 6.f;
+    themeView.layer.masksToBounds = YES;
+    themeView.layer.borderWidth = 1;
+    themeView.layer.borderColor = [[UIColor colorWithHexString:@"#DBDCE7"] CGColor];
+    [themeView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left).offset(16);
+        make.right.equalTo(self.view.mas_right).offset(-16);
+        make.top.equalTo(themeLabel.mas_bottom);
+        make.height.equalTo(@44);
+        
+    }];
+    
+    _themetext = [[UITextField alloc]initWithFrame:CGRectMake(FrameWidth(20), 0, FrameWidth(500), FrameWidth(80))];
+    _themetext.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入主题" attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#BABCC4"],NSFontAttributeName:FontSize(14)}];
+    
+    _themetext.tag=2;
+    _themetext.delegate = self;
+    [themeView addSubview:_themetext];
+    [_themetext mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(themeView.mas_left);
+        make.right.equalTo(themeView.mas_right);
+        make.height.equalTo(themeView.mas_height);
+        make.top.equalTo(themeView.mas_top);
+    }];
+    
+    
+    //文字内容
+    UILabel  *opinionLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, +Height_NavBar + 40 +44  ,FrameWidth(220),40)];
     opinionLabel.textAlignment = NSTextAlignmentLeft;
     opinionLabel.text = @"请描述具体问题";
     opinionLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     opinionLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.view addSubview:opinionLabel];
-//    问题主题
 
-
+    
     //问题描述
     UIView *opiniondescView = [[UIView alloc] initWithFrame:CGRectMake(16, FrameWidth(180) +Height_NavBar, WIDTH_SCREEN, 130)];
     opiniondescView.backgroundColor = [UIColor whiteColor];
@@ -88,8 +127,11 @@
     _desctext.font = FontSize(14);
     _desctext.tag = 100;
     _desctext.delegate = self;
-    _desctext.textColor = [UIColor lightGrayColor];
+    _desctext.textColor = [UIColor colorWithHexString:@"#24252A"];
+    _desctext.layer.cornerRadius = 6.f;
+    _desctext.layer.masksToBounds = YES;
     _desctext.layer.borderWidth = 0;
+    _desctext.backgroundColor = [UIColor colorWithHexString:@"#EEF0F4"];
     _desctext.text = @"异常发生的时间、网络状况、具体位置及表现等";
     if(self.thisdesc){
         _desctext.text = self.thisdesc;
@@ -254,7 +296,7 @@
     [self.view addSubview:submitButton];
     
     [submitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).offset(-TABBAR_HEIGHT-30);
+        make.top.equalTo(self.view.mas_bottom).offset(-TABBAR_HEIGHT-30);
         make.left.equalTo(self.view.mas_left).offset(16);
         make.right.equalTo(self.view.mas_right).offset(-16);
         make.height.equalTo(@44);
@@ -274,6 +316,7 @@
         
     }
 }
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     if ([FrameBaseRequest stringContainsEmoji:textField.text]) {
@@ -285,10 +328,12 @@
     }
     return [textField resignFirstResponder];
 }
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     //UITextField *pwd = [self.view viewWithTag:101];
     [_titletext endEditing:YES];
     [_desctext endEditing:YES];
+    [_themetext endEditing:YES];
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
@@ -303,6 +348,7 @@
         return YES;
     }
 }
+
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     NSLog(@"textViewDidEndEditing");
@@ -311,6 +357,7 @@
         _desctext.textColor = [UIColor lightGrayColor];
     }
 }
+
 -(void)textViewDidChange:(UITextView *)textView{
     
     NSLog(@"textViewDidChange");
@@ -318,6 +365,7 @@
         
     }
 }
+
 - (void)textViewDidChangeSelection:(UITextView *)textView{
     
     NSLog(@"textViewDidChangeSelection");
@@ -356,7 +404,7 @@
     [_titletext endEditing:YES];
     [_desctext endEditing:YES];
     
-    if([_titletext.text isEqualToString:@""]){
+    if([_themetext.text isEqualToString:@""]){
         
         [FrameBaseRequest showMessage:@"请填写主题"];
         return ;
@@ -401,24 +449,38 @@
     
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"title"] = _titletext.text;
+    params[@"title"] = _themetext.text;
     params[@"content"] = _desctext.text;
-    params[@"pictureOne"] = @"";
-    params[@"pictureTwo"] = @"";
-    params[@"pictureThree"] = @"";
+    params[@"contact"] = _titletext.text;
+//    params[@"pictureOne"] = @"";
+//    params[@"pictureTwo"] = @"";
+//    params[@"pictureThree"] = @"";
+    NSMutableDictionary *imgDic = [NSMutableDictionary dictionaryWithCapacity:0];
+    NSMutableArray *imgArr = [NSMutableArray arrayWithCapacity:0];
+    
     for (int i = 0; i<imgcount; i++) {
-        if(i == 0){
-            params[@"pictureOne"] = [_imgArray objectAtIndex:0];
-        }
-        if(i == 1){
-            params[@"pictureTwo"] = [_imgArray objectAtIndex:1];
-        }
-        if(i == 2){
-            params[@"pictureThree"] = [_imgArray objectAtIndex:2];
-        }
+        [imgDic setValue:@"1" forKey:@"name"];
+        [imgDic setValue:safeString(_imgArray[i]) forKey:@"url"];
+        [imgArr addObject:imgDic];
     }
     
-    NSString *FrameRequestURL = [WebHost stringByAppendingString:@"/api/atcFeedback"];
+    NSString *imgStr = [self gs_jsonStringCompactFormatForNSArray:imgArr];
+    params[@"fileUrl"] = imgStr;
+//
+//
+//    for (int i = 0; i<imgcount; i++) {
+//        if(i == 0){
+//            params[@"pictureOne"] = [_imgArray objectAtIndex:0];
+//        }
+//        if(i == 1){
+//            params[@"pictureTwo"] = [_imgArray objectAtIndex:1];
+//        }
+//        if(i == 2){
+//            params[@"pictureThree"] = [_imgArray objectAtIndex:2];
+//        }
+//    }
+    
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/atcFeedback"];
     _submitNum = 1;
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         _submitNum = 0;
@@ -465,6 +527,7 @@
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -532,7 +595,7 @@
 
 - (void)upDateHeadIcon:(UIImage *)photo{
     //请求地址
-    NSString *FrameRequestURL = [WebHost stringByAppendingString:@"/upload/app/feedback"];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/upload/feedback"];
 
     //photo.压缩
     NSData * datapng = UIImageJPEGRepresentation(photo, 0.3);
@@ -570,6 +633,7 @@
         //上传失败
     }];
 }
+
 -(void)setImage{
     
     NSInteger imgcount = [_imgArray count];
@@ -579,12 +643,12 @@
     [_imgbtn2 setHidden:true];
     [_imgbtn3 setHidden:true];
     if(imgcount == 0){
-        _image1.image = [UIImage imageNamed:@"personal_photo"];
+        _image1.image = [UIImage imageNamed:@"kg_fankui_addImage"];
         _image2.image = nil;
         _image3.image = nil;
     }else if(imgcount == 1){
         [_image1 sd_setImageWithURL:[NSURL URLWithString: [_imgArray objectAtIndex:0]]];
-        _image2.image = [UIImage imageNamed:@"personal_photo"];
+        _image2.image = [UIImage imageNamed:@"kg_fankui_addImage"];
         _image3.image = nil;
         [self performSelector:@selector(show1) withObject:nil afterDelay:3.0f];
         [_image1 setHidden:false];
@@ -592,7 +656,7 @@
     }else if(imgcount == 2){
         [_image1 sd_setImageWithURL:[NSURL URLWithString: [_imgArray objectAtIndex:0]]];
         [_image2 sd_setImageWithURL:[NSURL URLWithString: [_imgArray objectAtIndex:1]]];
-        _image3.image = [UIImage imageNamed:@"personal_photo"];
+        _image3.image = [UIImage imageNamed:@"kg_fankui_addImage"];
         [self performSelector:@selector(show2) withObject:nil afterDelay:3.0f];
         [_image1 setHidden:false];
         [_image2 setHidden:false];
@@ -611,10 +675,12 @@
     
     [_imgbtn1 setHidden:false];
 }
+
 -(void)show2{
     [_imgbtn1 setHidden:false];
     [_imgbtn2 setHidden:false];
 }
+
 -(void)show3{
     [_imgbtn1 setHidden:false];
     [_imgbtn2 setHidden:false];
@@ -718,7 +784,7 @@
     return _titleLabel;
 }
 
-- (UIImage*)createImageWithColor: (UIColor*) color{
+- (UIImage*)createImageWithColor: (UIColor*)color{
     CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -728,6 +794,25 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
+
+//将数组转换成json格式字符串,不含\n这些符号
+
+- (NSString *)gs_jsonStringCompactFormatForNSArray:(NSArray *)arrJson {
+
+    if (![arrJson isKindOfClass:[NSArray class]] || ![NSJSONSerialization isValidJSONObject:arrJson]) {
+
+        return nil;
+
+    }
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:arrJson options:0 error:nil];
+
+    NSString *strJson = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    return strJson;
+
+}
+
 
 @end
 

@@ -20,6 +20,12 @@
 #import "PersonalMsgController.h"
 #import "PersonalMsgListController.h"
 #import "PersonalViewController.h"
+#import "PersonalViewController.h"
+#import "PersonalPatrolController.h"
+#import "KG_DutyManageViewController.h"
+#import "KG_DataCenterManagerViewController.h"
+#import "PersonalAboutUsController.h"
+#import "KG_PersonInfoViewController.h"
 @interface KG_MineViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -34,6 +40,8 @@
 
 @property (nonatomic, strong)   UIButton                *rightButton;
 
+@property (nonatomic, copy)     NSString           *staStr;
+
 
 
 @end
@@ -45,8 +53,7 @@
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-//    [self createNaviTopView];
-    
+    //    [self createNaviTopView];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
@@ -54,10 +61,11 @@
         make.top.equalTo(self.view.mas_top);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-    
+    [self stationAction];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    
     NSLog(@"StationDetailController viewWillAppear");
     if (@available(iOS 13.0, *)){
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDarkContent;
@@ -74,13 +82,14 @@
             
         }
     }
-}
-
--(void)viewWillDisappear:(BOOL)animated{
-    NSLog(@"StationDetailController viewWillDisappear");
     
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    NSLog(@"StationDetailController viewWillDisappear");
+    
+}
 
 - (UITableView *)tableView {
     if (!_tableView) {
@@ -95,7 +104,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-   
+    
     return 4;
 }
 
@@ -108,12 +117,12 @@
     if (indexPath.section == 0) {
         return 320;
     }else if (indexPath.section == 1) {
-       return 150;
+        return 150;
     }else if (indexPath.section == 2) {
-       
+        
         return 330;
     }else if (indexPath.section == 3) {
-
+        
         return 55;
     }
     return 0;
@@ -127,8 +136,6 @@
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        
-      
         
         cell.pushToNextStep = ^(NSString * _Nonnull title) {
             if ([title isEqualToString:@"消息中心"]) {
@@ -148,6 +155,16 @@
                 [self.navigationController pushViewController: PersonalMsg animated:YES];
             }
         };
+        
+        cell.pushToPesonalMessPage = ^{
+            KG_PersonInfoViewController *vc = [[KG_PersonInfoViewController alloc] init];
+            vc.refreshData = ^{
+                [self.tableView reloadData];
+            };
+            vc.stationStr = self.staStr;
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        cell.staStr = self.staStr;
         return cell;
         
     }else if (indexPath.section == 1) {
@@ -157,7 +174,10 @@
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-      
+        cell.pushToDataManager = ^{
+            [self pushToDataManager];
+        };
+        
         return cell;
     }else if (indexPath.section == 2) {
         KG_MineThirdCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_MineThirdCell"];
@@ -167,10 +187,11 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         cell.didselStr = ^(NSString * _Nonnull ss) {
-           
+            
             if ([ss isEqualToString:@"台站值班"]) {
                 
-               
+                KG_DutyManageViewController *vc = [[KG_DutyManageViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
             }else if ([ss isEqualToString:@"通用"]) {
                 
                 KG_CenterCommonViewController *vc = [[KG_CenterCommonViewController alloc]init];
@@ -187,6 +208,11 @@
                 KG_AccountSafeViewController *vc = [[KG_AccountSafeViewController alloc]init];
                 [self.navigationController pushViewController:vc animated:YES];
                 
+            }else if ([ss isEqualToString:@"关于我们"]) {
+                
+                PersonalAboutUsController *vc = [[PersonalAboutUsController alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+                
             }else if ([ss isEqualToString:@"退出登录"]) {
                 [self logout];
             }
@@ -198,8 +224,9 @@
         if (cell == nil) {
             cell = [[KG_MineFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_MineFourthCell"];
             cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone; 
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
+        
         
         return cell;
     }
@@ -216,6 +243,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if (indexPath.section == 3) {
+        [self logout];
+    }
     
 }
 
@@ -333,7 +363,7 @@
             
             [FrameBaseRequest logout];
             
-             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
             //跳转登陆页
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.slideMenuController showViewController:login];
@@ -344,7 +374,7 @@
             
             [FrameBaseRequest showMessage:result[@"value"]];
             [FrameBaseRequest logout];
-             [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
             //跳转登陆页
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.slideMenuController showViewController:login];
@@ -353,20 +383,65 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
-//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
-//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
-//            [FrameBaseRequest logout];
-//             [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
-//            LoginViewController *login = [[LoginViewController alloc] init];
-//            [self.slideMenuController showViewController:login];
-//            return;
-//        }else if(responses.statusCode == 502){
-//
-//        }
+        //        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+        //            [FrameBaseRequest showMessage:@"身份已过期，请重新登录"];
+        //            [FrameBaseRequest logout];
+        //             [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
+        //            LoginViewController *login = [[LoginViewController alloc] init];
+        //            [self.slideMenuController showViewController:login];
+        //            return;
+        //        }else if(responses.statusCode == 502){
+        //
+        //        }
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
     
 }
+
+//跳转到数据中心
+- (void)pushToDataManager {
+    
+    KG_DataCenterManagerViewController *vc = [[KG_DataCenterManagerViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+-(void)stationAction {
+ 
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/allStationList"];
+    NSLog(@"FrameRequestURL %@",FrameRequestURL);
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        
+        NSArray *stationArr = result[@"value"];
+        NSMutableString *parStr = [NSMutableString stringWithCapacity:0];
+        
+        for (NSDictionary *dataDic in stationArr) {
+            
+            NSString *staStr = safeString(dataDic[@"name"]);
+            [parStr appendString:[NSString stringWithFormat:@"%@、",staStr]];
+            
+        }
+        self.staStr = parStr;
+        [self.tableView reloadData];
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+        
+    }];
+
+}
+
 
 @end

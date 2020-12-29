@@ -19,6 +19,8 @@
 #import "FrameGroupItem.h"
 #import <UIImageView+WebCache.h>
 #import "UIViewController+YQSlideMenu.h"
+#import "KG_PersonInfoViewController.h"
+#import "KG_DutyManageViewController.h"
 #define MAXPersonalViewWIDTH (WIDTH_SCREEN/6)
 @interface PersonalViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -472,8 +474,6 @@
         //发送退出请求
         [self postLogout];
         
-        
-        
         //[self presentViewController:alertContor animated:NO completion:nil];
         return ;
     }]];
@@ -493,7 +493,7 @@
             
             [FrameBaseRequest logout];
             
-             [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
             //跳转登陆页
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.slideMenuController showViewController:login];
@@ -529,7 +529,7 @@
     
 }
 -(void)gotoInfo{
-    PersonalInfoController *InfoController = [[PersonalInfoController alloc] init];
+    KG_PersonInfoViewController *InfoController = [[KG_PersonInfoViewController alloc] init];
     [self.slideMenuController showViewController:InfoController];
 }
 
@@ -545,8 +545,9 @@
     }
     if(pathrow == 1){//台站值班#import "PersonalPatrolController.h"
         [self showNavigation];
-        PersonalPatrolController *PatrolController = [[PersonalPatrolController alloc] init];
-        [self.slideMenuController showViewController:PatrolController];
+        KG_DutyManageViewController *vc = [[KG_DutyManageViewController alloc] init];
+//        PersonalPatrolController *PatrolController = [[PersonalPatrolController alloc] init];
+        [self.slideMenuController showViewController:vc];
         return ;
     }
     if(pathrow == 2){//所属台站

@@ -29,8 +29,8 @@
 @implementation KG_AccountSafeViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
     
+    [super viewDidLoad];
     self.view.backgroundColor =[UIColor colorWithHexString:@"#F6F7F9"];
     [self initData];
     // Do any additional setup after loading the view.
@@ -134,11 +134,19 @@
     return theImage;
 }
 
-
 - (void)createTableView {
     
-    [self.view addSubview:self.tableView];
+    UIView *bgView = [[UIView alloc]init];
+    [self.view addSubview:bgView];
+    bgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+        make.height.equalTo(@10);
+    }];
     
+    [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);

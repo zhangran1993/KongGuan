@@ -8,7 +8,7 @@
 
 #import "KG_NewMessNotiViewController.h"
 
-#import "KG_CenterCommonCell.h"
+#import "KG_NewMessNotiCell.h"
 @interface KG_NewMessNotiViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -23,6 +23,13 @@
 
 @property (nonatomic, strong)   UIButton                 *rightButton;
 
+@property (nonatomic, assign)   BOOL                     switchOn;
+
+
+@property (nonatomic, assign)   NSInteger                *indexPath;
+
+
+@property (nonatomic, strong)   NSDictionary             *dataDic;
 
 @end
 
@@ -37,6 +44,7 @@
     [self createNaviTopView];
     
     [self createTableView];
+    [self.tableView reloadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -59,6 +67,23 @@
 - (void)initData {
     
     self.dataArray = [NSArray arrayWithObjects:@"新消息通知",@"字体大小",@"清除缓存",nil];
+    
+    self.switchOn = NO;
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey:@"newMessNoti"]) {
+        self.dataDic = [userDefaults objectForKey:@"newMessNoti"];
+        
+    }else {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:0];
+        [dic setValue:[NSNumber numberWithInt:0] forKey:@"yujing"];
+        [dic setValue:[NSNumber numberWithInt:0] forKey:@"gaojing"];
+        [dic setValue:[NSNumber numberWithInt:0] forKey:@"gonggao"];
+        
+        self.dataDic = dic;
+        
+    }
+    
 }
 
 - (void)createNaviTopView {
@@ -82,7 +107,7 @@
         make.centerX.equalTo(self.navigationView.mas_centerX);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
-    self.titleLabel.text = safeString(@"通用");
+    self.titleLabel.text = safeString(@"新消息通知");
     
     /** 返回按钮 **/
     UIButton *backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
@@ -110,6 +135,7 @@
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -133,7 +159,6 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
-
 
 - (void)createTableView {
     
@@ -167,7 +192,7 @@
 - (UITableView *)tableView {
     
     if (!_tableView) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = self.view.backgroundColor;
@@ -177,33 +202,67 @@
     return _tableView;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
-    return self.dataArray.count;
-}
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 1;
-    
+    return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    
-    return 50;
+    return 60;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    KG_CenterCommonCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_CenterCommonCell"];
+    KG_NewMessNotiCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_NewMessNotiCell"];
    
     if (cell == nil) {
-        cell = [[KG_CenterCommonCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_CenterCommonCell"];
+        cell = [[KG_NewMessNotiCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_NewMessNotiCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
-    NSString *ss = self.dataArray[indexPath.section];
-    cell.str = ss;
+    cell.indexPath = indexPath.row;
+    
+    cell.switchOnBlock = ^(BOOL switchOn, NSInteger indexRow) {
+        
+      
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithDictionary:self.dataDic];
+        if (indexRow == 0) {
+            [dic setValue:[NSNumber numberWithInt:switchOn] forKey:@"yujing"];
+        }else if (indexRow == 1) {
+            [dic setValue:[NSNumber numberWithInt:switchOn] forKey:@"gaojing"];
+        }else if (indexRow == 2) {
+            [dic setValue:[NSNumber numberWithInt:switchOn] forKey:@"gonggao"];
+        }
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:dic forKey:@"newMessNoti"];
+        
+        
+    };
+    
+    
+    if(indexPath.row == 0) {
+        
+        cell.titleLabel.text = @"预警消息";
+        cell.detailLabel.text = @"包含天气预警和设备参数预警";
+//        [cell.swh setOn:[NSNumber numberWithBool:self.dataDic[@"yujing"]]];
+        
+        BOOL isON = [self.dataDic[@"yujing"] boolValue];
+        [cell.swh setOn:isON];
+    }else if(indexPath.row == 1) {
+        cell.titleLabel.text = @"告警消息";
+        cell.detailLabel.text = @"包含不同等级的告警消息";
+//        [cell.swh setOn:[NSNumber numberWithBool:self.dataDic[@"gaojing"]]];
+        BOOL isON =  [self.dataDic[@"gaojing"] boolValue];
+        [cell.swh setOn:isON];
+    }else if(indexPath.row == 2) {
+        cell.titleLabel.text = @"公告消息";
+        cell.detailLabel.text = @"包含任务提醒和提示消息";
+//        [cell.swh setOn:[NSNumber numberWithBool:self.dataDic[@"gonggao"]]];
+        BOOL isON = [self.dataDic[@"gonggao"] boolValue];
+        [cell.swh setOn:isON];
+    }
+    
+    
     return cell;
 }
 
@@ -220,29 +279,5 @@
 //
 //
 //      }
-
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
-    return headView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
-    return 0.001;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 4)];
-    footView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    return footView;
-    
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    
-    return 4;
 }
 @end

@@ -366,12 +366,11 @@ UISearchBarDelegate,UISearchDisplayDelegate>
     }];
 }
 - (void)sureMethod {
-    
+   
+    [self.navigationController popViewControllerAnimated:YES];
     if(self.sureBlockMethod){
-        
         self.sureBlockMethod(self.nameID, self.nameStr);
     }
-    [self.navigationController popViewControllerAnimated:YES];
     
 }
 - (void)backButtonClick:(UIButton *)button {

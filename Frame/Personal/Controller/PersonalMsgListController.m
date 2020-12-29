@@ -95,7 +95,8 @@
     
     
     [self.view addSubview:self.tableview];
-    
+    // 上拉加载
+        
     // 头部刷新控件
     self.tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     [self.tableview.mj_header beginRefreshing];
@@ -703,7 +704,6 @@
     [super dealloc];
 }
 
-
 - (void)createNaviTopView {
     
     UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
@@ -745,10 +745,6 @@
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
-    
-    
-    
-    
     
 }
 

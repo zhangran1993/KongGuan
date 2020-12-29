@@ -31,6 +31,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic ,strong) UILabel       *rightTitleLabel;
 
+
+@property (nonatomic ,strong) UIButton      *changeDutyButton;
+
+@property (nonatomic ,strong) void (^ischangeDutyBlock)( NSDictionary *dataDic);
+
 @end
 
 NS_ASSUME_NONNULL_END

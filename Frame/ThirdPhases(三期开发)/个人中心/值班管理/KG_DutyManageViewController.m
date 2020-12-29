@@ -9,6 +9,7 @@
 #import "KG_DutyManageViewController.h"
 #import "KG_DutyManageCell.h"
 #import "PGDatePickManager.h"
+#import "KG_AddressbookViewController.h"
 
 @interface KG_DutyManageViewController ()<UITableViewDelegate,UITableViewDataSource,PGDatePickerDelegate>{
     
@@ -28,16 +29,23 @@
 
 @property (nonatomic, strong)   UILabel                  *selDataTitleLabel;
 
-
 @property (nonatomic, copy)     NSString                 *currentDateStr;
 
-
-@property (nonatomic,assign)    NSString* dateStrA;
-@property (nonatomic,assign)    NSInteger viewNum;
-@property (nonatomic,assign)    NSInteger chooseDay;
-@property                       NSDate *NdDate;
+@property (nonatomic,copy)      NSString                 *dateStrA;
+@property (nonatomic,assign)    NSInteger                viewNum;
+@property (nonatomic,assign)    NSInteger                chooseDay;
+@property                       NSDate                   *NdDate;
 //时间选择器
-@property(strong,nonatomic)     PGDatePicker *DatePicker;
+@property(strong,nonatomic)     PGDatePicker             *DatePicker;
+
+@property (nonatomic,assign)    BOOL                     isClickZhiBan;
+
+@property (nonatomic, copy)     NSString                 *selNameStr;
+@property (nonatomic, copy)     NSString                 *selNameId;
+@property (nonatomic, strong)   NSDictionary             *selDic;
+
+@property (nonatomic, copy)     NSString                 *currentTime;
+@property (nonatomic, copy)     NSString                 *postId;
 
 @end
 
@@ -46,13 +54,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.view.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
     [self initData];
     // Do any additional setup after loading the view.
     [self createNaviTopView];
     [self createSelDataView];
     [self createTableView];
     [self setDateNow];
+    
     [self queryZhiBanData];
 }
 
@@ -66,16 +75,19 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
     [self.navigationController setNavigationBarHidden:YES];
- 
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
-
+    
 }
 
 - (void)initData {
+    self.isClickZhiBan = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushToAddressBook) name:@"pushToAddressBook" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addressBookSelPerson:) name:@"addressBookSelPerson" object:nil];
     
 }
 
@@ -132,13 +144,10 @@
         make.centerY.equalTo(rightBtn.mas_centerY);
         make.height.equalTo(@22);
     }];
-    
-    
 }
 
 //左边选择日期
 - (void)selTimeLeftMethod :(UIButton *)button {
-    
     
     [self lastDay];
 }
@@ -205,11 +214,12 @@
         make.height.equalTo(@44);
         make.right.equalTo(self.view.mas_right).offset(-10);
     }];
-    
 }
 
 //调班
 - (void)tiaobanMethod {
+    self.isClickZhiBan = YES;
+    [self.tableView reloadData];
     
     
 }
@@ -244,8 +254,83 @@
     return theImage;
 }
 
-
 - (void)createTableView {
+    
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH , 37)];
+    UIView *bgView = [[UIView alloc]init];
+    [headView addSubview:bgView];
+    bgView.backgroundColor = [UIColor colorWithHexString:@"#F1F5FC"];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headView.mas_left).offset(16);
+        make.top.equalTo(headView.mas_top);
+        make.bottom.equalTo(headView.mas_bottom);
+        make.right.equalTo(headView.mas_right).offset(-16);
+    }];
+    
+    UIView *leftView = [[UIView alloc]init];
+    [headView addSubview:leftView];
+    leftView.backgroundColor = [UIColor colorWithHexString:@"#E7ECF6"];
+    [leftView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headView.mas_left).offset(16);
+        make.top.equalTo(headView.mas_top);
+        make.bottom.equalTo(headView.mas_bottom);
+        make.width.equalTo(@1);
+    }];
+    
+    UIView *topLineView = [[UIView alloc]init];
+    [headView addSubview:topLineView];
+    topLineView.backgroundColor = [UIColor colorWithHexString:@"#E7ECF6"];
+    [topLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headView.mas_left).offset(16);
+        make.top.equalTo(headView.mas_top);
+        make.right.equalTo(headView.mas_right).offset(-16);
+        make.height.equalTo(@1);
+    }];
+    
+    UIView *rightLineView = [[UIView alloc]init];
+    [headView addSubview:rightLineView];
+    rightLineView.backgroundColor = [UIColor colorWithHexString:@"#E7ECF6"];
+    [rightLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(headView.mas_right).offset(-16);
+        make.top.equalTo(headView.mas_top);
+        make.bottom.equalTo(headView.mas_bottom);
+        make.width.equalTo(@1);
+    }];
+    
+    UIView *botLineView = [[UIView alloc]init];
+    [headView addSubview:botLineView];
+    botLineView.backgroundColor = [UIColor colorWithHexString:@"#E7ECF6"];
+    [botLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(headView.mas_right).offset(-16);
+        make.bottom.equalTo(headView.mas_bottom);
+        make.left.equalTo(headView.mas_left).offset(16);
+        make.height.equalTo(@1);
+    }];
+    
+    UILabel *leftLabel = [[UILabel alloc]init];
+    [headView addSubview:leftLabel];
+    leftLabel.text = @"职位";
+    leftLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    leftLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    [leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headView.mas_left).offset(34);
+        make.width.equalTo(@100);
+        make.centerY.equalTo(headView.mas_centerY);
+        make.height.equalTo(headView.mas_height);
+    }];
+    
+    UILabel *rightLabel = [[UILabel alloc]init];
+    [headView addSubview:rightLabel];
+    rightLabel.text = @"人员";
+    rightLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+    rightLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    rightLabel.textAlignment = NSTextAlignmentCenter;
+    [rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(headView.mas_left).offset(SCREEN_WIDTH/2);
+        make.right.equalTo(headView.mas_right).offset(-16);
+        make.centerY.equalTo(headView.mas_centerY);
+        make.height.equalTo(headView.mas_height);
+    }];
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -254,6 +339,7 @@
         make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT +21 +38 + 15);
         make.bottom.equalTo(self.view.mas_bottom).offset(-TABBAR_HEIGHT);
     }];
+    self.tableView.tableHeaderView = headView;
 }
 
 -(NSArray *)dataArray{
@@ -284,7 +370,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-   
+    
     return 37;
 }
 
@@ -294,6 +380,7 @@
     if (cell == nil) {
         cell = [[KG_DutyManageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_DutyManageCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     NSDictionary *dataDic = self.dataArray[indexPath.row];
@@ -304,31 +391,36 @@
             cell.botLineView.hidden = YES;
         }
     }
+    if (self.isClickZhiBan ==YES) {
+        cell.changeDutyButton.hidden = NO;
+    }else {
+        cell.changeDutyButton.hidden = YES;
+    }
     
     if (indexPath.row %2 == 0) {//如果是偶数
-  
         cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }else{//如果是奇数
-
+        
         cell.bgView.backgroundColor = [UIColor colorWithHexString:@"#FBFBFB"];
     }
+    cell.ischangeDutyBlock = ^(NSDictionary * _Nonnull dataDic) {
+        self.selDic = dataDic;
+        [self pushToAddressBook];
+    };
     
     
     cell.dataDic = dataDic;
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    
 }
 
 //查询值班数据
 - (void)queryZhiBanData {
-    
-    NSString * current_date = [NSString stringWithFormat:@"/intelligent/api/dutyList/%@",_dateStrA];
+    NSString * current_date = [NSString stringWithFormat:@"/intelligent/api/dutyList/%@",self.dateStrA];
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:current_date];
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil  success:^(id result) {
@@ -347,7 +439,6 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
-    
     return ;
 }
 
@@ -355,10 +446,12 @@
     _chooseDay --;
     [self setDateNow];
 }
+
 -(void)nextDay{
     _chooseDay ++;
     [self setDateNow];
 }
+
 -(void)setDateNow{
     NSDate *date = [NSDate date];
     if([_NdDate isKindOfClass:[NSNull class]] || [_NdDate isEqual:[NSNull null]] || _NdDate == nil){
@@ -379,18 +472,17 @@
     
     NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"星期日", @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", nil];
     NSString *weekStr = [weekdays objectAtIndex:comps.weekday];
-
+    
     NSDateFormatter *dateFormaterA = [[NSDateFormatter alloc]init];
     [dateFormaterA setDateFormat:@"yyyy-MM-dd"];
-    _dateStrA = [dateFormaterA stringFromDate:date];
-
-    self.selDataTitleLabel.text = [NSString stringWithFormat:@"%@ %@", _dateStrA, weekStr ] ;
+    self.dateStrA = [dateFormaterA stringFromDate:date];
+    
+    self.selDataTitleLabel.text = [NSString stringWithFormat:@"%@ %@", self.dateStrA, weekStr ] ;
     
     [self queryZhiBanData];
 }
 
 //时间选择器
-
 -(void)dateAction{
     PGDatePickManager *datePickManager = [[PGDatePickManager alloc]init];
     datePickManager.isShadeBackground = true;
@@ -400,7 +492,6 @@
     _DatePicker.isHiddenMiddleText = false;
     _DatePicker.datePickerMode = PGDatePickerModeDate;
     [self presentViewController:datePickManager animated:false completion:nil];
-    
 }
 
 #pragma PGDatePickerDelegate
@@ -418,12 +509,10 @@
     NSString *dateStr = [formatter stringFromDate:[calendar dateFromComponents:dateComponents]];
     //NSString *dateStr = [NSString stringWithFormat:@"%ld-%ld-%ld",(long)dateComponents.year,(long)dateComponents.month,(long)dateComponents.day];
     NSLog(@"dateStrdateStrdateStr%@",dateStr);
-    
     NSCalendar *calendar1 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
-    
     
     _NdDate = [calendar1 dateFromComponents:dateComponents];
     
@@ -431,11 +520,134 @@
     [calendar components:unitFlags fromDate:_NdDate];
     NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"星期日", @"星期一", @"星期二", @"星期三", @"星期四", @"星期五", @"星期六", nil];
     NSString *weekStr = [weekdays objectAtIndex:comps.weekday];
-    _dateStrA = dateStr;
- 
+    self.dateStrA = dateStr;
+    
     self.selDataTitleLabel.text = [NSString stringWithFormat:@"%@ %@", dateStr, weekStr];
     _chooseDay = 0;
     [self queryZhiBanData];
 }
+
+- (void)pushToAddressBook {
+    
+    [UserManager shareUserManager].isSelContact = YES;
+    KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
+    vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
+        
+        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",safeString(self.selDic[@"post"])] message:[NSString stringWithFormat:@"%@>%@",safeString(self.selDic[@"name"]),safeString(nameStr)] preferredStyle:UIAlertControllerStyleAlert];
+        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            
+            self.isClickZhiBan = NO;
+            [self.tableView reloadData];
+            
+        }]];
+        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            [self queryCurrWithId];
+          
+           
+        }]];
+        
+        [self presentViewController:alertContor animated:NO completion:nil];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)addressBookSelPerson:(NSNotification *)notification {
+    NSDictionary *dataDic = notification.userInfo;
+    if (dataDic.count) {
+        self.selNameStr = safeString(dataDic[@"nameStr"]);
+        self.selNameId = safeString(dataDic[@"nameID"]);
+      
+        [self performSelector:@selector(delayMethod:) withObject:nil afterDelay:0.1f];
+        
+    }
+}
+
+- (void)delayMethod:(id)sender {
+    
+    UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",safeString(self.selDic[@"post"])] message:[NSString stringWithFormat:@"%@>%@",safeString(self.selDic[@"name"]),safeString(self.selNameStr)] preferredStyle:UIAlertControllerStyleAlert];
+          [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+              
+              self.isClickZhiBan = NO;
+              [self.tableView reloadData];
+          }]];
+          [alertContor addAction:[UIAlertAction actionWithTitle:@"确定调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+              [self queryCurrWithId];
+             
+              
+          }]];
+          
+          [self presentViewController:alertContor animated:NO completion:nil];
+}
+
+//查询currenttime ID，用于保存接口使用（）
+- (void)queryCurrWithId {
+   
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcShiftManagement/%@",self.dateStrA]];
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        NSDictionary *resultDic = result[@"value"];
+        
+        self.currentTime = safeString(resultDic[@"currentTime"]);
+        self.postId = safeString(resultDic[@"id"]);
+        [self changeDuty:self.selDic];
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+}
+
+//调班保存接口
+- (void)changeDuty:(NSDictionary *)dataDic {
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcShiftManagement"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (self.postId.length >0) {
+        params[@"id"] = safeString(self.postId);
+    }
+    if (self.currentTime.length >0) {
+        params[@"currentTime"] = safeString(self.currentTime);
+    }
+    
+    for (NSDictionary *dataDic in self.dataArray) {
+  
+        if([safeString(dataDic[@"alias"]) isEqualToString:safeString(self.selDic[@"alias"])]) {
+            
+             [params setValue:safeString(self.selNameStr) forKey:safeString(dataDic[@"alias"])];
+        }else {
+             [params setValue:safeString(dataDic[@"name"]) forKey:safeString(dataDic[@"alias"])];
+        }
+    }
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest putWithUrl:FrameRequestURL param:params success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        [FrameBaseRequest showMessage:@"调班成功"];
+        self.isClickZhiBan = NO;
+        [self.tableView reloadData];
+        [self queryZhiBanData];
+        
+        
+    } failure:^(NSError *error)  {
+        [MBProgressHUD hideHUD];
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+}
+
 
 @end

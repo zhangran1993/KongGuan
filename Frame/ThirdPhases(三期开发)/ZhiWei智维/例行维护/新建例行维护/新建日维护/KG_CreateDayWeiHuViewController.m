@@ -867,7 +867,6 @@
 //                    特殊保障分为特殊维护specialSafeguard和特殊巡视specialTour
 //patrolCode是任务小类型编码，根据任务大类型从字典中获取。
 
-
 - (void)quertFrameData{
     NSString *stationCode = @"";
     NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
@@ -882,7 +881,6 @@
                 currentDic = [stationArr firstObject][@"station"];
             }
         }
-        
     }
     if (currentDic.count) {
         stationCode = safeString(currentDic[@"code"]);
@@ -933,19 +931,20 @@
     if (isSafeObj(timestamp)==NO) {
         return @"-/-";
     }
-    NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
     NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     
 }
 - (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
     [formatter setTimeStyle:NSDateFormatterShortStyle];
     [formatter setDateFormat:formatStr];//@"YYYY-MM-dd HH:mm:ss"
     //设置时区
-    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
     [formatter setTimeZone:timeZone];
     return formatter;
 }

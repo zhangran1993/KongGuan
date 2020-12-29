@@ -115,7 +115,7 @@
     }else if ([str isEqualToString:@"账号安全"]) {
        
         self.iconImage.image = [UIImage imageNamed:@"accountsafe_image"];
-    }else if ([str isEqualToString:@"退出登录"]) {
+    }else if ([str isEqualToString:@"关于我们"]) {
        
         self.iconImage.image = [UIImage imageNamed:@"aboutus_image"];
     }
