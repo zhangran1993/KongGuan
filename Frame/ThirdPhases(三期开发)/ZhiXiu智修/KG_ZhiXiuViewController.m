@@ -22,7 +22,7 @@
 #import "KG_ControlGaoJingAlertView.h"
 #import "KG_NewScreenViewController.h"
 #import "KG_NoDataPromptView.h"
-
+#import "KG_MineViewController.h"
 @interface KG_ZhiXiuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray     *dataArray;
@@ -878,8 +878,11 @@
  弹出个人中心
  */
 - (void)leftCenterButtonClick {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
-    [self.slideMenuController showMenu];
+    
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+//    [self.slideMenuController showMenu];
 }
 /** 标题栏 **/
 - (UILabel *)titleLabel {

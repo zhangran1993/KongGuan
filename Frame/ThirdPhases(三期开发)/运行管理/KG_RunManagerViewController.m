@@ -419,12 +419,11 @@
 //跳转智慧云
 - (void)goToZhiHuiYunMethod {
     //运行-智云
-//    KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
-//    vc.isPush = YES;
-//    [self.navigationController pushViewController:vc animated:YES];
-    
-    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
+    vc.isPush = YES;
     [self.navigationController pushViewController:vc animated:YES];
+    
+   
         
 }
 
@@ -721,8 +720,11 @@
  弹出个人中心
  */
 - (void)leftCenterButtonClick {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
-    [self.slideMenuController showMenu];
+    
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+    //    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+//    [self.slideMenuController showMenu];
 }
 
 //查看值班表

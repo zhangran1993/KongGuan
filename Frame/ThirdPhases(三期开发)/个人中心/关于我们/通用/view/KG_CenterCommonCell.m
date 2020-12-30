@@ -70,6 +70,7 @@
    
     
     self.rightImage = [[UIImageView alloc]init];
+    self.rightImage.image = [UIImage imageNamed:@"about_rightImage"];
     [self addSubview:self.rightImage];
     [self.rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-9.5);

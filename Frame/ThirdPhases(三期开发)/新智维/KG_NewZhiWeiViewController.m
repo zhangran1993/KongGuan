@@ -11,6 +11,7 @@
 #import "KG_HistoryTaskViewController.h"
 #import "KG_ZhiTaiStationModel.h"
 #import "UIViewController+CBPopup.h"
+#import "KG_MineViewController.h"
 @interface KG_NewZhiWeiViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong)  UILabel                 *titleLabel;
@@ -183,8 +184,11 @@
  弹出个人中心
  */
 - (void)leftCenterButtonClick {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
-    [self.slideMenuController showMenu];
+    
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+//    [self.slideMenuController showMenu];
 }
 
 /** 标题栏 **/

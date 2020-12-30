@@ -36,11 +36,12 @@
     //背景色
     self.view.backgroundColor =  [UIColor  colorWithPatternImage:[UIImage imageNamed:@"personal_gray_bg"]] ;
     //logo和版本
-    UIImageView *logoImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    UIImageView *logoImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kg_logo"]];
     
     logoImg.frame = CGRectMake((WIDTH_SCREEN- 60)/2, 50 +Height_NavBar,60, 60);
     
     UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-200/2,60 + 50 +Height_NavBar +15 ,200, 20)];
+    vsersionLabel.font = [UIFont systemFontOfSize:14 ];
     vsersionLabel.textAlignment = NSTextAlignmentCenter;
     vsersionLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     vsersionLabel.text = [NSString stringWithFormat:@"%@%@",@"智慧台站",AppVersion] ;
@@ -50,8 +51,8 @@
     //APP介绍
     UILabel * intoductionLabel = [[UILabel alloc] initWithFrame:CGRectMake(32, Height_NavBar + 60 +50 +20 +50 +15,SCREEN_WIDTH -64,FrameWidth(580))];
     
-    intoductionLabel.numberOfLines = 20;
-    intoductionLabel.font = [UIFont systemFontOfSize:12];
+    intoductionLabel.numberOfLines = 15;
+    intoductionLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
     [intoductionLabel setTextColor:[UIColor colorWithHexString:@"#626470"]];
     NSMutableParagraphStyle  *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     // 行间距设置为30

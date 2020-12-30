@@ -273,9 +273,9 @@
             [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"lastAserAccount"];
              [[NSUserDefaults standardUserDefaults] synchronize];
         }else {
-              [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"lastAserAccount"];
+            [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"lastAserAccount"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
             [UserManager shareUserManager].loginSuccess = YES;
             int num = 0;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];

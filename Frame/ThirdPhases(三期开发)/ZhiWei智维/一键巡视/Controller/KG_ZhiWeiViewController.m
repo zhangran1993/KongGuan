@@ -24,6 +24,7 @@
 #import "KG_CreateTeShuBaoZhangViewController.h"
 #import "KG_AssignView.h"
 #import "KG_AddressbookViewController.h"
+#import "KG_MineViewController.h"
 @interface KG_ZhiWeiViewController ()<UITableViewDelegate,UITableViewDataSource>
 /**  标题栏 */
 @property (nonatomic, strong)  UILabel                 *titleLabel;
@@ -469,8 +470,11 @@
  弹出个人中心
  */
 - (void)leftCenterButtonClick {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
-    [self.slideMenuController showMenu];
+    
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+//    [self.slideMenuController showMenu];
 }
 
 

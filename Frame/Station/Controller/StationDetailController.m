@@ -33,6 +33,7 @@
 #import "UIViewController+YQSlideMenu.h"
 #import <UIButton+WebCache.h>
 #import "KG_CommonWebAlertView.h"
+#import "KG_MineViewController.h"
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,copy) NSString* station_code;
@@ -340,8 +341,11 @@
  弹出个人中心
  */
 - (void)leftCenterButtonClick {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
-    [self.slideMenuController showMenu];
+    
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+//    [self.slideMenuController showMenu];
 }
 - (void)createTopView{
     [self.runView removeFromSuperview];

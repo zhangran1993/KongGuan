@@ -21,7 +21,6 @@
 
 #import "PersonalViewController.h"
 #import "PatrolController.h"
-#import "FrameHomeController.h"
 #import "LoginViewController.h"
 #import "StationDetailController.h"
 #import "AlarmListController.h"

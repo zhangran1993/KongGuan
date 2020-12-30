@@ -29,20 +29,17 @@
 @interface KG_MineViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
-@property (nonatomic, strong)  UITableView        *tableView;
+@property (nonatomic, strong)   UITableView        *tableView;
 
-@property (nonatomic, strong)  NSArray            *dataArray;
+@property (nonatomic, strong)   NSArray            *dataArray;
 
+@property (nonatomic, strong)   UILabel            *titleLabel;
 
-@property (nonatomic, strong)   UILabel                 *titleLabel;
+@property (nonatomic, strong)   UIView             *navigationView;
 
-@property (nonatomic, strong)   UIView                  *navigationView;
-
-@property (nonatomic, strong)   UIButton                *rightButton;
+@property (nonatomic, strong)   UIButton           *rightButton;
 
 @property (nonatomic, copy)     NSString           *staStr;
-
-
 
 @end
 
@@ -53,7 +50,7 @@
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    //    [self createNaviTopView];
+    
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
@@ -61,6 +58,7 @@
         make.top.equalTo(self.view.mas_top);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
+    [self createNaviTopView];
     [self stationAction];
 }
 
@@ -278,11 +276,10 @@
     
     UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
     [self.view addSubview:topImage1];
-    topImage1.backgroundColor  =[UIColor whiteColor];
+    topImage1.backgroundColor  =[UIColor clearColor];
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 44)];
     [self.view addSubview:topImage];
-    topImage.backgroundColor  =[UIColor whiteColor];
-    topImage.image = [UIImage imageNamed:@"zhiyun_bgImage"];
+    topImage.backgroundColor  =[UIColor clearColor];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar)];
     self.navigationView.backgroundColor = [UIColor clearColor];
@@ -295,7 +292,7 @@
         make.centerX.equalTo(self.navigationView.mas_centerX);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
     }];
-    self.titleLabel.text = @"运行报告";
+    self.titleLabel.text = @"";
     
     /** 返回按钮 **/
     UIButton * backBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, (Height_NavBar -44)/2, 44, 44)];
@@ -401,14 +398,12 @@
 
 //跳转到数据中心
 - (void)pushToDataManager {
-    
     KG_DataCenterManagerViewController *vc = [[KG_DataCenterManagerViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
 -(void)stationAction {
- 
+    
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/allStationList"];
     NSLog(@"FrameRequestURL %@",FrameRequestURL);
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
@@ -419,19 +414,16 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        
         NSArray *stationArr = result[@"value"];
         NSMutableString *parStr = [NSMutableString stringWithCapacity:0];
         
         for (NSDictionary *dataDic in stationArr) {
-            
             NSString *staStr = safeString(dataDic[@"name"]);
             [parStr appendString:[NSString stringWithFormat:@"%@、",staStr]];
             
         }
         self.staStr = parStr;
         [self.tableView reloadData];
-        
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -440,7 +432,7 @@
         return ;
         
     }];
-
+    
 }
 
 

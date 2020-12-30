@@ -27,6 +27,7 @@
 #import "KG_SecondFloorViewController.h"
 #import <UIButton+WebCache.h>
 #import "KG_NiTaiTuNoDataView.h"
+#import "KG_MineViewController.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;
@@ -246,8 +247,11 @@
  弹出个人中心
  */
 - (void)leftCenterButtonClick {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
-    [self.slideMenuController showMenu];
+    
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
+//    [self.slideMenuController showMenu];
 }
 
 - (void)createTopView{

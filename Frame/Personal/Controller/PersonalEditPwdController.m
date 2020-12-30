@@ -145,7 +145,7 @@
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(newPwdView.mas_left).offset(16);
         make.right.equalTo(newPwdView.mas_right).offset(-16);
-        make.top.equalTo(newPwdTitleLabel.mas_bottom);
+        make.bottom.equalTo(newPwdTitleLabel.mas_bottom);
         make.height.equalTo(@1);
     }];
     
@@ -357,7 +357,7 @@
         make.width.equalTo(@60);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.height.equalTo(@22);
-        make.right.equalTo(self.navigationView.mas_right).offset(-16);
+        make.right.equalTo(self.navigationView.mas_right).offset(-6);
     }];
     
 }
