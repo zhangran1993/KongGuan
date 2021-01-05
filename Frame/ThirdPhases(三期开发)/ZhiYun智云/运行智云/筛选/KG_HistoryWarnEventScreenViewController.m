@@ -389,6 +389,7 @@
             headerView.titleLabel.text = @"告警状态";
         }
         headerView.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightRegular];
+        headerView.titleLabel.font = [UIFont my_font:14];
         return headerView;
     }
     return nil;

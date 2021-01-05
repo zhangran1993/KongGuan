@@ -315,6 +315,7 @@
     [self.topView addSubview:self.topTitleLabel];
     self.topTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.topTitleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.topTitleLabel.font = [UIFont my_font:16];
     self.topTitleLabel.textAlignment = NSTextAlignmentLeft;
     self.topTitleLabel.numberOfLines = 1;
     [self.topTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -340,6 +341,7 @@
     self.statusNumLabel.text = @"1";
     self.statusNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.statusNumLabel.font = [UIFont systemFontOfSize:10];
+    self.statusNumLabel.font = [UIFont my_font:10];
     self.statusNumLabel.numberOfLines = 1;
     
     self.statusNumLabel.textAlignment = NSTextAlignmentCenter;
@@ -356,6 +358,7 @@
     self.statusLabel.text = @"当前状态";
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
     self.statusLabel.font = [UIFont systemFontOfSize:14];
+    self.statusLabel.font = [UIFont my_font:14];
     self.statusLabel.numberOfLines = 1;
     
     self.statusLabel.textAlignment = NSTextAlignmentRight;

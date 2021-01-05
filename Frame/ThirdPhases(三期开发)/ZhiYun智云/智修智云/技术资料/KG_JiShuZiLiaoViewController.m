@@ -83,6 +83,7 @@
     [topView addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     titleLabel.font = [UIFont systemFontOfSize:12];
+    titleLabel.font = [UIFont my_font:12];
     titleLabel.text = @"这里仅展示与该告警事件有关的技术资料，您可以切换到该台站查看更多信息。";
     titleLabel.numberOfLines = 2;
     [titleLabel sizeToFit];

@@ -108,6 +108,7 @@
     [topView addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     titleLabel.font = [UIFont systemFontOfSize:12];
+    titleLabel.font = [UIFont my_font:12];
     titleLabel.text = @"这里仅展示与该告警事件有关的设备档案信息，您可以切换到该台站或者所有台站查看更多信息。";
     titleLabel.numberOfLines = 2;
     [titleLabel sizeToFit];
@@ -365,6 +366,7 @@
         noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
+        noDataLabel.font = [UIFont my_font:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
         [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_noDataView.mas_centerX);

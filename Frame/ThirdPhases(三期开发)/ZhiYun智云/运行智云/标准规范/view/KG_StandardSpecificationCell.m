@@ -59,6 +59,7 @@
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel sizeToFit];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(9);

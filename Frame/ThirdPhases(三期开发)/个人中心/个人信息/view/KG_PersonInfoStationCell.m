@@ -43,6 +43,7 @@
     self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.numberOfLines = 1;
+    self.titleLabel.font = [UIFont my_font:16];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.width.equalTo(@120);
@@ -69,6 +70,7 @@
     self.detailLabel.font = [UIFont systemFontOfSize:16];
     self.detailLabel.textAlignment = NSTextAlignmentRight;
     self.detailLabel.numberOfLines = 1;
+    self.detailLabel.font = [UIFont my_font:16];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightImage.mas_left).offset(-4);
         make.width.equalTo(@220);

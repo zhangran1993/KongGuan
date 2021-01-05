@@ -69,6 +69,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.numberOfLines = 1;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgImage.mas_left).offset(16);
@@ -93,6 +94,7 @@
     [self addSubview:self.leftLabel];
     self.leftLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.leftLabel.font = [UIFont systemFontOfSize:12];
+    self.leftLabel.font = [UIFont my_font:12];
     self.leftLabel.numberOfLines = 1;
     self.leftLabel.text = @"2020.05.07 08:00:23";
     
@@ -109,6 +111,7 @@
     [self addSubview:self.rightLabel];
     self.rightLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.rightLabel.font = [UIFont systemFontOfSize:12];
+    self.rightLabel.font = [UIFont my_font:12];
     self.rightLabel.numberOfLines = 1;
     self.rightLabel.textAlignment = NSTextAlignmentLeft;
     [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {

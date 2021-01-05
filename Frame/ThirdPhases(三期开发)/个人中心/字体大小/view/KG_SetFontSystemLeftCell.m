@@ -48,8 +48,7 @@
 }
 
 - (void)createSubviewsView {
-
-
+  
     self.headIcon = [[UIImageView alloc]init];
     [self addSubview:self.headIcon];
     self.headIcon.image = [UIImage imageNamed:@"kg_font_rightIcon"];
@@ -78,7 +77,7 @@
     self.titleLabel = [[UILabel alloc]init];
     self.titleLabel.text = @"预览字体大小";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.titleLabel.font = [UIFont systemFontOfSize:16];
+    self.titleLabel.font =[UIFont my_font:16];
     [self addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentRight;
     [self.titleLabel sizeToFit];

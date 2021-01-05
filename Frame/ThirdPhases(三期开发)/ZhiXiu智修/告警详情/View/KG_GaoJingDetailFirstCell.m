@@ -47,6 +47,7 @@
     self.roomLabel.text = @"黄城导航台-电池间";
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.roomLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+    self.roomLabel.font = [UIFont my_font:18];
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(15);
         make.top.equalTo(self.mas_top).offset(11);
@@ -114,6 +115,7 @@
     self.powLabel.text = @"电池组2#";
     self.powLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.powLabel.font = [UIFont systemFontOfSize:14];
+    self.powLabel.font = [UIFont my_font:14];
     [self.powLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(14);
         make.top.equalTo(lineImage.mas_bottom).offset(11);
@@ -136,6 +138,7 @@
     self.detailLabel.text = @"电池组2#";
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
+    self.detailLabel.font = [UIFont my_font:14];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.gaojingImage.mas_right).offset(14);
         make.top.equalTo(self.powLabel.mas_bottom).offset(8);
@@ -148,6 +151,7 @@
     self.timeLabel.text = @"2019.12.24 06:37";
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
+    self.timeLabel.font = [UIFont my_font:12];
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.bottom.equalTo(self.mas_bottom).offset(-15);

@@ -82,6 +82,7 @@
     titleLabel.text = [NSString stringWithFormat:@"%@",@"备件统计"];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:16];
     titleLabel.numberOfLines =1;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -98,6 +99,7 @@
     promptLabel.text = [NSString stringWithFormat:@"%@",@"最近使用"];
     promptLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     promptLabel.font = [UIFont systemFontOfSize:12];
+    promptLabel.font = [UIFont my_font:12];
     promptLabel.numberOfLines =1;
     promptLabel.textAlignment = NSTextAlignmentLeft;
     [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -124,6 +126,7 @@
     ciyaoLabel.text = [NSString stringWithFormat:@"%@",@"未使用"];
     ciyaoLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     ciyaoLabel.font = [UIFont systemFontOfSize:12];
+    ciyaoLabel.font = [UIFont my_font:12];
     ciyaoLabel.numberOfLines =1;
     ciyaoLabel.textAlignment = NSTextAlignmentLeft;
     [ciyaoLabel mas_makeConstraints:^(MASConstraintMaker *make) {

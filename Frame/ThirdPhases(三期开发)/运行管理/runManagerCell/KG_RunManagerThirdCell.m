@@ -108,10 +108,11 @@
     stationReportLabel.text = @"台站运行报告";
     stationReportLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     stationReportLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    stationReportLabel.font = [UIFont my_font:16];
     [stationReportLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftView.mas_right).offset(8);
         make.centerY.equalTo(leftView.mas_centerY);
-        make.width.equalTo(@150);
+        make.width.equalTo(@200);
     }];
     
     UIButton *reportRightBtn = [[UIButton alloc]init];

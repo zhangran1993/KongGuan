@@ -43,6 +43,7 @@
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:16];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top).offset(13);
@@ -65,6 +66,7 @@
     picLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     picLabel.textAlignment = NSTextAlignmentLeft;
     picLabel.font = [UIFont systemFontOfSize:14];
+    picLabel.font = [UIFont my_font:14];
     [picLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(picImage.mas_right).offset(6);
         make.centerY.equalTo(picImage.mas_centerY);
@@ -121,6 +123,7 @@
     videoLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     videoLabel.textAlignment = NSTextAlignmentLeft;
     videoLabel.font = [UIFont systemFontOfSize:14];
+    videoLabel.font = [UIFont my_font:14];
     [videoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(videoImage.mas_right).offset(6);
         make.centerY.equalTo(videoImage.mas_centerY);

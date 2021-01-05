@@ -61,6 +61,7 @@
     vsersionLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     vsersionLabel.textAlignment = NSTextAlignmentCenter;
     vsersionLabel.font = FontSize(14);
+    vsersionLabel.font = [UIFont my_font:14];
     vsersionLabel.text = [NSString stringWithFormat:@"%@%@",@"智慧台站",AppVersion];
     [self.view addSubview:vsersionLabel];
     
@@ -89,6 +90,7 @@
     introduceLabel.text = @"APP介绍";
     introduceLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     introduceLabel.font = FontSize(14);
+    introduceLabel.font = [UIFont my_font:14];
     [introduceView addSubview:introduceLabel];
 //
     UIView *introduceLineView = [[UIView alloc]initWithFrame:CGRectMake(16, 49, SCREEN_WIDTH - 16- 16, 1)];
@@ -126,6 +128,7 @@
     opinionLabel.text = @"意见反馈";
     opinionLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     opinionLabel.font = FontSize(14);
+    opinionLabel.font = [UIFont my_font:14];
     [opinionView addSubview:opinionLabel];
     
     UIImageView *opinionImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about_rightImage"]];
@@ -146,6 +149,7 @@
     serviceAgreeLabel.text = @"服务协议";
     serviceAgreeLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     serviceAgreeLabel.font = FontSize(14);
+    serviceAgreeLabel.font = [UIFont my_font:14];
     [serviceAgreeView addSubview:serviceAgreeLabel];
     
     UIImageView *serviceAgreeImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"about_rightImage"]];

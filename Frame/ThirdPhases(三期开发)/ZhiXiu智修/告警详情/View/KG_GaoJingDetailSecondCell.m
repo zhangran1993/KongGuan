@@ -32,13 +32,15 @@
     UILabel *titleLabel = [[UILabel alloc]init];
     [self addSubview:titleLabel];
     titleLabel.text = @"智慧助手";
+    
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:16];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top).offset(13);
-        make.width.equalTo(@120);
+        make.width.equalTo(@150);
         make.height.equalTo(@22);
     }];
     
@@ -57,10 +59,11 @@
     veideoLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     veideoLabel.textAlignment = NSTextAlignmentCenter;
     veideoLabel.font = [UIFont systemFontOfSize:12];
+    veideoLabel.font = [UIFont my_font:12];
     [veideoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(videoBtn.mas_centerX);
         make.top.equalTo(videoBtn.mas_bottom).offset(8);
-        make.width.equalTo(@60);
+        make.width.equalTo(@80);
         make.height.equalTo(@22);
     }];
     
@@ -79,6 +82,7 @@
     yunLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     yunLabel.textAlignment = NSTextAlignmentCenter;
     yunLabel.font = [UIFont systemFontOfSize:12];
+    yunLabel.font = [UIFont my_font:12];
     [yunLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(yunBtn.mas_centerX);
         make.top.equalTo(yunBtn.mas_bottom).offset(8);
@@ -101,10 +105,11 @@
     tongGaoLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     tongGaoLabel.textAlignment = NSTextAlignmentCenter;
     tongGaoLabel.font = [UIFont systemFontOfSize:12];
+    tongGaoLabel.font = [UIFont my_font:12];
     [tongGaoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(tongGaoBtn.mas_centerX);
         make.top.equalTo(videoBtn.mas_bottom).offset(8);
-        make.width.equalTo(@60);
+        make.width.equalTo(@80);
         make.height.equalTo(@22);
     }];
     
@@ -123,10 +128,11 @@
     huizhenLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     huizhenLabel.textAlignment = NSTextAlignmentCenter;
     huizhenLabel.font = [UIFont systemFontOfSize:12];
+    huizhenLabel.font = [UIFont my_font:12];
     [huizhenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(huizhenBtn.mas_centerX);
         make.top.equalTo(huizhenBtn.mas_bottom).offset(8);
-        make.width.equalTo(@60);
+        make.width.equalTo(@80);
         make.height.equalTo(@22);
     }];
     

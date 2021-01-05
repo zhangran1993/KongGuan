@@ -76,6 +76,7 @@
     [self.centerView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"可能原因分析";
     self.titleLabel.numberOfLines = 1;

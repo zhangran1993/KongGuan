@@ -220,6 +220,7 @@
         cell = [[KG_NewMessNotiCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_NewMessNotiCell"];
         cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.indexPath = indexPath.row;
     
     cell.switchOnBlock = ^(BOOL switchOn, NSInteger indexRow) {

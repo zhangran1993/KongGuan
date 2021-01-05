@@ -53,6 +53,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.numberOfLines = 2;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -69,6 +70,7 @@
      [self addSubview:self.detailLabel];
      self.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
      self.detailLabel.font = [UIFont systemFontOfSize:14];
+     self.detailLabel.font = [UIFont my_font:14];
      self.detailLabel.numberOfLines = 2;
      self.detailLabel.textAlignment = NSTextAlignmentRight;
      [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {

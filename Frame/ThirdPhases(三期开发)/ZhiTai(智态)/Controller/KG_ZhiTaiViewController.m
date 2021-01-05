@@ -302,13 +302,14 @@
     zhihuanRunLabel.text = @"智态运行情况";
     zhihuanRunLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     zhihuanRunLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+    zhihuanRunLabel.font = [UIFont my_font:18];
     zhihuanRunLabel.numberOfLines = 1;
     zhihuanRunLabel.textAlignment = NSTextAlignmentLeft;
     [zhihuanRunLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.runView.mas_left).offset(17);
         make.top.equalTo(self.runView.mas_top).offset(17);
         make.height.equalTo(@24);
-        make.width.equalTo(@140);
+        make.width.equalTo(@200);
     }];
     
     self.equipView = [[KG_ZhiTaiEquipView alloc]init];
@@ -1190,6 +1191,7 @@
         KG_ZhiTaiStationModel *model = self.stationArray[indexPath.row];
         cell.textLabel.text = safeString(model.name) ;
         cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell.textLabel.font = [UIFont my_font:14];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
         
         return cell;

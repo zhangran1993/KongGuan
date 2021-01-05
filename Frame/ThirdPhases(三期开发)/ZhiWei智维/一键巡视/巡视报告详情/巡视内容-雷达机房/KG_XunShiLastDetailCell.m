@@ -119,6 +119,7 @@
     self.specialContentTitleLabel.text = @"A相输入电压特殊参数标记";
     self.specialContentTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.specialContentTitleLabel.font = [UIFont systemFontOfSize:12];
+    self.specialContentTitleLabel.font = [UIFont my_font:12];
     self.specialContentTitleLabel.numberOfLines = 1;
     self.specialContentTitleLabel.textAlignment = NSTextAlignmentLeft;
     [self.specialContentTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -133,6 +134,7 @@
     self.specialContentDetailLabel.text = @"电压过高";
     self.specialContentDetailLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
     self.specialContentDetailLabel.font = [UIFont systemFontOfSize:12];
+    self.specialContentDetailLabel.font = [UIFont my_font:12];
     self.specialContentDetailLabel.numberOfLines = 1;
     self.specialContentDetailLabel.textAlignment = NSTextAlignmentLeft;
     [self.specialContentDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -150,6 +152,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).offset(4);
@@ -256,6 +259,7 @@
     [self.selectView addSubview:self.selectTitleLabel];
     self.selectTitleLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.selectTitleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.selectTitleLabel.font = [UIFont my_font:14];
     self.selectTitleLabel.textAlignment = NSTextAlignmentRight;
     [self.selectTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.selectView.mas_centerY);
@@ -411,6 +415,7 @@
     [self.charsetView addSubview:self.charsetTitleLabel];
     self.charsetTitleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.charsetTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.charsetTitleLabel.font = [UIFont my_font:14];
     self.charsetTitleLabel.textAlignment = NSTextAlignmentRight;
     [self.charsetTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.charsetView.mas_centerY);

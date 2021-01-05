@@ -144,6 +144,7 @@
     self.malfunLabel.numberOfLines = 1;
     self.malfunLabel.textAlignment = NSTextAlignmentRight;
     self.malfunLabel.font = [UIFont systemFontOfSize:14];
+    self.malfunLabel.font = [UIFont my_font:14];
     [self.malfunLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.malfunTextLabel.mas_left).offset(-5);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
@@ -154,6 +155,7 @@
     [self.centerView addSubview:self.rightLabel];
     self.rightLabel.textColor = [UIColor colorWithHexString:@"#636571"];
     self.rightLabel.font = [UIFont systemFontOfSize:14];
+    self.rightLabel.font = [UIFont my_font:14];
     self.rightLabel.textAlignment = NSTextAlignmentLeft;
     [self.rightLabel sizeToFit];
     self.rightLabel.numberOfLines = 4;

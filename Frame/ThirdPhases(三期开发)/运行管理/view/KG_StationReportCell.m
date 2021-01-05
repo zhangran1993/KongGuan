@@ -60,6 +60,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:13];
+    self.titleLabel.font = [UIFont my_font:13];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"2020.02.02终端本场设备";
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -73,6 +74,7 @@
     [self addSubview:self.statusLabel];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#2B8EFF"];
     self.statusLabel.font = [UIFont systemFontOfSize:13];
+    self.statusLabel.font = [UIFont my_font:13];
     self.statusLabel.textAlignment = NSTextAlignmentRight;
     self.statusLabel.text = @"进行中";
     [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {

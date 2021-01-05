@@ -60,6 +60,7 @@
     [bgView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"";
     self.titleLabel.numberOfLines = 2;

@@ -69,7 +69,7 @@
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.backgroundColor = self.view.backgroundColor;
+        _tableView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollEnabled = YES;
         _tableView.rowHeight = UITableViewAutomaticDimension;
@@ -99,7 +99,7 @@
         CGRect fontRect = [dic[@"content"] boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         if (fontRect.size.height >21) {
-            return 124 +fontRect.size.height-16;
+            return 124 +fontRect.size.height ;
         }
     }
     
@@ -111,8 +111,9 @@
     KG_RunPromptCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunPromptCell "];
     if (cell == nil) {
         cell = [[KG_RunPromptCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunPromptCell"];
-        
+        cell.backgroundColor = [UIColor colorWithHexString:@"F6F7F9"];
     }
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSDictionary *dic = self.dataArray[indexPath.section];
     cell.dic = dic;
@@ -182,6 +183,7 @@
         noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
+        noDataLabel.font = [UIFont my_font:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
         [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_noDataView.mas_centerX);

@@ -411,6 +411,7 @@
         KG_ZhiTaiStationModel *model = self.stationArray[indexPath.row];
         cell.textLabel.text = safeString(model.name) ;
         cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell.textLabel.font = [UIFont my_font:14];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
         
         return cell;

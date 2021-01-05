@@ -92,6 +92,7 @@
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"台站告警记录";
     self.titleLabel.numberOfLines = 2;
+    self.titleLabel.font = [UIFont my_font:14];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(7);
         make.right.equalTo(self.centerView.mas_right).offset(-50);

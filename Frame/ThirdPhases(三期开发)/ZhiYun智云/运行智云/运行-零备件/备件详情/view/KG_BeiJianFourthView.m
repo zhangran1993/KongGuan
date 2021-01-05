@@ -64,6 +64,7 @@
     titleLabel.text = @"备件履历";
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:14];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(iconImage.mas_centerY);
         make.left.equalTo(iconImage.mas_right).offset(7);
@@ -104,6 +105,7 @@
     noDataLabel.text = @"暂无备件履历";
     noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
     noDataLabel.font = [UIFont systemFontOfSize:12];
+    noDataLabel.font = [UIFont my_font:12];
     noDataLabel.textAlignment = NSTextAlignmentCenter;
     [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.noDataView.mas_centerX);

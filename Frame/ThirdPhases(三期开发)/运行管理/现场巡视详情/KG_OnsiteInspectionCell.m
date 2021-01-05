@@ -70,6 +70,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"";
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -83,6 +84,7 @@
     [self addSubview:self.timeLabel];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
+    self.timeLabel.font = [UIFont my_font:12];
     self.timeLabel.textAlignment = NSTextAlignmentLeft;
     self.timeLabel.text = @"2020.04.28 17:00:23";
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {

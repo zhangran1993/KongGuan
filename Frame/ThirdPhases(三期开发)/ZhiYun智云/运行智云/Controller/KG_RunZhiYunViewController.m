@@ -79,6 +79,7 @@
     [topView addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     titleLabel.font = [UIFont systemFontOfSize:12];
+    titleLabel.font = [UIFont my_font:12];
     titleLabel.text = @"这里仅展示与该告警事件有关的信息，您可切换到该台站智云查看更多信息。";
     titleLabel.numberOfLines = 2;
     [titleLabel sizeToFit];
@@ -495,7 +496,7 @@
         cell.textLabel.text = safeString(model.name) ;
         cell.textLabel.font = [UIFont systemFontOfSize:14];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-        
+        cell.textLabel.font = [UIFont my_font:14];
         return cell;
         
     }

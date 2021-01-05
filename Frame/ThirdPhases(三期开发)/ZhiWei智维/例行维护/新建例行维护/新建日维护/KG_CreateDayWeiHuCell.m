@@ -35,6 +35,7 @@
     self.titleLabel.text = @"";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.numberOfLines = 2;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

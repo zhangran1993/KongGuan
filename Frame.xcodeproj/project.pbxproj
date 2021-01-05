@@ -725,6 +725,13 @@
 		259A5C40251DDBB500A97A97 /* KG_YiQiOperationGuideAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259A5C3F251DDBB500A97A97 /* KG_YiQiOperationGuideAlertCell.m */; };
 		259DE4D02536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259DE4CF2536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.m */; };
 		259DE4D32536EC7700B924F3 /* KG_CaseLibraryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259DE4D22536EC7700B924F3 /* KG_CaseLibraryDetailCell.m */; };
+		25A47466259C05CC00337611 /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A47458259C05CB00337611 /* NextViewController.m */; };
+		25A47467259C05CC00337611 /* FMChooseFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A47459259C05CB00337611 /* FMChooseFontView.m */; };
+		25A47468259C05CC00337611 /* KG_SSSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A4745C259C05CB00337611 /* KG_SSSViewController.m */; };
+		25A47469259C05CC00337611 /* ChangeFontManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A4745F259C05CC00337611 /* ChangeFontManager.m */; };
+		25A4746A259C05CC00337611 /* UILabel+ChangeFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A47462259C05CC00337611 /* UILabel+ChangeFont.m */; };
+		25A4746B259C05CC00337611 /* FMFontManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A47463259C05CC00337611 /* FMFontManager.m */; };
+		25A4746C259C05CC00337611 /* UIFont+Addtion.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A47465259C05CC00337611 /* UIFont+Addtion.m */; };
 		25B0D08E25104D14009B13E2 /* KG_HistorySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D08A25104D13009B13E2 /* KG_HistorySearchViewController.m */; };
 		25B0D08F25104D14009B13E2 /* KG_HistorySearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D08C25104D14009B13E2 /* KG_HistorySearchCell.m */; };
 		25B0D09925104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B0D09225104E8C009B13E2 /* KG_HistoryScreenSelTimeCell.m */; };
@@ -2268,6 +2275,20 @@
 		259DE4CF2536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_EquipmentHistoryDetailMoreViewController.m; sourceTree = "<group>"; };
 		259DE4D12536EC7700B924F3 /* KG_CaseLibraryDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CaseLibraryDetailCell.h; sourceTree = "<group>"; };
 		259DE4D22536EC7700B924F3 /* KG_CaseLibraryDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_CaseLibraryDetailCell.m; sourceTree = "<group>"; };
+		25A47457259C05CB00337611 /* FMChooseFontView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMChooseFontView.h; sourceTree = "<group>"; };
+		25A47458259C05CB00337611 /* NextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextViewController.m; sourceTree = "<group>"; };
+		25A47459259C05CB00337611 /* FMChooseFontView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMChooseFontView.m; sourceTree = "<group>"; };
+		25A4745A259C05CB00337611 /* NextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextViewController.h; sourceTree = "<group>"; };
+		25A4745B259C05CB00337611 /* KG_SSSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_SSSViewController.h; sourceTree = "<group>"; };
+		25A4745C259C05CB00337611 /* KG_SSSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_SSSViewController.m; sourceTree = "<group>"; };
+		25A4745E259C05CC00337611 /* UILabel+ChangeFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+ChangeFont.h"; sourceTree = "<group>"; };
+		25A4745F259C05CC00337611 /* ChangeFontManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeFontManager.m; sourceTree = "<group>"; };
+		25A47460259C05CC00337611 /* FMFontManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMFontManager.h; sourceTree = "<group>"; };
+		25A47461259C05CC00337611 /* UIFont+Addtion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Addtion.h"; sourceTree = "<group>"; };
+		25A47462259C05CC00337611 /* UILabel+ChangeFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ChangeFont.m"; sourceTree = "<group>"; };
+		25A47463259C05CC00337611 /* FMFontManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMFontManager.m; sourceTree = "<group>"; };
+		25A47464259C05CC00337611 /* ChangeFontManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeFontManager.h; sourceTree = "<group>"; };
+		25A47465259C05CC00337611 /* UIFont+Addtion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Addtion.m"; sourceTree = "<group>"; };
 		25B0D08A25104D13009B13E2 /* KG_HistorySearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistorySearchViewController.m; sourceTree = "<group>"; };
 		25B0D08B25104D13009B13E2 /* KG_HistorySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KG_HistorySearchViewController.h; sourceTree = "<group>"; };
 		25B0D08C25104D14009B13E2 /* KG_HistorySearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KG_HistorySearchCell.m; sourceTree = "<group>"; };
@@ -4349,6 +4370,13 @@
 		258954422591C3A200D616FC /* 字体大小 */ = {
 			isa = PBXGroup;
 			children = (
+				25A47457259C05CB00337611 /* FMChooseFontView.h */,
+				25A47459259C05CB00337611 /* FMChooseFontView.m */,
+				25A4745A259C05CB00337611 /* NextViewController.h */,
+				25A47458259C05CB00337611 /* NextViewController.m */,
+				25A4745D259C05CC00337611 /* Tools */,
+				25A4745B259C05CB00337611 /* KG_SSSViewController.h */,
+				25A4745C259C05CB00337611 /* KG_SSSViewController.m */,
 				258954432591C3BE00D616FC /* KG_SetFontSystemViewController.h */,
 				258954442591C3BE00D616FC /* KG_SetFontSystemViewController.m */,
 				258954462592E05100D616FC /* view */,
@@ -6027,6 +6055,21 @@
 				259DE4CF2536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.m */,
 			);
 			path = "详情页更多";
+			sourceTree = "<group>";
+		};
+		25A4745D259C05CC00337611 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				25A47464259C05CC00337611 /* ChangeFontManager.h */,
+				25A4745F259C05CC00337611 /* ChangeFontManager.m */,
+				25A47460259C05CC00337611 /* FMFontManager.h */,
+				25A47463259C05CC00337611 /* FMFontManager.m */,
+				25A47461259C05CC00337611 /* UIFont+Addtion.h */,
+				25A47465259C05CC00337611 /* UIFont+Addtion.m */,
+				25A4745E259C05CC00337611 /* UILabel+ChangeFont.h */,
+				25A47462259C05CC00337611 /* UILabel+ChangeFont.m */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		25B0D09025104E8C009B13E2 /* 筛选 */ = {
@@ -8521,6 +8564,7 @@
 				2584D61B2446FE660059A949 /* KG_KongTiaoScrollViewController.m in Sources */,
 				258D2930246A6C9A004E8B5A /* KG_XunShiBottomTextView.m in Sources */,
 				2585863925415D73002993A0 /* KG_FactoryViewController.m in Sources */,
+				25A47466259C05CC00337611 /* NextViewController.m in Sources */,
 				FE24525C20AE5F0C00CA0D98 /* StationMachinePictureController.m in Sources */,
 				2584859E247682B700F0AB09 /* KG_KongTiaoCeDianCell.m in Sources */,
 				258B6FBC25480F6500C936E7 /* KG_StationFileDetailFirstCell.m in Sources */,
@@ -8590,6 +8634,7 @@
 				2585862D25412044002993A0 /* KG_FailureNoticeDetailCell.m in Sources */,
 				25C4B7292486213200BA84F4 /* KG_RunReportDetailFirstCell.m in Sources */,
 				EC51DEC521BF483C00D68F47 /* RecordTableViewCell.m in Sources */,
+				25A47467259C05CC00337611 /* FMChooseFontView.m in Sources */,
 				258D293E246A6C9A004E8B5A /* KG_NewContentModel.m in Sources */,
 				2589E9322582189F0065A022 /* KG_DutyManageCell.m in Sources */,
 				2584D60C2444037E0059A949 /* KG_MachineStationModel.m in Sources */,
@@ -8760,6 +8805,7 @@
 				FEE2491B206CB7B400D62197 /* PatrolSetController.m in Sources */,
 				258A62DF25805848005A8105 /* KG_MineViewController.m in Sources */,
 				258D295E246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m in Sources */,
+				25A47469259C05CC00337611 /* ChangeFontManager.m in Sources */,
 				C1F8F174205BB32B0070CFE6 /* LoginViewController.m in Sources */,
 				25CF3F492502199500AD3ACA /* KG_CreateTeShuBaoZhangModel.m in Sources */,
 				25EDC54D247BB1C50006821C /* KG_ImagePickerView.m in Sources */,
@@ -8794,10 +8840,12 @@
 				FEF66959206F191900F3CF2B /* PersonalMsgListController.m in Sources */,
 				2581ED5D24503324002B1D9F /* KG_ZhiTaiStationModel.m in Sources */,
 				EC025D8821C8BEDC001A3F5E /* LYEmptyBaseView.m in Sources */,
+				25A4746A259C05CC00337611 /* UILabel+ChangeFont.m in Sources */,
 				FEAD852A207F4A790046026F /* NSString+MD5.m in Sources */,
 				25C4B73B24865CA000BA84F4 /* KG_RunReportDetailCommonCell.m in Sources */,
 				259299CE24DBA99200D824AA /* KG_InspectionRecordCell.m in Sources */,
 				25EDC55F247CA2790006821C /* KG_GaoJingDetailModel.m in Sources */,
+				25A47468259C05CC00337611 /* KG_SSSViewController.m in Sources */,
 				25EEB340243C71E600B9F803 /* KG_SecView.m in Sources */,
 				EC4E9ADF21B122F200B69476 /* YQSlideMenuController.m in Sources */,
 				25847AC124E3C6050044E9E7 /* KG_CommonWebAlertView.m in Sources */,
@@ -8828,6 +8876,7 @@
 				1F8AB5611F0CB9EB00256218 /* AppDelegate.m in Sources */,
 				250B885523C42E6C00C79136 /* RadarTableViewCell.m in Sources */,
 				258E024224D400F200CDF8BA /* KG_BeiJianDetailViewController.m in Sources */,
+				25A4746B259C05CC00337611 /* FMFontManager.m in Sources */,
 				18482D8B21C7D9F70064FE8B /* WSLPictureBrowseView.m in Sources */,
 				25C4B7162484A8B700BA84F4 /* KG_JiaoJieBanRecordCell.m in Sources */,
 				FE77AD0E2069DB7D00CE8866 /* UIViewController+CBPopup.m in Sources */,
@@ -8886,6 +8935,7 @@
 				2587B1E42498B8CB000289C7 /* KG_EquipCardRemarkCell.m in Sources */,
 				EC5E523521B77034009212D7 /* FilePreviewViewController.m in Sources */,
 				258B68E6251483CC004A83B4 /* KG_SpecilaCanShuSignView.m in Sources */,
+				25A4746C259C05CC00337611 /* UIFont+Addtion.m in Sources */,
 				259721662565FFBF00156504 /* KG_XunShiLastDetailCell.m in Sources */,
 				25C4B6A52480EA9500BA84F4 /* KG_RunZhiHuiYunViewController.m in Sources */,
 				259A5C12251AEEF200A97A97 /* KG_InstrumentationContentCell.m in Sources */,

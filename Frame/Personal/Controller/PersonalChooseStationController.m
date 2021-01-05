@@ -312,9 +312,9 @@ static NSString * const FrameCellID = @"ChooseStation";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-
     return 55;
 }
+
 -(CGFloat)getHeightByWidth:(CGFloat)width title:(NSString *)title font:(UIFont *)font {
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 0)];

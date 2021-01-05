@@ -378,6 +378,7 @@
     zhihuanRunLabel.text = @"智环运行情况";
     zhihuanRunLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     zhihuanRunLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
+    zhihuanRunLabel.font = [UIFont my_font:18];
     zhihuanRunLabel.numberOfLines = 1;
     zhihuanRunLabel.textAlignment = NSTextAlignmentLeft;
     [zhihuanRunLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -407,6 +408,7 @@
     anfangLalbel.text = @"安防监测";
     anfangLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     anfangLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    anfangLalbel.font = [UIFont my_font:14];
     anfangLalbel.numberOfLines = 1;
     anfangLalbel.textAlignment = NSTextAlignmentLeft;
     [anfangLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -432,6 +434,7 @@
     self.anfangNumLalbel.text = @"1";
     self.anfangNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.anfangNumLalbel.font = [UIFont systemFontOfSize:10];
+    self.anfangNumLalbel.font = [UIFont my_font:10];
     self.anfangNumLalbel.numberOfLines = 1;
     
     self.anfangNumLalbel.textAlignment = NSTextAlignmentCenter;
@@ -447,6 +450,7 @@
     envLalbel.text = @"环境监测";
     envLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     envLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    envLalbel.font = [UIFont my_font:14];
     envLalbel.numberOfLines = 1;
     envLalbel.textAlignment = NSTextAlignmentLeft;
     [envLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -472,6 +476,7 @@
     self.envNumLalbel.layer.masksToBounds = YES;
     self.envNumLalbel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.envNumLalbel.font = [UIFont systemFontOfSize:10];
+    self.envNumLalbel.font = [UIFont my_font:10];
     self.envNumLalbel.numberOfLines = 1;
     self.envNumLalbel.backgroundColor = [self getTextColor:@""];
     self.envNumLalbel.textAlignment = NSTextAlignmentCenter;
@@ -487,6 +492,7 @@
     powerLalbel.text = @"动力监测";
     powerLalbel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     powerLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    powerLalbel.font = [UIFont my_font:14];
     powerLalbel.numberOfLines = 1;
     powerLalbel.textAlignment = NSTextAlignmentLeft;
     
@@ -510,6 +516,7 @@
     self.powerNumLabel.text = @"1";
     self.powerNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.powerNumLabel.font = [UIFont systemFontOfSize:10];
+    self.powerNumLabel.font = [UIFont my_font:10];
     self.powerNumLabel.numberOfLines = 1;
     self.powerNumLabel.layer.cornerRadius = 5.f;
     self.powerNumLabel.layer.masksToBounds = YES;
@@ -1067,11 +1074,13 @@
             UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(55), 0, FrameWidth(300), FrameWidth(54))];
             titleLabel.text = item.alias;
             titleLabel.font =  FontSize(16);
+            titleLabel.font = [UIFont my_font:16];
             [cell addSubview:titleLabel];
         }else{
             UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(80), 0, FrameWidth(220), FrameWidth(54))];
             titleLabel.text = item.alias;
             titleLabel.font =  FontSize(15);
+            titleLabel.font = [UIFont my_font:15];
             [cell addSubview:titleLabel];
             
             UIImageView *dot = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(55), FrameWidth(20), FrameWidth(12), FrameWidth(12))];
@@ -1135,6 +1144,7 @@
     UILabel  *leftTitle = [[UILabel alloc]init];
     leftTitle.text = @"机房实时视频";
     leftTitle.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    leftTitle.font = [UIFont my_font:16];
     leftTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
     [bgView addSubview:leftTitle];
     leftTitle.numberOfLines = 1;
@@ -1142,7 +1152,7 @@
     [leftTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(bgView.mas_left).offset(16);
         make.top.equalTo(bgView.mas_top).offset(17);
-        make.width.equalTo(@120);
+        make.width.equalTo(@180);
         make.height.equalTo(@22);
     }];
     
@@ -1323,11 +1333,12 @@
     tempLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     tempLabel.numberOfLines = 1;
     tempLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    tempLabel.font = [UIFont my_font:16];
     tempLabel.textAlignment = NSTextAlignmentLeft;
     [tempLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(tempImage.mas_right).offset(4);
         make.top.equalTo(tempView.mas_top).offset(19);
-        make.width.equalTo(@40);
+        make.width.equalTo(@80);
         make.height.equalTo(@20);
     }];
     
@@ -1337,6 +1348,7 @@
     tempNumLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     tempNumLabel.numberOfLines = 1;
     tempNumLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    tempNumLabel.font = [UIFont my_font:14];
     tempNumLabel.textAlignment = NSTextAlignmentLeft;
     [tempNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(tempView.mas_left).offset(30);
@@ -1355,6 +1367,7 @@
     tempTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     tempTitleLabel.numberOfLines = 1;
     tempTitleLabel.font = [UIFont systemFontOfSize:10];
+    tempTitleLabel.font = [UIFont my_font:10];
     tempTitleLabel.textAlignment = NSTextAlignmentLeft;
     [tempTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(tempNumLabel.mas_right);
@@ -1456,11 +1469,12 @@
     humidityLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     humidityLabel.numberOfLines = 1;
     humidityLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    humidityLabel.font = [UIFont my_font:14];
     humidityLabel.textAlignment = NSTextAlignmentLeft;
     [humidityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(humidityImage.mas_right).offset(4);
         make.top.equalTo(humidityView.mas_top).offset(19);
-        make.width.equalTo(@40);
+        make.width.equalTo(@80);
         make.height.equalTo(@20);
     }];
     
@@ -1470,6 +1484,7 @@
     humidityNumLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     humidityNumLabel.numberOfLines = 1;
     humidityNumLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    humidityNumLabel.font = [UIFont my_font:14];
     humidityNumLabel.textAlignment = NSTextAlignmentLeft;
     [humidityNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(humidityView.mas_left).offset(30);
@@ -1489,6 +1504,7 @@
     humidityTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     humidityTitleLabel.numberOfLines = 1;
     humidityTitleLabel.font = [UIFont systemFontOfSize:10];
+    humidityTitleLabel.font = [UIFont my_font:10];
     humidityTitleLabel.textAlignment = NSTextAlignmentLeft;
     [humidityTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(humidityNumLabel.mas_right);
@@ -2104,10 +2120,11 @@
     }];
     
     
-    UIFont *btnFont = FontSize(12);
+    UIFont *btnFont = [UIFont my_font:12];
     
     UILabel *addressLabel = [[UILabel alloc]init];
     addressLabel.font = [UIFont systemFontOfSize:16];
+    addressLabel.font = [UIFont my_font:16];
     addressLabel.text = [_address  isEqual:[NSNull null]]?@"xxx":_address;
     addressLabel.numberOfLines = 0;
     addressLabel.textAlignment = NSTextAlignmentLeft;
@@ -2157,15 +2174,17 @@
     
     UILabel *qwLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(155),tqImg.lx_y + tqImg.lx_height/2.5 , FrameWidth(130), FrameWidth(60))];
     qwLabel.font = FontSize(46);
+    qwLabel.font = [UIFont my_font:46];
     qwLabel.text = [self.weatherDic[@"temp"] isEqualToString:@"－－"]?@"--":[NSString stringWithFormat:@"%@",self.weatherDic[@"temp"]];
     qwLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     CGSize size =[qwLabel.text sizeWithAttributes:@{NSFontAttributeName:FontSize(35)}];
+    [qwLabel sizeToFit];
     //@"13°";
     [bottomView addSubview:qwLabel];
     [qwLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(bottomView.mas_left).offset(17);
         make.bottom.equalTo(bottomView.mas_bottom).offset(-11);
-        make.width.equalTo(@56);
+//        make.width.equalTo(@56);
         make.height.equalTo(@65);
     }];
     
@@ -2182,6 +2201,7 @@
     
     UILabel *tqLabel = [[UILabel alloc]initWithFrame:CGRectMake(size.width+FrameWidth(20), FrameWidth(20), FrameWidth(90), FrameWidth(30))];
     tqLabel.font = FontSize(14);
+    tqLabel.font = [UIFont my_font:14];
     tqLabel.text = self.weatherDic[@"condition"];
     tqLabel.textAlignment = NSTextAlignmentCenter;
     tqLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];

@@ -46,6 +46,7 @@
     self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.numberOfLines = 1;
+    self.titleLabel.font = [UIFont my_font:16];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.width.equalTo(@120);

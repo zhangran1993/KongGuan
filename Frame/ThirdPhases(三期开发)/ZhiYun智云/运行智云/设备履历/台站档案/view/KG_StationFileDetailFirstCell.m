@@ -110,6 +110,7 @@
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"无线电综合测试仪";
     self.titleLabel.numberOfLines = 2;
+    self.titleLabel.font = [UIFont my_font:16];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.centerView.mas_left).offset(16);
         make.right.equalTo(self.centerView.mas_right).offset(-15);
@@ -148,6 +149,7 @@
        self.nameLabel.textAlignment = NSTextAlignmentLeft;
        self.nameLabel.text = @"台站简称:";
        self.nameLabel.numberOfLines = 1;
+       self.nameLabel.font = [UIFont my_font:14];
        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
            make.left.equalTo(self.bgView.mas_right).offset(8);
            make.width.equalTo(@80);
@@ -159,6 +161,7 @@
        [self.centerView addSubview:self.nameTextLabel];
        self.nameTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
        self.nameTextLabel.font = [UIFont systemFontOfSize:14];
+       self.nameTextLabel.font = [UIFont my_font:14];
        self.nameTextLabel.textAlignment = NSTextAlignmentRight;
        self.nameTextLabel.text = @"";
        self.nameTextLabel.numberOfLines = 1;
@@ -173,17 +176,11 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
     self.typeLabel = [[UILabel alloc]init];
     [self.centerView addSubview:self.typeLabel];
     self.typeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.typeLabel.font = [UIFont systemFontOfSize:14];
+    self.typeLabel.font = [UIFont my_font:14];
     self.typeLabel.textAlignment = NSTextAlignmentLeft;
     self.typeLabel.text = @"台站分类:";
     self.typeLabel.numberOfLines = 1;
@@ -198,6 +195,7 @@
     [self.centerView addSubview:self.typeTextLabel];
     self.typeTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.typeTextLabel.font = [UIFont systemFontOfSize:14];
+    self.typeTextLabel.font = [UIFont my_font:14];
     self.typeTextLabel.textAlignment = NSTextAlignmentRight;
     self.typeTextLabel.text = @"";
     self.typeTextLabel.numberOfLines = 1;
@@ -213,6 +211,7 @@
     [self.centerView addSubview:self.statusLabel];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.font = [UIFont systemFontOfSize:14];
+    self.statusLabel.font = [UIFont my_font:14];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.text = @"台站状态:";
     self.statusLabel.numberOfLines = 1;
@@ -239,6 +238,7 @@
     self.statusNumLabel.text = @"1";
     self.statusNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.statusNumLabel.font = [UIFont systemFontOfSize:10];
+    self.statusNumLabel.font = [UIFont my_font:10];
     self.statusNumLabel.numberOfLines = 1;
     
     self.statusNumLabel.textAlignment = NSTextAlignmentCenter;
@@ -254,6 +254,7 @@
     [self.centerView addSubview:self.healthLabel];
     self.healthLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.healthLabel.font = [UIFont systemFontOfSize:14];
+    self.healthLabel.font = [UIFont my_font:14];
     self.healthLabel.textAlignment = NSTextAlignmentLeft;
     self.healthLabel.text = @"健康指数:";
     self.healthLabel.numberOfLines = 1;
@@ -268,6 +269,7 @@
     [self.centerView addSubview:self.healthTextLabel];
     self.healthTextLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.healthTextLabel.font = [UIFont systemFontOfSize:14];
+    self.healthTextLabel.font = [UIFont my_font:14];
     self.healthTextLabel.textAlignment = NSTextAlignmentRight;
     self.healthTextLabel.text = @"良好";
     self.healthTextLabel.numberOfLines = 1;

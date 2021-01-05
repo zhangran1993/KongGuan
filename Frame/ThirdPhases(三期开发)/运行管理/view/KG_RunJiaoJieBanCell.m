@@ -73,6 +73,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top).offset(7);
@@ -112,6 +113,7 @@
     self.leftTitle.text = @"张树剑告";
     self.leftTitle.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.leftTitle.font = [UIFont systemFontOfSize:12];
+    self.leftTitle.font = [UIFont my_font:12];
     [self.leftTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftIcon.mas_right).offset(9);
         make.top.equalTo(self.leftView.mas_top).offset(5);
@@ -123,6 +125,7 @@
     self.leftTime.text = @"2020.05.07 08:00:23";
     self.leftTime.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.leftTime.font = [UIFont systemFontOfSize:10];
+    self.leftTime.font = [UIFont my_font:10];
     [self.leftTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftIcon.mas_right).offset(9);
         make.top.equalTo(self.leftTitle.mas_bottom);
@@ -158,6 +161,7 @@
     self.rightTitle.text = @"张树剑告";
     self.rightTitle.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.rightTitle.font = [UIFont systemFontOfSize:12];
+    self.rightTitle.font = [UIFont my_font:12];
     [self.rightTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(rightIcon.mas_right).offset(9);
         make.top.equalTo(self.rightView.mas_top).offset(5);
@@ -169,6 +173,7 @@
     self.rightTime.text = @"2020.05.07 08:00:23";
     self.rightTime.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.rightTime.font = [UIFont systemFontOfSize:10];
+    self.rightTime.font = [UIFont my_font:10];
     [self.rightTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(rightIcon.mas_right).offset(9);
         make.top.equalTo(self.rightTitle.mas_bottom);

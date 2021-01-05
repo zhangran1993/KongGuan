@@ -51,6 +51,7 @@
     [self.rightView addSubview:self.titleLabel];
     self.titleLabel.text = @"电池间蓄电池2#设备故障";
     self.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.numberOfLines = 1;
@@ -65,7 +66,8 @@
     self.detailLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.detailLabel];
     self.detailLabel.text = @"电池间";
-    self.detailLabel.font = [UIFont systemFontOfSize:14 ];
+    self.detailLabel.font = [UIFont systemFontOfSize:14];
+    self.detailLabel.font = [UIFont my_font:14];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
     self.detailLabel.numberOfLines = 0;

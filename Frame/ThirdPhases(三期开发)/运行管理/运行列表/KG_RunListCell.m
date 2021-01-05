@@ -62,6 +62,7 @@
     [bgView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"黄城导航台2020.02.02-2020";
     self.titleLabel.numberOfLines = 2;
@@ -88,6 +89,7 @@
     [bgView addSubview:self.statusLabel];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.font = [UIFont systemFontOfSize:12];
+    self.statusLabel.font = [UIFont my_font:12];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.text = @"技术主任张树剑";
     [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -101,6 +103,7 @@
     [bgView addSubview:self.timeLabel];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
+    self.timeLabel.font = [UIFont my_font:12];
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     self.timeLabel.text = @"2020.04.28 17:00:23";
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {

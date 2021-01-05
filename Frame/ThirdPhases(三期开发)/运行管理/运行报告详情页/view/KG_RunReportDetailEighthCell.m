@@ -68,6 +68,7 @@
     titleLabel.numberOfLines = 0;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont my_font:14];
     titleLabel.text = @"交接班记录";
     [tableHeadView addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

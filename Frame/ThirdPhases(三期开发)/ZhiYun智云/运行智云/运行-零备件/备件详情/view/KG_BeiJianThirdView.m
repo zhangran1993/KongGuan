@@ -65,6 +65,7 @@
     titleLabel.text = @"备注";
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:14];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(iconImage.mas_centerY);
         make.left.equalTo(iconImage.mas_right).offset(7);
@@ -138,6 +139,7 @@
     self.placeholderLabel.numberOfLines = 1;
     self.placeholderLabel.textAlignment = NSTextAlignmentLeft;
     self.placeholderLabel.font = [UIFont systemFontOfSize:14];
+    self.placeholderLabel.font = [UIFont my_font:14];
     [self.placeholderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         
         make.right.equalTo(textBgView.mas_right).offset(-16);
@@ -152,6 +154,7 @@
     self.numLabel.text = @"0/50";
     self.numLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.numLabel.font = [UIFont systemFontOfSize:14];
+    self.numLabel.font = [UIFont my_font:14];
     self.numLabel.numberOfLines = 1;
     self.numLabel.textAlignment = NSTextAlignmentRight;
     [self.numLabel mas_makeConstraints:^(MASConstraintMaker *make) {

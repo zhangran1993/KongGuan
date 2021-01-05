@@ -87,7 +87,7 @@
     headLabel.text = @"选择操作指引分类";
     headLabel.textColor = [UIColor colorWithHexString:@"#030303"];
     headLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
-    
+    headLabel.font = [UIFont my_font:18];
     UIView *lineView = [[UIView alloc]init];
     [headView addSubview:lineView];
     lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];

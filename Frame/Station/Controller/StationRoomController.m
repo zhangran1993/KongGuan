@@ -355,6 +355,7 @@
     UILabel *title1 = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(84))];
     title1.text = @"动力监测";
     title1.font = FontSize(18);
+    title1.font = [UIFont my_font:18];
     [view1 addSubview:title1];
     //
     if([_romeDetail[@"powerStatus"][@"status"] isEqualToString:@"0"]){

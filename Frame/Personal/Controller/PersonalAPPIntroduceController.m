@@ -42,6 +42,7 @@
     
     UILabel *vsersionLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH_SCREEN/2-200/2,60 + 50 +Height_NavBar +15 ,200, 20)];
     vsersionLabel.font = [UIFont systemFontOfSize:14 ];
+    vsersionLabel.font = [UIFont my_font:14];
     vsersionLabel.textAlignment = NSTextAlignmentCenter;
     vsersionLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     vsersionLabel.text = [NSString stringWithFormat:@"%@%@",@"智慧台站",AppVersion] ;
@@ -53,6 +54,7 @@
     
     intoductionLabel.numberOfLines = 15;
     intoductionLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    intoductionLabel.font = [UIFont my_font:12];
     [intoductionLabel setTextColor:[UIColor colorWithHexString:@"#626470"]];
     NSMutableParagraphStyle  *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     // 行间距设置为30

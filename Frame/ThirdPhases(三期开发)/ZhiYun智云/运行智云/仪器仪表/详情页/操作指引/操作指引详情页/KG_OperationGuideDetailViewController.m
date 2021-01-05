@@ -55,6 +55,7 @@
     self.headLabel = [[UILabel alloc]init];
     self.headLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.headLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.headLabel.font = [UIFont my_font:16];
     self.headLabel.text = safeString(self.dataDic[@"title"]);
     [headView addSubview:self.headLabel];
     [self.headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -163,6 +164,7 @@
     
     titleLabel.textColor = [UIColor colorWithHexString:@"#005DC4"];
     titleLabel.font = [UIFont systemFontOfSize:22 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:22];
     titleLabel.numberOfLines = 1;
     
     UIImageView *underImage = [[UIImageView alloc]init];

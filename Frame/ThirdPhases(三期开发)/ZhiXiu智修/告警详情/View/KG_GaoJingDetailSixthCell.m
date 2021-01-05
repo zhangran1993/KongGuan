@@ -46,6 +46,7 @@
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:16];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top).offset(13);

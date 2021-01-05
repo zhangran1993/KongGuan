@@ -46,6 +46,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(32);
         make.width.equalTo(@200);
@@ -57,6 +58,7 @@
     [self addSubview:self.detailLabel];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.detailLabel.font = [UIFont systemFontOfSize:12];
+    self.detailLabel.font = [UIFont my_font:12];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(32);
         make.width.equalTo(@200);

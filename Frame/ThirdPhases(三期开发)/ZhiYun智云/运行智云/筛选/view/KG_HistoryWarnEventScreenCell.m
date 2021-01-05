@@ -29,6 +29,7 @@
     [self.btn setTitleColor:[UIColor colorWithHexString:@"#7C7E86"] forState:UIControlStateNormal];
     [self.btn setBackgroundColor:[UIColor colorWithHexString:@"#FFFFFF"]];
     self.btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.btn.titleLabel.font = [UIFont my_font:14];
     self.btn.layer.cornerRadius =4 ;
     self.btn.layer.masksToBounds = YES;
     self.btn.layer.borderColor = [[UIColor colorWithHexString:@"#F2F2F2"] CGColor];

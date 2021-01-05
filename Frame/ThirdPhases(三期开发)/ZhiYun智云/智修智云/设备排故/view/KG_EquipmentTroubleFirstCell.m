@@ -58,6 +58,7 @@
     [self addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont my_font:14];
     titleLabel.text = @"故障案例";
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(iconImage.mas_centerY);

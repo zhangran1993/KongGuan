@@ -47,6 +47,7 @@
     self.titieLabel.numberOfLines = 0;
     self.titieLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.titieLabel.font = [UIFont systemFontOfSize:14];
+    self.titieLabel.font = [UIFont my_font:14];
     [self.titieLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(32);
         make.right.equalTo(self.mas_right).offset(-32);

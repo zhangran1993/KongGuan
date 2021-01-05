@@ -14,6 +14,7 @@
     [super awakeFromNib];
     self.redDotImage.layer.cornerRadius = 5.f;
     self.redDotImage.layer.masksToBounds = YES;
+    self.titleLabel.font = [UIFont my_font:14];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

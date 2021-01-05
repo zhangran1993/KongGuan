@@ -111,6 +111,7 @@
     [self getLoginInfo];
     [UserManager shareUserManager].zhiweiSegmentCurIndex = 0;
     [UserManager shareUserManager].zhiweiWeihuIndex = 0;
+   
 }
 
 - (void)changeCookies {

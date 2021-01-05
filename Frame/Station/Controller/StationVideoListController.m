@@ -271,12 +271,14 @@
             UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(55), 0, FrameWidth(300), FrameWidth(54))];
             titleLabel.text = item.alias;
             titleLabel.font =  FontSize(15);
+            titleLabel.font = [UIFont my_font:15];
             [cell addSubview:titleLabel];
         }else{
             UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(80), 0, FrameWidth(220), FrameWidth(54))];
             titleLabel.text = item.alias;
             titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
             titleLabel.font = FontSize(15);
+            titleLabel.font = [UIFont my_font:15];
             [cell addSubview:titleLabel];
             
             UIImageView *dot = [[UIImageView alloc] initWithFrame:CGRectMake(FrameWidth(55), FrameWidth(20), FrameWidth(12), FrameWidth(12))];
@@ -308,6 +310,7 @@
         
         UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(25), 0, WIDTH_SCREEN, FrameWidth(72))];
         titleLabel.font = FontSize(17);
+        titleLabel.font = [UIFont my_font:17];
         titleLabel.text = self.videoList[indexPath.row].name;
         [thiscell addSubview:titleLabel];
     }else{
@@ -320,6 +323,7 @@
         [thiscell addSubview:videoImg];//station_right
         UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(FrameWidth(120), FrameWidth(1), FrameWidth(450), FrameWidth(107))];
         titleLabel.font = FontSize(17);
+        titleLabel.font = [UIFont my_font:17];
         titleLabel.text = self.videoList[indexPath.row].name;
         titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
         [thiscell addSubview:titleLabel];

@@ -62,6 +62,7 @@
     self.titleLabel = [[UILabel alloc]init];
     [self.centerView addSubview:self.titleLabel];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.numberOfLines = 2;
@@ -74,12 +75,12 @@
         make.height.equalTo(@20);
     }];
 
-
     
     self.detailLabel = [[UILabel alloc]init];
     [self.centerView addSubview:self.detailLabel];
     self.detailLabel.text = @"秋季换季时将此备上机测试，测量发射机峰值";
     self.detailLabel.font = [UIFont systemFontOfSize:12];
+    self.detailLabel.font = [UIFont my_font:12];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
     self.detailLabel.numberOfLines = 2;

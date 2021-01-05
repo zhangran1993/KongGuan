@@ -73,6 +73,7 @@
     accountLabel.text = @"用户名";
     accountLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     accountLabel.font = [UIFont systemFontOfSize:14];
+    accountLabel.font = [UIFont my_font:14];
     [accountLabel sizeToFit];
     accountLabel.numberOfLines = 1;
     [accountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -92,6 +93,7 @@
     }
     accountDetailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     accountDetailLabel.font = [UIFont systemFontOfSize:14];
+    accountDetailLabel.font = [UIFont my_font:14];
     [accountDetailLabel sizeToFit];
     accountDetailLabel.numberOfLines = 1;
     [accountDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -104,14 +106,16 @@
     //旧密码
     UIView *oldPwdView = [[UIView alloc] initWithFrame:CGRectMake(0,  60 + Height_NavBar, WIDTH_SCREEN, 50)];
     oldPwdView.backgroundColor = [UIColor whiteColor];
-    UILabel *oldPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 50, 50)];
+    UILabel *oldPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 80, 50)];
     oldPwdTitleLabel.font = FontSize(14);
+    oldPwdTitleLabel.font = [UIFont my_font:14];
     oldPwdTitleLabel.text = @"原密码";
     oldPwdTitleLabel.textColor = [UIColor  colorWithHexString:@"#24252A"];
     [oldPwdView addSubview:oldPwdTitleLabel];
     
     _oldPwdText = [[UITextField alloc]initWithFrame:CGRectMake(90.5, 0, FrameWidth(300), 50)];
     _oldPwdText.font = FontSize(14);
+    _oldPwdText.font = [UIFont my_font:14];
     _oldPwdText.secureTextEntry = YES;
     _oldPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写原密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(14)}];
     _oldPwdText.tag = 1;
@@ -123,14 +127,16 @@
     //新密码
     UIView *newPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, 60 + 60 + Height_NavBar, WIDTH_SCREEN, 50)];
     newPwdView.backgroundColor = [UIColor whiteColor];
-    UILabel *newPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 50,50)];
+    UILabel *newPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 80,50)];
     newPwdTitleLabel.font = FontSize(14);
+    newPwdTitleLabel.font = [UIFont my_font:14];
     newPwdTitleLabel.text = @"新密码";
     newPwdTitleLabel.textColor = [UIColor  colorWithHexString:@"#24252A"];
     [newPwdView addSubview:newPwdTitleLabel];
     
     _oneNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(90.5, 0, FrameWidth(300), 50)];
     _oneNewPwdText.font = FontSize(14);
+    _oneNewPwdText.font = [UIFont my_font:14];
     _oneNewPwdText.secureTextEntry = YES;
     _oneNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(14)}];
     _oneNewPwdText.tag = 2;
@@ -153,14 +159,16 @@
     //确认密码
     UIView *sureNewPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, 60 + 60 + Height_NavBar +50 , WIDTH_SCREEN, 50)];
     sureNewPwdView.backgroundColor = [UIColor whiteColor];
-    UILabel *sureNewPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 60,50)];
+    UILabel *sureNewPwdTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, 80,50)];
     sureNewPwdTitleLabel.font = FontSize(14);
+    sureNewPwdTitleLabel.font = [UIFont my_font:14];
     sureNewPwdTitleLabel.text = @"确认密码";
     sureNewPwdTitleLabel.textColor = [UIColor  colorWithHexString:@"#24252A"];
     [sureNewPwdView addSubview:sureNewPwdTitleLabel];
     
     _sureNewPwdText = [[UITextField alloc]initWithFrame:CGRectMake(90.5, 0, FrameWidth(300), 50)];
     _sureNewPwdText.font = FontSize(14);
+    _sureNewPwdText.font = [UIFont my_font:14];
     _sureNewPwdText.secureTextEntry = YES;
     _sureNewPwdText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请再次输入新密码" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor],NSFontAttributeName:FontSize(14)}];
  

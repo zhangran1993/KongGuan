@@ -81,6 +81,7 @@
     [self.centerView addSubview:titleLabel];
     titleLabel.text = @"现场巡视详情";
     titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:17];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.numberOfLines = 1;
@@ -106,6 +107,7 @@
     timeLabel.text = @"任务时间：";
     [timeLabel sizeToFit];
     timeLabel.font = [UIFont systemFontOfSize:14];
+    timeLabel.font = [UIFont my_font:14];
     timeLabel.textAlignment = NSTextAlignmentLeft;
     timeLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     timeLabel.numberOfLines = 1;
@@ -121,6 +123,7 @@
     timeTextLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"patrolIntervalTime"])];
     [timeTextLabel sizeToFit];
     timeTextLabel.font = [UIFont systemFontOfSize:14];
+    timeTextLabel.font = [UIFont my_font:14];
     timeTextLabel.textAlignment = NSTextAlignmentRight;
     timeTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     timeTextLabel.numberOfLines = 1;
@@ -146,6 +149,7 @@
     nameLabel.text = @"任务名称：";
     [nameLabel sizeToFit];
     nameLabel.font = [UIFont systemFontOfSize:14];
+    nameLabel.font = [UIFont my_font:14];
     nameLabel.textAlignment = NSTextAlignmentLeft;
     nameLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     nameLabel.numberOfLines = 1;
@@ -161,6 +165,7 @@
     nameTextLabel.text = safeString(self.dataDic[@"taskName"]);
     [nameTextLabel sizeToFit];
     nameTextLabel.font = [UIFont systemFontOfSize:14];
+    nameTextLabel.font = [UIFont my_font:14];
     nameTextLabel.textAlignment = NSTextAlignmentRight;
     nameTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     nameTextLabel.numberOfLines = 1;
@@ -186,6 +191,7 @@
     peopleLabel.text = @"执行负责人：";
     [peopleLabel sizeToFit];
     peopleLabel.font = [UIFont systemFontOfSize:14];
+    peopleLabel.font = [UIFont my_font:14];
     peopleLabel.textAlignment = NSTextAlignmentLeft;
     peopleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     peopleLabel.numberOfLines = 1;
@@ -201,6 +207,7 @@
     peopleTextLabel.text = safeString(self.dataDic[@"leaderName"]);
     [peopleTextLabel sizeToFit];
     peopleTextLabel.font = [UIFont systemFontOfSize:14];
+    peopleTextLabel.font = [UIFont my_font:14];
     peopleTextLabel.textAlignment = NSTextAlignmentRight;
     peopleTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     peopleTextLabel.numberOfLines = 1;
@@ -225,6 +232,7 @@
     resultLabel.text = @"巡视结果：";
     [resultLabel sizeToFit];
     resultLabel.font = [UIFont systemFontOfSize:14];
+    resultLabel.font = [UIFont my_font:14];
     resultLabel.textAlignment = NSTextAlignmentLeft;
     resultLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     resultLabel.numberOfLines = 1;
@@ -238,6 +246,7 @@
     resultTextLabel.text = safeString(self.dataDic[@"result"]);
     [resultTextLabel sizeToFit];
     resultTextLabel.font = [UIFont systemFontOfSize:14];
+    resultTextLabel.font = [UIFont my_font:14];
     resultTextLabel.textAlignment = NSTextAlignmentRight;
     resultTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     resultTextLabel.numberOfLines = 1;

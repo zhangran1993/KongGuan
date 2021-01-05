@@ -35,6 +35,7 @@
     self.titleLabel.layer.borderColor = [[UIColor colorWithHexString:@"#EDEEF5"] CGColor];
     self.titleLabel.layer.borderWidth = 0.5;
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     [self addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.layer.cornerRadius =4.f;

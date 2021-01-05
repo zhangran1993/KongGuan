@@ -44,6 +44,7 @@
     [self addSubview:self.leftTitleLabel];
     self.leftTitleLabel.text = @"--";
     self.leftTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.leftTitleLabel.font = [UIFont my_font:14];
     self.leftTitleLabel.textAlignment = NSTextAlignmentLeft;
     self.leftTitleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.leftTitleLabel.numberOfLines = 2;
@@ -59,6 +60,7 @@
     [self addSubview:self.rightTitleLabel];
     self.rightTitleLabel.text = @"--";
     self.rightTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.rightTitleLabel.font = [UIFont my_font:14];
     self.rightTitleLabel.textAlignment = NSTextAlignmentRight;
     self.rightTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.rightTitleLabel.numberOfLines = 2;

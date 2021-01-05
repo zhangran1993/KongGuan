@@ -125,6 +125,7 @@
     
     self.roomLabel = [[UILabel alloc]init];
     self.roomLabel.font = [UIFont systemFontOfSize:14];
+    self.roomLabel.font = [UIFont my_font:14];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.roomLabel.numberOfLines = 2;
     [self.roomLabel sizeToFit];
@@ -193,6 +194,7 @@
     self.leftTitle.text = @"1";
     self.leftTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.leftTitle.font = [UIFont systemFontOfSize:14];
+    self.leftTitle.font = [UIFont my_font:14];
     self.leftTitle.numberOfLines = 1;
     
     self.leftTitle.textAlignment = NSTextAlignmentLeft;

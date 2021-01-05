@@ -81,6 +81,7 @@
     titleLabel.text = [NSString stringWithFormat:@"%@",@"最近告警统计"];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:16];
     titleLabel.numberOfLines =1;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -97,6 +98,7 @@
     promptLabel.text = [NSString stringWithFormat:@"%@",@"提示"];
     promptLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     promptLabel.font = [UIFont systemFontOfSize:12];
+    promptLabel.font = [UIFont my_font:12];
     promptLabel.numberOfLines =1;
     promptLabel.textAlignment = NSTextAlignmentLeft;
     [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -123,6 +125,7 @@
     ciyaoLabel.text = [NSString stringWithFormat:@"%@",@"次要"];
     ciyaoLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     ciyaoLabel.font = [UIFont systemFontOfSize:12];
+    ciyaoLabel.font = [UIFont my_font:12];
     ciyaoLabel.numberOfLines =1;
     ciyaoLabel.textAlignment = NSTextAlignmentLeft;
     [ciyaoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -149,6 +152,7 @@
     importantLabel.text = [NSString stringWithFormat:@"%@",@"重要"];
     importantLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     importantLabel.font = [UIFont systemFontOfSize:12];
+    importantLabel.font = [UIFont my_font:12];
     importantLabel.numberOfLines =1;
     importantLabel.textAlignment = NSTextAlignmentLeft;
     [importantLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -175,6 +179,7 @@
     jinjiLabel.text = [NSString stringWithFormat:@"%@",@"紧急"];
     jinjiLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     jinjiLabel.font = [UIFont systemFontOfSize:12];
+    jinjiLabel.font = [UIFont my_font:12];
     jinjiLabel.numberOfLines =1;
     jinjiLabel.textAlignment = NSTextAlignmentLeft;
     [jinjiLabel mas_makeConstraints:^(MASConstraintMaker *make) {

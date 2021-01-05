@@ -59,7 +59,8 @@
     self.titleLabel = [[UILabel alloc]init];
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.titleLabel.font = [UIFont systemFontOfSize:14];
+//    self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(42);
         make.width.equalTo(@200);
@@ -82,6 +83,7 @@
     [self addSubview:self.detailLabel];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
+    self.detailLabel.font = [UIFont my_font:14];
     self.detailLabel.textAlignment = NSTextAlignmentRight;
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightImage.mas_left).offset(-5);
@@ -97,6 +99,7 @@
 - (void)setStr:(NSString *)str {
     _str = str;
     self.titleLabel.text = str;
+    self.detailLabel.hidden = YES;
     if ([str isEqualToString:@"新消息通知"]) {
         
         self.iconImage.image = [UIImage imageNamed:@"kg_messnoti"];
@@ -104,7 +107,25 @@
         
         self.iconImage.image = [UIImage imageNamed:@"kg_fontsize"];
     }else if ([str isEqualToString:@"清除缓存"]) {
-       
+        
+        self.detailLabel.hidden = NO;
+        CGFloat size = [self folderSizeAtPath:NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject] +[self folderSizeAtPath:NSTemporaryDirectory()];
+                  //if(size <= 0.00025){wo
+                  //   size = 0.0;
+                  //}
+                  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                  [userDefaults removeObjectForKey:@"station"];
+                  
+                  NSString *message =@"";
+                  if(size > 1){
+                      message =[NSString stringWithFormat:@"%.2fM", size];
+                  } else if(size == 0){
+                      message =[NSString stringWithFormat:@"%dK", 0];
+                  }else{
+                      message =[NSString stringWithFormat:@"%.2fKB", size * 1024.0];
+                  }
+                  
+        self.detailLabel.text = safeString(message);
         self.iconImage.image = [UIImage imageNamed:@"kg_clearcache"];
     }else if ([str isEqualToString:@"密码修改"]) {
        
@@ -112,5 +133,21 @@
     }
         
 }
-
+// 计算目录大小
+- (CGFloat)folderSizeAtPath:(NSString *)path{
+    // 利用NSFileManager实现对文件的管理
+    NSFileManager *manager = [NSFileManager defaultManager];
+    CGFloat size = 0;
+    if ([manager fileExistsAtPath:path]) {
+        // 获取该目录下的文件，计算其大小
+        NSArray *childrenFile = [manager subpathsAtPath:path];
+        for (NSString *fileName in childrenFile) {
+            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
+            size += [manager attributesOfItemAtPath:absolutePath error:nil].fileSize;
+        }
+        // 将大小转化为M
+        return size / 1024.0 / 1024.0;
+    }
+    return 0;
+}
 @end

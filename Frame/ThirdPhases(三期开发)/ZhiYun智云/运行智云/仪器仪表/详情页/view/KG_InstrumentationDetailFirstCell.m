@@ -106,6 +106,7 @@
     [self.centerView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:16];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"无线电综合测试仪";
     self.titleLabel.numberOfLines = 2;
@@ -145,6 +146,7 @@
     [self.centerView addSubview:self.typeLabel];
     self.typeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.typeLabel.font = [UIFont systemFontOfSize:14];
+    self.typeLabel.font = [UIFont my_font:14];
     self.typeLabel.textAlignment = NSTextAlignmentLeft;
     self.typeLabel.text = @"型号:";
     self.typeLabel.numberOfLines = 1;
@@ -159,6 +161,7 @@
     [self.centerView addSubview:self.typeTextLabel];
     self.typeTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.typeTextLabel.font = [UIFont systemFontOfSize:14];
+    self.typeTextLabel.font = [UIFont my_font:14];
     self.typeTextLabel.textAlignment = NSTextAlignmentRight;
     self.typeTextLabel.text = @"";
     self.typeTextLabel.numberOfLines = 1;
@@ -174,6 +177,7 @@
     [self.centerView addSubview:self.codeLabel];
     self.codeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.codeLabel.font = [UIFont systemFontOfSize:14];
+    self.codeLabel.font = [UIFont my_font:14];
     self.codeLabel.textAlignment = NSTextAlignmentLeft;
     self.codeLabel.text = @"编码:";
     self.codeLabel.numberOfLines = 1;
@@ -188,6 +192,7 @@
     [self.centerView addSubview:self.codeTextLabel];
     self.codeTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.codeTextLabel.font = [UIFont systemFontOfSize:14];
+    self.codeTextLabel.font = [UIFont my_font:14];
     self.codeTextLabel.textAlignment = NSTextAlignmentRight;
     self.codeTextLabel.text = @"";
     self.codeTextLabel.numberOfLines = 1;
@@ -202,6 +207,7 @@
     [self.centerView addSubview:self.partLabel];
     self.partLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.partLabel.font = [UIFont systemFontOfSize:14];
+    self.partLabel.font = [UIFont my_font:14];
     self.partLabel.textAlignment = NSTextAlignmentLeft;
     self.partLabel.text = @"部件号:";
     self.partLabel.numberOfLines = 1;
@@ -216,6 +222,7 @@
     [self.centerView addSubview:self.partTextLabel];
     self.partTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.partTextLabel.font = [UIFont systemFontOfSize:14];
+    self.partTextLabel.font = [UIFont my_font:14];
     self.partTextLabel.textAlignment = NSTextAlignmentRight;
     self.partTextLabel.text = @"";
     self.partTextLabel.numberOfLines = 1;
@@ -231,6 +238,7 @@
     [self.centerView addSubview:self.statusLabel];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.font = [UIFont systemFontOfSize:14];
+    self.statusLabel.font = [UIFont my_font:14];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.text = @"状态:";
     self.statusLabel.numberOfLines = 1;
@@ -246,6 +254,7 @@
     [self.centerView addSubview:self.statusTextLabel];
     self.statusTextLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.statusTextLabel.font = [UIFont systemFontOfSize:14];
+    self.statusTextLabel.font = [UIFont my_font:14];
     self.statusTextLabel.textAlignment = NSTextAlignmentRight;
     self.statusTextLabel.text = @"";
     self.statusTextLabel.numberOfLines = 1;

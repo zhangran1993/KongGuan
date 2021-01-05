@@ -77,6 +77,7 @@
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
   
     self.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:16];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"";
     self.titleLabel.numberOfLines = 2;
@@ -92,6 +93,7 @@
     [self addSubview:self.typeLabel];
     self.typeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.typeLabel.font = [UIFont systemFontOfSize:14];
+    self.typeLabel.font = [UIFont my_font:14];
     self.typeLabel.textAlignment = NSTextAlignmentLeft;
     self.typeLabel.text = @"型号:";
     self.typeLabel.numberOfLines = 1;
@@ -106,6 +108,7 @@
     [self addSubview:self.typeTextLabel];
     self.typeTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.typeTextLabel.font = [UIFont systemFontOfSize:14];
+    self.typeTextLabel.font = [UIFont my_font:14];
     self.typeTextLabel.textAlignment = NSTextAlignmentRight;
     self.typeTextLabel.text = @"";
     self.typeTextLabel.numberOfLines = 1;
@@ -121,6 +124,7 @@
     [self addSubview:self.statusLabel];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.font = [UIFont systemFontOfSize:14];
+    self.statusLabel.font = [UIFont my_font:14];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.text = @"状态:";
     self.statusLabel.numberOfLines = 1;
@@ -136,6 +140,7 @@
     [self addSubview:self.statusTextLabel];
     self.statusTextLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.statusTextLabel.font = [UIFont systemFontOfSize:14];
+    self.statusTextLabel.font = [UIFont my_font:14];
     self.statusTextLabel.textAlignment = NSTextAlignmentRight;
     self.statusTextLabel.text = @"";
     self.statusTextLabel.numberOfLines = 1;
@@ -151,6 +156,7 @@
     [self addSubview:self.addressLabel];
     self.addressLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.addressLabel.font = [UIFont systemFontOfSize:14];
+    self.addressLabel.font = [UIFont my_font:14];
     self.addressLabel.textAlignment = NSTextAlignmentLeft;
     self.addressLabel.text = @"存放地点:";
     self.addressLabel.numberOfLines = 1;
@@ -166,6 +172,7 @@
     [self addSubview:self.addressTextLabel];
     self.addressTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.addressTextLabel.font = [UIFont systemFontOfSize:14];
+    self.addressTextLabel.font = [UIFont my_font:14];
     self.addressTextLabel.textAlignment = NSTextAlignmentRight;
     self.addressTextLabel.text = @"";
     self.addressTextLabel.numberOfLines = 1;

@@ -55,6 +55,7 @@
     [bgView addSubview:self.leftTitleLabel];
     self.leftTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.leftTitleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.leftTitleLabel.font = [UIFont my_font:16];
     self.leftTitleLabel.numberOfLines = 2;
     [self.leftTitleLabel sizeToFit];
     [self.leftTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -89,6 +89,7 @@
     [self.centerView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"台站关键环境事件记录";
     self.titleLabel.numberOfLines = 2;

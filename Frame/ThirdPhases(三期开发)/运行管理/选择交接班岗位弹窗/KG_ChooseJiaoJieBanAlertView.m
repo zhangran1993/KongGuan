@@ -81,6 +81,7 @@
     [self.centerView addSubview:titleLabel];
     titleLabel.text = @"选择交接班岗位";
     titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont my_font:14];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.numberOfLines = 1;
@@ -115,6 +116,7 @@
     zhibanLabel.text = @"值班岗位";
     zhibanLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     zhibanLabel.font = [UIFont systemFontOfSize:12];
+    zhibanLabel.font = [UIFont my_font:12];
     [zhibanLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(zhibanLeftIcon.mas_right).offset(4);
         make.height.equalTo(@17);
@@ -286,6 +288,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [CommonExtension getWorkType:safeString(dic[@"post"])];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.textLabel.font = [UIFont my_font:12];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     return cell;
 }

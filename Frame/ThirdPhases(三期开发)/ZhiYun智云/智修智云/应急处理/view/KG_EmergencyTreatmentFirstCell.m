@@ -92,6 +92,7 @@
     topTitleLabel.text = @"应急操作指引提醒";
     topTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     topTitleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    topTitleLabel.font = [UIFont my_font:16];
     topTitleLabel.numberOfLines = 1;
     topTitleLabel.backgroundColor = [UIColor clearColor];
     topTitleLabel.textAlignment = NSTextAlignmentLeft;

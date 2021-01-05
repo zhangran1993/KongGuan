@@ -136,12 +136,14 @@
     // 默认
     NSMutableDictionary *attrs = [NSMutableDictionary dictionary];
     attrs[NSFontAttributeName] = [UIFont systemFontOfSize:10];
+    
     attrs[NSForegroundColorAttributeName] = [UIColor colorWithHexString:@"#BDC2CC"];
     [viewController.tabBarItem setTitleTextAttributes:attrs forState:UIControlStateNormal];
     
     // 选中
     NSMutableDictionary *attrSelected = [NSMutableDictionary dictionary];
     attrSelected[NSFontAttributeName] = [UIFont systemFontOfSize:10];
+    
     attrSelected[NSForegroundColorAttributeName] = [UIColor colorWithHexString:@"#0E59AB"];
     [viewController.tabBarItem setTitleTextAttributes:attrSelected forState:UIControlStateNormal];
 

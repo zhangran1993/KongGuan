@@ -101,8 +101,6 @@
     
 }
 
-
-
 - (void)createNaviTopView {
     
     UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
@@ -162,11 +160,7 @@
         make.right.equalTo(self.view.mas_right).offset(-16);
     }];
     
-    
-    
 }
-
-
 
 - (void)screenAction{
     
@@ -288,9 +282,6 @@
     }
     
     return cell;
-    
-    
-    
     
 }
 

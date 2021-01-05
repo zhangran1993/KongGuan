@@ -80,6 +80,7 @@
     [self.centerView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"处理办法";
     self.titleLabel.numberOfLines = 1;
@@ -94,6 +95,7 @@
     self.rightTotalNumLabel.textColor = [UIColor colorWithHexString:@"#AFB2BD"];
     self.rightTotalNumLabel.text = @"/4";
     self.rightTotalNumLabel.font = [UIFont systemFontOfSize:14];
+    self.rightTotalNumLabel.font = [UIFont my_font:14];
     [self.centerView addSubview:self.rightTotalNumLabel];
     self.rightTotalNumLabel.textAlignment = NSTextAlignmentRight;
     [self.rightTotalNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -110,6 +112,7 @@
     self.rightNumLabel.text = @"2";
     [self.rightNumLabel sizeToFit];
     self.rightNumLabel.font = [UIFont systemFontOfSize:14];
+    self.rightNumLabel.font = [UIFont my_font:14];
     self.rightNumLabel.textAlignment = NSTextAlignmentRight;
     [self.rightNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightTotalNumLabel.mas_left);

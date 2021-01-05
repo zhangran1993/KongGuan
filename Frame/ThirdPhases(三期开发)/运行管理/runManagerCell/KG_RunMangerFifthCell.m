@@ -66,6 +66,7 @@
     [self.zhihuiyunView addSubview:titleLabel];
     titleLabel.text = @"智慧云";
     titleLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightHeavy];
+    titleLabel.font = [UIFont my_font:20];
     titleLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(bgImage.mas_left).offset(24);
@@ -78,6 +79,7 @@
     [self.zhihuiyunView addSubview:detailLabel];
     detailLabel.text = @"零备件/技术资料/巡视维护记录";
     detailLabel.font = [UIFont systemFontOfSize:14];
+    detailLabel.font = [UIFont my_font:14];
     detailLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(bgImage.mas_left).offset(24);

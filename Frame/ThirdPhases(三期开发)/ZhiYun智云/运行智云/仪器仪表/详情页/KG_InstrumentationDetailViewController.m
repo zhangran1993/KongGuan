@@ -470,6 +470,7 @@
         noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
+        noDataLabel.font = [UIFont my_font:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
         [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_noDataView.mas_centerX);

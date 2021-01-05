@@ -92,6 +92,7 @@
     [self.centerView addSubview:titleLabel];
     titleLabel.text = @"生成运行报告";
     titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:17];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.numberOfLines = 1;
@@ -126,6 +127,7 @@
     zhibanLabel.text = @"值班岗位";
     zhibanLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     zhibanLabel.font = [UIFont systemFontOfSize:12];
+    zhibanLabel.font = [UIFont my_font:12];
     [zhibanLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(zhibanLeftIcon.mas_right).offset(4);
         make.height.equalTo(@17);
@@ -244,6 +246,7 @@
     endPromptlabel.text = @"值班结束时间";
     endPromptlabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     endPromptlabel.font = [UIFont systemFontOfSize:12];
+    endPromptlabel.font = [UIFont my_font:12];
     [endPromptlabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(endImage.mas_right).offset(4);
         make.height.equalTo(@17);
@@ -295,6 +298,7 @@
     startPromptlabel.text = @"值班结束时间";
     startPromptlabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     startPromptlabel.font = [UIFont systemFontOfSize:12];
+    startPromptlabel.font = [UIFont my_font:12];
     [startPromptlabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(startImage.mas_right).offset(4);
         make.height.equalTo(@17);
@@ -345,6 +349,7 @@
     fanweiPromptlabel.text = @"报告范围";
     fanweiPromptlabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     fanweiPromptlabel.font = [UIFont systemFontOfSize:12];
+    fanweiPromptlabel.font = [UIFont my_font:12];
     [fanweiPromptlabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(fanweiImage.mas_right).offset(4);
         make.height.equalTo(@17);
@@ -468,6 +473,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = [CommonExtension getWorkType:safeString(dic[@"post"])];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.textLabel.font = [UIFont my_font:12];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     return cell;
 }

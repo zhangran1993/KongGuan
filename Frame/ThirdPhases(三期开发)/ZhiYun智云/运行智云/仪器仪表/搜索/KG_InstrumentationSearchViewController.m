@@ -117,6 +117,7 @@
     [self.view addSubview:self.containLabel];
     self.containLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.containLabel.font = [UIFont systemFontOfSize:12];
+    self.containLabel.font = [UIFont my_font:12];
     self.containLabel.numberOfLines = 1;
     [self.containLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navigationView.mas_bottom).offset(13);

@@ -540,7 +540,7 @@
     // 点击了第indexPath.row行Cell所做的操作
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSLog(@"点击了第%ld行Cell所做的操作",(long)indexPath.row);
-    
+     return;
     if(self.msgList[indexPath.row].status == 1){
         return;
     }

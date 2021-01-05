@@ -234,6 +234,7 @@
     firstLabel.text = @"备件名称";
     firstLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     firstLabel.font = [UIFont systemFontOfSize:14];
+    firstLabel.font = [UIFont my_font:14];
     firstLabel.numberOfLines = 1;
     firstLabel.textAlignment = NSTextAlignmentLeft;
     [firstLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -248,6 +249,7 @@
     secondLabel.text = @"编号";
     secondLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     secondLabel.font = [UIFont systemFontOfSize:14];
+    secondLabel.font = [UIFont my_font:14];
     secondLabel.numberOfLines = 1;
     secondLabel.textAlignment = NSTextAlignmentRight;
     [secondLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -263,6 +265,7 @@
     thirdLabel.text = @"状态";
     thirdLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     thirdLabel.font = [UIFont systemFontOfSize:14];
+    thirdLabel.font = [UIFont my_font:14];
     thirdLabel.numberOfLines = 1;
     thirdLabel.textAlignment = NSTextAlignmentLeft;
     [thirdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -278,6 +281,7 @@
     fourthLabel.text = @"型号";
     fourthLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     fourthLabel.font = [UIFont systemFontOfSize:14];
+    fourthLabel.font = [UIFont my_font:14];
     fourthLabel.numberOfLines = 1;
     fourthLabel.textAlignment = NSTextAlignmentRight;
     [fourthLabel mas_makeConstraints:^(MASConstraintMaker *make) {

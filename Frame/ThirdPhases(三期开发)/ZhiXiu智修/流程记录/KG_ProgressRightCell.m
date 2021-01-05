@@ -57,6 +57,7 @@
      self.titleLabel.text = @"应急处理 张三";
      self.titleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
      self.titleLabel.font = [UIFont systemFontOfSize:14];
+     self.titleLabel.font = [UIFont my_font:14];
      self.titleLabel.numberOfLines = 2;
      [self.titleLabel sizeToFit];
      self.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -77,6 +78,7 @@
      self.timeLabel.text = @"2020.02.03 19:00:56";
      self.timeLabel.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
      self.timeLabel.font = [UIFont systemFontOfSize:12];
+     self.timeLabel.font = [UIFont my_font:12];
      self.timeLabel.numberOfLines = 1;
      self.timeLabel.textAlignment = NSTextAlignmentLeft;
      [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {

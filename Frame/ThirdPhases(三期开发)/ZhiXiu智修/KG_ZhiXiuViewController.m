@@ -185,6 +185,7 @@
     titleLabel.text = @"仅展示空管专用设备";
     titleLabel.textColor = [UIColor colorWithHexString:@"#808EAC"];
     titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont my_font:14];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(swhView.mas_left).offset(15);
         make.top.equalTo(swhView.mas_top);
@@ -1011,6 +1012,7 @@
         KG_ZhiXiuModel *model = self.stationArray[indexPath.row];
         cell.textLabel.text = safeString(model.name) ;
         cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell.textLabel.font = [UIFont my_font:14];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
         
         return cell;
@@ -1461,6 +1463,7 @@
     hangLabel.text = @"确认";
     hangLabel.textAlignment = NSTextAlignmentCenter;
     hangLabel.font = [UIFont systemFontOfSize:12];
+    hangLabel.font = [UIFont my_font:12];
     hangLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [hangLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(hangBgView.mas_centerX);
@@ -1507,6 +1510,7 @@
     liftLabel.text = @"解除";
     liftLabel.textAlignment = NSTextAlignmentCenter;
     liftLabel.font = [UIFont systemFontOfSize:12];
+    liftLabel.font = [UIFont my_font:12];
     liftLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [liftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(liftBgView.mas_centerX);
@@ -1546,6 +1550,7 @@
     confirmLabel.text = @"挂起";
     confirmLabel.textAlignment = NSTextAlignmentCenter;
     confirmLabel.font = [UIFont systemFontOfSize:12];
+    confirmLabel.font = [UIFont my_font:12];
     confirmLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [confirmLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(confirmBgView.mas_centerX);

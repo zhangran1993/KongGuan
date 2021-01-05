@@ -56,6 +56,7 @@
     titleLabel.text = @"数据中心";
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font =[UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font =[UIFont my_font:16];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(shuView.mas_right).offset(8);
@@ -93,6 +94,7 @@
     guzhangLabel.numberOfLines = 1;
     guzhangLabel.textAlignment = NSTextAlignmentCenter;
     guzhangLabel.font = [UIFont systemFontOfSize:14];
+    guzhangLabel.font =[UIFont my_font:14];
     [guzhangLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(guzhangBtn.mas_centerX);
         make.top.equalTo(guzhangBtn.mas_bottom).offset(4);
@@ -117,6 +119,7 @@
     beijianLabel.numberOfLines = 1;
     beijianLabel.textAlignment = NSTextAlignmentCenter;
     beijianLabel.font = [UIFont systemFontOfSize:14];
+    beijianLabel.font =[UIFont my_font:14];
     [beijianLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(beijianBtn.mas_centerX);
         make.top.equalTo(beijianBtn.mas_bottom).offset(4);
@@ -141,6 +144,7 @@
     levelLabel.numberOfLines = 1;
     levelLabel.textAlignment = NSTextAlignmentCenter;
     levelLabel.font = [UIFont systemFontOfSize:14];
+    levelLabel.font =[UIFont my_font:14];
     [levelLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(levelBtn.mas_centerX);
         make.top.equalTo(levelBtn.mas_bottom).offset(4);

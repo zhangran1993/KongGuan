@@ -136,6 +136,7 @@
     firstLabel.text = @"备件所属设备";
     firstLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     firstLabel.font = [UIFont systemFontOfSize:14];
+    firstLabel.font = [UIFont my_font:14];
     firstLabel.numberOfLines = 1;
     firstLabel.textAlignment = NSTextAlignmentLeft;
     [firstLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -150,6 +151,7 @@
     secondLabel.text = @"备件类型";
     secondLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     secondLabel.font = [UIFont systemFontOfSize:14];
+    secondLabel.font = [UIFont my_font:14];
     secondLabel.numberOfLines = 1;
     secondLabel.textAlignment = NSTextAlignmentLeft;
     [secondLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -165,6 +167,7 @@
     thirdLabel.text = @"备件数量";
     thirdLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     thirdLabel.font = [UIFont systemFontOfSize:14];
+    thirdLabel.font = [UIFont my_font:14];
     thirdLabel.numberOfLines = 1;
     thirdLabel.textAlignment = NSTextAlignmentRight;
     [thirdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -372,6 +375,7 @@
         noDataLabel.text = @"当前暂无数据";
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BFC6D2"];
         noDataLabel.font = [UIFont systemFontOfSize:12];
+        noDataLabel.font = [UIFont my_font:12];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
         [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_noDataView.mas_centerX);

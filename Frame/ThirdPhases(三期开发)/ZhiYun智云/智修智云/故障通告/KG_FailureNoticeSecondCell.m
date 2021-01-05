@@ -58,6 +58,7 @@
     [self addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
+    
     titleLabel.text = @"通讯录";
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(iconImage.mas_centerY);
@@ -102,6 +103,7 @@
     [leftView addSubview:leftLabel];
     leftLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     leftLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    leftLabel.font = [UIFont my_font:16];
     leftLabel.text = @"值班班组";
     leftLabel.textAlignment = NSTextAlignmentRight;
     [leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -148,6 +150,7 @@
     [rightView addSubview:rightLabel];
     rightLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     rightLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    rightLabel.font = [UIFont my_font:16];
     rightLabel.text = @"厂家";
     rightLabel.textAlignment = NSTextAlignmentLeft;
     [rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {

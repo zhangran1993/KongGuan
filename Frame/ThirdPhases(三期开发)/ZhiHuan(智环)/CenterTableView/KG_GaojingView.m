@@ -102,6 +102,7 @@
     
     cell.textLabel.text = safeString(dataDic[@"name"]);
     cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.textLabel.font = [UIFont my_font:14];
     [cell.textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.textLabel.mas_centerY);
         make.left.equalTo(cell.mas_left);
@@ -126,6 +127,7 @@
     detaillabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     detaillabel.textAlignment = NSTextAlignmentRight;
     detaillabel.font = [UIFont systemFontOfSize:14];
+    detaillabel.font = [UIFont my_font:14];
     [cell addSubview:detaillabel];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [detaillabel mas_makeConstraints:^(MASConstraintMaker *make) {

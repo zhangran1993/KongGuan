@@ -79,6 +79,7 @@
     }];
     self.topTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.topTitle.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.topTitle.font = [UIFont my_font:16];
     self.topTitle.numberOfLines = 1;
     self.topTitle.textAlignment = NSTextAlignmentLeft;
     

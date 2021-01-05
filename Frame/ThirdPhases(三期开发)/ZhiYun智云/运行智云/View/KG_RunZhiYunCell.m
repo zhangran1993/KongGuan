@@ -38,6 +38,7 @@
     [self addSubview:self.titlelLabel];
     self.titlelLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.titlelLabel.font = [UIFont systemFontOfSize:12];
+    self.titlelLabel.font = [UIFont my_font:12];
     self.titlelLabel.textAlignment =  NSTextAlignmentCenter;
     [self.titlelLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.mas_centerX);

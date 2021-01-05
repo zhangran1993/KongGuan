@@ -63,6 +63,7 @@
     titleLabel.numberOfLines = 0;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont my_font:14];
     titleLabel.text = @"设备发生问题及处理情况";
     [tableHeadView addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -174,6 +175,7 @@
     [headView addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont my_font:14];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftImage.mas_right).offset(6);
         make.top.equalTo(headView.mas_top);

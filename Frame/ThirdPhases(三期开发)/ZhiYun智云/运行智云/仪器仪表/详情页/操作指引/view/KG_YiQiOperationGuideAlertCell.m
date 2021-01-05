@@ -41,7 +41,7 @@
     self.titleLabel.text = @"";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#2F5ED1"];
     self.titleLabel.font = [UIFont systemFontOfSize:17 ];
-    
+    self.titleLabel.font = [UIFont my_font:17];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);

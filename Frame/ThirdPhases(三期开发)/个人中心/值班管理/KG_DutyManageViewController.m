@@ -137,10 +137,11 @@
     [self.selDataView addSubview:self.selDataTitleLabel];
     self.selDataTitleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.selDataTitleLabel.font = [UIFont systemFontOfSize:16];
+    self.selDataTitleLabel.font = [UIFont my_font:16];
     self.selDataTitleLabel.numberOfLines = 1;
     [self.selDataTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftBtn.mas_right).offset(10);
-        make.right.equalTo(rightBtn.mas_left).offset(-10);
+        make.left.equalTo(leftBtn.mas_right).offset(6);
+        make.right.equalTo(rightBtn.mas_left).offset(-6);
         make.centerY.equalTo(rightBtn.mas_centerY);
         make.height.equalTo(@22);
     }];
@@ -312,6 +313,7 @@
     leftLabel.text = @"职位";
     leftLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     leftLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    leftLabel.font = [UIFont my_font:16];
     [leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headView.mas_left).offset(34);
         make.width.equalTo(@100);
@@ -324,6 +326,7 @@
     rightLabel.text = @"人员";
     rightLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     rightLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    rightLabel.font = [UIFont my_font:16];
     rightLabel.textAlignment = NSTextAlignmentCenter;
     [rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headView.mas_left).offset(SCREEN_WIDTH/2);

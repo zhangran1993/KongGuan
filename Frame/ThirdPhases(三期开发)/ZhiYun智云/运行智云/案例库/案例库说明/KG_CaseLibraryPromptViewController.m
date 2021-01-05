@@ -156,6 +156,7 @@
     self.topLeftTitleLabel.text = @"故障案例库说明";
     self.topLeftTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.topLeftTitleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.topLeftTitleLabel.font = [UIFont my_font:16];
     [self.topLeftTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.topLeftView.mas_right).offset(6);
         make.centerY.equalTo(self.topLeftView.mas_centerY);

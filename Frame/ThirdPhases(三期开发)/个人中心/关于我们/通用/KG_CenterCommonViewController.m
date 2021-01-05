@@ -11,6 +11,11 @@
 #import "KG_CenterCommonCell.h"
 #import "KG_SetFontSystemViewController.h"
 #import "KG_NewMessNotiViewController.h"
+#import "KG_SSSViewController.h"
+#import "UILabel+ChangeFont.h"
+#import "FMFontManager.h"
+#import "UIFont+Addtion.h"
+#import "ChangeFontManager.h"
 @interface KG_CenterCommonViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -19,7 +24,7 @@
 
 @property (nonatomic, strong)   NSArray                  *dataArray;
 
-@property (nonatomic, strong)   UILabel                  *titleLabel;
+@property (nonatomic, strong)   UITextField              *titleLabel;
 
 @property (nonatomic, strong)   UIView                   *navigationView;
 
@@ -113,13 +118,14 @@
     
 }
 /** 标题栏 **/
-- (UILabel *)titleLabel {
+- (UITextField *)titleLabel {
     if (!_titleLabel) {
-        UILabel * titleLabel = [[UILabel alloc] init];
+        UITextField *titleLabel = [[UITextField alloc] init];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
         titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+        titleLabel.userInteractionEnabled = NO;
         _titleLabel = titleLabel;
     }
     return _titleLabel;
@@ -222,14 +228,13 @@
         
         KG_SetFontSystemViewController *vc = [[KG_SetFontSystemViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
-        
+
+       
         
     }else if ([ss isEqualToString:@"清除缓存"]) {
-        
+       
         UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:nil message:@"确认要清除缓存吗？" preferredStyle:UIAlertControllerStyleAlert];
         [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-            
-           
             
         }]];
         [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
@@ -246,11 +251,11 @@
             
             NSString *message =@"";
             if(size > 1){
-                message =[NSString stringWithFormat:@"成功清理%.2fM缓存", size];
+                message =[NSString stringWithFormat:@"成功清理%.2fM", size];
             } else if(size == 0){
-                message =[NSString stringWithFormat:@"成功清理%dK缓存", 0];
+                message =[NSString stringWithFormat:@"成功清理%dK", 0];
             }else{
-                message =[NSString stringWithFormat:@"成功清理%.2fKB缓存", size * 1024.0];
+                message =[NSString stringWithFormat:@"成功清理%.2fKB", size * 1024.0];
             }
             
             
@@ -258,16 +263,12 @@
             //[self cleanCaches:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).lastObject];
             [self cleanCaches:NSTemporaryDirectory()];
             //NSString * msg = [NSString stringWithFormat:@"成功清理%0.2fKB缓存",huan];
-            
+            [self.tableView reloadData];
             [FrameBaseRequest showMessage:message];
             return ;
         }]];
         
         [self presentViewController:alertContor animated:NO completion:nil];
-        
-        
-        
-        
         
     }
     
@@ -295,7 +296,6 @@
     
     return 4;
 }
-
 
 // 计算目录大小
 - (CGFloat)folderSizeAtPath:(NSString *)path{
@@ -330,6 +330,5 @@
     }
     
 }
-
 
 @end

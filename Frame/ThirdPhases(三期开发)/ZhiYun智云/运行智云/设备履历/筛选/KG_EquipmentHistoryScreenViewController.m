@@ -58,7 +58,7 @@
     topLabel.text = @"选择设备";
     topLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     topLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-    
+    topLabel.font = [UIFont my_font:14];
     [topLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left).offset(16);
         make.right.equalTo(self.view.mas_right);

@@ -60,6 +60,7 @@
     self.titleLabel.text = @"旁路供电";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#7C7E86"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -74,6 +75,7 @@
     self.rightLabel.text = @"否";
     self.rightLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.rightLabel.font = [UIFont systemFontOfSize:14];
+    self.rightLabel.font = [UIFont my_font:14];
     self.rightLabel.numberOfLines = 1;
     self.rightLabel.textAlignment = NSTextAlignmentRight;
     [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {

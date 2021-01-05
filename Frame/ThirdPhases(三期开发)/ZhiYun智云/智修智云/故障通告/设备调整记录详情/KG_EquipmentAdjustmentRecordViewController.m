@@ -54,7 +54,8 @@
     self.headerLabel = [[UILabel alloc]init];
     [headView addSubview:self.headerLabel];
     self.headerLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.headerLabel.font  =[UIFont systemFontOfSize:16];
+    self.headerLabel.font = [UIFont systemFontOfSize:16];
+    self.headerLabel.font = [UIFont my_font:16];
     self.headerLabel.numberOfLines = 0;
     [self.headerLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headView.mas_left).offset(16);

@@ -119,6 +119,7 @@
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:16];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top).offset(13);
@@ -141,6 +142,7 @@
     self.label1.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
     self.label1.textAlignment = NSTextAlignmentCenter;
     self.label1.font = [UIFont systemFontOfSize:12];
+    self.label1.font = [UIFont my_font:12];
     [self.label1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.btn1.mas_centerX);
         make.top.equalTo(self.btn1.mas_bottom).offset(8);
@@ -164,6 +166,7 @@
     self.label2.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
     self.label2.textAlignment = NSTextAlignmentCenter;
     self.label2.font = [UIFont systemFontOfSize:12];
+    self.label2.font = [UIFont my_font:12];
     [self.label2 sizeToFit];
     [self.label2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.btn2.mas_centerX);
@@ -198,6 +201,7 @@
     self.label3.textAlignment = NSTextAlignmentCenter;
     [self.label3 sizeToFit];
     self.label3.font = [UIFont systemFontOfSize:12];
+    self.label3.font = [UIFont my_font:12];
     [self.label3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.btn3.mas_centerX);
         make.top.equalTo(self.btn3.mas_bottom).offset(8);
@@ -229,6 +233,7 @@
     self.label4.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
     self.label4.textAlignment = NSTextAlignmentCenter;
     self.label4.font = [UIFont systemFontOfSize:12];
+    self.label4.font = [UIFont my_font:12];
     [self.label4 sizeToFit];
     [self.label4 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.btn4.mas_centerX);
@@ -262,6 +267,7 @@
     self.label5.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
     self.label5.textAlignment = NSTextAlignmentCenter;
     self.label5.font = [UIFont systemFontOfSize:12];
+    self.label5.font = [UIFont my_font:12];
     [self.label5 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.btn5.mas_centerX);
         make.top.equalTo(self.btn5.mas_bottom).offset(8);

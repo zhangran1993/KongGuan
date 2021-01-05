@@ -30,6 +30,7 @@
 - (void)setStation:(StationItems *)station{
     _stationName.text = station.alias;
     _stationName.font = FontSize(16);
+    _stationName.font = [UIFont my_font:16];
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, FrameWidth(78), WIDTH_SCREEN, 1)];
     lineView.backgroundColor = BGColor;
     [self addSubview:lineView];

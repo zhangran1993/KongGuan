@@ -97,13 +97,14 @@
     [topView addSubview:promptLabel];
     promptLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     promptLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    promptLabel.font = [UIFont my_font:16];
     promptLabel.textAlignment = NSTextAlignmentLeft;
     promptLabel.text = @"台站任务提醒";
     [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(topView.mas_left).offset(16);
         make.top.equalTo(topView.mas_top);
         make.bottom.equalTo(topView.mas_bottom);
-        make.width.equalTo(@100);
+        make.width.equalTo(@200);
     }];
     
     UIButton *totalBtn = [[UIButton alloc]init];
@@ -137,6 +138,7 @@
         [noDataView addSubview:noDataLabel];
         noDataLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
         noDataLabel.font = [UIFont systemFontOfSize:14];
+        noDataLabel.font = [UIFont my_font:14];
         noDataLabel.textAlignment = NSTextAlignmentCenter;
         noDataLabel.text = @"当前暂无数据";
         [noDataLabel mas_makeConstraints:^(MASConstraintMaker *make) {

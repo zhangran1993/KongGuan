@@ -75,7 +75,8 @@
     UILabel *titleLabel = [[UILabel alloc]init];
     [self.jiaojiebanView addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont my_font:16];
     titleLabel.text = [NSString stringWithFormat:@"%@",@"交接班记录"];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftView.mas_right).offset(4);
@@ -106,6 +107,7 @@
     [self.jiaojiebanView addSubview:recordLabel];
     recordLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     recordLabel.font = [UIFont systemFontOfSize:12];
+    recordLabel.font = [UIFont my_font:12];
     recordLabel.textAlignment = NSTextAlignmentRight;
     recordLabel.text = [NSString stringWithFormat:@""];
     [recordLabel mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -57,6 +57,7 @@
     self.timeLabel.text = @"2020.02.03 19:00:56";
     self.timeLabel.textColor = [UIColor colorWithHexString:@"24252A"];
     self.timeLabel.font = [UIFont systemFontOfSize:14];
+    self.timeLabel.font = [UIFont my_font:14];
     self.timeLabel.numberOfLines = 3;
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     
@@ -75,6 +76,7 @@
     self.titleLabel.text = @"应急处理 张三";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel sizeToFit];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -91,6 +93,7 @@
    self.personLabel.text = @"应急处理 张三";
    self.personLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
    self.personLabel.font = [UIFont systemFontOfSize:12];
+   self.personLabel.font = [UIFont my_font:12];
    self.personLabel.numberOfLines = 1;
    [self.personLabel sizeToFit];
    self.personLabel.textAlignment = NSTextAlignmentLeft;
@@ -107,6 +110,7 @@
     self.contentLabel.text = @"应急处理 张三";
     self.contentLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.contentLabel.font = [UIFont systemFontOfSize:12];
+    self.contentLabel.font = [UIFont my_font:12];
     self.contentLabel.numberOfLines = 2;
     [self.contentLabel sizeToFit];
     self.contentLabel.textAlignment = NSTextAlignmentLeft;

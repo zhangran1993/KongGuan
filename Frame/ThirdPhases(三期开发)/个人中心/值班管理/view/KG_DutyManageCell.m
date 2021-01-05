@@ -69,7 +69,6 @@
     }];
     
     
-    
     self.topLineView = [[UIView alloc]init];
     [self addSubview:self.topLineView];
     self.topLineView.backgroundColor = [UIColor colorWithHexString:@"#E7ECF6"];
@@ -105,6 +104,7 @@
     [self addSubview:self.leftTitleLabel];
     self.leftTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.leftTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.leftTitleLabel.font = [UIFont my_font:14];
     self.leftTitleLabel.numberOfLines = 1;
     self.leftTitleLabel.textAlignment = NSTextAlignmentLeft;
     [self.leftTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -118,6 +118,7 @@
     [self addSubview:self.rightTitleLabel];
     self.rightTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.rightTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.rightTitleLabel.font = [UIFont my_font:14];
     self.rightTitleLabel.numberOfLines = 1;
     self.rightTitleLabel.textAlignment = NSTextAlignmentCenter;
     [self.rightTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

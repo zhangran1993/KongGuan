@@ -48,6 +48,7 @@
     [self addSubview:self.firstLabel];
     self.firstLabel.text = @"--";
     self.firstLabel.font = [UIFont systemFontOfSize:14];
+    self.firstLabel.font = [UIFont my_font:14];
     self.firstLabel.textAlignment = NSTextAlignmentLeft;
     self.firstLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     [self.firstLabel sizeToFit];
@@ -64,6 +65,7 @@
     [self addSubview:self.secondLabel];
     self.secondLabel.text = @"--";
     self.secondLabel.font = [UIFont systemFontOfSize:14];
+    self.secondLabel.font = [UIFont my_font:14];
     self.secondLabel.textAlignment = NSTextAlignmentRight;
     self.secondLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.secondLabel sizeToFit];
@@ -80,6 +82,7 @@
     [self addSubview:self.thirdLabel];
     self.thirdLabel.text = @"--";
     self.thirdLabel.font = [UIFont systemFontOfSize:14];
+    self.thirdLabel.font = [UIFont my_font:14];
     self.thirdLabel.textAlignment = NSTextAlignmentLeft;
     self.thirdLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.thirdLabel sizeToFit];
@@ -96,6 +99,7 @@
     [self addSubview:self.fourthLabel];
     self.fourthLabel.text = @"--";
     self.fourthLabel.font = [UIFont systemFontOfSize:14];
+    self.fourthLabel.font = [UIFont my_font:14];
     self.fourthLabel.textAlignment = NSTextAlignmentRight;
     self.fourthLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.fourthLabel sizeToFit];

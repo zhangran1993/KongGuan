@@ -56,7 +56,7 @@
     [self.tableHeadView addSubview:self.headTitleLabel];
     self.headTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.headTitleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
-    
+    self.headTitleLabel.font = [UIFont my_font:16];
     
     [self.headTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tableHeadView.mas_left).offset(16);

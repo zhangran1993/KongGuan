@@ -86,6 +86,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
+    self.titleLabel.font = [UIFont my_font:16];
     self.titleLabel.numberOfLines = 2;
     [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -101,6 +102,7 @@
     [self addSubview:self.detailLabel];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
+    self.detailLabel.font = [UIFont my_font:14];
     self.detailLabel.numberOfLines = 0;
     self.detailLabel.text = @"afdnjsdfsdasvdkajfsvnkafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjljls";
     [self.detailLabel sizeToFit];
@@ -127,6 +129,7 @@
     [self addSubview:self.timeLabel];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
+    self.timeLabel.font = [UIFont my_font:12];
     self.timeLabel.numberOfLines = 1;
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -140,6 +143,7 @@
     [self addSubview:self.personLabel];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.personLabel.font = [UIFont systemFontOfSize:12];
+    self.personLabel.font = [UIFont my_font:12];
     self.personLabel.textAlignment = NSTextAlignmentLeft;
     self.personLabel.numberOfLines = 1;
     [self.personLabel mas_makeConstraints:^(MASConstraintMaker *make) {

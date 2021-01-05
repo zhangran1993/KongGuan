@@ -64,6 +64,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:16];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"";
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -77,6 +78,7 @@
     [self addSubview:self.firstLabel];
     self.firstLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.firstLabel.font = [UIFont systemFontOfSize:14];
+    self.firstLabel.font = [UIFont my_font:14];
     self.firstLabel.textAlignment = NSTextAlignmentLeft;
     self.firstLabel.text = @"";
     [self.firstLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -90,6 +92,7 @@
     [self addSubview:self.firstTextLabel];
     self.firstTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.firstTextLabel.font = [UIFont systemFontOfSize:14];
+    self.firstTextLabel.font = [UIFont my_font:14];
     self.firstTextLabel.textAlignment = NSTextAlignmentRight;
     self.firstTextLabel.text = @"";
     [self.firstTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -103,6 +106,7 @@
     [self addSubview:self.secondLabel];
     self.secondLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.secondLabel.font =  [UIFont systemFontOfSize:14];
+    self.secondLabel.font = [UIFont my_font:14];
     self.secondLabel.textAlignment = NSTextAlignmentLeft;
     self.secondLabel.text = @"";
     [self.secondLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -116,6 +120,7 @@
     [self addSubview:self.secondTextLabel];
     self.secondTextLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.secondTextLabel.font =  [UIFont systemFontOfSize:14];
+    self.secondTextLabel.font = [UIFont my_font:14];
     self.secondTextLabel.textAlignment = NSTextAlignmentRight;
     self.secondTextLabel.text = @"";
     [self.secondTextLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,6 +134,7 @@
     [self addSubview:self.thirdLabel];
     self.thirdLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.thirdLabel.font =  [UIFont systemFontOfSize:14];
+    self.thirdLabel.font = [UIFont my_font:14];
     self.thirdLabel.textAlignment = NSTextAlignmentLeft;
     self.thirdLabel.text = @"";
     [self.thirdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -154,6 +160,7 @@
     self.rightNumLabel.text = @"1";
     self.rightNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.rightNumLabel.font = [UIFont systemFontOfSize:10];
+    self.rightNumLabel.font = [UIFont my_font:10];
     self.rightNumLabel.numberOfLines = 1;
     
     self.rightNumLabel.textAlignment = NSTextAlignmentCenter;

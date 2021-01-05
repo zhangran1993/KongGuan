@@ -54,6 +54,7 @@
     self.leftTitleLabel.textAlignment = NSTextAlignmentRight;
     self.leftTitleLabel.numberOfLines = 1;
     self.leftTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.leftTitleLabel.font = [UIFont my_font:14];
     [self.leftTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.height.equalTo(@27);
@@ -88,6 +89,7 @@
     self.rightTitleLabel.textAlignment = NSTextAlignmentLeft;
     self.rightTitleLabel.numberOfLines = 1;
     self.rightTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.rightTitleLabel.font = [UIFont my_font:14];
     [self addSubview:self.rightTitleLabel];
     [self.rightTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
@@ -103,6 +105,7 @@
     self.rightDetailLabel.textAlignment = NSTextAlignmentLeft;
     self.rightDetailLabel.numberOfLines = 0;
     self.rightDetailLabel.font = [UIFont systemFontOfSize:14];
+    self.rightDetailLabel.font = [UIFont my_font:14];
     [self.rightDetailLabel sizeToFit];
     [self addSubview:self.rightDetailLabel];
     [self.rightDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -147,7 +150,6 @@
     self.leftTitleLabel.text = [self timestampToTimeStr:safeString(dataDic[@"time"])];
     
 }
-
 
 
 //将时间戳转换为时间字符串

@@ -45,6 +45,7 @@
     self.titleLabel.text = @"环境情况";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.titleLabel.font = [UIFont systemFontOfSize:17];
+    self.titleLabel.font = [UIFont my_font:17];
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

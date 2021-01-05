@@ -85,6 +85,7 @@
     [self.centerView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"操作指引";
     self.titleLabel.numberOfLines = 2;
@@ -113,6 +114,7 @@
     [self.centerView addSubview:self.rightLabel];
     self.rightLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.rightLabel.font = [UIFont systemFontOfSize:14];
+    self.rightLabel.font = [UIFont my_font:14];
     self.rightLabel.textAlignment = NSTextAlignmentRight;
     [self.rightLabel sizeToFit];
     self.rightLabel.text = @"电台测试";

@@ -82,6 +82,7 @@
     yujingTitleLabel.text = @"预警消息";
     yujingTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     yujingTitleLabel.font = FontSize(16);
+    yujingTitleLabel.font = [UIFont my_font:16];
     [yujingView addSubview:yujingTitleLabel];
     
     _yujingNumLabel = [[UILabel alloc]init];
@@ -89,6 +90,7 @@
     _yujingNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
     //_yujingNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _yujingNumLabel.font = FontSize(10);
+    _yujingNumLabel.font = [UIFont my_font:10];
     _yujingNumLabel.layer.cornerRadius = 4;
     _yujingNumLabel.clipsToBounds = YES;
     _yujingNumLabel.textColor = [UIColor whiteColor];
@@ -102,6 +104,7 @@
     yujingDescLabel.lineBreakMode = NSLineBreakByCharWrapping;
     yujingDescLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     yujingDescLabel.font =FontSize(14);
+    yujingDescLabel.font = [UIFont my_font:14];
     yujingDescLabel.text = @"预警消息列表在此处显示";
     [yujingView addSubview:yujingDescLabel];
     
@@ -126,6 +129,7 @@
     UILabel *WarnTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20 + 40 + 14, 17, 200, 22)];
     WarnTitleLabel.text = @"告警消息";
     WarnTitleLabel.font = FontSize(16);
+    WarnTitleLabel.font = [UIFont my_font:16];
     WarnTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [WarnView addSubview:WarnTitleLabel];
     
@@ -134,6 +138,7 @@
     _newsNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
     //_newsNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _newsNumLabel.font = FontSize(10);
+    _newsNumLabel.font = [UIFont my_font:10];
     _newsNumLabel.layer.cornerRadius = 4;
     _newsNumLabel.clipsToBounds = YES;
     _newsNumLabel.textColor = [UIColor whiteColor];
@@ -147,6 +152,7 @@
     WarnDescLabel.lineBreakMode = NSLineBreakByCharWrapping;
     WarnDescLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     WarnDescLabel.font =FontSize(14);
+    WarnDescLabel.font = [UIFont my_font:14];
     WarnDescLabel.text = @"告警消息列表在此处显示";
     [WarnView addSubview:WarnDescLabel];
     
@@ -174,6 +180,7 @@
     RadioTitleLabel.text = @"公告消息";
     RadioTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     RadioTitleLabel.font = FontSize(16);
+    RadioTitleLabel.font = [UIFont my_font:16];
     [RadioView addSubview:RadioTitleLabel];
     
     _gonggaoNumLabel = [[UILabel alloc]init];
@@ -181,6 +188,7 @@
     _gonggaoNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
     //_gonggaoNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _gonggaoNumLabel.font = FontSize(10);
+    _gonggaoNumLabel.font = [UIFont my_font:10];
     _gonggaoNumLabel.layer.cornerRadius = FrameWidth(13);
     _gonggaoNumLabel.clipsToBounds = YES;
     _gonggaoNumLabel.textColor = [UIColor whiteColor];
@@ -194,6 +202,7 @@
     RadioDescLabel.lineBreakMode = NSLineBreakByCharWrapping;
     RadioDescLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     RadioDescLabel.font = FontSize(14);
+    RadioDescLabel.font = [UIFont my_font:14];
     RadioDescLabel.text = @"公告消息列表在此处显示";
     [RadioView addSubview:RadioDescLabel];
     return ;

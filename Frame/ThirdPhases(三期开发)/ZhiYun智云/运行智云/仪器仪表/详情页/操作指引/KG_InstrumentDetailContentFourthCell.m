@@ -54,6 +54,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_font:14];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.text = @"";
     [self.titleLabel sizeToFit];
@@ -68,6 +69,7 @@
     [self addSubview:self.totalNumLabel];
     self.totalNumLabel.textColor = [UIColor colorWithHexString:@"#AFB2BD"];
     self.totalNumLabel.font = [UIFont systemFontOfSize:14];
+    self.totalNumLabel.font = [UIFont my_font:14];
     self.totalNumLabel.textAlignment = NSTextAlignmentRight;
     self.totalNumLabel.text = @"/4";
     [self.totalNumLabel sizeToFit];
@@ -84,6 +86,7 @@
     [self addSubview:self.numLabel];
     self.numLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.numLabel.font = [UIFont systemFontOfSize:14];
+    self.numLabel.font = [UIFont my_font:14];
     self.numLabel.textAlignment = NSTextAlignmentRight;
     self.numLabel.text = @"";
     [self.numLabel sizeToFit];

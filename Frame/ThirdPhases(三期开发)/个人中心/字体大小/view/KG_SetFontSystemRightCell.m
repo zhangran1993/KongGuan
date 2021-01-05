@@ -47,7 +47,8 @@
 }
 
 - (void)createSubviewsView {
-
+    NSString *font = [[NSUserDefaults standardUserDefaults]objectForKey:kLocalTextFont];
+    
 
     self.headIcon = [[UIImageView alloc]init];
     [self addSubview:self.headIcon];
@@ -77,7 +78,7 @@
     self.titleLabel = [[UILabel alloc]init];
     self.titleLabel.text = @"拖动下面的滑块，可设置字体大小";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
-    self.titleLabel.font = [UIFont systemFontOfSize:16];
+    self.titleLabel.font = [UIFont my_font:16];
     [self addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel sizeToFit];
@@ -101,21 +102,6 @@
 //    [self performSelector:@selector(fontSet2) withObject:nil afterDelay:20.f];
 }
 
-- (void)fontSet {
-    
-    self.titleLabel.font = [UIFont systemFontOfSize:28];
-}
-
-- (void)fontSet1 {
-    
-    self.titleLabel.font = [UIFont systemFontOfSize:18];
-}
-
-- (void)fontSet2 {
-    
-    self.titleLabel.font = [UIFont systemFontOfSize:19];
-    
-}
 
 - (void)setFontSize:(int)fontSize {
     _fontSize = fontSize;

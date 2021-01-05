@@ -55,13 +55,11 @@
         make.bottom.equalTo(self.mas_bottom);
     }];
     
-
-    
-    
     
     self.leftTimeLabel = [[UILabel alloc]init];
     [self.leftView addSubview:self.leftTimeLabel];
     self.leftTimeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.leftTimeLabel.font = [UIFont my_font:12];
     self.leftTimeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.leftTimeLabel.textAlignment = NSTextAlignmentRight;
     self.leftTimeLabel.numberOfLines = 1;
@@ -158,6 +156,7 @@
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
     self.roomLabel.font = [UIFont systemFontOfSize:12];
+    self.roomLabel.font = [UIFont my_font:12];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
     self.roomLabel.numberOfLines = 2;
@@ -173,6 +172,7 @@
     [self.rightView addSubview:self.statusLabel];
     self.statusLabel.text = @"";
     self.statusLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.statusLabel.font = [UIFont my_font:12];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.numberOfLines = 1;
@@ -187,6 +187,7 @@
     [self.rightView addSubview:self.detailLabel];
     self.detailLabel.text = @"电池间蓄电池2#设备故障";
     self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.detailLabel.font = [UIFont my_font:14];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
     self.detailLabel.numberOfLines = 2;
@@ -259,6 +260,7 @@
     [self addSubview:self.timeLabel];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
+    self.timeLabel.font = [UIFont my_font:12];
     self.timeLabel.numberOfLines = 1;
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeImage.mas_right).offset(4);
@@ -271,6 +273,7 @@
     [self addSubview:self.personLabel];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.personLabel.font = [UIFont systemFontOfSize:12];
+    self.personLabel.font = [UIFont my_font:12];
     self.personLabel.textAlignment = NSTextAlignmentRight;
     self.personLabel.numberOfLines = 1;
     [self.personLabel mas_makeConstraints:^(MASConstraintMaker *make) {
