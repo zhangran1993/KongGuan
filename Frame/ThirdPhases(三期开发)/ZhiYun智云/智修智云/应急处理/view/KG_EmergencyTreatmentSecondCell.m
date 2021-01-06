@@ -8,6 +8,10 @@
 
 #import "KG_EmergencyTreatmentSecondCell.h"
 #import "KG_BeiJianListCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_EmergencyTreatmentSecondCell ()<UITableViewDelegate,UITableViewDataSource> {
     
 }

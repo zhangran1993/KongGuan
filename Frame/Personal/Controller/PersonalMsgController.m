@@ -15,6 +15,10 @@
 #import <AFNetworking.h>
 #import <MJExtension.h>
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface PersonalMsgController (){
     int       timeCont;
     NSTimer   *timer;

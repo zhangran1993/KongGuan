@@ -9,6 +9,11 @@
 #import "KG_InstrumentDetailFourthCell.h"
 #import "KG_InstrumentDeatailContentFourCell.h"
 #import "KG_InstrumentDetailContentFourthCell.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_InstrumentDetailFourthCell ()<UITableViewDelegate,UITableViewDataSource>{
     
     

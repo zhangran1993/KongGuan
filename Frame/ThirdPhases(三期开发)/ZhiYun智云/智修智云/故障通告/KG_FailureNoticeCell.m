@@ -8,6 +8,10 @@
 
 #import "KG_FailureNoticeCell.h"
 #import "KG_FailureNoticeDetailCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface  KG_FailureNoticeCell()<UITableViewDelegate,UITableViewDataSource>{
     
 }

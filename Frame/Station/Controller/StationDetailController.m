@@ -34,6 +34,11 @@
 #import <UIButton+WebCache.h>
 #import "KG_CommonWebAlertView.h"
 #import "KG_MineViewController.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface StationDetailController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,copy) NSString* station_code;

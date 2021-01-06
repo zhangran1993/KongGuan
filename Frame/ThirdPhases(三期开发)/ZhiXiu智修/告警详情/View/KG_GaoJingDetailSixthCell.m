@@ -9,6 +9,11 @@
 #import "KG_GaoJingDetailSixthCell.h"
 #import "KG_ProgressLeftCell.h"
 #import "KG_ProgressRightCell.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_GaoJingDetailSixthCell()<UITableViewDelegate,UITableViewDataSource>{
     
 }

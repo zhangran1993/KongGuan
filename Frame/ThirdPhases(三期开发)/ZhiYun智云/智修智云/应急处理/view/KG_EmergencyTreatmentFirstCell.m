@@ -8,6 +8,10 @@
 
 #import "KG_EmergencyTreatmentFirstCell.h"
 #import "KG_EquipmentTroubleshootDetailCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_EmergencyTreatmentFirstCell ()<UITableViewDelegate,UITableViewDataSource> {
     
 }

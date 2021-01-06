@@ -26,7 +26,16 @@
     [self.controls enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         @autoreleasepool {
             UILabel *label = (UILabel*)obj;
-            [label switchLanguageFont];
+            if([label.text isEqualToString:@"智环"] || [label.text isEqualToString:@"运行"]
+               || [label.text isEqualToString:@"智态"] || [label.text isEqualToString:@"智维"]
+               || [label.text isEqualToString:@"智修"]) {
+                
+            
+            }else {
+                 [label switchLanguageFont];
+            }
+            
+           
             if (index == self.controls.allKeys.count-1) {
                 if (completionBlock) {
                     completionBlock(YES);

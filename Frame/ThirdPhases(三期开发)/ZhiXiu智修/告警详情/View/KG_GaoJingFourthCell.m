@@ -10,6 +10,10 @@
 #import "KG_SelPhotoView.h"
 #import "KG_SelVideoView.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_GaoJingFourthCell (){
     
 }

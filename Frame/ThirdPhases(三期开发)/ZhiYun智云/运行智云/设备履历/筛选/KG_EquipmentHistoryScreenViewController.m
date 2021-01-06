@@ -11,7 +11,10 @@
 #import "KG_WeiHuCardAlertHeaderView.h"
 #import "KG_NewScreenSelTimeCell.h"
 #import "KG_NewScreenHeaderView.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_EquipmentHistoryScreenViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
 
 }

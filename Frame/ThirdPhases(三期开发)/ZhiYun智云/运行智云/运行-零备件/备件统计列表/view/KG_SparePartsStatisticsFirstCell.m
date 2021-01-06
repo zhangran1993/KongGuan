@@ -10,6 +10,10 @@
 #import "HXCharts.h"
 #import "KG_SparePartsStatisticsCollectionViewCell.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_SparePartsStatisticsFirstCell ()<UICollectionViewDelegate,UICollectionViewDataSource> {
     
     

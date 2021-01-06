@@ -8,6 +8,10 @@
 
 #import "KG_RunManagerFourthCell.h"
 #import "KG_RunJiaoJieBanCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_RunManagerFourthCell ()<UITableViewDelegate,UITableViewDataSource>{
     
 }

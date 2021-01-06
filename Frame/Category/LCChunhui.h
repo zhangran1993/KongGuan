@@ -35,9 +35,10 @@
 #import "FrameNavigationController.h"
 #import "LoginViewController.h"
 #import "UIViewController+YQSlideMenu.h"
+
 #import "UILabel+ChangeFont.h"
-#import "FMFontManager.h"
 #import "UIFont+Addtion.h"
+#import "FMFontManager.h"
 #import "ChangeFontManager.h"
 #define XZShare [UtilsJSH standarInstance]
 //MARK:判断手机机型

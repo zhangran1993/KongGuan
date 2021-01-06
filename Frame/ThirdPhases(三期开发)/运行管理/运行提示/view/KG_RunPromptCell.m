@@ -7,7 +7,10 @@
 //
 
 #import "KG_RunPromptCell.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_RunPromptCell (){
     
 }
@@ -96,8 +99,6 @@
         
     }];
     
-    
-    
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
@@ -107,11 +108,10 @@
     self.detailLabel.text = @"afdnjsdfsdasvdkajfsvnkafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjlafdnjsdfsdasvdkajfsvnkjljls";
     [self.detailLabel sizeToFit];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.bgImage.mas_left).offset(17);
+        make.left.equalTo(self.bgImage.mas_left).offset(16);
         make.right.equalTo(self.bgImage.mas_right).offset(-16);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(9);
         
-       
     }];
     
     UIView *lineView = [[UIView alloc]init];
@@ -153,9 +153,6 @@
         make.height.equalTo(@17);
     }];
    
-   
-    
-    
 }
 
 - (void)setDic:(NSDictionary *)dic {

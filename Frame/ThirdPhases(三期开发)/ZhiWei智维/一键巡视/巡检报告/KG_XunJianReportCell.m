@@ -8,6 +8,10 @@
 
 #import "KG_XunJianReportCell.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @implementation KG_XunJianReportCell
 
 - (void)awakeFromNib {

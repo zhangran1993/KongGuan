@@ -10,6 +10,10 @@
 #import "KG_FaultEventRecordCell.h"
 #import "KG_FaultEventRecordSecondCell.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_StationFileEnvEventDetailController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong)    UITableView             *tableView;

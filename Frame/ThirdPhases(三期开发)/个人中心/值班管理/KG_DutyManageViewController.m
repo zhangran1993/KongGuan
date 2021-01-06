@@ -10,7 +10,10 @@
 #import "KG_DutyManageCell.h"
 #import "PGDatePickManager.h"
 #import "KG_AddressbookViewController.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_DutyManageViewController ()<UITableViewDelegate,UITableViewDataSource,PGDatePickerDelegate>{
     
 }

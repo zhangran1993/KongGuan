@@ -10,6 +10,10 @@
 #import "KG_TechInfoCell.h"
 #import "KG_StandardSpecificationViewController.h"
 #import "KG_TecInforViewController.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_JiShuZiLiaoViewController ()<UITableViewDelegate,UITableViewDataSource>{
 
 }

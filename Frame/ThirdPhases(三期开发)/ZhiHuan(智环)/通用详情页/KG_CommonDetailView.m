@@ -10,6 +10,11 @@
 #import "KG_CommonDetailCell.h"
 #import "KG_GaojingView.h"
 #import "KG_CommonGaojingView.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_CommonDetailView ()<UITableViewDelegate,UITableViewDataSource>{
     
 }

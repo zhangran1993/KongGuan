@@ -9,6 +9,11 @@
 
 #import "KG_SecView.h"
 #import "KG_CenterCell.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface  KG_SecView()<UITableViewDelegate,UITableViewDataSource>{
     
 }

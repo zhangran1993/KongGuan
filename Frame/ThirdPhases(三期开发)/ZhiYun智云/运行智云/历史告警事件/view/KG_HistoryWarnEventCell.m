@@ -8,7 +8,10 @@
 
 #import "KG_HistoryWarnEventCell.h"
 
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_HistoryWarnEventCell (){
     
     

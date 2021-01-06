@@ -18,6 +18,11 @@
 #import "UIView+LX_Frame.h"
 #import <MJExtension.h>
 #import "UIColor+Extension.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface StationRoomController ()<UITableViewDataSource,UITableViewDelegate,ParentViewDelegate>
 @property (nonatomic,copy) NSString* airport;
 @property (nonatomic,copy) NSString* address;

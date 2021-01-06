@@ -13,6 +13,11 @@
     fontSize = [self resetFont:fontSize];
     return [UIFont systemFontOfSize:fontSize];
 }
+
++(UIFont *)my_Newfont:(CGFloat)fontSize{
+    fontSize = [self alwaysFont:fontSize];
+    return [UIFont systemFontOfSize:fontSize];
+}
 //MARK: - 根据本地存储字体获取新的字体
 +(NSInteger)resetFont:(CGFloat)fontSize{
     NSString *localFont = [[NSUserDefaults standardUserDefaults]objectForKey:@"kLocalTextFont"];
@@ -22,5 +27,13 @@
     }
     return font;
 }
+
++(NSInteger)alwaysFont:(CGFloat)fontSize{
+  
+    NSInteger font = fontSize;
+   
+    return font;
+}
+
 
 @end

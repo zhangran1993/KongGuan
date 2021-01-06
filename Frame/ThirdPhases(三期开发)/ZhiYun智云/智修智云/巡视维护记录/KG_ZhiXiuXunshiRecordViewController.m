@@ -21,6 +21,10 @@
 
 #import "KG_AssignView.h"
 #import "KG_AddressbookViewController.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_ZhiXiuXunshiRecordViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong)       UIView                *noDataView;

@@ -23,6 +23,10 @@
 #import "KG_GaoJingModel.h"
 #import "KG_NoDataPromptView.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_ZhiXiu_HistoryWarnEventViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray     *dataArray;

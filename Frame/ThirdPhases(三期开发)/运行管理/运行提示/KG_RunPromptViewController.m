@@ -8,6 +8,10 @@
 
 #import "KG_RunPromptViewController.h"
 #import "KG_RunPromptCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_RunPromptViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *tableView;
@@ -99,7 +103,7 @@
         CGRect fontRect = [dic[@"content"] boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         if (fontRect.size.height >21) {
-            return 124 +fontRect.size.height ;
+            return 124 +fontRect.size.height -5 ;
         }
     }
     

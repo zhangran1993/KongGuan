@@ -16,6 +16,10 @@
 #import "KG_CaseLibraryPromptViewController.h"
 #import "KG_CaseLibraryDetailViewController.h"
 #import "KG_CaseLibraryViewController.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_ZhiXiu_CaseLibraryViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 

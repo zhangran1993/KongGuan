@@ -10,6 +10,11 @@
 #import "KG_RunLingBeiJianSearchCell.h"
 #import "KG_NoDataPromptView.h"
 #import "KG_BeiJianDetailViewController.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_RunLingBeiJianSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong)    UITableView             *tableView;

@@ -8,6 +8,10 @@
 
 #import "KG_RunManagerThirdCell.h"
 #import "KG_RunReportCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_RunManagerThirdCell ()<UITableViewDelegate,UITableViewDataSource>{
     
     

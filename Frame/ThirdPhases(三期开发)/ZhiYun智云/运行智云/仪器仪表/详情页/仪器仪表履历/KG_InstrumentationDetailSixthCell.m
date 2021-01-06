@@ -8,6 +8,10 @@
 
 #import "KG_InstrumentationDetailSixthCell.h"
 #import "KG_InstrumentationDetailContentSixthCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface  KG_InstrumentationDetailSixthCell() <UITableViewDelegate,UITableViewDataSource>{
     
 }

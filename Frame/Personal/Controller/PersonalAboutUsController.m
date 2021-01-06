@@ -12,6 +12,10 @@
 #import "PersonalSendOpinionController.h"
 #import "FrameBaseRequest.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface PersonalAboutUsController (){
     int timeCont;
     NSTimer *timer;

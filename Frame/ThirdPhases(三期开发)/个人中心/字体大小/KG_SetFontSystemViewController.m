@@ -16,8 +16,11 @@
 #import "KG_SetFontSystemRightCell.h"
 
 #import "CLSlider.h"
-#import "FMFontManager.h"
 #import "FMChooseFontView.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_SetFontSystemViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }

@@ -15,6 +15,11 @@
 #import "KG_KongTiaoControlView.h"
 #import "KG_AccessCardView.h"
 #import "KG_AccessCardLogViewController.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_CommonDetailViewController ()<UIScrollViewDelegate>
 //topview
 @property (nonatomic, strong) UIView         *topView;

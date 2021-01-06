@@ -8,6 +8,10 @@
 #import "KG_JiaoJieBanRecordViewController.h"
 #import "KG_JiaoJieBanRecordCell.h"
 #import "WYLDatePickerView.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_JiaoJieBanRecordViewController ()<UITableViewDelegate,UITableViewDataSource,WYLDatePickerViewDelegate>
 
 @property (nonatomic,strong) UITableView *tableView;

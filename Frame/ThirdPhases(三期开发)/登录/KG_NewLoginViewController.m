@@ -387,7 +387,7 @@
     [UserManager shareUserManager].currentStationDic = self.currentStationDic;
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
     [UserManager shareUserManager].loginSuccess = YES;
     
     int num = 0;

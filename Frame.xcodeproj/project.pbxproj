@@ -388,8 +388,6 @@
 		25862E70255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E6F255BD952001AE8D6 /* KG_SparePartsStatisticsSecondCell.m */; };
 		25869A4F2490987300A2343D /* KG_OnsiteInspectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25869A4E2490987200A2343D /* KG_OnsiteInspectionView.m */; };
 		25869A582490AF3300A2343D /* lauchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 25869A522490AF3300A2343D /* lauchImage.png */; };
-		25869A592490AF3300A2343D /* lauchImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25869A532490AF3300A2343D /* lauchImage@3x.png */; };
-		25869A5A2490AF3300A2343D /* lauchImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25869A542490AF3300A2343D /* lauchImage@2x.png */; };
 		25869A5E2490CE9000A2343D /* KG_OnsiteInspectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25869A5D2490CE9000A2343D /* KG_OnsiteInspectionCell.m */; };
 		2586B9792533FEE400B9BA06 /* KG_CaseLibraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2586B9782533FEE400B9BA06 /* KG_CaseLibraryCell.m */; };
 		2586B97C25358B7800B9BA06 /* KG_EquipmentHistoryDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2586B97B25358B7800B9BA06 /* KG_EquipmentHistoryDetailModel.m */; };
@@ -627,8 +625,6 @@
 		258E025C24D791E400CDF8BA /* KG_BeiJianDetailThirdCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E025B24D791E400CDF8BA /* KG_BeiJianDetailThirdCell.m */; };
 		258E025F24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258E025E24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.m */; };
 		258E026B24D7B24C00CDF8BA /* 备件标签-损坏@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */; };
-		258E026D24D7B24C00CDF8BA /* 备件标签-备品@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */; };
-		258E026E24D7B24C00CDF8BA /* 备件标签-备品@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */; };
 		258E027124D7B24C00CDF8BA /* 备件标签-报废@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */; };
 		258E027224D7B24C00CDF8BA /* 备件标签-报废@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */; };
 		258E027324D7B24C00CDF8BA /* 备件标签-损坏@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */; };
@@ -1689,8 +1685,6 @@
 		25869A4D2490987200A2343D /* KG_OnsiteInspectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_OnsiteInspectionView.h; sourceTree = "<group>"; };
 		25869A4E2490987200A2343D /* KG_OnsiteInspectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_OnsiteInspectionView.m; sourceTree = "<group>"; };
 		25869A522490AF3300A2343D /* lauchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lauchImage.png; sourceTree = "<group>"; };
-		25869A532490AF3300A2343D /* lauchImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lauchImage@3x.png"; sourceTree = "<group>"; };
-		25869A542490AF3300A2343D /* lauchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lauchImage@2x.png"; sourceTree = "<group>"; };
 		25869A5C2490CE9000A2343D /* KG_OnsiteInspectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_OnsiteInspectionCell.h; sourceTree = "<group>"; };
 		25869A5D2490CE9000A2343D /* KG_OnsiteInspectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_OnsiteInspectionCell.m; sourceTree = "<group>"; };
 		2586B9772533FEE400B9BA06 /* KG_CaseLibraryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CaseLibraryCell.h; sourceTree = "<group>"; };
@@ -2088,8 +2082,6 @@
 		258E025D24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_BeiJianDetaiFourthCell.h; sourceTree = "<group>"; };
 		258E025E24D791F600CDF8BA /* KG_BeiJianDetaiFourthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_BeiJianDetaiFourthCell.m; sourceTree = "<group>"; };
 		258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@3x.png"; sourceTree = "<group>"; };
-		258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@3x.png"; sourceTree = "<group>"; };
-		258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-备品@2x.png"; sourceTree = "<group>"; };
 		258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@2x.png"; sourceTree = "<group>"; };
 		258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-报废@3x.png"; sourceTree = "<group>"; };
 		258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-损坏@2x.png"; sourceTree = "<group>"; };
@@ -3047,8 +3039,6 @@
 			isa = PBXGroup;
 			children = (
 				25869A522490AF3300A2343D /* lauchImage.png */,
-				25869A542490AF3300A2343D /* lauchImage@2x.png */,
-				25869A532490AF3300A2343D /* lauchImage@3x.png */,
 				2543B6BD240751DC00829016 /* baidu_map_style.json */,
 				184871AF21D642DC007F8066 /* Default.png */,
 			);
@@ -5472,8 +5462,6 @@
 				25862E57255B9047001AE8D6 /* 备件标签-维修中@3x.png */,
 				258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */,
 				258E026824D7B24C00CDF8BA /* 备件标签-报废@3x.png */,
-				258E026424D7B24B00CDF8BA /* 备件标签-备品@2x.png */,
-				258E026324D7B24B00CDF8BA /* 备件标签-备品@3x.png */,
 				258E026924D7B24C00CDF8BA /* 备件标签-损坏@2x.png */,
 				258E026124D7B24B00CDF8BA /* 备件标签-损坏@3x.png */,
 			);
@@ -7806,11 +7794,9 @@
 				2580EE6F2479214500E7D36B /* 空开@2x.png in Resources */,
 				25EDC5A2247E56670006821C /* 智云@2x.png in Resources */,
 				25893EAB2429A78C00D92C0F /* FrameBottomCell.xib in Resources */,
-				258E026D24D7B24C00CDF8BA /* 备件标签-备品@3x.png in Resources */,
 				258484E924765ADD00F0AB09 /* 沙尘@2x.png in Resources */,
 				25EDC5B1247E62A30006821C /* stationList.plist in Resources */,
 				25EEB2DF242D86B700B9F803 /* station_zhixiuunsel@2x.png in Resources */,
-				25869A592490AF3300A2343D /* lauchImage@3x.png in Resources */,
 				258CEE4124B44A21007FEE18 /* 挂式空调-蓝@2x.png in Resources */,
 				258CEE4D24B44A21007FEE18 /* 二次雷达-蓝@3x.png in Resources */,
 				2584858124765BEB00F0AB09 /* 霾_icon@3x.png in Resources */,
@@ -7894,7 +7880,6 @@
 				25EEB30E242D9AEB00B9F803 /* zhiwei_unsel@3x.png in Resources */,
 				258CEE3C24B44A21007FEE18 /* 导航DVOR-蓝@3x.png in Resources */,
 				2580EED22479234400E7D36B /* 电子围栏2@2x.png in Resources */,
-				25869A5A2490AF3300A2343D /* lauchImage@2x.png in Resources */,
 				2584855824765BEB00F0AB09 /* 霜冻_icon@3x.png in Resources */,
 				2580EE6C2479214500E7D36B /* ATS@2x.png in Resources */,
 				25C4B6F02484927200BA84F4 /* 类型标签-现场巡视@2x.png in Resources */,
@@ -7986,7 +7971,6 @@
 				25EDC5AA247E56680006821C /* 智维@2x.png in Resources */,
 				25C4B6F12484927200BA84F4 /* 状态标签-已完成@3x.png in Resources */,
 				2584855A24765BEB00F0AB09 /* 降温_icon@2x.png in Resources */,
-				258E026E24D7B24C00CDF8BA /* 备件标签-备品@2x.png in Resources */,
 				258CEE3924B44A21007FEE18 /* 空开-蓝@2x.png in Resources */,
 				258CEE3724B44A21007FEE18 /* UPS-蓝@2x.png in Resources */,
 				2580EE522479214500E7D36B /* 柜式空调@2x.png in Resources */,
@@ -9117,6 +9101,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = NO;
@@ -9210,6 +9195,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = NO;

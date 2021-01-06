@@ -7,7 +7,10 @@
 //
 
 #import "KG_NewMessNotiCell.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @implementation KG_NewMessNotiCell
 
 - (void)awakeFromNib {
@@ -61,7 +64,7 @@
     self.detailLabel.font = [UIFont my_font:12];
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(32);
-        make.width.equalTo(@200);
+        make.width.equalTo(@300);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(10);
         make.height.equalTo(@11.5);
     }];

@@ -9,6 +9,11 @@
 #import "KG_XunShiRadarView.h"
 #import "KG_LiXingWeiHuCell.h"
 #import "KG_RadarEnvCell.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_XunShiRadarView ()<UITableViewDelegate,UITableViewDataSource>{
     
 }

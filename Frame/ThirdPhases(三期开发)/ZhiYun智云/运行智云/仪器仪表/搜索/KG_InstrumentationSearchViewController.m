@@ -10,6 +10,11 @@
 #import "KG_InstrumentationSearchCell.h"
 #import "KG_XunShiReportDetailViewController.h"
 #import "KG_NoDataPromptView.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_InstrumentationSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong)    UITableView             *tableView;

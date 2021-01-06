@@ -8,6 +8,10 @@
 
 #import "KG_CreateDayWeiHuCell.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @implementation KG_CreateDayWeiHuCell
 
 - (void)awakeFromNib {

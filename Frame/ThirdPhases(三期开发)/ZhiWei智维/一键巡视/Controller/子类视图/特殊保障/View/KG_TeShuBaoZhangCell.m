@@ -9,6 +9,10 @@
 #import "KG_TeShuBaoZhangCell.h"
 
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @implementation KG_TeShuBaoZhangCell
 
 - (void)awakeFromNib {

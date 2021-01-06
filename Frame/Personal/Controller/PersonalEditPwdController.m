@@ -14,6 +14,11 @@
 #import "FrameBaseRequest.h"
 #import "NSString+MD5.h"
 
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface PersonalEditPwdController (){
     int timeCont;
     NSTimer *timer;

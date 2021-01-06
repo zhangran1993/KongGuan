@@ -23,6 +23,11 @@
 #import "KG_ZhiXiu_EquipmentHistoryViewController.h"
 #import "KG_ZhiXiu_CaseLibraryViewController.h"
 #import "KG_ZhiXiu_HistoryWarnEventViewController.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_RunZhiYunViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource>
 //品牌
 @property (nonatomic,strong)UICollectionView *collectionView;

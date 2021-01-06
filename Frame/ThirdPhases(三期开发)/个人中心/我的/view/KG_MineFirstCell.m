@@ -7,7 +7,10 @@
 //
 
 #import "KG_MineFirstCell.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_MineFirstCell () {
     
     
@@ -87,6 +90,7 @@
     
     
     self.iconImage = [[UIImageView alloc]init];
+    self.iconImage.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:self.iconImage];
     [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(18);

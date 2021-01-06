@@ -28,6 +28,12 @@
 #import <UIButton+WebCache.h>
 #import "KG_NiTaiTuNoDataView.h"
 #import "KG_MineViewController.h"
+
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_ZhiTaiViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource> {
     UIView *_sliderView;
     UIScrollView *_scrollView;

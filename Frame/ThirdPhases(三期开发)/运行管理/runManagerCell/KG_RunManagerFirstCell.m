@@ -8,6 +8,10 @@
 
 #import "KG_RunManagerFirstCell.h"
 #import "KG_StationReportCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_RunManagerFirstCell ()<UITableViewDelegate,UITableViewDataSource>{
     
 }

@@ -7,7 +7,10 @@
 //
 
 #import "KG_FailureNoticeSecondCell.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_FailureNoticeSecondCell () {
     
     
@@ -58,7 +61,7 @@
     [self addSubview:titleLabel];
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
-    
+    titleLabel.font = [UIFont my_font:14];
     titleLabel.text = @"通讯录";
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(iconImage.mas_centerY);

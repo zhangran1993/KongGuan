@@ -23,6 +23,11 @@
 #import "KG_NewScreenViewController.h"
 #import "KG_NoDataPromptView.h"
 #import "KG_MineViewController.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_ZhiXiuViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray     *dataArray;

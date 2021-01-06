@@ -8,6 +8,10 @@
 
 #import "KG_CaseLibraryCell.h"
 #import "KG_CaseLibraryDetailCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface  KG_CaseLibraryCell()<UITableViewDelegate,UITableViewDataSource>{
     
 }

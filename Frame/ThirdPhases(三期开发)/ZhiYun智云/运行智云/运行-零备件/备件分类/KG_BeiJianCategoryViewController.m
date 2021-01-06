@@ -9,6 +9,11 @@
 #import "KG_BeiJianCategoryViewController.h"
 #import "KG_BeiJianCategoryCell.h"
 #import "KG_BeiJianDetailViewController.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_BeiJianCategoryViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 

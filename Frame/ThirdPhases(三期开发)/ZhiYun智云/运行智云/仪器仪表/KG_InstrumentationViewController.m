@@ -11,6 +11,10 @@
 #import "KG_InstrumentationSearchViewController.h"
 #import "KG_InstrumentationDetailViewController.h"
 
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_InstrumentationViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     

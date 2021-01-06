@@ -14,7 +14,10 @@
 #import "KG_StationFileViewController.h"
 #import "KG_EquipmentHistoryScreenViewController.h"
 #import "KG_NoDataPromptView.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_EquipmentHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     

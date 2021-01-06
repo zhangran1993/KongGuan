@@ -10,6 +10,11 @@
 #import "PersonalEditPwdController.h"
 #import "FrameBaseRequest.h"
 
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface PersonalAPPIntroduceController (){
 }
 @property (nonatomic, strong)  UILabel   *titleLabel;

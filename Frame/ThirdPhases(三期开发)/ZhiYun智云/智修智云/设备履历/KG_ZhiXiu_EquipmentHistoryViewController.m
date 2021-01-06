@@ -12,6 +12,10 @@
 #import "KG_InstrumentationDetailViewController.h"
 #import "KG_EquipmentHistoryDetailViewController.h"
 #import "KG_EquipmentHistoryViewController.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_ZhiXiu_EquipmentHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     

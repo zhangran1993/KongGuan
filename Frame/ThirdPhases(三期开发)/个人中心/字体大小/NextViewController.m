@@ -11,6 +11,8 @@
 #import "FMChooseFontView.h"
 #import "ChangeFontManager.h"
 #import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface NextViewController ()
 
 @end

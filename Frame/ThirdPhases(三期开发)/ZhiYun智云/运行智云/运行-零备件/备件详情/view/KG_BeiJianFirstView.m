@@ -8,6 +8,11 @@
 
 #import "KG_BeiJianFirstView.h"
 #import "KG_BeiJianDetailCell.h"
+
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_BeiJianFirstView ()<UITableViewDelegate,UITableViewDataSource>{
     
 

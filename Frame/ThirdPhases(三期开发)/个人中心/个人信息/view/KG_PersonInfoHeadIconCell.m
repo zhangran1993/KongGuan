@@ -7,7 +7,10 @@
 //
 
 #import "KG_PersonInfoHeadIconCell.h"
-
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface KG_PersonInfoHeadIconCell (){
     
     
@@ -66,6 +69,7 @@
     
     
     self.headImage = [[UIImageView alloc]init];
+    self.headImage.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:self.headImage];
     [self.headImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@56);

@@ -8,6 +8,10 @@
 
 #import "KG_RunReportDetailSeventhCell.h"
 #import "KG_RunReportDetailCommonCell.h"
+#import "UILabel+ChangeFont.h"
+#import "UIFont+Addtion.h"
+#import "FMFontManager.h"
+#import "ChangeFontManager.h"
 @interface  KG_RunReportDetailSeventhCell()<UITableViewDelegate,UITableViewDataSource>{
     
 }
