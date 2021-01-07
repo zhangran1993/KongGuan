@@ -91,7 +91,7 @@
     
     _yujingNumLabel = [[UILabel alloc]init];
     // CGSize size = [@"告警消息" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(16),NSFontAttributeName,nil]];
-    _yujingNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
+    _yujingNumLabel.frame = CGRectMake(20 +40 -4, 20 , 8, 8);
     //_yujingNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _yujingNumLabel.font = FontSize(10);
     _yujingNumLabel.font = [UIFont my_font:10];
@@ -139,7 +139,7 @@
     
     _newsNumLabel = [[UILabel alloc]init];
     CGSize size = [@"告警消息" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(16),NSFontAttributeName,nil]];
-    _newsNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
+    _newsNumLabel.frame = CGRectMake(20 +40 -4, 20 , 8, 8);
     //_newsNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _newsNumLabel.font = FontSize(10);
     _newsNumLabel.font = [UIFont my_font:10];
@@ -189,7 +189,7 @@
     
     _gonggaoNumLabel = [[UILabel alloc]init];
     // CGSize size = [@"告警消息" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FontSize(16),NSFontAttributeName,nil]];
-    _gonggaoNumLabel.frame = CGRectMake(20 +40 -4, 20 +4, 8, 8);
+    _gonggaoNumLabel.frame = CGRectMake(20 +40 -4, 20 , 8, 8);
     //_gonggaoNumLabel.frame = CGRectMake(FrameWidth(260), FrameWidth(30), FrameWidth(25), FrameWidth(25));
     _gonggaoNumLabel.font = FontSize(10);
     _gonggaoNumLabel.font = [UIFont my_font:10];

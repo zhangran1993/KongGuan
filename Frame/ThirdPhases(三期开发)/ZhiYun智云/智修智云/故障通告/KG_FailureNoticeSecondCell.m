@@ -71,7 +71,6 @@
     }];
     
     
-    
     UIView *leftView = [[UIView alloc]init];
     [self addSubview:leftView];
     [leftView mas_makeConstraints:^(MASConstraintMaker *make) {

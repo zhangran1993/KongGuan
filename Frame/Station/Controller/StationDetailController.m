@@ -274,6 +274,7 @@
     
     self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightButton.titleLabel.font = FontSize(12);
+    
     self.rightButton.layer.borderColor = [[UIColor colorWithHexString:@"#DFDFDF"]CGColor];
     self.rightButton.layer.borderWidth = 0.5f;
     self.rightButton.layer.cornerRadius = 12.5f;

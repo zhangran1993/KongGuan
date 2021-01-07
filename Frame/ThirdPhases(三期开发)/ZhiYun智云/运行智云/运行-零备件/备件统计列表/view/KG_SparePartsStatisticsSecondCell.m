@@ -108,7 +108,7 @@
     promptLabel.textAlignment = NSTextAlignmentLeft;
     [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(bgView.mas_right).offset(-16);
-        make.width.equalTo(@58);
+        make.width.equalTo(@68);
         make.height.equalTo(@17);
         make.centerY.equalTo(shuView.mas_centerY);
     }];
@@ -135,7 +135,7 @@
     ciyaoLabel.textAlignment = NSTextAlignmentLeft;
     [ciyaoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(promptImage.mas_left).offset(-12);
-        make.width.equalTo(@48);
+        make.width.equalTo(@58);
         make.height.equalTo(@17);
         make.centerY.equalTo(shuView.mas_centerY);
     }];
