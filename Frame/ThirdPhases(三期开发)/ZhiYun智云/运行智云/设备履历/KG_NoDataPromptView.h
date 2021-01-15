@@ -16,6 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong)      UIImageView *iconImage;
 
+ 
+@property (nonatomic, strong)       UIView       *noDataView;
+
+
 - (void)showView;
 
 - (void)hideView;

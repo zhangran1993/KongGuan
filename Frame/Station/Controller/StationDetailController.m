@@ -416,11 +416,12 @@
     anfangLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     anfangLalbel.font = [UIFont my_font:14];
     anfangLalbel.numberOfLines = 1;
+    [anfangLalbel sizeToFit];
     anfangLalbel.textAlignment = NSTextAlignmentLeft;
     [anfangLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.runView.mas_left).offset(16);
         make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
-        make.width.equalTo(@60);
+        make.width.mas_greaterThanOrEqualTo(@60);
         make.height.equalTo(@18);
     }];
     self.anfangImage = [[UIImageView alloc]init];
@@ -458,11 +459,12 @@
     envLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     envLalbel.font = [UIFont my_font:14];
     envLalbel.numberOfLines = 1;
+    [envLalbel sizeToFit];
     envLalbel.textAlignment = NSTextAlignmentLeft;
     [envLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.runView.mas_centerX).offset(-15);
         make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
-        make.width.equalTo(@60);
+        make.width.mas_greaterThanOrEqualTo(@60);
         make.height.equalTo(@18);
     }];
     self.envImage = [[UIImageView alloc]init];
@@ -500,6 +502,7 @@
     powerLalbel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     powerLalbel.font = [UIFont my_font:14];
     powerLalbel.numberOfLines = 1;
+    [powerLalbel sizeToFit];
     powerLalbel.textAlignment = NSTextAlignmentLeft;
     
     self.powerImage = [[UIImageView alloc]init];
@@ -514,7 +517,7 @@
     [powerLalbel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.powerImage.mas_left).offset(-5);
         make.bottom.equalTo(self.runView.mas_bottom).offset(-19);
-        make.width.equalTo(@60);
+        make.width.mas_greaterThanOrEqualTo(@60);
         make.height.equalTo(@18);
     }];
     self.powerNumLabel = [[UILabel alloc]init];

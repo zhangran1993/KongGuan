@@ -264,9 +264,6 @@
 
 - (void)createSliderView {
     
-    
-    
-    
 //    UIView *botView = [[UIView alloc]init];
 //    [self.view addSubview:botView];
 //    botView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];

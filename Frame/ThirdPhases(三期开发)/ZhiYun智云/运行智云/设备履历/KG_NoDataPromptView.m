@@ -14,8 +14,6 @@
 @interface KG_NoDataPromptView () {
     
 }
- 
-@property (nonatomic, strong)       UIView       *noDataView;
 
 @end
 
@@ -35,6 +33,14 @@
     
     self.noDataView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - NAVIGATIONBAR_HEIGHT)];
     [self addSubview:self.noDataView];
+    
+    [self.noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_top);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.bottom.equalTo(self.mas_bottom);
+    }];
+    
     self.iconImage = [[UIImageView alloc]init];
     self.iconImage.image = [UIImage imageNamed:@"kg_searchEmpty_Icon"];
     self.iconImage.contentMode = UIViewContentModeScaleAspectFit;

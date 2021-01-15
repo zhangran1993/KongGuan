@@ -164,6 +164,8 @@
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     //     [self.navigationController setNavigationBarHidden:NO];
+    [_nodataView removeFromSuperview];
+    _nodataView = nil;
     
 }
 
@@ -1939,14 +1941,15 @@
 - (KG_NoDataPromptView *)nodataView {
     if (!_nodataView) {
         _nodataView = [[KG_NoDataPromptView alloc]init];
-        [self.view addSubview:_nodataView];
-        [self.view bringSubviewToFront:_nodataView];
+        [JSHmainWindow addSubview:_nodataView];
+//        [self.view bringSubviewToFront:_nodataView];
         _nodataView.noDataLabel.text = @"当前暂无数据";
+        
         [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
             make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
             make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT +50 +44);
-            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom).offset(-TABBAR_HEIGHT);
         }];
        
     }

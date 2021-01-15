@@ -4,7 +4,7 @@
 //
 //  Created by Netsdk on 15/4/22.
 //
-//
+//海康威视 SDK禁用了iOS 模拟器调试，需要修改配置打包文件 现在是
 
 #ifndef SimpleDemo_Preview_h
 #define SimpleDemo_Preview_h

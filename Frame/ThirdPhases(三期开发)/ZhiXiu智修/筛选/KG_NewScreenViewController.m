@@ -66,6 +66,7 @@
     [self.collectionView reloadData];
     
 }
+
 //初始化collectionview
 - (void)initCollevtionView{
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]init];
@@ -87,7 +88,6 @@
     [self.collectionView registerClass:[KG_NewScreenHeaderView class]  forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"KG_NewScreenHeaderView"];
 //    [self.collectionView registerClass:[KG_NewScreenSelTimeCell class] forCellWithReuseIdentifier:@"KG_NewScreenSelTimeCell"];
     
-    
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.showsVerticalScrollIndicator = NO;
@@ -95,8 +95,8 @@
     self.collectionView.scrollEnabled = YES;
     self.collectionView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
-    
 }
+
 #pragma mark ---- collectionView 数据源方法
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
@@ -151,8 +151,7 @@
         return cell;
     }
     return nil;
-    
-    
+   
 }
 
 #pragma mark  定义每个UICollectionViewCell的大小
@@ -222,6 +221,7 @@
     }];
     
 }
+
 - (void)backButtonClick:(UIButton *)button {
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -252,7 +252,6 @@
         make.height.equalTo(@70);
     }];
     
-    
     UIView *lineView = [[UIView alloc]init];
     [bottomView addSubview:lineView];
     lineView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
@@ -262,8 +261,6 @@
         make.right.equalTo(bottomView.mas_right);
         make.top.equalTo(bottomView.mas_top);
     }];
-    
-    
     
     UIButton *cancelBtn = [[UIButton alloc]init];
     [bottomView addSubview:cancelBtn];
@@ -283,7 +280,6 @@
         make.height.equalTo(@40);
     }];
     
-    
     UIButton *confirmBtn = [[UIButton alloc]init];
     [bottomView addSubview:confirmBtn];
     [confirmBtn setTitle:@"确认" forState:UIControlStateNormal];
@@ -301,7 +297,6 @@
         make.height.equalTo(@40);
     }];
     
-    
 }
 
 //取消
@@ -318,6 +313,7 @@
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
 
     if (kind == UICollectionElementKindSectionHeader) {

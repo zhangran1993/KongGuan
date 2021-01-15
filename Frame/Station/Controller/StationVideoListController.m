@@ -9,7 +9,7 @@
 
 #import "StationVideoListController.h"
 
-//#import "SimpleDemoViewController.h"
+#import "SimpleDemoViewController.h"
 #import "FrameBaseRequest.h"
 #import <UIImageView+WebCache.h>
 #import "VideoItems.h"
@@ -381,16 +381,16 @@
     }
     _didselect = 1000;
     
-//    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
-//    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
-//    SimpleDemoView.name = self.videoList[indexPath.row].account;
-//    SimpleDemoView.password = self.videoList[indexPath.row].password;
-//    SimpleDemoView.port = self.videoList[indexPath.row].port;
-//    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
-//
-//    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
-//
-//    [self.navigationController pushViewController:SimpleDemoView animated:YES];
+    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
+    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
+    SimpleDemoView.name = self.videoList[indexPath.row].account;
+    SimpleDemoView.password = self.videoList[indexPath.row].password;
+    SimpleDemoView.port = self.videoList[indexPath.row].port;
+    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
+
+    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
+
+    [self.navigationController pushViewController:SimpleDemoView animated:YES];
     
     
      

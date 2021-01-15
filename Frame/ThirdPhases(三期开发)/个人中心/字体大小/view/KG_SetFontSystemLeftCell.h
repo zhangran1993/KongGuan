@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_SetFontSystemLeftCell : UITableViewCell
 
+@property  (nonatomic, assign)        int              fontSize;
 
-@property (nonatomic, assign)   int                      fontSize;
 @end
 
 NS_ASSUME_NONNULL_END

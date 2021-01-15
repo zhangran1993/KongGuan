@@ -27,57 +27,58 @@
 #import "KG_AddressbookViewController.h"
 @interface KG_WeihuDailyReportDetailViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic ,strong) NSArray *dataArray;
+@property (nonatomic ,strong)   NSArray *dataArray;
 /**  标题栏 */
-@property (nonatomic, strong)   UILabel      *titleLabel;
+@property (nonatomic, strong)   UILabel                    *titleLabel;
 
-@property (nonatomic, strong)   UIView       *navigationView;
+@property (nonatomic, strong)   UIView                     *navigationView;
 
-@property (strong, nonatomic)   UIImageView  *topImage1;
+@property (strong, nonatomic)   UIImageView                *topImage1;
 
 @property (strong, nonatomic)   KG_XunShiReportDetailModel *dataModel;
 
-@property (strong, nonatomic)   KG_XunShiTopView *xunshiTopView;
+@property (strong, nonatomic)   KG_XunShiTopView           *xunshiTopView;
 
-@property (strong, nonatomic)   KG_XunShiHandleView *xunShiHandelView;
+@property (strong, nonatomic)   KG_XunShiHandleView        *xunShiHandelView;
 
-@property (strong, nonatomic)   KG_XunShiReportDataModel *listModel;
+@property (strong, nonatomic)   KG_XunShiReportDataModel   *listModel;
 
-@property (strong, nonatomic)   taskDetail *radarModel;
+@property (strong, nonatomic)   taskDetail                 *radarModel;
 
-@property (strong, nonatomic)   taskDetail *powerModel;
+@property (strong, nonatomic)   taskDetail                 *powerModel;
 
-@property (strong, nonatomic)   taskDetail *upsModel;
+@property (strong, nonatomic)   taskDetail                 *upsModel;
 
-@property (strong, nonatomic)   KG_XunShiRadarView *radarView;
+@property (strong, nonatomic)   KG_XunShiRadarView         *radarView;
 
-@property (strong, nonatomic)   KG_XunShiRadarView *powerView;
+@property (strong, nonatomic)   KG_XunShiRadarView         *powerView;
 
-@property (strong, nonatomic)   KG_XunShiRadarView *upsView;
+@property (strong, nonatomic)   KG_XunShiRadarView         *upsView;
 
-@property (strong, nonatomic)   UIScrollView *scrollView;
+@property (strong, nonatomic)   UIScrollView               *scrollView;
 
-@property (strong, nonatomic)   UITableView *tableView;
+@property (strong, nonatomic)   UITableView                *tableView;
 
-@property (strong, nonatomic)   KG_XunShiResultView *resultView;
+@property (strong, nonatomic)   KG_XunShiResultView              *resultView;
 
-@property (strong, nonatomic)   NSArray *receiveArr;
+@property (strong, nonatomic)   NSArray                          *receiveArr;
 
-@property (strong, nonatomic)   NSArray *logArr;
+@property (strong, nonatomic)   NSArray                          *logArr;
 
-@property (nonatomic, strong)   UIView       *tableHeadView;
+@property (nonatomic, strong)   UIView                           *tableHeadView;
 
-@property (strong, nonatomic)   NSArray *equipArr;
+@property (strong, nonatomic)   NSArray                          *equipArr;
 
-@property (nonatomic, strong)   KG_WeiHuDetailReportDataModel *weihuModel;
+@property (nonatomic, strong)   KG_WeiHuDetailReportDataModel    *weihuModel;
 
-@property (strong, nonatomic)   NSDictionary *xunshiTopDic;
+@property (strong, nonatomic)   NSDictionary                     *xunshiTopDic;
 
-@property (nonatomic, strong)   UIButton * moreBtn;
+@property (nonatomic, strong)   UIButton                         *moreBtn;
 
-@property (nonatomic, assign)   BOOL canUpdateOrSubmit;
+@property (nonatomic, assign)   BOOL                             canUpdateOrSubmit;
 
-@property (nonatomic, strong)  KG_RemoveTaskView *alertView;
+@property (nonatomic, strong)   KG_RemoveTaskView                *alertView;
+
 @end
 
 @implementation KG_WeihuDailyReportDetailViewController
@@ -85,7 +86,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushRemoveToAddressBook) name:@"pushRemoveToAddressBook" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushRemoveToAddressBook) name:@"pushRemoveToAddressBook" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveWeiHuSpecialData:) name:@"saveWeiHuSpecialData" object:nil];
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
     self.listModel = [[KG_XunShiReportDataModel alloc]init];
@@ -96,12 +97,10 @@
     self.upsModel = [[taskDetail alloc]init];
     [self createNaviTopView];
     [self createDataView];
-    
-   
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     
-    
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     
     NSLog(@"StationDetailController viewWillAppear");
@@ -109,6 +108,7 @@
     self.navigationController.navigationBarHidden = YES;
     [self queryReportDetailData];
     [self getTemplateData];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -128,9 +128,7 @@
 }
 - (void)pushRemoveToAddressBook {
     
-   
     self.alertView.hidden = YES;
-    
     KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
     vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
         self.alertView.hidden = NO;
@@ -139,7 +137,9 @@
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 - (void)createDataView{
+    
     self.tableHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 266)];
     [self.view addSubview:self.tableView];
     [self.tableHeadView addSubview:self.xunshiTopView];
@@ -156,7 +156,7 @@
 
         self.tableView.tableHeaderView =nil;
 
-        frame.size.height =128.0+54;// 新高度
+        frame.size.height = 128.0 + 54;// 新高度
 
         tableHeaderView.frame = frame;
 
@@ -166,20 +166,20 @@
             make.left.equalTo(self.tableHeadView.mas_left);
             make.right.equalTo(self.tableHeadView.mas_right);
             make.top.equalTo(self.tableHeadView.mas_top);
-            make.height.equalTo(@(128 +54));
+            make.height.equalTo(@(128 + 54));
         }];
     };
     
     self.xunshiTopView.zhankaiMethod = ^{
-        UIView *tableHeaderView =self.tableView.tableHeaderView;
+        UIView *tableHeaderView = self.tableView.tableHeaderView;
         
         CGRect frame = tableHeaderView.frame;
         
         [tableHeaderView removeFromSuperview];
         
-        self.tableView.tableHeaderView =nil;
+        self.tableView.tableHeaderView = nil;
         
-        frame.size.height =266.0;// 新高度
+        frame.size.height = 266.0;// 新高度
         
         tableHeaderView.frame = frame;
         
@@ -193,15 +193,12 @@
         }];
     };
     
-    
-    
     [self.xunshiTopView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tableHeadView.mas_left);
         make.right.equalTo(self.tableHeadView.mas_right);
         make.top.equalTo(self.tableHeadView.mas_top);
         make.height.equalTo(@266);
     }];
-   
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navigationView.mas_bottom);
@@ -225,7 +222,6 @@
     return _tableView;
 }
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     return self.dataArray.count + 2;
@@ -235,11 +231,13 @@
     
     return 1;
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     return footView;
     
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 10.f;
 }
@@ -248,10 +246,12 @@
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
     return headView;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
     return 0.001;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == self.dataArray.count) {
         if(self.equipArr.count == 0 ){
@@ -295,16 +295,12 @@
                         }
                     }
                 }
-                
                 num ++;
-                
             }
-            
         }
 //        if (num>0 &&thirdArr.count >0) {
 //            thirdHeight += 30;
 //        }
-      
     }
     
     totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
@@ -327,12 +323,10 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         taskDetail *model  = self.dataArray[indexPath.section];
-        
         cell.model = model;
-        
         return cell;
+        
     }else if (indexPath.section == self.dataArray.count ) {
         KG_EquipResultCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EquipResultCell"];
         if (cell == nil) {
@@ -347,10 +341,7 @@
         cell.dataDic = self.dataDic;
         cell.listArray = self.equipArr;
         cell.dataModel = self.dataModel;
-       
-//        if (safeString(self.dataModel.taskDescription).length) {
-//            cell.taskDescription = self.dataModel.taskDescription;
-//        }
+
         cell.moreAction = ^{
             KG_EquipCardViewController *vc = [[KG_EquipCardViewController alloc]init];
             vc.saveSuccessBlock = ^{
@@ -372,10 +363,8 @@
             
             [self.navigationController pushViewController:vc animated:YES];
         };
-        
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+
         return cell;
         
     }else if (indexPath.section == self.dataArray.count +1 ) {
@@ -398,15 +387,12 @@
     }
     return nil;
 }
- 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
    
    
-
 }
-
 
 - (void)createNaviTopView {
     
@@ -468,7 +454,6 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-    
 }
 
 /** 标题栏 **/
@@ -483,11 +468,17 @@
     }
     return _titleLabel;
 }
+
 - (void)back
 {
      [UserManager shareUserManager].isChangeTask = NO;
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+//修改：只有执行负责人可以修改任务内容，但是不能添加特殊标记，领导可以添加特殊标记，不能修改任务内容
+//           移交：执行负责人和领导都可以移交任务 但是已经完成的任务（已经提交过一次的任务）不能再次移交
+//           提交： 已经提交过一次的任务（已经完成的任务）不能再次提交
+//           删除：只有领导有权限删除任务
 - (void)moreAction {
     if(!self.canUpdateOrSubmit) {
 //        [FrameBaseRequest showMessage:@"任务已完成，不能执行此操作"];
@@ -517,9 +508,6 @@
                     return;
                 }
             }
-            
-            
-            
             
         [self checkCanChangeTask:dataStr];
         if ([dataStr isEqualToString:@"提交任务"]) {
@@ -600,9 +588,7 @@
             }
             [FrameBaseRequest showMessage:@"网络链接失败"];
             return ;
-        } ];
-        
-        
+        }];
     }]];
     
     [self presentViewController:alertContor animated:NO completion:nil];
@@ -678,14 +664,11 @@
     } ];
 }
 
-
-
-
 //修改任务
 - (void)saveAction {
-    
     [self changeTask];
 }
+
 - (void)changeTask {
     NSString *leadStr = @"";
     NSString *patrolName = safeString(self.dataModel.patrolName);
@@ -706,8 +689,6 @@
         }
     }
     
-    
-    
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/atcSafeguard/updateAtcPatrolRecode",WebNewHost];
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
     
@@ -727,8 +708,6 @@
     }else {
         paramDic[@"remark"] = [self convertToJsonData:remarkDic];
     }
-    
-    
     paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
     //
     NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
@@ -747,7 +726,6 @@
         
     }
     
-    
     NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
     //    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
     //    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
@@ -761,9 +739,6 @@
     }else {
         paramDic[@"atcPatrolWorkList"] = workList;
     }
-    
-    
-    
     
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -791,8 +766,6 @@
             make.right.equalTo(self.navigationView.mas_right).offset(-13);
         }];
         
-        
-        
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
@@ -802,8 +775,8 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
-    
 }
+
 //提交任务
 - (void)uploadTask{
 
@@ -881,9 +854,6 @@
         paramDic[@"atcPatrolWorkList"] = workList;
     }
     
-    
-    
-    
     [FrameBaseRequest postWithUrl:FrameRequestURL param:paramDic success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -908,6 +878,7 @@
     }];
     
 }
+
 //请求地址：/intelligent/atcSafeguard/checkUpdate/{patrolId}/{oldUpdateTime}
 //其中，patrolId是任务的id；
 //oldUpdateTime是任务详情接口返回的taskLastUpdateTime字段，精确到ms的时间戳
@@ -936,9 +907,7 @@
 //            [self presentViewController:alertContor animated:NO completion:nil];
 //
 //
-            
         }
-        
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -956,13 +925,12 @@
         return ;
         
     }];
-    
 }
 
 
 - (void)queryReportDetailData {
     NSString *rId = self.dataDic[@"id"];
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getTourInfoById/%@",rId]];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getTourInfoById/%@",rId]];
     
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
