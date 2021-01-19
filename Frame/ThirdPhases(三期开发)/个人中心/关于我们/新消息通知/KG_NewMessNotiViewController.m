@@ -236,7 +236,10 @@
         }
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:dic forKey:@"newMessNoti"];
-        
+      
+        if ([userDefaults objectForKey:@"newMessNoti"]) {
+            self.dataDic = [userDefaults objectForKey:@"newMessNoti"];
+        }
         
     };
     

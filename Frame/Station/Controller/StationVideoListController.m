@@ -9,7 +9,12 @@
 
 #import "StationVideoListController.h"
 
-#import "SimpleDemoViewController.h"
+#if TARGET_IPHONE_SIMULATOR
+    
+#else
+//#import "SimpleDemoViewController.h"
+#endif
+
 #import "FrameBaseRequest.h"
 #import <UIImageView+WebCache.h>
 #import "VideoItems.h"
@@ -25,32 +30,29 @@
 #import "ChangeFontManager.h"
 @interface StationVideoListController ()<UITableViewDataSource,UITableViewDelegate,EmptyDataSetDelegate>
 
-@property (strong, nonatomic) NSMutableArray<VideoItems *> * videoList;
-@property (strong, nonatomic) NSMutableArray<StationItems *> * StationItem;
-@property (strong, nonatomic) UIButton *rightButton;
-@property(nonatomic) UITableView *filterTabView;
-
+@property (strong, nonatomic)  NSMutableArray   <VideoItems *> * videoList;
+@property (strong, nonatomic)  NSMutableArray   <StationItems *> * StationItem;
+@property (strong, nonatomic)  UIButton         *rightButton;
+@property(nonatomic)           UITableView      *filterTabView;
 
 /** 请求管理者 */
 //@property (nonatomic,weak) AFHTTPSessionManager * manager;
 /** 用于加载下一页的参数(页码) */
-@property   NSInteger didselect;
-@property (nonatomic,copy) NSString* litpic;
+@property                      NSInteger        didselect;
+@property (nonatomic,copy)     NSString         *litpic;
 
-@property (nonatomic,assign) double iscollect;
-@property(nonatomic) UIView* bottomView;
-@property(nonatomic) UITableView *tableview;
+@property (nonatomic,assign)   double           iscollect;
+@property(nonatomic)           UIView           *bottomView;
+@property(nonatomic)           UITableView      *tableview;
 
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
+@property (nonatomic, strong)  UILabel          *titleLabel;
+@property (nonatomic, strong)  UIView           *navigationView;
 
 @end
 
 @implementation StationVideoListController
 
 #pragma mark - 全局常量
-
-
 
 #pragma mark - life cycle 生命周期方法
 
@@ -70,8 +72,8 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, Height_NavBar, WIDTH_SCREEN, HEIGHT_SCREEN- FrameWidth(100))];
-    self.tableview.delegate =self;
-    self.tableview.dataSource =self;
+    self.tableview.delegate = self;
+    self.tableview.dataSource = self;
     self.tableview.separatorStyle = NO;
     //[self.tableview registerClass:[UITableViewCell class]forCellReuseIdentifier:cellIdentifier];
     [self.view addSubview:self.tableview];
@@ -80,9 +82,10 @@
     [self setupTable];
     
 }
+
 -(void)viewWillAppear:(BOOL)animated{
-    NSLog(@"StationVideoListController  %@",_station_code);
     
+    NSLog(@"StationVideoListController  %@",_station_code);
     [self setupTable];
    
 }
@@ -102,6 +105,7 @@
     [self.navigationController setNavigationBarHidden:YES];
     
 }
+
 /**
  颜色转图片
  
@@ -130,8 +134,8 @@
         [self setupTable];
     }
 }
-#pragma mark - private methods 私有方法
 
+#pragma mark - private methods 私有方法
 - (void)setupTable{
     ///api/atcVideoList/{station_code}
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/atcVideoList/%@",_station_code]];//
@@ -162,11 +166,7 @@
         //NSMutableArray<VideoItems *> * navigation = [[VideoItems class] mj_objectArrayWithKeyValuesArray:@[@{@"category":@"title",@"name":@"雷达台站"}]];
         
         [self.tableview reloadData];
-        
-        
-        
-        
-        
+         
     } failure:^(NSURLSessionDataTask *error)  {
         self.tableview.emptyDataSetDelegate = self;
         [self.tableview reloadData];
@@ -183,8 +183,6 @@
         return ;
         
     }];
-    
-    
     
     //去除分割线
     //self.tableview.separatorStyle =NO;
@@ -380,20 +378,22 @@
         return ;
     }
     _didselect = 1000;
+#if TARGET_IPHONE_SIMULATOR
     
-    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
-    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
-    SimpleDemoView.name = self.videoList[indexPath.row].account;
-    SimpleDemoView.password = self.videoList[indexPath.row].password;
-    SimpleDemoView.port = self.videoList[indexPath.row].port;
-    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
-
-    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
-
-    [self.navigationController pushViewController:SimpleDemoView animated:YES];
+   
     
-    
-     
+#else
+//    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
+//    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
+//    SimpleDemoView.name = self.videoList[indexPath.row].account;
+//    SimpleDemoView.password = self.videoList[indexPath.row].password;
+//    SimpleDemoView.port = self.videoList[indexPath.row].port;
+//    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
+//
+//    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
+//
+//    [self.navigationController pushViewController:SimpleDemoView animated:YES];
+#endif
 }
 
 -(void)stationAction {

@@ -297,7 +297,7 @@
     NSLog(@"logout");
     //清除信息
    
-    [FrameBaseRequest logout];
+//    [FrameBaseRequest logout];
     
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"修改成功" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){

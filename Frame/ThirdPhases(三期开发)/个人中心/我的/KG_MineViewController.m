@@ -360,7 +360,7 @@
             
             [FrameBaseRequest logout];
             
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
+//            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
             //跳转登陆页
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.slideMenuController showViewController:login];
@@ -371,7 +371,7 @@
             
             [FrameBaseRequest showMessage:result[@"value"]];
             [FrameBaseRequest logout];
-            [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
+//            [[NSNotificationCenter defaultCenter] addObserver:self   selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
             //跳转登陆页
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.slideMenuController showViewController:login];

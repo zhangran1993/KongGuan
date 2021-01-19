@@ -598,10 +598,10 @@
         [self.view bringSubviewToFront:_nodataView];
         _nodataView.noDataLabel.text = @"当前暂无数据";
         [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
-            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
-            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT);
-            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+            make.left.equalTo(self.view.mas_left);
+            make.right.equalTo(self.view.mas_right);
+            make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+            make.bottom.equalTo(self.view.mas_bottom);
         }];
        
     }

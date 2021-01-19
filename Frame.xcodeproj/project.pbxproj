@@ -86,10 +86,6 @@
 		250F191624BD99F800EBD8F7 /* 送风不可选@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 250F190E24BD99F600EBD8F7 /* 送风不可选@3x.png */; };
 		250F191724BD99F800EBD8F7 /* 送风可选未选中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 250F190F24BD99F600EBD8F7 /* 送风可选未选中@3x.png */; };
 		250F191824BD99F800EBD8F7 /* 送风不可选@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 250F191024BD99F600EBD8F7 /* 送风不可选@2x.png */; };
-		251A331625B029F800364211 /* Preview.h in Sources */ = {isa = PBXBuildFile; fileRef = 185A5F3021D48DD30065085C /* Preview.h */; };
-		251A331725B0340900364211 /* SimpleDemoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18E8DFBB21F0C23E00D5449F /* SimpleDemoViewController.mm */; };
-		251A331825B0340F00364211 /* SimpleDemoViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 18E8DFBA21F0C23E00D5449F /* SimpleDemoViewController.h */; };
-		251A331925B0341900364211 /* Preview.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18E8DFB721F0C23100D5449F /* Preview.mm */; };
 		251F3F9323C5A0AE00217E73 /* RS_ColorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9223C5A0AE00217E73 /* RS_ColorManager.m */; };
 		251F3F9923C5B5EB00217E73 /* AlarmClassInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 251F3F9823C5B5EB00217E73 /* AlarmClassInfoCell.m */; };
 		2543B6BE240751DC00829016 /* baidu_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = 2543B6BD240751DC00829016 /* baidu_map_style.json */; };
@@ -379,10 +375,8 @@
 		2585866725469C66002993A0 /* KG_EquipmentTroubleshootDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2585866625469C66002993A0 /* KG_EquipmentTroubleshootDetailCell.m */; };
 		2585FE1A24C0322000521E7B /* KG_EquipCardFourthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2585FE1924C0321F00521E7B /* KG_EquipCardFourthCell.m */; };
 		258624DA249228330066C0A4 /* KG_XunShiReportDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 258624D9249228330066C0A4 /* KG_XunShiReportDataModel.m */; };
-		25862E5A255B9047001AE8D6 /* 备件标签-使用中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E54255B9046001AE8D6 /* 备件标签-使用中@3x.png */; };
 		25862E5C255B9047001AE8D6 /* 备件标签-维修中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E56255B9047001AE8D6 /* 备件标签-维修中@2x.png */; };
 		25862E5D255B9047001AE8D6 /* 备件标签-维修中@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E57255B9047001AE8D6 /* 备件标签-维修中@3x.png */; };
-		25862E5E255B9047001AE8D6 /* 备件标签-使用中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25862E58255B9047001AE8D6 /* 备件标签-使用中@2x.png */; };
 		25862E62255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E61255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m */; };
 		25862E65255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E64255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.m */; };
 		25862E69255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25862E68255BD72D001AE8D6 /* KG_SparePartsStatisticsListViewController.m */; };
@@ -488,6 +482,7 @@
 		258B6FCF2549146A00C936E7 /* KG_StationFileWarnRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258B6FCE2549146A00C936E7 /* KG_StationFileWarnRecordCell.m */; };
 		258B6FD22549148100C936E7 /* KG_StationFileEnvEventRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258B6FD12549148100C936E7 /* KG_StationFileEnvEventRecordCell.m */; };
 		258B6FD62549479500C936E7 /* KG_StationFileEnvEventDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 258B6FD52549479500C936E7 /* KG_StationFileEnvEventDetailController.m */; };
+		258C810925B69EA900C3096C /* StationVideoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE419F68206E070A00A35A2F /* StationVideoListController.m */; };
 		258CDE232428435000B870D6 /* KG_FrameBottomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CDE222428435000B870D6 /* KG_FrameBottomAlertView.m */; };
 		258CDE2A24284BD400B870D6 /* KG_FrameBottonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CDE2924284BD400B870D6 /* KG_FrameBottonCell.m */; };
 		258CDE2D24285D1500B870D6 /* FrameScrollList.m in Sources */ = {isa = PBXBuildFile; fileRef = 258CDE2C24285D1500B870D6 /* FrameScrollList.m */; };
@@ -859,7 +854,6 @@
 		25D1F05B2424A9F3007E5870 /* KG_OverAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05A2424A9F3007E5870 /* KG_OverAlertView.m */; };
 		25D1F05F2424B01C007E5870 /* UtilsJSH.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1F05E2424B01C007E5870 /* UtilsJSH.m */; };
 		25D748882580C55C00606BDB /* KG_MineThirdDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D748872580C55C00606BDB /* KG_MineThirdDetailCell.m */; };
-		25E6CC2125B02569009F06D9 /* StationVideoListController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE419F68206E070A00A35A2F /* StationVideoListController.m */; };
 		25EDC52B247A1FE50006821C /* BAUISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EDC52A247A1FE50006821C /* BAUISlider.m */; };
 		25EDC537247B67DF0006821C /* 应急处理@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25EDC52D247B67DE0006821C /* 应急处理@3x.png */; };
 		25EDC538247B67DF0006821C /* 设备排故@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25EDC52E247B67DE0006821C /* 设备排故@2x.png */; };
@@ -1668,10 +1662,8 @@
 		2585FE1924C0321F00521E7B /* KG_EquipCardFourthCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_EquipCardFourthCell.m; sourceTree = "<group>"; };
 		258624D8249228330066C0A4 /* KG_XunShiReportDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_XunShiReportDataModel.h; sourceTree = "<group>"; };
 		258624D9249228330066C0A4 /* KG_XunShiReportDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_XunShiReportDataModel.m; sourceTree = "<group>"; };
-		25862E54255B9046001AE8D6 /* 备件标签-使用中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@3x.png"; sourceTree = "<group>"; };
 		25862E56255B9047001AE8D6 /* 备件标签-维修中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修中@2x.png"; sourceTree = "<group>"; };
 		25862E57255B9047001AE8D6 /* 备件标签-维修中@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-维修中@3x.png"; sourceTree = "<group>"; };
-		25862E58255B9047001AE8D6 /* 备件标签-使用中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "备件标签-使用中@2x.png"; sourceTree = "<group>"; };
 		25862E60255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunLingBeiJianSearchViewController.h; sourceTree = "<group>"; };
 		25862E61255BCCA6001AE8D6 /* KG_RunLingBeiJianSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_RunLingBeiJianSearchViewController.m; sourceTree = "<group>"; };
 		25862E63255BCD00001AE8D6 /* KG_RunLingBeiJianSearchCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_RunLingBeiJianSearchCell.h; sourceTree = "<group>"; };
@@ -5454,8 +5446,6 @@
 		258E026024D7B22F00CDF8BA /* 备件icon */ = {
 			isa = PBXGroup;
 			children = (
-				25862E58255B9047001AE8D6 /* 备件标签-使用中@2x.png */,
-				25862E54255B9046001AE8D6 /* 备件标签-使用中@3x.png */,
 				25862E56255B9047001AE8D6 /* 备件标签-维修中@2x.png */,
 				25862E57255B9047001AE8D6 /* 备件标签-维修中@3x.png */,
 				258E026724D7B24C00CDF8BA /* 备件标签-报废@2x.png */,
@@ -7915,7 +7905,6 @@
 				2580EECE2479234400E7D36B /* 场监雷达2@2x.png in Resources */,
 				2580EE6A2479214500E7D36B /* 电子围栏@2x.png in Resources */,
 				2584858B24765BEB00F0AB09 /* 火险_icon@3x.png in Resources */,
-				25862E5A255B9047001AE8D6 /* 备件标签-使用中@3x.png in Resources */,
 				2584854B24765BEB00F0AB09 /* 干旱_icon@3x.png in Resources */,
 				258484F424765ADD00F0AB09 /* 阴@2x.png in Resources */,
 				258CEE2024B44A21007FEE18 /* ATS-蓝@3x.png in Resources */,
@@ -7974,7 +7963,6 @@
 				25EDC598247E56670006821C /* 智态@2x.png in Resources */,
 				25EDC5A1247E56670006821C /* 智修_sel@3x.png in Resources */,
 				2580EE482479214500E7D36B /* 空开@3x.png in Resources */,
-				25862E5E255B9047001AE8D6 /* 备件标签-使用中@2x.png in Resources */,
 				25EDC5AF247E56680006821C /* 智云_sel@2x.png in Resources */,
 				25EDC5A4247E56670006821C /* 智态@3x.png in Resources */,
 				2580EE612479214500E7D36B /* 门禁@2x.png in Resources */,
@@ -8309,11 +8297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				251A331925B0341900364211 /* Preview.mm in Sources */,
-				251A331825B0340F00364211 /* SimpleDemoViewController.h in Sources */,
-				251A331725B0340900364211 /* SimpleDemoViewController.mm in Sources */,
-				251A331625B029F800364211 /* Preview.h in Sources */,
-				25E6CC2125B02569009F06D9 /* StationVideoListController.m in Sources */,
+				258C810925B69EA900C3096C /* StationVideoListController.m in Sources */,
 				25CF3F1A2500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m in Sources */,
 				25862E6D255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.m in Sources */,
 				258D295C246BF9DA004E8B5A /* RS_ConditionSearchModel.m in Sources */,

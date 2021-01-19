@@ -141,6 +141,7 @@
     self.selDataTitleLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
     self.selDataTitleLabel.font = [UIFont systemFontOfSize:16];
     self.selDataTitleLabel.font = [UIFont my_font:16];
+    self.selDataTitleLabel.textAlignment = NSTextAlignmentCenter;
     self.selDataTitleLabel.numberOfLines = 1;
     [self.selDataTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftBtn.mas_right).offset(6);

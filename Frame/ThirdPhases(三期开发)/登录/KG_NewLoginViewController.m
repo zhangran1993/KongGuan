@@ -51,6 +51,15 @@
     self.tabBarController.tabBar.hidden = NO;
     
 }
+-(void)dealloc
+{
+    [super dealloc];
+    //第一种方法.这里可以移除该控制器下的所有通知
+    //移除当前所有通知
+    NSLog(@"移除了所有的通知");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
 
 //初始化数据
 - (void)initData {
@@ -122,6 +131,7 @@
     self.userTextField = [[UITextField alloc]init];
     [self.view addSubview:self.userTextField];
     self.userTextField.delegate = self;
+    self.userTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.userTextField.placeholder = @"请输入用户名";
     [self.userTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.userLabel.mas_bottom);
@@ -160,6 +170,7 @@
         make.width.equalTo(@120);
     }];
     self.passTextField = [[UITextField alloc]init];
+    self.passTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.view addSubview:self.passTextField];
     self.passTextField.delegate = self;
     self.passTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -275,7 +286,7 @@
         }else {
             [userDefaults setObject:[CommonExtension returnWithString:userDic[@"userAccount"]]  forKey:@"lastAserAccount"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
             [UserManager shareUserManager].loginSuccess = YES;
             int num = 0;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
@@ -387,7 +398,7 @@
     [UserManager shareUserManager].currentStationDic = self.currentStationDic;
     
     [[NSUserDefaults standardUserDefaults] synchronize];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
     [UserManager shareUserManager].loginSuccess = YES;
     
     int num = 0;

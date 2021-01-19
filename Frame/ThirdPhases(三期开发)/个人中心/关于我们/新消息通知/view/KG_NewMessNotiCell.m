@@ -79,7 +79,6 @@
         make.height.equalTo(@1);
     }];
     
-    
     self.swh = [[UISwitch alloc]init];
     [self addSubview:self.swh];
     self.swh.onTintColor = [UIColor colorWithHexString:@"#2F5ED1"];  //On状态下颜色
@@ -90,8 +89,6 @@
         make.centerY.equalTo(self.mas_centerY);
     }];
     [self.swh addTarget:self action:@selector(swhValueChange:) forControlEvents:UIControlEventValueChanged];
-    
-
 }
 
 - (void)swhValueChange:(id)sender {

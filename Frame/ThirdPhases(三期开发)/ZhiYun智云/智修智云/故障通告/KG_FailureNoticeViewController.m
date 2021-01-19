@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong)     UITableView        *tableView;
 
-
 @property (nonatomic, strong)     UILabel            *titleLabel;
 
 @property (nonatomic, strong)     UIView             *navigationView;
