@@ -12,7 +12,7 @@
 #if TARGET_IPHONE_SIMULATOR
     
 #else
-//#import "SimpleDemoViewController.h"
+#import "SimpleDemoViewController.h"
 #endif
 
 #import "FrameBaseRequest.h"
@@ -383,16 +383,16 @@
    
     
 #else
-//    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
-//    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
-//    SimpleDemoView.name = self.videoList[indexPath.row].account;
-//    SimpleDemoView.password = self.videoList[indexPath.row].password;
-//    SimpleDemoView.port = self.videoList[indexPath.row].port;
-//    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
-//
-//    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
-//
-//    [self.navigationController pushViewController:SimpleDemoView animated:YES];
+    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
+    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
+    SimpleDemoView.name = self.videoList[indexPath.row].account;
+    SimpleDemoView.password = self.videoList[indexPath.row].password;
+    SimpleDemoView.port = self.videoList[indexPath.row].port;
+    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
+
+    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
+
+    [self.navigationController pushViewController:SimpleDemoView animated:YES];
 #endif
 }
 

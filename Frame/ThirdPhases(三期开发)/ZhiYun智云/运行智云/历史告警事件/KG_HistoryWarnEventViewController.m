@@ -98,6 +98,7 @@
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     //     [self.navigationController setNavigationBarHidden:NO];
+    [self.nodataView hideView];
     
 }
 

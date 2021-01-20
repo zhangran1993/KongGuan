@@ -12,7 +12,7 @@
 #if TARGET_IPHONE_SIMULATOR
 
 #else
-//#import "SimpleDemoViewController.h"
+#import "SimpleDemoViewController.h"
 #endif
 
 #define MAX_VIEW_NUM    4
