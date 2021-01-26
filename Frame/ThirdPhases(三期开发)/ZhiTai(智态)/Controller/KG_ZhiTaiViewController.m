@@ -254,10 +254,17 @@
  */
 - (void)leftCenterButtonClick {
     
-    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
+//    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+//    [self.navigationController pushViewController:vc animated:YES];
 //    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
 //    [self.slideMenuController showMenu];
+    KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
+    
+    CATransition* transition = [CATransition animation];
+    transition.type = kCATransitionPush;            //改变视图控制器出现的方式
+    transition.subtype = kCATransitionFromLeft;     //出现的位置
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (void)createTopView{

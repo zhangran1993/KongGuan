@@ -20,6 +20,8 @@
 #import "UIFont+Addtion.h"
 #import "FMFontManager.h"
 #import "ChangeFontManager.h"
+#import "KG_EmergencyTreatmentFileCell.h"
+#import "KG_EmergencyTreatmentFileViewController.h"
 @interface KG_EmergencyTreatmentViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -48,7 +50,13 @@
 @property (nonatomic, assign)   BOOL                    isZhanKai;
 
 
+@property (nonatomic, assign)   BOOL                    isZhanKaiFile;
+
+
 @property (nonatomic,strong)    NSArray                 *topArray;
+
+
+@property (nonatomic,strong)    NSArray                 *fileArray;
 
 @property (nonatomic, strong) UIButton        *bottomBtn;
 
@@ -66,7 +74,9 @@
    
     
     self.isZhanKai = NO;
+    self.isZhanKaiFile = NO;
     self.topArray = self.dataModel.emergency[@"emergencyOperation"];
+    self.fileArray = self.dataModel.emergency[@"emergencyEvent"];
     [self createNaviTopView];
     
     [self createTableView];
@@ -242,8 +252,6 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-    
-    
 }
 
 - (void)backButtonClick:(UIButton *)button {
@@ -297,7 +305,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
   
-    return 2;
+    return 3;
     
 }
 
@@ -342,18 +350,30 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    
     if (indexPath.section == 0) {
+        if (self.isZhanKaiFile == NO) {
+            if (self.fileArray.count >3) {
+                return 50*3+ 50 +40 +10;
+            }else {
+                return self.fileArray.count *50 +50 +40;
+            }
+        }else {
+           
+            return self.fileArray.count *50 +50+40 ;
+        }
+    }else if (indexPath.section == 1) {
         if (self.isZhanKai == NO) {
             if (self.topArray.count >3) {
                 return 50*3+ 50 +40 +10;
             }else {
-                return self.topArray.count *50 +50 +40 +10;
+                return self.topArray.count *50 +50 +40 ;
             }
         }else {
             
-            return self.topArray.count *50 +50+40  +10;
+            return self.topArray.count *50 +50+40;
         }
-    }else if (indexPath.section == 1) {
+    }else if (indexPath.section == 2) {
         NSInteger topHeight = 0;
         if (self.dataDic.count) {
             NSArray *dataArr = self.dataDic[@"attachmentInfo"];
@@ -417,6 +437,26 @@
     
     if (indexPath.section == 0) {
 
+        KG_EmergencyTreatmentFileCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EmergencyTreatmentFileCell"];
+        if (cell == nil) {
+            cell = [[KG_EmergencyTreatmentFileCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EmergencyTreatmentFileCell"];
+        }
+        cell.topArray = self.fileArray;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      
+        cell.zhanKaiMethod = ^(BOOL iszhankai) {
+            self.isZhanKaiFile = iszhankai;
+            [self.tableView reloadData];
+        };
+        cell.pushToNextStep = ^(NSDictionary * _Nonnull dataDic) {
+           
+            KG_EmergencyTreatmentFileViewController *vc = [[KG_EmergencyTreatmentFileViewController alloc]init];
+            vc.dataDic = dataDic;
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        return cell;
+    }else if (indexPath.section == 1) {
+
         KG_EmergencyTreatmentFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EmergencyTreatmentFirstCell"];
         if (cell == nil) {
             cell = [[KG_EmergencyTreatmentFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EmergencyTreatmentFirstCell"];
@@ -435,7 +475,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         };
         return cell;
-    }else if (indexPath.section == 1) {
+    }else if (indexPath.section == 2) {
         
         KG_EmergencyTreatmentSecondCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EmergencyTreatmentSecondCell"];
         if (cell == nil) {
@@ -527,7 +567,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    if(section == 0) {
+    if(section == 0 ||section == 1) {
         
         UIView *topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
         topView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
@@ -648,7 +688,7 @@
 //    return  topView;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == 0 ||section == 1) {
         return 10;
     }
     return 0.001;

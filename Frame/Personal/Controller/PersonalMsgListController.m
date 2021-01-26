@@ -122,9 +122,12 @@
 -(void)viewDidAppear:(BOOL)animated{
     // NSLog(@"viewDidAppear");
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
+  
     NSLog(@"viewDidDisappear");
 }
+
 -(void)viewWillLayoutSubviews{
     // NSLog(@"viewWillLayoutSubviews");
 }
@@ -140,7 +143,6 @@
         [self loadData];
     }
 }
-
 
 #pragma mark - 请求数据方法
 /**
@@ -194,9 +196,6 @@
         
         //[self.tableview reloadData];
         
-        
-        
-        
         if(self.pageNum == 1){
             self.msgList = [[MsgItems class] mj_objectArrayWithKeyValuesArray: result[@"value"][@"records"]];
             if(self.msgList.count < self.pageSize){
@@ -221,10 +220,6 @@
             self.msgList[i].LabelHeight = ceilf(lblSize.height);
         }
         
-        
-        
-        
-        
         self.tableview.emptyDataSetDelegate = self;
         [self.tableview reloadData];
         
@@ -247,32 +242,32 @@
             [self.navigationView addSubview:self.deleteButon];
             
         }
-        
-        BOOL isRead = false;
-        for (int i = 0; i< self.msgList.count; i++) {
-            if(self.msgList[i].status != 1){
-                isRead = true;
-            }
-        }
-        if (self.yiduButon == nil) {
-            self.yiduButon  = [UIButton buttonWithType:UIButtonTypeCustom];
-            if( isRead){
-                self.yiduButon.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
-                [self.yiduButon setImage:[UIImage imageNamed:@"msg_read"] forState:UIControlStateNormal];
-                [self.yiduButon addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
-            }
-            [self.navigationView addSubview:self.yiduButon];
-        }
+//
+//        BOOL isRead = false;
+//        for (int i = 0; i< self.msgList.count; i++) {
+//            if(self.msgList[i].status != 1){
+//                isRead = true;
+//            }
+//        }
+//        if (self.yiduButon == nil) {
+//            self.yiduButon  = [UIButton buttonWithType:UIButtonTypeCustom];
+//            if( isRead){
+//                self.yiduButon.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
+//                [self.yiduButon setImage:[UIImage imageNamed:@"msg_read"] forState:UIControlStateNormal];
+//                [self.yiduButon addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
+//            }
+//            [self.navigationView addSubview:self.yiduButon];
+//        }
         [self.deleteButon mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);
             make.centerY.equalTo(self.titleLabel.mas_centerY);
-            make.right.equalTo(self.navigationView.mas_right).offset(-20);
+            make.right.equalTo(self.navigationView.mas_right).offset(-5);
         }];
-        [self.yiduButon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@44);
-            make.centerY.equalTo(self.titleLabel.mas_centerY);
-            make.right.equalTo(self.deleteButon.mas_right).offset(-40);
-        }];
+//        [self.yiduButon mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.width.height.equalTo(@44);
+//            make.centerY.equalTo(self.titleLabel.mas_centerY);
+//            make.right.equalTo(self.deleteButon.mas_right).offset(-40);
+//        }];
         
         if (!self.hasMore) {
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
@@ -282,9 +277,6 @@
                 [self.tableview.mj_footer resetNoMoreData];
             }
         }
-        
-        
-        
     } failure:^(NSURLSessionDataTask *error)  {
         self.tableview.emptyDataSetDelegate = self;
         [self.tableview reloadData];
@@ -305,9 +297,6 @@
         return ;
         
     }];
-    
-    
-    
     
 }
 
@@ -380,7 +369,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    [self backBtn];
+//    [self backBtn];
     return self.msgList.count;
 }
 
@@ -402,6 +391,18 @@
         cell.detailLabel.text = msgString;
         cell.iconImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(msgString)]];
         
+        if(self.msgList[indexPath.row].status == 0){
+            
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+            cell.redDotImage.hidden = NO;
+        }else {//已读
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+            cell.redDotImage.hidden = YES;
+            
+        }
+        
         return cell;
     }else if([_thistitle isEqualToString:@"预警消息"]){
         
@@ -418,6 +419,17 @@
         cell.timeLabel.text = createTime;
         NSString *msgString =  self.msgList[indexPath.row].content;
         cell.detailLabel.text = msgString;
+        if(self.msgList[indexPath.row].status == 0){
+            
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+            cell.redDotImage.hidden = NO;
+        }else {//已读
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+            cell.redDotImage.hidden = YES;
+            
+        }
         return cell;
     }else{//告警消息
         
@@ -436,16 +448,21 @@
         cell.detailLabel.text = msgString;
         
         cell.iconImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(msgString)]];
+        if(self.msgList[indexPath.row].status == 0){
+            
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+            cell.redDotImage.hidden = NO;
+        }else {//已读
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+            cell.redDotImage.hidden = YES;
+            
+        }
         return cell;
         
     }
-   
-   
- 
-    
     return nil;
-    
-    
     
 }
 
@@ -540,7 +557,7 @@
     // 点击了第indexPath.row行Cell所做的操作
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSLog(@"点击了第%ld行Cell所做的操作",(long)indexPath.row);
-     return;
+    
     if(self.msgList[indexPath.row].status == 1){
         return;
     }
@@ -744,6 +761,45 @@
     [leftImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(backBtn.mas_centerX);
         make.centerY.equalTo(backBtn.mas_centerY);
+    }];
+    if(self.msgList.count > 0){
+        self.deleteButon = [[UIButton alloc]init];
+        [self.navigationView addSubview:self.deleteButon];
+        [self.deleteButon setImage:[UIImage imageNamed:@"kg_messDelImage"] forState:UIControlStateNormal];
+        [self.deleteButon addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.deleteButon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.height.equalTo(@44);
+            make.right.equalTo(self.navigationView.mas_right).offset(-5);
+            make.centerY.equalTo(self.titleLabel.mas_centerY);
+        }];
+        
+    }
+    
+    
+    BOOL isRead = false;
+    for (int i = 0; i< self.msgList.count; i++) {
+        if(self.msgList[i].status != 1){
+            isRead = true;
+        }
+    }
+    
+    self.yiduButon = [[UIButton alloc]init];
+    [self.navigationView addSubview:self.yiduButon];
+    [self.yiduButon setTitle:@"全部已读" forState:UIControlStateNormal];
+    [self.yiduButon setTitleColor:[UIColor colorWithHexString:@"#9294A0"] forState:UIControlStateNormal];
+    self.yiduButon.titleLabel.font = [UIFont systemFontOfSize:12];
+    self.yiduButon.layer.cornerRadius = 12;
+    self.yiduButon.layer.masksToBounds = YES;
+    self.yiduButon.layer.borderWidth = 1;
+    self.yiduButon.layer.borderColor = [[UIColor colorWithHexString:@"#BDBECC"] CGColor];
+    
+    [self.yiduButon addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.yiduButon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@70);
+        make.right.equalTo(self.navigationView.mas_right).offset(-50);
+        make.centerY.equalTo(self.titleLabel.mas_centerY);
+        make.height.equalTo(@24);
     }];
     
 }

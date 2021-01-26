@@ -33,11 +33,19 @@
 @property (nonatomic, strong)   UIView            *bgView;
 
 @property (nonatomic, strong)   UIView            *shuView;
- 
+
 @property (nonatomic, strong)   UIButton          *staRightBtn;
 
-@end
+@property (nonatomic, strong)   UIView            *firstRoleView;
+@property (nonatomic, strong)   UILabel           *firstRoleTitleLabel;
 
+@property (nonatomic, strong)   UIView            *secondRoleView;
+@property (nonatomic, strong)   UILabel           *secondRoleTitleLabel;
+
+@property (nonatomic, strong)   UIView            *thirdRoleView;
+@property (nonatomic, strong)   UILabel           *thirdRoleTitleLabel;
+
+@end
 
 @implementation KG_MineFirstCell
 
@@ -48,7 +56,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -72,12 +80,10 @@
         make.height.equalTo(@180);
     }];
     
-    
-
-    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *name = [userDefaults objectForKey:@"name"];
     NSArray * positions = [userDefaults objectForKey:@"role"];
+//    NSArray * positions = [NSArray arrayWithObjects:@"123123",@"222",@"34341412",@"34341412",nil];
     NSString *position = @"";
     if(![positions  isEqual: @[]] ){
         position = positions[0];
@@ -86,7 +92,6 @@
         }
         //position = [userDefaults objectForKey:@"role"][0];
     }
-    
     
     
     self.iconImage = [[UIImageView alloc]init];
@@ -104,7 +109,7 @@
     
     if([userDefaults objectForKey:@"icon"]){
         NSString *iconString = [userDefaults objectForKey:@"icon"];
-      
+        
         
         
         if([iconString isEqualToString:@"head_blueIcon"]) {
@@ -140,37 +145,152 @@
     self.detailLabel.font = [UIFont systemFontOfSize:14];
     self.detailLabel.font = [UIFont my_font:14];
     [self.detailLabel sizeToFit];
-
+    
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(16);
         make.top.equalTo(self.titleLabel.mas_bottom).offset(5);
         make.height.equalTo(@20);
         make.width.lessThanOrEqualTo(@(SCREEN_WIDTH - 108-29));
-//        make.right.equalTo(self.mas_right).offset(-29);
-    }];
-    
- 
-    self.detailLabel.text = position;
-    
-    
-    
-    self.positionLabel = [[UILabel alloc]init];
-    [self addSubview:self.positionLabel];
-    self.positionLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    self.positionLabel.textAlignment = NSTextAlignmentLeft;
-    self.positionLabel.font = [UIFont systemFontOfSize:14];
-    self.positionLabel.font =[UIFont my_font:14];
-    [self.positionLabel sizeToFit];
-    
-    [self.positionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.iconImage.mas_right).offset(16);
-        make.top.equalTo(self.detailLabel.mas_bottom).offset(5);
-        make.height.equalTo(@20);
-        make.width.lessThanOrEqualTo(@(SCREEN_WIDTH - 108-29));
         //        make.right.equalTo(self.mas_right).offset(-29);
     }];
-    self.positionLabel.text = position;
     
+    
+    self.detailLabel.text = position;
+    
+    //第一个
+    self.firstRoleView = [[UIView alloc]init];
+    self.firstRoleView.layer.borderWidth = 0.5;
+    self.firstRoleView.layer.borderColor = [[UIColor colorWithHexString:@"#75E6FF"] CGColor];
+    self.firstRoleView.layer.cornerRadius = 11.5;
+    self.firstRoleView.layer.masksToBounds = YES;
+    [self addSubview:self.firstRoleView];
+    self.firstRoleTitleLabel = [[UILabel alloc]init];
+    [self.firstRoleView addSubview:self.firstRoleTitleLabel];
+    self.firstRoleTitleLabel.textColor = [UIColor colorWithHexString:@"#75E6FF"];
+    self.firstRoleTitleLabel.font = [UIFont my_font:12];
+    self.firstRoleTitleLabel.textAlignment = NSTextAlignmentLeft;
+    self.firstRoleTitleLabel.numberOfLines = 1;
+    [self.firstRoleTitleLabel sizeToFit];
+    
+    [self.firstRoleTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.titleLabel.mas_left).offset(8);
+        make.height.equalTo(@17);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(13);
+    }];
+    
+    [self.firstRoleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.firstRoleTitleLabel.mas_left).offset(-8);
+        make.right.equalTo(self.firstRoleTitleLabel.mas_right).offset(8);
+        make.top.equalTo(self.firstRoleTitleLabel.mas_top).offset(-3);
+        make.bottom.equalTo(self.firstRoleTitleLabel.mas_bottom).offset(3);
+    }];
+    
+     //第二个
+    self.secondRoleView = [[UIView alloc]init];
+    [self addSubview:self.secondRoleView];
+    self.secondRoleView.layer.borderWidth = 0.5;
+    self.secondRoleView.layer.borderColor = [[UIColor colorWithHexString:@"#75E6FF"] CGColor];
+    self.secondRoleView.layer.cornerRadius = 11.5;
+    self.secondRoleView.layer.masksToBounds = YES;
+    self.secondRoleTitleLabel = [[UILabel alloc]init];
+    [self.secondRoleView addSubview:self.secondRoleTitleLabel];
+    self.secondRoleTitleLabel.textColor = [UIColor colorWithHexString:@"#75E6FF"];
+    self.secondRoleTitleLabel.font = [UIFont my_font:12];
+    self.secondRoleTitleLabel.textAlignment = NSTextAlignmentLeft;
+    self.secondRoleTitleLabel.numberOfLines = 1;
+    [self.secondRoleTitleLabel sizeToFit];
+  
+    
+    
+    //第三个
+    self.thirdRoleView = [[UIView alloc]init];
+    [self addSubview:self.thirdRoleView];
+    self.thirdRoleView.layer.borderWidth = 0.5;
+    self.thirdRoleView.layer.borderColor = [[UIColor colorWithHexString:@"#75E6FF"] CGColor];
+    self.thirdRoleView.layer.cornerRadius = 11.5;
+    self.thirdRoleView.layer.masksToBounds = YES;
+    self.thirdRoleTitleLabel = [[UILabel alloc]init];
+    [self.thirdRoleView addSubview:self.thirdRoleTitleLabel];
+    self.thirdRoleTitleLabel.textColor = [UIColor colorWithHexString:@"#75E6FF"];
+    self.thirdRoleTitleLabel.font = [UIFont my_font:12];
+    self.thirdRoleTitleLabel.textAlignment = NSTextAlignmentLeft;
+    self.thirdRoleTitleLabel.numberOfLines = 1;
+    [self.thirdRoleTitleLabel sizeToFit];
+   
+    
+    if (positions.count == 0) {
+        self.firstRoleView.hidden = YES;
+        self.secondRoleView.hidden = YES;
+        self.thirdRoleView.hidden = YES;
+    }else if (positions.count == 1) {
+        self.firstRoleView.hidden = NO;
+        self.secondRoleView.hidden = YES;
+        self.thirdRoleView.hidden = YES;
+        self.firstRoleTitleLabel.text = [NSString stringWithFormat:@"%@",positions[0]];
+        
+    }else if (positions.count == 2) {
+        self.firstRoleView.hidden = NO;
+        self.secondRoleView.hidden = NO;
+        self.thirdRoleView.hidden = YES;
+        
+        self.firstRoleTitleLabel.text = [NSString stringWithFormat:@"%@",positions[0]];
+        self.secondRoleTitleLabel.text = [NSString stringWithFormat:@"%@",positions[1]];
+        
+    }else if (positions.count >= 3) {
+        self.firstRoleView.hidden = NO;
+        self.secondRoleView.hidden = NO;
+        self.thirdRoleView.hidden = NO;
+        
+        self.firstRoleTitleLabel.text = [NSString stringWithFormat:@"%@",positions[0]];
+        self.secondRoleTitleLabel.text = [NSString stringWithFormat:@"%@",positions[1]];
+        self.thirdRoleTitleLabel.text = [NSString stringWithFormat:@"%@",positions[2]];
+        
+    }
+    
+    [self.secondRoleTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.firstRoleView.mas_right).offset(18);
+        make.height.equalTo(@17);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(13);
+    }];
+    
+    [self.secondRoleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.secondRoleTitleLabel.mas_left).offset(-8);
+        make.right.equalTo(self.secondRoleTitleLabel.mas_right).offset(8);
+        make.top.equalTo(self.secondRoleTitleLabel.mas_top).offset(-3);
+        make.bottom.equalTo(self.secondRoleTitleLabel.mas_bottom).offset(3);
+    }];
+    
+    [self.thirdRoleTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.secondRoleView.mas_right).offset(18);
+        make.height.equalTo(@17);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(13);
+    }];
+    
+    [self.thirdRoleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.thirdRoleTitleLabel.mas_left).offset(-8);
+        make.right.equalTo(self.thirdRoleTitleLabel.mas_right).offset(8);
+        make.top.equalTo(self.thirdRoleTitleLabel.mas_top).offset(-3);
+        make.bottom.equalTo(self.thirdRoleTitleLabel.mas_bottom).offset(3);
+    }];
+    
+    
+//    self.positionLabel = [[UILabel alloc]init];
+//    [self addSubview:self.positionLabel];
+//    self.positionLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+//    self.positionLabel.textAlignment = NSTextAlignmentLeft;
+//    self.positionLabel.font = [UIFont systemFontOfSize:14];
+//    self.positionLabel.font =[UIFont my_font:14];
+//    [self.positionLabel sizeToFit];
+//
+//    [self.positionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.iconImage.mas_right).offset(16);
+//        make.top.equalTo(self.detailLabel.mas_bottom).offset(5);
+//        make.height.equalTo(@20);
+//        make.width.lessThanOrEqualTo(@(SCREEN_WIDTH - 108-29));
+//        //        make.right.equalTo(self.mas_right).offset(-29);
+//    }];
+//    self.positionLabel.text = position;
+//
     
     
     
@@ -321,7 +441,7 @@
         make.height.equalTo(@22);
         make.width.equalTo(@80);
     }];
-
+    
 }
 
 - (void)rightButtonClicked :(UIButton *)btn {
@@ -346,16 +466,16 @@
     
     
     if (self.pushToNextStep) {
-           self.pushToNextStep(@"公告消息");
-       }
+        self.pushToNextStep(@"公告消息");
+    }
 }
 
 //告警消息点击
 - (void)gaojingButtonCLicked:(UIButton *)button {
     
     if (self.pushToNextStep) {
-           self.pushToNextStep(@"告警消息");
-       }
+        self.pushToNextStep(@"告警消息");
+    }
     
 }
 
@@ -363,8 +483,8 @@
 - (void)yujingButtonCLicked:(UIButton *)button {
     
     if (self.pushToNextStep) {
-           self.pushToNextStep(@"预警消息");
-       }
+        self.pushToNextStep(@"预警消息");
+    }
     
 }
 

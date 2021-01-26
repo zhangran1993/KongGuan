@@ -13,7 +13,6 @@
 #import "ChangeFontManager.h"
 @interface  KG_MineFourthCell () {
     
-    
 }
 
 @property (nonatomic,strong)  UIImageView    *iconImage;
@@ -21,8 +20,6 @@
 @property (nonatomic,strong)  UILabel        *titleLabel;
 
 @property (nonatomic,strong)  UIImageView    *rightImage;
-
-
 
 @end
 

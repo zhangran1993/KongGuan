@@ -23,6 +23,12 @@
 @property (nonatomic,strong)  UIImageView    *rightImage;
 
 
+@property (nonatomic,strong)  UISwitch       *swh;
+
+
+@property (nonatomic,strong)  UIView         *lineView;
+
+
 
 @end
 
@@ -83,16 +89,35 @@
     }];
     
     
-    UIView *lineView = [[UIView alloc]init];
-    [self addSubview:lineView];
-    lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.swh = [[UISwitch alloc]init];
+    [self addSubview:self.swh];
+    self.swh.onTintColor = [UIColor colorWithHexString:@"#4DD865"];  //On状态下颜色
+    [self.swh mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.rightImage.mas_left).offset(-10);
+        make.height.equalTo(@24);
+        make.width.equalTo(@40);
+        make.centerY.equalTo(self.rightImage.mas_centerY);
+    }];
+    [self.swh setOn:NO];
+    self.swh.userInteractionEnabled = NO;
+    [self.swh addTarget:self action:@selector(swhValueChange:) forControlEvents:UIControlEventValueChanged];
+    
+    self.lineView = [[UIView alloc]init];
+    [self addSubview:self.lineView];
+    self.lineView.backgroundColor = [UIColor colorWithHexString:@"#EFF0F7"];
+    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(63);
         make.right.equalTo(self.mas_right).offset(-15);
         make.top.equalTo(self.mas_top).offset(54);
         make.height.equalTo(@1);
         
     }];
+}
+
+//
+- (void)swhValueChange:(UISwitch *)swh {
+    
+    
 }
 
 - (void)setDataDic:(NSDictionary *)dataDic {
@@ -104,6 +129,8 @@
 - (void)setStr:(NSString *)str {
     _str = str;
     self.titleLabel.text = str;
+    self.lineView.hidden = NO;
+    self.swh.hidden = YES;
     if ([str isEqualToString:@"台站值班"]) {
         
         self.iconImage.image = [UIImage imageNamed:@"stationduty_image"];
@@ -111,16 +138,16 @@
         
         self.iconImage.image = [UIImage imageNamed:@"common_image"];
     }else if ([str isEqualToString:@"夜间模式"]) {
-       
+        self.swh.hidden = NO;
         self.iconImage.image = [UIImage imageNamed:@"nightmode_image"];
     }else if ([str isEqualToString:@"夜间模式跟随系统"]) {
-       
+        self.swh.hidden = NO;
         self.iconImage.image = [UIImage imageNamed:@"nightmodewithsystem_image"];
     }else if ([str isEqualToString:@"账号安全"]) {
        
         self.iconImage.image = [UIImage imageNamed:@"accountsafe_image"];
     }else if ([str isEqualToString:@"关于我们"]) {
-       
+        self.lineView.hidden = YES;
         self.iconImage.image = [UIImage imageNamed:@"aboutus_image"];
     }
     

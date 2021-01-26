@@ -223,10 +223,15 @@
 
 //调班
 - (void)tiaobanMethod {
-    self.isClickZhiBan = YES;
+    
+    self.isClickZhiBan = !self.isClickZhiBan;
+    
+    if(self.isClickZhiBan == YES ) {
+        [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+    }else {
+        [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+    }
     [self.tableView reloadData];
-    
-    
 }
 
 - (void)backButtonClick:(UIButton *)button {

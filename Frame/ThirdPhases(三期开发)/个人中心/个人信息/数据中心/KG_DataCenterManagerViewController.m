@@ -9,14 +9,17 @@
 #import "KG_DataCenterManagerViewController.h"
 #import <WebKit/WebKit.h>
 @interface KG_DataCenterManagerViewController ()<WKNavigationDelegate,UIDocumentInteractionControllerDelegate>
-@property (nonatomic,strong) WKWebView* webView;
-@property (strong, nonatomic) UIProgressView *progressView;
+
+@property (nonatomic,strong)    WKWebView               *webView;
+
+@property (strong, nonatomic)   UIProgressView          *progressView;
 
 @property (nonatomic, strong)   UILabel                 *titleLabel;
 
 @property (nonatomic, strong)   UIView                  *navigationView;
 
 @property (nonatomic, strong)   UIButton                *rightButton;
+
 @end
 
 @implementation KG_DataCenterManagerViewController
@@ -62,8 +65,6 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"webViewDidFinishLoad");
-   
-
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error{
@@ -76,21 +77,17 @@
 //       [MyController showAlert:@"网络连接异常,请检查网络" view:self.view];
         [FrameBaseRequest showMessage:@"网络连接异常,请检查网络"];
     });
-   
-
-    
 }
 
-- (void)createData{
+- (void)createData {
+        
     [self loadExamplePage:_webView];
 }
 
 - (void)loadExamplePage:(WKWebView*)webView {
     
-    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebHost,@"/html5"]];
-    
-    NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:url]; // 网络地址
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];// 网络地址
     //    NSString *path = [[NSBundle mainBundle] pathForResource:@"1111111" ofType:@"pdf"]; // 本地
     //    NSURL *url = [NSURL fileURLWithPath:path];
     //    NSURLRequest *request=[NSURLRequest requestWithURL:url];
@@ -105,7 +102,7 @@
     [_webView setUIDelegate:nil];
 }
 
-- (void) backBtnClicked {
+- (void)backBtnClicked {
     NSArray * types = @[WKWebsiteDataTypeMemoryCache, WKWebsiteDataTypeDiskCache];
     NSSet *websiteDataTypes = [NSSet setWithArray:types];
     NSDate *dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
@@ -121,22 +118,19 @@
     topImage1.backgroundColor  =[UIColor whiteColor];
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT + 10)];
     [self.view addSubview:topImage];
-    topImage.backgroundColor  =[UIColor whiteColor];
+    topImage.backgroundColor = [UIColor whiteColor];
     topImage.image = [self createImageWithColor:[UIColor whiteColor]];
     /** 导航栏 **/
     self.navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, Height_NavBar+10)];
     self.navigationView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.navigationView];
-    
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
-    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.navigationView.mas_centerX);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
         make.left.equalTo(self.navigationView.mas_left).offset(60);
         make.right.equalTo(self.navigationView.mas_right).offset(-60);
-        
     }];
     self.titleLabel.text = @"数据中心";
     
@@ -159,22 +153,19 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-//    self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-//    
+//    self.rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
 //    self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
 //    [self.rightButton setImage:[UIImage imageNamed:@"icon_yunMore"] forState:UIControlStateNormal];
 //    [self.rightButton addTarget:self action:@selector(shareFile) forControlEvents:UIControlEventTouchUpInside];
-// 
+ 
 //    [self.navigationView addSubview:self.rightButton];
-//    
+    
 //    [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.width.height.equalTo(@44);
 //        make.centerY.equalTo(self.titleLabel.mas_centerY);
 //        make.right.equalTo(self.navigationView.mas_right).offset(-20);
 //    }];
-//    
-    
-    
+
 }
 
 - (void)createUI {
@@ -186,6 +177,7 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -210,7 +202,6 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
-
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];

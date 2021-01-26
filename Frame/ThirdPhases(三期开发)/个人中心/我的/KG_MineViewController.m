@@ -50,15 +50,15 @@
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.top.equalTo(self.view.mas_top);
-        make.bottom.equalTo(self.view.mas_bottom);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-58- SafeAreaBottomMargin);
     }];
     [self createNaviTopView];
+    [self createBottomView];
     [self stationAction];
 }
 
@@ -103,7 +103,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -217,16 +217,16 @@
         };
         
         return cell;
-    }else if (indexPath.section == 3) {
-        KG_MineFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_MineFourthCell"];
-        if (cell == nil) {
-            cell = [[KG_MineFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_MineFourthCell"];
-            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        
-        return cell;
+//    }else if (indexPath.section == 3) {
+//        KG_MineFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_MineFourthCell"];
+//        if (cell == nil) {
+//            cell = [[KG_MineFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_MineFourthCell"];
+//            cell.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        }
+//
+//
+//        return cell;
     }
     return nil;
 }
@@ -262,13 +262,20 @@
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if(section == 2){
+        UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
+        footView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        return footView;
+    }
     
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 10)];
     footView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return footView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    
+    if(section == 2){
+        return 0.001;
+    }
     return 10;
 }
 
@@ -317,8 +324,26 @@
 
 - (void)backButtonClick:(UIButton *)button {
     
+    //页面返回 效果修改
+//    [UIView  beginAnimations:nil context:NULL];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    [UIView setAnimationDuration:0.75];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+//    [UIView commitAnimations];
+//
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDelay:0.375];
+//    [self.navigationController popViewControllerAnimated:NO];
+//    [UIView commitAnimations];
+    
+    
+    CATransition* transition = [CATransition animation];
+    transition.type = kCATransitionPush;            //改变视图控制器出现的方式
+    transition.subtype = kCATransitionFromRight;     //出现的位置
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -398,6 +423,10 @@
 
 //跳转到数据中心
 - (void)pushToDataManager {
+    
+    [FrameBaseRequest showMessage:@"数据中心暂未开放，敬请期待"];
+    return;
+    
     KG_DataCenterManagerViewController *vc = [[KG_DataCenterManagerViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -431,6 +460,49 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
         
+    }];
+    
+}
+
+- (void)createBottomView {
+    
+    UIView *botView = [[UIView alloc]init];
+    [self.view addSubview:botView];
+    botView.backgroundColor = [UIColor whiteColor];
+    [botView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.height.equalTo(@(58+SafeAreaBottomMargin));
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        
+    }];
+    
+    UIImageView *layerBgImage = [[UIImageView alloc]init];
+    [botView addSubview:layerBgImage];
+    layerBgImage.image = [UIImage imageNamed:@"kg_logout_sliderBgImage"];
+//    layerBgImage.contentMode = UIViewContentModeScaleAspectFit;
+    [layerBgImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(botView.mas_left);
+        make.right.equalTo(botView.mas_right);
+        make.top.equalTo(botView.mas_top);
+        make.height.equalTo(@58);
+    }];
+    
+    
+    UIButton *logOutBtn = [[UIButton alloc]init];
+    [botView addSubview:logOutBtn];
+    logOutBtn.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
+    [logOutBtn setTitle:@"退出登录" forState:UIControlStateNormal];
+    [logOutBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    logOutBtn.layer.cornerRadius = 4.f;
+    logOutBtn.layer.masksToBounds = YES;
+    logOutBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    [logOutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpOutside];
+    [logOutBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(botView.mas_left).offset(16);
+        make.right.equalTo(botView.mas_right).offset(-16);
+        make.height.equalTo(@40);
+        make.top.equalTo(botView.mas_top).offset(12);
     }];
     
 }

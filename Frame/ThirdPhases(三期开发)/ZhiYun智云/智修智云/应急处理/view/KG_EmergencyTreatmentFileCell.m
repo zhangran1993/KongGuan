@@ -6,13 +6,13 @@
 //  Copyright © 2020 hibaysoft. All rights reserved.
 //
 
-#import "KG_EmergencyTreatmentFirstCell.h"
+#import "KG_EmergencyTreatmentFileCell.h"
 #import "KG_EquipmentTroubleshootDetailCell.h"
 #import "UILabel+ChangeFont.h"
 #import "UIFont+Addtion.h"
 #import "FMFontManager.h"
 #import "ChangeFontManager.h"
-@interface KG_EmergencyTreatmentFirstCell ()<UITableViewDelegate,UITableViewDataSource> {
+@interface KG_EmergencyTreatmentFileCell ()<UITableViewDelegate,UITableViewDataSource> {
     
 }
 
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation KG_EmergencyTreatmentFirstCell
+@implementation KG_EmergencyTreatmentFileCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -58,6 +58,7 @@
     if (self.topArray.count >3) {
         height = 50 + 50 *3 +44;
     }
+    
     
     [self addSubview:self.topTableView];
     [self.topTableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -92,7 +93,7 @@
     
     UILabel *topTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(16, 0, 84, 50)];
     [headView addSubview:topTitleLabel];
-    topTitleLabel.text = @"应急操作指引提醒";
+    topTitleLabel.text = @"应急处理文件";
     topTitleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     topTitleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
     topTitleLabel.font = [UIFont my_font:16];
@@ -108,7 +109,6 @@
     }];
     
     self.topTableView.tableHeaderView = headView;
-    
     
     
     self.footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
@@ -128,8 +128,6 @@
         [self.bottomBtn setTitle:@"收起" forState:UIControlStateNormal];
     }
     
-    
-    
     [self.bottomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.footView.mas_left);
         make.right.equalTo(self.footView.mas_right);
@@ -141,9 +139,7 @@
     
     [self.topTableView reloadData];
     
-    
 }
-
 
 - (void)bottomButtonClick :(UIButton *)btn {
     self.isZhanKai = !self.isZhanKai;
@@ -317,10 +313,10 @@
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0.001)];
     return footView;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 0.001;
 }
-
 
 - (void)setTopArray:(NSArray *)topArray {
     _topArray =topArray;

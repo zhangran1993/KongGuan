@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,strong) UIImageView     *rightImage;
 
 @property (nonatomic ,strong) NSDictionary    *dataDic;
+
+
+@property (nonatomic ,strong) UIImageView     *redDotImage;
 @end
 
 NS_ASSUME_NONNULL_END

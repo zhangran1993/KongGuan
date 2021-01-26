@@ -169,6 +169,9 @@
     _model = model;
     
     self.roomLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(model.stationName),safeString(model.engineRoomName)];
+    if (safeString(model.engineRoomName).length == 0) {
+        self.roomLabel.text = [NSString stringWithFormat:@"%@",safeString(model.stationName)];
+    }
     self.iconImage.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-蓝",[CommonExtension getDeviceIcon:safeString(model.equipmentCategory)]]];
     
     if([safeString(model.equipmentCategory) isEqualToString:@"navigation"]){

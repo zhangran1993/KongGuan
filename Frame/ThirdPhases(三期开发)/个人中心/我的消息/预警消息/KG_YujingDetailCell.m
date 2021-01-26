@@ -98,12 +98,25 @@
     self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.font = [UIFont my_font:16];
     self.titleLabel.numberOfLines = 1;
+    [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
         make.top.equalTo(self.mas_top).offset(50);
         make.height.equalTo(@40);
-        make.width.equalTo(@200);
+       
     }];
+    
+    self.redDotImage = [[UIImageView alloc]init];
+    [self.centerView addSubview:self.redDotImage];
+    self.redDotImage.backgroundColor = [UIColor colorWithHexString:@"#FB394C"];
+    self.redDotImage.layer.cornerRadius =6.f;
+    self.redDotImage.layer.masksToBounds = YES;
+    [self.redDotImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.titleLabel.mas_right).offset(-15);
+        make.top.equalTo(self.centerView.mas_top).offset(6);
+        make.height.width.equalTo(@12);
+    }];
+    
     
     self.lineView = [[UIView alloc]init];
     [self.centerView addSubview:self.lineView];

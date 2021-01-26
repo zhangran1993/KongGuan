@@ -76,10 +76,13 @@
         
     }else {
         NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:0];
-        [dic setValue:[NSNumber numberWithInt:0] forKey:@"yujing"];
-        [dic setValue:[NSNumber numberWithInt:0] forKey:@"gaojing"];
-        [dic setValue:[NSNumber numberWithInt:0] forKey:@"gonggao"];
+        [dic setValue:[NSNumber numberWithInt:1] forKey:@"yujing"];
+        [dic setValue:[NSNumber numberWithInt:1] forKey:@"gaojing"];
+        [dic setValue:[NSNumber numberWithInt:1] forKey:@"gonggao"];
         
+        [userDefaults setObject:dic forKey:@"newMessNoti"];
+        [userDefaults synchronize];
+    
         self.dataDic = dic;
         
     }

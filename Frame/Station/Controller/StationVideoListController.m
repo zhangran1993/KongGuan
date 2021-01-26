@@ -12,7 +12,7 @@
 #if TARGET_IPHONE_SIMULATOR
     
 #else
-#import "SimpleDemoViewController.h"
+//#import "SimpleDemoViewController.h"
 #endif
 
 #import "FrameBaseRequest.h"
@@ -77,7 +77,6 @@
     self.tableview.separatorStyle = NO;
     //[self.tableview registerClass:[UITableViewCell class]forCellReuseIdentifier:cellIdentifier];
     [self.view addSubview:self.tableview];
-    
     self.tableview.backgroundColor = BGColor;
     [self setupTable];
     
@@ -190,13 +189,14 @@
     
 }
 
-
 -(void)viewDidAppear:(BOOL)animated{
     // NSLog(@"viewDidAppear");
 }
+
 -(void)viewDidDisappear:(BOOL)animated{
     NSLog(@"StationVideoListController viewDidDisappear");
 }
+
 -(void)viewWillLayoutSubviews{
     // NSLog(@"viewWillLayoutSubviews");
 }
@@ -205,8 +205,6 @@
 /**
  *  发送请求并获取数据方法
  */
-
-
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -247,6 +245,7 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     //if(tableView == self.filterTabView){
     if(tableView.frame.size.width != WIDTH_SCREEN){
@@ -331,7 +330,6 @@
         titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
         [thiscell addSubview:titleLabel];
         
-        
         UIImageView *rightArrow = [[UIImageView alloc]initWithFrame:CGRectMake(FrameWidth(20), FrameWidth(13), FrameWidth(72), FrameWidth(72))];
         rightArrow.image = [UIImage imageNamed:@"video_right"];
         [thiscell addSubview:rightArrow];//station_right
@@ -343,10 +341,7 @@
         
     }
     return thiscell;
-    
-   
 }
-
 
 #pragma mark - UITableviewDelegate 代理方法
 
@@ -383,16 +378,16 @@
    
     
 #else
-    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
-    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
-    SimpleDemoView.name = self.videoList[indexPath.row].account;
-    SimpleDemoView.password = self.videoList[indexPath.row].password;
-    SimpleDemoView.port = self.videoList[indexPath.row].port;
-    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
-
-    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
-
-    [self.navigationController pushViewController:SimpleDemoView animated:YES];
+//    SimpleDemoViewController  *SimpleDemoView = [[SimpleDemoViewController alloc] init];
+//    SimpleDemoView.ip = self.videoList[indexPath.row].ip;
+//    SimpleDemoView.name = self.videoList[indexPath.row].account;
+//    SimpleDemoView.password = self.videoList[indexPath.row].password;
+//    SimpleDemoView.port = self.videoList[indexPath.row].port;
+//    SimpleDemoView.channelId = self.videoList[indexPath.row].channelId;
+//
+//    SimpleDemoView.titleString = [NSString stringWithFormat:@"%@",self.videoList[indexPath.row].name];
+//
+//    [self.navigationController pushViewController:SimpleDemoView animated:YES];
 #endif
 }
 
@@ -493,6 +488,7 @@
     [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentRight overlayDismissed:nil];
     
 }
+
 -(void)backBtn{
     UIButton *leftButon = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     leftButon.frame = CGRectMake(0,0,FrameWidth(60),FrameWidth(60));
@@ -506,6 +502,7 @@
 
     [self stationBtn];
 }
+
 -(void)stationBtn{
 //    _rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,  FrameWidth(100), FrameWidth(30))];
 //
@@ -527,10 +524,12 @@
 //
     
 }
+
 -(void)backAction {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"bottomapevent" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 -(void)closeFrame{
     
     [self cb_dismissPopupViewControllerAnimated:YES completion:nil];
@@ -568,6 +567,7 @@
 - (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button{
     [self setupTable];
 }
+
 - (void)createNaviTopView {
     UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
     [self.view addSubview:topImage1];
@@ -609,18 +609,11 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-    
-    
-    
-    
-    
 }
-
 
 - (void)backButtonClick:(UIButton *)button {
     
     [self.navigationController popViewControllerAnimated:YES];
-    
     
 }
 /** 标题栏 **/

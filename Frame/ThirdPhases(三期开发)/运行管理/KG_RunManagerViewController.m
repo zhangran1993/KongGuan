@@ -615,7 +615,7 @@
             [self.slideMenuController showViewController:login];
             return;
         }
-        [FrameBaseRequest showMessage:@"网络链接失败"];
+//        [FrameBaseRequest showMessage:@"网络链接失败"];
         
         return ;
     } ];
@@ -723,7 +723,16 @@
 - (void)leftCenterButtonClick {
     
     KG_MineViewController  *vc = [[KG_MineViewController alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    CATransition* transition = [CATransition animation];
+    transition.type = kCATransitionPush;            //改变视图控制器出现的方式
+    transition.subtype = kCATransitionFromLeft;     //出现的位置
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController pushViewController:vc animated:NO];
+    
+    
+    
+//    [self.navigationController pushViewController:vc animated:YES];
     //    [[NSNotificationCenter defaultCenter] postNotificationName:@"modifyingHeadNotification" object:self];
 //    [self.slideMenuController showMenu];
 }

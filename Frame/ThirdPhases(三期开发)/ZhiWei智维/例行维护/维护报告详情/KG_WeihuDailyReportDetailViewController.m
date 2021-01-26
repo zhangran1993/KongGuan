@@ -1199,6 +1199,7 @@
     return ss;
     
 }
+
 - (KG_XunShiHandleView *)xunShiHandelView {
     if (!_xunShiHandelView) {
         _xunShiHandelView = [[KG_XunShiHandleView alloc]init];
@@ -1206,6 +1207,7 @@
     }
     return _xunShiHandelView;
 }
+
 //获得回复
 - (void)getReceviceData {
     
@@ -1238,7 +1240,6 @@
         
     }];
 }
-
 
 //获得日志
 - (void)getLogData {
@@ -1325,6 +1326,7 @@
     return mutStr;
 
 }
+    
 //提交回复
 //任务的回复提交接口：
 //请求地址：/intelligent/atcPatrolDialog
@@ -1372,6 +1374,7 @@
         return ;
     } ];
 }
+
 - (void)saveWeiHuSpecialData:(NSNotification *)notification {
     NSDictionary *dic = notification.userInfo;
     if (dic.count) {

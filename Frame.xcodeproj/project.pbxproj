@@ -688,6 +688,9 @@
 		25921071254AA7E600DAFCF7 /* HXGaugeChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 2592106B254AA7E600DAFCF7 /* HXGaugeChart.m */; };
 		25921072254AA7E600DAFCF7 /* HXRingChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 2592106C254AA7E600DAFCF7 /* HXRingChart.m */; };
 		25921073254AA7E600DAFCF7 /* HXLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 2592106D254AA7E600DAFCF7 /* HXLineChart.m */; };
+		2592601225BAABEF00612E3F /* KG_EmergencyTreatmentFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2592601125BAABEE00612E3F /* KG_EmergencyTreatmentFileCell.m */; };
+		2592601525BAB45D00612E3F /* KG_EmergencyTreatmentFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2592601425BAB45D00612E3F /* KG_EmergencyTreatmentFileViewController.m */; };
+		2592601825BAB79100612E3F /* KG_EmergencyTreatmentFileDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2592601725BAB79100612E3F /* KG_EmergencyTreatmentFileDetailCell.m */; };
 		259299CE24DBA99200D824AA /* KG_InspectionRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259299CD24DBA99200D824AA /* KG_InspectionRecordCell.m */; };
 		2593B5B6246D4C2100BBB964 /* KG_ZhiXiuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2593B5B5246D4C2100BBB964 /* KG_ZhiXiuViewController.m */; };
 		2593B5BA246D523500BBB964 /* KG_ZhiXiuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2593B5B9246D523500BBB964 /* KG_ZhiXiuCell.m */; };
@@ -2199,6 +2202,12 @@
 		2592106C254AA7E600DAFCF7 /* HXRingChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HXRingChart.m; sourceTree = "<group>"; };
 		2592106D254AA7E600DAFCF7 /* HXLineChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HXLineChart.m; sourceTree = "<group>"; };
 		2592106E254AA7E600DAFCF7 /* HXBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HXBarChart.h; sourceTree = "<group>"; };
+		2592601025BAABEE00612E3F /* KG_EmergencyTreatmentFileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_EmergencyTreatmentFileCell.h; sourceTree = "<group>"; };
+		2592601125BAABEE00612E3F /* KG_EmergencyTreatmentFileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_EmergencyTreatmentFileCell.m; sourceTree = "<group>"; };
+		2592601325BAB45D00612E3F /* KG_EmergencyTreatmentFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_EmergencyTreatmentFileViewController.h; sourceTree = "<group>"; };
+		2592601425BAB45D00612E3F /* KG_EmergencyTreatmentFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_EmergencyTreatmentFileViewController.m; sourceTree = "<group>"; };
+		2592601625BAB79100612E3F /* KG_EmergencyTreatmentFileDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_EmergencyTreatmentFileDetailCell.h; sourceTree = "<group>"; };
+		2592601725BAB79100612E3F /* KG_EmergencyTreatmentFileDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_EmergencyTreatmentFileDetailCell.m; sourceTree = "<group>"; };
 		259299CC24DBA99200D824AA /* KG_InspectionRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_InspectionRecordCell.h; sourceTree = "<group>"; };
 		259299CD24DBA99200D824AA /* KG_InspectionRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_InspectionRecordCell.m; sourceTree = "<group>"; };
 		2593B5B4246D4C2100BBB964 /* KG_ZhiXiuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_ZhiXiuViewController.h; sourceTree = "<group>"; };
@@ -5833,6 +5842,12 @@
 				2592105E254A669400DAFCF7 /* KG_EmergencyTreatmentFirstCell.m */,
 				25921060254A66B400DAFCF7 /* KG_EmergencyTreatmentSecondCell.h */,
 				25921061254A66B400DAFCF7 /* KG_EmergencyTreatmentSecondCell.m */,
+				2592601025BAABEE00612E3F /* KG_EmergencyTreatmentFileCell.h */,
+				2592601125BAABEE00612E3F /* KG_EmergencyTreatmentFileCell.m */,
+				2592601325BAB45D00612E3F /* KG_EmergencyTreatmentFileViewController.h */,
+				2592601425BAB45D00612E3F /* KG_EmergencyTreatmentFileViewController.m */,
+				2592601625BAB79100612E3F /* KG_EmergencyTreatmentFileDetailCell.h */,
+				2592601725BAB79100612E3F /* KG_EmergencyTreatmentFileDetailCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -8312,6 +8327,7 @@
 				258D293F246A6C9A004E8B5A /* KG_NewContentCell.m in Sources */,
 				258188C4247279D000AE3DF6 /* KG_LoginSelStationViewController.m in Sources */,
 				18E8DFB421F0BC9C00D5449F /* VideoItems.h in Sources */,
+				2592601525BAB45D00612E3F /* KG_EmergencyTreatmentFileViewController.m in Sources */,
 				18E8DFB521F0BC9C00D5449F /* MachineItems.h in Sources */,
 				25CF3EE924FC943500AD3ACA /* KG_ContactTopView.m in Sources */,
 				257DF8E22531AFC30008E252 /* KG_CaseLibraryPromptViewController.m in Sources */,
@@ -8598,6 +8614,7 @@
 				25EEB31E2434756100B9F803 /* KG_UpsAlertView.m in Sources */,
 				258954492592E06C00D616FC /* KG_SetFontSystemLeftCell.m in Sources */,
 				2587B1CA24977322000289C7 /* KG_GetLogCell.m in Sources */,
+				2592601225BAABEF00612E3F /* KG_EmergencyTreatmentFileCell.m in Sources */,
 				EC4C0C1121B60C9600E23EFA /* ZYSpreadSubButton.m in Sources */,
 				25EDC559247BCE000006821C /* KG_SelVideoCollectionViewCell.m in Sources */,
 				2585862D25412044002993A0 /* KG_FailureNoticeDetailCell.m in Sources */,
@@ -8771,6 +8788,7 @@
 				25906F5A2488A0D40010DD89 /* KG_RunManagerThirdCell.m in Sources */,
 				25CF3F1F2500D6A300AD3ACA /* KG_CreateDayWeiHuCell.m in Sources */,
 				18B34DE421C348330021C2E6 /* UploadCell.m in Sources */,
+				2592601825BAB79100612E3F /* KG_EmergencyTreatmentFileDetailCell.m in Sources */,
 				FEE2491B206CB7B400D62197 /* PatrolSetController.m in Sources */,
 				258A62DF25805848005A8105 /* KG_MineViewController.m in Sources */,
 				258D295E246BF9DA004E8B5A /* RS_ConditionSearchTableViewCell.m in Sources */,
