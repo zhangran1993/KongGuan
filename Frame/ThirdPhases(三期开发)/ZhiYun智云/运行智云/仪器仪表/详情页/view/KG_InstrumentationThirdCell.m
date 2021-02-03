@@ -97,7 +97,7 @@
     [self.centerView addSubview:self.detailLabel];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
-    self.detailLabel.font = [UIFont my_font:14];
+//    self.detailLabel.font = [UIFont my_font:14];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
     self.detailLabel.text = @"";
     self.detailLabel.numberOfLines = 0;

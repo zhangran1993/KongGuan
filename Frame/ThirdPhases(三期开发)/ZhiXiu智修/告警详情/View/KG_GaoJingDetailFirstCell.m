@@ -48,7 +48,7 @@
     
     self.roomLabel = [[UILabel alloc]init];
     [self addSubview:self.roomLabel];
-    self.roomLabel.text = @"黄城导航台-电池间";
+    self.roomLabel.text = @"-";
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.roomLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightMedium];
     self.roomLabel.font = [UIFont my_font:18];
@@ -81,7 +81,7 @@
     
     self.confirmBtn = [[UIButton alloc]init];
     [self addSubview:self.confirmBtn];
-    [self.confirmBtn setTitle:@"未确认" forState:UIControlStateNormal];
+    [self.confirmBtn setTitle:@"-" forState:UIControlStateNormal];
     [self.confirmBtn setTitleColor:[UIColor colorWithHexString:@"#AABBCD"] forState:UIControlStateNormal];
     self.confirmBtn.layer.cornerRadius = 5;
     self.confirmBtn.layer.masksToBounds = YES;
@@ -116,7 +116,7 @@
     
     self.powLabel = [[UILabel alloc]init];
     [self addSubview:self.powLabel];
-    self.powLabel.text = @"电池组2#";
+    self.powLabel.text = @"-";
     self.powLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.powLabel.font = [UIFont systemFontOfSize:14];
     self.powLabel.font = [UIFont my_font:14];
@@ -139,7 +139,7 @@
     
     self.detailLabel = [[UILabel alloc]init];
     [self addSubview:self.detailLabel];
-    self.detailLabel.text = @"电池组2#";
+    self.detailLabel.text = @"-";
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
     self.detailLabel.font = [UIFont my_font:14];
@@ -152,7 +152,7 @@
     
     self.timeLabel = [[UILabel alloc]init];
     [self addSubview:self.timeLabel];
-    self.timeLabel.text = @"2019.12.24 06:37";
+    self.timeLabel.text = @"-";
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.font = [UIFont my_font:12];

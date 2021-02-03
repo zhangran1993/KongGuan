@@ -97,6 +97,7 @@
     KG_ZhiTaiEquipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_ZhiTaiEquipCell"];
     if (cell == nil) {
         cell = [[KG_ZhiTaiEquipCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_ZhiTaiEquipCell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     //    NSDictionary *dataDic = self.dataArray[indexPath.row *2-1];
     //    cell.dataDic = dataDic;

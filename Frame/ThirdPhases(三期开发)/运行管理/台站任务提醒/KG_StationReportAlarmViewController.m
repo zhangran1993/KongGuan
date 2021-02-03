@@ -18,16 +18,16 @@
 #import "ChangeFontManager.h"
 @interface KG_StationReportAlarmViewController ()<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) UIView *noDataView;
-@property (nonatomic,strong) NSArray *dataArray;
+@property (nonatomic,strong)   UITableView                *tableView;
+@property (nonatomic,strong)   UIView                     *noDataView;
+@property (nonatomic,strong)   NSArray                    *dataArray;
 
-@property (nonatomic, strong)  UILabel   *titleLabel;
-@property (nonatomic, strong)  UIView    *navigationView;
-@property (nonatomic, strong)  UIButton  *rightButton;
-@property (nonatomic, strong)  KG_OnsiteInspectionView *alertView;
-@property (nonatomic,strong)  NSDictionary *alertInfo;
-@property (nonatomic, strong)  KG_AssignView *alertPersonView;
+@property (nonatomic, strong)  UILabel                    *titleLabel;
+@property (nonatomic, strong)  UIView                     *navigationView;
+@property (nonatomic, strong)  UIButton                   *rightButton;
+@property (nonatomic, strong)  KG_OnsiteInspectionView    *alertView;
+@property (nonatomic, strong)  NSDictionary               *alertInfo;
+@property (nonatomic, strong)  KG_AssignView              *alertPersonView;
 @end
 
 @implementation KG_StationReportAlarmViewController
@@ -259,7 +259,9 @@
         return;
     }
     if ([safeString(self.alertInfo[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
-         self.alertView.hidden = NO;
+        [_alertView removeFromSuperview];
+        _alertView = nil;
+        self.alertView.hidden = NO;
         
     }else {
         KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];

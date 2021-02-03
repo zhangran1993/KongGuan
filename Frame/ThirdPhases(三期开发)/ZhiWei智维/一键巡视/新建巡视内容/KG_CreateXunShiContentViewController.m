@@ -236,7 +236,7 @@
     params[@"planFinishTime"] = @"";
     params[@"patrolName"] = safeString(self.dataModel.realPersonID);
     params[@"typeCode"] = @"oneTouchTour";
-    params[@"patrolCode"] = @"normalInspection";
+    params[@"patrolCode"] = safeString(self.dataModel.taskType);
     params[@"patrolId"] = safeString(self.dataModel.xunshiRoomID);
     params[@"taskName"] = safeString(self.dataModel.taskTitle);
     

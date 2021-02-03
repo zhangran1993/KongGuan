@@ -470,6 +470,8 @@
         iconString =@"导航DME";
     }else if([code isEqualToString:@"dvor"]){
         iconString =@"导航DVOR";
+    }else if([code isEqualToString:@"directCurrent"]){
+        iconString =@"直流电源";
     }
     return iconString;
 }

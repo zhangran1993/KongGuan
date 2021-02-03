@@ -339,10 +339,10 @@
         _nodataView.noDataLabel.text = @"未找到相关结果";
         _nodataView.iconImage.image = [UIImage imageNamed:@"kg_lingbeijian_NodataImage"];
         [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
-            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
-            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT);
-            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+            make.left.equalTo(self.view.mas_left);
+            make.right.equalTo(self.view.mas_right);
+            make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT);
+            make.bottom.equalTo(self.view.mas_bottom);
         }];
        
     }

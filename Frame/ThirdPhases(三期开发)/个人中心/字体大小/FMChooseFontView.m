@@ -148,6 +148,10 @@
     UIImageView *sliderBgImgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_detail_sliderBgImg"]];
     [bgView addSubview:sliderBgImgView];
     
+    UIView *lineBgView = [[UIView alloc]init];
+    [bgView addSubview:lineBgView];
+    lineBgView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    
     UISlider *slider = [[UISlider alloc] init];
     slider.minimumValue = 1;
     slider.maximumValue = 7;
@@ -196,6 +200,9 @@
     bigLabel.text = @"A";
     [bgView addSubview:bigLabel];
     
+  
+    
+   
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.mas_equalTo(self);
         make.height.mas_equalTo(128);
@@ -220,6 +227,26 @@
         make.height.mas_equalTo(sliderBgImgView);
         make.width.mas_equalTo(330);
     }];
+  
+    [lineBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(bgView);
+        make.bottom.mas_offset(-(20+20));
+        make.width.mas_equalTo(300);
+        make.height.mas_equalTo(10);
+    }];
+    for (int i = 0; i<7; i++) {
+        UIImageView *lineImage =[[UIImageView alloc]initWithFrame:CGRectMake(0+(300/6)*i, 0,1 , 10)];
+        lineImage.backgroundColor = [UIColor colorWithHexString:@"#ABABAB"];
+        [lineBgView addSubview:lineImage];
+        
+    }
+    UIImageView *lineHengImage =[[UIImageView alloc]initWithFrame:CGRectMake(0,4.5,300 , 1)];
+    lineHengImage.backgroundColor = [UIColor colorWithHexString:@"#ABABAB"];
+    [lineBgView addSubview:lineHengImage];
+    
+    
+    
+    
     [smallLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(sliderBgImgView.mas_top).mas_offset(-20);
         make.centerX.mas_equalTo(sliderBgImgView.mas_left);

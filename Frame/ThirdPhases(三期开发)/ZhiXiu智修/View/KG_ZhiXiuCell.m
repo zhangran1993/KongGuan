@@ -126,7 +126,7 @@
         make.left.equalTo(self.iconImage.mas_right).offset(14);
         make.top.equalTo(lineView.mas_bottom).offset(11);
         make.height.equalTo(@21);
-        make.width.equalTo(@200);
+        make.right.equalTo(self.mas_right).offset(-67);
     }];
     self.gaojingImage.image = [UIImage imageNamed:@"gaojing_red"];
     self.gaojingImage = [[UIImageView alloc]init];
@@ -180,6 +180,8 @@
         }else if ([safeString(model.equipmentName) isEqualToString:@"导航DVOR"]) {
             self.iconImage.image =  [UIImage imageNamed:@"导航DVOR"];
         }
+     }else if([safeString(model.equipmentCategory) isEqualToString:@"monitor"]){
+         self.iconImage.image =  [UIImage imageNamed:@"视频监测-蓝"];
      }
     
     self.timeLabel.text = [self timestampToTimeStr:safeString(model.happenTime)];

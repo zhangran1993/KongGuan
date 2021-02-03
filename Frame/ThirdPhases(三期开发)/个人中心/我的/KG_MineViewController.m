@@ -356,6 +356,7 @@
     }
     return _titleLabel;
 }
+
 //退出
 -(void)logout{
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"确定要退出？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
@@ -372,6 +373,7 @@
     [self presentViewController:alertContor animated:NO completion:nil];
     
 }
+
 -(void)postLogout{
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
@@ -497,7 +499,7 @@
     logOutBtn.layer.cornerRadius = 4.f;
     logOutBtn.layer.masksToBounds = YES;
     logOutBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [logOutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpOutside];
+    [logOutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
     [logOutBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(botView.mas_left).offset(16);
         make.right.equalTo(botView.mas_right).offset(-16);

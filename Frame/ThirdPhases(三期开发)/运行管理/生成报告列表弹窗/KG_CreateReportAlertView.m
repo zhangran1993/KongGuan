@@ -54,7 +54,7 @@
         [self.dataArray addObjectsFromArray:condition[@"handoverInfo"]];
         [self initData];
         [self setupDataSubviews];
-       
+        
     }
     return self;
 }
@@ -95,8 +95,9 @@
     UILabel *titleLabel = [[UILabel alloc]init];
     [self.centerView addSubview:titleLabel];
     titleLabel.text = @"生成运行报告";
-    titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-    titleLabel.font = [UIFont my_font:17];
+//    titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+    titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:17];
+//    titleLabel.font = [UIFont my_font:17];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.numberOfLines = 1;
@@ -247,7 +248,7 @@
     
     UILabel *endPromptlabel = [[UILabel alloc]init];
     [endView addSubview:endPromptlabel];
-    endPromptlabel.text = @"值班结束时间";
+    endPromptlabel.text = @"结束时间";
     endPromptlabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     endPromptlabel.font = [UIFont systemFontOfSize:12];
     endPromptlabel.font = [UIFont my_font:12];
@@ -299,7 +300,7 @@
     
     UILabel *startPromptlabel = [[UILabel alloc]init];
     [startView addSubview:startPromptlabel];
-    startPromptlabel.text = @"值班结束时间";
+    startPromptlabel.text = @"开始时间";
     startPromptlabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     startPromptlabel.font = [UIFont systemFontOfSize:12];
     startPromptlabel.font = [UIFont my_font:12];
@@ -408,32 +409,33 @@
 //选择岗位
 
 - (void)showStationList {
-    self.stationListView = [[UIView alloc]init];
-    self.stationListView.backgroundColor = [UIColor whiteColor];
-    
-    [self.centerView addSubview:self.stationListView];
-    
-    [self.stationListView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@(self.dataArray.count*30));
-        make.top.equalTo(self.centerView.mas_top).offset(75);
-        make.left.equalTo(self.centerView.mas_left).offset(16);
-        make.right.equalTo(self.centerView.mas_right).offset(-16);
+    if(_stationListView == nil) {
+        self.stationListView = [[UIView alloc]init];
+        self.stationListView.backgroundColor = [UIColor whiteColor];
         
-    }];
-    [self.centerView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@(225 + self.dataArray.count*30 +5));
-    }];
-    
-    [self addSubview:self.tableView];
-    self.tableView.layer.borderWidth = 0.5;
-    self.tableView.layer.borderColor = [[UIColor colorWithHexString:@"#E6E8ED"] CGColor];
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.stationListView.mas_top);
-        make.left.equalTo(self.stationListView.mas_left);
-        make.right.equalTo(self.stationListView.mas_right);
-        make.bottom.equalTo(self.stationListView.mas_bottom);
-    }];
-    
+        [self.centerView addSubview:self.stationListView];
+        
+        [self.stationListView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@(self.dataArray.count*30));
+            make.top.equalTo(self.centerView.mas_top).offset(75);
+            make.left.equalTo(self.centerView.mas_left).offset(16);
+            make.right.equalTo(self.centerView.mas_right).offset(-16);
+            
+        }];
+        [self.centerView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@(225 + self.dataArray.count*30 +5));
+        }];
+        
+        [self.stationListView addSubview:self.tableView];
+        self.tableView.layer.borderWidth = 0.5;
+        self.tableView.layer.borderColor = [[UIColor colorWithHexString:@"#E6E8ED"] CGColor];
+        [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.stationListView.mas_top);
+            make.left.equalTo(self.stationListView.mas_left);
+            make.right.equalTo(self.stationListView.mas_right);
+            make.bottom.equalTo(self.stationListView.mas_bottom);
+        }];
+    }
     
 }
 - (UITableView *)tableView {
@@ -485,6 +487,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     self.dataDic = self.dataArray[indexPath.row];
     [self refreshData];
+    [self.centerView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(225));
+    }];
+    [_stationListView removeFromSuperview];
+    _stationListView = nil;
+    
 }
 - (void)selEndTimeMethod:(UIButton *)btn{
     self.currIndex = 1;
@@ -497,7 +505,9 @@
     self.currIndex = 0;
     [UIView animateWithDuration:0.3 animations:^{
         self.dataPickerview.frame = CGRectMake(0,  self.height-300, self.width, 300);
+        self.dataPickerview.date = safeString(self.dataDic[@"time"]);
         [self.dataPickerview  show];
+        
     }];
 }
 
@@ -544,8 +554,8 @@
         _dataPickerview.isSlide = NO;
         _dataPickerview.toolBackColor = [UIColor colorWithHexString:@"#F7F7F7"];
         _dataPickerview.toolTitleColor = [UIColor colorWithHexString:@"#555555"];
-        _dataPickerview.saveTitleColor = [UIColor colorWithHexString:@"#EA3425"];
-        _dataPickerview.cancleTitleColor = [UIColor colorWithHexString:@"#EA3425"];
+        _dataPickerview.saveTitleColor = [UIColor colorWithHexString:@"#24252A"];
+        _dataPickerview.cancleTitleColor = [UIColor colorWithHexString:@"#004EC4"];
         
         [self addSubview:_dataPickerview];
         

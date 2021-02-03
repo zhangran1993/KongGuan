@@ -52,11 +52,15 @@
     self.rightTime.text = [self timestampToTimeStr:safeString(dic[@"acceptTime"])];
     
    
-    if (safeString(dic[@"handoverName"]).length == 0) {
+    if (safeString(dic[@"handoverName"]).length > 0) {
+        self.leftView.hidden = NO;
+    }else {
         self.leftView.hidden = YES;
     }
     
-    if (safeString(dic[@"successorName"]).length == 0) {
+    if (safeString(dic[@"successorName"]).length > 0) {
+        self.rightView.hidden = NO;
+    }else {
         self.rightView.hidden = YES;
     }
     

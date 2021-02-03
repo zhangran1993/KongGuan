@@ -84,8 +84,9 @@
     UILabel *titleLabel = [[UILabel alloc]init];
     [self.centerView addSubview:titleLabel];
     titleLabel.text = @"选择交接班岗位";
-    titleLabel.font = [UIFont systemFontOfSize:14];
-    titleLabel.font = [UIFont my_font:14];
+//    titleLabel.font = [UIFont systemFontOfSize:14];
+    titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:17];
+//    titleLabel.font = [UIFont my_font:17];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.numberOfLines = 1;
@@ -300,6 +301,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     self.dataDic = self.dataArray[indexPath.row];
     [self refreshData];
+    [self.centerView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(148));
+    }];
+    [_stationListView removeFromSuperview];
+    _stationListView = nil;
 }
 
 - (void)refreshData {

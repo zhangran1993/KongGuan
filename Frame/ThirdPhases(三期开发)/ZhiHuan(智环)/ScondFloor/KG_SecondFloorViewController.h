@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) KG_StationDetailModel *dataModel;
 @property (copy, nonatomic)  NSString *idStr;
 @property (copy, nonatomic)  NSString *codeStr;
+@property (strong, nonatomic) void (^BackToLastPage)();
 @end
 
 NS_ASSUME_NONNULL_END

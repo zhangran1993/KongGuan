@@ -145,7 +145,16 @@
     self.titleLabel.text = safeString(dic[@"postName"]);
     self.leftLabel.text = [NSString stringWithFormat:@"%@ %@",[self timestampToTimeStr:safeString(dic[@"handoverTime"])],safeString(dic[@"handoverName"])];
     
+    if(safeString(dic[@"handoverTime"]).length == 0) {
+        self.leftLabel.text = [NSString stringWithFormat:@"%@",safeString(dic[@"handoverName"])];
+    }
+    
+    
     self.rightLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dic[@"successorName"]),[self timestampToTimeStr:safeString(dic[@"acceptTime"])]];
+    if(safeString(dic[@"acceptTime"]).length == 0) {
+        self.rightLabel.text = [NSString stringWithFormat:@"%@",safeString(dic[@"successorName"])];
+    }
+    
      
 }
 

@@ -288,10 +288,10 @@
     NSString *xunshiString = [UserManager shareUserManager].xunshiTypeStr;
     
     if (xunshiString.length == 0) {
-        xunshiString = @"一键巡视";
+        xunshiString = @"常规巡视";
         
     }
-    NSArray *array = @[safeString(xunshiString) ,@"例行维护",@"特殊保障"];
+    NSArray *array = @[safeString(@"常规巡视") ,@"例行维护",@"特殊保障"];
   
     UIView *bgView = [[UIView alloc]init];
     [self.view addSubview:bgView];

@@ -112,7 +112,9 @@
     transition.subtype = kCATransitionFromTop;
     
     [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
-    
+    if (self.BackToLastPage) {
+        self.BackToLastPage();
+    }
     [self.navigationController popViewControllerAnimated:NO];
     
 }

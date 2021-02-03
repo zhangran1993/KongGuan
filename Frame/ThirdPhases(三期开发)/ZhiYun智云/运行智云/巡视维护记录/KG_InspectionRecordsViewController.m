@@ -16,6 +16,7 @@
 #import "KG_HistoryScreenViewController.h"
 #import "KG_AssignView.h"
 #import "KG_AddressbookViewController.h"
+#import "KG_OnsiteInspectionView.h"
 @interface KG_InspectionRecordsViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 
@@ -49,6 +50,10 @@
 @property (nonatomic, copy)     NSString                *searchString;
 
 @property (nonatomic ,assign)   BOOL                    isScreenStatus;
+
+
+@property (nonatomic ,strong)   NSDictionary            *alertInfo;
+@property (nonatomic, strong)   KG_OnsiteInspectionView *alertView;
 @end
 
 @implementation KG_InspectionRecordsViewController
@@ -501,12 +506,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dataDic = self.dataArray[indexPath.row];
     
-     
-    KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
-    vc.dataDic = dataDic;
-    [self.navigationController pushViewController:vc animated:YES];
-    //    NSString *str = self.dataArray[indexPath.row];
+    self.alertInfo = dataDic;
+    if ([safeString(dataDic[@"status"]) isEqualToString:@"5"]) {
+        
+        if ([CommonExtension isLingDao]) {
+            [FrameBaseRequest showMessage:@"请先指派任务"];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"请先领取任务"];
+        return;
+    }
     
+    if ([safeString(self.alertInfo[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+        //            normalInspection一键巡视
+        _alertView = nil;
+        [_alertView removeFromSuperview];
+        self.alertView.hidden = NO;
+        return;
+    }else {
+        KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+        vc.dataDic = dataDic;
+        [self.navigationController pushViewController:vc animated:YES];
+        //    NSString *str = self.dataArray[indexPath.row];
+    }
 }
 
 
@@ -1311,6 +1333,23 @@
         ss = @"5";
     }
     return ss;
+    
+}
+
+- (KG_OnsiteInspectionView *)alertView {
+    
+    if (!_alertView) {
+        _alertView = [[KG_OnsiteInspectionView alloc]initWithCondition:self.alertInfo];
+        [JSHmainWindow addSubview:_alertView];
+        [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+        
+    }
+    return _alertView;
     
 }
 @end

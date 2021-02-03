@@ -18,5 +18,5 @@
 @property (strong,nonatomic)NSString* thistitle;
 @property (strong,nonatomic)NSString* from;
 
-
+@property (strong,nonatomic) void (^refreshLastPageData)();
 @end

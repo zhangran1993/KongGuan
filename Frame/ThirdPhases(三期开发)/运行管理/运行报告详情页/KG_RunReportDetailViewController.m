@@ -83,7 +83,7 @@
         
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-            [FrameBaseRequest showMessage:result[@"errMsg"]];
+//            [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
         [self.dataModel mj_setKeyValues:result[@"value"]];
@@ -330,10 +330,10 @@
                 }
                 if (num >0) {
                     [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"EBF4FF"]];
-                    cell.centerBtn.enabled = NO;
+                    cell.centerBtn.userInteractionEnabled = NO;
                 }else {
                     [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-                    cell.centerBtn.enabled = YES;
+                    cell.centerBtn.userInteractionEnabled = YES;
                 }
             }
         }else if ([self.pushType isEqualToString:@"jiaoban"]) {
@@ -350,10 +350,10 @@
                 }
                 if (num >0) {
                     [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"EBF4FF"]];
-                    cell.centerBtn.enabled = NO;
+                    cell.centerBtn.userInteractionEnabled = NO;
                 }else {
                     [cell.centerBtn setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
-                    cell.centerBtn.enabled = YES;
+                    cell.centerBtn.userInteractionEnabled = YES;
                 }
             }
             
@@ -414,7 +414,9 @@
         [FrameBaseRequest showMessage:@"请交班人生成运行报告"];
     }
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/succession/%@/%@",safeString(self.dataDic[@"post"]),rId]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
             
@@ -423,7 +425,7 @@
 
         NSLog(@"请求成功");
         if ([result[@"value"] boolValue]) {
-            [MBProgressHUD showSuccess:@"接班成功"];
+            [FrameBaseRequest showMessage:@"接班成功"];
             self.isFinishStatus = YES;
             [self queryData];
         }
@@ -431,6 +433,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         
     }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
         NSLog(@"请求失败 原因：%@",error);
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
@@ -458,8 +461,9 @@
         rId = self.dataDic[@"id"];
     }
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/shiftHandover/%@/%@",safeString(self.dataDic[@"post"]),rId]];
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
             
@@ -475,6 +479,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         
     }  failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
         NSLog(@"请求失败 原因：%@",error);
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
@@ -492,8 +497,8 @@
     if (safeString(self.dataDic[@"time"]).length >10 && self.endTime.length >10) {
         NSString *startTimeStr = [safeString(self.dataDic[@"time"]) substringToIndex:10];
         NSString *endTimeStr = [self.endTime substringToIndex:10];
-        
-        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(self.dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
+        NSString *title = safeString(self.dataModel.info[@"title"]);
+//        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(self.dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
         params[@"title"] = title;
     }
     
@@ -503,7 +508,7 @@
     params[@"post"] = safeString(self.dataDic[@"post"]);
     params[@"submitter"] = safeString(self.dataModel.info[@"operatorId"]);
     params[@"id"] = safeString(self.dataDic[@"id"]);
-    
+    params[@"status"] = safeString(self.dataDic[@"true"]);
     if (self.dataModel.info.count >0) {
         NSString *json1=safeString(self.dataModel.info[@"fileUrl"]) ;
         if (json1.length >0) {
@@ -541,8 +546,9 @@
     }else {
         params[@"manualAlarmContent"] = @"";
     }
-    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest putWithUrl:FrameRequestURL param:params success:^(id result) {
+        [MBProgressHUD hideHUD];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
@@ -555,7 +561,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         
     } failure:^(NSError *error)  {
-        
+        [MBProgressHUD hideHUD];
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];

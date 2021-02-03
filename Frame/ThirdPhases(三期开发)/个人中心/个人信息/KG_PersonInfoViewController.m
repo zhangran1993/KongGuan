@@ -414,6 +414,7 @@
 }
 
 - (void)showActionSheet {
+    
     UIActionSheet *myActionSheet;
     myActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"修改头像", @"恢复默认头像", nil];
     [myActionSheet showInView:self.view];

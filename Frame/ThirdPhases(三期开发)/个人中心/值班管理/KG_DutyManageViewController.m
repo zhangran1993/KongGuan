@@ -14,6 +14,8 @@
 #import "UIFont+Addtion.h"
 #import "FMFontManager.h"
 #import "ChangeFontManager.h"
+#import "KG_DutyManageSelAlertView.h"
+#import "KG_DutyManageSelModel.h"
 @interface KG_DutyManageViewController ()<UITableViewDelegate,UITableViewDataSource,PGDatePickerDelegate>{
     
 }
@@ -50,6 +52,13 @@
 @property (nonatomic, copy)     NSString                 *currentTime;
 @property (nonatomic, copy)     NSString                 *postId;
 
+
+@property (nonatomic, strong)   NSArray                  *selContactArray;
+
+
+
+@property (nonatomic, strong)   KG_DutyManageSelAlertView       *dutyAlertView;
+
 @end
 
 @implementation KG_DutyManageViewController
@@ -64,8 +73,8 @@
     [self createSelDataView];
     [self createTableView];
     [self setDateNow];
+   
     
-    [self queryZhiBanData];
 }
 
 
@@ -223,6 +232,14 @@
 
 //调班
 - (void)tiaobanMethod {
+     
+    NSString *today = [self time_dateToString:[NSDate date]];
+    if (![today isEqualToString:self.dateStrA]) {
+        
+        
+        [FrameBaseRequest showMessage:@"请选择当天日期调班"];
+        return;
+    }
     
     self.isClickZhiBan = !self.isClickZhiBan;
     
@@ -238,6 +255,17 @@
     
     [self.navigationController popViewControllerAnimated:YES];
     
+}
+- (NSString *)time_dateToString:(NSDate *)date{
+
+    NSDateFormatter *dateFormat=[[NSDateFormatter alloc]init];
+
+    [dateFormat setDateFormat:@"yyyy-MM-dd"];
+
+    NSString* string=[dateFormat stringFromDate:date];
+
+    return string;
+
 }
 
 /** 标题栏 **/
@@ -492,6 +520,7 @@
     self.selDataTitleLabel.text = [NSString stringWithFormat:@"%@ %@", self.dateStrA, weekStr ] ;
     
     [self queryZhiBanData];
+    [self queryCurrWithId];
 }
 
 //时间选择器
@@ -544,21 +573,10 @@
     [UserManager shareUserManager].isSelContact = YES;
     KG_AddressbookViewController *vc = [[KG_AddressbookViewController alloc]init];
     vc.sureBlockMethod = ^(NSString * _Nonnull nameID, NSString * _Nonnull nameStr) {
-        
-        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",safeString(self.selDic[@"post"])] message:[NSString stringWithFormat:@"%@>%@",safeString(self.selDic[@"name"]),safeString(nameStr)] preferredStyle:UIAlertControllerStyleAlert];
-        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-            
-            self.isClickZhiBan = NO;
-            [self.tableView reloadData];
-            
-        }]];
-        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-            [self queryCurrWithId];
-          
-           
-        }]];
-        
-        [self presentViewController:alertContor animated:NO completion:nil];
+        self.selNameStr = safeString(nameStr);
+        self.selNameId = safeString(nameID);
+        [self queryTaskInfoByChangeShifts];
+
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -568,32 +586,196 @@
     if (dataDic.count) {
         self.selNameStr = safeString(dataDic[@"nameStr"]);
         self.selNameId = safeString(dataDic[@"nameID"]);
-      
-        [self performSelector:@selector(delayMethod:) withObject:nil afterDelay:0.1f];
+        [self queryTaskInfoByChangeShifts];
+        
+        //        [self performSelector:@selector(delayMethod:) withObject:nil afterDelay:0.1f];
         
     }
+}
+
+//获取调班岗位今日相关任务列表信息接口
+- (void)queryTaskInfoByChangeShifts {
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcShiftManagement/getTaskInfoByChangeShifts"]];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (self.postId.length >0) {
+        params[@"id"] = safeString(self.postId);
+    }
+    if (self.currentTime.length >0) {
+        params[@"currentTime"] = safeString(self.currentTime);
+    }
+    
+    for (NSDictionary *dataDic in self.dataArray) {
+        
+        if([safeString(dataDic[@"alias"]) isEqualToString:safeString(self.selDic[@"alias"])]) {
+            
+            [params setValue:safeString(self.selNameStr) forKey:safeString(dataDic[@"alias"])];
+        }else {
+            [params setValue:safeString(dataDic[@"name"]) forKey:safeString(dataDic[@"alias"])];
+        }
+    }
+    
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        NSArray *arr = result[@"value"];
+        if (arr.count == 0) {
+            self.isClickZhiBan = NO;
+            if(self.isClickZhiBan == YES ) {
+                [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+            }else {
+                [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+            }
+            [self.tableView reloadData];
+            return;
+        }
+        
+        NSDictionary *dataDic = [arr firstObject];
+        
+        
+        
+        
+//        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",safeString(self.selDic[@"post"])] message:[NSString stringWithFormat:@"%@>%@",safeString(self.selDic[@"name"]),safeString(nameStr)] preferredStyle:UIAlertControllerStyleAlert];
+//        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+//            
+//            self.isClickZhiBan = NO;
+//            [self.tableView reloadData];
+//            
+//        }]];
+//        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+//            
+//            
+//            
+//        }]];
+//        
+//        [self presentViewController:alertContor animated:NO completion:nil];
+        
+        KG_DutyManageSelAlertView *alertView = [[KG_DutyManageSelAlertView alloc]initWithDataDictionary:dataDic];
+        alertView.oldPostName = safeString(self.selDic[@"name"]);
+        [JSHmainWindow addSubview:alertView];
+        alertView.cancelMethod = ^{
+            [alertView removeFromSuperview];
+            self.isClickZhiBan = NO;
+            if(self.isClickZhiBan == YES ) {
+                [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+            }else {
+                [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+            }
+            [self.tableView reloadData];
+        };
+        alertView.confirmMethod = ^(NSDictionary * _Nonnull dataDic) {
+            
+            [alertView removeFromSuperview];
+            self.isClickZhiBan = NO;
+            if(self.isClickZhiBan == YES ) {
+                [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+            }else {
+                [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+            }
+            [self.tableView reloadData];
+            //调班先
+            [self changeDuty:self.selDic];
+            
+            [self changeContactPerson];
+        };
+        
+        alertView.selContact = ^(NSArray * _Nonnull array) {
+            self.selContactArray = array;
+        };
+        [alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+        }];
+     
+        
+    }  failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
+    
+}
+
+//批量更改执行负责人
+//请求地址：/intelligent/atcSafeguard/amendPatrolName
+//请求方式：POST
+//请求Body：
+//List<AtcTaskAmend>对象，具体如下所示：
+//[{
+//    "patrolName": "XXX",              //新的执行负责人名称，如：张颖
+//     "patrolRecodeIdList": ["XXX"]       //待更改执行负责人的任务id列表
+//}]
+
+//patrolRecodeIdList取值id。
+- (void)changeContactPerson {
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/amendPatrolName"]];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    
+    params[@"patrolName"] = safeString(self.selNameStr);
+    NSMutableArray *patrolRecodeIdList = [NSMutableArray arrayWithCapacity:0];
+    for (KG_DutyManageSelModel *model in self.selContactArray) {
+        if (model.isSelect ) {
+            [patrolRecodeIdList addObject:safeString(model.id)];
+        }
+    }
+    if (patrolRecodeIdList.count) {
+        params[@"patrolRecodeIdList"] = patrolRecodeIdList;
+    }
+    //加入数组
+    NSMutableArray *paramsArr = [NSMutableArray arrayWithCapacity:0];
+    if (params.count) {
+        [paramsArr addObject:params];
+    }
+    [FrameBaseRequest postWithUrl:FrameRequestURL param:paramsArr success:^(id result) {
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code != 0){
+            
+            return ;
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"请求失败 原因：%@",error);
+        if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
+            return;
+        }
+        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    } ];
+    
 }
 
 - (void)delayMethod:(id)sender {
     
     UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",safeString(self.selDic[@"post"])] message:[NSString stringWithFormat:@"%@>%@",safeString(self.selDic[@"name"]),safeString(self.selNameStr)] preferredStyle:UIAlertControllerStyleAlert];
-          [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-              
-              self.isClickZhiBan = NO;
-              [self.tableView reloadData];
-          }]];
-          [alertContor addAction:[UIAlertAction actionWithTitle:@"确定调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-              [self queryCurrWithId];
-             
-              
-          }]];
-          
-          [self presentViewController:alertContor animated:NO completion:nil];
+    [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        
+        self.isClickZhiBan = NO;
+        [self.tableView reloadData];
+    }]];
+    [alertContor addAction:[UIAlertAction actionWithTitle:@"确定调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        [self queryCurrWithId];
+        
+        
+    }]];
+    
+    [self presentViewController:alertContor animated:NO completion:nil];
 }
 
 //查询currenttime ID，用于保存接口使用（）
 - (void)queryCurrWithId {
-   
+    
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcShiftManagement/%@",self.dateStrA]];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -605,7 +787,8 @@
         
         self.currentTime = safeString(resultDic[@"currentTime"]);
         self.postId = safeString(resultDic[@"id"]);
-        [self changeDuty:self.selDic];
+        
+//        [self changeDuty:self.selDic];
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -622,7 +805,7 @@
 //调班保存接口
 - (void)changeDuty:(NSDictionary *)dataDic {
     
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcShiftManagement"];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcShiftManagement"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (self.postId.length >0) {
         params[@"id"] = safeString(self.postId);
@@ -632,12 +815,12 @@
     }
     
     for (NSDictionary *dataDic in self.dataArray) {
-  
+        
         if([safeString(dataDic[@"alias"]) isEqualToString:safeString(self.selDic[@"alias"])]) {
             
-             [params setValue:safeString(self.selNameStr) forKey:safeString(dataDic[@"alias"])];
+            [params setValue:safeString(self.selNameStr) forKey:safeString(dataDic[@"alias"])];
         }else {
-             [params setValue:safeString(dataDic[@"name"]) forKey:safeString(dataDic[@"alias"])];
+            [params setValue:safeString(dataDic[@"name"]) forKey:safeString(dataDic[@"alias"])];
         }
     }
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
@@ -650,9 +833,14 @@
         }
         [FrameBaseRequest showMessage:@"调班成功"];
         self.isClickZhiBan = NO;
-        [self.tableView reloadData];
-        [self queryZhiBanData];
         
+        [self queryZhiBanData];
+        if(self.isClickZhiBan == YES ) {
+            [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+        }else {
+            [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+        }
+        [self.tableView reloadData];
         
     } failure:^(NSError *error)  {
         [MBProgressHUD hideHUD];
@@ -660,6 +848,44 @@
         return ;
     }];
 }
+// 字典转json字符串方法
 
+-(NSString *)convertToJsonData:(NSDictionary *)dict
+
+{
+
+    NSError *error;
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+
+    NSString *jsonString;
+
+    if (!jsonData) {
+
+        NSLog(@"%@",error);
+
+    }else{
+
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    }
+
+    NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
+
+    NSRange range = {0,jsonString.length};
+
+    //去掉字符串中的空格
+
+    [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
+
+    NSRange range2 = {0,mutStr.length};
+
+    //去掉字符串中的换行符
+
+    [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+
+    return mutStr;
+
+}
 
 @end

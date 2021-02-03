@@ -107,7 +107,7 @@
     [self.startButton setImage:[UIImage imageNamed:@"start_calImage"] forState:UIControlStateNormal];
     self.startButton.layer.cornerRadius =2.f;
     self.startButton.layer.masksToBounds = YES;
-//    self.startButton.imageEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
+    self.startButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
 //    self.startButton.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
 //
     self.startButton.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -122,7 +122,7 @@
     
     
      self.endButton = [[UIButton alloc]init];
-//    self.endButton.imageEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
+    self.endButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
 //    self.endButton.titleEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
 //
     self.endButton.layer.cornerRadius =2.f;
@@ -209,6 +209,11 @@
         self.endTime = @"";
         [self.endButton setTitle:@"结束日期" forState:UIControlStateNormal];
         [self.endButton setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+        if (self.startTime.length >0 && self.endTime.length>0) {
+            [self.resetButton setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+        }else {
+            [self.resetButton setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+        }
     }
     
    
@@ -458,6 +463,8 @@
     params[@"time"] = @"";
     WS(weakSelf)
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
+        
+        [self.tableView.mj_footer endRefreshing];
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
             
@@ -476,7 +483,7 @@
             }
         }
         NSLog(@"resultresult %@",result);
-        
+        [self.tableView reloadData];
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
         if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
@@ -507,8 +514,8 @@
         _dataPickerview.isSlide = NO;
         _dataPickerview.toolBackColor = [UIColor colorWithHexString:@"#F7F7F7"];
         _dataPickerview.toolTitleColor = [UIColor colorWithHexString:@"#555555"];
-        _dataPickerview.saveTitleColor = [UIColor colorWithHexString:@"#EA3425"];
-        _dataPickerview.cancleTitleColor = [UIColor colorWithHexString:@"#EA3425"];
+        _dataPickerview.saveTitleColor = [UIColor colorWithHexString:@"#004EC4"];
+        _dataPickerview.cancleTitleColor = [UIColor colorWithHexString:@"#24252A"];
         
         [self.view addSubview:_dataPickerview];
         
@@ -516,19 +523,33 @@
     return _dataPickerview;
 }
 - (void)datePickerViewSaveBtnClickDelegate:(NSString *)timer {
-  
+    
     if (self.currIndex == 0) {
+        
+        NSString *strUrl = [timer stringByReplacingOccurrencesOfString:@"-" withString:@"."];
         self.startTime = timer;
         //start
-         [self.startButton setTitle:timer forState:UIControlStateNormal];
-         [self.startButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+        [self.startButton setTitle:strUrl forState:UIControlStateNormal];
+        [self.startButton setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
         
     }else {
         //end
+        NSString *strUrl = [timer stringByReplacingOccurrencesOfString:@"-" withString:@"."];
         self.endTime = timer;
-         [self.endButton setTitle:timer forState:UIControlStateNormal];
-         [self.endButton setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
+        [self.endButton setTitle:strUrl forState:UIControlStateNormal];
+        [self.endButton setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
     }
+    
+    if (self.startTime.length >0 && self.endTime.length>0) {
+        [self.resetButton setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
+    }else {
+        [self.resetButton setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
+    }
+    
+    
+    
+    
+    
     
     [UIView animateWithDuration:0.3 animations:^{
         self.dataPickerview.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300);
@@ -553,7 +574,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY.MM.dd"] stringFromDate:date];
     //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
     

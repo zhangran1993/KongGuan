@@ -110,6 +110,9 @@
 @property (strong, nonatomic) KG_CommonWebAlertView *webAlertView;
 @property (nonatomic, copy) NSString *hxStr;
 @property (nonatomic, copy) NSString *txStr;
+
+
+@property (nonatomic, assign) BOOL       pushToUpPage; //这个字段用来判断是否是从顶部下拉到空管设备页面，使其只能跳转一次
 @end
 
 @implementation StationDetailController
@@ -2874,20 +2877,26 @@
     
     if (scrollView.contentOffset.y <-120) {
         NSLog(@"11111111%f",scrollView.contentOffset.y);
-        KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
-        vc.dataModel = self.dataModel;
-        CATransition* transition = [CATransition animation];
-        
-        transition.duration =0.4f;
-        
-        transition.type = kCATransitionMoveIn;
-        
-        transition.subtype = kCATransitionFromBottom;
-        
-        [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
-        
-        
-        [self.navigationController pushViewController:vc animated:NO];
+        if(!self.pushToUpPage) {
+            self.pushToUpPage = YES;
+            KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
+            vc.BackToLastPage = ^{
+                self.pushToUpPage = NO;
+            };
+            vc.dataModel = self.dataModel;
+            CATransition* transition = [CATransition animation];
+            
+            transition.duration =0.4f;
+            
+            transition.type = kCATransitionMoveIn;
+            
+            transition.subtype = kCATransitionFromBottom;
+            
+            [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+            
+            
+            [self.navigationController pushViewController:vc animated:NO];
+        }
     }
     
 }

@@ -98,9 +98,10 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (self.dataArray.count) {
-        
+        NSString *font = [[NSUserDefaults standardUserDefaults]objectForKey:kLocalTextFont];
+          
         NSDictionary *dic = self.dataArray[indexPath.section];
-        CGRect fontRect = [dic[@"content"] boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        CGRect fontRect = [dic[@"content"] boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject: [UIFont systemFontOfSize:14 + [font integerValue]] forKey:NSFontAttributeName] context:nil];
         NSLog(@"%f",fontRect.size.height);
         if (fontRect.size.height >21) {
             return 124 +fontRect.size.height -5 ;

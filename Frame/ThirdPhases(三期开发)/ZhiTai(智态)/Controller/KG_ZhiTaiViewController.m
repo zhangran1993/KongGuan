@@ -79,8 +79,10 @@
 @property (nonatomic, strong) NSDictionary *dvorDic;
 @property (nonatomic, strong) KG_ZhiTaiView *dvorView;
 
-@property (nonatomic, strong)  UIImageView *topImageView;
+@property (nonatomic, strong) UIImageView *topImageView;
 @property (strong, nonatomic) UIButton *leftIconImage;
+
+@property (nonatomic, assign) BOOL       pushToUpPage; //这个字段用来判断是否是从顶部下拉到空管设备页面，使其只能跳转一次
 
 @property (nonatomic, assign) int  scrollHei;
 @end
@@ -502,33 +504,37 @@
     }
     
    
-    if (scrollView.contentOffset.y <-120) {
+    if (scrollView.contentOffset.y < -120) {
         NSLog(@"11111111%f",scrollView.contentOffset.y);
-        KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
-        vc.idStr = self.dataModel.stationInfo.id;
-        vc.codeStr = self.dataModel.stationInfo.code;
-        CATransition* transition = [CATransition animation];
+        if(!self.pushToUpPage) {
+            self.pushToUpPage = YES;
+            KG_SecondFloorViewController *vc = [[KG_SecondFloorViewController alloc]init];
+            vc.BackToLastPage = ^{
+                self.pushToUpPage = NO;
+            };
+            vc.idStr   = self.dataModel.stationInfo.id;
+            vc.codeStr = self.dataModel.stationInfo.code;
+            
+            CATransition* transition = [CATransition animation];
+            
+            transition.duration = 0.4f;
+            
+            transition.type     = kCATransitionMoveIn;
+            
+            transition.subtype  = kCATransitionFromBottom;
+            
+            [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+            
+            [self.navigationController pushViewController:vc animated:NO];
+        }
         
-        transition.duration =0.4f;
-        
-        transition.type = kCATransitionMoveIn;
-        
-        transition.subtype = kCATransitionFromBottom;
-        
-        [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
-        
-        
-        [self.navigationController pushViewController:vc animated:NO];
     }
    
-    if(scrollView.contentOffset.y == 0 &&scrollView.contentOffset.x != 0 ) {
+    if(scrollView.contentOffset.y == 0 && scrollView.contentOffset.x != 0 ) {
         NSInteger index = scrollView.contentOffset.x / SCREEN_WIDTH;
         [self selectButton:index];
     }
     
-    
-    
-
 }
 
 - (UIColor *)getTextColor:(NSString *)level {
@@ -545,7 +551,6 @@
     }else if ([level isEqualToString:@"1"]) {
         textColor = [UIColor colorWithHexString:@"F62546"];
     }
-    
     //紧急
     return textColor;
 }

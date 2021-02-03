@@ -481,7 +481,7 @@
             KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
             vc.jiaojiebanArray = self.jiaojiebanListArr;
             vc.dataDic = dataDic;
-            if (safeString(dataDic[@"id"]).length == 0) {
+            if (safeString(dataDic[@"atcRunReportId"]).length == 0) {
                 [FrameBaseRequest showMessage:@"请先生成运行报告"];
                 return;
             }
@@ -687,6 +687,7 @@
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:16];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     
     /** 添加标题栏 **/

@@ -719,6 +719,9 @@
 		259A5C3A251DBD0700A97A97 /* KG_OperationGuideDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259A5C39251DBD0700A97A97 /* KG_OperationGuideDetailViewController.m */; };
 		259A5C3D251DBDF600A97A97 /* KG_OperationGuideDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259A5C3C251DBDF600A97A97 /* KG_OperationGuideDetailCell.m */; };
 		259A5C40251DDBB500A97A97 /* KG_YiQiOperationGuideAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259A5C3F251DDBB500A97A97 /* KG_YiQiOperationGuideAlertCell.m */; };
+		259AB81725C165CD007E4D95 /* KG_DutyManageSelAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 259AB81625C165CC007E4D95 /* KG_DutyManageSelAlertView.m */; };
+		259AB81B25C17F32007E4D95 /* KG_DutyManageSelAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259AB81A25C17F32007E4D95 /* KG_DutyManageSelAlertCell.m */; };
+		259AB81F25C2859F007E4D95 /* KG_DutyManageSelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 259AB81E25C2859F007E4D95 /* KG_DutyManageSelModel.m */; };
 		259DE4D02536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259DE4CF2536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.m */; };
 		259DE4D32536EC7700B924F3 /* KG_CaseLibraryDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 259DE4D22536EC7700B924F3 /* KG_CaseLibraryDetailCell.m */; };
 		25A47466259C05CC00337611 /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A47458259C05CB00337611 /* NextViewController.m */; };
@@ -2264,6 +2267,12 @@
 		259A5C3C251DBDF600A97A97 /* KG_OperationGuideDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_OperationGuideDetailCell.m; sourceTree = "<group>"; };
 		259A5C3E251DDBB500A97A97 /* KG_YiQiOperationGuideAlertCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_YiQiOperationGuideAlertCell.h; sourceTree = "<group>"; };
 		259A5C3F251DDBB500A97A97 /* KG_YiQiOperationGuideAlertCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_YiQiOperationGuideAlertCell.m; sourceTree = "<group>"; };
+		259AB81525C165CC007E4D95 /* KG_DutyManageSelAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_DutyManageSelAlertView.h; sourceTree = "<group>"; };
+		259AB81625C165CC007E4D95 /* KG_DutyManageSelAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_DutyManageSelAlertView.m; sourceTree = "<group>"; };
+		259AB81925C17F32007E4D95 /* KG_DutyManageSelAlertCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_DutyManageSelAlertCell.h; sourceTree = "<group>"; };
+		259AB81A25C17F32007E4D95 /* KG_DutyManageSelAlertCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_DutyManageSelAlertCell.m; sourceTree = "<group>"; };
+		259AB81D25C2859F007E4D95 /* KG_DutyManageSelModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_DutyManageSelModel.h; sourceTree = "<group>"; };
+		259AB81E25C2859F007E4D95 /* KG_DutyManageSelModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_DutyManageSelModel.m; sourceTree = "<group>"; };
 		259DE4CE2536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_EquipmentHistoryDetailMoreViewController.h; sourceTree = "<group>"; };
 		259DE4CF2536C7A800B924F3 /* KG_EquipmentHistoryDetailMoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KG_EquipmentHistoryDetailMoreViewController.m; sourceTree = "<group>"; };
 		259DE4D12536EC7700B924F3 /* KG_CaseLibraryDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KG_CaseLibraryDetailCell.h; sourceTree = "<group>"; };
@@ -4458,6 +4467,7 @@
 		2589E92B258217AA0065A022 /* 值班管理 */ = {
 			isa = PBXGroup;
 			children = (
+				259AB81425C1655C007E4D95 /* alert */,
 				2589E92C258217CB0065A022 /* KG_DutyManageViewController.h */,
 				2589E92D258217CB0065A022 /* KG_DutyManageViewController.m */,
 				2589E92F2582188C0065A022 /* view */,
@@ -6037,6 +6047,35 @@
 				259A5C3C251DBDF600A97A97 /* KG_OperationGuideDetailCell.m */,
 			);
 			path = "操作指引详情页";
+			sourceTree = "<group>";
+		};
+		259AB81425C1655C007E4D95 /* alert */ = {
+			isa = PBXGroup;
+			children = (
+				259AB81C25C28586007E4D95 /* model */,
+				259AB81825C17F1A007E4D95 /* cell */,
+				259AB81525C165CC007E4D95 /* KG_DutyManageSelAlertView.h */,
+				259AB81625C165CC007E4D95 /* KG_DutyManageSelAlertView.m */,
+			);
+			path = alert;
+			sourceTree = "<group>";
+		};
+		259AB81825C17F1A007E4D95 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				259AB81925C17F32007E4D95 /* KG_DutyManageSelAlertCell.h */,
+				259AB81A25C17F32007E4D95 /* KG_DutyManageSelAlertCell.m */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
+		259AB81C25C28586007E4D95 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				259AB81D25C2859F007E4D95 /* KG_DutyManageSelModel.h */,
+				259AB81E25C2859F007E4D95 /* KG_DutyManageSelModel.m */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		259DE4CD2536C77D00B924F3 /* 详情页更多 */ = {
@@ -8313,6 +8352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				258C810925B69EA900C3096C /* StationVideoListController.m in Sources */,
+				259AB81B25C17F32007E4D95 /* KG_DutyManageSelAlertCell.m in Sources */,
 				25CF3F1A2500D63400AD3ACA /* KG_CreateDayWeiHuViewController.m in Sources */,
 				25862E6D255BD92D001AE8D6 /* KG_SparePartsStatisticsFirstCell.m in Sources */,
 				258D295C246BF9DA004E8B5A /* RS_ConditionSearchModel.m in Sources */,
@@ -8440,6 +8480,7 @@
 				258CDE2A24284BD400B870D6 /* KG_FrameBottonCell.m in Sources */,
 				258F773825208D300043B3A6 /* KG_EquipmentHistoryDetailViewController.m in Sources */,
 				258E028024D8137F00CDF8BA /* KG_StandardSpecificationCell.m in Sources */,
+				259AB81F25C2859F007E4D95 /* KG_DutyManageSelModel.m in Sources */,
 				25EEB37D243FF92000B9F803 /* KG_MonitorFirstView.m in Sources */,
 				1F8AB55E1F0CB9EB00256218 /* FrameViewController.m in Sources */,
 				258D2974246C078B004E8B5A /* UIImage+RSMethod.m in Sources */,
@@ -8517,6 +8558,7 @@
 				25906F632488DAEA0010DD89 /* CircleView.m in Sources */,
 				25EEB343243C71F700B9F803 /* KG_EnvView.m in Sources */,
 				25B7953A2428C2D700F8C0FC /* KG_OverAlertCenterView.m in Sources */,
+				259AB81725C165CD007E4D95 /* KG_DutyManageSelAlertView.m in Sources */,
 				258586552542B6BA002993A0 /* KG_FaultEventRecordSecondCell.m in Sources */,
 				258E025624D791AB00CDF8BA /* KG_BeiJianDetailFirstCell.m in Sources */,
 				258E028424D9013A00CDF8BA /* KG_WatchPdfViewController.m in Sources */,

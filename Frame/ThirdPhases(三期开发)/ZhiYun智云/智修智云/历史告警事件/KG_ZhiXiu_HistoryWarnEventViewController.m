@@ -238,16 +238,14 @@
 - (void)screenAction{
     
     KG_HistoryWarnEventScreenViewController *vc = [[KG_HistoryWarnEventScreenViewController alloc]init];
-    vc.roomStr = self.roomStr;
-    vc.alarmLevelStr = self.alarmLevelStr;
-    vc.alarmStatusStr = self.alarmStatusStr;
-    vc.startTime = self.startTime;
-    vc.endTime = self.endTime;
-    vc.equipTypeStr = self.equipTypeStr;
-    vc.kongguanTypeStr = self.kongguanTypeStr;
+//    vc.roomStr = self.roomStr;
+//    vc.alarmLevelStr = self.alarmLevelStr;
+//    vc.alarmStatusStr = self.alarmStatusStr;
+//    vc.startTime = self.startTime;
+//    vc.endTime = self.endTime;
+//    vc.equipTypeStr = self.equipTypeStr;
+//    vc.kongguanTypeStr = self.kongguanTypeStr;
     vc.confirmBlockMethod = ^(NSString * _Nonnull roomStr, NSString * _Nonnull equipTypeStr, NSString * _Nonnull kongguanTypeStr, NSString * _Nonnull alarmLevelStr, NSString * _Nonnull alarmStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray, NSArray * _Nonnull kongArray) {
-        
-    
         
         
         self.roomStr = roomStr;
@@ -794,10 +792,10 @@
         [self.view bringSubviewToFront:_nodataView];
         _nodataView.noDataLabel.text = @"当前暂无数据";
         [_nodataView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
-            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
-            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top).offset(NAVIGATIONBAR_HEIGHT + 102);
-            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+            make.left.equalTo(self.view.mas_left);
+            make.right.equalTo(self.view.mas_right);
+            make.top.equalTo(self.view.mas_top).offset(NAVIGATIONBAR_HEIGHT + 102);
+            make.bottom.equalTo(self.view.mas_bottom);
         }];
        
     }

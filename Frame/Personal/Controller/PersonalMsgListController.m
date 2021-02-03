@@ -806,6 +806,10 @@
 
 - (void)backButtonClick:(UIButton *)button {
     
+    if (self.refreshLastPageData) {
+        self.refreshLastPageData();
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
     
     
