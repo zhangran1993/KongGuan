@@ -22,7 +22,7 @@
 //本地 http://10.44.44.109:8089
 //140  http://140.249.55.11:8089
 //本地测试环境 http://192.5.32.127:8089
-#define WebNewHost @"http://222.173.103.125:8099"
+#define WebNewHost @"http://192.5.32.127:8089"
 #define AppVersion    @"V3.0.0"
 //static NSString *const AppVersion = @"appVersion";battery diesel，electric，humidity，immersion，radar ratproof smoke temperature ups
 #define AllEquipment @[@"ups",@"electric",@"diesel",@"battery",@"humidity",@"temperature",@"immersion",@"ratproof",@"smoke",@"radar"]

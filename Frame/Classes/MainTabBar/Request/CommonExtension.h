@@ -49,6 +49,6 @@
 
 + (NSString *) getWorkType:(NSString *)typeCode ;
 + (NSString *) getWeatherImage:(NSString *)weather;
-
++ (NSDictionary *)getXunshiResultReportDic:(NSArray *)dataArray;
 + (BOOL)isLingDao;
 @end

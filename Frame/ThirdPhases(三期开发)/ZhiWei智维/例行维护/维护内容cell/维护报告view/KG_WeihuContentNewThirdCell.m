@@ -119,6 +119,7 @@
     self.specialContentTitleLabel.text = @"A相输入电压特殊参数标记";
     self.specialContentTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.specialContentTitleLabel.font = [UIFont systemFontOfSize:12];
+    self.specialContentTitleLabel.font = [UIFont my_Pingfont:12];
     self.specialContentTitleLabel.numberOfLines = 1;
     self.specialContentTitleLabel.textAlignment = NSTextAlignmentLeft;
     [self.specialContentTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -133,6 +134,7 @@
     self.specialContentDetailLabel.text = @"电压过高";
     self.specialContentDetailLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
     self.specialContentDetailLabel.font = [UIFont systemFontOfSize:12];
+    self.specialContentDetailLabel.font = [UIFont my_Pingfont:12];
     self.specialContentDetailLabel.numberOfLines = 1;
     self.specialContentDetailLabel.textAlignment = NSTextAlignmentLeft;
     [self.specialContentDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -150,12 +152,13 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont my_Pingfont:14];
     [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).offset(4);
         make.left.equalTo(self.mas_left).offset(49.5);
         make.height.equalTo(@32);
-        make.width.lessThanOrEqualTo(@150);
+        make.width.lessThanOrEqualTo(@220);
     }];
     
     //数值未取到红色感叹号
@@ -175,7 +178,7 @@
         make.width.height.equalTo(@32);
         make.centerY.equalTo(self.titleLabel.mas_centerY);
     }];
-    self.specialView.userInteractionEnabled = NO;
+//    self.specialView.userInteractionEnabled = NO;
     
     //特殊参数标记的按钮
     self.specialButton = [[UIButton alloc]init];
@@ -256,6 +259,7 @@
     [self.selectView addSubview:self.selectTitleLabel];
     self.selectTitleLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.selectTitleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.selectTitleLabel.font = [UIFont my_Pingfont:14];
     self.selectTitleLabel.textAlignment = NSTextAlignmentRight;
     [self.selectTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.selectView.mas_centerY);
@@ -411,6 +415,7 @@
     [self.charsetView addSubview:self.charsetTitleLabel];
     self.charsetTitleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.charsetTitleLabel.font = [UIFont systemFontOfSize:14];
+    self.charsetTitleLabel.font = [UIFont my_Pingfont:14];
     self.charsetTitleLabel.textAlignment = NSTextAlignmentRight;
     [self.charsetTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.charsetView.mas_centerY);
@@ -498,12 +503,12 @@
         self.segmentedControl.userInteractionEnabled = NO;
         self.textView.userInteractionEnabled = NO;
         self.selectBtn.userInteractionEnabled = NO;
-        self.specialView.userInteractionEnabled = NO;
+//        self.specialView.userInteractionEnabled = NO;
         
     }
     
     //判断一下是否特殊参数标记
-    BOOL special = self.modelDic[@"special"];//特殊参数标记
+    BOOL special = [self.modelDic[@"special"] boolValue];//特殊参数标记
     if (special) {
         [self.specialView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_right).offset(-16);
@@ -588,6 +593,44 @@
             make.width.lessThanOrEqualTo(@0);
         }];
         self.textInputView.hidden = YES;
+        //如果是charset 下 ，值为空 ，显示正常和不正常
+        if (safeString(self.dataDic[@"measureValueAlias"]).length == 0) {
+            self.charsetTitleLabel.text = @"";
+            self.selectView.hidden = YES;
+            self.segmentView.hidden = NO;
+            self.charsetView.hidden = YES;
+            self.textInputView.hidden = YES;
+            NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
+            if (array.count == 2) {
+                [self.segmentedControl setTitle:safeString(array[0]) forSegmentAtIndex:0];
+                [self.segmentedControl setTitle:safeString(array[1]) forSegmentAtIndex:1];
+            }
+        }
+        
+        if ([[UserManager shareUserManager].resultDic count]) {
+            NSArray *keyArr =  [[UserManager shareUserManager].resultDic allKeys];
+            for (NSString *keyss in keyArr) {
+                //找到符合id 刷页面
+                if ([safeString(self.modelDic[@"parentId"]) isEqualToString:safeString(keyss)]) {
+                    NSString *valueStr = safeString([UserManager shareUserManager].resultDic[keyss]);
+                    NSString *value = safeString([UserManager shareUserManager].resultDic[keyss]);
+                    if (value.length >0) {
+                        NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
+                        if (array.count == 2) {
+                            if ([valueStr isEqualToString:safeString(array[0])]) {
+                                self.segmentedControl.selectedSegmentIndex = 0;
+                            }else if ([valueStr isEqualToString:safeString(array[1])]) {
+                                self.segmentedControl.selectedSegmentIndex = 1;
+                            }else {
+                                self.segmentedControl.selectedSegmentIndex = -1;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            
+        }
         
     }else if([safeString(self.modelDic[@"type"]) isEqualToString:@"data"]){
         
@@ -629,6 +672,28 @@
                 }
             }
         }
+        if ([[UserManager shareUserManager].resultDic count]) {
+            NSArray *keyArr =  [[UserManager shareUserManager].resultDic allKeys];
+            for (NSString *keyss in keyArr) {
+                //找到符合id 刷页面
+                if ([safeString(self.modelDic[@"parentId"]) isEqualToString:safeString(keyss)]) {
+                    NSString *valueStr = safeString([UserManager shareUserManager].resultDic[keyss]);
+                    NSString *value = safeString(self.modelDic[@"value"]);
+                    
+                    if (value.length >0) {
+                        NSArray *array = [value componentsSeparatedByString:@"@&@"];
+                        for (NSString *ss in array) {
+                            if ([ss isEqualToString:valueStr]) {
+                                self.selectTitleLabel.text = ss;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            
+        }
     }else if([safeString(self.modelDic[@"type"]) isEqualToString:@"charset"]) {
         self.charsetTitleLabel.text = safeString(self.dataDic[@"measureValueAlias"]);
         if([safeString(self.dataDic[@"alarmContent"]) containsString:@"告警"] ) {
@@ -651,6 +716,8 @@
             }
         }
     }else if([safeString(self.modelDic[@"type"]) isEqualToString:@"data"]) {
+        
+        
         
         self.charsetTitleLabel.text = safeString(self.dataDic[@"measureValueAlias"]);
         if([safeString(self.dataDic[@"alarmContent"]) containsString:@"告警"] ) {
@@ -687,21 +754,50 @@
             }];
             self.charsetWarnImageView.image = [UIImage imageNamed:@""];
         }
-        
-        if (safeString(self.dataDic[@"measureValueAlias"]).length == 0) {
-            NSString *ss = safeString(self.modelDic[@"value"]);
-            if (ss.length >0) {
-                NSArray *array = [ss componentsSeparatedByString:@"@&@"];
-                if (array.count) {
-                    self.selectTitleLabel.text = [array firstObject];
+        int levelMax = [self.dataDic[@"levelMax"] intValue];
+        if (levelMax == 4) {
+            self.charsetTitleLabel.text = safeString(self.dataDic[@"measureValueAlias"]);
+            if (safeString(self.dataDic[@"measureValueAlias"]).length == 0) {
+                NSString *ss = safeString(self.modelDic[@"value"]);
+                if (ss.length >0) {
+                    NSArray *array = [ss componentsSeparatedByString:@"@&@"];
+                    if (array.count) {
+                        self.charsetTitleLabel.text = [array firstObject];
+                    }
+                }else {
+                    
+                    self.charsetTitleLabel.text = @"";
+                    self.selectView.hidden = YES;
+                    self.segmentView.hidden = YES;
+                    self.charsetView.hidden = YES;
+                    self.textInputView.hidden = NO;
                 }
-            }else {
+            }
+            
+            
+        }else if (levelMax == 5) {
+            NSArray *modelArr = self.dataDic[@"childrens"];
+            if (modelArr.count) {
+                NSDictionary *dataDic = [self.dataDic[@"childrens"] firstObject];
+                self.charsetTitleLabel.text = safeString(dataDic[@"measureValueAlias"]);
                 
-                self.charsetTitleLabel.text = @"";
-                self.selectView.hidden = YES;
-                self.segmentView.hidden = YES;
-                self.charsetView.hidden = YES;
-                self.textInputView.hidden = NO;
+                
+                if (safeString(dataDic[@"measureValueAlias"]).length == 0) {
+                    NSString *ss = safeString(self.modelDic[@"value"]);
+                    if (ss.length >0) {
+                        NSArray *array = [ss componentsSeparatedByString:@"@&@"];
+                        if (array.count) {
+                            self.selectTitleLabel.text = [array firstObject];
+                        }
+                    }else {
+                        
+                        self.charsetTitleLabel.text = @"";
+                        self.selectView.hidden = YES;
+                        self.segmentView.hidden = YES;
+                        self.charsetView.hidden = YES;
+                        self.textInputView.hidden = NO;
+                    }
+                }
             }
         }
         
@@ -731,6 +827,49 @@
                 self.segmentedControl.selectedSegmentIndex = -1;
             }
         }
+        
+        
+        
+        if ([[UserManager shareUserManager].resultDic count]) {
+            NSArray *keyArr =  [[UserManager shareUserManager].resultDic allKeys];
+            for (NSString *keyss in keyArr) {
+                //找到符合id 刷页面
+                if ([safeString(self.modelDic[@"parentId"]) isEqualToString:safeString(keyss)]) {
+                    NSString *valueStr = safeString([UserManager shareUserManager].resultDic[keyss]);
+                    NSString *value = safeString(self.modelDic[@"value"]);
+                    if (value.length ==0) {
+                        NSArray *array = [NSArray arrayWithObjects:@"正常",@"不正常", nil];
+                        if (array.count == 2) {
+                            
+                            if ([valueStr isEqualToString:safeString(array[0])]) {
+                                self.segmentedControl.selectedSegmentIndex = 0;
+                            }else if ([valueStr isEqualToString:safeString(array[1])]) {
+                                self.segmentedControl.selectedSegmentIndex = 1;
+                            }else {
+                                self.segmentedControl.selectedSegmentIndex = -1;
+                            }
+                        }
+                    }else {
+                        NSArray *array = [value componentsSeparatedByString:@"@&@"];
+                        
+                        if ([valueStr isEqualToString:safeString(array[0])]) {
+                            self.segmentedControl.selectedSegmentIndex = 0;
+                        }else if ([valueStr isEqualToString:safeString(array[1])]) {
+                            self.segmentedControl.selectedSegmentIndex = 1;
+                        }else {
+                            self.segmentedControl.selectedSegmentIndex = -1;
+                        }
+                        
+                        
+                    }
+                    break;
+                }
+            }
+            
+        }
+        
+        
+        
     }else {
         
     }

@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UIImageView *topArrowImage ;
 @property (nonatomic, strong) UIImageView *topLineImage ;
 
-
+@property (nonatomic, strong) UILabel  *statusNumLabel;
 
 @property (nonatomic, strong) KG_MonitorFirstView *monitorFirstView;
 @property (nonatomic, strong) KG_MonitorSecondView *monitorSecondView;
@@ -121,6 +121,22 @@
         make.height.equalTo(@17);
         make.width.equalTo(@32);
         make.centerY.equalTo(self.topImage.mas_centerY);
+    }];
+    self.statusNumLabel = [[UILabel alloc]init];
+    [self addSubview:self.statusNumLabel];
+    self.statusNumLabel.layer.cornerRadius = 5.f;
+    self.statusNumLabel.layer.masksToBounds = YES;
+    self.statusNumLabel.text = @"1";
+    self.statusNumLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    self.statusNumLabel.font = [UIFont systemFontOfSize:10];
+    self.statusNumLabel.numberOfLines = 1;
+    
+    self.statusNumLabel.textAlignment = NSTextAlignmentCenter;
+    [self.statusNumLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.topStatusImage.mas_right).offset(-5);
+        make.bottom.equalTo(self.topStatusImage.mas_top).offset(5);
+        make.width.equalTo(@10);
+        make.height.equalTo(@10);
     }];
     self.topLineImage = [[UIImageView alloc]init];
     [self addSubview:self.topLineImage];
@@ -658,7 +674,16 @@
         self.detailDic = Detail;
     }
     
-    
+    NSDictionary *totalDic = self.dataDic[@"totalDetail"];
+    self.topStatusImage.image =[UIImage imageNamed:[self getLevelImage:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]]];
+    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",totalDic[@"totalLevel"]]];
+    self.statusNumLabel.text = [NSString stringWithFormat:@"%@",totalDic[@"totalNum"]];
+    if([totalDic[@"totalLevel"] intValue] ==0) {
+        self.statusNumLabel.hidden = YES;
+    }else {
+        self.statusNumLabel.hidden = NO;
+    }
+     
     //工作机
     for (NSDictionary *dic in list) {
         if ([dic[@"name"] containsString:@"监视器1自身状态"]) {
@@ -771,4 +796,5 @@
     }
     
 }
+
 @end

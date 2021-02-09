@@ -414,6 +414,16 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
+//任务权限：
+//修改：只有执行负责人和执行人可以修改任务内容，但是不能添加特殊标记，领导可以修改任务，添加特殊标记，不能修改任务内容
+//
+//移交：执行负责人和领导都可以移交任务 但是已经完成的任务（已经提交过一次的任务）不能再次移交
+//
+//提交： 已经提交过一次的任务（已经完成的任务）不能再次提交，只有执行负责人和执行人可以提交任务
+//
+//删除：只有领导有权限删除任务
+
 - (void)moreAction {
     
     if(!self.canUpdateOrSubmit) {
@@ -454,9 +464,22 @@
                 [self uploadTask];
             }else if ([dataStr isEqualToString:@"移交任务"]) {
                 NSLog(@"移交任务");
+                if([safeString(self.dataDic[@"status"]) isEqualToString:@"2"] ||
+                   [safeString(self.dataDic[@"status"]) isEqualToString:@"4"]) {
+                    
+                    [FrameBaseRequest showMessage:@"已完成任务不能移交任务"];
+                    return;
+                }
                 [self removeTask];
             }else if ([dataStr isEqualToString:@"删除任务"]) {
                 NSLog(@"删除任务");
+                
+                if (![CommonExtension isLingDao]) {
+                    [FrameBaseRequest showMessage:@"您没有删除任务的权限"];
+                    return;
+                }
+        
+                
                 [self deleteTask];
             }else {
                 
@@ -763,11 +786,17 @@
     
     
     paramDic[@"id"] = safeString(self.dataDic[@"id"]);
-    NSDictionary *resultDic = [UserManager shareUserManager].resultDic;
-    paramDic[@"result"] = [self convertToJsonData:resultDic];
+//    NSDictionary *resultDic = [UserManager shareUserManager].resultDic;
+    if([self.dataModel.task count]) {
+        paramDic[@"result"] =  [self convertToJsonData:[CommonExtension getXunshiResultReportDic:self.dataModel.task]] ;
+    }
+    
     paramDic[@"status"] = @"2";
     paramDic[@"description"] = safeString(self.descriptonStr);
     NSDictionary *remarkDic = [NSDictionary dictionary];
+    
+    
+    
     if (isSafeDictionary(self.dataDic[@"remark"])) {
         if ([self.dataDic[@"remark"] count]) {
             paramDic[@"remark"] = [self convertToJsonData:self.dataDic[@"remark"]];
@@ -895,6 +924,8 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
+        
+        self.descriptonStr = safeString(result[@"value"][@"taskDescription"]);
         [self.dataModel mj_setKeyValues:result[@"value"]];
         [self.listModel mj_setKeyValues:result[@"value"]];
         NSMutableDictionary *remarkDic = [NSMutableDictionary dictionary];
@@ -1409,5 +1440,7 @@
         } ];
     }
 }
+
+
 
 @end

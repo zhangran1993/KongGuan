@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy) NSString *eventType;
 @property (nonatomic ,copy) NSString *faultInfo;
 @property (nonatomic ,copy) NSString *faultInfoCode;
-@property (nonatomic ,copy) NSString *hangupStatus;
+
 @property (nonatomic ,copy) NSString *happenTime;
 @property (nonatomic ,copy) NSString *id;
 @property (nonatomic ,strong) NSArray *imageList;
@@ -55,8 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic ,copy) NSString *systemEquipmentName;
 @property (nonatomic ,copy) NSString *type;
 @property (nonatomic ,copy) NSString *unit ;
+@property (nonatomic ,copy) NSString *code;
 @property (nonatomic ,strong) NSArray *videosList;
-
+@property (nonatomic ,assign) BOOL  hangupStatus;
        
         
 @end

@@ -428,6 +428,11 @@
             [FrameBaseRequest showMessage:@"接班成功"];
             self.isFinishStatus = YES;
             [self queryData];
+        }else {
+            [FrameBaseRequest showMessage:@"接班失败"];
+            self.isFinishStatus = YES;
+            [self queryData];
+            
         }
         //        [self.navigationController popViewControllerAnimated:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
@@ -471,6 +476,10 @@
         }
         if ([result[@"value"] boolValue]) {
             [FrameBaseRequest showMessage:@"交班成功"];
+            self.isFinishStatus = YES;
+            [self queryData];
+        }else {
+            [FrameBaseRequest showMessage:@"交班失败"];
             self.isFinishStatus = YES;
             [self queryData];
         }
@@ -554,9 +563,10 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
+      
         [FrameBaseRequest showMessage:@"生成报告成功"];
         self.isFinishStatus = YES;
-        //        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
         [self queryData];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
         

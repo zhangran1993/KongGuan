@@ -190,7 +190,10 @@
     self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(model.level)]];
     self.gaojingImage.image = [UIImage imageNamed:[self getGaoJingImage:safeString(model.level)]];
     [self.confirmBtn setTitle:safeString(model.status) forState:UIControlStateNormal];
-    
+    if (model.hangupStatus) {
+        [self.confirmBtn setTitle:@"已挂起" forState:UIControlStateNormal];
+        
+    }
     self.powLabel.text = safeString(model.equipmentName);
     
     self.detailLabel.text = safeString(model.name);

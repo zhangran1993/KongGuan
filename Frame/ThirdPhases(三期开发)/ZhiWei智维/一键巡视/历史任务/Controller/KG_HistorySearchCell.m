@@ -177,13 +177,14 @@
     self.personLabel.font = [UIFont systemFontOfSize:12];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.personLabel.textAlignment = NSTextAlignmentRight;
-    self.personLabel.numberOfLines = 1;
+    self.personLabel.numberOfLines = 2;
+    [self.personLabel sizeToFit];
     self.personLabel.text = @"执行负责人：王雪";
     [self.personLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@150);
         make.right.equalTo(self.rightView.mas_right).offset(-20);
         make.centerY.equalTo(self.timeImage.mas_centerY);
-        make.height.equalTo(@14);
+ 
     }];
     
     self.taskButton = [[UIButton alloc]init];

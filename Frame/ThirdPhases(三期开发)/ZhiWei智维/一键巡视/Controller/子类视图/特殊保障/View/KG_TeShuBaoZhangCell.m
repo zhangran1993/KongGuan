@@ -67,7 +67,7 @@
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
     self.roomLabel.font = [UIFont systemFontOfSize:12];
-    self.roomLabel.font = [UIFont my_font:12];
+    self.roomLabel.font = [UIFont my_Pingfont:12];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
     self.roomLabel.numberOfLines = 1;
@@ -102,7 +102,7 @@
     [self.rightView addSubview:self.statusLabel];
     self.statusLabel.text = @"";
     self.statusLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.statusLabel.font = [UIFont my_font:12];
+    self.statusLabel.font = [UIFont my_Pingfont:12];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.numberOfLines = 1;
@@ -116,15 +116,15 @@
     self.detailLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.detailLabel];
     self.detailLabel.text = @"电池间蓄电池2#设备故障";
-    self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-    self.detailLabel.font = [UIFont my_font:14];
+    self.detailLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.detailLabel.font = [UIFont my_Pingfont:16];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
     self.detailLabel.numberOfLines = 1;
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_left);
         make.right.equalTo(self.rightView.mas_right).offset(-20);
-        make.top.equalTo(self.iconImage.mas_bottom).offset(12);
+        make.top.equalTo(self.roomLabel.mas_bottom).offset(12);
         make.height.equalTo(@14);
     }];
 //
@@ -160,7 +160,7 @@
     self.timeLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.timeLabel];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
-    self.timeLabel.font = [UIFont my_font:12];
+    self.timeLabel.font = [UIFont my_Pingfont:12];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.timeLabel.textAlignment = NSTextAlignmentLeft;
     self.timeLabel.numberOfLines = 1;
@@ -174,16 +174,18 @@
     self.personLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.personLabel];
     self.personLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.personLabel.font = [UIFont my_font:12];
+    self.personLabel.font = [UIFont my_Pingfont:12];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#BABCC4"];
     self.personLabel.textAlignment = NSTextAlignmentRight;
-    self.personLabel.numberOfLines = 1;
+  
+    self.personLabel.numberOfLines = 2;
+    [self.personLabel sizeToFit];
     self.personLabel.text = @"执行负责人：王雪";
     [self.personLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@150);
         make.right.equalTo(self.rightView.mas_right).offset(-20);
         make.centerY.equalTo(self.timeImage.mas_centerY);
-        make.height.equalTo(@14);
+       
     }];
     
     self.taskButton = [[UIButton alloc]init];

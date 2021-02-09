@@ -14,6 +14,11 @@
     return [UIFont systemFontOfSize:fontSize];
 }
 
++(UIFont *)my_Pingfont:(CGFloat)fontSize{
+    fontSize = [self resetFont:fontSize];
+    return [UIFont fontWithName:@"PingFang SC" size:fontSize];
+}
+
 +(UIFont *)my_Newfont:(CGFloat)fontSize{
     fontSize = [self alwaysFont:fontSize];
     return [UIFont systemFontOfSize:fontSize];

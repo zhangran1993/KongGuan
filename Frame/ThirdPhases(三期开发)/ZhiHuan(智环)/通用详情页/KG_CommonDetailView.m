@@ -249,7 +249,18 @@
         make.right.equalTo(self.mas_right);
         make.bottom.equalTo(self.mas_bottom);
     }];
+     self.tableView.contentSize = CGSizeMake(0,2000);
+    [self.tableView reloadData];
     
+
+}
+
+- (CGSize)preferredContentSize
+{
+    // Force the table view to calculate its height
+    [self.tableView layoutIfNeeded];
+    self.tableView.contentSize = CGSizeMake(0,2000);
+    return self.tableView.contentSize;
 }
 
 // 背景按钮点击视图消失
@@ -583,5 +594,12 @@
     
     //紧急
     return levelString;
+}
+//tableview滑动的范围
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    self.tableView.contentSize = CGSizeMake(0,self.dataArray.count *50+100);
+
 }
 @end

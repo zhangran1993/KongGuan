@@ -46,7 +46,8 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.text = @"修改任务";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#626470"];
-    self.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    self.titleLabel.font = [UIFont my_font:16];
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

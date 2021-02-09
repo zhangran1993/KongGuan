@@ -88,6 +88,10 @@
 - (void)loadExamplePage:(WKWebView*)webView {
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://vip.ow365.cn/?i=21701&furl=%@%@",WebNewHost,safeString(self.dataDic[@"url"])]];
+    if([safeString(self.dataDic[@"url"]) containsString:@".pdf"]) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",WebNewHost,safeString(self.dataDic[@"url"])]];
+    }
+    
     
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:url]; // 网络地址
     //    NSString *path = [[NSBundle mainBundle] pathForResource:@"1111111" ofType:@"pdf"]; // 本地

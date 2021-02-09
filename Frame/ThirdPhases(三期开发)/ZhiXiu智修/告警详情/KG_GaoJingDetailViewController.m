@@ -1115,6 +1115,10 @@
     if(str.length == 0){
         return;
     }
+    NSURL *uu = [NSURL URLWithString:str];
+    if (uu ==nil) {
+        return;
+    }
     UIImageView *imageView = [[UIImageView alloc]init];
     [imageView sd_setImageWithURL:[NSURL URLWithString:str]];
     UIImage *image = imageView.image;

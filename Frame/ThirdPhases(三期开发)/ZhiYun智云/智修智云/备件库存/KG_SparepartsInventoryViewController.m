@@ -86,8 +86,12 @@
 //查询数据 equipmentCode是告警设备的编码
 - (void)queryData {
     
+    NSString *code = safeString(self.model.equipmentCode);
+    if (code.length == 0) {
+        code = safeString(self.model.code);
+    }
    
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/attachmentInfo/%@",safeString(self.model.equipmentCode)]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/attachmentInfo/%@",code]];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         

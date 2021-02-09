@@ -42,6 +42,7 @@
     self.leftLabel.text = @"Thales雷达";
     self.leftLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.leftLabel.font = [UIFont systemFontOfSize:14];
+    self.leftLabel.font = [UIFont my_font:14];
     self.leftLabel.numberOfLines = 2;
     [self.leftLabel sizeToFit];
     self.leftLabel.textAlignment = NSTextAlignmentLeft;
@@ -88,6 +89,7 @@
     self.rightLabel.text = @"Thales雷达";
     self.rightLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.rightLabel.font = [UIFont systemFontOfSize:14];
+    self.rightLabel.font = [UIFont my_font:14];
     self.rightLabel.numberOfLines = 2;
     [self.rightLabel sizeToFit];
     self.rightLabel.textAlignment = NSTextAlignmentLeft;

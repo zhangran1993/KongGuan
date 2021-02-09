@@ -12,24 +12,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_LiXingWeiHuCell : UITableViewCell
 
-@property (nonatomic, strong) UIView *rightView;
-@property (nonatomic, strong) UIImageView *iconImage;
-@property (nonatomic, strong) UILabel *roomLabel;
-@property (nonatomic, strong) UILabel *statusLabel;
-@property (nonatomic, strong) UILabel *detailLabel;
+@property (nonatomic, strong) UIView              *rightView;
+@property (nonatomic, strong) UIImageView         *iconImage;
+@property (nonatomic, strong) UILabel             *roomLabel;
+@property (nonatomic, strong) UILabel             *statusLabel;
+@property (nonatomic, strong) UILabel             *detailLabel;
 
-@property (nonatomic, strong) UIImageView *starImage;
-@property (nonatomic, strong) UILabel *starLabel;
+@property (nonatomic, strong) UIImageView         *starImage;
+@property (nonatomic, strong) UILabel             *starLabel;
 
-@property (nonatomic, strong) UIImageView *timeImage;
-@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UIImageView         *timeImage;
+@property (nonatomic, strong) UILabel             *timeLabel;
+ 
+@property (nonatomic, strong) UILabel             *personLabel;
 
-@property (nonatomic, strong) UILabel *personLabel;
+@property (nonatomic, strong) UIImageView         *statusImage ;
+@property (nonatomic, strong) UIButton            *taskButton;
 
-@property (nonatomic, strong) UIImageView *statusImage ;
-@property (nonatomic, strong) UIButton *taskButton;
-
-@property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic, strong) NSDictionary        *dataDic;
 
 @property (nonatomic, copy) void(^taskMethod)(NSDictionary *dic);
 @end

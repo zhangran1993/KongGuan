@@ -189,7 +189,7 @@
 
 //取消
 - (void)cancelMethod:(UIButton *)button {
-    self.hidden = YES;
+    [self removeFromSuperview];
    
 }
 //确定
@@ -203,10 +203,11 @@
     if (self.confirmBlockMethod) {
         self.confirmBlockMethod(self.dataDic,self.name,self.nameID);
     }
+    [self removeFromSuperview];
 }
 
 - (void)buttonClickMethod:(UIButton *)btn {
-    self.hidden = YES;
+    [self removeFromSuperview];
 }
 
 - (void)setDataDic:(NSDictionary *)dataDic {

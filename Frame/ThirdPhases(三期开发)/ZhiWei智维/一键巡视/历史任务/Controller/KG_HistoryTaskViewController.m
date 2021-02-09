@@ -64,6 +64,7 @@
     self.pageSize = 10;
     self.currIndex = 0;
     //初始化为日
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshHistoryData) name:@"refreshHistoryData" object:nil];
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     
     NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
@@ -1237,5 +1238,23 @@
     }
     return _alertView;
     
+}
+
+- (void)refreshHistoryData {
+    
+    [self.dataArray removeAllObjects];
+    if (self.currIndex == 0) {
+        NSLog(@"1");
+        [self loadData];
+    }else if (self.currIndex == 1){
+        NSLog(@"2");
+        [self getXunShiHistoryData];
+    }else if (self.currIndex == 2){
+        NSLog(@"3");
+        [self getWeiHuHistoryData];
+    }else if (self.currIndex == 3){
+        NSLog(@"4");
+        [self getBaoZhangHistoryData];
+    }
 }
 @end

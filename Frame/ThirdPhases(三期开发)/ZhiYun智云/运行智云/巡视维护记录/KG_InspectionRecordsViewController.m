@@ -231,7 +231,8 @@
 }
 
 - (void)backButtonClick:(UIButton *)button {
-    
+    [_alertPersonView removeFromSuperview];
+    _alertPersonView = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 /** 标题栏 **/
@@ -276,6 +277,16 @@
     [self.dataArray removeAllObjects];
     self.pageNum = 1;
     self.currIndex = (int)index;
+    
+    if (index == 1 || index == 2 || index == 3) {
+        self.isScreenStatus = NO;
+        self.roomStr = nil;
+        self.taskStr = nil;
+        self.taskStatusStr = nil;
+        self.startTime = nil;
+        self.endTime = nil;
+        [self.rightButton setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
+    }
     if (index == 0) {
         NSLog(@"1");
         [self loadData];
@@ -420,7 +431,8 @@
         NSLog(@"请求成功");
         
         [FrameBaseRequest showMessage:@"指派成功"];
-        self.alertPersonView.hidden = YES;
+        [_alertPersonView removeFromSuperview];
+        _alertPersonView = nil;
         [self.dataArray removeAllObjects];
         self.pageNum = 1;
         
@@ -971,19 +983,26 @@
     }];
 }
 
-
-
 //筛选
 - (void)screenMethod:(UIButton *)button {
     
     KG_HistoryScreenViewController *vc = [[KG_HistoryScreenViewController alloc]init];
     
-    vc.taskStr = self.taskStr;
-    vc.roomStr = self.roomStr;
-    vc.taskStatusStr = self.taskStatusStr;
-    vc.startTime = self.startTime;
-    vc.endTime = self.endTime;
-    
+    if(self.roomStr.length >0) {
+        vc.roomStr = self.roomStr;
+    }
+    if(self.taskStr.length >0) {
+        vc.taskStr = self.taskStr;
+    }
+    if(self.taskStatusStr.length >0) {
+        vc.taskStatusStr = self.taskStatusStr;
+    }
+    if(self.startTime.length >0) {
+        vc.startTime = self.startTime;
+    }
+    if(self.endTime.length >0) {
+        vc.endTime = self.endTime;
+    }
     
     vc.confirmBlockMethod = ^(NSString * _Nonnull taskStr, NSString * _Nonnull roomStr, NSString * _Nonnull taskStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray) {
         
@@ -998,8 +1017,13 @@
         if(roomStr.length == 0 && taskStr.length == 0 && taskStausStr.length == 0
            && startTimeStr.length == 0 && endTimeStr.length == 0) {
             self.isScreenStatus = NO;
+            [self.rightButton setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
             return ;
         }
+      
+       [self.rightButton setImage:[UIImage imageNamed:@"screen_blueImage"] forState:UIControlStateNormal];
+      
+        
         self.isScreenStatus = YES;
         
         [self screenHistoryData];
@@ -1295,6 +1319,8 @@
         }
 //        self.screenResultLabel.text = [NSString stringWithFormat:@"%@",safeString(parStr)];
         
+       
+        
         [self.tableView reloadData];
         if(self.dataArray.count) {
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -1329,7 +1355,8 @@
         ss = @"4";
     }else if ([status isEqualToString:@"待领取"]) {
         ss = @"5";
-    }else if ([status isEqualToString:@"待指派"]) {
+      
+    }else if ([status isEqualToString:@"待领取/指派"]) {
         ss = @"5";
     }
     return ss;

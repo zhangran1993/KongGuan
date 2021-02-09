@@ -149,10 +149,12 @@
         NSLog(@"请求成功");
         if ([result[@"value"] boolValue]) {
             [FrameBaseRequest showMessage:@"指派成功"];
-            self.alertView.hidden = YES;
+            [_alertView removeFromSuperview];
+            _alertView = nil;
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshHistoryData" object:self];
         
     }  failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
@@ -379,7 +381,8 @@
             return;
         }
         NSString *ss = safeString(dataDic[@"patrolCode"]);
-        if ([ss isEqualToString:@"monthSafeguard"] || [ss isEqualToString:@"daySafeguard"]  || [ss isEqualToString:@"yearSafeguard"] ||[ss isEqualToString:@"weekSafeguard"]  ) {
+        if ([ss isEqualToString:@"monthSafeguard"] || [ss isEqualToString:@"daySafeguard"]  || [ss isEqualToString:@"yearSafeguard"] ||[ss isEqualToString:@"weekSafeguard"]
+            ||[ss isEqualToString:@"quarterSafeguard"]) {
             
             KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
             vc.dataDic = dataDic;
@@ -462,6 +465,8 @@
 }
 
 - (void)backButtonClick:(UIButton *)button {
+    [_alertView removeFromSuperview];
+    _alertView = nil;
     [self leftCenterButtonClick];
 //    [self.tabBarController.navigationController popToRootViewControllerAnimated:YES];
     

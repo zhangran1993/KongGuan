@@ -315,10 +315,10 @@
         if (biaoqianArr.count &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
             return 134;
         }else {
-            return 108;
+            return 118;
         }
     }
-    return  108;
+    return  118;
     
 }
 

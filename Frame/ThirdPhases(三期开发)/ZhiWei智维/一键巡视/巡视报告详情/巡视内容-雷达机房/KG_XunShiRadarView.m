@@ -84,7 +84,7 @@
     }];
     self.topTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.topTitle.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
-    self.topTitle.font = [UIFont my_font:16];
+    self.topTitle.font = [UIFont my_Pingfont:16];
     self.topTitle.numberOfLines = 1;
     self.topTitle.textAlignment = NSTextAlignmentLeft;
     
@@ -268,6 +268,7 @@
  
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
+    self.titleLabel.font = [UIFont my_Pingfont:16]; 
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:self.titleLabel];

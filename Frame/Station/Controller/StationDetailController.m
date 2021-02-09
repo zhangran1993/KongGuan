@@ -565,15 +565,16 @@
     }else if ([level isEqualToString:@"1"]) {
         textColor = [UIColor colorWithHexString:@"F62546"];
     }
-    
     //紧急
     return textColor;
 }
+
 //查看视频
 - (void)rightButtonClicked:(UIButton *)button {
     [self sptapevent];
     
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;

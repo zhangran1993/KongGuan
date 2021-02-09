@@ -572,6 +572,9 @@
     }
     
     NSArray *functionArr = self.dataDic[@"controlConfigList"];
+    if (!isSafeArray(functionArr)) {
+        return;
+    }
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
     for (NSDictionary *funDic in functionArr) {
         NSString *funStr = safeString(funDic[@"modeName"]);
@@ -832,10 +835,14 @@
     
     NSArray *functionArr = self.dataDic[@"controlConfigList"];
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
-    for (NSDictionary *funDic in functionArr) {
-        NSString *funStr = safeString(funDic[@"modeName"]);
-        [arr addObject:funStr];
+    
+    if (isSafeArray(functionArr)) {
+        for (NSDictionary *funDic in functionArr) {
+            NSString *funStr = safeString(funDic[@"modeName"]);
+            [arr addObject:funStr];
+        }
     }
+    
     
     NSString *str = @"制热模式";
     NSString *str1 = @"制冷模式";

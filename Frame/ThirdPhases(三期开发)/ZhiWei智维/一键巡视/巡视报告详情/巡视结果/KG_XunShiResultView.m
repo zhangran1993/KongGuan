@@ -90,29 +90,32 @@
     }
     if([UserManager shareUserManager].isChangeTask ) {
         cell.textLabel.hidden = YES;
-        self.textView = [[UITextView alloc]init];
-        self.textView.backgroundColor = [UIColor colorWithHexString:@"#F8F9FA"];
-        self.textView.layer.cornerRadius = 6;
-        self.textView.returnKeyType = UIReturnKeyDone;
-        self.textView.text = @"请输入巡视结果";
-        if (safeString(self.taskDescription).length) {
-            self.textView.text = safeString(self.taskDescription);
+        if(_textView == nil) {
+            self.textView = [[UITextView alloc]init];
+            self.textView.backgroundColor = [UIColor colorWithHexString:@"#F8F9FA"];
+            self.textView.layer.cornerRadius = 6;
+            self.textView.returnKeyType = UIReturnKeyDone;
+            self.textView.text = @"请输入巡视结果";
+            if (safeString(self.taskDescription).length) {
+                self.textView.text = safeString(self.taskDescription);
+            }
+            self.textView.textColor = [UIColor colorWithHexString:@"#24252A"];
+            self.textView.layer.masksToBounds = YES;
+            self.textView.font = [UIFont systemFontOfSize:14];
+            self.textView.delegate = self;
+            self.textView.textContainerInset = UIEdgeInsetsMake(15, 15, 5, 15);
+            [cell addSubview:self.textView];
+            [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell.mas_left).offset(16);
+                make.right.equalTo(cell.mas_right).offset(-16);
+                make.top.equalTo(cell.mas_top).offset(5);
+                make.height.equalTo(@70);
+            }];
         }
-        self.textView.textColor = [UIColor colorWithHexString:@"#24252A"];
-        self.textView.layer.masksToBounds = YES;
-        self.textView.font = [UIFont systemFontOfSize:14];
-        self.textView.delegate = self;
-        self.textView.textContainerInset = UIEdgeInsetsMake(15, 15, 5, 15);
-        [cell addSubview:self.textView];
-        [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(cell.mas_left).offset(16);
-            make.right.equalTo(cell.mas_right).offset(-16);
-            make.top.equalTo(cell.mas_top).offset(5);
-            make.height.equalTo(@70);
-        }];
+      
     }else {
-        [self.textView removeFromSuperview];
-        self.textView = nil;
+        [_textView removeFromSuperview];
+        _textView = nil;
         cell.textLabel.hidden = NO;
     }
     

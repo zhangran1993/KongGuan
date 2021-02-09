@@ -230,8 +230,8 @@
         NSLog(@"请求成功");
         
         [FrameBaseRequest showMessage:@"指派成功"];
-        [self.alertPersonView removeFromSuperview];
-        self.alertPersonView = nil;
+        [_alertPersonView removeFromSuperview];
+        _alertPersonView = nil;
         
         
         
@@ -401,7 +401,8 @@
 
 - (void)backButtonClick:(UIButton *)button {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshYunxingData" object:self];
-   
+    [_alertPersonView removeFromSuperview];
+    _alertPersonView = nil;
      [self.navigationController popViewControllerAnimated:YES];
     
     

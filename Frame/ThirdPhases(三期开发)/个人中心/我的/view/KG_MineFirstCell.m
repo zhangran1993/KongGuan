@@ -80,6 +80,18 @@
         make.height.equalTo(@180);
     }];
     
+    UIButton *staBgBtn = [[UIButton alloc]init];
+    [self addSubview:staBgBtn];
+    
+    [staBgBtn addTarget:self action:@selector(stationClickMethod:) forControlEvents:UIControlEventTouchUpInside];
+    [staBgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right);
+        make.left.equalTo(self.mas_left).offset(100);
+        make.bottom.equalTo(self.bgImage.mas_bottom);
+        make.top.equalTo(self.mas_top);
+        
+    }];
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *name = [userDefaults objectForKey:@"name"];
     NSArray * positions = [userDefaults objectForKey:@"role"];

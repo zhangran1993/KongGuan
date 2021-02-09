@@ -10,10 +10,10 @@
 #import "KG_CreateTeShuBaoZhangCell.h"
 #import "KG_AddressbookViewController.h"
 #import "KG_XunShiSelTimeView.h"
-#import "ZRDatePickerView.h"
+#import "WYLDatePickerView.h"
 #import "KG_CreateTeShuBaoZhangModel.h"
 #import "KG_SelTaskTypeView.h"
-@interface KG_CreateTeShuBaoZhangViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ZRDatePickerViewDelegate>{
+@interface KG_CreateTeShuBaoZhangViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,WYLDatePickerViewDelegate>{
     
 }
 
@@ -51,13 +51,13 @@
 
 @property (nonatomic, strong)   KG_CreateTeShuBaoZhangModel *dataModel;
 
-@property (nonatomic, strong)   NSDictionary          *dataDic;
+@property (nonatomic, strong)   NSDictionary            *dataDic;
 
-@property (nonatomic, strong) ZRDatePickerView *dataPickerview;
+@property (nonatomic, strong) WYLDatePickerView         *dataPickerview;
 
 @property (nonatomic, strong) UIButton                  *taskTypeButton;
 
-@property (nonatomic, strong) KG_SelTaskTypeView *taskTypeView;
+@property (nonatomic, strong) KG_SelTaskTypeView        *taskTypeView;
 
 @end
 
@@ -1011,10 +1011,10 @@
     }];
 }
 
-- (ZRDatePickerView *)dataPickerview
+- (WYLDatePickerView *)dataPickerview
 {
     if (!_dataPickerview) {
-        _dataPickerview = [[ZRDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:ZRDatePickerTypeYMDHMS];
+        _dataPickerview = [[WYLDatePickerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 300) withDatePickerType:WYLDatePickerTypeYMD];
         _dataPickerview.delegate = self;
         _dataPickerview.title = @"请选择时间";
         _dataPickerview.isSlide = NO;
@@ -1053,7 +1053,7 @@
 -(NSString *)nsstringConversionNSDate:(NSString *)dateStr
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
     NSDate *datestr = [dateFormatter dateFromString:dateStr];
     
     NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datestr timeIntervalSince1970]*1000];

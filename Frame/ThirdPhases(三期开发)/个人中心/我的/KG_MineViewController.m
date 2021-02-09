@@ -435,7 +435,7 @@
 
 -(void)stationAction {
     
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/allStationList"];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/api/allStationList"];
     NSLog(@"FrameRequestURL %@",FrameRequestURL);
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {

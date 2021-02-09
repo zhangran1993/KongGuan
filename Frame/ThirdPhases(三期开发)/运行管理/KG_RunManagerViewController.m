@@ -301,7 +301,7 @@
     
     [self getStationReportAlarmInfo];
     [self getJiaoJieBanStatus];
-    
+//    [self getJiaoJieBanStatus1];
     [self quertFrameData];
     [self getRunPromptDetailData];
     [self getRunReportDetailData];
@@ -1363,6 +1363,38 @@
     
 }
 
+
+
+- (void)getJiaoJieBanStatus1 {
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"id"]) {
+        [UserManager shareUserManager].userID =safeString([userDefaults objectForKey:@"id"]) ;
+    }
+    
+    //    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/verification/%@",[UserManager shareUserManager].userID]];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/operation/%@",[UserManager shareUserManager].userID]];
+    
+    [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            [FrameBaseRequest showMessage:result[@"errMsg"]];
+            return ;
+        }
+        self.jiaoJieBanInfo = result[@"value"];
+        [self.tableView reloadData];
+        
+        NSLog(@"");
+    } failure:^(NSURLSessionDataTask *error)  {
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        [MBProgressHUD hideHUD];
+        
+        
+    }];
+    
+}
+
 //查询交接班列表接口：
 //请求地址：/atcChangeShiftsRecord /{pageNum}/{pageSize}
 //请求方式：POST
@@ -1403,7 +1435,10 @@
         NSMutableArray *aa = [NSMutableArray arrayWithCapacity:0];
         for (NSDictionary *dd in dateArr) {
             if ([safeString(dd[@"handoverName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]|| [safeString(dd[@"successorName"]) isEqualToString:safeString(self.loginNameInfo[@"userName"])]) {
-                [aa addObject:dd];
+                if(safeString(self.loginNameInfo[@"userName"]).length >0) {
+                    [aa addObject:dd];
+                }
+                
             }
         }
         self.jiaojiebanListArr = aa;

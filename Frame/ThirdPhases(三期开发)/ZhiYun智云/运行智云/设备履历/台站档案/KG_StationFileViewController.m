@@ -30,7 +30,7 @@
 #import "KG_XunShiReportDetailViewController.h"
 #import "KG_WeihuDailyReportDetailViewController.h"
 #import "KG_SparepartsInventoryViewController.h"
-
+#import "KG_RunLingBeiJianViewController.h"
 @interface KG_StationFileViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
     
@@ -535,10 +535,8 @@
             }else  if([titleStr isEqualToString:@"备件库存"]) {
                 
                 
-                KG_SparepartsInventoryViewController *vc = [[KG_SparepartsInventoryViewController alloc]init];
-                KG_GaoJingModel *model = [[KG_GaoJingModel alloc]init];
-                [model mj_setKeyValues:dataDic];
-                vc.model = model;
+                //零备件
+                KG_RunLingBeiJianViewController *vc = [[KG_RunLingBeiJianViewController alloc]init];
                 [self.navigationController pushViewController:vc animated:YES];
             }
         };

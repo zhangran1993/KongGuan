@@ -65,7 +65,7 @@
     self.titleLabel.textColor = [UIColor colorWithHexString:@""];
     [bgView addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.font  =[UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    self.titleLabel.font  = [UIFont systemFontOfSize:12];
     [self.titleLabel sizeToFit];
     self.titleLabel.text = @"未自动获取到数值";
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

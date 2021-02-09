@@ -45,6 +45,7 @@
 @property (nonatomic, strong) UIButton           *rightButton;
 @property (nonatomic, strong) UILabel            *titleLabel;
 @property (nonatomic, strong) UIView             *navigationView;
+@property (nonatomic, strong) UIButton           *histroyBtn;
 
 @property (nonatomic ,strong) NSMutableArray     *paraArr;          //请求的数组
 
@@ -268,15 +269,15 @@
     }else {
         if (self.currIndex == 0) {
             NSLog(@"1");
-           
+            
             [self queryOpenSwhAllGaoJingData];
         }else if (self.currIndex == 1){
             NSLog(@"2");
-           
+            self.isScreenStatus = NO;
             [self queryOpenSwhUnConfirmData];
         }else if (self.currIndex == 2){
             NSLog(@"3");
-           
+            self.isScreenStatus = NO;
             [self queryOpenSwhHaveConfirmData];
             
         }
@@ -476,16 +477,16 @@
     }
     
     
-    UIButton *histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    histroyBtn.titleLabel.font = FontSize(12);
+    self.histroyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.histroyBtn.titleLabel.font = FontSize(12);
     
     
-    [histroyBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-    [histroyBtn setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
-    histroyBtn.frame = CGRectMake(0,0,81,22);
-    [self.view addSubview:histroyBtn];
-    [histroyBtn addTarget:self action:@selector(screenAction) forControlEvents:UIControlEventTouchUpInside];
-    [histroyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.histroyBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    [self.histroyBtn setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
+    self.histroyBtn.frame = CGRectMake(0,0,81,22);
+    [self.view addSubview:self.histroyBtn];
+    [self.histroyBtn addTarget:self action:@selector(screenAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.histroyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@24);
         make.centerY.equalTo(backBtn.mas_centerY);
         make.height.equalTo(@24);
@@ -515,7 +516,7 @@
         make.width.equalTo(@81);
         make.centerY.equalTo(backBtn.mas_centerY);
         make.height.equalTo(@22);
-        make.right.equalTo(histroyBtn.mas_left).offset(-6);
+        make.right.equalTo(self.histroyBtn.mas_left).offset(-6);
     }];
     [self.leftIconImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.navigationView.mas_left).offset(16);
@@ -533,13 +534,27 @@
 - (void)screenAction{
     
     KG_NewScreenViewController *vc = [[KG_NewScreenViewController alloc]init];
-//    vc.roomStr = self.roomStr;
-//    vc.alarmLevelStr = self.alarmLevelStr;
-//    vc.alarmStatusStr = self.alarmStatusStr;
-//    vc.startTime = self.startTime;
-//    vc.endTime = self.endTime;
-//    vc.equipTypeStr = self.equipTypeStr;
-//
+    if(self.roomStr.length >0) {
+        vc.roomStr = self.roomStr;
+    }
+    if(self.alarmLevelStr.length >0) {
+        vc.alarmLevelStr = self.alarmLevelStr;
+    }
+    
+    if(self.startTime.length >0) {
+        vc.startTime = self.startTime;
+    }
+    
+    if(self.endTime.length >0) {
+        vc.endTime = self.endTime;
+    }
+    if(self.equipTypeStr.length >0) {
+        vc.equipTypeStr = self.equipTypeStr;
+    }
+    
+    
+    
+
     vc.confirmBlockMethod = ^(NSString * _Nonnull roomStr, NSString * _Nonnull equipTypeStr, NSString * _Nonnull alarmLevelStr, NSString * _Nonnull alarmStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray) {
         
         self.roomStr = roomStr;
@@ -553,8 +568,11 @@
         if(roomStr.length == 0 && equipTypeStr.length == 0 && alarmLevelStr.length == 0
            &&alarmStausStr.length == 0  && startTimeStr.length == 0 && endTimeStr.length == 0) {
             self.isScreenStatus = NO;
+            [self.histroyBtn setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
             return ;
         }
+        [self.histroyBtn setImage:[UIImage imageNamed:@"screen_blueImage"] forState:UIControlStateNormal];
+        
         self.isScreenStatus = YES;
         [self screenMethodData];
     };
@@ -563,7 +581,7 @@
 }
 
 - (void)loadmoreScreenData {
-    self.pageNum ++;
+    [self.paraArr removeAllObjects];
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
     NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
     paraDic[@"name"] = @"stationCode";
@@ -1239,7 +1257,19 @@
    
     if(index == 1 || index == 2) {
         self.isScreenStatus = NO;
+        self.roomStr = nil;
+        self.alarmLevelStr = nil;
+        self.startTime = nil;
+        self.endTime = nil;
+        self.equipTypeStr = nil;
+        
+        [self.histroyBtn setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
     }
+    if (self.isScreenStatus && self.currIndex == 0) {
+        [self screenMethodData];
+    }
+    
+    
     //如果是关闭
     if (self.isOpenSwh == NO) {
         if (index == 0) {
@@ -1556,7 +1586,7 @@
     
     KG_GaoJingModel *model = self.dataArray[button.tag];
     if ([safeString(model.status) isEqualToString:@"已解除"]) {
-        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能挂起"];
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能确认"];
         return;
     }
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
@@ -1574,7 +1604,7 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"确认操作成功"];
-        [self queryNoHudGaoJingData];
+        [self queryRefreshData];
         
         
     } failure:^(NSError *error)  {
@@ -1600,7 +1630,7 @@
     
     
     if ([safeString(model.status) isEqualToString:@"已解除"]) {
-        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能挂起"];
+        [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能解除"];
         return;
     }
     KG_ControlGaoJingAlertView *view = [[KG_ControlGaoJingAlertView alloc]init];
@@ -1618,8 +1648,21 @@
         NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
         paramDic[@"id"] = safeString(model.id);
         paramDic[@"status"] = @"removed";
-        paramDic[@"suppressStartTime"] = safeString(self.removeStartTime);
-        paramDic[@"suppressEndTime"] = safeString(self.removeEndTime);
+        NSString *startStr = safeString(self.removeStartTime);
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-ddTHH:mm:ssZ"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];//解决8小时时间差问题
+        NSDate *startDate = [dateFormatter dateFromString:startStr];
+        
+        NSString *endStr= safeString(self.removeEndTime);
+        NSDateFormatter *dateFormatter1 = [[NSDateFormatter alloc] init];
+        [dateFormatter1 setDateFormat:@"yyyy-MM-ddTHH:mm:ssZ"];
+        [dateFormatter1 setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:8]];//解决8小时时间差问题
+        NSDate *endDate = [dateFormatter1 dateFromString:endStr];
+        
+        paramDic[@"suppressStartTime"] = startDate ;
+        paramDic[@"suppressEndTime"] = endDate;
+        
         
         //JAVA中Date数据类型格式
         NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/handleAlarmStatus",WebNewHost];
@@ -1634,7 +1677,7 @@
                 return ;
             }
             [FrameBaseRequest showMessage:@"解除成功"];
-            [self queryNoHudGaoJingData];
+            [self queryRefreshData];
             
         } failure:^(NSError *error)  {
             FrameLog(@"请求失败，返回数据 : %@",error);
@@ -1666,6 +1709,12 @@
         [FrameBaseRequest showMessage:@"该告警状态为:已解除,不能挂起"];
         return;
     }
+    if ([safeString(model.status) isEqualToString:@"已解决"]) {
+        [FrameBaseRequest showMessage:@"该告警状态为:已解决,不能挂起"];
+        return;
+    }
+    
+    
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
     paramDic[@"id"] = safeString(model.id);
     paramDic[@"status"] = @"";
@@ -1682,7 +1731,7 @@
             return ;
         }
         [FrameBaseRequest showMessage:@"挂起操作成功"];
-        [self queryNoHudGaoJingData];
+        [self queryRefreshData];
         
     } failure:^(NSError *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -2668,5 +2717,34 @@
     }];
 }
 
+-  (void)queryRefreshData {
+    //如果是关闭
+    if (self.isOpenSwh == NO) {
+        if (self.currIndex == 0) {
+            NSLog(@"1");
+            [self queryAllGaoJingData];
+        }else if (self.currIndex == 1){
+            self.isScreenStatus = NO; //未确认不带筛选条件
+            [self queryUnConfirmData];//未确认
+        }else if (self.currIndex == 2){
+            self.isScreenStatus = NO; //未确认不带筛选条件
+            NSLog(@"3");
+            [self queryHaveConfirmData];
+        }
+    }else {
+        if (self.currIndex == 0) {
+            NSLog(@"1");
+            [self queryOpenSwhAllGaoJingData];
+        }else if (self.currIndex == 1){
+            NSLog(@"2");
+            self.isScreenStatus = NO;
+            [self queryOpenSwhUnConfirmData];
+        }else if (self.currIndex == 2){
+            NSLog(@"3");
+            self.isScreenStatus = NO;
+            [self queryOpenSwhHaveConfirmData];
+        }
+    }
+}
 
 @end

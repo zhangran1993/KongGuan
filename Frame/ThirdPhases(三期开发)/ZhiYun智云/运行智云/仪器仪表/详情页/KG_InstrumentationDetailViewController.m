@@ -267,7 +267,7 @@
            return 48+ 40*2 +40;
        }
        if (arr.count <=2 ) {
-           return 48;
+           return 48 +arr.count *40;
        }
        return 48 + self.dataModel.fileList.count *40 +40;
    }else if(indexPath.section == 5) {

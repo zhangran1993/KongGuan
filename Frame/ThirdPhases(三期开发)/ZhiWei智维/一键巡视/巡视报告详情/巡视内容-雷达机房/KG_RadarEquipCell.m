@@ -51,7 +51,7 @@
     [self addSubview:self.titleLabel];
     self.titleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
-    self.titleLabel.font = [UIFont my_font:14];
+    self.titleLabel.font = [UIFont my_Pingfont:14];
     [self.titleLabel sizeToFit];
     [self.titleLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).offset(4);
@@ -64,7 +64,7 @@
     [self addSubview:self.detailLabel];
     self.detailLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
-    self.detailLabel.font = [UIFont my_font:14];
+    self.detailLabel.font = [UIFont my_Pingfont:14];
     self.detailLabel.textAlignment = NSTextAlignmentRight;
     [self.detailLabel sizeToFit];
     [self.detailLabel  mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -117,7 +117,7 @@
     self.detailTitleLabel.text = @"A相输入电压特殊参数标记";
     self.detailTitleLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.detailTitleLabel.font = [UIFont systemFontOfSize:12];
-    self.detailTitleLabel.font = [UIFont my_font:12];
+    self.detailTitleLabel.font = [UIFont my_Pingfont:12];
     self.detailTitleLabel.numberOfLines = 1;
     self.detailTitleLabel.textAlignment = NSTextAlignmentLeft;
     [self.detailTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -132,7 +132,7 @@
     self.detailTextTitleLabel.text = @"电压过高";
     self.detailTextTitleLabel.textColor = [UIColor colorWithHexString:@"#FFB428"];
     self.detailTextTitleLabel.font = [UIFont systemFontOfSize:12];
-    self.detailTextTitleLabel.font = [UIFont my_font:12];
+    self.detailTextTitleLabel.font = [UIFont my_Pingfont:12];
     self.detailTextTitleLabel.numberOfLines = 1;
     self.detailTextTitleLabel.textAlignment = NSTextAlignmentLeft;
     [self.detailTextTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -63,7 +63,7 @@
     self.leftTimeLabel = [[UILabel alloc]init];
     [self.leftView addSubview:self.leftTimeLabel];
     self.leftTimeLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.leftTimeLabel.font = [UIFont my_font:12];
+    self.leftTimeLabel.font = [UIFont my_Pingfont:12];
     self.leftTimeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.leftTimeLabel.textAlignment = NSTextAlignmentRight;
     self.leftTimeLabel.numberOfLines = 1;
@@ -143,10 +143,8 @@
         make.width.height.equalTo(@6);
     }];
     
-   
     
-    
-    self.statusImage  = [[UIImageView alloc]init];
+    self.statusImage = [[UIImageView alloc]init];
     [self.statusImage sizeToFit];
     self.statusImage.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:self.statusImage];
@@ -160,7 +158,7 @@
     self.roomLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.roomLabel];
     self.roomLabel.font = [UIFont systemFontOfSize:12];
-    self.roomLabel.font = [UIFont my_font:12];
+    self.roomLabel.font = [UIFont my_Pingfont:12];
     self.roomLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.roomLabel.textAlignment = NSTextAlignmentLeft;
     self.roomLabel.numberOfLines = 2;
@@ -168,7 +166,7 @@
     [self.roomLabel sizeToFit];
     [self.roomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_right).offset(8);
-        make.right.equalTo(self.rightView.mas_right).offset(-90);
+        make.right.equalTo(self.rightView.mas_right).offset(-70);
         make.centerY.equalTo(self.iconImage.mas_centerY);
     }];
     
@@ -176,7 +174,7 @@
     [self.rightView addSubview:self.statusLabel];
     self.statusLabel.text = @"";
     self.statusLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
-    self.statusLabel.font = [UIFont my_font:12];
+    self.statusLabel.font = [UIFont my_Pingfont:12];
     self.statusLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.statusLabel.textAlignment = NSTextAlignmentLeft;
     self.statusLabel.numberOfLines = 1;
@@ -190,8 +188,11 @@
     self.detailLabel = [[UILabel alloc]init];
     [self.rightView addSubview:self.detailLabel];
     self.detailLabel.text = @"电池间蓄电池2#设备故障";
-    self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-    self.detailLabel.font = [UIFont my_font:14];
+//    self.detailLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+//    self.detailLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium"size:14];
+   
+    self.detailLabel.font = [UIFont my_Pingfont:16];
+    
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.detailLabel.textAlignment = NSTextAlignmentLeft;
     self.detailLabel.numberOfLines = 2;
@@ -199,7 +200,7 @@
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImage.mas_left);
         make.right.equalTo(self.rightView.mas_right).offset(-20);
-        make.top.equalTo(self.roomLabel.mas_bottom).offset(12);
+        make.top.equalTo(self.roomLabel.mas_bottom).offset(9.5);
         
     }];
     
@@ -208,7 +209,7 @@
     [self addSubview:self.statusView];
     [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.rightView.mas_left).offset(15);
-        make.top.equalTo(self.detailLabel.mas_bottom).offset(11);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(9.5);
         make.right.equalTo(self.rightView.mas_right).offset(-120);
         make.height.equalTo(@12);
     }];
@@ -219,7 +220,7 @@
     self.specialView.hidden = YES;
     [self.specialView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.rightView.mas_left).offset(15);
-        make.top.equalTo(self.detailLabel.mas_bottom).offset(11);
+        make.top.equalTo(self.detailLabel.mas_bottom).offset(9.5);
         make.right.equalTo(self.rightView.mas_right).offset(-120);
         make.height.equalTo(@12);
     }];
@@ -264,7 +265,7 @@
     [self addSubview:self.timeLabel];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
-    self.timeLabel.font = [UIFont my_font:12];
+    self.timeLabel.font = [UIFont my_Pingfont:12];
     self.timeLabel.numberOfLines = 1;
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeImage.mas_right).offset(4);
@@ -277,14 +278,15 @@
     [self addSubview:self.personLabel];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.personLabel.font = [UIFont systemFontOfSize:12];
-    self.personLabel.font = [UIFont my_font:12];
+    self.personLabel.font = [UIFont my_Pingfont:12];
     self.personLabel.textAlignment = NSTextAlignmentRight;
-    self.personLabel.numberOfLines = 1;
+    self.personLabel.numberOfLines = 2;
+    [self.personLabel sizeToFit];
     [self.personLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.rightView.mas_right).offset(-16);
         make.centerY.equalTo(self.timeLabel.mas_centerY);
-        make.width.equalTo(@200);
-        make.height.equalTo(@17);
+        make.width.equalTo(@120);
+        
     }];
     
     self.taskButton = [[UIButton alloc]init];
@@ -357,22 +359,22 @@
         self.personLabel.hidden = NO;
     }
  
-    
+    self.statusView.hidden = YES;
+    self.specialView.hidden = YES;
     NSArray *biaoqianArr = self.dataDic[@"atcPatrolRoomList"];
     if (biaoqianArr.count &&[safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
         self.statusView.hidden = NO;
         
         [self createSignView:biaoqianArr];
-    }else {
-        self.specialView.hidden = NO;
-        NSArray *specArr = self.dataDic[@"atcSpecialTagList"];
-        if (specArr.count ) {
-            
-            [self createSpecialView:specArr];
-        }
-            
-        
     }
+       
+    NSArray *specArr = self.dataDic[@"atcSpecialTagList"];
+    if (specArr.count ) {
+        self.specialView.hidden = NO;
+        [self createSpecialView:specArr];
+    }
+    
+   
 }
 
 - (NSString *)getTaskStatus :(NSString *)status {

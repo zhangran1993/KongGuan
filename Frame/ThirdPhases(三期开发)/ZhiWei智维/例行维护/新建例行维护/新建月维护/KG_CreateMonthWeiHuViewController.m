@@ -1167,7 +1167,7 @@
 -(NSString *)nsstringConversionNSDate:(NSString *)dateStr
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
     NSDate *datestr = [dateFormatter dateFromString:dateStr];
     
     NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datestr timeIntervalSince1970]*1000];

@@ -55,6 +55,8 @@
 @property (nonatomic, copy)        NSString              *searchString;
 @property (nonatomic, strong)      KG_AssignView         *alertPersonView;
 
+@property (nonatomic ,assign)   BOOL                    isScreenStatus;
+
 @end
 
 @implementation KG_ZhiXiuXunshiRecordViewController
@@ -277,7 +279,8 @@
 }
 
 - (void)backButtonClick:(UIButton *)button {
-    
+    [_alertPersonView removeFromSuperview];
+    _alertPersonView = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 /** 标题栏 **/
@@ -347,6 +350,15 @@
     [self.paraArr removeAllObjects];
     self.pageNum = 1;
     self.currIndex = (int)index;
+    if (index == 1 || index == 2 || index == 3) {
+        self.isScreenStatus = NO;
+        self.roomStr = nil;
+        self.taskStr = nil;
+        self.taskStatusStr = nil;
+        self.startTime = nil;
+        self.endTime = nil;
+        [self.rightButton setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
+    }
     if (index == 0) {
         NSLog(@"1");
         NSMutableDictionary *paraDic = [NSMutableDictionary dictionary];
@@ -1004,10 +1016,13 @@
         
         if(roomStr.length == 0 && taskStr.length == 0 && taskStausStr.length == 0
            && startTimeStr.length == 0 && endTimeStr.length == 0) {
-            
+            self.isScreenStatus = NO;
+            [self.rightButton setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
             return ;
         }
+        self.isScreenStatus = YES;
         
+        [self.rightButton setImage:[UIImage imageNamed:@"screen_blueImage"] forState:UIControlStateNormal];
         [self screenHistoryData];
     };
     
@@ -1185,7 +1200,7 @@
         ss = @"4";
     }else if ([status isEqualToString:@"待领取"]) {
         ss = @"5";
-    }else if ([status isEqualToString:@"待指派"]) {
+    }else if ([status isEqualToString:@"待领取/指派"]) {
         ss = @"5";
     }
     return ss;
@@ -1238,7 +1253,8 @@
         NSLog(@"请求成功");
         
         [FrameBaseRequest showMessage:@"指派成功"];
-        self.alertPersonView.hidden = YES;
+        [_alertPersonView removeFromSuperview];
+        _alertPersonView = nil;
         [self.dataArray removeAllObjects];
         self.pageNum = 1;
         
@@ -1247,12 +1263,15 @@
             [self loadData];
         }else if (self.currIndex == 1){
             NSLog(@"2");
+            self.isScreenStatus = NO;
             [self getXunShiHistoryData];
         }else if (self.currIndex == 2){
             NSLog(@"3");
+            self.isScreenStatus = NO;
             [self getWeiHuHistoryData];
         }else if (self.currIndex == 3){
             NSLog(@"4");
+            self.isScreenStatus = NO;
             [self getBaoZhangHistoryData];
         }
         

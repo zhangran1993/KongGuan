@@ -117,13 +117,35 @@
             if(isSafeDictionary(self.dataDic)) {
                 if(self.dataDic.count >0){
                     
-                    cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                    
+                    if([safeString(self.dataDic[@"typeCode"]) isEqualToString:@"oneTouchTour"] ||
+                       [safeString(self.dataDic[@"typeCode"]) isEqualToString:@"fieldInspection"]) {
+                        
+                        cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"patrolIntervalTime"])];
+                        
+                    }else if([safeString(self.dataDic[@"typeCode"]) isEqualToString:@"routineMaintenance"] ) {
+                        
+                        cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                        
+                    }else if([safeString(self.dataDic[@"typeCode"]) isEqualToString:@"specialSafeguard"]
+                             ||[safeString(self.dataDic[@"typeCode"]) isEqualToString:@"specialTour"]) {
+                        
+                        cell.titleLabel.text = [NSString stringWithFormat:@"%@-%@",[self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])],[self timestampToTimeStr:safeString(self.dataDic[@"planFinishTime"])]];
+                    }
+                   
+                
                 }
             }
-            if(safeString(self.model.taskTime).length) {
-                cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.model.taskTime)];
-                
-            }
+            
+//            if(safeString(self.model.taskTime).length) {
+//                if([safeString(self.dataDic[@"typeCode"]) isEqualToString:@"oneTouchTour"]) {
+//                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskTime)];
+//
+//                }else {
+//                    cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.model.taskTime)];
+//
+//                }
+//            }
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];
@@ -142,15 +164,31 @@
             if(isSafeDictionary(self.dataDic)) {
                 if(self.dataDic.count >0){
                     
-                    cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                    if ([safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"weekSafeguard"]
+                        ||[safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"daySafeguard"]
+                        ||[safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"monthSafeguard"]) {
+                        cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                    }else if ([safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"yearSafeguard"] ||
+                              [safeString(self.dataDic[@"patrolCode"]) isEqualToString:@"quarterSafeguard"]){
+                        
+                        cell.titleLabel.text = [NSString stringWithFormat:@"%@-%@",[self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])],[self timestampToTimeStr:safeString(self.dataDic[@"planFinishTime"])]];
+                    }else {
+                        cell.titleLabel.text = [self timestampToTimeStr:safeString(self.dataDic[@"planStartTime"])];
+                    }
+                    
                 }
             }
             if(safeString(self.model.taskTime).length) {
-                cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.model.taskTime)];
+                if([safeString(self.dataDic[@"typeCode"]) isEqualToString:@"oneTouchTour"]) {
+                    cell.titleLabel.text = [self timestampToTimeStr:safeString(self.model.taskTime)];
+                    
+                }else {
+                    cell.titleLabel.text = [self timestampToDayTimeStr:safeString(self.model.taskTime)];
+                    
+                }
                 
             }
             
-
             cell.iconImage.image = [UIImage imageNamed:@"xunshi_timeIcon"];
         }else if (indexPath.row == 2) {
             cell.titleLabel.text = [NSString stringWithFormat:@"发布人：%@",@""];
@@ -406,7 +444,7 @@
         return @"-/-";
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
-    NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日 HH:mm"] stringFromDate:date];
+    NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日HH时"] stringFromDate:date];
 //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
 
@@ -474,16 +512,27 @@
 //                patrolName = [userdefaults objectForKey:@"name"];
 //
 //            }
-//
-//        }
+        //
+        //        }
         NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
-        NSLog(@"完成");
-        for (NSDictionary *dic in leadArr) {
-            if ([safeString(dic[@"id"]) isEqualToString:patrolName]) {
-                self.leadStr = safeString(dic[@"name"]);
-                break;
+        if(patrolName.length >0) {
+            NSArray *patrolArray = [patrolName componentsSeparatedByString:@","]; //从字符A中分隔成2个元素的数组
+            NSMutableString *parStr = [NSMutableString stringWithCapacity:0];
+            
+            
+            NSLog(@"完成");
+            for (NSString *patrolStr in patrolArray) {
+                for (NSDictionary *dic in leadArr) {
+                    if ([safeString(dic[@"id"]) isEqualToString:patrolStr]) {
+                        [parStr appendString:[NSString stringWithFormat:@"%@,",safeString(dic[@"name"])]];
+                        break;
+                    }
+                }
             }
+            self.leadStr = parStr;
         }
+        
+      
         NSMutableString *ss = [NSMutableString stringWithCapacity:0];
         for (NSDictionary *personDic in self.model.workPersonName) {
             NSString *personId = safeString(personDic[@"id"]);

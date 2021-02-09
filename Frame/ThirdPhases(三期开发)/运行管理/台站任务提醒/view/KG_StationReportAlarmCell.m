@@ -158,12 +158,13 @@
     self.personLabel.font = [UIFont systemFontOfSize:12];
     self.personLabel.font = [UIFont my_font:12];
     self.personLabel.textAlignment = NSTextAlignmentRight;
-    self.personLabel.numberOfLines = 1;
+    self.personLabel.numberOfLines = 2;
+    [self.personLabel sizeToFit];
     [self.personLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.bgImage.mas_right).offset(-16);
         make.centerY.equalTo(self.timeLabel.mas_centerY);
         make.width.equalTo(@200);
-        make.height.equalTo(@17);
+        
     }];
     
     self.taskButton = [[UIButton alloc]init];

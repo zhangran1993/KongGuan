@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIFont (Addtion)
 +(UIFont *)my_font:(CGFloat)fontSize;
 
++(UIFont *)my_Pingfont:(CGFloat)fontSize;
 
 +(UIFont *)my_Newfont:(CGFloat)fontSize;
 @end

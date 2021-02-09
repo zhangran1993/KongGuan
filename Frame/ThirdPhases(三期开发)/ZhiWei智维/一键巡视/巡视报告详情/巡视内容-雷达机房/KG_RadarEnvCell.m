@@ -337,7 +337,7 @@
  
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
-    self.titleLabel.font = [UIFont my_font:14];
+    self.titleLabel.font = [UIFont my_Pingfont:14];
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [headView addSubview:self.titleLabel];
