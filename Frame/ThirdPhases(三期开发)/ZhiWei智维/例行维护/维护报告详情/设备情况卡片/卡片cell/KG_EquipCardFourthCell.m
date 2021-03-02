@@ -47,7 +47,7 @@
     [self addSubview:self.sliderBgView];
     self.sliderBgView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     
-    float sliderV_X = SCREEN_WIDTH/2-60;
+    float sliderV_X = SCREEN_WIDTH/2-30;
     float sliderVX =  sliderV_X;
     UIView *sliderV=[[UIView alloc]initWithFrame:CGRectMake(sliderVX, 10, 6, 6)];
     
@@ -58,7 +58,7 @@
     if (self.totalNum > 0) {
         for (int i = 0; i <self.totalNum; i++) {
             //滑块
-            float sliderV_X =SCREEN_WIDTH /2-60+ i*10;
+            float sliderV_X =SCREEN_WIDTH /2-30+ i*10;
             //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
             
             float sliderX = sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);
@@ -148,7 +148,7 @@
     
     [UIView animateWithDuration:0.3 animations:^{
         if ([str floatValue] >0) {
-            float sliderV_X = SCREEN_WIDTH/2-60 + ( [str floatValue]-1)*10;
+            float sliderV_X = SCREEN_WIDTH/2-30 + ( [str floatValue]-1)*10;
             //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
             
             float sliderX =  sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);
@@ -159,7 +159,7 @@
             self.numLabel.text = [NSString stringWithFormat:@"%@",str];
             self.totalNumLabel.text = [NSString stringWithFormat:@"/%d",self.totalNum];
         }else {
-            float sliderV_X = SCREEN_WIDTH/2-60 + ( [str floatValue])*10;
+            float sliderV_X = SCREEN_WIDTH/2-30 + ( [str floatValue])*10;
             //float sliderVX = WIDTH_SCREEN - FrameWidth(sliderV_X);
             
             float sliderX =  sliderV_X;//WIDTH_SCREEN - FrameWidth(i*18+30);

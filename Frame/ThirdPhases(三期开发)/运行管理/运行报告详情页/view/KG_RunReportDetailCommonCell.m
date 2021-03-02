@@ -50,7 +50,7 @@
     
     self.textView = [[UITextView alloc]init];
     self.textView.textAlignment = NSTextAlignmentLeft;
-    
+    self.textView.backgroundColor = [UIColor colorWithHexString:@"#F8F9FA"];
     self.textView.textColor = [UIColor colorWithHexString:@"#626470"];
     self.textView.font = [UIFont systemFontOfSize:14];
     self.textView.delegate = self;

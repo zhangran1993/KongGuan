@@ -73,7 +73,7 @@
     [self createSelDataView];
     [self createTableView];
     [self setDateNow];
-   
+    
     
 }
 
@@ -232,7 +232,7 @@
 
 //调班
 - (void)tiaobanMethod {
-     
+    
     NSString *today = [self time_dateToString:[NSDate date]];
     if (![today isEqualToString:self.dateStrA]) {
         
@@ -257,15 +257,15 @@
     
 }
 - (NSString *)time_dateToString:(NSDate *)date{
-
+    
     NSDateFormatter *dateFormat=[[NSDateFormatter alloc]init];
-
+    
     [dateFormat setDateFormat:@"yyyy-MM-dd"];
-
+    
     NSString* string=[dateFormat stringFromDate:date];
-
+    
     return string;
-
+    
 }
 
 /** 标题栏 **/
@@ -433,8 +433,10 @@
     }
     if (self.isClickZhiBan ==YES) {
         cell.changeDutyButton.hidden = NO;
+        cell.changeDutyBgButton.hidden = NO;
     }else {
         cell.changeDutyButton.hidden = YES;
+        cell.changeDutyBgButton.hidden = YES;
     }
     
     if (indexPath.row %2 == 0) {//如果是偶数
@@ -576,7 +578,7 @@
         self.selNameStr = safeString(nameStr);
         self.selNameId = safeString(nameID);
         [self queryTaskInfoByChangeShifts];
-
+        
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -634,64 +636,84 @@
         }
         
         NSDictionary *dataDic = [arr firstObject];
-        
-        
-        
-        
-//        UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",safeString(self.selDic[@"post"])] message:[NSString stringWithFormat:@"%@>%@",safeString(self.selDic[@"name"]),safeString(nameStr)] preferredStyle:UIAlertControllerStyleAlert];
-//        [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-//            
-//            self.isClickZhiBan = NO;
-//            [self.tableView reloadData];
-//            
-//        }]];
-//        [alertContor addAction:[UIAlertAction actionWithTitle:@"确定调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-//            
-//            
-//            
-//        }]];
-//        
-//        [self presentViewController:alertContor animated:NO completion:nil];
-        
-        KG_DutyManageSelAlertView *alertView = [[KG_DutyManageSelAlertView alloc]initWithDataDictionary:dataDic];
-        alertView.oldPostName = safeString(self.selDic[@"name"]);
-        [JSHmainWindow addSubview:alertView];
-        alertView.cancelMethod = ^{
-            [alertView removeFromSuperview];
-            self.isClickZhiBan = NO;
-            if(self.isClickZhiBan == YES ) {
-                [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
-            }else {
-                [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
-            }
-            [self.tableView reloadData];
-        };
-        alertView.confirmMethod = ^(NSDictionary * _Nonnull dataDic) {
-            
-            [alertView removeFromSuperview];
-            self.isClickZhiBan = NO;
-            if(self.isClickZhiBan == YES ) {
-                [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
-            }else {
-                [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
-            }
-            [self.tableView reloadData];
-            //调班先
-            [self changeDuty:self.selDic];
-            
-            [self changeContactPerson];
-        };
-        
-        alertView.selContact = ^(NSArray * _Nonnull array) {
-            self.selContactArray = array;
-        };
-        [alertView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
-            make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
-            make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
-            make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
-        }];
+        NSArray *taskList = dataDic[@"taskList"];
+        if ([taskList isKindOfClass:[NSNull class]] ||taskList.count == 0) {
+
      
+            
+            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",safeString(self.selDic[@"post"])] message:[NSString stringWithFormat:@"%@>%@",safeString(self.selDic[@"name"]),safeString(dataDic[@"changePerson"])] preferredStyle:UIAlertControllerStyleAlert];
+            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+                
+                self.isClickZhiBan = NO;
+                if(self.isClickZhiBan == YES ) {
+                    [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+                }else {
+                    [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+                }
+                [self.tableView reloadData];
+               
+            }]];
+            [alertContor addAction:[UIAlertAction actionWithTitle:@"确认调班" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+                
+                
+                self.isClickZhiBan = NO;
+                if(self.isClickZhiBan == YES ) {
+                    [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+                }else {
+                    [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+                }
+                [self.tableView reloadData];
+                //调班先
+                [self changeDuty:self.selDic];
+                
+//                [self changeContactPerson];
+                
+            }]];
+            
+            [self presentViewController:alertContor animated:NO completion:nil];
+            
+        }else {
+            
+            
+            KG_DutyManageSelAlertView *alertView = [[KG_DutyManageSelAlertView alloc]initWithDataDictionary:dataDic];
+            alertView.oldPostName = safeString(self.selDic[@"name"]);
+            [JSHmainWindow addSubview:alertView];
+            alertView.cancelMethod = ^{
+                [alertView removeFromSuperview];
+                self.isClickZhiBan = NO;
+                if(self.isClickZhiBan == YES ) {
+                    [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+                }else {
+                    [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+                }
+                [self.tableView reloadData];
+            };
+            alertView.confirmMethod = ^(NSDictionary * _Nonnull dataDic) {
+                
+                [alertView removeFromSuperview];
+                self.isClickZhiBan = NO;
+                if(self.isClickZhiBan == YES ) {
+                    [self.rightButton setTitle:@"取消" forState:UIControlStateNormal];
+                }else {
+                    [self.rightButton setTitle:@"调班" forState:UIControlStateNormal];
+                }
+                [self.tableView reloadData];
+                //调班先
+                [self changeDuty:self.selDic];
+                
+                [self changeContactPerson];
+            };
+            
+            alertView.selContact = ^(NSArray * _Nonnull array) {
+                self.selContactArray = array;
+            };
+            [alertView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
+                make.right.equalTo([UIApplication sharedApplication].keyWindow.mas_right);
+                make.top.equalTo([UIApplication sharedApplication].keyWindow.mas_top);
+                make.bottom.equalTo([UIApplication sharedApplication].keyWindow.mas_bottom);
+            }];
+        }
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -788,7 +810,7 @@
         self.currentTime = safeString(resultDic[@"currentTime"]);
         self.postId = safeString(resultDic[@"id"]);
         
-//        [self changeDuty:self.selDic];
+        //        [self changeDuty:self.selDic];
         
     }  failure:^(NSError *error) {
         NSLog(@"请求失败 原因：%@",error);
@@ -853,39 +875,39 @@
 -(NSString *)convertToJsonData:(NSDictionary *)dict
 
 {
-
+    
     NSError *error;
-
+    
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
-
+    
     NSString *jsonString;
-
+    
     if (!jsonData) {
-
+        
         NSLog(@"%@",error);
-
+        
     }else{
-
+        
         jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
-
+        
     }
-
+    
     NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
-
+    
     NSRange range = {0,jsonString.length};
-
+    
     //去掉字符串中的空格
-
+    
     [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
-
+    
     NSRange range2 = {0,mutStr.length};
-
+    
     //去掉字符串中的换行符
-
+    
     [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
-
+    
     return mutStr;
-
+    
 }
 
 @end

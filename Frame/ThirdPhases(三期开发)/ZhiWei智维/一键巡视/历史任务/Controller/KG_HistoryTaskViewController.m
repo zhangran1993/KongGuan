@@ -18,41 +18,37 @@
 @interface KG_HistoryTaskViewController ()<SegmentTapViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 
-@property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) SegmentTapView *segment;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong)    NSMutableArray          *dataArray;
+@property (nonatomic, strong)    SegmentTapView          *segment;
+@property (nonatomic, strong)    UITableView             *tableView;
 
 
-@property (nonatomic ,assign) int pageNum;
-@property (nonatomic ,assign) int pageSize;
+@property (nonatomic ,assign)    int                     pageNum;
+@property (nonatomic ,assign)    int                     pageSize;
 
-@property (nonatomic ,strong) NSMutableArray *paraArr;
+@property (nonatomic ,strong)    NSMutableArray          *paraArr;
 
-@property (nonatomic ,assign) int currIndex;
+@property (nonatomic ,assign)    int                     currIndex;
 
-@property (nonatomic, strong) UILabel *  titleLabel;
+@property (nonatomic, strong)    UILabel                 *titleLabel;
+@property (nonatomic, strong)    UIView                  *navigationView;
+@property (nonatomic, strong)    UIButton                *rightButton;
+@property (nonatomic, strong)    UIButton                *searchBtn;
 
-@property (nonatomic, strong)   UIView                  *navigationView;
+@property (nonatomic, copy)      NSString                *taskStr;
+@property (nonatomic, copy)      NSString                *roomStr;
+@property (nonatomic, copy)      NSString                *taskStatusStr;
+@property (nonatomic, copy)      NSString                *startTime;
+@property (nonatomic, copy)      NSString                *endTime;
+@property (nonatomic, strong)    NSArray                 *roomArray;
 
-@property (nonatomic, strong)   UIButton                *rightButton;
+@property (nonatomic, copy)      NSString                *searchString;
 
-@property (nonatomic, strong)   UIButton                *searchBtn;
+@property (nonatomic, strong)    UIView                  *screenResultView;
+@property (nonatomic, strong)    UILabel                 *screenResultLabel;
 
-
-@property (nonatomic, copy)     NSString                *taskStr;
-@property (nonatomic, copy)     NSString                *roomStr;
-@property (nonatomic, copy)     NSString                *taskStatusStr;
-@property (nonatomic, copy)     NSString                *startTime;
-@property (nonatomic, copy)     NSString                *endTime;
-@property (nonatomic, strong)   NSArray                 *roomArray;
-
-@property (nonatomic, copy)     NSString                *searchString;
-
-@property (nonatomic, strong)     UIView                *screenResultView;
-@property (nonatomic, strong)     UILabel               *screenResultLabel;
-
-@property (nonatomic ,strong) NSDictionary *alertInfo;
-@property (nonatomic, strong)  KG_OnsiteInspectionView *alertView;
+@property (nonatomic ,strong)    NSDictionary            *alertInfo;
+@property (nonatomic, strong)    KG_OnsiteInspectionView *alertView;
 @end
 
 @implementation KG_HistoryTaskViewController
@@ -86,7 +82,6 @@
     [self.view addSubview:self.segment];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    
     
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -166,7 +161,6 @@
     
 }
 
-
 -(void)viewWillAppear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillAppear");
     if (@available(iOS 13.0, *)){
@@ -175,8 +169,8 @@
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
     [self.navigationController setNavigationBarHidden:YES];
-    
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:YES];
@@ -199,7 +193,6 @@
     
     /** 添加标题栏 **/
     [self.navigationView addSubview:self.titleLabel];
-    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.navigationView.mas_centerX);
         make.top.equalTo(self.navigationView.mas_top).offset(Height_StatusBar+9);
@@ -225,18 +218,14 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-    
     self.searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    
     self.searchBtn.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
     [self.searchBtn setImage:[UIImage imageNamed:@"history_search_image"] forState:UIControlStateNormal];
     self.searchBtn.userInteractionEnabled = YES;
     [self.searchBtn addTarget:self action:@selector(searchMethod:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationView addSubview:self.searchBtn];
     
-    
     self.rightButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-    
     self.rightButton.frame = CGRectMake(0,0,FrameWidth(40),FrameWidth(40));
     [self.rightButton setImage:[UIImage imageNamed:@"history_screen_image"] forState:UIControlStateNormal];
     //    [self.rightButton addTarget:self action:@selector(yiduAction) forControlEvents:UIControlEventTouchUpInside];
@@ -254,34 +243,28 @@
         make.centerY.equalTo(self.titleLabel.mas_centerY);
         make.right.equalTo(self.rightButton.mas_right).offset(-40);
     }];
-    
 }
 
 //搜索
 - (void)searchMethod:(UIButton *)button {
     
     KG_HistorySearchViewController *vc = [[KG_HistorySearchViewController alloc]init];
-    
-    
     vc.didselBlock = ^(NSString * _Nonnull nameID, NSString * _Nonnull name) {
         self.searchString = name;
         [self searchHistoryData:name];
     };
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
 
 //筛选
 - (void)screenMethod:(UIButton *)button {
     
     KG_HistoryScreenViewController *vc = [[KG_HistoryScreenViewController alloc]init];
-    
     vc.taskStr = self.taskStr;
     vc.roomStr = self.roomStr;
     vc.taskStatusStr = self.taskStatusStr;
     vc.startTime = self.startTime;
     vc.endTime = self.endTime;
-    
     
     vc.confirmBlockMethod = ^(NSString * _Nonnull taskStr, NSString * _Nonnull roomStr, NSString * _Nonnull taskStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray) {
         
@@ -323,9 +306,9 @@
 }
 
 - (void)backButtonClick:(UIButton *)button {
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 /** 标题栏 **/
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
@@ -364,13 +347,13 @@
     [searchView show];
     
 }
+
 //搜索方法
 - (void)serachMethod {
     KG_NiControlSearchViewController *vc = [[KG_NiControlSearchViewController alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
     
 }
-
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
@@ -397,7 +380,6 @@
         NSLog(@"4");
         [self getBaoZhangHistoryData];
     }
-    
 }
 
 - (UITableView *)tableView {
@@ -423,16 +405,21 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     NSDictionary *dataDic = self.dataArray[indexPath.row];
+    int height = 108;
     if (dataDic.count) {
         
         NSArray *biaoqianArr = dataDic[@"atcSpecialTagList"];
         if (biaoqianArr.count ) {
-            return 128;
+            height +=20;
+        }
+        
+        NSArray *roomArr = dataDic[@"atcPatrolRoomList"];
+        if (roomArr.count &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+            height +=20;
         }
     }
-    return  108;
+    return  height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

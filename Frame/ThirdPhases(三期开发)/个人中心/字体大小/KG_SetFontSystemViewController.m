@@ -277,7 +277,7 @@
     [FMChooseFontView showChooseFontViewWith:^(FMChooseFont currentFont, NSInteger tag) {
         //            [FMFontManager refreshFontWithView:self.view];
         [[ChangeFontManager shareManager]switchLanguageFontCompletionBlock:^(BOOL success) {
-            
+            [self  showHUDview];
         }];
         
     } completion:^(FMChooseFont currentFont, NSInteger tag) {
@@ -384,5 +384,17 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setPositiveFormat:@"0"];
     return [formatter stringFromNumber:[NSNumber numberWithFloat:num]];
+}
+
+- (void)showHUDview {
+    
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [self performSelector:@selector(hidHud) withObject:nil afterDelay:1.f];
+    
+}
+
+- (void)hidHud {
+    [MBProgressHUD hideHUD];
+    
 }
 @end

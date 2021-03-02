@@ -76,7 +76,7 @@
     titleLabel.text = @"交接班记录";
     [tableHeadView addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(iconImage.mas_right).offset(4);
+        make.left.equalTo(iconImage.mas_right).offset(8);
         make.top.equalTo(tableHeadView.mas_top).offset(16);
         make.width.equalTo(@250);
         make.height.equalTo(@24);

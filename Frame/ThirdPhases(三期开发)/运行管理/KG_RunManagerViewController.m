@@ -31,9 +31,11 @@
 #import "KG_ChooseJiaoJieBanAlertView.h"
 #import <SDWebImage/UIButton+WebCache.h>
 #import "KG_MineViewController.h"
-
+#import "KG_RunManagerSixthCell.h"
 
 #import "KG_DutyManageViewController.h"
+
+#import "KG_RunManagerDetailModel.h"
 @interface KG_RunManagerViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,UINavigationControllerDelegate,ZRDatePickerViewDelegate>
 @property (strong, nonatomic) NSDictionary *currentStationDic;
 
@@ -60,17 +62,19 @@
 @property (nonatomic, strong)  UITableView      *tableView;//3
 @property (nonatomic, strong)  UIScrollView     *scrollView;
 @property (nonatomic, strong)  NSDictionary     *jiaoJieBanInfo;
-@property (nonatomic, strong)  ZRDatePickerView *dataPickerview;
-@property (nonatomic, strong)  KG_JiaoJieBanAlertView *jiaoJieBanAlertView;
-@property (nonatomic, strong)  KG_CreateReportAlertView *createReportAlertView;
-@property (nonatomic, strong)  KG_ChooseJiaoJieBanAlertView *jieBanAlertView;
+@property (nonatomic, strong)  ZRDatePickerView                *dataPickerview;
+@property (nonatomic, strong)  KG_JiaoJieBanAlertView          *jiaoJieBanAlertView;
+@property (nonatomic, strong)  KG_CreateReportAlertView        *createReportAlertView;
+@property (nonatomic, strong)  KG_ChooseJiaoJieBanAlertView    *jieBanAlertView;
+
+@property (nonatomic, strong)  KG_RunManagerDetailModel        *detailModel;
 @property (nonatomic ,assign) int currIndex;
 
-@property (nonatomic,copy)     NSString         *startTime;
-@property (nonatomic,copy)     NSString         *endTime;
+@property (nonatomic,copy)     NSString                        *startTime;
+@property (nonatomic,copy)     NSString                        *endTime;
 
-@property (strong, nonatomic)  UIButton         *leftIconImage;
-
+@property (strong, nonatomic)  UIButton                        *leftIconImage;
+ 
 @end
 
 @implementation KG_RunManagerViewController
@@ -111,6 +115,7 @@
     [self getLoginInfo];
     [UserManager shareUserManager].zhiweiSegmentCurIndex = 0;
     [UserManager shareUserManager].zhiweiWeihuIndex = 0;
+    
    
 }
 
@@ -301,12 +306,12 @@
     
     [self getStationReportAlarmInfo];
     [self getJiaoJieBanStatus];
-//    [self getJiaoJieBanStatus1];
+    [self getJiaoJieBanStatus1];
     [self quertFrameData];
     [self getRunPromptDetailData];
     [self getRunReportDetailData];
     [self queryJiaoJieBaneListData];
-    
+    [self getXunShiNameData];
     //    [self queryTypeData];
     
 }
@@ -436,55 +441,55 @@
 
 //交班
 - (void)jiaobanMethod {
-    //    交班接口：
-    //    请求地址：/atcChangeShiftsRecord/shiftHandover/{post}/{runReportId}
-    //    请求方式：POST
-    //    请求参数：post岗位编码 runReportId报告id
-    //    请求返回：
-    //    如：
-    //    {
-    //        "errCode": 0,
-    //        "errMsg": "",
-    //        "value": true              //交接成功返回true
-    //    }
+ 
     
-    //    int num  =0;
-    
-    //    for (NSDictionary *dd in self.jiaojiebanListArr) {
-    //        if (safeString(dd[@"successorName"]).length>0) {
-    //            num ++;
-    //        }
-    //
-    //    }
-    //    if (num == 0) {
-    //        [FrameBaseRequest showMessage:@"请先接班再交班"];
-    //        return;
-    //    }
-    
-    
-    if ([self.jiaoJieBanInfo[@"handoverInfo"] count] == 1) {
+    if ([self.detailModel.handoverPositionInfo count] == 1) {
+        handoverPositionInfoModel *model = [self.detailModel.handoverPositionInfo firstObject];
+          //如果已经生成了运行报告，并且已经接班了，则为true。点击后，直接进行交班操作。
+          //如果已经生成运行报告，但是尚未接班即finishSucceed为false，则为true。点击后，提示用户先去接班。
+          //如果没有生成运行报告即runReportId为空，enableHandover则为true。点击后，提示用户生成运行报告。
         KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
-        NSDictionary *dd = [self.jiaoJieBanInfo[@"handoverInfo"] firstObject];
-        if (safeString(dd[@"atcRunReportId"]).length == 0) {
+        if(safeString(model.runReportId).length >0 && model.finishSucceed == 0) {
+            [FrameBaseRequest showMessage:@"请先接班再交班"];
+            return;
+        }
+        
+        if(safeString(model.runReportId).length ==0 && model.enableHandover == 1) {
             [FrameBaseRequest showMessage:@"请先生成运行报告"];
             return;
         }
-        vc.dataDic = dd;
+        if (model.finishHandover) {
+            [FrameBaseRequest showMessage:@"已经完成交班"];
+            return;
+        }
+        vc.dataDic = [model mj_keyValues];
         vc.jiaojiebanArray = self.jiaojiebanListArr;
         
         vc.pushType = @"jiaoban";
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         self.jiaoJieBanAlertView.hidden = NO;
-        self.jiaoJieBanAlertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic) {
+        self.jiaoJieBanAlertView.confirmBlockMethod = ^(handoverPositionInfoModel * _Nonnull dataDic) {
+            
             self.jiaoJieBanAlertView.hidden = YES;
             KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
             vc.jiaojiebanArray = self.jiaojiebanListArr;
-            vc.dataDic = dataDic;
-            if (safeString(dataDic[@"atcRunReportId"]).length == 0) {
+            vc.dataDic = [dataDic mj_keyValues];
+            if(safeString(dataDic.runReportId).length >0 && dataDic.finishSucceed == 0) {
+                [FrameBaseRequest showMessage:@"请先接班再交班"];
+                return;
+            }
+            
+            if(safeString(dataDic.runReportId).length ==0 && dataDic.enableHandover == 1) {
                 [FrameBaseRequest showMessage:@"请先生成运行报告"];
                 return;
             }
+            if (dataDic.finishHandover) {
+                [FrameBaseRequest showMessage:@"已经完成交班"];
+                return;
+            }
+            
+            
             vc.pushType = @"jiaoban";
             [self.navigationController pushViewController:vc animated:YES];
         };
@@ -501,25 +506,42 @@
     //    {
     //        "errCode": 0,
     //
-    if ([self.jiaoJieBanInfo[@"successInfo"] count] == 1) {
-        NSDictionary *dataDic =  [self.jiaoJieBanInfo[@"successInfo"] firstObject];
-        NSString *reportId = safeString(dataDic[@"atcRunReportId"]);
-        if (reportId.length == 0) {
+    if ([self.detailModel.succeedPositionInfo count] == 1) {
+        succeedPositionInfoModel *model = [self.detailModel.succeedPositionInfo firstObject];
+          //如果运行报告尚为生成即runReportId为空，则为true，前台提示用户生成运行报告。
+          //如果运行报告已经生成，并且尚为完成接班，则为true。如果已经接班完成，则为false。
+       
+        if (safeString(model.runReportId).length == 0) {
             [FrameBaseRequest showMessage:@"请交班人生成运行报告"];
             return;
         }
+        if (model.finishSucceed) {
+            [FrameBaseRequest showMessage:@"已经完成接班"];
+            return;
+        }
+        
         KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
         vc.jiaojiebanArray = self.jiaojiebanListArr;
-        vc.dataDic = [self.jiaoJieBanInfo[@"successInfo"] firstObject];
+        vc.dataDic = [model mj_keyValues];
         vc.pushType = @"jieban";
         [self.navigationController pushViewController:vc animated:YES];
     }else {
         self.jieBanAlertView.hidden = NO;
-        self.jieBanAlertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic) {
+        self.jieBanAlertView.confirmBlockMethod = ^(succeedPositionInfoModel * _Nonnull dataDic) {
+        
             self.jieBanAlertView.hidden = YES;
+            if(safeString(dataDic.runReportId).length ==0 && dataDic.enableSucceed == 1) {
+                [FrameBaseRequest showMessage:@"请先生成运行报告"];
+                return;
+            }
+            if (dataDic.finishSucceed) {
+                [FrameBaseRequest showMessage:@"已经完成接班"];
+                return;
+            }
+            
             KG_RunReportDetailViewController  *vc = [[KG_RunReportDetailViewController alloc]init];
             vc.jiaojiebanArray = self.jiaojiebanListArr;
-            vc.dataDic = dataDic;
+            vc.dataDic = [dataDic mj_keyValues];
             
             vc.pushType = @"jieban";
             [self.navigationController pushViewController:vc animated:YES];
@@ -539,11 +561,11 @@
             [self.dataPickerview  show];
         }];
     };
-    self.createReportAlertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull endTime) {
-        self.createReportAlertView .hidden = YES;
+    self.createReportAlertView.confirmBlockMethod = ^(handoverPositionInfoModel * _Nonnull dataDic, NSString * _Nonnull endTime) {
+        self.createReportAlertView.hidden = YES;
         [_createReportAlertView removeFromSuperview];
         _createReportAlertView = nil;
-        [self  getReportIdData:dataDic withEndTime:endTime];
+        [self  getReportIdData:[dataDic mj_keyValues] withEndTime:endTime];
     };
 }
 
@@ -565,16 +587,16 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
     params[@"reportRange"] =safeString(dataDic[@"stationCode"]);
-    if (safeString(dataDic[@"time"]).length >10) {
-        NSString *timeStr = safeString(dataDic[@"time"]);
+    if (safeString(dataDic[@"startOnDutyDay"]).length >10) {
+        NSString *timeStr = safeString(dataDic[@"startOnDutyDay"]);
         params[@"startTime"] =[self CurTimeMilSec:safeString(timeStr)] ;
     }
     if (endTime.length >10) {
         NSString *timeStr = safeString(endTime) ;
         params[@"endTime"] = [self CurTimeMilSec:safeString(timeStr)];
     }
-    if (safeString(dataDic[@"time"]).length >10 && endTime.length >10) {
-        NSString *startTimeStr = [safeString(dataDic[@"time"]) substringToIndex:10];
+    if (safeString(dataDic[@"startOnDutyDay"]).length >10 && endTime.length >10) {
+        NSString *startTimeStr = [safeString(dataDic[@"startOnDutyDay"]) substringToIndex:10];
         NSString *endTimeStr = [endTime substringToIndex:10];
         
         //        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
@@ -585,7 +607,7 @@
     
     params[@"status"] = @"true";
     params[@"submitTime"] = @"";
-    params[@"post"] = safeString(dataDic[@"post"]);
+    params[@"post"] = safeString(dataDic[@"positionCode"]);
     params[@"submitter"] = safeString([UserManager shareUserManager].userID);
     
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
@@ -879,7 +901,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return 5;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -1024,12 +1046,30 @@
         }
         
         //        if (self.jiaoJieBanInfo.count >0) {
-        cell.jiaoJieBanInfo = self.jiaoJieBanInfo;
+//        cell.jiaoJieBanInfo = self.jiaoJieBanInfo;
+        
+       
         //        }
         //        if (self.stationRunReportArr.count>0) {
         cell.stationRunReportArr = self.stationRunReportArr;
         //        }
         
+        cell.runReportBlockMethod = ^{
+            [self reportRightMethod];
+        };
+        cell.gotoDetailBlockMethod = ^(NSDictionary * _Nonnull dic) {
+            [self gotoDetailPage:dic];
+        };
+     
+        cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+        
+    }else if (indexPath.section == 3) {
+        KG_RunManagerSixthCell  *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerSixthCell"];
+        if (cell == nil) {
+            cell = [[KG_RunManagerSixthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerSixthCell"];
+        }
         cell.runReportBlockMethod = ^{
             [self reportRightMethod];
         };
@@ -1046,10 +1086,11 @@
             [self CreateReportMethod];
         };
         cell.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+               cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.detailModel = self.detailModel;
         return cell;
         
-    }else if (indexPath.section == 3) {
+    }else if (indexPath.section == 4) {
         KG_RunManagerFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunManagerFourthCell"];
         if (cell == nil) {
             cell = [[KG_RunManagerFourthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunManagerFourthCell"];
@@ -1065,7 +1106,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
-    }else if (indexPath.section == 4) {
+    }else if (indexPath.section == 5) {
         KG_RunMangerFifthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_RunMangerFifthCell"];
         if (cell == nil) {
             cell = [[KG_RunMangerFifthCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_RunMangerFifthCell"];
@@ -1145,11 +1186,13 @@
         return 72;
     }else if(indexPath.section == 2){
         
-        return 125 +80*self.stationRunReportArr.count;
+        return 125 +80*self.stationRunReportArr.count-70;
         
     }else if(indexPath.section == 3){
-        return self.jiaojiebanListArr.count *80+40;
+        return 70;
     }else if(indexPath.section == 4){
+        return self.jiaojiebanListArr.count *80+40;
+    }else if(indexPath.section == 5){
         return 94;
     }
     
@@ -1228,6 +1271,7 @@
     });
     
 }
+
 - (void)getRunPromptDetailData{
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunPrompt/1/20"];
@@ -1243,7 +1287,6 @@
             
             return ;
         }
-        
         NSLog(@"resultresult %@",result);
         self.reportListArr = result[@"value"][@"records"];
         [self.tableView reloadData];
@@ -1262,7 +1305,6 @@
         return ;
     } ];
     
-    
 }
 //查询运行报告列表接口：
 //请求地址：/atcRunReport/{pageNum}/{pageSize}
@@ -1277,7 +1319,6 @@
 
 - (void)getRunReportDetailData{
     
-    
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunReport/1/2"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1285,7 +1326,6 @@
         //        params[@"reportRange"] = [userDefaults objectForKey:@"station"][@"code"];
         
     }
-    
     //    params[@"title"] = @"";
     //    params[@"time"] = @"";
     
@@ -1295,7 +1335,6 @@
             
             return ;
         }
-        
         NSLog(@"resultresult %@",result);
         self.stationRunReportArr = result[@"value"][@"records"];
         [self.tableView reloadData];
@@ -1312,17 +1351,13 @@
         }
         //        [FrameBaseRequest showMessage:@"网络链接失败"];
         
-        
         return ;
     } ];
-    
-    
 }
 
 //
 //获取用户岗位交接班信息接口：
 //请求地址：/intelligent/atcChangeShiftsRecord/operation/{userId}
-
 
 
 
@@ -1350,20 +1385,14 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        self.jiaoJieBanInfo = result[@"value"];
-        [self.tableView reloadData];
+        
         
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         [MBProgressHUD hideHUD];
-        
-        
     }];
-    
 }
-
-
 
 - (void)getJiaoJieBanStatus1 {
     
@@ -1382,9 +1411,10 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        self.jiaoJieBanInfo = result[@"value"];
+    
+        self.detailModel = [[KG_RunManagerDetailModel alloc]init];
+        [self.detailModel mj_setKeyValues:result[@"value"]];
         [self.tableView reloadData];
-        
         NSLog(@"");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -1465,7 +1495,7 @@
 - (KG_CreateReportAlertView *)createReportAlertView {
     
     if (!_createReportAlertView) {
-        _createReportAlertView = [[KG_CreateReportAlertView alloc]initWithCondition:self.jiaoJieBanInfo];
+        _createReportAlertView = [[KG_CreateReportAlertView alloc]initWithCondition:self.detailModel];
         [JSHmainWindow addSubview:_createReportAlertView];
         [_createReportAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
@@ -1481,7 +1511,7 @@
 - (KG_ChooseJiaoJieBanAlertView *)jieBanAlertView {
     
     if (!_jieBanAlertView) {
-        _jieBanAlertView = [[KG_ChooseJiaoJieBanAlertView alloc]initWithCondition:self.jiaoJieBanInfo];
+        _jieBanAlertView = [[KG_ChooseJiaoJieBanAlertView alloc]initWithCondition:self.detailModel];
         [JSHmainWindow addSubview:_jieBanAlertView];
         [_jieBanAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
@@ -1497,7 +1527,7 @@
 - (KG_JiaoJieBanAlertView *)jiaoJieBanAlertView {
     
     if (!_jiaoJieBanAlertView) {
-        _jiaoJieBanAlertView = [[KG_JiaoJieBanAlertView alloc]initWithCondition:self.jiaoJieBanInfo];
+        _jiaoJieBanAlertView = [[KG_JiaoJieBanAlertView alloc]initWithCondition:self.detailModel];
         [JSHmainWindow addSubview:_jiaoJieBanAlertView];
         [_jiaoJieBanAlertView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo([UIApplication sharedApplication].keyWindow.mas_left);
@@ -1641,7 +1671,7 @@
             
             [UserManager shareUserManager].xunshiTypeStr = @"现场巡视";
         }else {
-            [UserManager shareUserManager].xunshiTypeStr = @"一键巡视";
+            [UserManager shareUserManager].xunshiTypeStr = @"常规巡视";
         }
         [self setupDataSubviews];
         

@@ -28,7 +28,7 @@
 #import <UIButton+WebCache.h>
 #import "KG_NiTaiTuNoDataView.h"
 #import "KG_MineViewController.h"
-
+#import "KG_ZhiTaiBottomNavigationView.h"
 
 #import "UILabel+ChangeFont.h"
 #import "UIFont+Addtion.h"
@@ -62,6 +62,7 @@
 @property (nonatomic, strong) KG_JifangView *jifangView;
 @property (nonatomic, strong) KG_RoomInfoView *roomView;
 @property (nonatomic, strong) KG_ZhiTaiBottomView *bottomView;//智态VTF
+@property (nonatomic, strong) KG_ZhiTaiBottomNavigationView  *bottomNaviView;
 @property (nonatomic, assign) int currIndex; //设备选择
 @property (nonatomic, strong) NSString * jifangString; //机房选择
 @property (nonatomic, strong)  NSArray *categoryArray;
@@ -103,10 +104,7 @@
     
     [self getData];
     
-    
 }
-
-
 
 - (void)createScrollView
 {
@@ -669,8 +667,10 @@
                     StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
                     StationMachine.station_name = safeString(dataDic[@"stationName"]);;
                     StationMachine.station_code = safeString(dataDic[@"stationCode"]);
-                    StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+                    StationMachine.engine_room_code = safeString(dataDic[@"code"]);
                     StationMachine.zhitaiDic = self.dmeDic;
+                    StationMachine.isSystemEquipment = [dataDic[@"isSystemEquipment"] boolValue];
+                    StationMachine.isFromZhiTai = YES;
                     [self.navigationController pushViewController:StationMachine animated:YES];
                 };
                 [_scrollView addSubview:self.demView];
@@ -689,8 +689,10 @@
                 StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
                 StationMachine.station_name = safeString(dataDic[@"stationName"]);;
                 StationMachine.station_code = safeString(dataDic[@"stationCode"]);
-                StationMachine.engine_room_code = safeString(dataDic[@"engineRoomCode"]);
+                StationMachine.engine_room_code = safeString(dataDic[@"code"]);
                 StationMachine.zhitaiDic = self.dvorDic;
+                StationMachine.isSystemEquipment = [dataDic[@"isSystemEquipment"] boolValue];
+                StationMachine.isFromZhiTai = YES;
                 [self.navigationController pushViewController:StationMachine animated:YES];
                 
             };
@@ -718,6 +720,10 @@
             self.scrollHei = he;
         }
     }
+    if([self.jifangString isEqualToString:@"雷达"] ||[self.jifangString isEqualToString:@"导航"]) {
+          
+        self.scrollHei = (int)[listArr count] *60 +60;
+    }
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     NSLog(@"SCREEN_HEIGHT %f",SCREEN_HEIGHT);
     NSLog(@"HEIGHT_SCREEN %f",HEIGHT_SCREEN);
@@ -726,17 +732,56 @@
     scrollView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     scrollView.pagingEnabled = YES;
     scrollView.scrollEnabled = YES;
-    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH*listArr.count, 0);
+    if([self.jifangString isEqualToString:@"雷达"] ||[self.jifangString isEqualToString:@"导航"]) {
+        scrollView.contentSize = CGSizeMake(0, 0);
+        
+    }else {
+        scrollView.contentSize = CGSizeMake(SCREEN_WIDTH*listArr.count, 0);
+    }
+    
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;
     [self.bottomBgView addSubview:scrollView];
     _scrollView = scrollView;
     
+    //雷达或者导航设备放在一排显示
+    if([self.jifangString isEqualToString:@"雷达"] ||[self.jifangString isEqualToString:@"导航"]) {
+        
+        self.bottomNaviView = [[KG_ZhiTaiBottomNavigationView alloc]init];
+        self.bottomNaviView.frame = CGRectMake(16, 0, SCREEN_WIDTH-32, listArr.count *60+60);
+        self.bottomNaviView.secArray = listArr;
+   
+        
+        NSLog(@"_scrollView.frameHeight %f",_scrollView.frameHeight);
+        self.bottomNaviView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+      
+        [_scrollView addSubview:self.bottomNaviView];
+        self.bottomNaviView.clickToDetail = ^(NSDictionary * _Nonnull dataDic) {
+            NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
+            if (currDic.count == 0) {
+                return ;
+            }
+            KG_CommonDetailViewController  *StationMachine = [[KG_CommonDetailViewController alloc] init];
+            StationMachine.category = safeString(dataDic[@"category"]);
+            StationMachine.machine_name = safeString(dataDic[@"machine_name"]);
+            StationMachine.station_name = safeString(dataDic[@"stationName"]);;
+            StationMachine.station_code = safeString(currDic[@"code"]);
+            StationMachine.engine_room_code = safeString(dataDic[@"code"]);
+            StationMachine.isSystemEquipment = [dataDic[@"isSystemEquipment"] boolValue];
+            StationMachine.isFromZhiTai = YES;
+            [self.navigationController pushViewController:StationMachine animated:YES];
+        };
+        
+        return;
+    }
+    
+    
+    
     for (int i = 0; i <listArr.count; i++) {
         KG_ZhiTaiBottomView *viewcon = [[KG_ZhiTaiBottomView alloc] init];
         viewcon.secArray = listArr[i][@"subEquipmentList"];
         int hh = (int)[listArr[i][@"subEquipmentList"] count] *40 +40+20;
-       
+        
         viewcon.frame = CGRectMake(SCREEN_WIDTH*i +16, 0, SCREEN_WIDTH-32, hh+60);
         viewcon.titleString =safeString(listArr[i][@"name"]) ;
         NSArray *listArr =self.bottomDic[self.jifangString] ;
@@ -928,7 +973,6 @@
     
     self.jifangView.didsel = ^(NSString *str) {
         
-        
         self.jifangString = str;
         [self getBottomArrayData];
     };
@@ -980,7 +1024,12 @@
     [self.bottomBgView addSubview:self.sliderBgView];
     [self.sliderBgView setFrame:CGRectMake(SCREEN_WIDTH - 100, 0, 100, 51)];
     self.sliderBgView.backgroundColor = [UIColor clearColor];
-    
+    if([self.jifangString isEqualToString:@"雷达"] ||[self.jifangString isEqualToString:@"导航"]) {
+        self.sliderBgView.hidden = YES;
+    }else {
+        self.sliderBgView.hidden = NO;
+        
+    }
    if([self.dataModel.stationInfo.code isEqualToString:@"DDDHT"]){
        //        [self.bottomBgView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
        [self.bottomBgView addSubview:self.niTaiTuNoDataView];
@@ -1163,7 +1212,6 @@
         return ;
         
     }];
-    
 }
 
 -(void)stationAction {
@@ -1177,9 +1225,7 @@
     }
     self.stationArray = [KG_ZhiTaiStationModel mj_objectArrayWithKeyValuesArray:list];
     [self getStationList];
-    
-    
-    
+     
 }
 
 #pragma mark - UITableviewDatasource 数据源方法
@@ -1190,8 +1236,6 @@
     }
     return FrameWidth(210);
 }
-
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView == self.stationTabView){
@@ -1215,11 +1259,7 @@
         return cell;
         
     }
-    
-    
-    
     return nil;
-    
     
 }
 
@@ -1238,8 +1278,6 @@
     [self getNewData:safeString(model.code)];
     [self cb_dismissPopupViewControllerAnimated:YES completion:nil];
 }
-
-
 
 -(void)getStationList{
     
@@ -1290,11 +1328,6 @@
         make.height.equalTo(@7);
     }];
     
-    
-    
-    
-    
-    
     [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentLeft overlayDismissed:nil];
     
 }
@@ -1304,7 +1337,6 @@
 }
 
 - (void)getNewData:(NSString *)code {
-    
     
 //    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/stationSitInfo/%@",code];
     

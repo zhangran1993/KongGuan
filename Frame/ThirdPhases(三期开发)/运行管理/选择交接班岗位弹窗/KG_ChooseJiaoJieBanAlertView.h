@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KG_RunManagerDetailModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_ChooseJiaoJieBanAlertView : UIView
@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,copy)    void(^textFieldString)(NSString *textFieldStr);
 
-@property (nonatomic ,strong) void(^confirmBlockMethod)(NSDictionary *dataDic);
+@property (nonatomic ,strong) void(^confirmBlockMethod)(succeedPositionInfoModel *dataDic);
 
-- (instancetype)initWithCondition:(NSDictionary *)condition;
+- (instancetype)initWithCondition:(KG_RunManagerDetailModel *)condition;
 @end
 
 NS_ASSUME_NONNULL_END

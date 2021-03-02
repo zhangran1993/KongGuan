@@ -296,11 +296,11 @@
         
         if ([dic[@"hangupStatus"] boolValue]) {
             
-            [self.hangUpStautsBtn setAlpha:0.4];
-            self.hangUpStautsBtn.userInteractionEnabled = NO;
+            [self.confirmStatusBtn setAlpha:0.4];
+            self.confirmStatusBtn.userInteractionEnabled = NO;
         }else {
-            [self.hangUpStautsBtn setAlpha:1];
-            self.hangUpStautsBtn.userInteractionEnabled = YES;
+            [self.confirmStatusBtn setAlpha:1];
+            self.confirmStatusBtn.userInteractionEnabled = YES;
             
         }
     }else if ([safeString(dic[@"status"]) isEqualToString:@"confirmed"]) {
@@ -316,11 +316,11 @@
         
         if ([dic[@"hangupStatus"] boolValue]) {
             
-            [self.hangUpStautsBtn setAlpha:0.4];
-            self.hangUpStautsBtn.userInteractionEnabled = NO;
+            [self.confirmStatusBtn setAlpha:0.4];
+            self.confirmStatusBtn.userInteractionEnabled = NO;
         }else {
-            [self.hangUpStautsBtn setAlpha:1];
-            self.hangUpStautsBtn.userInteractionEnabled = YES;
+            [self.confirmStatusBtn setAlpha:1];
+            self.confirmStatusBtn.userInteractionEnabled = YES;
         }
     }else if ([safeString(dic[@"status"]) isEqualToString:@"removed"]) {
         sta = @"已解除";

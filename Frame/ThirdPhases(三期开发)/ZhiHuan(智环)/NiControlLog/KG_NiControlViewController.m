@@ -147,11 +147,11 @@
     //    [self.paraArr addObject:paraDic3];
     //
     //
-    //    NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
-    //    paraDic4[@"name"] = @"equipmentCode";
-    //    paraDic4[@"type"] = @"eq";
-    //    paraDic4[@"content"] = @"";
-    //    [self.paraArr addObject:paraDic4];
+        NSMutableDictionary *paraDic4 = [NSMutableDictionary dictionary];
+        paraDic4[@"name"] = @"equipmentCode";
+        paraDic4[@"type"] = @"eq";
+        paraDic4[@"content"] = safeString(self.dataDic[@"code"]);
+        [self.paraArr addObject:paraDic4];
     //
     //    //可选，关键字，如：空调
     //    //用于反向操作日志的搜索

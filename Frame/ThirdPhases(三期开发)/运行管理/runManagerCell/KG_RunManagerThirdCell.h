@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KG_RunManagerDetailModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface KG_RunManagerThirdCell : UITableViewCell
@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) void (^jiebanBlockMethod)();
 @property (nonatomic, strong) void (^createReportBlockMethod)();
 @property (nonatomic, strong) void (^gotoDetailBlockMethod)(NSDictionary *dic);
+@property (nonatomic, strong) KG_RunManagerDetailModel *model;
 @end
 
 NS_ASSUME_NONNULL_END

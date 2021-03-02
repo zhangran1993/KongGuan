@@ -110,7 +110,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
+    if (self.isFromZhiTai) {
+        NSArray *categoryArray = self.dataArray[section][@"equipmentInfo"];
+        
+        return categoryArray.count;
+    }
     NSArray *categoryArray = self.dataArray[section][@"categoryInfo"];
+   
     return categoryArray.count;
 }
 
@@ -127,9 +133,14 @@
         
     }
     NSDictionary *dataDic = self.dataArray[indexPath.section];
-    
-    NSDictionary *detailDic = dataDic[@"categoryInfo"][indexPath.row];
-    cell.titleLabel.text = safeString(detailDic[@"categoryName"]);
+    if (self.isFromZhiTai) {
+        NSDictionary *detailDic = dataDic[@"equipmentInfo"][indexPath.row];
+        cell.titleLabel.text = safeString(detailDic[@"equipmentName"]);
+    }else {
+        NSDictionary *detailDic = dataDic[@"categoryInfo"][indexPath.row];
+        cell.titleLabel.text = safeString(detailDic[@"categoryName"]);
+        
+    }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -148,8 +159,14 @@
     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(14, 0, 100, 40)];
    
     NSDictionary *dataDic = self.dataArray[section];
-    titleLabel.text = safeString(dataDic[@"groupName"]);
-       
+    if (self.isFromZhiTai) {
+        titleLabel.text = safeString(dataDic[@"categoryName"]);
+            
+    }else {
+        titleLabel.text = safeString(dataDic[@"groupName"]);
+            
+    }
+     
     titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     titleLabel.font = [UIFont systemFontOfSize:14];
     titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -167,11 +184,20 @@
     
    
     NSDictionary *dataDic = self.dataArray[indexPath.section];
-    NSDictionary *detailDic = dataDic[@"categoryInfo"][indexPath.row];
-    
-    if (self.didsel) {
-        self.didsel(detailDic);
+    if (self.isFromZhiTai) {
+        NSDictionary *detailDic = dataDic[@"equipmentInfo"][indexPath.row];
+        
+        if (self.didsel) {
+            self.didsel(detailDic);
+        }
+    }else {
+        NSDictionary *detailDic = dataDic[@"categoryInfo"][indexPath.row];
+        
+        if (self.didsel) {
+            self.didsel(detailDic);
+        }
     }
+    
     self.hidden = YES;
 }
 

@@ -14,7 +14,7 @@
 #import "KG_XunShiReportDetailViewController.h"
 #import "KG_InspectionRecordsViewController.h"
 #import "KG_InspectionRecordCell.h"
-
+#import "KG_ZhiXiuXunshiRecordScreenViewController.h"
 #import "KG_WeihuDailyReportDetailViewController.h"
 
 #import "KG_HistoryScreenViewController.h"
@@ -306,31 +306,7 @@
     UIGraphicsEndImageContext();
     return theImage;
 }
-//筛选方法
-- (void)screenMethod {
-    NSArray *array = @[@{@"sectionName": @"内容",
-                         @"sectionType": @(RS_ConditionSearchSectionTypeNormal),
-                         @"allowMutiSelect": @(YES),
-                         @"allowPackUp": @(YES),
-                         @"itemArrM": @[@{@"itemName":@"开始时间"},
-                                        @{@"itemName":@"结束时间"}]},
-                       @{@"sectionName":@"起始时间",
-                         @"sectionType":@(RS_ConditionSearchSectionTypeInterval),
-                         @"allowMutiSelect":@(NO),
-                         @"allowPackUp":@(NO),
-                         @"intervalStart":@"",
-                         @"intervalEnd":@"",
-                         @"intervalIsInput":@(NO),
-                         @"itemArrM":
-                             @[@{@"itemName":@"开始时间"},
-                               @{@"itemName":@"结束时间"}]}];
-    
-    RS_ConditionSearchView *searchView = [[RS_ConditionSearchView alloc] initWithCondition:array];
-    
-    //          searchView.conditionDataArr = array;
-    [searchView show];
-    
-}
+
 //搜索方法
 - (void)serachMethod {
     KG_NiControlSearchViewController *vc = [[KG_NiControlSearchViewController alloc]init];
@@ -352,7 +328,7 @@
     self.currIndex = (int)index;
     if (index == 1 || index == 2 || index == 3) {
         self.isScreenStatus = NO;
-        self.roomStr = nil;
+     
         self.taskStr = nil;
         self.taskStatusStr = nil;
         self.startTime = nil;
@@ -995,10 +971,10 @@
 //筛选
 - (void)screenMethod:(UIButton *)button {
     
-    KG_HistoryScreenViewController *vc = [[KG_HistoryScreenViewController alloc]init];
+    KG_ZhiXiuXunshiRecordScreenViewController *vc = [[KG_ZhiXiuXunshiRecordScreenViewController alloc]init];
     
     vc.taskStr = self.taskStr;
-    vc.roomStr = self.roomStr;
+  
     vc.taskStatusStr = self.taskStatusStr;
     vc.startTime = self.startTime;
     vc.endTime = self.endTime;
@@ -1006,7 +982,7 @@
     
     vc.confirmBlockMethod = ^(NSString * _Nonnull taskStr, NSString * _Nonnull roomStr, NSString * _Nonnull taskStausStr, NSString * _Nonnull startTimeStr, NSString * _Nonnull endTimeStr, NSArray * _Nonnull roomArray) {
         
-        self.roomStr = roomStr;
+     
         self.taskStr = taskStr;
         self.taskStatusStr = taskStausStr;
         
@@ -1014,7 +990,7 @@
         self.endTime = endTimeStr;
         self.roomArray = roomArray;
         
-        if(roomStr.length == 0 && taskStr.length == 0 && taskStausStr.length == 0
+        if( taskStr.length == 0 && taskStausStr.length == 0
            && startTimeStr.length == 0 && endTimeStr.length == 0) {
             self.isScreenStatus = NO;
             [self.rightButton setImage:[UIImage imageNamed:@"screen_icon"] forState:UIControlStateNormal];
@@ -1030,7 +1006,7 @@
     
 }
 
-- (void) screenHistoryData {
+- (void)screenHistoryData {
     NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
     if (currentDic.count == 0) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1044,13 +1020,7 @@
             }
         }
     }
-    NSString *engineCode = @"";
-    for (NSDictionary *roomDic in self.roomArray) {
-        if ([self.roomStr isEqualToString:safeString(roomDic[@"alias"])]) {
-            engineCode = safeString(roomDic[@"code"]);
-            break;
-        }
-    }
+
     self.pageNum = 1;
     
     
@@ -1072,15 +1042,15 @@
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolRecode/appSearch/%@/%d/%d",safeString(type),self.pageNum,self.pageSize]];
     NSMutableArray *paramArr = [NSMutableArray arrayWithCapacity:0];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"name"] = @"stationCode";
+    params[@"name"] = @"typeCode";
     params[@"type"] = @"eq";
-    params[@"content"] = safeString(currentDic[@"code"]);
+    params[@"content"] = safeString(type);
     
     //机房编码
     NSMutableDictionary *params1 = [NSMutableDictionary dictionary];
-    params1[@"name"] = @"engineRoomCode";
+    params1[@"name"] = @"equipmentCode";
     params1[@"type"] = @"eq";
-    params1[@"content"] = safeString(engineCode);
+    params1[@"content"] = safeString(self.model.equipmentCode);
     //开始时间，如："2020-04-01"
     NSMutableDictionary *params2 = [NSMutableDictionary dictionary];
     params2[@"name"] = @"startTime";
@@ -1117,7 +1087,7 @@
             
             return ;
         }
-        [self.segment selectIndex:0];
+        [self.segment selectIndex:1];
         [self.tableView.mj_footer endRefreshing];
         [self.dataArray removeAllObjects];
         [self.dataArray addObjectsFromArray:result[@"value"][@"records"]] ;
@@ -1140,17 +1110,7 @@
             [parStr appendString:safeString(self.taskStr)];
         }
         
-        NSString *engineCode = @"";
-        for (NSDictionary *roomDic in self.roomArray) {
-            if ([self.roomStr isEqualToString:safeString(roomDic[@"alias"])]) {
-                engineCode = safeString(roomDic[@"code"]);
-                break;
-            }
-        }
-        
-        if (self.roomStr.length >0) {
-            [parStr appendString:safeString(self.roomStr)];
-        }
+    
         
         NSString *statusCode = @"0";
         statusCode = [self getTaskStatus:self.taskStatusStr];
@@ -1197,6 +1157,8 @@
     }else if ([status isEqualToString:@"逾期未完成"]) {
         ss = @"3";
     }else if ([status isEqualToString:@"逾期完成"]) {
+        ss = @"4";
+    }else if ([status isEqualToString:@"逾期已完成"]) {
         ss = @"4";
     }else if ([status isEqualToString:@"待领取"]) {
         ss = @"5";

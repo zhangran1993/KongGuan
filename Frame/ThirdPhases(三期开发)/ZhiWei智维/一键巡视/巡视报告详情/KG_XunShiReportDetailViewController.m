@@ -76,9 +76,14 @@
     [self createNaviTopView];
     [self createDataView];
     [self queryReportDetailData];
-    [self getTemplateData];
-    
+//    [self getTemplateData];
+    [self performSelector:@selector(hidHud) withObject:nil afterDelay:10.f];
+     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    
+}
+- (void)hidHud {
+    [MBProgressHUD hideHUD];
     
 }
 - (void)pushRemoveToAddressBook {
@@ -271,6 +276,45 @@
             }
         }
     }
+    
+    //计算备注高度
+    
+    int remarkHeight = 0;
+    NSMutableDictionary *remarkDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+    for (NSDictionary *secondDic in secondArr) {
+        if ([secondDic[@"annotation"] boolValue]) {
+            [remarkDic setValue:safeString(secondDic[@"remark"]) forKey:safeString(secondDic[@"infoId"])];
+            remarkHeight +=60;
+        }
+        NSArray *thirdArr = secondDic[@"childrens"];
+        for (NSDictionary *thridDic in thirdArr) {
+            if ([thridDic[@"annotation"] boolValue]) {
+                [remarkDic setValue:safeString(thridDic[@"remark"]) forKey:safeString(thridDic[@"infoId"])];
+                remarkHeight +=60;
+            }
+            NSArray *fourthArr = thridDic[@"childrens"];
+            
+            for (NSDictionary *fourthDic in fourthArr) {
+                if ([fourthDic[@"annotation"] boolValue]) {
+                    [remarkDic setValue:safeString(fourthDic[@"remark"]) forKey:safeString(fourthDic[@"infoId"])];
+                    remarkHeight +=60;
+                }
+                NSArray *fifthArr = fourthDic[@"childrens"];
+                for (NSDictionary *fifDic in fifthArr) {
+                    if ([fifDic[@"annotation"] boolValue]) {
+                        [remarkDic setValue:safeString(fifDic[@"remark"]) forKey:safeString(fifDic[@"infoId"])];
+                        remarkHeight +=60;
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    
+    NSLog(@"remarkHeight ==%d",remarkHeight);
+    
+    
     totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
     NSLog(@"第一层高度：-----------%ld",(long)firstHeight);
     NSLog(@"第2层高度：-----------%ld",(long)secondHeight);
@@ -1038,6 +1082,7 @@
         
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
+//        [MBProgressHUD hideHUD];
         FrameLog(@"请求失败，返回数据 : %@",error);
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {

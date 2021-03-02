@@ -200,14 +200,14 @@
     self.leftTitle.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.leftTitle.font = [UIFont systemFontOfSize:14];
     self.leftTitle.font = [UIFont my_font:14];
-    self.leftTitle.numberOfLines = 1;
+    self.leftTitle.numberOfLines = 2;
     
     self.leftTitle.textAlignment = NSTextAlignmentLeft;
     [self.leftTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.leftImage.mas_right).offset(7);
         make.bottom.equalTo(self.topView.mas_bottom).offset(-12);
-        make.width.equalTo(@150);
-        make.height.equalTo(@21);
+        make.width.equalTo(@250);
+        make.centerY.equalTo(self.leftImage.mas_centerY);
     }];
     
     self.moreBtn = [[UIButton alloc]init];

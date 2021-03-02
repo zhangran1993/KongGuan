@@ -38,6 +38,8 @@
 
 @property (nonatomic, strong)  NSMutableArray* jiaojiebanListArr;
 
+@property (nonatomic ,assign) BOOL  isScreen;
+
 @end
 
 @implementation KG_JiaoJieBanRecordViewController
@@ -58,6 +60,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.isScreen = NO;
     self.pageNum = 1;
     self.pageSize = 20;
     self.currIndex = 0;
@@ -182,21 +185,26 @@
         return;
     }
     if ([btn.titleLabel.text isEqualToString:@"筛选"]) {
-        NSMutableArray *dateArr = [NSMutableArray arrayWithCapacity:0];
-        for (NSDictionary *dateDic in self.jiaojiebanListArr) {
-            NSString *ti = [self timestampToTimeStr:safeString(dateDic[@"createTime"])];
-            if ([ti isEqualToString:self.startTime] ||[ti isEqualToString:self.endTime]) {
-                [dateArr addObject:dateDic];
-            }
-        }
-        self.jiaojiebanListArr = dateArr;
+//        NSMutableArray *dateArr = [NSMutableArray arrayWithCapacity:0];
+//        for (NSDictionary *dateDic in self.jiaojiebanListArr) {
+//            NSString *ti = [self timestampToTimeStr:safeString(dateDic[@"createTime"])];
+//            if ([ti isEqualToString:self.startTime] ||[ti isEqualToString:self.endTime]) {
+//                [dateArr addObject:dateDic];
+//            }
+//        }
+        self.isScreen = YES;
+        [self queryJiaoJieBaneListData];
+//        self.jiaojiebanListArr = dateArr;
         self.totalNumLabel.text = [NSString stringWithFormat:@"共%lu条",(unsigned long)self.jiaojiebanListArr.count];
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
         [self.resetButton setTitle:@"重置" forState:UIControlStateNormal];
     }else {
-        
+        self.isScreen = NO;
         [self.jiaojiebanListArr removeAllObjects];
         self.pageNum = 1;
+        //end
+        self.startTime = @"";
+        self.endTime = @"";
         [self queryJiaoJieBaneListData];
         [self.resetButton setTitle:@"筛选" forState:UIControlStateNormal];
         
@@ -204,9 +212,7 @@
         [self.startButton setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
         
         
-        //end
-        self.startTime = @"";
-        self.endTime = @"";
+       
         [self.endButton setTitle:@"结束日期" forState:UIControlStateNormal];
         [self.endButton setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
         if (self.startTime.length >0 && self.endTime.length>0) {
@@ -423,6 +429,7 @@
     }
     return _titleLabel;
 }
+
 - (void)queryJiaoJieBaneListData {
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/%d/%d",self.pageNum,self.pageSize]];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -430,13 +437,22 @@
     params[@"post"] = @"";
     params[@"time"] = @"";
     
+    if (self.startTime.length > 0) {
+        params[@"startTime"] = safeString(self.startTime);
+    }
+    if (self.endTime.length > 0) {
+        params[@"endTime"] = safeString(self.endTime);
+    }
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code != 0){
             
             return ;
         }
-        [self.jiaojiebanListArr addObjectsFromArray: result[@"value"][@"records"] ];
+        if(self.isScreen) {
+            [self.jiaojiebanListArr removeAllObjects];
+        }
+        [self.jiaojiebanListArr addObjectsFromArray:result[@"value"][@"records"] ];
         self.totalNumLabel.text = [NSString stringWithFormat:@"共%lu条",(unsigned long)self.jiaojiebanListArr.count];
         [self.tableView reloadData];
         
@@ -461,6 +477,12 @@
     
     params[@"post"] = @"";
     params[@"time"] = @"";
+    if (self.startTime.length > 0) {
+        params[@"startTime"] = safeString(self.startTime);
+    }
+    if (self.endTime.length > 0) {
+        params[@"endTime"] = safeString(self.endTime);
+    }
     WS(weakSelf)
     [FrameBaseRequest postWithUrl:FrameRequestURL param:params success:^(id result) {
         

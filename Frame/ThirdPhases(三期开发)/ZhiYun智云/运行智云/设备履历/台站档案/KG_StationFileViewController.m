@@ -588,7 +588,6 @@
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
-        
     }
     
     return nil;
@@ -612,6 +611,7 @@
     footView.backgroundColor = [UIColor clearColor];
     return footView;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
     return 10;
@@ -625,7 +625,7 @@
 
 - (void)queryTechnicalInformationData{
     
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcTechnicalInfomation/station/%@/%@/%@",safeString(self.dataDic[@"code"]),safeString(@"1"),safeString(@"20")]];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcTechnicalInfomation/station/%@/%@/%@",safeString(self.dataDic[@"code"]),safeString(@"1"),safeString(@"20")]];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
@@ -742,7 +742,6 @@
         return ;
     } ];
      
-    
 }
 
 //查询特殊保障
@@ -793,7 +792,7 @@
 //请求方式：GET
 - (void)queryStationAlarmListData{
     
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/equipmentAuto/%@/%@/%@",safeString(self.dataDic[@"code"]),safeString(@"1"),safeString(@"20")]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/stationAuto/%@/%@/%@",safeString(self.dataDic[@"code"]),safeString(@"1"),safeString(@"20")]];
     
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         
@@ -837,7 +836,7 @@
             return ;
         }
         
-        self.dataModel.equipmentWarnRecordList = result[@"value"][@"records"];
+        self.dataModel.equipmentAdjustList = result[@"value"][@"records"];
         [self.tableView reloadData];
         
     } failure:^(NSURLSessionDataTask *error)  {

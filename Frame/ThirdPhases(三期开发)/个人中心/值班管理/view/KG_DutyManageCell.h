@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic ,strong) UIButton      *changeDutyButton;
+@property (nonatomic ,strong) UIButton      *changeDutyBgButton;
 
 @property (nonatomic ,strong) void (^ischangeDutyBlock)( NSDictionary *dataDic);
 

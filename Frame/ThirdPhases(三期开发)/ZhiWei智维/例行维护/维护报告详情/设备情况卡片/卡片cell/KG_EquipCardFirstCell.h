@@ -13,10 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface KG_EquipCardFirstCell : UITableViewCell
 
 
-@property (nonatomic ,strong)NSDictionary *dic;
-@property (nonatomic, strong) UIButton *selectBtn;
+@property (nonatomic ,strong)NSDictionary *dataDic;
 
-@property (nonatomic, strong) UITextView *textView;
+
+//特殊参数标记block传值
+@property (nonatomic, strong) void(^specialData)(NSDictionary *dataDic);
 @end
 
 NS_ASSUME_NONNULL_END

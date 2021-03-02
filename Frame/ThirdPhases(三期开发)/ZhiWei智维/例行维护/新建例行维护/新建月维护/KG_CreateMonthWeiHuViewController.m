@@ -1118,7 +1118,8 @@
     }];
 }
 - (void)selectTime:(UIButton *)btn{
-    
+    [self.textField resignFirstResponder];
+    [self.view endEditing:YES];
     [UIView animateWithDuration:0.3 animations:^{
         self.dataPickerview.frame = CGRectMake(0,  self.view.frame.size.height-300, self.view.frame.size.width, 300);
         [self.dataPickerview  show];

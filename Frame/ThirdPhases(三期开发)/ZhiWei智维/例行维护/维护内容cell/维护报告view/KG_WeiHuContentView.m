@@ -28,6 +28,7 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code
 }
+ 
 */
 - (instancetype)init
 {
@@ -35,10 +36,10 @@
     if (self) {
         [self initData];
         [self setupDataSubviews];
-        
     }
     return self;
 }
+
 //初始化数据
 - (void)initData {
    
@@ -101,8 +102,6 @@
        
 }
 
-
-
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -159,6 +158,7 @@
     
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -183,18 +183,13 @@
             if (fourthArr.count) {
                 fourthHeight += [fourthArr count] *40;
             }
-            
-            
             num ++;
         }
-       
-        
     }
 //    if (num> 0 &&thirdArr.count >0) {
 //
 //        thirdHeight +=30;
-//
-//
+
 //    }
     NSLog(@"第5层高度：-----------%ld",(long)thirdHeight);
     NSLog(@"第6层高度：-----------%ld",(long)fourthHeight);
@@ -230,6 +225,7 @@
     [self.tableView reloadData];
     
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 44)];
@@ -246,7 +242,6 @@
     }];
     
     self.titleLabel = [[UILabel alloc]init];
- 
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.font = [UIFont my_Pingfont:16];
@@ -270,24 +265,25 @@
         make.right.equalTo(headView.mas_right).offset(-20);
     }];
     
-    
     return headView;
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 2)];
     footView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     return footView;
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     
     return 2;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
     return 44;
 }
+
 -(NSMutableArray *)dataArray{
     if (!_dataArray) {
         _dataArray = [[NSMutableArray alloc]init];

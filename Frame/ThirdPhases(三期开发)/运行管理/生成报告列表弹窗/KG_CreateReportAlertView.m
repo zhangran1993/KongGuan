@@ -22,7 +22,7 @@
 @property (nonatomic, strong) ZRDatePickerView *dataPickerview;
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic, strong) handoverPositionInfoModel *dataDic;
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) UIButton *bgBtn ;
@@ -43,15 +43,18 @@
 @end
 @implementation KG_CreateReportAlertView
 
-- (instancetype)initWithCondition:(NSDictionary *)condition
+- (instancetype)initWithCondition:(KG_RunManagerDetailModel *)condition
 {
     self = [super init];
     if (self) {
         NSDate *date = [NSDate date];
         NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd HH:mm:ss"] stringFromDate:date];
         self.endTime = timeStr;
-        self.dataDic = [condition[@"handoverInfo"] firstObject];
-        [self.dataArray addObjectsFromArray:condition[@"handoverInfo"]];
+        self.dataDic = [condition.handoverPositionInfo firstObject];
+       
+        
+        self.dataArray =  [handoverPositionInfoModel mj_objectArrayWithKeyValuesArray:condition.handoverPositionInfo];
+        
         [self initData];
         [self setupDataSubviews];
         
@@ -163,9 +166,9 @@
     [zhibanView addSubview:self.zhibanBtn];
     [self.zhibanBtn setTitle:@"黄城导航台保障岗" forState:UIControlStateNormal];
     
-    if (self.dataDic.count) {
-        [self.zhibanBtn setTitle:[CommonExtension getWorkType:self.dataDic[@"post"]] forState:UIControlStateNormal];
-    }
+    
+    [self.zhibanBtn setTitle:[CommonExtension getWorkType:safeString(self.dataDic.positionCode)] forState:UIControlStateNormal];
+    
     [self.zhibanBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     self.zhibanBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [self.zhibanBtn sizeToFit];
@@ -366,9 +369,9 @@
     [fanweiView addSubview:self.fanweiBtn];
     
     [self.fanweiBtn setTitle:@"黄城导航台" forState:UIControlStateNormal];
-    if (self.dataDic.count) {
-        [self.fanweiBtn setTitle:safeString(self.dataDic[@"stationName"]) forState:UIControlStateNormal];
-    }
+   
+    [self.fanweiBtn setTitle:safeString(self.dataDic.stationName) forState:UIControlStateNormal];
+   
     self.fanweiBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [self.fanweiBtn setTitleColor:[UIColor colorWithHexString:@"#24252A"] forState:UIControlStateNormal];
     [self.fanweiBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -377,9 +380,9 @@
         make.height.equalTo(fanweiView.mas_height);
         make.top.equalTo(fanweiView.mas_top);
     }];
-    if (self.dataDic.count) {
-        [self refreshData];
-    }
+  
+    [self refreshData];
+    
     
 }
 //取消
@@ -475,9 +478,9 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     }
-    NSDictionary *dic = self.dataArray[indexPath.row];
+    handoverPositionInfoModel *dic = self.dataArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = [CommonExtension getWorkType:safeString(dic[@"post"])];
+    cell.textLabel.text = [CommonExtension getWorkType:safeString(dic.positionCode)];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     cell.textLabel.font = [UIFont my_font:12];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -505,22 +508,22 @@
     self.currIndex = 0;
     [UIView animateWithDuration:0.3 animations:^{
         self.dataPickerview.frame = CGRectMake(0,  self.height-300, self.width, 300);
-        self.dataPickerview.date = safeString(self.dataDic[@"time"]);
+        self.dataPickerview.date = safeString(self.dataDic.startOnDutyDay);
         [self.dataPickerview  show];
         
     }];
 }
 
 - (void)refreshData {
-    if (self.dataDic.count) {
-        [self.fanweiBtn setTitle:safeString(self.dataDic[@"stationName"]) forState:UIControlStateNormal];
-        
-        [self.zhibanBtn setTitle:[CommonExtension getWorkType:self.dataDic[@"post"]] forState:UIControlStateNormal];
-        [self.startBtn setTitle:safeString(self.dataDic[@"time"]) forState:UIControlStateNormal];
-        
-        [self.endBtn setTitle:self.endTime forState:UIControlStateNormal];
-        
-    }
+   
+    [self.fanweiBtn setTitle:safeString(self.dataDic.stationName) forState:UIControlStateNormal];
+    
+    [self.zhibanBtn setTitle:[CommonExtension getWorkType:safeString(self.dataDic.positionCode)] forState:UIControlStateNormal];
+    [self.startBtn setTitle:safeString(self.dataDic.startOnDutyDay) forState:UIControlStateNormal];
+    
+    [self.endBtn setTitle:self.endTime forState:UIControlStateNormal];
+    
+    
 }
 
 //将时间戳转换为时间字符串
@@ -566,10 +569,11 @@
     
     
     self.startTime = timer;
-    NSMutableDictionary *ddic = [[NSMutableDictionary alloc]initWithDictionary:self.dataDic];
+    NSDictionary *dd = [self.dataDic mj_keyValues];
+    NSMutableDictionary *ddic = [[NSMutableDictionary alloc]initWithDictionary:dd];
     
-    [ddic setValue:self.startTime forKey:@"time"];
-    self.dataDic = ddic;
+    [ddic setValue:self.startTime forKey:@"startOnDutyDay"];
+    [self.dataDic mj_setKeyValues:ddic];
     [self refreshData];
     [UIView animateWithDuration:0.3 animations:^{
         self.dataPickerview.frame = CGRectMake(0, self.height, self.width, 300);

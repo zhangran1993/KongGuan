@@ -17,7 +17,7 @@
 }
 @property (nonatomic, strong) UIButton *zhibanBtn;
 @property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSDictionary *dataDic;
+@property (nonatomic, strong) handoverPositionInfoModel *dataDic;
 
 @property (nonatomic, strong) UITableView *tableView;
    
@@ -32,12 +32,14 @@
 @end
 @implementation KG_JiaoJieBanAlertView
 
-- (instancetype)initWithCondition:(NSDictionary *)condition
+- (instancetype)initWithCondition:(KG_RunManagerDetailModel *)condition
 {
     self = [super init];
     if (self) {
-        self.dataDic = [condition[@"handoverInfo"] firstObject];
-        [self.dataArray addObjectsFromArray:condition[@"handoverInfo"]];
+       
+        [self.dataDic mj_setKeyValues:[condition.handoverPositionInfo firstObject]] ;
+        [self.dataArray addObjectsFromArray:condition.handoverPositionInfo];
+        
         [self initData];
         [self setupDataSubviews];
         
@@ -299,9 +301,9 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     }
    
-    NSDictionary *dic = self.dataArray[indexPath.row];
+    handoverPositionInfoModel *dic = self.dataArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = [CommonExtension getWorkType:safeString(dic[@"post"])];
+    cell.textLabel.text = [CommonExtension getWorkType:safeString(dic.positionCode)];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     cell.textLabel.font = [UIFont my_font:12];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -318,11 +320,9 @@
     _stationListView = nil;
 }
 - (void)refreshData {
-    if (self.dataDic.count) {
-        
-        [self.zhibanBtn setTitle:[CommonExtension getWorkType:self.dataDic[@"post"]] forState:UIControlStateNormal];
-        
-    }
+   
+        [self.zhibanBtn setTitle:[CommonExtension getWorkType:safeString(self.dataDic.positionCode)] forState:UIControlStateNormal];
+   
 }
 
 @end

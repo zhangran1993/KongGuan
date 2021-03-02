@@ -38,8 +38,9 @@
     
     self.xunshiString = [UserManager shareUserManager].xunshiTypeStr;
     if (self.xunshiString.length == 0) {
-        self.xunshiString = @"一键巡视";
+        self.xunshiString = @"常规巡视";
     }
+    
     
     NSArray *array = @[safeString(self.xunshiString) ,@"例行维护",@"特殊保障"];
     self.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];

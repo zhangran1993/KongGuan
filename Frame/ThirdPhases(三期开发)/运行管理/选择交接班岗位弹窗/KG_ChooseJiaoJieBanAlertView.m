@@ -19,7 +19,7 @@
 
 @property (nonatomic, strong)  NSMutableArray    *dataArray;
 
-@property (nonatomic, strong)  NSDictionary      *dataDic;
+@property (nonatomic, strong)  succeedPositionInfoModel      *dataDic;
 
 @property (nonatomic, strong)  UITableView       *tableView;
    
@@ -36,12 +36,13 @@
 @end
 @implementation KG_ChooseJiaoJieBanAlertView
 
-- (instancetype)initWithCondition:(NSDictionary *)condition
+- (instancetype)initWithCondition:(KG_RunManagerDetailModel *)condition
 {
     self = [super init];
     if (self) {
-        self.dataDic = [condition[@"successInfo"] firstObject];
-        [self.dataArray addObjectsFromArray:condition[@"successInfo"]];
+       
+        [self.dataDic mj_setKeyValues:[condition.succeedPositionInfo firstObject]] ;
+        [self.dataArray addObjectsFromArray:condition.succeedPositionInfo];
         [self initData];
         [self setupDataSubviews];
     }
@@ -289,9 +290,9 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     }
-    NSDictionary *dic = self.dataArray[indexPath.row];
+    succeedPositionInfoModel *dic = self.dataArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = [CommonExtension getWorkType:safeString(dic[@"post"])];
+    cell.textLabel.text = [CommonExtension getWorkType:safeString(dic.positionCode)];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     cell.textLabel.font = [UIFont my_font:12];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
@@ -309,9 +310,9 @@
 }
 
 - (void)refreshData {
-    if (self.dataDic.count) {
-        [self.zhibanBtn setTitle:[CommonExtension getWorkType:self.dataDic[@"post"]] forState:UIControlStateNormal];
-    }
+  
+    [self.zhibanBtn setTitle:[CommonExtension getWorkType:safeString(self.dataDic.positionCode)] forState:UIControlStateNormal];
+    
 }
 
 @end

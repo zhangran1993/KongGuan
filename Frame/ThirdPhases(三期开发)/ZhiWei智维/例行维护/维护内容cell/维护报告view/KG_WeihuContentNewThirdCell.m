@@ -154,11 +154,13 @@
     self.titleLabel.font = [UIFont systemFontOfSize:14];
     self.titleLabel.font = [UIFont my_Pingfont:14];
     [self.titleLabel sizeToFit];
+    self.titleLabel.numberOfLines = 2;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).offset(4);
+        make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left).offset(49.5);
-        make.height.equalTo(@32);
-        make.width.lessThanOrEqualTo(@220);
+        make.height.equalTo(@40);
+        make.width.lessThanOrEqualTo(@250);
+//        make.bottom.equalTo(self.mas_bottom);
     }];
     
     //数值未取到红色感叹号
@@ -545,12 +547,33 @@
     self.redPromptView.hidden = YES;
     if ([safeString(self.modelDic[@"type"]) isEqualToString:@"charset"] ||
         [safeString(self.modelDic[@"type"]) isEqualToString:@"data"]) {
-        NSString *valueString = safeString(self.dataDic[@"measureValueAlias"]);
-        if (valueString.length == 0) {
-            self.redPromptView.hidden = NO;
-        }else {
-            self.redPromptView.hidden = YES;
-        }
+        
+        int levelMax = [self.dataDic[@"levelMax"] intValue];
+        if (levelMax == 4) {
+            NSString *valueString = safeString(self.dataDic[@"measureValueAlias"]);
+            if (valueString.length == 0) {
+                self.redPromptView.hidden = NO;
+            }else {
+                self.redPromptView.hidden = YES;
+            }
+            
+        }else if (levelMax == 5) {
+            if (safeString(self.dataDic[@"measureValueAlias"]).length == 0) {
+                
+                NSArray *fourArr = self.dataDic[@"childrens"];
+                if (fourArr.count) {
+                    NSDictionary *fourDic = [fourArr firstObject];
+                    NSString *valueString  = safeString(fourDic[@"measureValueAlias"]);
+                    if (valueString.length == 0) {
+                        self.redPromptView.hidden = NO;
+                    }else {
+                         self.redPromptView.hidden = YES;
+                    }
+                    
+                }
+            }
+            }
+                 
     }
     
     //确定了数据类型之后，根据字典开始按类型区分
@@ -756,6 +779,7 @@
         }
         int levelMax = [self.dataDic[@"levelMax"] intValue];
         if (levelMax == 4) {
+            self.textInputView.hidden = YES;
             self.charsetTitleLabel.text = safeString(self.dataDic[@"measureValueAlias"]);
             if (safeString(self.dataDic[@"measureValueAlias"]).length == 0) {
                 NSString *ss = safeString(self.modelDic[@"value"]);
@@ -763,6 +787,7 @@
                     NSArray *array = [ss componentsSeparatedByString:@"@&@"];
                     if (array.count) {
                         self.charsetTitleLabel.text = [array firstObject];
+                        
                     }
                 }else {
                     
@@ -776,29 +801,27 @@
             
             
         }else if (levelMax == 5) {
-            NSArray *modelArr = self.dataDic[@"childrens"];
-            if (modelArr.count) {
-                NSDictionary *dataDic = [self.dataDic[@"childrens"] firstObject];
-                self.charsetTitleLabel.text = safeString(dataDic[@"measureValueAlias"]);
+            self.textInputView.hidden = YES;
+            self.charsetTitleLabel.text = safeString(self.dataDic[@"measureValueAlias"]);
+            
                 
-                
-                if (safeString(dataDic[@"measureValueAlias"]).length == 0) {
-                    NSString *ss = safeString(self.modelDic[@"value"]);
-                    if (ss.length >0) {
-                        NSArray *array = [ss componentsSeparatedByString:@"@&@"];
-                        if (array.count) {
-                            self.selectTitleLabel.text = [array firstObject];
+                if (safeString(self.dataDic[@"measureValueAlias"]).length == 0) {
+                    
+                    NSArray *fourArr = self.dataDic[@"childrens"];
+                    if (fourArr.count) {
+                        NSDictionary *fourDic = [fourArr firstObject];
+                        self.charsetTitleLabel.text = safeString(fourDic[@"measureValueAlias"]);
+                        if (safeString(fourDic[@"measureValueAlias"]).length == 0) {
+                            self.charsetTitleLabel.text = safeString(self.modelDic[@"measureValueAlias"]);
+                            if (safeString(fourDic[@"measureValueAlias"]).length == 0) {
+                                self.selectTitleLabel.text = @"";
+                                self.textInputView.hidden = NO;
+                            }
                         }
                     }else {
-                        
-                        self.charsetTitleLabel.text = @"";
-                        self.selectView.hidden = YES;
-                        self.segmentView.hidden = YES;
-                        self.charsetView.hidden = YES;
                         self.textInputView.hidden = NO;
                     }
                 }
-            }
         }
         
     }else if([safeString(self.modelDic[@"type"]) isEqualToString:@"radio"]) {
@@ -859,16 +882,12 @@
                         }else {
                             self.segmentedControl.selectedSegmentIndex = -1;
                         }
-                        
-                        
                     }
                     break;
                 }
             }
             
         }
-        
-        
         
     }else {
         

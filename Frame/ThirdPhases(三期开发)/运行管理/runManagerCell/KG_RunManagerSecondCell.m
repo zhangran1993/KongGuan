@@ -164,6 +164,12 @@
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(self.weihuBlockMethod){
+        self.weihuBlockMethod();
+    }
+}
+
 
 - (void)weihuMethod {
     

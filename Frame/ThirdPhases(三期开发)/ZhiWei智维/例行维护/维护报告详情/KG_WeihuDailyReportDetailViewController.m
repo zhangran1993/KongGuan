@@ -77,7 +77,9 @@
 
 @property (nonatomic, assign)   BOOL                             canUpdateOrSubmit;
 
-@property (nonatomic, strong)   KG_RemoveTaskView                *alertView;
+@property (nonatomic, strong)   KG_RemoveTaskView                *alertView;\
+
+@property (nonatomic, assign) int       cardHeight ;//卡片高度自适应
 
 @end
 
@@ -88,6 +90,7 @@
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushRemoveToAddressBook) name:@"pushRemoveToAddressBook" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveWeiHuSpecialData:) name:@"saveWeiHuSpecialData" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshCardHeight:) name:@"refreshCardHeight" object:nil];
     self.dataModel = [[KG_XunShiReportDetailModel alloc]init];
     self.listModel = [[KG_XunShiReportDataModel alloc]init];
     self.canUpdateOrSubmit = YES;
@@ -97,8 +100,15 @@
     self.upsModel = [[taskDetail alloc]init];
     [self createNaviTopView];
     [self createDataView];
+    [self queryReportDetailData];
+    //    [self getTemplateData];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    [self performSelector:@selector(hidHud) withObject:nil afterDelay:10.f];
     
+}
+
+- (void)hidHud {
+    [MBProgressHUD hideHUD];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -106,15 +116,13 @@
     NSLog(@"StationDetailController viewWillAppear");
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     self.navigationController.navigationBarHidden = YES;
-    [self queryReportDetailData];
-    [self getTemplateData];
     
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     self.navigationController.navigationBarHidden = NO;
-   
+    
 }
 
 -(void)dealloc
@@ -124,8 +132,9 @@
     //移除当前所有通知
     NSLog(@"移除了所有的通知");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
+    
 }
+
 - (void)pushRemoveToAddressBook {
     
     self.alertView.hidden = YES;
@@ -149,17 +158,16 @@
     self.xunshiTopView.layer.masksToBounds = YES;
     self.xunshiTopView.shouqiMethod = ^{
         UIView *tableHeaderView =self.tableView.tableHeaderView;
-
+        
         CGRect frame = tableHeaderView.frame;
-
+        
         [tableHeaderView removeFromSuperview];
-
+        
         self.tableView.tableHeaderView =nil;
-
+        
         frame.size.height = 128.0 + 54;// 新高度
-
+        
         tableHeaderView.frame = frame;
-
         self.tableView.tableHeaderView = tableHeaderView;
         self.xunshiTopView.dic = self.xunshiTopDic;
         [self.xunshiTopView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -192,6 +200,8 @@
             make.height.equalTo(@(266));
         }];
     };
+    
+    //高度自适应
     
     [self.xunshiTopView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tableHeadView.mas_left);
@@ -258,13 +268,16 @@
             
             return 100;
         }
+        if (self.cardHeight >0) {
+            return self.cardHeight;
+        }
         return SCREEN_HEIGHT - NAVIGATIONBAR_HEIGHT;
     }else if (indexPath.section == self.dataArray.count + 1) {
         return 280;
     }
     
     NSInteger totalHeight = 0;
-  
+    
     taskDetail *model = self.dataArray[indexPath.section];
     
     NSInteger firstHeight = 44 ;
@@ -282,7 +295,7 @@
         int num = 0;
         for (NSDictionary *detailArr in thirdArr) {
             if (![detailArr[@"cardDisplay"] boolValue]) {
-               NSArray *fourthArr = detailArr[@"childrens"];
+                NSArray *fourthArr = detailArr[@"childrens"];
                 thirdHeight += 40;
                 if (fourthArr.count) {
                     fourthHeight += [fourthArr count] *40;
@@ -298,12 +311,50 @@
                 num ++;
             }
         }
-//        if (num>0 &&thirdArr.count >0) {
-//            thirdHeight += 30;
-//        }
+        //        if (num>0 &&thirdArr.count >0) {
+        //            thirdHeight += 30;
+        //        }
     }
     
-    totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
+    //计算下 备注有几个，每个都给一个定高吧 60？
+    //计算备注高度
+      
+      int remarkHeight = 0;
+      NSMutableDictionary *remarkDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+      for (NSDictionary *secondDic in secondArr) {
+          if ([secondDic[@"annotation"] boolValue]) {
+              [remarkDic setValue:safeString(secondDic[@"remark"]) forKey:safeString(secondDic[@"infoId"])];
+              remarkHeight +=60;
+          }
+          NSArray *thirdArr = secondDic[@"childrens"];
+          for (NSDictionary *thridDic in thirdArr) {
+              if ([thridDic[@"annotation"] boolValue]) {
+                  [remarkDic setValue:safeString(thridDic[@"remark"]) forKey:safeString(thridDic[@"infoId"])];
+                  remarkHeight +=60;
+              }
+              NSArray *fourthArr = thridDic[@"childrens"];
+              
+              for (NSDictionary *fourthDic in fourthArr) {
+                  if ([fourthDic[@"annotation"] boolValue]) {
+                      [remarkDic setValue:safeString(fourthDic[@"remark"]) forKey:safeString(fourthDic[@"infoId"])];
+                      remarkHeight +=60;
+                  }
+                  NSArray *fifthArr = fourthDic[@"childrens"];
+                  for (NSDictionary *fifDic in fifthArr) {
+                      if ([fifDic[@"annotation"] boolValue]) {
+                          [remarkDic setValue:safeString(fifDic[@"remark"]) forKey:safeString(fifDic[@"infoId"])];
+                          remarkHeight +=60;
+                      }
+                  }
+                  
+              }
+          }
+          
+      }
+      
+    NSLog(@"remarkHeight ==%d",remarkHeight);
+    
+    totalHeight = firstHeight + secondHeight + thirdHeight + fourthHeight ;
     NSLog(@"第一层高度：-----------%ld",(long)firstHeight);
     NSLog(@"第2层高度：-----------%ld",(long)secondHeight);
     NSLog(@"第3层高度：-----------%ld",(long)thirdHeight);
@@ -312,7 +363,7 @@
         totalHeight +=50;
     }
     return totalHeight;
-
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -341,21 +392,21 @@
         cell.dataDic = self.dataDic;
         cell.listArray = self.equipArr;
         cell.dataModel = self.dataModel;
-
+        
         cell.moreAction = ^{
             KG_EquipCardViewController *vc = [[KG_EquipCardViewController alloc]init];
             vc.saveSuccessBlock = ^{
-//                [self.moreBtn removeFromSuperview];
-//                self.moreBtn = nil;
-//                self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//                [self.moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
-//                [self.moreBtn setImage:[UIImage imageNamed:@"white_more"] forState:UIControlStateNormal];
-//                [self.navigationView addSubview:self.moreBtn];
-//                [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//                    make.width.height.equalTo(@44);
-//                    make.centerY.equalTo(self.titleLabel.mas_centerY);
-//                    make.right.equalTo(self.navigationView.mas_right).offset(-13);
-//                }];
+                //                [self.moreBtn removeFromSuperview];
+                //                self.moreBtn = nil;
+                //                self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                //                [self.moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+                //                [self.moreBtn setImage:[UIImage imageNamed:@"white_more"] forState:UIControlStateNormal];
+                //                [self.navigationView addSubview:self.moreBtn];
+                //                [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                //                    make.width.height.equalTo(@44);
+                //                    make.centerY.equalTo(self.titleLabel.mas_centerY);
+                //                    make.right.equalTo(self.navigationView.mas_right).offset(-13);
+                //                }];
             };
             vc.dataDic = self.dataDic;
             vc.listArray = self.equipArr;
@@ -364,7 +415,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         };
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         return cell;
         
     }else if (indexPath.section == self.dataArray.count +1 ) {
@@ -390,8 +441,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-   
-   
+    
+    
 }
 
 - (void)createNaviTopView {
@@ -471,7 +522,7 @@
 
 - (void)back
 {
-     [UserManager shareUserManager].isChangeTask = NO;
+    [UserManager shareUserManager].isChangeTask = NO;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -481,8 +532,8 @@
 //           删除：只有领导有权限删除任务
 - (void)moreAction {
     if(!self.canUpdateOrSubmit) {
-//        [FrameBaseRequest showMessage:@"任务已完成，不能执行此操作"];
-//        return;
+        //        [FrameBaseRequest showMessage:@"任务已完成，不能执行此操作"];
+        //        return;
     }
     [_xunShiHandelView removeFromSuperview];
     _xunShiHandelView= nil;
@@ -509,38 +560,55 @@
                 }
             }
             
-        [self checkCanChangeTask:dataStr];
-        if ([dataStr isEqualToString:@"提交任务"]) {
-            NSLog(@"提交任务");
-            [self uploadTask];
-        }else if ([dataStr isEqualToString:@"移交任务"]) {
-            NSLog(@"移交任务");
-            [self removeTask];
-        }else if ([dataStr isEqualToString:@"删除任务"]) {
-            NSLog(@"删除任务");
-            [self deleteTask];
-        }else {
-            NSLog(@"修改任务");
-            [self.moreBtn removeFromSuperview];
-            self.moreBtn = nil;
-            /** 更多按钮 **/
-            self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            [self.moreBtn addTarget:self action:@selector(saveAction) forControlEvents:UIControlEventTouchUpInside];
-            self.moreBtn.titleLabel.font = FontSize(16);
-            
-            [self.moreBtn setTitle:@"保存" forState:UIControlStateNormal];
-            [self.moreBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
-            [self.navigationView addSubview:self.moreBtn];
-            [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.height.equalTo(@44);
-                make.centerY.equalTo(self.titleLabel.mas_centerY);
-                make.right.equalTo(self.navigationView.mas_right).offset(-13);
-            }];
-            [UserManager shareUserManager].isChangeTask = YES;
-            //                [self changeTask];
-            [self.tableView reloadData];
-        }
-    };
+            [self checkCanChangeTask:dataStr];
+            if ([dataStr isEqualToString:@"提交任务"]) {
+                NSLog(@"提交任务");
+                if([safeString(self.dataDic[@"status"]) isEqualToString:@"2"] ||
+                   [safeString(self.dataDic[@"status"]) isEqualToString:@"4"]) {
+                    
+                    [FrameBaseRequest showMessage:@"已完成任务不能提交任务"];
+                    return;
+                }
+                [self uploadTask];
+            }else if ([dataStr isEqualToString:@"移交任务"]) {
+                NSLog(@"移交任务");
+                if([safeString(self.dataDic[@"status"]) isEqualToString:@"2"] ||
+                   [safeString(self.dataDic[@"status"]) isEqualToString:@"4"]) {
+                    
+                    [FrameBaseRequest showMessage:@"已完成任务不能移交任务"];
+                    return;
+                }
+                [self removeTask];
+            }else if ([dataStr isEqualToString:@"删除任务"]) {
+                NSLog(@"删除任务");
+                if (![CommonExtension isLingDao]) {
+                    [FrameBaseRequest showMessage:@"您没有删除任务的权限"];
+                    return;
+                }
+                
+                [self deleteTask];
+            }else {
+                NSLog(@"修改任务");
+                [self.moreBtn removeFromSuperview];
+                self.moreBtn = nil;
+                /** 更多按钮 **/
+                self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                [self.moreBtn addTarget:self action:@selector(saveAction) forControlEvents:UIControlEventTouchUpInside];
+                self.moreBtn.titleLabel.font = FontSize(16);
+                
+                [self.moreBtn setTitle:@"保存" forState:UIControlStateNormal];
+                [self.moreBtn setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+                [self.navigationView addSubview:self.moreBtn];
+                [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.width.height.equalTo(@44);
+                    make.centerY.equalTo(self.titleLabel.mas_centerY);
+                    make.right.equalTo(self.navigationView.mas_right).offset(-13);
+                }];
+                [UserManager shareUserManager].isChangeTask = YES;
+                //                [self changeTask];
+                [self.tableView reloadData];
+            }
+        };
         [self.xunShiHandelView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.view.mas_left);
             make.right.equalTo(self.view.mas_right);
@@ -592,7 +660,7 @@
     }]];
     
     [self presentViewController:alertContor animated:NO completion:nil];
-  
+    
 }
 //移交任务
 - (void)removeTask {
@@ -603,12 +671,12 @@
 //显示弹窗
 - (void)showAssignView {
     NSDictionary *dDic = self.dataDic;
-  
+    
     self.alertView = [[KG_RemoveTaskView alloc]init];
     [JSHmainWindow addSubview:self.alertView];
     self.alertView.dataDic = dDic;
     self.alertView.confirmBlockMethod = ^(NSDictionary * _Nonnull dataDic, NSString * _Nonnull name, NSString * _Nonnull nameID) {
-
+        
         [self assignData:dataDic name:name withNameID:nameID];
         
     };
@@ -779,7 +847,7 @@
 
 //提交任务
 - (void)uploadTask{
-
+    
     NSString *leadStr = @"";
     NSString *patrolName = safeString(self.dataModel.patrolName);
     NSArray *leadArr = [UserManager shareUserManager].leaderNameArray;
@@ -805,8 +873,10 @@
     
     
     paramDic[@"id"] = safeString(self.dataDic[@"id"]);
-    NSDictionary *resultDic = [NSDictionary dictionaryWithObjectsAndKeys:@"干净",@"99f29833-0c39-48f9-81b3-9246e25ee9f7",@"18s",@"233b470f-0d6f-43a6-9f35-dcaa43657e27", nil];
-    paramDic[@"result"] = [self convertToJsonData:resultDic];
+    if([self.dataModel.task count]) {
+        paramDic[@"result"] =  [self convertToJsonData:[CommonExtension getXunshiResultReportDic:self.dataModel.task]] ;
+    }
+    
     paramDic[@"status"] = @"2";
     paramDic[@"description"] = @"";
     NSDictionary *remarkDic = [NSDictionary dictionary];
@@ -822,11 +892,11 @@
     
     
     paramDic[@"patrolName"] = safeString(self.dataDic[@"patrolName"]);
-//
+    //
     NSMutableArray *labelList = [NSMutableArray arrayWithCapacity:0];
-//    NSMutableDictionary *labelDic = [NSMutableDictionary dictionary];
-//    [labelDic setValue:@"DVOR" forKey:@"name"];
-//    [labelList addObject:labelDic];
+    //    NSMutableDictionary *labelDic = [NSMutableDictionary dictionary];
+    //    [labelDic setValue:@"DVOR" forKey:@"name"];
+    //    [labelList addObject:labelDic];
     if (isSafeArray(self.dataDic[@"atcPatrolLabelList"])) {
         if ([self.dataDic[@"atcPatrolLabelList"] count]) {
             paramDic[@"atcPatrolLabelList"] = self.dataDic[@"atcPatrolLabelList"];
@@ -836,14 +906,14 @@
         
     }else {
         paramDic[@"atcPatrolLabelList"] = labelList;
-      
+        
     }
     
     
     NSMutableArray *workList = [NSMutableArray arrayWithCapacity:0];
-//    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
-//    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
-//    [workList addObject:workDic];
+    //    NSMutableDictionary *workDic = [NSMutableDictionary dictionary];
+    //    [workDic setValue:@"1d13c2dc-fb3a-441f-976d-7a7537018245" forKey:@"workPersonName"];
+    //    [workList addObject:workDic];
     if (isSafeArray(self.dataDic[@"atcPatrolWorkList"])) {
         if ([self.dataDic[@"atcPatrolWorkList"] count]) {
             paramDic[@"atcPatrolWorkList"] = self.dataDic[@"atcPatrolWorkList"];
@@ -898,15 +968,15 @@
         if ([dic[@"isUpdateEnable"] boolValue]) {
             
         }else {
-//            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
-//            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
-//            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-//
-//            }]];
-//
-//            [self presentViewController:alertContor animated:NO completion:nil];
-//
-//
+            //            UIAlertController *alertContor = [UIAlertController alertControllerWithTitle:@"" message:@"是否要覆盖别人的提交?" preferredStyle:UIAlertControllerStyleAlert];
+            //            [alertContor addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+            //            [alertContor addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            //
+            //            }]];
+            //
+            //            [self presentViewController:alertContor animated:NO completion:nil];
+            //
+            //
         }
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
@@ -930,7 +1000,7 @@
 
 - (void)queryReportDetailData {
     NSString *rId = self.dataDic[@"id"];
-    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getTourInfoById/%@",rId]];
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getMaintainInfoById/%@",rId]];
     
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -998,7 +1068,7 @@
             NSArray *darr = infoDic[@"systemAndEquipmentInfo"];
             self.equipArr = darr;
         }
-
+        
         
         [self getTaskFaBuTiJiaoData];
         [self getReceviceData];
@@ -1043,7 +1113,7 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-       
+        
         NSLog(@"1");
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -1108,37 +1178,37 @@
 - (void)refreshData {
     self.xunshiTopView.model = self.dataModel;
     self.xunshiTopView.dataDic =self.dataDic;
-//    self.radarView.detailModel = self.radarModel;
-//    self.powerView.detailModel = self.powerModel;
-//    self.upsView.detailModel = self.upsModel;
+    //    self.radarView.detailModel = self.radarModel;
+    //    self.powerView.detailModel = self.powerModel;
+    //    self.upsView.detailModel = self.upsModel;
     //44 +
-//    NSInteger scrollHeight = 0;
-//    NSInteger totalHeight = 0;
-//
-//    for(taskDetail *model in self.dataModel.task){
-//
-//        NSInteger firstHeight = model.childrens.count * 44 ;
-//        //第一层 model.childrens 44
-//        //第二层 model.childrens firstobject  44
-//        NSArray *secondArr = [model.childrens firstObject][@"childrens"];
-//        NSInteger secondHeight = [secondArr count] *44;
-//        //第三层
-//        NSInteger thirdHeight = 0;
-//        NSInteger fourthHeight = 0;
-//        for (NSDictionary *dic in secondArr) {
-//            NSArray *thirdArr = dic[@"childrens"];
-//            thirdHeight += thirdArr.count *30;
-//            for (NSDictionary *detailArr in thirdArr) {
-//                NSArray *fourthArr = detailArr[@"childrens"];
-//                fourthHeight += fourthArr.count *30;
-//            }
-//        }
-//        totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
-//
-//        scrollHeight += totalHeight;
-//    }
-   [self.tableView reloadData];
-   
+    //    NSInteger scrollHeight = 0;
+    //    NSInteger totalHeight = 0;
+    //
+    //    for(taskDetail *model in self.dataModel.task){
+    //
+    //        NSInteger firstHeight = model.childrens.count * 44 ;
+    //        //第一层 model.childrens 44
+    //        //第二层 model.childrens firstobject  44
+    //        NSArray *secondArr = [model.childrens firstObject][@"childrens"];
+    //        NSInteger secondHeight = [secondArr count] *44;
+    //        //第三层
+    //        NSInteger thirdHeight = 0;
+    //        NSInteger fourthHeight = 0;
+    //        for (NSDictionary *dic in secondArr) {
+    //            NSArray *thirdArr = dic[@"childrens"];
+    //            thirdHeight += thirdArr.count *30;
+    //            for (NSDictionary *detailArr in thirdArr) {
+    //                NSArray *fourthArr = detailArr[@"childrens"];
+    //                fourthHeight += fourthArr.count *30;
+    //            }
+    //        }
+    //        totalHeight = firstHeight + secondHeight +thirdHeight +fourthHeight;
+    //
+    //        scrollHeight += totalHeight;
+    //    }
+    [self.tableView reloadData];
+    
 }
 
 -(NSArray *)dataArray{
@@ -1152,7 +1222,7 @@
 //展开
 - (void)zhankaiMethod:(UIButton *)button {
     
-   
+    
 }
 
 
@@ -1165,9 +1235,9 @@
     }
     NSDate *date=[NSDate dateWithTimeIntervalSince1970:timestamp.integerValue/1000];
     NSString *timeStr=[[self dateFormatWith:@"YYYY年MM月dd日HH时mm分"] stringFromDate:date];
-//    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
+    //    NSString *timeStr=[[self dateFormatWith:@"YYYY-MM-dd"] stringFromDate:date];
     return timeStr;
-
+    
 }
 - (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -1203,7 +1273,7 @@
 - (KG_XunShiHandleView *)xunShiHandelView {
     if (!_xunShiHandelView) {
         _xunShiHandelView = [[KG_XunShiHandleView alloc]init];
-      
+        
     }
     return _xunShiHandelView;
 }
@@ -1211,7 +1281,7 @@
 //获得回复
 - (void)getReceviceData {
     
-//    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
+    //    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
     NSString *rId = self.dataDic[@"id"];
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcPatrolDialog/%@",rId]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -1244,7 +1314,7 @@
 //获得日志
 - (void)getLogData {
     
-//    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
+    //    http://192.168.100.173:8089/intelligent/atcPatrolDialog/67900de54fe34afda50bde26e2b40b0a
     NSString *rId = safeString(self.dataDic[@"id"]) ;
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/getAtcPatrolLog/%@/%@/%@",rId,@"1",@"100"]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
@@ -1253,12 +1323,12 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-       
+        
         if (isSafeDictionary(result[@"value"])) {
             if (isSafeArray(result[@"value"][@"records"])) {
                 self.logArr = result[@"value"][@"records"];
             }
-           
+            
         }
         for (NSDictionary *logDic in self.logArr) {
             if ([safeString(logDic[@"content"]) isEqualToString:@"提交"]) {
@@ -1294,39 +1364,39 @@
         return @"";
     }
     NSError *error;
-
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
-
-    NSString *jsonString;
-
-    if (!jsonData) {
-
-
-
-    }else{
-
-        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
-
-    }
-
-    NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
-
-    NSRange range = {0,jsonString.length};
-
-    //去掉字符串中的空格
-
-    [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
-
-    NSRange range2 = {0,mutStr.length};
-
-    //去掉字符串中的换行符
-
-    [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
-
-    return mutStr;
-
-}
     
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+    
+    NSString *jsonString;
+    
+    if (!jsonData) {
+        
+        
+        
+    }else{
+        
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+    }
+    
+    NSMutableString *mutStr = [NSMutableString stringWithString:jsonString];
+    
+    NSRange range = {0,jsonString.length};
+    
+    //去掉字符串中的空格
+    
+    [mutStr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
+    
+    NSRange range2 = {0,mutStr.length};
+    
+    //去掉字符串中的换行符
+    
+    [mutStr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+    
+    return mutStr;
+    
+}
+
 //提交回复
 //任务的回复提交接口：
 //请求地址：/intelligent/atcPatrolDialog
@@ -1336,7 +1406,7 @@
 //请求地址：/intelligent/atcPatrolDialog
 //请求方式：POST
 - (void)uploadReceiveData:(NSString *)textStr {
-
+    
     NSString *idStr = @"";
     NSString *nameStr = @"";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1382,7 +1452,7 @@
         NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcSafeguard/insertAtcSpecialTag"]];
         
         NSMutableArray *paramArr = [NSMutableArray arrayWithCapacity:0];
-       
+        
         
         NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
         paramDic[@"patrolInfoId"] = safeString(dic[@"patrolRecordId"]);
@@ -1403,7 +1473,7 @@
         paramDic[@"source"] = safeString(self.dataDic[@"typeCode"]);
         
         [paramArr addObject:paramDic];
-   
+        
         [FrameBaseRequest postWithUrl:FrameRequestURL param:paramArr success:^(id result) {
             NSInteger code = [[result objectForKey:@"errCode"] intValue];
             if(code != 0){
@@ -1412,7 +1482,8 @@
             }
             [FrameBaseRequest showMessage:@"保存特殊标记成功"];
             NSLog(@"请求成功");
-          
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshZhiWeiData" object:self];
+            [self queryReportDetailData];
         }  failure:^(NSError *error) {
             NSLog(@"请求失败 原因：%@",error);
             if([[NSString stringWithFormat:@"%@",error] rangeOfString:@"unauthorized"].location !=NSNotFound||[[NSString stringWithFormat:@"%@",error] rangeOfString:@"forbidden"].location !=NSNotFound){
@@ -1426,5 +1497,13 @@
     }
 }
 
-
+//实现方法
+-(void)refreshCardHeight:(NSNotification *)notification{
+    NSLog(@"接收 不带参数的消息");
+   
+    self.cardHeight = [notification.object intValue];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+    
+}
 @end

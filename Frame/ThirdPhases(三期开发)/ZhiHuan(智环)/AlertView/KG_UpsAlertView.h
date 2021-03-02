@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic ,strong) NSMutableArray *dataArray;
+
+
+@property (nonatomic ,assign) BOOL  isFromZhiTai;
 @end
 
 NS_ASSUME_NONNULL_END

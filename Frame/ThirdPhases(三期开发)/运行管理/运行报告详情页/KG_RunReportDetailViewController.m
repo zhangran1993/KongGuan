@@ -78,6 +78,9 @@
     if (rId.length == 0) {
         rId = self.dataDic[@"id"];
     }
+    if (rId.length == 0) {
+        rId = self.dataDic[@"runReportId"];
+    }
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcRunReport/%@",rId]];
     [FrameBaseRequest getDataWithUrl:FrameRequestURL param:nil success:^(id result) {
         
@@ -225,6 +228,9 @@
     }else if (indexPath.section == 6) {
         NSString *str = safeString(self.dataModel.info[@"changeContent"]);
         
+        if ([self.pushType isEqualToString:@"create"]) {
+            return 125;
+        }
         if(str.length == 0) {
             return 0;
         }
@@ -410,10 +416,14 @@
         rId = self.dataDic[@"id"];
     }
     if(rId.length == 0) {
+        rId = self.dataDic[@"runReportId"];
+    }
+    if(rId.length == 0) {
         
         [FrameBaseRequest showMessage:@"请交班人生成运行报告"];
+        return;
     }
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/succession/%@/%@",safeString(self.dataDic[@"post"]),rId]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/succession/%@/%@",safeString(self.dataDic[@"positionCode"]),rId]];
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
         [MBProgressHUD hideHUD];
@@ -460,12 +470,16 @@
         [FrameBaseRequest showMessage:@"请先接班再交班"];
         return;
     }
+   
     
     NSString *rId = safeString(self.dataDic[@"atcRunReportId"]);
     if (rId.length == 0) {
         rId = self.dataDic[@"id"];
     }
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/shiftHandover/%@/%@",safeString(self.dataDic[@"post"]),rId]];
+    if (rId.length == 0) {
+        rId = self.dataDic[@"runReportId"];
+    }
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcChangeShiftsRecord/shiftHandover/%@/%@",safeString(self.dataDic[@"positionCode"]),rId]];
     [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
     [FrameBaseRequest postWithUrl:FrameRequestURL param:nil success:^(id result) {
         [MBProgressHUD hideHUD];
@@ -503,18 +517,33 @@
 - (void)createReportMethod{
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:@"/intelligent/atcRunReport"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    if (safeString(self.dataDic[@"time"]).length >10 && self.endTime.length >10) {
-        NSString *startTimeStr = [safeString(self.dataDic[@"time"]) substringToIndex:10];
+    if (safeString(self.dataDic[@"startOnDutyDay"]).length >10 && self.endTime.length >10) {
+        NSString *startTimeStr = [safeString(self.dataDic[@"startOnDutyDay"]) substringToIndex:10];
         NSString *endTimeStr = [self.endTime substringToIndex:10];
         NSString *title = safeString(self.dataModel.info[@"title"]);
 //        NSString *title = [NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString(self.dataDic[@"post"])],startTimeStr,endTimeStr,@"运行报告"];
-        params[@"title"] = title;
+        
+        if([title containsString:@","]) {
+            
+            NSArray *array = [title componentsSeparatedByString:@","];
+            if (array.count) {
+                NSString *ss =[NSString stringWithFormat:@"%@%@-%@%@",[CommonExtension getWorkType:safeString([array firstObject])],startTimeStr,endTimeStr,@"运行报告"];
+                params[@"title"] = ss;
+            }else {
+                
+                params[@"title"] = title;
+            }
+            
+        }else {
+            params[@"title"] = title;
+        }
+        
     }
     
     params[@"reportRange"] =safeString(self.dataDic[@"stationCode"]);
-    params[@"startTime"] =[self CurTimeMilSec:safeString(self.dataDic[@"time"])] ;
+    params[@"startTime"] =[self CurTimeMilSec:safeString(self.dataDic[@"startOnDutyDay"])] ;
     params[@"endTime"] = [self CurTimeMilSec:safeString(self.endTime)];
-    params[@"post"] = safeString(self.dataDic[@"post"]);
+    params[@"post"] = safeString(self.dataDic[@"positionCode"]);
     params[@"submitter"] = safeString(self.dataModel.info[@"operatorId"]);
     params[@"id"] = safeString(self.dataDic[@"id"]);
     params[@"status"] = safeString(self.dataDic[@"true"]);

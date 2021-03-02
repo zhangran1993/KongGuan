@@ -138,135 +138,7 @@
         make.top.equalTo(reportRightBtn.mas_bottom).offset(15);
     }];
     [self.runReportTableView reloadData];
-    UIView *createReportView = [[UIView alloc]init];
-    [self.runReprtView addSubview:createReportView];
-    [createReportView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@147);
-        make.height.equalTo(@37);
-        make.left.equalTo(self.runReprtView.mas_left).offset(16);
-        make.top.equalTo(self.runReportTableView.mas_bottom).offset(16);
-    }];
-    createReportView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
-    createReportView.layer.cornerRadius = 20;
-    createReportView.layer.masksToBounds = YES;
-    
-    UIImageView *createIcon = [[UIImageView alloc]init];
-    [createReportView addSubview:createIcon];
-    createIcon.image = [UIImage imageNamed:@"run_createIcon"];
-    [createIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@16);
-        make.height.equalTo(@19);
-        make.left.equalTo(createReportView.mas_left).offset(13);
-        make.centerY.equalTo(createReportView.mas_centerY);
-    }];
-    
-    UILabel *createReportLabel = [[UILabel alloc]init];
-    [createReportView addSubview:createReportLabel];
-    createReportLabel.text = @"生成运行报告";
-    createReportLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-    createReportLabel.font = [UIFont systemFontOfSize:16];
-    [createReportLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(createIcon.mas_right).offset(6);
-        make.centerY.equalTo(createIcon.mas_centerY);
-        make.right.equalTo(createReportView.mas_right).offset(-6);
-        make.height.equalTo(@22);
-    }];
-    
-    UIButton *createReportBtn = [[UIButton alloc]init];
-    [createReportBtn setBackgroundColor:[UIColor clearColor]];
-    [createReportView addSubview:createReportBtn];
-    [createReportBtn addTarget:self action:@selector(CreateReportMethod) forControlEvents:UIControlEventTouchUpInside];
-    [createReportBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(createReportView.mas_height);
-        make.centerY.equalTo(createReportView.mas_centerY);
-        make.left.equalTo(createReportView.mas_left);
-        make.right.equalTo(createReportView.mas_right);
-    }];
-    
-    UIButton *jiaobanBtn  = [[UIButton alloc]init];
-    [jiaobanBtn setBackgroundColor:[UIColor clearColor]];
-    jiaobanBtn.layer.borderWidth = 1;
-    jiaobanBtn.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-    [jiaobanBtn setTitle:@"交班"  forState:UIControlStateNormal];
-    jiaobanBtn.layer.cornerRadius = 20;
-    jiaobanBtn.layer.masksToBounds = YES;
-    [jiaobanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
-    jiaobanBtn.titleLabel.font  = [UIFont systemFontOfSize:16];
-    [self.runReprtView addSubview:jiaobanBtn];
-    [jiaobanBtn addTarget:self action:@selector(jiaobanMethod) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    UIButton *jiebanBtn  = [[UIButton alloc]init];
-    [jiebanBtn setBackgroundColor:[UIColor clearColor]];
-    jiebanBtn.layer.borderWidth = 1;
-    jiebanBtn.layer.cornerRadius = 20;
-    jiebanBtn.titleLabel.font  = [UIFont systemFontOfSize:16];
-    [jiebanBtn setTitle:@"接班"  forState:UIControlStateNormal];
-    jiebanBtn.layer.masksToBounds = YES;
-    jiebanBtn.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-    [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
-    jiaobanBtn.titleLabel.font  = [UIFont systemFontOfSize:16];
-    [self.runReprtView addSubview:jiebanBtn];
-    [jiebanBtn addTarget:self action:@selector(jiebanMethod) forControlEvents:UIControlEventTouchUpInside];
-    [jiebanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@37);
-        make.centerY.equalTo(createReportView.mas_centerY);
-        make.width.equalTo(@64);
-        make.right.equalTo(self.runReprtView.mas_right).offset(-16);
-    }];
-    [jiaobanBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@37);
-        make.centerY.equalTo(createReportView.mas_centerY);
-        make.right.equalTo(jiebanBtn.mas_left).offset(-9);
-        make.width.equalTo(@64);
-    }];
-    //是否为接班人
-    if([self.jiaoJieBanInfo[@"isSuccessor"] boolValue]) {
-        jiebanBtn.layer.borderColor =  [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
-        jiebanBtn.userInteractionEnabled = YES;
-    }else {
-        jiebanBtn.layer.borderColor = [[UIColor colorWithHexString:@"#E3E3E5"] CGColor];
-        [jiebanBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
-        jiebanBtn.userInteractionEnabled = NO;
-    }
-    //是否为交班人
-    if([self.jiaoJieBanInfo[@"isHandoverPerson"] boolValue]) {
-        jiaobanBtn.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-        [jiaobanBtn setTitleColor:[UIColor colorWithHexString:@"#004EC4"] forState:UIControlStateNormal];
-        jiaobanBtn.userInteractionEnabled = YES;
-    }else {
-        jiaobanBtn.layer.borderColor = [[UIColor colorWithHexString:@"#E3E3E5"] CGColor];
-        [jiaobanBtn setTitleColor:[UIColor colorWithHexString:@"#BABCC4"] forState:UIControlStateNormal];
-        jiaobanBtn.userInteractionEnabled = NO;
-    }
-    //是否能生成运行报告
-    if([self.jiaoJieBanInfo[@"isRunReport"] boolValue]) {
-        createReportView.layer.borderColor = [UIColor colorWithRed:47/255.0 green:94/255.0 blue:209/255.0 alpha:1.0].CGColor;
-        createReportView.layer.borderWidth = 1;
-        createIcon.image = [UIImage imageNamed:@"run_createIcon"];
-        createReportLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
-        createReportBtn.userInteractionEnabled = YES;
-        createReportView.backgroundColor = [UIColor colorWithHexString:@"#2F5ED1"];
-    }else {
-        createReportView.layer.borderColor = [[UIColor colorWithHexString:@"#E3E3E5"] CGColor];
-        createReportView.layer.borderWidth = 1;
-        createIcon.image = [UIImage imageNamed:@"create_unselIcon"];
-        createReportLabel.textColor = [UIColor colorWithHexString:@"#BEBFC7"];
-        createReportBtn.userInteractionEnabled = NO;
-        createReportView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
-    }
-    
-    
-    UIView *lineView = [[UIView alloc]init];
-    lineView.backgroundColor = [UIColor colorWithHexString:@"#E1E1E5"];
-    [self.runReprtView addSubview:lineView];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@0.5);
-        make.left.equalTo(self.runReprtView.mas_left).offset(15);
-        make.right.equalTo(self.runReprtView.mas_right).offset(-17);
-        make.top.equalTo(jiaobanBtn.mas_bottom).offset(16);
-    }];
+   
 }
 
 - (UITableView *)runReportTableView {
@@ -321,5 +193,9 @@
     if (self.gotoDetailBlockMethod) {
         self.gotoDetailBlockMethod(dataDic);
     }
+}
+
+- (void)setModel:(KG_RunManagerDetailModel *)model {
+    _model = model;
 }
 @end

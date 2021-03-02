@@ -157,12 +157,14 @@
     self.titleLabel.textColor =[UIColor colorWithHexString:@"#626470"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
     self.titleLabel.font = [UIFont my_Pingfont:14];
+    self.titleLabel.numberOfLines = 2;
     [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).offset(4);
+        make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left).offset(49.5);
-        make.height.equalTo(@32);
-        make.width.lessThanOrEqualTo(@150);
+        make.height.equalTo(@40);
+        make.width.lessThanOrEqualTo(@250);
+//        make.bottom.equalTo(self.mas_bottom);
     }];
     
     //数值未取到红色感叹号

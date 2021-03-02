@@ -141,6 +141,18 @@
     self.changeDutyButton.hidden = YES;
     [self.changeDutyButton addTarget:self action:@selector(changeDuty:) forControlEvents:UIControlEventTouchUpInside];
     
+    self.changeDutyBgButton = [[UIButton alloc]init];
+    [self addSubview:self.changeDutyBgButton];
+  
+    [self.changeDutyBgButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).offset(-16);
+        make.centerY.equalTo(self.mas_centerY);
+        make.height.equalTo(self.mas_height);
+        make.width.equalTo(@((SCREEN_WIDTH -32)/2));
+    }];
+    self.changeDutyBgButton.hidden = YES;
+    [self.changeDutyBgButton addTarget:self action:@selector(changeDuty:) forControlEvents:UIControlEventTouchUpInside];
+    
     
 }
 

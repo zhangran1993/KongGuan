@@ -149,7 +149,7 @@
     
     UILabel  *opinionImgLabel = [[UILabel alloc] initWithFrame:CGRectMake(FrameWidth(23),FrameWidth(530)+Height_NavBar ,FrameWidth(220), 20)];
     opinionImgLabel.textAlignment = NSTextAlignmentLeft;
-    opinionImgLabel.text = @"图片补充：(相关图能帮程序员哥哥解决问题哦~)";
+    opinionImgLabel.text = @"图片补充：";
     opinionImgLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     opinionImgLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     [self.view addSubview:opinionImgLabel];

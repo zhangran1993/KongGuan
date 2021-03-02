@@ -19,17 +19,17 @@
 @interface CommonExtension : NSObject
 + (BOOL)isEmptyWithString:(NSString *)string;
 + (NSString *)returnWithString:(NSString *)string;
-+(NSString *)convertToJsonData:(NSMutableArray *)dict;
++ (NSString *)convertToJsonData:(NSMutableArray *)dict;
 + (void)logout;
 + (void)showviewLoadView;
--(void)addTouchViewParent:(UIView *)ParentView;
--(void)addTouchViewParentTagClass:(UIView *)ParentView;
-+(void)addLevelBtn:(UIButton *)btn level:(NSString *)level;
+- (void)addTouchViewParent:(UIView *)ParentView;
+- (void)addTouchViewParentTagClass:(UIView *)ParentView;
++ (void)addLevelBtn:(UIButton *)btn level:(NSString *)level;
 + (void)addTViewParent:(UIView *)ParentView textView:(FSTextView *)textView text:(NSString*)text placeholder:(NSString *)placeholder maxLength:(int)maxLength;
 
 + (BOOL)isPureInt:(NSString *)string;
-+(NSString *)getDateByTimesp:(double)date dateType:(NSString *)dateType;
-+(void)showMessage:(NSString*)message;
++ (NSString *)getDateByTimesp:(double)date dateType:(NSString *)dateType;
++ (void)showMessage:(NSString*)message;
 /*
  *第二种方法，利用Emoji表情最终会被编码成Unicode，因此，
  *只要知道Emoji表情的Unicode编码的范围，
@@ -41,14 +41,16 @@
 @property(nonatomic, strong)NSString *parentViewTitle;
 @property(nonatomic, assign)NSInteger parentViewTag;
 @property (nonatomic, weak)id<ParentViewDelegate>delegate;
-+(int)isFirstLauch;
++ (int)isFirstLauch;
 + (float)heightForString:(NSString *)value fontSize:(UIFont*)fontSize andWidth:(float)width ;
 
-
-+ (NSString *) getDeviceIcon:(NSString *)code ;
-
-+ (NSString *) getWorkType:(NSString *)typeCode ;
+//获得设备icon
++ (NSString *)getDeviceIcon:(NSString *)code ;
+//获得工作类型
++ (NSString *)getWorkType:(NSString *)typeCode;
+//获得天气对应的图片
 + (NSString *) getWeatherImage:(NSString *)weather;
+//提交任务时，保存所有的集合 用于”result“字段
 + (NSDictionary *)getXunshiResultReportDic:(NSArray *)dataArray;
 + (BOOL)isLingDao;
 @end

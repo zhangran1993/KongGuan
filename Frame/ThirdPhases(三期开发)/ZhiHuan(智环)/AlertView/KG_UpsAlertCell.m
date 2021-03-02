@@ -55,10 +55,11 @@
     self.titleLabel.font = [UIFont systemFontOfSize:14];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
-    self.titleLabel.numberOfLines = 1;
+    self.titleLabel.numberOfLines = 2;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_selectImageView.mas_right).offset(7);
-        make.width.height.equalTo(@100);
+        make.height.equalTo(self.mas_height);
+        make.right.equalTo(self.mas_right).offset(-5);
         make.centerY.equalTo(_selectImageView.mas_centerY);
     }];
     

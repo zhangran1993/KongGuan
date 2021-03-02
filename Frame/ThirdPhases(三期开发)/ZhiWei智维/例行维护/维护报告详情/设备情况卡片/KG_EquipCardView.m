@@ -15,10 +15,12 @@
 @interface KG_EquipCardView ()<UITableViewDataSource,UITableViewDelegate>{
     
 }
-@property (nonatomic,strong) UITableView *sliderTableView;
-@property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) UIImageView * statusImage;
-@property (nonatomic,strong) UIButton * moreBtn;
+@property (nonatomic,strong)  UITableView        *sliderTableView;
+@property (nonatomic,strong)  UITableView        *tableView;
+@property (nonatomic,strong)  UIImageView        *statusImage;
+@property (nonatomic,strong)  UIButton           *moreBtn;
+@property (nonatomic,assign)  NSInteger          currSection;
+
 @end
 
 @implementation KG_EquipCardView
@@ -41,6 +43,8 @@
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
     }];
+    bgView.layer.cornerRadius =6.f;
+    bgView.layer.masksToBounds = YES;
     
     
     [self addSubview:self.tableView];
@@ -67,9 +71,6 @@
         make.right.equalTo(self.mas_right).offset(-22);
         make.height.equalTo(@44);
     }];
-    
-    
-    
     
 }
 - (UITableView *)tableView {
@@ -125,6 +126,39 @@
         NSString *str =  safeString(self.dataDic[@"remark"]);
         if (str.length == 0) {
             return 0;
+        }
+        return 40;
+    }else if (indexPath.section == 0) {
+        
+        
+        //先判断是四级还是五级 模板，取值
+        int levelMax = [self.dataDic[@"levelMax"] intValue];
+        if (levelMax == 4) {
+            return 40;
+            
+        }else if (levelMax == 5) {
+            
+            NSDictionary *dataDic = self.dataArray[indexPath.row];
+            NSArray *modelArr = dataDic[@"childrens"];
+            if (modelArr.count) {
+                for (NSDictionary *fourDic in modelArr) {
+                    
+                    if (isSafeDictionary(fourDic[@"atcSpecialTag"])) {
+                        NSDictionary *specDic = fourDic[@"atcSpecialTag"];
+                        if (safeString(specDic[@"specialTagCode"]).length >0) {
+                            return  40 + 57;
+                        }else {
+                            return 40;
+                        }
+                    }else {
+                        return 40;
+                    }
+                    
+                }
+                
+            }
+            return 40;
+            
         }
         return 40;
     }
@@ -351,8 +385,31 @@
         if (cell == nil) {
             cell = [[KG_EquipCardFirstCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_EquipCardFirstCell"];
         }
+        self.currSection = indexPath.row;
+        cell.specialData = ^(NSDictionary * _Nonnull dataDic) {
+            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+            
+            [dic setValue:safeString(dataDic[@"description"]) forKey:@"description"];
+            [dic setValue:safeString(dataDic[@"specialTagName"]) forKey:@"specialTagName"];
+            [dic setValue:safeString(dataDic[@"specialTagValue"]) forKey:@"specialTagValue"];
+            [dic setValue:safeString(dataDic[@"patrolRecordId"]) forKey:@"patrolRecordId"];
+            //        [dic setValue:safeString(dataDic[@"infoId"]) forKey:@"patrolInfoId"];
+            
+            
+            [dic setValue:safeString(dataDic[@"engineRoomCode"]) forKey:@"engineRoomCode"];
+            [dic setValue:safeString(dataDic[@"engineRoomName"]) forKey:@"engineRoomName"];
+            //        [dataDic setValue:safeString(self.dataDic[@"taskTime"]) forKey:@"taskTime"];
+            
+            NSDictionary *currDic = self.dataArray[self.currSection];
+            [dic setValue:safeString(currDic[@"equipmentCode"]) forKey:@"equipmentCode"];
+            [dic setValue:safeString(currDic[@"equipmentName"]) forKey:@"equipmentName"];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"saveWeiHuSpecialData"
+                                                                object:self
+                                                              userInfo:dic];
+        };
         NSDictionary *dic = self.dataArray[indexPath.row];
-        cell.dic = dic;
+        cell.dataDic = dic;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;

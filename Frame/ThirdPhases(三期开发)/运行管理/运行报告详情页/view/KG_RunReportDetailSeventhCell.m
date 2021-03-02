@@ -114,6 +114,10 @@
     NSString *str = self.model.info[@"manualAlarmContent"];
     CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 40-26, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
     NSLog(@"%f",fontRect.size.height);
+    if([self.pushType isEqualToString:@"create"]) {
+        
+       return fontRect.size.height+26 +30;
+    }
     if (str.length == 0) {
         return 0;
     }

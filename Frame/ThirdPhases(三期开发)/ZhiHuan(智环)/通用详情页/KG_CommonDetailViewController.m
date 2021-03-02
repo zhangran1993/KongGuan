@@ -99,9 +99,12 @@
 - (void)queryDMEData {
     NSString *code = @"";
     int isSystem = 0;
-   
+    NSString *equipmentCode = self.engine_room_code ;
+    if (self.engine_room_code.length == 0) {
+        equipmentCode = safeString(self.zhitaiDic[@"totalDetail"][@"code"]);
+    }
 //    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/sitDeviceInfo/%@/%d",code,isSystem];
-    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceInfo/%@/%d",self.engine_room_code,self.isSystemEquipment]];
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceInfo/%@/%d",equipmentCode,self.isSystemEquipment]];
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
@@ -574,7 +577,11 @@
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
         for (int i = 0; i < self.dataArray.count; i++) {
             equipmentDetailsModel *detailModel = self.dataArray[i];
-            if ([safeString(detailModel.equipment[@"category"]) isEqualToString:safeString(self.category)]) {
+            NSString *scode = safeString(detailModel.equipment[@"parentEquipmentCode"]);
+            if (scode.length == 0) {
+                scode = safeString(detailModel.equipment[@"code"]);
+            }
+            if ([scode isEqualToString:safeString(self.engine_room_code)]) {
                 [arr addObject:detailModel];
             }
         }
@@ -654,7 +661,7 @@
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-       [MBProgressHUD hideHUDForView:JSHmainWindow];
+       [MBProgressHUD hideHUD];
         self.detailModel = nil;
         [self.dataArray removeAllObjects];
         if (self.detailModel == nil) {
@@ -679,7 +686,7 @@
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
         
-        [MBProgressHUD hideHUDForView:JSHmainWindow];
+        [MBProgressHUD hideHUD];
         NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
         if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loginOutMethod" object:self];
@@ -732,14 +739,28 @@
 //    NSString *  FrameRequestURL  =  [NSString stringWithFormat:@"http://10.33.33.147:8089/intelligent/api/envDeviceCategory/%@",_station_code];
     
     NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/envDeviceCategory/%@",_station_code]];
+    if(self.isFromZhiTai) {
+        
+        FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/api/sitDeviceCategory/%@",_station_code]];
+    }
     [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
             [FrameBaseRequest showMessage:result[@"errMsg"]];
             return ;
         }
-        self.rightArray = result[@"value"];
-        
+        if(self.isFromZhiTai) {
+            NSDictionary *dataDic = result[@"value"];
+            if ([[dataDic allKeys] containsObject:@"categoryInfo"]) {
+                if (isSafeArray(result[@"value"][@"categoryInfo"])) {
+                    self.rightArray = result[@"value"][@"categoryInfo"];
+                }
+            }
+        }else {
+            self.rightArray = result[@"value"];
+                   
+        }
+       
         
     } failure:^(NSURLSessionDataTask *error)  {
         FrameLog(@"请求失败，返回数据 : %@",error);
@@ -806,6 +827,7 @@
 //            make.top.equalTo(self.view.mas_top).offset(-NAVIGATIONBAR_HEIGHT);
 //
 //        }];
+        _upsAlertView.isFromZhiTai = self.isFromZhiTai;
         _upsAlertView.dataArray = self.rightArray;
         _upsAlertView.didsel = ^(NSDictionary * _Nonnull selDic) {
             [self.sliderBgView removeFromSuperview];
@@ -813,10 +835,20 @@
             [self.sliderView removeFromSuperview];
             _sliderView = nil;
             [self createSliderView];
-            _category =safeString(selDic[@"categoryCode"]);
-            self.machine_name = safeString(selDic[@"categoryName"]);
-            self.currIndex = 0;
-            [self getMachineDetailList];
+             self.currIndex = 0;
+            if(self.isFromZhiTai) {
+                self.engine_room_code =safeString(selDic[@"equipmentCode"]);
+                self.machine_name = safeString(selDic[@"equipmentName"]);
+                self.isSystemEquipment = [selDic[@"isSystemEquipment"] boolValue];
+                [self queryDMEData];
+            }else {
+                _category =safeString(selDic[@"categoryCode"]);
+                self.machine_name = safeString(selDic[@"categoryName"]);
+                [self getMachineDetailList];
+            }
+            
+           
+            
         };
         
     }

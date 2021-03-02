@@ -58,7 +58,7 @@
         make.left.equalTo(self.leftIcon.mas_right).offset(5);
         make.centerY.equalTo(self.leftIcon.mas_centerY);
         make.height.equalTo(@21);
-        make.width.equalTo(@100);
+        make.width.equalTo(@250);
     }];
     
     self.moreBtn = [[UIButton alloc]init];

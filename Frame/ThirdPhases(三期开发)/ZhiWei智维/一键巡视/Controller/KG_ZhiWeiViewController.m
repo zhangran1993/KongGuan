@@ -380,20 +380,40 @@
             [FrameBaseRequest showMessage:@"请先领取任务"];
             return;
         }
-        NSString *ss = safeString(dataDic[@"patrolCode"]);
-        if ([ss isEqualToString:@"monthSafeguard"] || [ss isEqualToString:@"daySafeguard"]  || [ss isEqualToString:@"yearSafeguard"] ||[ss isEqualToString:@"weekSafeguard"]
-            ||[ss isEqualToString:@"quarterSafeguard"]) {
+        NSString *ss = safeString(dataDic[@"typeCode"]);
+        if ([ss isEqualToString:@"routineMaintenance"] ) {
             
             KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
             vc.dataDic = dataDic;
             
             [self.navigationController pushViewController:vc animated:YES];
-        }else {
-            KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+        }else if([ss isEqualToString:@"specialSafeguard"]) {
+        //特殊维护
+            KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
             vc.dataDic = dataDic;
             [self.navigationController pushViewController:vc animated:YES];
+            
+        }else if([ss isEqualToString:@"specialTour"]) {
+        //特殊巡视
+            KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+            
+            vc.dataDic = dataDic;
+            vc.themeTitleStr = [NSString stringWithFormat:@"%@", dataDic[@"taskName"]];
+            [self.navigationController pushViewController:vc animated:YES];
+        }else if([ss isEqualToString:@"oneTouchTour"]) {
+            KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+            
+            vc.dataDic = dataDic;
+            vc.themeTitleStr = [NSString stringWithFormat:@"%@", dataDic[@"taskName"]];;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else {
+            KG_XunShiReportDetailViewController *vc = [[KG_XunShiReportDetailViewController alloc]init];
+            
+            vc.dataDic = dataDic;
+            vc.themeTitleStr = [NSString stringWithFormat:@"%@", dataDic[@"taskName"]];;
+            [self.navigationController pushViewController:vc animated:YES];
         }
-       
+        
     };
     self.naviTopView.addMethod = ^(NSString * _Nonnull statusType) {
         if ([statusType isEqualToString:@"yijianxunshi"]) {
@@ -642,7 +662,6 @@
         return ;
         
     }];
-    
     
 }
 //获取监控平台下所有用户列表，用来获取执行负责人名称：

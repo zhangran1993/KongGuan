@@ -188,6 +188,18 @@
       
     }];
     
+    self.statusView = [[UIView alloc]init];
+    [self.rightView addSubview:self.statusView];
+//    self.statusView.backgroundColor = [UIColor redColor];
+    self.statusView.hidden = YES; 
+    [self.statusView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.timeImage.mas_left);
+        make.bottom.equalTo(self.timeLabel.mas_top).offset(-10);
+        make.right.equalTo(self.rightView.mas_right).offset(-15);
+        make.height.equalTo(@12);
+    }];
+    
+    
     self.taskButton = [[UIButton alloc]init];
     [self.rightView addSubview:self.taskButton];
     [self.taskButton setBackgroundColor:[UIColor colorWithHexString:@"#2F5ED1"]];
@@ -300,6 +312,16 @@
         [self.starImage mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.equalTo(@0);
         }];
+    }
+    
+    
+    NSArray *siginArr = dataDic[@"atcPatrolRoomList"];
+    if (siginArr.count  &&[safeString(dataDic[@"patrolCode"]) isEqualToString:@"fieldInspection"]) {
+        self.statusView.hidden = NO;
+        
+        [self createSignView:siginArr];
+    }else {
+        //        self.statusView.hidden = YES;
     }
     if (self.currIndex == 0) {
         self.iconImage.hidden = YES;
@@ -430,4 +452,44 @@
     return timeStr;
     
 }
+
+
+- (void)createSignView :(NSArray *)array{
+    [self.statusView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    CGFloat witdth = 0;
+    CGFloat orX = 0;
+    for (int i =0; i<array.count; i++) {
+        CGRect fontRect = [safeString(array[i][@"engineRoomName"]) boundingRectWithSize:CGSizeMake(MAXFLOAT,12) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+        
+       
+        witdth = fontRect.size.width ;
+        UIImageView *detailImage = [[UIImageView alloc]initWithFrame:CGRectMake(orX, 0, 12, 12)];
+        if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"0"])  {
+            detailImage.image = [UIImage imageNamed:@"gray_qizi"];
+        }else if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"1"])  {
+            detailImage.image = [UIImage imageNamed:@"lv_qizi"];
+        }else {
+            detailImage.image = [UIImage imageNamed:@"red_qizi"];
+        }
+        [self.statusView addSubview:detailImage];
+        
+        
+        UILabel *detailLabel = [[UILabel alloc]initWithFrame:CGRectMake(12 +orX, 0,witdth, 12)];
+        detailLabel.text = safeString(array[i][@"engineRoomName"]);
+        [self.statusView addSubview:detailLabel];
+        if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"0"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#D0CFCF"];
+        }else if ([safeString(array[i][@"fingerPrintStatus"]) isEqualToString:@"1"])  {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#03C3B6"];
+        }else {
+            detailLabel.textColor = [UIColor colorWithHexString:@"#FB3957"];
+        }
+        detailLabel.font = [UIFont systemFontOfSize:12];
+        detailLabel.numberOfLines = 1;
+        orX += fontRect.size.width+12 ;
+    }
+  
+   
+}
+
 @end

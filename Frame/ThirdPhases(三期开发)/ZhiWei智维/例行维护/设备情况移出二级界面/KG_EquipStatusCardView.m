@@ -35,7 +35,7 @@
 
 @property (nonatomic, strong) UIView         *sliderBgView;
 @property (nonatomic, strong) UIView         *sliderView;
-
+@property (nonatomic, assign) int       cardHeight ;
 
 @end
 
@@ -45,6 +45,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor whiteColor];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshCardHeight:) name:@"refreshCardHeight" object:nil];
         [self createUI];
 //        [self createNaviTopView];
         // Do any additional setup after loading the view.
@@ -439,8 +440,6 @@
     return _dataArray;
 }
 
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
    
     return 1;
@@ -448,6 +447,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    
+    if (self.cardHeight >0) {
+        return self.cardHeight;
+    }
     return SCREEN_HEIGHT - NAVIGATIONBAR_HEIGHT;
 }
 
@@ -518,7 +520,6 @@
         [self.sliderBgView insertSubview:sliderV atIndex:0];
         
     }
-    
 }
 #pragma mark ----  字典转Json字符串
 -(NSString *)convertToJsonData:(NSDictionary *)dict
@@ -576,5 +577,13 @@
     
    
     
+}
+//实现方法
+-(void)refreshCardHeight:(NSNotification *)notification{
+    NSLog(@"接收 不带参数的消息");
+   
+    self.cardHeight = [notification.object intValue];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 @end

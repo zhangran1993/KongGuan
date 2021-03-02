@@ -284,7 +284,7 @@
     }];
     
 }
-
+//包含字符串校验方法
 + (BOOL)stringContainsEmoji:(NSString *)string
 {
     __block BOOL containsEmoji = NO;
@@ -589,6 +589,7 @@
     return islingDao;
 }
 
+//提交任务 保存所有的 result 集合
 + (NSDictionary *)getXunshiResultReportDic:(NSArray *)dataArray {
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -604,11 +605,21 @@
                     NSArray *threeArr = twoDic[@"childrens"];
                     for (NSDictionary *threeDic in threeArr) { // levelCode =3
                         
-                        if (safeString(threeDic[@"measureValueAlias"]).length == 0) {
-                            [dic setValue:safeString(threeDic[@"infoId"]) forKey:safeString(@"正常")];
+                        if([safeString(threeDic[@"alarmContent"]) containsString:@"告警"] ) {
+                            if (safeString(threeDic[@"measureValueAlias"]).length == 0) {
+                                [dic setValue:[NSString stringWithFormat:@"%@#&%@",safeString(@"正常"),safeString(threeDic[@"alarmContent"])] forKey:safeString(threeDic[@"infoId"])];
+                            }else {
+                                [dic setValue:[NSString stringWithFormat:@"%@#&%@",safeString(threeDic[@"measureValueAlias"]),safeString(threeDic[@"alarmContent"])] forKey:safeString(threeDic[@"infoId"])];
+                            }
                         }else {
-                            [dic setValue:safeString(threeDic[@"infoId"]) forKey:safeString(threeDic[@"measureValueAlias"])];
+                            if (safeString(threeDic[@"measureValueAlias"]).length == 0) {
+                                [dic setValue:[NSString stringWithFormat:@"%@",safeString(@"正常")] forKey:safeString(threeDic[@"infoId"])];
+                            }else {
+                                [dic setValue:safeString(threeDic[@"measureValueAlias"]) forKey:safeString(threeDic[@"infoId"])];
+                            }
                         }
+                        
+                        
                     }
                 }
             }else if ([oneDic[@"levelMax"] isEqualToString:@"5"]) { //5级模板。
@@ -618,11 +629,24 @@
                     for (NSDictionary *threeDic in threeArr) { // levelCode =3
                         NSArray *fourArr = threeDic[@"childrens"];
                         for (NSDictionary *fourDic in fourArr) {
-                            if (safeString(fourDic[@"measureValueAlias"]).length == 0) {
-                                [dic setValue:safeString(fourDic[@"infoId"]) forKey:safeString(@"正常")];
+                            
+                            
+                    
+                            if([safeString(fourDic[@"alarmContent"]) containsString:@"告警"] ) {
+                                if (safeString(fourDic[@"measureValueAlias"]).length == 0) {
+                                    [dic setValue:[NSString stringWithFormat:@"%@#&%@",safeString(@"正常"),safeString(fourDic[@"alarmContent"])] forKey:safeString(fourDic[@"infoId"])];
+                                }else {
+                                    [dic setValue:safeString(fourDic[@"measureValueAlias"]) forKey:safeString(fourDic[@"infoId"])];
+                                }
                             }else {
-                                [dic setValue:safeString(fourDic[@"infoId"]) forKey:safeString(fourDic[@"measureValueAlias"])];
+                                if (safeString(fourDic[@"measureValueAlias"]).length == 0) {
+                                    [dic setValue:safeString(@"正常") forKey:safeString(fourDic[@"infoId"])];
+                                }else {
+                                    [dic setValue:[NSString stringWithFormat:@"%@",safeString(fourDic[@"measureValueAlias"])]  forKey:safeString(fourDic[@"infoId"])];
+                                }
                             }
+                            
+                            
                         }
                     }
                 }

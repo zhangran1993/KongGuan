@@ -1161,6 +1161,10 @@
     }];
 }
 - (void)selectTime:(UIButton *)btn{
+    [self.textField resignFirstResponder];
+    [self.view endEditing:YES];
+    //第二种
+    [self.view endEditing:YES];
     if (self.dataModel.xunshiRoom.length == 0) {
         [FrameBaseRequest showMessage:@"请选择巡视机房"];
         return;

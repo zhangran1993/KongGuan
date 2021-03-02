@@ -15,6 +15,10 @@
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
 @property (nonatomic, strong) UIScrollView *scrollView;
+
+@property (nonatomic, assign) BOOL     isFirstCard;
+
+@property (nonatomic, strong) NSMutableArray *cardHeightArray;
 @end
 
 @implementation KG_EquipCardCell
@@ -33,6 +37,7 @@
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         [self createSubviewsView];
+        self.cardHeightArray = [NSMutableArray arrayWithCapacity:0];
         self.backgroundColor = [UIColor whiteColor];
     }
     return self;
@@ -52,11 +57,9 @@
     self.scrollView.backgroundColor = [UIColor whiteColor];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.scrollEnabled = YES;
-   
+    self.scrollView.bounces =NO;
     [self addSubview:self.scrollView];
    
-  
-    
 }
 
 - (void)setDataModel:(KG_XunShiReportDetailModel *)dataModel {
@@ -64,15 +67,12 @@
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
     for(taskDetail *model in self.dataModel.task){
         for(NSDictionary *dic in model.childrens){
-//            if (isSafeDictionary(dic) && [[dic allKeys] containsObject:@"childrens"]) {
                 for (NSDictionary *dataDic in dic[@"childrens"]) {
                     if([safeString(dataDic[@"levelCode"]) isEqualToString:@"2"] &&
                        [safeString(dataDic[@"cardDisplay"]) boolValue]){
                         [arr addObject:dataDic];
                     }
                 }
-//            }
-            
         }
     }
     if (arr.count>0) {
@@ -88,7 +88,6 @@
                     }
                 }
             }
-           
         }else {
             if (self.listArray.count) {
                 NSArray *detailListarr = [self.listArray firstObject][@"equipmentList"];
@@ -98,33 +97,34 @@
                         NSArray *idArr = detailDic[@"patrolInfoIdList"];
                         for (NSString *ss in idArr) {
                             for (NSDictionary *dic in arr) {
-                                
-                                
                                 if ([safeString(dic[@"infoId"]) isEqualToString:safeString(ss)]) {
                                     [self.dataArray addObjectsFromArray: dic[@"childrens"]];
                                 }
                             }
                         }
                     }
-                    
-                    
-                    
                 }
             }
-            
-            
         }
-//             self.dataArray = [arr firstObject][@"childrens"];
-       
-       
     }
     
     self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH*self.dataArray.count, 0);
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self createSliderView];
+    
+    
+    [self.cardHeightArray removeAllObjects];
     for(int i = 0; i < self.dataArray.count; i++) {
-        KG_EquipCardView *viewcon = [[KG_EquipCardView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*i, 0, SCREEN_WIDTH, self.scrollView.frameHeight)];
         NSDictionary *dic = self.dataArray[i];
+        [self.cardHeightArray addObject:[NSNumber numberWithInt:[self calcuelateHeight:dic]]];
+        int h = [self calcuelateHeight:dic];
+        if (!self.isFirstCard) {
+            self.isFirstCard = YES;
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshCardHeight" object:[NSNumber numberWithInt:h +80]];
+        }
+        KG_EquipCardView *viewcon = [[KG_EquipCardView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*i, 0, SCREEN_WIDTH, h)];
+       
+       
         if (isSafeDictionary(dic)) {
             viewcon.cardTotalNum = (int)self.dataArray.count;
             viewcon.cardCurrNum = 1;
@@ -138,12 +138,68 @@
                 self.moreBlockMethod(dataDic);
             }
         };
-
     }
+    
+    
 }
+
+//计算高度数组
+- (int)calcuelateHeight:(NSDictionary *)dic {
+    
+    int height = 0;
+    
+    NSString *str = safeString(dic[@"operationalGuidelines"]);
+    CGRect fontRect = [str boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 64, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey:NSFontAttributeName] context:nil];
+    NSLog(@"%f",fontRect.size.height);
+    height += (fontRect.size.height +24 +62);
+    
+    NSString *str1 =  safeString(dic[@"remark"]);
+    if (str1.length == 0) {
+        height += 0;
+    }else {
+        height += 40 +42;
+    }
+    
+    //先判断是四级还是五级 模板，取值
+    int levelMax = [dic[@"levelMax"] intValue];
+    if (levelMax == 4) {
+        NSArray *arr = dic[@"childrens"];
+        
+        height += arr.count *45;
+        
+    }else if (levelMax == 5) {
+      
+        NSArray *modelArr = dic[@"childrens"];
+        if (modelArr.count) {
+            for (NSDictionary *fourDic in modelArr) {
+                if (isSafeDictionary(fourDic[@"atcSpecialTag"])) {
+                    NSDictionary *specDic = fourDic[@"atcSpecialTag"];
+                    if (safeString(specDic[@"specialTagCode"]).length >0) {
+                        height += (45 +57);
+                        
+                    }else {
+                        height +=45;
+                    }
+                }else {
+                    height +=45;
+                }
+            }
+        }else {
+            height +=45;
+        }
+    }
+
+    return height +45 + 45 + 20;
+}
+
 - (void)selectButton:(NSInteger)index
 {
-    
+    CGRect frame = self.scrollView.frame;
+    frame.size.height = [self.cardHeightArray[index] intValue];
+    self.scrollView.frame = frame;
+    //让卡片高度自适应
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshCardHeight" object:[NSNumber numberWithInt:[self.cardHeightArray[index] intValue] +80]];
+//    self.scrollView.frame = CGRectMake(0, 6, SCREEN_WIDTH, SCREEN_HEIGHT -NAVIGATIONBAR_HEIGHT - 56-6);
  
 }
 
