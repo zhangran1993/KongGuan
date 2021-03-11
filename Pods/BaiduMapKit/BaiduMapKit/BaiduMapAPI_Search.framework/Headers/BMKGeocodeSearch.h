@@ -11,9 +11,9 @@
 #import "BMKSearchBase.h"
 
 @protocol BMKGeoCodeSearchDelegate;
-///geo搜索服务
+/// geo搜索服务
 @interface BMKGeoCodeSearch : BMKSearchBase
-/// 检索模块的Delegate，此处记得不用的时候需要置nil，否则影响内存的释放
+/// geo检索模块的Delegate
 @property (nonatomic, weak) id<BMKGeoCodeSearchDelegate> delegate;
 
 /**

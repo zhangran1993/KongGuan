@@ -54,7 +54,10 @@
 @property (nonatomic, strong)   KG_EquipmentHistoryDetailModel *dataModel;
 
 
+
 @property (nonatomic,copy)     NSString                  *healthStr;
+
+@property (nonatomic, strong)   NSDictionary             *currSelDic;
 
 @end
 
@@ -66,6 +69,7 @@
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     self.dataModel = [[KG_EquipmentHistoryDetailModel alloc]init];
+   
     self.model  = [[KG_GaoJingModel alloc]init];
     [self createUI];
     [self createTableView];
@@ -95,7 +99,10 @@
               
           }
       }
+    [self querySparePartData];
+    [self queryLastedWarnData];
     
+   
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -246,7 +253,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return 11;
+    return 13;
     
 }
 
@@ -306,6 +313,10 @@
         }
         return 50 +self.dataModel.specialGuaranteeList.count *40;
         
+    }else if(indexPath.section == 11) {
+        return  313;
+    }else if(indexPath.section == 12) {
+       return  347 + 50;
     }
     return 50;
     
@@ -378,14 +389,13 @@
                 [self.model mj_setKeyValues:dataDic];
                 vc.model = self.model;
                 [self.navigationController pushViewController:vc animated:YES];
-                
             }
         };
         
         cell.moreMethodBlock = ^(NSString * _Nonnull titleStr) {
             KG_EquipmentHistoryDetailMoreViewController *vc = [[KG_EquipmentHistoryDetailMoreViewController alloc]init];
             if([titleStr isEqualToString:@"台站告警记录"]) {
-                vc.listArr = self.dataModel.equipmentFailureList;
+                vc.listArr = self.dataModel.equipmentWarnRecordList;
             }
             vc.titleStr = titleStr;
             vc.code = safeString(self.dataDic[@"code"]);
@@ -438,7 +448,7 @@
         cell.moreMethodBlock = ^(NSString * _Nonnull titleStr) {
             KG_EquipmentHistoryDetailMoreViewController *vc = [[KG_EquipmentHistoryDetailMoreViewController alloc]init];
             if([titleStr isEqualToString:@"台站关键环境事件记录"]) {
-                vc.listArr = self.dataModel.equipmentFailureList;
+                vc.listArr = self.dataModel.equipmentAdjustList;
             }
             vc.titleStr = titleStr;
             vc.code = safeString(self.dataDic[@"code"]);
@@ -469,16 +479,27 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
         
-    }else if(indexPath.section == 12) {
+    }else if(indexPath.section == 11) {
         
+        KG_LastestWarnTotalCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_LastestWarnTotalCell"];
+        if (cell == nil) {
+            cell = [[KG_LastestWarnTotalCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_LastestWarnTotalCell"];
+        }
+        cell.dataDic = self.dataModel.lastestWarnDic;
+        cell.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      
+        return cell;
+    }else if(indexPath.section == 12) {
+
         KG_SparePartsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_SparePartsCell"];
         if (cell == nil) {
             cell = [[KG_SparePartsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_SparePartsCell"];
         }
-        cell.dataDic = self.dataDic;
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        cell.dataDic = self.dataDic;
+        cell.listArray = self.dataModel.sparePartsStatistics;
         return cell;
     }else {
         KG_EquipmentHistoryFourthCell *cell = [tableView dequeueReusableCellWithIdentifier:@"KG_EquipmentHistoryFourthCell"];
@@ -913,6 +934,254 @@
        }
         return ;
         
+    }];
+    
+}
+
+
+
+
+//查询第一个图标内容
+- (void)querySparePartData {
+    
+    NSString *stationCode = @"";
+    NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+    if (currentDic.count == 0) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"station"]){
+            currentDic = [userDefaults objectForKey:@"station"];
+        }else {
+            NSArray *stationArr = [UserManager shareUserManager].stationList;
+            if (stationArr.count >0) {
+                currentDic = [stationArr firstObject][@"station"];
+            }
+        }
+    }
+    if (currentDic.count) {
+        stationCode = safeString(currentDic[@"code"]);
+    }
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDataCenter/getEquipmentInfo/%@",stationCode]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            return ;
+        }
+        
+        self.dataModel.sparePartsStatistics = result[@"value"];
+        if (self.dataModel.sparePartsStatistics.count >0) {
+            self.currSelDic = [self.dataModel.sparePartsStatistics firstObject];
+            [self queryDetailData];
+        }
+        
+        [self.tableView reloadData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
+        return ;
+    }];
+}
+//
+////查询第二个图标内容
+//- (void)queryLastedWarnData {
+//    
+//    NSString *stationCode = @"";
+//    NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+//    if (currentDic.count == 0) {
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        if([userDefaults objectForKey:@"station"]){
+//            currentDic = [userDefaults objectForKey:@"station"];
+//        }else {
+//            NSArray *stationArr = [UserManager shareUserManager].stationList;
+//            if (stationArr.count >0) {
+//                currentDic = [stationArr firstObject][@"station"];
+//            }
+//        }
+//    }
+//    if (currentDic.count) {
+//        stationCode = safeString(currentDic[@"code"]);
+//    }
+//    
+//    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDataCenter/getOneGradeAttachmentInfo/%@",stationCode]];
+//    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+//    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+//        [MBProgressHUD hideHUD];
+//        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//        if(code  <= -1){
+//            return ;
+//        }
+//        
+//        self.dataModel.lastestWarnDic = result[@"value"];
+//        [self.tableView reloadData];
+//        
+//    } failure:^(NSURLSessionDataTask *error)  {
+//        [MBProgressHUD hideHUD];
+//        FrameLog(@"请求失败，返回数据 : %@",error);
+//        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+//            [FrameBaseRequest logout];
+//            LoginViewController *login = [[LoginViewController alloc] init];
+//            [self.slideMenuController showViewController:login];
+//            return;
+//            
+//        }else if(responses.statusCode == 502){
+//            
+//        }
+//        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+//        return ;
+//    }];
+//    
+//}
+
+//获取台站备件数量统计图接口：
+//请求地址：
+///intelligent/atcDataCenter/getAttachmentByEquipmentInfo/{stationCode}/{equipmentCategory}
+//其中，stationCode 是台站编码，
+//equipmentCategory是上个接口返回的categoryCode字段。
+//请求方式：GET
+//请求返回：
+//如：/intelligent/atcDataCenter/getAttachmentByEquipmentInfo/S5/radar
+
+- (void)queryDetailData {
+    
+    NSString *stationCode = @"";
+    NSDictionary *currentDic = [UserManager shareUserManager].currentStationDic;
+    if (currentDic.count == 0) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if([userDefaults objectForKey:@"station"]){
+            currentDic = [userDefaults objectForKey:@"station"];
+        }else {
+            NSArray *stationArr = [UserManager shareUserManager].stationList;
+            if (stationArr.count >0) {
+                currentDic = [stationArr firstObject][@"station"];
+            }
+        }
+    }
+    if (currentDic.count) {
+        stationCode = safeString(currentDic[@"code"]);
+    }
+    
+    NSString *FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDataCenter/getAttachmentByEquipmentInfo/%@/%@",safeString(stationCode),safeString(self.currSelDic[@"categoryCode"])]];
+    
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+        
+            return ;
+        }
+        self.dataModel.sparePartsStatisticsDic = result[@"value"];
+        [self.tableView reloadData];
+        
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
+        return ;
+    }];
+}
+
+//
+//获取台站备件数量统计图中有备件的设备分类信息接口：
+//
+//请求地址：/intelligent/atcDataCenter/getEquipmentInfo/{stationCode}
+//其中，stationCode是台站编码
+//请求方式：GET
+//请求返回：
+//如：/intelligent/atcDataCenter/getEquipmentInfo/S5
+
+//
+//- (void)querySparePartData {
+//    
+//    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDataCenter/getEquipmentInfo/%@",safeString(self.dataDic[@"stationCode"])]];
+//    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+//    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+//        [MBProgressHUD hideHUD];
+//        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+//        if(code  <= -1){
+//            return ;
+//        }
+//        
+//        self.dataModel.sparePartsStatistics = result[@"value"];
+//        [self.tableView reloadData];
+//        
+//    } failure:^(NSURLSessionDataTask *error)  {
+//        [MBProgressHUD hideHUD];
+//        FrameLog(@"请求失败，返回数据 : %@",error);
+//        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+//        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+//            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+//            [FrameBaseRequest logout];
+//            LoginViewController *login = [[LoginViewController alloc] init];
+//            [self.slideMenuController showViewController:login];
+//            return;
+//            
+//        }else if(responses.statusCode == 502){
+//            
+//        }
+//        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+//        return ;
+//    }];
+//}
+
+
+- (void)queryLastedWarnData {
+    
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/atcDataCenter/getStationAlarmGrade"]];
+    [MBProgressHUD showHUDAddedTo:JSHmainWindow animated:YES];
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [MBProgressHUD hideHUD];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            return ;
+        }
+        
+        self.dataModel.lastestWarnDic = result[@"value"];
+        [self.tableView reloadData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
     }];
     
 }

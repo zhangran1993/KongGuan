@@ -43,6 +43,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
         
     }
@@ -54,7 +55,7 @@
     
 
     self.headIcon = [[UIImageView alloc]init];
-    [self addSubview:self.headIcon];
+    [self.contentView addSubview:self.headIcon];
     self.headIcon.image = [UIImage imageNamed:@"kg_font_leftIcon"];
     [self.headIcon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);
@@ -63,7 +64,7 @@
     }];
     
     self.rightSlider = [[UIImageView alloc]init];
-    [self addSubview:self.rightSlider];
+    [self.contentView addSubview:self.rightSlider];
     self.rightSlider.image = [UIImage imageNamed:@"kg_font_leftSlider"];
     [self.rightSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.headIcon.mas_right).offset(6);
@@ -73,7 +74,7 @@
     }];
     
     self.titleBgView = [[UIView alloc]init];
-    [self addSubview:self.titleBgView];
+    [self.contentView addSubview:self.titleBgView];
     self.titleBgView.layer.cornerRadius = 6.f;
     self.titleBgView.layer.masksToBounds = YES;
     self.titleBgView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
@@ -82,7 +83,7 @@
     self.titleLabel.text = @"拖动下面的滑块，可设置字体大小";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont my_font:16];
-    [self addSubview:self.titleLabel];
+    [self.contentView addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.titleLabel sizeToFit];
     self.titleLabel.numberOfLines = 0;

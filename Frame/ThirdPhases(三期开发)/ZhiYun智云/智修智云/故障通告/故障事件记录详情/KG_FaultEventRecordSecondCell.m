@@ -34,6 +34,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -59,6 +60,7 @@
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:14];
     self.titleLabel.font = [UIFont my_font:14];
+    
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@20);
         make.width.equalTo(@200);
@@ -72,6 +74,7 @@
     self.detailLabel.font = [UIFont systemFontOfSize:14];
     self.detailLabel.font = [UIFont my_font:14];
     [self.detailLabel sizeToFit];
+  
     self.detailLabel.numberOfLines = 0;
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         
@@ -83,6 +86,41 @@
     
 }
 
+-(void)setLineSpace:(CGFloat)lineSpace withText:(NSString *)text inLabel:(UILabel *)label{
+    if (!text || !label) {
+        return;
+    }
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = lineSpace;  //设置行间距
+    paragraphStyle.lineBreakMode = label.lineBreakMode;
+    paragraphStyle.alignment = label.textAlignment;
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [text length])];
+    label.attributedText = attributedString;
+}
 
+- (void)setStr:(NSString *)str {
+    _str = str;
+    self.titleLabel.text = safeString(str);
+}
+- (void)setDataDic:(NSDictionary *)dataDic {
+    _dataDic = dataDic;
+//    self.detailLabel.text = safeString(self.dataDic[@"implementationCase"]);
+    
+    NSString *str = safeString(self.dataDic[@"recordDescription"]);
+        
+    NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:str];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = 8.0; // 设置行间距
+    paragraphStyle.alignment = NSTextAlignmentJustified; //设置两端对齐显示
+    [attributedStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, attributedStr.length)];
+    
+    self.detailLabel.attributedText = attributedStr;
+    [self.detailLabel sizeToFit];
+    //调用
+//    [self setLineSpace:55.0f withText:safeString(self.dataDic[@"implementationCase"]) inLabel:self.detailLabel];
 
+}
+   
 @end

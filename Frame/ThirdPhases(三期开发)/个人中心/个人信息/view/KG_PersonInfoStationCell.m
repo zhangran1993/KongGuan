@@ -33,6 +33,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -41,7 +42,7 @@
 - (void)createSubviewsView {
     
     self.titleLabel = [[UILabel alloc]init];
-    [self addSubview:self.titleLabel];
+    [self.contentView addSubview:self.titleLabel];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -58,7 +59,7 @@
   
     self.rightImage = [[UIImageView alloc]init];
     self.rightImage.image = [UIImage imageNamed:@"center_rightImage"];
-    [self addSubview:self.rightImage];
+    [self.contentView addSubview:self.rightImage];
     [self.rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@18);
         make.centerY.equalTo(self.mas_centerY);
@@ -68,7 +69,7 @@
     
     
     self.detailLabel = [[UILabel alloc]init];
-    [self addSubview:self.detailLabel];
+    [self.contentView addSubview:self.detailLabel];
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.detailLabel.font = [UIFont systemFontOfSize:16];
     self.detailLabel.textAlignment = NSTextAlignmentRight;

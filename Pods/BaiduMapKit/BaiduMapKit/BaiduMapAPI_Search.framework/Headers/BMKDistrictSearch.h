@@ -17,7 +17,7 @@
 @protocol BMKDistrictSearchDelegate;
 /// 行政区域搜索服务
 @interface BMKDistrictSearch : BMKSearchBase
-/// 检索模块的delegate，此处记得不用的时候需要置nil，否则影响内存的释放
+/// 行政区域检索模块的delegate
 @property (nonatomic, weak) id<BMKDistrictSearchDelegate> delegate;
 /**
  *行政区域检索
@@ -30,7 +30,7 @@
 
 
 #pragma mark - BMKDistrictSearchDelegate
-///搜索delegate，用于获取行政区域搜索结果
+/// 搜索delegate，用于获取行政区域搜索结果
 @protocol BMKDistrictSearchDelegate<NSObject>
 @optional
 /**

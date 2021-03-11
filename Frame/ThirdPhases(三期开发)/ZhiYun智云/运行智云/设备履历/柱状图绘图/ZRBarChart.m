@@ -389,7 +389,7 @@
 }
 
 - (void)setColor{
-    if (self.colorArray.count == 0 ) {
+    if (self.colorArray.count == 0 ||_colorLayerArray.count == 0) {
         return;
     }
     

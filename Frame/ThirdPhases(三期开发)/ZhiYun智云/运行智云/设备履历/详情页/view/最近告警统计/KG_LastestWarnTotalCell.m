@@ -39,6 +39,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -328,7 +329,9 @@
         
         
         NSArray *numArray = [dataDic[@"yArr"] firstObject][@"data"];
-      
+        if(numArray.count == 0) {
+            numArray = [dataDic[@"yArr"] firstObject][@"detail"];
+        }
         
         self.chartBar.valueArray = numArray;
         
@@ -345,4 +348,6 @@
     }
     
 }
+
+
 @end

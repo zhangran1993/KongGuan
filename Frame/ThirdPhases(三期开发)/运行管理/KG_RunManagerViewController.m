@@ -428,8 +428,6 @@
     KG_RunZhiHuiYunViewController *vc = [[KG_RunZhiHuiYunViewController alloc]init];
     vc.isPush = YES;
     [self.navigationController pushViewController:vc animated:YES];
-    
-   
         
 }
 
@@ -442,7 +440,6 @@
 //交班
 - (void)jiaobanMethod {
  
-    
     if ([self.detailModel.handoverPositionInfo count] == 1) {
         handoverPositionInfoModel *model = [self.detailModel.handoverPositionInfo firstObject];
           //如果已经生成了运行报告，并且已经接班了，则为true。点击后，直接进行交班操作。
@@ -489,12 +486,12 @@
                 return;
             }
             
-            
             vc.pushType = @"jiaoban";
             [self.navigationController pushViewController:vc animated:YES];
         };
     }
 }
+
 //接班
 - (void)jiebanMethod {
     //    接班接口：
@@ -502,10 +499,8 @@
     //    请求方式：POST
     //    请求参数：post岗位编码 runReportId报告id
     //    请求返回：
-    //    如：
-    //    {
-    //        "errCode": 0,
-    //
+    
+    
     if ([self.detailModel.succeedPositionInfo count] == 1) {
         succeedPositionInfoModel *model = [self.detailModel.succeedPositionInfo firstObject];
           //如果运行报告尚为生成即runReportId为空，则为true，前台提示用户生成运行报告。

@@ -14,18 +14,32 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - BaiduMapKit (5.1.0)
-  - Bugly (2.5.0)
+  - BaiduMapKit (6.2.0):
+    - BaiduMapKit/Base (= 6.2.0)
+    - BaiduMapKit/Cloud (= 6.2.0)
+    - BaiduMapKit/Map (= 6.2.0)
+    - BaiduMapKit/Search (= 6.2.0)
+    - BaiduMapKit/Utils (= 6.2.0)
+  - BaiduMapKit/Base (6.2.0)
+  - BaiduMapKit/Cloud (6.2.0):
+    - BaiduMapKit/Base
+  - BaiduMapKit/Map (6.2.0):
+    - BaiduMapKit/Base
+  - BaiduMapKit/Search (6.2.0):
+    - BaiduMapKit/Base
+  - BaiduMapKit/Utils (6.2.0):
+    - BaiduMapKit/Base
+  - Bugly (2.5.71)
   - DZNEmptyDataSet (1.8.1)
-  - JCore (2.1.8)
-  - JPush (3.2.8):
+  - JCore (2.4.0)
+  - JPush (3.4.0):
     - JCore (< 3.0.0, >= 2.0.0)
   - JSONKit (1.4)
   - JSONModel (1.8.0)
   - Masonry (1.0.2)
   - MBProgressHUD (1.2.0)
-  - MJExtension (3.1.0)
-  - MJRefresh (3.2.0)
+  - MJExtension (3.2.4)
+  - MJRefresh (3.5.0)
   - MSImagePickerController (1.0.1)
   - PGDatePicker (2.6.9):
     - PGPickerView
@@ -33,18 +47,19 @@ PODS:
   - QBImagePickerController (3.4.0)
   - ReactiveObjC (3.1.1)
   - SDAutoLayout (2.1.9)
-  - SDWebImage (5.1.0):
-    - SDWebImage/Core (= 5.1.0)
-  - SDWebImage/Core (5.1.0)
+  - SDWebImage (5.10.4):
+    - SDWebImage/Core (= 5.10.4)
+  - SDWebImage/Core (5.10.4)
   - SVProgressHUD (2.2.5)
-  - TZImagePickerController (3.3.1)
+  - TZImagePickerController (3.5.8)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - BaiduMapKit (> 5.0.0)
   - Bugly
   - DZNEmptyDataSet
-  - JPush (>= 3.0.6)
+  - JCore
+  - JPush
   - JSONKit (~> 1.4)
   - JSONModel
   - Masonry (~> 1.0.1)
@@ -86,27 +101,27 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  BaiduMapKit: be03d7c0d625e2106ba04691e4be45f71f8dee7f
-  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  BaiduMapKit: 907c6d9b74f66c3ff4741fc4b568ae0b339917f8
+  Bugly: fd066c75c4a0eca1440f9b6a84bd37d51bfc85ac
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  JCore: a7f1dead960d77a97717c73ea8b0aa5b33706491
-  JPush: 8ce888d6dedfa417e90c8b6bc87405a16ce2e699
+  JCore: a29e4b0ee54e1301446dc02d8e1c350404108b34
+  JPush: defaa108c38806f6efdcfaf4c416854d25fca8e5
   JSONKit: 5b69e804ea54d99293eed0fd2ce596c5703fefb0
   JSONModel: 02ab723958366a3fd27da57ea2af2113658762e9
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  MJExtension: 6b69b3bef2864fd550ce1a184eda219e321209d2
-  MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
+  MJExtension: 88e0900751b6cac8de1cf724ca9838a0b28d5acb
+  MJRefresh: 6afc955813966afb08305477dd7a0d9ad5e79a16
   MSImagePickerController: 500e0cd0d165ca52a4b927b68de474ff59263dbd
   PGDatePicker: 88960f3760edac96219c10320f25536ad31d0f44
   PGPickerView: 037acfb132a4c8054fb43aaa59a5ff50c7f747f5
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
   SDAutoLayout: 6b6f4db0d009dfc46cef14ef710dbb164e86616c
-  SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
+  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  TZImagePickerController: 99f03b64145a8c92c55b9b1b931410967d9be4cb
+  TZImagePickerController: 7fd9702897ef8c0b7c951e5463f4bcf398296f9e
 
-PODFILE CHECKSUM: 956cc1dafd3d43caee95d029cd65b0159039ba3e
+PODFILE CHECKSUM: 51a2034ca355ef3c38c01cf9b09e9c5a22eec0ab
 
 COCOAPODS: 1.8.4

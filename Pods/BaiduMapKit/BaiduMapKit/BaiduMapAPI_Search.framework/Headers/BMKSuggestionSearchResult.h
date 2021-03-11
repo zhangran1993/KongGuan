@@ -33,11 +33,11 @@
 @property (nonatomic, copy) NSString *city;
 /// 联想结果所在区县
 @property (nonatomic, copy) NSString *district;
-/// 联想结果分类，默认不召回，需要权限。
+/// 联想结果分类
 @property (nonatomic, copy) NSString *tag;
-/// 联想结果地址，默认不召回，需要权限。
+/// 联想结果地址
 @property (nonatomic, copy) NSString *address;
-/// 联想结果子节点，默认不召回，需要权限。
+/// 联想结果子节点
 @property (nonatomic, copy) NSArray <BMKSuggestionChildrenInfo *> *children;
 
 @end

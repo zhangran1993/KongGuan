@@ -40,13 +40,13 @@
 + (BMK_COORD_TYPE)getCoordinateTypeUsedInBaiduMapSDK;
 
 
-/**
+/**方法废弃 since 6.2.0，请参考BMKBaseLog
  打开某模块的日志，默认不打印日志
  debug时，建议打开，有利于调试程序；release时建议关闭
  @param enable 是否开启日志打印
  @param mapModule 开启哪个模块的日志
  */
-+ (void)logEnable:(BOOL)enable module:(BMKMapModule)mapModule;
++ (void)logEnable:(BOOL)enable module:(BMKMapModule)mapModule __deprecated_msg("此方法已废弃,替换为BMKBaseLog");
 
 
 /**

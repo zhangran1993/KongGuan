@@ -39,6 +39,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -255,7 +256,7 @@
         
         NSMutableArray *colorArray = [NSMutableArray arrayWithCapacity:0];
         for (NSDictionary *dataDic in self.listArray) {
-            BOOL inUse = dataDic[@"inUse"];
+            BOOL inUse = [safeString(dataDic[@"inUse"]) boolValue];
             if (inUse) {
                 NSArray *color = @[[self colorWithHexString:@"#F7A310" alpha:1],[self colorWithHexString:@"#F7A310" alpha:1]];
                 [colorArray addObject:color];

@@ -47,7 +47,7 @@
     
     if([super initWithStyle:style reuseIdentifier:reuseIdentifier]){
         
-        
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createUI];
     }
     

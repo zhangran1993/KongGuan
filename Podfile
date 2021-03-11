@@ -18,13 +18,14 @@ target 'Frame' do
     pod 'BaiduMapKit' , '> 5.0.0' #百度地图SDK
     pod 'Bugly'
     pod 'QBImagePickerController', '~>3.0'
-    pod 'JPush', '>= 3.0.6'
     pod 'Masonry','~>1.0.1'
     pod 'SDAutoLayout', '~> 2.1.7'
     pod 'DZNEmptyDataSet'
     pod 'MBProgressHUD'
     pod 'JSONModel'
-    pod 'TZImagePickerController' 
+    pod 'TZImagePickerController'
+    pod 'JCore' 
+    pod 'JPush'  
     #pod 'Pgyer'
     #pod 'PgyUpdate'
 

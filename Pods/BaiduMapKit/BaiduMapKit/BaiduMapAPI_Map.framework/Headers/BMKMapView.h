@@ -5,17 +5,22 @@
  *  Copyright 2011 Baidu Inc. All rights reserved.
  *
  */
+#ifdef USE_NAVI
+#import <BaiduMapAPI_Base_Navi/BMKBaseComponent.h>
+#else
 #import <BaiduMapAPI_Base/BMKBaseComponent.h>
+#endif
 #import "BMKAnnotation.h"
 #import "BMKAnnotationView.h"
 #import "BMKOverlayView.h"
-#import "UIKit/UIKit.h"
 #import "BMKMapStatus.h"
 #import "BMKLocationViewDisplayParam.h"
 #import "BMKHeatMap.h"
 #import "BMKBaseIndoorMapInfo.h"
 #import "BMKCustomMapStyleOption.h"
-
+#import "BMapType.h"
+@class BMMapControl;
+@class CompassOverlay;
 @protocol BMKMapViewDelegate;
 
 ///点击地图标注返回数据结构
@@ -63,7 +68,7 @@ typedef enum {
 ///地图View类，使用此View可以显示地图窗口，并且对地图进行相关的操作
 @interface BMKMapView : UIView
 
-/// 地图View的Delegate，此处记得不用的时候需要置nil，否则影响内存的释放
+/// 地图View的Delegate
 @property (nonatomic, weak) id<BMKMapViewDelegate> delegate;
 
 /// 当前地图类型，可设定为标准地图、卫星地图
@@ -164,34 +169,34 @@ typedef enum {
 @property(nonatomic, getter=isChangeCenterWithDoubleTouchPointEnabled) BOOL ChangeCenterWithDoubleTouchPointEnabled;
 
 /**
- *设置自定义地图样式
+ *设置自定义地图样式 since 6.0 空实现
  *注：必须在BMKMapView对象初始化之前调用
  *@param customMapStyleJsonFilePath 自定义样式文件所在路径，包含文件名
  */
 + (void)customMapStyle:(NSString *)customMapStyleJsonFilePath __deprecated_msg("Please use - (void)setCustomMapStyleEnable:(BOOL)enable");
 
 /**
- *自定义地图样式开关，影响所有BMKMapView对象
+ *自定义地图样式开关，影响所有BMKMapView对象 since 6.0 空实现
  *@param enable 自定义地图样式是否生效
  */
-+ (void)enableCustomMapStyle:(BOOL)enable __deprecated_msg("Please use - (void)setCustomMapStylePath:(NSString *)customMapStyleJsonFilePath");
++ (void)enableCustomMapStyle:(BOOL)enable __deprecated_msg("Please use - (void)setCustomMapStylePath:(NSString *)customMapStyleFilePath");
 
 /**
  V5.0.0版本新增
  设置个性化地图样式路径，仅影响当前BMKMapView对象，需在对象创建后调用
 
- @param customMapStyleJsonFilePath 本地个性化样式文件所在路径，包含文件名
+ @param customMapStyleFilePath 本地个性化样式文件所在路径，包含文件名
  */
-- (void)setCustomMapStylePath:(NSString *)customMapStyleJsonFilePath;
+- (void)setCustomMapStylePath:(NSString *)customMapStyleFilePath;
 
 /**
  V5.0.0版本新增
  设置个性化地图样式路径，仅影响当前BMKMapView对象，需在对象创建后调用
 
- @param customMapStyleJsonFilePath 本地个性化样式文件所在路径，包含文件名
+ @param customMapStyleFilePath 本地个性化样式文件所在路径，包含文件名
  @param mode 加载模式，0:加载本地文件 1:加载在线文件或在线缓存文件
  */
-- (void)setCustomMapStylePath:(NSString *)customMapStyleJsonFilePath mode:(int)mode;
+- (void)setCustomMapStylePath:(NSString *)customMapStyleFilePath mode:(int)mode;
 
 /**
  V5.0.0版本新增
@@ -493,7 +498,7 @@ typedef enum {
  * 获取当前聚焦的室内图信息
  * @return 当前聚焦的室内图信息。没有聚焦的室内图，返回nil
  */
-- (BMKBaseIndoorMapInfo*)getFocusedBaseIndoorMapInfo;
+- (BMKBaseIndoorMapInfo *)getFocusedBaseIndoorMapInfo;
 
 @end
 
@@ -609,7 +614,7 @@ typedef enum {
  *向地图窗口添加一组Overlay，需要实现BMKMapViewDelegate的-mapView:viewForOverlay:函数来生成标注对应的View
  *@param overlays 要添加的overlay数组
  */
-- (void)addOverlays:(NSArray *)overlays;
+- (void)addOverlays:(NSArray<id <BMKOverlay>> *)overlays;
 
 /**
  *移除Overlay
@@ -621,7 +626,7 @@ typedef enum {
  *移除一组Overlay
  *@param overlays 要移除的overlay数组
  */
-- (void)removeOverlays:(NSArray *)overlays;
+- (void)removeOverlays:(NSArray<id <BMKOverlay>> *)overlays;
 
 /**
  *在指定的索引处添加一个Overlay
@@ -686,6 +691,13 @@ typedef enum {
  *@param mapView 地图View
  */
 - (void)mapViewDidFinishLoading:(BMKMapView *)mapView;
+
+/**
+ *地图绘制出有效数据时调用此接口
+ *@param mapView 地图View
+ *@param error 错误码
+*/
+- (void)mapViewDidRenderValidData:(BMKMapView *)mapView withError:(NSError *)error;
 
 /**
  *地图渲染完毕后会调用此接口
@@ -837,7 +849,7 @@ typedef enum {
 - (void)mapview:(BMKMapView *)mapView onLongClick:(CLLocationCoordinate2D)coordinate;
 
 /**
- *3DTouch 按地图时会回调此接口（仅在支持3D Touch，且fouchTouchEnabled属性为YES时，会回调此接口）
+ *3DTouch 按地图时会回调此接口（仅在支持3D Touch，且forceTouchEnabled属性为YES时，会回调此接口）
  *@param mapView 地图View
  *@param coordinate 触摸点的经纬度
  *@param force 触摸该点的力度(参考UITouch的force属性)

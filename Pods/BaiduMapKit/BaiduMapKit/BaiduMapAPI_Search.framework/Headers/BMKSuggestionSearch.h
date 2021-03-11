@@ -12,9 +12,9 @@
 #import "BMKSuggestionSearchResult.h"
 
 @protocol BMKSuggestionSearchDelegate;
-///sug搜索服务
+/// sug搜索服务
 @interface BMKSuggestionSearch : BMKSearchBase
-/// 检索模块的Delegate，此处记得不用的时候需要置nil，否则影响内存的释放
+/// sug检索模块的Delegate
 @property (nonatomic, weak) id<BMKSuggestionSearchDelegate> delegate;
 
 /**

@@ -43,6 +43,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -53,7 +54,7 @@
     self.centerView = [[UIView alloc]init];
     self.centerView.layer.cornerRadius = 4;
     self.centerView.layer.masksToBounds = YES;
-    [self addSubview:self.centerView];
+    [self.contentView addSubview:self.centerView];
     self.centerView.backgroundColor = [UIColor colorWithHexString:@"#F8F9FA"];
     [self.centerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(12);
@@ -77,7 +78,7 @@
     
     self.selBtn = [[UIImageView alloc]init];
     [self.selBtn setImage:[UIImage imageNamed:@"kg_dutymanageunSelImage"]];
-    [self addSubview:self.selBtn];
+    [self.contentView addSubview:self.selBtn];
     [self.selBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.centerView.mas_left).offset(8);
         make.width.height.equalTo(@18);
@@ -85,7 +86,7 @@
     }];
     
     self.timeImage = [[UIImageView alloc]init];
-    [self addSubview:self.timeImage];
+    [self.contentView addSubview:self.timeImage];
     self.timeImage.image = [UIImage imageNamed:@"kg_dutymanTimeIcon"];
     [self.timeImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@12);
@@ -94,7 +95,7 @@
     }];
     
     self.timeLabel = [[UILabel alloc]init];
-    [self addSubview:self.timeLabel];
+    [self.contentView addSubview:self.timeLabel];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.font = [UIFont my_font:12];
@@ -107,7 +108,7 @@
     }];
     
     self.personLabel  = [[UILabel alloc]init];
-    [self addSubview:self.personLabel];
+    [self.contentView addSubview:self.personLabel];
     self.personLabel.textColor = [UIColor colorWithHexString:@"#9294A0"];
     self.personLabel.font = [UIFont systemFontOfSize:12];
     self.personLabel.font = [UIFont my_font:12];

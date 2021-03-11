@@ -1419,6 +1419,7 @@
         for (UIView *subView in self.tableView.subviews) {
             if ([subView isKindOfClass:NSClassFromString(@"UISwipeActionPullView")] && [subView.subviews count] >= 1) {
                 // 修改图片
+               
                 UIView *remarkContentView = subView;
                 [self setupRowActionView:remarkContentView withIndex:editingIndexPath];
             }
@@ -2163,9 +2164,7 @@
     }];
 }
 
-
 //已确认
-
 - (void)queryHaveConfirmData {
     [self.paraArr removeAllObjects];
     self.pageNum = 1;
@@ -2227,7 +2226,6 @@
 
 
 //已确认更多
-
 - (void)queryMoreConfirmData {
     
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/notUnconfirmed/%d/%d",WebNewHost,self.pageNum,self.pageSize];
@@ -2275,13 +2273,10 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
-    
 }
 
 #pragma mark ------ 打开了空管开关
 //打开空管设备开关下的请求
-
-
 //全部的数据 pagenum = 1
 - (void)queryOpenSwhAllGaoJingData {
     [self.paraArr removeAllObjects];
@@ -2529,9 +2524,7 @@
     }];
 }
 
-
 //已确认
-
 - (void)queryOpenSwhHaveConfirmData {
     [self.paraArr removeAllObjects];
     self.pageNum = 1;
@@ -2597,9 +2590,7 @@
       }];
 }
 
-
 //已确认更多
-
 - (void)queryOpenSwhMoreConfirmData {
     
     NSString *FrameRequestURL = [NSString stringWithFormat:@"%@/intelligent/keepInRepair/notUnconfirmed/%d/%d",WebNewHost,self.pageNum,self.pageSize];
@@ -2659,12 +2650,10 @@
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
     }];
-    
 }
 
 //查询全部
 - (void)queryScreenMoreAllGaoJingData {
-    
     
     //进入页面请求全部数据
     NSDictionary *currDic = [UserManager shareUserManager].currentStationDic;
@@ -2717,7 +2706,7 @@
     }];
 }
 
--  (void)queryRefreshData {
+- (void)queryRefreshData {
     //如果是关闭
     if (self.isOpenSwh == NO) {
         if (self.currIndex == 0) {
@@ -2746,5 +2735,20 @@
         }
     }
 }
+
+//- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath API_AVAILABLE(ios(11.0)) API_UNAVAILABLE(tvos){// delete action
+//    UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"" handler:^(UIContextualAction * _Nonnull action,__kindof UIView * _Nonnull sourceView,void (^ _Nonnull completionHandler)(BOOL)) {
+//        [tableView setEditing:NO animated:YES];// 这句很重要，退出编辑模式，隐藏左滑菜单
+//
+//    }];
+//
+//
+//
+//
+//
+//    UISwipeActionsConfiguration *actions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+//    actions.performsFirstActionWithFullSwipe = NO;
+//    return actions;
+//}
 
 @end

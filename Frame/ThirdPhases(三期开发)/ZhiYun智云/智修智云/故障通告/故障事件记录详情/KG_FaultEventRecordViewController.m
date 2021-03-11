@@ -58,7 +58,8 @@
     [headView addSubview:self.headerLabel];
     self.headerLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.headerLabel.font = [UIFont systemFontOfSize:16];
-    self.headerLabel.font = [UIFont my_font:16];
+    self.headerLabel.font = [UIFont my_Pingfont:16];
+    
     self.headerLabel.numberOfLines = 0;
     [self.headerLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(headView.mas_left).offset(16);
@@ -90,12 +91,12 @@
     [self.navigationController setNavigationBarHidden:YES];
     
 }
+
 -(void)viewWillDisappear:(BOOL)animated{
     NSLog(@"StationDetailController viewWillDisappear");
     [self.navigationController setNavigationBarHidden:NO];
     
 }
-
 
 
 -(NSMutableArray *)dataArray{
@@ -118,7 +119,6 @@
 
 -(void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
-  
 }
 
 - (UITableView *)tableView {
@@ -171,7 +171,6 @@
         cell = [[KG_FaultEventRecordCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"KG_FaultEventRecordCell"];
     }
     NSString *str = self.dataArray[indexPath.row];
- 
     cell.titleLabel.text = safeString(str);
     cell.dataDic = self.dataDic;
     
@@ -182,9 +181,34 @@
     }else if (indexPath.row == 2) {
         cell.detailLabel.text = safeString(self.dataDic[@"eventType"]);
     }else if (indexPath.row == 3) {
-        cell.detailLabel.text = safeString(self.dataDic[@"atcEventReason"][@"otherName"]);
+        if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"设备故障"]) {
+            if (isSafeDictionary(self.dataDic[@"atcEventReason"])) {
+                 NSDictionary *dic = self.dataDic[@"atcEventReason"];
+                 cell.detailLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(dic[@"equipmentClass"]),safeString(dic[@"equipmentName"])];
+            }
+        }else if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"不正常事件"]) {
+            if (isSafeDictionary(self.dataDic[@"atcEventReason"])) {
+                 NSDictionary *dic = self.dataDic[@"atcEventReason"];
+                 cell.detailLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(dic[@"abnormalType"]),safeString(dic[@"abnormalName"])];
+            }
+        }else if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"无线电干扰"]) {
+            if (isSafeDictionary(self.dataDic[@"atcEventReason"])) {
+                NSDictionary *dic = self.dataDic[@"atcEventReason"];
+                cell.detailLabel.text = [NSString stringWithFormat:@"%@-%@-%@-%@",safeString(dic[@"stationAddress"]),safeString(dic[@"interferenceBusiness"]),safeString(dic[@"interferenceType"]),safeString(dic[@"interferenceSource"])];
+            }
+        }else if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"其他"]) {
+            NSDictionary *dic = self.dataDic[@"atcEventReason"];
+            cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(dic[@"otherName"])];
+        }
     }else if (indexPath.row == 4) {
         cell.detailLabel.text = safeString(self.dataDic[@"status"]);
+        if ([safeString(self.dataDic[@"status"]) isEqualToString:@"已解决"]) {
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#004EC4"];
+            
+        }else {
+            cell.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
+
+        }
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -257,7 +281,6 @@
     return _titleLabel;
 }
 
-
 //将时间戳转换为时间字符串
 - (NSString *)timestampToTimeStr:(NSString *)timestamp {
     if (isSafeObj(timestamp)==NO) {
@@ -269,6 +292,7 @@
     return timeStr;
     
 }
+
 - (NSDateFormatter *)dateFormatWith:(NSString *)formatStr {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];

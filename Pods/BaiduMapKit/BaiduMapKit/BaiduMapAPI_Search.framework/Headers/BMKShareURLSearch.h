@@ -10,18 +10,18 @@
 #import "BMKSearchBase.h"
 
 #pragma mark - 短串分享结果类
-///分享URL结果类
+/// 分享URL结果类
 @interface BMKShareURLResult : NSObject
-///返回结果url
+/// 返回结果url
 @property (nonatomic, copy) NSString *url;
 @end
 
 
 @protocol BMKShareURLSearchDelegate;
 #pragma mark - 短串分享请求类
-///短串搜索服务
+/// 短串搜索服务
 @interface BMKShareURLSearch : BMKSearchBase
-/// 检索模块的Delegate，此处记得不用的时候需要置nil，否则影响内存的释放
+/// 短串检索模块的Delegate
 @property (nonatomic, weak) id<BMKShareURLSearchDelegate> delegate;
 
 /**

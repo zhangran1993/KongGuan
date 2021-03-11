@@ -35,6 +35,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -43,7 +44,7 @@
 - (void)createSubviewsView {
     
     self.titleLabel = [[UILabel alloc]init];
-    [self addSubview:self.titleLabel];
+    [self.contentView addSubview:self.titleLabel];
     self.titleLabel.text = @"头像";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
@@ -58,7 +59,7 @@
     }];
     
     self.bgBtn = [[UIButton alloc]init];
-    [self addSubview:self.bgBtn];
+    [self.contentView addSubview:self.bgBtn];
     [self.bgBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.bgBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@80);
@@ -70,7 +71,7 @@
     
     self.headImage = [[UIImageView alloc]init];
     self.headImage.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:self.headImage];
+    [self.contentView addSubview:self.headImage];
     [self.headImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@56);
         make.centerY.equalTo(self.mas_centerY);
@@ -83,7 +84,7 @@
     
     self.rightImage = [[UIImageView alloc]init];
     self.rightImage.image = [UIImage imageNamed:@"center_rightImage"];
-    [self addSubview:self.rightImage];
+    [self.contentView addSubview:self.rightImage];
     [self.rightImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@18);
         make.centerY.equalTo(self.mas_centerY);
@@ -92,7 +93,7 @@
     }];
     
     self.lineView = [[UIView alloc]init];
-    [self addSubview:self.lineView];
+    [self.contentView addSubview:self.lineView];
     self.lineView.backgroundColor = [UIColor colorWithHexString:@"#F6F7F9"];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);

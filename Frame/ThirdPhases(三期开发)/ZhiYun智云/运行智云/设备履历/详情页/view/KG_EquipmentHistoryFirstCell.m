@@ -56,6 +56,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -308,7 +309,7 @@
     }else if ([level isEqualToString:@"紧急"]) {
         levelString = @"level_jinji";
     }else if ([level isEqualToString:@"预警"]) {
-        levelString = @" level_yujing";
+        levelString = @"level_yujing";
     }
     
     //紧急
@@ -329,6 +330,8 @@
         textColor = [UIColor colorWithHexString:@"FC7D0E"];
     }else if ([level isEqualToString:@"紧急"]) {
         textColor = [UIColor colorWithHexString:@"F62546"];
+    }else if ([level isEqualToString:@"预警"]) {
+        textColor = [UIColor colorWithHexString:@"DB9B3B"];
     }
     
     //紧急

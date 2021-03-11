@@ -25,7 +25,7 @@
  *@param radius 半径，单位：米
  *@return 新生成的圆
  */
-+ (BMKCircle *)circleWithCenterCoordinate:(CLLocationCoordinate2D)coord
++ (instancetype)circleWithCenterCoordinate:(CLLocationCoordinate2D)coord
                                   radius:(CLLocationDistance)radius;
 
 /**
@@ -33,7 +33,7 @@
  *@param mapRect 指定的直角坐标矩形
  *@return 新生成的圆
  */
-+ (BMKCircle *)circleWithMapRect:(BMKMapRect)mapRect;
++ (instancetype)circleWithMapRect:(BMKMapRect)mapRect;
 
 /// 中心点坐标
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;

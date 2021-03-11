@@ -157,11 +157,11 @@
         }
         NSString *str = self.dataArray[indexPath.row];
         cell.str = str;
-        cell.titleLabel.text = safeString(str);
+        
         cell.dataDic = self.dataDic;
-        if (indexPath.row == 4) {
-            cell.detailLabel.text = safeString(self.dataDic[@"implementationCase"]);
-        }
+//        if (indexPath.row == 4) {
+//            cell.detailLabel.text = safeString(self.dataDic[@"implementationCase"]);
+//        }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;

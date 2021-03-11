@@ -1119,9 +1119,16 @@
     if (uu ==nil) {
         return;
     }
+    if([str containsString:@"192.5.32.127"]) {
+        
+        str = [str stringByReplacingOccurrencesOfString:@"192.5.32.127"withString:@"192.5.32.176"];
+    }
     UIImageView *imageView = [[UIImageView alloc]init];
     [imageView sd_setImageWithURL:[NSURL URLWithString:str]];
     UIImage *image = imageView.image;
+    if(image == nil) {
+        return;
+    }
     KG_ReViewPhotoView *review = [[KG_ReViewPhotoView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) Photo:image];
     
     CATransition *transition = [CATransition animation];

@@ -21,6 +21,8 @@
 
 @property (nonatomic,strong)      UIImageView     *iconImage;
 
+@property (nonatomic,strong)      UIImageView     *topImage1;
+
 @property (nonatomic,strong)      UILabel         *titleLabel;
 
 
@@ -62,6 +64,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -69,27 +72,34 @@
 
 - (void)createSubviewsView {
     
-    UIImageView *topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
-    [self addSubview:topImage1];
-    [topImage1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left);
-        make.right.equalTo(self.mas_right);
-        make.height.equalTo(@(NAVIGATIONBAR_HEIGHT +44));
-        make.top.equalTo(self.mas_top);
-    }];
-    
-    
-    topImage1.backgroundColor  =[UIColor whiteColor];
+   
+    self.topImage1.backgroundColor  =[UIColor whiteColor];
     UIImageView *topImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 208)];
     [self addSubview:topImage];
     topImage.backgroundColor  =[UIColor colorWithHexString:@"#F6F7F9"];
-    topImage.image = [UIImage imageNamed:@"kg_shebeilvli_BgImaage"];
+    topImage.contentMode = UIViewContentModeScaleAspectFill;
+    topImage.image  =[UIImage imageNamed:@"zhihuan_bgimage"];
+    if(IS_IPHONE_X_SERIES) {
+        topImage.image  =[UIImage imageNamed:@"zhihuan_bgfullimage"];
+    }
     [topImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
         make.height.equalTo(@(208));
         make.top.equalTo(self.mas_top);
     }];
+    
+    self.topImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, NAVIGATIONBAR_HEIGHT +44)];
+    [self addSubview:self.topImage1];
+    [self.topImage1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.height.equalTo(@(208));
+        make.top.equalTo(self.mas_top);
+    }];
+    
+    
+    
     self.centerView = [[UIView alloc]init];
     self.centerView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self addSubview:self.centerView];
@@ -291,16 +301,19 @@
     _dataDic = dataDic;
     self.titleLabel.text = safeString(dataDic[@"name"]);
     
+    self.nameTextLabel.text = safeString(dataDic[@"alias"]);
+    [self.topImage1 sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,safeString(dataDic[@"picture"])]]];
+    
     [self.iconImage sd_setImageWithURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@%@",WebNewHost,safeString(dataDic[@"picture"])]]];
     
     self.typeTextLabel.text = safeString(dataDic[@"stationName"]);
     
     self.typeTextLabel.text = safeString(dataDic[@"categoryName"]);
     
-    self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"status"])]];
+    self.statusImage.image = [UIImage imageNamed:[self getLevelImage:safeString(_dataDic[@"alarmStatus"])]];
    
     self.statusNumLabel.text = safeString(_dataDic[@"alarmNum"]);
-    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",safeString(_dataDic[@"status"])]];
+    self.statusNumLabel.backgroundColor = [self getTextColor:[NSString stringWithFormat:@"%@",safeString(_dataDic[@"alarmStatus"])]];
     if([safeString(_dataDic[@"alarmNum"]) floatValue] <=0) {
         self.statusNumLabel.hidden = YES;
     }
@@ -346,7 +359,7 @@
     }else if ([level isEqualToString:@"紧急"]) {
         levelString = @"level_jinji";
     }else if ([level isEqualToString:@"预警"]) {
-        levelString = @" level_yujing";
+        levelString = @"level_yujing";
     }
     
     //紧急
@@ -367,6 +380,8 @@
         textColor = [UIColor colorWithHexString:@"FC7D0E"];
     }else if ([level isEqualToString:@"紧急"]) {
         textColor = [UIColor colorWithHexString:@"F62546"];
+    }else if ([level isEqualToString:@"预警"]) {
+        textColor = [UIColor colorWithHexString:@"DB9B3B"];
     }
     
     //紧急

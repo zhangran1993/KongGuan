@@ -22,7 +22,7 @@
  *@param count points数组中点的个数
  *@return 新生成的多边形对象
  */
-+ (BMKPolygon *)polygonWithPoints:(BMKMapPoint *)points count:(NSUInteger)count;
++ (instancetype)polygonWithPoints:(BMKMapPoint *)points count:(NSUInteger)count;
 
 /**
  *根据多个点生成多边形
@@ -30,7 +30,7 @@
  *@param count coords数组中点的个数
  *@return 新生成的多边形对象
  */
-+ (BMKPolygon *)polygonWithCoordinates:(CLLocationCoordinate2D *)coords count:(NSUInteger)count;
++ (instancetype)polygonWithCoordinates:(CLLocationCoordinate2D *)coords count:(NSUInteger)count;
 
 /**
  *重新设置多边形顶点

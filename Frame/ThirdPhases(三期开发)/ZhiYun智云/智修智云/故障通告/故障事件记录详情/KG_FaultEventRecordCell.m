@@ -35,6 +35,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -72,10 +73,11 @@
     self.detailLabel.textColor = [UIColor colorWithHexString:@"#626470"];
     self.detailLabel.font = [UIFont systemFontOfSize:14];
     self.detailLabel.font = [UIFont my_font:14];
+    self.detailLabel.numberOfLines = 2;
     self.detailLabel.textAlignment = NSTextAlignmentRight;
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@36);
-        make.width.equalTo(@200);
+        make.height.equalTo(self.mas_height);
+        make.width.equalTo(@250);
         make.right.equalTo(self.mas_right).offset(-16);
         make.centerY.equalTo(self.mas_centerY);
     }];
@@ -86,7 +88,7 @@
     
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom);
-        make.height.equalTo(@1);
+        make.height.equalTo(@0.5);
         make.right.equalTo(self.mas_right);
         make.left.equalTo(self.mas_left);
     }];

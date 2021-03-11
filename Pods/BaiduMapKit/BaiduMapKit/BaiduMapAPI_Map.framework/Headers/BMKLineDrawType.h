@@ -12,9 +12,10 @@
 ///line拐角处理方式（不支持虚线）
 enum BMKLineJoinType
 {
-    kBMKLineJoinBevel = 0,   ///< 平角衔接
-    kBMKLineJoinMiter,      ///< 尖角衔接(尖角过长(大于线宽)按平角处理)
-    kBMKLineJoinRound      ///< 圆⻆角衔接
+    kBMKLineJoinBevel = 0,    ///< 平角衔接
+    kBMKLineJoinMiter,       ///< 尖角衔接(尖角过长(大于线宽)按平角处理)
+    kBMKLineJoinRound,      ///< 圆⻆衔接
+    kBMKLineJoinBerzier    ///< 贝塞尔平滑衔接(仅支持多纹理和多颜色的polyline绘制) 此衔接不可以与kBMKLineCapRound配合使用
 };
 typedef enum BMKLineJoinType BMKLineJoinType;
 
@@ -29,9 +30,9 @@ typedef enum BMKLineCapType BMKLineCapType;
 ///虚线绘制样式
  enum BMKLineDashType
 {
-    kBMKLineDashTypeNone = 0,      ///<实折线
-    kBMKLineDashTypeSquare,       ///<方块样式
-    kBMKLineDashTypeDot,         ///<圆点样式
+    kBMKLineDashTypeNone = 0,    ///<实折线
+    kBMKLineDashTypeSquare,     ///<方块样式
+    kBMKLineDashTypeDot        ///<圆点样式
 };
 typedef enum BMKLineDashType BMKLineDashType;
 

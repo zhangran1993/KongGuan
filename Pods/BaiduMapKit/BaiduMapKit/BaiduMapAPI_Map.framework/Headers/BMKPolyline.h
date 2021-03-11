@@ -12,13 +12,16 @@
 /// 此类用于定义一段折线
 @interface BMKPolyline : BMKMultiPoint <BMKOverlay>
 
+/// 是否需要对Polyline坐标数据进行抽稀，默认为YES
+@property (nonatomic, assign) BOOL isThined;
+
 /**
  *根据指定坐标点生成一段折线
  *@param points 指定的直角坐标点数组
  *@param count points数组中坐标点的个数
  *@return 新生成的折线对象
  */
-+ (BMKPolyline *)polylineWithPoints:(BMKMapPoint *)points count:(NSUInteger)count;
++ (instancetype)polylineWithPoints:(BMKMapPoint *)points count:(NSUInteger)count;
 
 /**
  *根据指定坐标点生成一段折线
@@ -26,7 +29,7 @@
  *@param count coords数组中坐标点的个数
  *@return 新生成的折线对象
  */
-+ (BMKPolyline *)polylineWithCoordinates:(CLLocationCoordinate2D *)coords count:(NSUInteger)count;
++ (instancetype)polylineWithCoordinates:(CLLocationCoordinate2D *)coords count:(NSUInteger)count;
 
 /**
  *重新设置折线坐标点
@@ -62,7 +65,9 @@
  *@param textureIndex 纹理索引数组（颜色索引数组），成员为NSNumber,且为非负数，负数按0处理
  *@return 新生成的折线对象
  */
-+ (BMKPolyline *)polylineWithPoints:(BMKMapPoint *)points count:(NSUInteger)count textureIndex:(NSArray<NSNumber *> *) textureIndex;
++ (instancetype)polylineWithPoints:(BMKMapPoint *)points
+                             count:(NSUInteger)count
+                      textureIndex:(NSArray<NSNumber *> *) textureIndex;
 
 /**
  *根据指定坐标点生成一段折线
@@ -75,7 +80,9 @@
  *@param textureIndex 纹理索引数组（颜色索引数组），成员为NSNumber,且为非负数，负数按0处理
  *@return 新生成的折线对象
  */
-+ (BMKPolyline *)polylineWithCoordinates:(CLLocationCoordinate2D *)coords count:(NSUInteger)count textureIndex:(NSArray<NSNumber *> *) textureIndex;
++ (instancetype)polylineWithCoordinates:(CLLocationCoordinate2D *)coords
+                                  count:(NSUInteger)count
+                           textureIndex:(NSArray<NSNumber *> *)textureIndex;
 
 /**
  *重新设置折线坐标点 和 纹理索引
@@ -84,7 +91,9 @@
  *@param textureIndex 纹理索引数组（颜色索引数组），成员为NSNumber,且为非负数，负数按0处理
  *@return 是否设置成功
  */
-- (BOOL)setPolylineWithPoints:(BMKMapPoint *)points count:(NSInteger) count textureIndex:(NSArray<NSNumber *> *) textureIndex;
+- (BOOL)setPolylineWithPoints:(BMKMapPoint *)points
+                        count:(NSInteger)count
+                 textureIndex:(NSArray<NSNumber *> *)textureIndex;
 
 /**
  *重新设置折线坐标点
@@ -93,6 +102,8 @@
  *@param textureIndex 纹理索引数组（颜色索引数组），成员为NSNumber,且为非负数，负数按0处理
  *@return 是否设置成功
  */
-- (BOOL)setPolylineWithCoordinates:(CLLocationCoordinate2D *)coords count:(NSInteger) count textureIndex:(NSArray<NSNumber *> *) textureIndex;
+- (BOOL)setPolylineWithCoordinates:(CLLocationCoordinate2D *)coords
+                             count:(NSInteger)count
+                      textureIndex:(NSArray<NSNumber *> *)textureIndex;
 
 @end

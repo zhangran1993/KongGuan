@@ -28,6 +28,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -83,12 +84,13 @@
      self.timeLabel.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
      self.timeLabel.font = [UIFont systemFontOfSize:12];
      self.timeLabel.font = [UIFont my_font:12];
-     self.timeLabel.numberOfLines = 1;
+     self.timeLabel.numberOfLines = 2;
+     [self.timeLabel sizeToFit];
      self.timeLabel.textAlignment = NSTextAlignmentLeft;
      [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
          make.top.equalTo(self.titleLabel.mas_bottom).offset(2);
          make.left.equalTo(self.titleLabel.mas_left);
-         make.height.equalTo(@20);
+//         make.height.equalTo(@20);
          make.width.equalTo(@150);
      }];
      
@@ -102,7 +104,9 @@
     self.titleLabel.text = [NSString stringWithFormat:@"%@ %@",safeString(dic[@"content"]),safeString(dic[@"userName"])];
     
     self.timeLabel.text = [self timestampToTimeStr:safeString(dic[@"createTime"])];
-    
+    if(safeString(dic[@"createTime"]).length ==0) {
+        self.timeLabel.text = @"";
+    }
 }
 
 

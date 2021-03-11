@@ -18,19 +18,21 @@
 #import "UIImageView+WebCache.h"
 #import <AFNetworkReachabilityManager.h>
 #import "UIColor+Extension.h"
+
+// 引入 JPush 功能所需头文件
+#import "JPUSHService.h"
+#import <UserNotifications/UserNotifications.h>
+
 #import "StationDetailController.h"
 // iOS10注册APNs所需头文件
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
-#import <UserNotifications/UserNotifications.h>
-
 //蒲公英
 //#import <PgySDK/PgyManager.h>
 //#import <PgyUpdate/PgyUpdateManager.h>
 
 #endif
 #define BUGLY_APP_ID @"f4004224f8"
-
-
+#define APPKEY @"13136a0d56bea32e57f518db"
 @interface AppDelegate ()<JPUSHRegisterDelegate,UITabBarControllerDelegate,BuglyDelegate>
 @property (strong, nonatomic) UIView *ADView;
 
@@ -43,7 +45,6 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
     
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
@@ -127,7 +128,7 @@
     //[[PgyManager sharedPgyManager] startManagerWithAppId:@"PGY_APP_ID"];
     //启动更新检查SDK
     //[[PgyUpdateManager sharedPgyManager] startManagerWithAppId:@"PGY_APP_ID"];
- 
+
     return YES;
 }
 - (void)alwaysShows {

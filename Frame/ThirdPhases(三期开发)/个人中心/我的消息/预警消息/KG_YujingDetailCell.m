@@ -35,6 +35,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -45,14 +46,14 @@
     
     
     UIView *timeBgView = [[UIView alloc]init];
-    [self addSubview:timeBgView];
+    [self.contentView addSubview:timeBgView];
     timeBgView.backgroundColor = [UIColor colorWithHexString:@"#ABAFB9"];
     timeBgView.layer.cornerRadius = 3.f;
     timeBgView.layer.masksToBounds = YES;
     
     
     self.timeLabel = [[UILabel alloc]init];
-    [self addSubview:self.timeLabel];
+    [self.contentView addSubview:self.timeLabel];
     self.timeLabel.backgroundColor = [UIColor colorWithHexString:@"#ABAFB9"];
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     self.timeLabel.font = [UIFont systemFontOfSize:10];
@@ -73,7 +74,7 @@
     }];
     
     self.centerView = [[UIView alloc]init];
-    [self addSubview:self.centerView];
+    [self.contentView addSubview:self.centerView];
     self.centerView.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     [self.centerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(16);

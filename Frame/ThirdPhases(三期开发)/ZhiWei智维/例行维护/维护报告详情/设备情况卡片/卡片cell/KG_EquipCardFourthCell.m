@@ -33,6 +33,7 @@
 }
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         self.backgroundColor =[UIColor colorWithHexString:@"#F6F7F9"];
         [self createSubviewsView];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cardScrollIndex:) name:@"cardScrollIndex" object:nil];

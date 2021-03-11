@@ -183,7 +183,25 @@
     }else if (indexPath.row == 2) {
         cell.detailLabel.text = safeString(self.dataDic[@"eventType"]);
     }else if (indexPath.row == 3) {
-        cell.detailLabel.text = safeString(self.dataDic[@"atcEventReason"][@"otherName"]);
+        if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"设备故障"]) {
+            if (isSafeDictionary(self.dataDic[@"atcEventReason"])) {
+                 NSDictionary *dic = self.dataDic[@"atcEventReason"];
+                 cell.detailLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(dic[@"equipmentClass"]),safeString(dic[@"equipmentName"])];
+            }
+        }else if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"不正常事件"]) {
+            if (isSafeDictionary(self.dataDic[@"atcEventReason"])) {
+                 NSDictionary *dic = self.dataDic[@"atcEventReason"];
+                 cell.detailLabel.text = [NSString stringWithFormat:@"%@-%@",safeString(dic[@"abnormalType"]),safeString(dic[@"abnormalName"])];
+            }
+        }else if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"无线电干扰"]) {
+            if (isSafeDictionary(self.dataDic[@"atcEventReason"])) {
+                NSDictionary *dic = self.dataDic[@"atcEventReason"];
+                cell.detailLabel.text = [NSString stringWithFormat:@"%@-%@-%@-%@",safeString(dic[@"stationAddress"]),safeString(dic[@"interferenceBusiness"]),safeString(dic[@"interferenceType"]),safeString(dic[@"interferenceSource"])];
+            }
+        }else if([safeString(self.dataDic[@"eventType"]) isEqualToString:@"其他"]) {
+            NSDictionary *dic = self.dataDic[@"atcEventReason"];
+            cell.detailLabel.text = [NSString stringWithFormat:@"%@",safeString(dic[@"otherName"])];
+        }
     }else if (indexPath.row == 4) {
         cell.detailLabel.text = safeString(self.dataDic[@"status"]);
     }

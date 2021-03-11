@@ -2448,7 +2448,8 @@
     //返回设置的高度
     return containerView.frame.size.height;
 }
--(void)jfbtapevent:(UIButton *) nlabel{
+
+- (void)jfbtapevent:(UIButton *) nlabel{
     if (!_objects0 || _objects0[nlabel.tag - 1][@"code"] == nil) {
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
@@ -2477,8 +2478,6 @@
     
 }
 
-
-
 #pragma  设备监测入口
 - (void)deviceTestingClick {
     NSLog(@"设备监测入口");
@@ -2497,9 +2496,7 @@
     }
 }
 
-
-
--(void)jftapevent{
+- (void)jftapevent{
     if (!_objects0 ) {
         [FrameBaseRequest showMessage:@"网络链接失败"];
         return ;
@@ -2530,17 +2527,17 @@
         
     }
     
-    
     [self.navigationController pushViewController:StationRoom animated:YES];
     
 }
 
--(void)sptapevent{
+- (void)sptapevent{
     StationVideoListController  *StationVideo = [[StationVideoListController alloc] init];
     StationVideo.station_code = _station_code;
     StationVideo.station_name = _station_name;
     [self.navigationController pushViewController:StationVideo animated:YES];
 }
+
 -(void)machineTapevent:(id)sender{
     NSString * category = @"";
     NSString * machinename = @"";
@@ -2603,7 +2600,7 @@
     [self.navigationController pushViewController:StationMachine animated:YES];
 }
 
--(void)stationAction {
+- (void)stationAction {
     
     
     NSArray *array = [UserManager shareUserManager].stationList;
@@ -2615,12 +2612,10 @@
     self.stationArray = [KG_ZhiTaiStationModel mj_objectArrayWithKeyValuesArray:list];
     [self getStationList];
     
-    
-    
 }
 
 
--(void)getStationList{
+- (void)getStationList{
     
     UIViewController *vc = [UIViewController new];
     //按钮背景 点击消失
@@ -2668,10 +2663,6 @@
         make.width.equalTo(@25);
         make.height.equalTo(@7);
     }];
-    
-    
-    
-    
     
     
     [self cb_presentPopupViewController:vc animationType:CBPopupViewAnimationSlideFromRight aligment:CBPopupViewAligmentLeft overlayDismissed:nil];

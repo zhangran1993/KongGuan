@@ -39,8 +39,9 @@
     
     if([super initWithStyle:style reuseIdentifier:reuseIdentifier]){
         
-        
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createUI];
+        
     }
     
     return self;
@@ -270,7 +271,7 @@
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeImage.mas_right).offset(4);
         make.centerY.equalTo(self.timeImage.mas_centerY);
-        make.width.equalTo(@200);
+        make.width.equalTo(@180);
         make.height.equalTo(@20);
     }];
     

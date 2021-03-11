@@ -5,6 +5,10 @@
  *  Copyright 2011 Baidu Inc. All rights reserved.
  *
  */
+
+#ifndef BMKMapComponent_h
+#define BMKMapComponent_h
+
 #import "BMKMapVersion.h"
 
 #import "BMKAnnotation.h"
@@ -36,6 +40,8 @@
 #import "BMKGradient.h"
 #import "BMKTileLayer.h"
 #import "BMKTileLayerView.h"
-//#import "BMKParticleOverlayView.h"
-//#import "BMKWeatherOverlayView.h"
+
+#endif /* BMKMapComponent_h */
+
+
 

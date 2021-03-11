@@ -28,6 +28,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -81,12 +82,13 @@
     self.timeLabel.textColor = [UIColor colorWithHexString:@"#BBBBBB"];
     self.timeLabel.font = [UIFont systemFontOfSize:12];
     self.timeLabel.font = [UIFont my_font:12];
-    self.timeLabel.numberOfLines = 3;
+    self.timeLabel.numberOfLines = 2;
+    [self.timeLabel sizeToFit];
     self.timeLabel.textAlignment = NSTextAlignmentRight;
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.mas_bottom).offset(2);
         make.right.equalTo(self.titleLabel.mas_right);
-        make.height.equalTo(@20);
+//        make.height.equalTo(@20);
         make.width.equalTo(@150);
     }];
     
@@ -107,11 +109,14 @@
     }
     if([safeString(dic[@"status"]) isEqualToString:@"removed"]) {
         self.timeLabel.text = [NSString stringWithFormat:@"%@-\n%@",[self timestampToTimeStr:safeString(dic[@"suppressStartTime"])],[self timestampToTimeStr:safeString(dic[@"suppressEndTime"])]];
+        //如果没有时间 显示为空
+        if (safeString(dic[@"suppressStartTime"]).length == 0 &&
+            safeString(dic[@"suppressEndTime"]).length == 0) {
+            self.timeLabel.text = @"";
+        }
+        
     }
-//    if (safeString(dic[@"suppressStartTime"]).length == 0 &&
-//        safeString(dic[@"suppressEndTime"]).length == 0) {
-//        self.timeLabel.text = @"";
-//    }
+
     
     
 }

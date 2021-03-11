@@ -20,6 +20,12 @@
 #import "KG_XunShiReportDetailViewController.h"
 #import "KG_WeihuDailyReportDetailViewController.h"
 #import "KG_XunShiReportDetailViewController.h"
+
+
+#import "KG_StationFileEnvEventDetailController.h"
+#import "KG_GaoJingDetailViewController.h"
+#import "KG_GaoJingModel.h"
+
 @interface KG_EquipmentHistoryDetailMoreViewController ()<UITableViewDelegate,UITableViewDataSource>{
     
 }
@@ -35,6 +41,7 @@
 @property (nonatomic, strong)   KG_EquipmentHistoryDetailModel *dataModel;
 
 @property (nonatomic, assign) int  pageNum;
+@property (nonatomic,strong)    KG_GaoJingModel *model;
 @end
 
 @implementation KG_EquipmentHistoryDetailMoreViewController
@@ -43,6 +50,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.dataModel = [[KG_EquipmentHistoryDetailModel alloc]init];
+    self.model = [[KG_GaoJingModel alloc]init];
     self.pageNum =  1;
     [self createNaviTopView];
     [self initViewData];
@@ -227,9 +235,12 @@
         [self getDeviceSpecialData];
     }else if([self.titleStr isEqualToString:@"备件库存"]) {
         
+    }else if([self.titleStr isEqualToString:@"台站关键环境事件记录"]) {
+        //查询技术资料
+        [self queryStationEnvEventListData];
+    }else if([self.titleStr isEqualToString:@"台站告警记录"]) {
+        [self queryStationAlarmListData];
     }
-    
-    
 }
 
 
@@ -290,7 +301,6 @@
         //查询维护
         KG_WeihuDailyReportDetailViewController *vc = [[KG_WeihuDailyReportDetailViewController alloc]init];
         vc.dataDic = dataDic;
-        
         [self.navigationController pushViewController:vc animated:YES];
     }else if([self.titleStr isEqualToString:@"特殊保障记录"]) {
         //查询特殊保障
@@ -300,8 +310,17 @@
         [self.navigationController pushViewController:vc animated:YES];
     }else if([self.titleStr isEqualToString:@"备件库存"]) {
         
+    }else if([self.titleStr isEqualToString:@"台站关键环境事件记录"]) {
+        KG_StationFileEnvEventDetailController *vc = [[KG_StationFileEnvEventDetailController alloc]init];
+        vc.dataDic = dataDic;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if([self.titleStr isEqualToString:@"台站告警记录"]) {
+        KG_GaoJingDetailViewController *vc = [[KG_GaoJingDetailViewController alloc]init];
+        [self.model mj_setKeyValues:dataDic];
+        vc.model = self.model;
+        [self.navigationController pushViewController:vc animated:YES];
     }
- 
+    
 }
 
 
@@ -667,6 +686,99 @@
     } ];
     
     
+}
+
+//台站档案：关键环境事件记录，按页返回：
+- (void)queryStationEnvEventListData{
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/stationManual/%@/%d/%@",safeString(self.code),self.pageNum,safeString(@"20")]];
+    
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        [self.tableView.mj_footer endRefreshing];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            return ;
+        }
+        
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
+        [self.tableView reloadData];
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (self.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [self.tableView.mj_footer resetNoMoreData];
+            }
+        }
+               
+        [self.tableView reloadData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        [self.tableView.mj_footer endRefreshing];
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
+}
+
+
+- (void)queryStationAlarmListData{
+    
+    NSString *  FrameRequestURL = [WebNewHost stringByAppendingString:[NSString stringWithFormat:@"/intelligent/keepInRepair/stationAuto/%@/%d/%@",safeString(self.code),self.pageNum,safeString(@"20")]];
+    
+    [FrameBaseRequest getWithUrl:FrameRequestURL param:nil success:^(id result) {
+        
+        [self.tableView.mj_footer endRefreshing];
+        NSInteger code = [[result objectForKey:@"errCode"] intValue];
+        if(code  <= -1){
+            return ;
+        }
+        
+        [self.dataArray addObjectsFromArray:result[@"value"][@"records"]];
+        [self.tableView reloadData];
+        int pages = [result[@"value"][@"pages"] intValue];
+        
+        if (self.pageNum >= pages) {
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            
+        }else {
+            if (self.tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+                [self.tableView.mj_footer resetNoMoreData];
+            }
+        }
+        [self.tableView reloadData];
+        
+    } failure:^(NSURLSessionDataTask *error)  {
+        [MBProgressHUD hideHUD];
+        FrameLog(@"请求失败，返回数据 : %@",error);
+        NSHTTPURLResponse * responses = (NSHTTPURLResponse *)error.response;
+        if (responses.statusCode == 401||responses.statusCode == 402||responses.statusCode == 403) {
+            [FrameBaseRequest showMessage:@"身份已过期，请重新登录！"];
+            [FrameBaseRequest logout];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.slideMenuController showViewController:login];
+            return;
+            
+        }else if(responses.statusCode == 502){
+            
+        }
+        //        [FrameBaseRequest showMessage:@"网络链接失败"];
+        return ;
+    }];
 }
 
 @end

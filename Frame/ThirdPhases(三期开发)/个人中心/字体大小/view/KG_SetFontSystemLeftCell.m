@@ -45,6 +45,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -53,7 +54,7 @@
 - (void)createSubviewsView {
   
     self.headIcon = [[UIImageView alloc]init];
-    [self addSubview:self.headIcon];
+    [self.contentView addSubview:self.headIcon];
     self.headIcon.image = [UIImage imageNamed:@"kg_font_rightIcon"];
     [self.headIcon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).offset(-16);
@@ -62,7 +63,7 @@
     }];
     
     self.rightSlider = [[UIImageView alloc]init];
-    [self addSubview:self.rightSlider];
+    [self.contentView addSubview:self.rightSlider];
     self.rightSlider.image = [UIImage imageNamed:@"kg_font_rightSlider"];
     [self.rightSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.headIcon.mas_left).offset(-6);
@@ -72,7 +73,7 @@
     }];
     
     self.titleBgView = [[UIView alloc]init];
-    [self addSubview:self.titleBgView];
+    [self.contentView addSubview:self.titleBgView];
     self.titleBgView.layer.cornerRadius = 6.f;
     self.titleBgView.layer.masksToBounds = YES;
     self.titleBgView.backgroundColor = [UIColor colorWithHexString:@"#AED1F9"];
@@ -81,7 +82,7 @@
     self.titleLabel.text = @"预览字体大小";
     self.titleLabel.textColor = [UIColor colorWithHexString:@"#24252A"];
     self.titleLabel.font =[UIFont my_font:16];
-    [self addSubview:self.titleLabel];
+    [self.contentView addSubview:self.titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentRight;
     [self.titleLabel sizeToFit];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

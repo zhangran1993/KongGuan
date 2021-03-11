@@ -57,6 +57,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -237,7 +238,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSDictionary *dataDic = self.dataArray[indexPath.row];
-    if (self.pushToNextStep) {
+        if (self.pushToNextStep) {
         self.pushToNextStep(self.titleLabel.text,dataDic);
     }
 }

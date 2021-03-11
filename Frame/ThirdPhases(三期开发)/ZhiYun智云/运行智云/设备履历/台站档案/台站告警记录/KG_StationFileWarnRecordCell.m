@@ -54,6 +54,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = self.backgroundColor;
         [self createSubviewsView];
     }
     return self;
@@ -141,7 +142,12 @@
     [self.footBtn addTarget:self action:@selector(moreMethod:) forControlEvents:UIControlEventTouchUpInside];
    
     [self.tableHeadView addSubview:self.footBtn];
-   
+    [self.footBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.tableHeadView.mas_centerY);
+        make.height.equalTo(@40);
+        make.centerX.equalTo(self.tableHeadView.mas_centerX);
+        make.width.equalTo(@(SCREEN_WIDTH/2));
+    }];
     self.tableView.tableFooterView = self.tableHeadView;
     
 }

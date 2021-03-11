@@ -43,9 +43,7 @@ static const BMKFeatureDisplayPriority BMKFeatureDisplayPriorityDefaultLow = 250
 @interface BMKAnnotationView : UIView
 {
 @private
-    BMKAnnotationViewInternal *_internal;
     BOOL _enabled3D;
-    CGPoint _originPt;
     CGPoint startPoint;
 }
 
@@ -55,12 +53,12 @@ static const BMKFeatureDisplayPriority BMKFeatureDisplayPriorityDefaultLow = 250
  *@param reuseIdentifier 如果要重用view,传入一个字符串,否则设为nil,建议重用view
  *@return 初始化成功则返回annotation view,否则返回nil
  */
-- (id)initWithAnnotation:(id <BMKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;
+- (instancetype)initWithAnnotation:(id <BMKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;
 
 ///复用标志
 @property (nonatomic, readonly) NSString *reuseIdentifier;
 ///paopaoView
-@property (nonatomic, strong) BMKActionPaopaoView* paopaoView;
+@property (nonatomic, strong) BMKActionPaopaoView *paopaoView;
 
 /**
  *当view从reuse队列里取出时被调用
@@ -75,10 +73,10 @@ static const BMKFeatureDisplayPriority BMKFeatureDisplayPriorityDefaultLow = 250
 @property (nonatomic, strong) UIImage *image;
 
 ///默认情况下, annotation view的中心位于annotation的坐标位置，可以设置centerOffset改变view的位置，正的偏移使view朝右下方移动，负的朝左上方，单位是像素
-@property (nonatomic) CGPoint centerOffset;
+@property (nonatomic, assign) CGPoint centerOffset;
 
 ///默认情况下, 弹出的气泡位于view正中上方，可以设置calloutOffset改变view的位置，正的偏移使view朝右下方移动，负的朝左上方，单位是像素
-@property (nonatomic) CGPoint calloutOffset;
+@property (nonatomic, assign) CGPoint calloutOffset;
 
 ///默认情况下,标注没有3D效果，可以设置enabled3D改变使用3D效果，使得标注在地图旋转和俯视时跟随旋转、俯视
 @property (nonatomic) BOOL enabled3D;
@@ -86,7 +84,7 @@ static const BMKFeatureDisplayPriority BMKFeatureDisplayPriorityDefaultLow = 250
 ///默认为YES,当为NO时view忽略触摸事件
 @property (nonatomic, getter=isEnabled) BOOL enabled;
 
-///默认为NO,当为YES时为会弹出气泡
+///默认为NO,初始化时设置为YES时会默认弹出气泡。V5.2.0以后版本可以直接设置该值来控制隐藏和弹出气泡，无需调用强制刷新
 @property (nonatomic, getter=isSelected) BOOL selected;
 
 /**
@@ -98,7 +96,7 @@ static const BMKFeatureDisplayPriority BMKFeatureDisplayPriorityDefaultLow = 250
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 
 ///当为YES时，view被选中时会弹出气泡，annotation必须实现了title这个方法
-@property (nonatomic) BOOL canShowCallout;
+@property (nonatomic, assign) BOOL canShowCallout;
 
 ///显示在气泡左侧的view(使用默认气泡时，view的width最大值为32，height最大值为41，大于则使用最大值）
 @property (strong, nonatomic) UIView *leftCalloutAccessoryView;
@@ -107,18 +105,18 @@ static const BMKFeatureDisplayPriority BMKFeatureDisplayPriorityDefaultLow = 250
 @property (strong, nonatomic) UIView *rightCalloutAccessoryView;
 
 ///当设为YES并实现了setCoordinate:方法时，支持将view在地图上拖动, iOS 3.2以后支持
-@property (nonatomic, getter=isDraggable) BOOL draggable __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_2);
+@property (nonatomic, assign, getter=isDraggable) BOOL draggable __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_2);
 
 ///当前view的拖动状态, iOS 3.2以后支持
-@property (nonatomic) BMKAnnotationViewDragState dragState __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_2);
+@property (nonatomic, assign) BMKAnnotationViewDragState dragState __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_2);
 
-///当发生单击地图事件时，当前的annotation的泡泡是否隐藏，默认值为NO，V4.2.1以后支持
+///当发生单击地图事件时，当前的annotation的泡泡是否隐藏，默认值为YES，V4.2.1以后支持
 @property (nonatomic, assign) BOOL hidePaopaoWhenSingleTapOnMap;
 ///当发生双击地图事件时，当前的annotation的泡泡是否隐藏，默认值为NO，V4.2.1以后支持
 @property (nonatomic, assign) BOOL hidePaopaoWhenDoubleTapOnMap;
 ///当发生两个手指点击地图（缩小地图）事件时，当前的annotation的泡泡是否隐藏，默认值为NO，V4.2.1以后支持
 @property (nonatomic, assign) BOOL hidePaopaoWhenTwoFingersTapOnMap;
-///当选中其他annotation时，当前annotation的泡泡是否隐藏，默认值为NO，V4.2.1以后支持
+///当选中其他annotation时，当前annotation的泡泡是否隐藏，默认值为YES，V4.2.1以后支持
 @property (nonatomic, assign) BOOL hidePaopaoWhenSelectOthers;
 ///当拖拽当前的annotation时，当前annotation的泡泡是否隐藏，默认值为NO，V4.2.1以后支持
 @property (nonatomic, assign) BOOL hidePaopaoWhenDrag;

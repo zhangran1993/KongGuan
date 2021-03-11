@@ -10,7 +10,7 @@
 #import "KG_TechInfoCell.h"
 #import "KG_StandardSpecificationViewController.h"
 @interface KG_TecInforViewController ()<UITableViewDelegate,UITableViewDataSource>{
-
+    
 }
 
 @property (nonatomic, strong) NSMutableArray            *dataArray;
@@ -21,6 +21,8 @@
 @property (nonatomic, strong)   UILabel                 *titleLabel;
 
 @property (nonatomic, strong)   UIView                  *navigationView;
+
+@property (nonatomic, strong)  NSIndexPath  *editingIndexPath;
 
 @end
 
@@ -150,7 +152,7 @@
         make.centerY.equalTo(backBtn.mas_centerY);
     }];
     
-   
+    
     
 }
 
@@ -266,7 +268,7 @@
         
         NSInteger code = [[result objectForKey:@"errCode"] intValue];
         if(code  <= -1){
-           
+            
             return ;
         }
         
@@ -285,5 +287,150 @@
         }
         return ;
     }];
+}
+
+- (NSArray*)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    // delete action
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:NSLocalizedString(@"DeleteLabel", @"") handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
+                                          {
+        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
+        
+    }];
+    
+    // read action
+    // 根据cell当前的状态改变选项文字
+    NSInteger index = indexPath.section;
+    
+    NSString *readTitle =@"Read";
+    
+    // 创建action
+    UITableViewRowAction *readAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:readTitle handler:^(UITableViewRowAction *action, NSIndexPath *indexPath)
+                                        {
+        [tableView setEditing:NO animated:YES];  // 这句很重要，退出编辑模式，隐藏左滑菜单
+        
+    }];
+    
+    return @[deleteAction, readAction];
+}
+
+- (void)configSwipeButtons
+{
+    // 获取选项按钮的reference
+    if (@available(iOS 11.0, *))
+    {
+        // iOS 11层级 (Xcode 9编译): UITableView -> UISwipeActionPullView
+        for (UIView *subview in self.tableView.subviews)
+        {
+            if ([subview isKindOfClass:NSClassFromString(@"UISwipeActionPullView")] && [subview.subviews count] >= 2)
+            {
+                // 和iOS 10的按钮顺序相反
+                UIButton *deleteButton = subview.subviews[1];
+                UIButton *readButton = subview.subviews[0];
+                
+                [self configDeleteButton:deleteButton];
+                [self configReadButton:readButton];
+            }
+        }
+    }
+    else
+    {
+        // iOS 8-10层级: UITableView -> UITableViewCell -> UITableViewCellDeleteConfirmationView
+        KG_TechInfoCell *tableCell = [self.tableView cellForRowAtIndexPath:self.editingIndexPath];
+        for (UIView *subview in tableCell.subviews)
+        {
+            if ([subview isKindOfClass:NSClassFromString(@"UITableViewCellDeleteConfirmationView")] && [subview.subviews count] >= 2)
+            {
+                UIButton *deleteButton = subview.subviews[0];
+                UIButton *readButton = subview.subviews[1];
+                
+                [self configDeleteButton:deleteButton];
+                [self configReadButton:readButton];
+                [subview setBackgroundColor:[UIColor colorWithHexString:@"#E5E8E8"]];
+            }
+        }
+    }
+    
+    //    [self configDeleteButton:deleteButton];
+    //    [self configReadButton:readButton];
+}
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.editingIndexPath = indexPath;
+    [self.view setNeedsLayout];   // 触发-(void)viewDidLayoutSubviews
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.editingIndexPath = nil;
+}
+
+- (void)configDeleteButton:(UIButton*)deleteButton
+{
+    if (deleteButton)
+    {
+        [deleteButton.titleLabel setFont:[UIFont fontWithName:@"SFUIText-Regular" size:12.0]];
+        [deleteButton setTitleColor:[UIColor colorWithHexString:@"D0021B"] forState:UIControlStateNormal];
+        [deleteButton setImage:[UIImage imageNamed:@"Delete_icon_.png"] forState:UIControlStateNormal];
+        [deleteButton setBackgroundColor:[UIColor  colorWithHexString:@"E5E8E8"]];
+        // 调整按钮上图片和文字的相对位置（该方法的实现在下面）
+        [self centerImageAndTextOnButton:deleteButton];
+    }
+}
+
+- (void)configReadButton:(UIButton*)readButton
+{
+    if (readButton)
+    {
+        [readButton.titleLabel setFont:[UIFont fontWithName:@"SFUIText-Regular" size:12.0]];
+        [readButton setTitleColor:[UIColor  colorWithHexString:@"4A90E2"] forState:UIControlStateNormal];
+        
+        UIImage *readButtonImage = [UIImage imageNamed: @"Mark_as_unread_icon_.png"];
+        [readButton setImage:readButtonImage forState:UIControlStateNormal];
+        
+        [readButton setBackgroundColor:[UIColor  colorWithHexString:@"E5E8E8"]];
+        // 调整按钮上图片和文字的相对位置（该方法的实现在下面）
+        [self centerImageAndTextOnButton:readButton];
+    }
+}
+- (void)centerImageAndTextOnButton:(UIButton*)button
+{
+    // this is to center the image and text on button.
+    // the space between the image and text
+    CGFloat spacing = 35.0;
+    
+    // lower the text and push it left so it appears centered below the image
+    CGSize imageSize = button.imageView.image.size;
+    button.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+    
+    // raise the image and push it right so it appears centered above the text
+    CGSize titleSize = [button.titleLabel.text sizeWithAttributes:@{NSFontAttributeName: button.titleLabel.font}];
+    button.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+    
+    // increase the content height to avoid clipping
+    CGFloat edgeOffset = (titleSize.height - imageSize.height) / 2.0;
+    button.contentEdgeInsets = UIEdgeInsetsMake(edgeOffset, 0.0, edgeOffset, 0.0);
+    
+    // move whole button down, apple placed the button too high in iOS 10
+    if (@available(iOS 11.0, *)){
+        
+        CGRect btnFrame = button.frame;
+        btnFrame.origin.y = 18;
+        button.frame = btnFrame;
+    }
+}
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"想写什么都行";
+}
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath API_AVAILABLE(ios(11.0)) API_UNAVAILABLE(tvos){// delete action
+    UIContextualAction *deleteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"删除" handler:^(UIContextualAction * _Nonnull action,__kindof UIView * _Nonnull sourceView,void (^ _Nonnull completionHandler)(BOOL)) {
+        [tableView setEditing:NO animated:YES];// 这句很重要，退出编辑模式，隐藏左滑菜单
+       
+    }];
+    
+    UISwipeActionsConfiguration *actions = [UISwipeActionsConfiguration configurationWithActions:@[deleteAction]];
+    actions.performsFirstActionWithFullSwipe = NO;
+    return actions;
 }
 @end

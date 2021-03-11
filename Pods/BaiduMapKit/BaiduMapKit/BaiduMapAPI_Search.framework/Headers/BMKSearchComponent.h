@@ -5,6 +5,8 @@
 //  Created by baidu on 14-3-10.
 //  Copyright (c) 2014年 baidu. All rights reserved.
 //
+#ifndef BMKSearchComponent_h
+#define BMKSearchComponent_h
 
 #import "BMKSearchVersion.h"
 
@@ -45,3 +47,15 @@
 #import "BMKRouteSearchOption.h"
 #import "BMKRouteSearchResult.h"
 
+// 推荐上车点
+#import "BMKRecommendStopSearch.h"
+#import "BMKRecommendStopSearchOption.h"
+#import "BMKRecommendStopSearchResult.h"
+
+// 天气服务
+#import "BMKWeatherSearch.h"
+#import "BMKWeatherSearchOption.h"
+#import "BMKWeatherSearchResult.h"
+
+
+#endif /* BMKSearchComponent_h */

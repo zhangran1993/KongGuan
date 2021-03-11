@@ -35,6 +35,7 @@
     self=[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         //布局View
+        self.contentView.backgroundColor = self.backgroundColor;
         [self setUpView];
     }
     return self;

@@ -40,6 +40,8 @@
 #import "UIFont+Addtion.h"
 #import "FMFontManager.h"
 #import "ChangeFontManager.h"
+#import "JPUSHService.h"
+#import <UserNotifications/UserNotifications.h>
 #define XZShare [UtilsJSH standarInstance]
 //MARK:判断手机机型
 #define JSHmainWindow [UIApplication sharedApplication].keyWindow
@@ -187,7 +189,7 @@
 
 
 //判断手机系统的宏
-#define ios(verson) ([UIDevice currentDevice].systemVersion.doubleValue >= (verson))
+//#define ios(verson) ([UIDevice currentDevice].systemVersion.doubleValue >= (verson))
 
 //打印json数据的宏
 #ifdef DEBUG //开发阶段

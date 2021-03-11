@@ -12,7 +12,7 @@
 @protocol BMKRouteSearchDelegate;
 /// 路线规划服务
 @interface BMKRouteSearch : BMKSearchBase
-/// 检索模块的Delegate，此处记得不用的时候需要置nil，否则影响内存的释放
+/// 路线规划检索模块的Delegate
 @property (nonatomic, weak) id<BMKRouteSearchDelegate> delegate;
 
 /**

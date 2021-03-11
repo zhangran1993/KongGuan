@@ -127,7 +127,11 @@
         };
         NSString *str = safeString(self.dataArray[indexPath.row]);
         if ([str containsString:@"http"]) {
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.dataArray[indexPath.row]]];
+            
+            if([str containsString:@"192.5.32.127"]) {
+                str = [str stringByReplacingOccurrencesOfString:@"192.5.32.127"withString:@"192.5.32.176"];
+            }
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",str]];
 //            [cell.iconImage sd_setImageWithURL:url];
              [cell.iconImage sd_setImageWithURL:url forState:UIControlStateNormal];
         }else {
